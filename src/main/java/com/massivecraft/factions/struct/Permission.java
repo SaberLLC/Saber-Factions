@@ -43,7 +43,9 @@ public enum Permission {
     MAP("map"),
     MAPHEIGHT("mapheight"),
     MOD("mod"),
+    COLEADER("coleader"),
     MOD_ANY("mod.any"),
+    COLEADER_ANY("coleader.any"),
     MODIFY_POWER("modifypower"),
     MONEY_BALANCE("money.balance"),
     MONEY_BALANCE_ANY("money.balance.any"),
@@ -76,6 +78,7 @@ public enum Permission {
     STATUS("status"),
     STUCK("stuck"),
     TAG("tag"),
+    TNT("tnt"),
     TITLE("title"),
     TITLE_COLOR("title.color"),
     TOGGLE_ALLIANCE_CHAT("togglealliancechat"),
@@ -87,7 +90,14 @@ public enum Permission {
     SETWARP("setwarp"),
     TOP("top"),
     VAULT("vault"),
+    GETVAULT("getvault"),
     SETMAXVAULTS("setmaxvaults"),
+    RULES("rules"),
+    CHECKPOINT("checkpoint"),
+    UPGRADES("upgrades"),
+    BANNER("banner"),
+    TPBANNER("tpbanner"),
+    KILLHOLOS("killholos"),
     WARP("warp");
 
     public final String node;

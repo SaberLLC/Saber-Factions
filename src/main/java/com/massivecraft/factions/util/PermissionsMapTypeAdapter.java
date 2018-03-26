@@ -98,4 +98,3 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
     }
 
 }
-

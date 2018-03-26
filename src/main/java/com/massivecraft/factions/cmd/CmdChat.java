@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 
 public class CmdChat extends FCommand {
 
@@ -21,6 +22,7 @@ public class CmdChat extends FCommand {
         senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 
@@ -36,7 +38,7 @@ public class CmdChat extends FCommand {
 
         if (modeString != null) {
             modeString = modeString.toLowerCase();
-            if (modeString.startsWith("m")) {
+            if (modeString.startsWith("m")){
                 modeTarget = ChatMode.MOD;
             } else if (modeString.startsWith("p")) {
                 modeTarget = ChatMode.PUBLIC;
@@ -54,9 +56,10 @@ public class CmdChat extends FCommand {
 
         fme.setChatMode(modeTarget);
 
-        if (fme.getChatMode() == ChatMode.MOD) {
+        if (fme.getChatMode() == ChatMode.MOD)
+        {
             msg(TL.COMMAND_CHAT_MODE_MOD);
-        } else if (fme.getChatMode() == ChatMode.PUBLIC) {
+        }else if (fme.getChatMode() == ChatMode.PUBLIC) {
             msg(TL.COMMAND_CHAT_MODE_PUBLIC);
         } else if (fme.getChatMode() == ChatMode.ALLIANCE) {
             msg(TL.COMMAND_CHAT_MODE_ALLIANCE);

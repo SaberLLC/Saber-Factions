@@ -23,6 +23,7 @@ public class CmdModifyPower extends FCommand {
         this.senderMustBeAdmin = false;
         this.senderMustBePlayer = false;
         this.senderMustBeMember = false;
+        senderMustBeColeader = false;
         this.senderMustBeModerator = false;
     }
 

@@ -1,6 +1,8 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.CmdFly;
+import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
@@ -9,31 +11,35 @@ import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.FactionGUI;
+import com.massivecraft.factions.util.Particle.ParticleEffect;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import com.sun.org.apache.xerces.internal.xs.StringList;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 public class FactionsPlayerListener implements Listener {
@@ -46,6 +52,52 @@ public class FactionsPlayerListener implements Listener {
             initPlayer(player);
         }
     }
+
+    @EventHandler
+    public void onVaultPlace(BlockPlaceEvent e) {
+        if (e.getItemInHand().getType() == Material.CHEST) {
+            ItemStack vault = P.p.createItem(Material.CHEST, 1, (short) 0, P.p.color(P.p.getConfig().getString("fvault.Item.Name")), P.p.colorList(P.p.getConfig().getStringList("fvault.Item.Lore")));
+            if (e.getItemInHand().equals(vault)) {
+                FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
+                if (fme.getFaction().getVault() != null) {
+                    fme.msg(TL.COMMAND_GETVAULT_ALREADYSET);
+                    e.setCancelled(true);
+                    return;
+                }
+                FLocation flocation = new FLocation(e.getBlockPlaced().getLocation());
+                if (Board.getInstance().getFactionAt(flocation) != fme.getFaction()) {
+                    fme.msg(TL.COMMAND_GETVAULT_INVALIDLOCATION);
+                    e.setCancelled(true);
+                    return;
+                }
+                Block start = e.getBlockPlaced();
+                int radius = 1;
+                for (double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++) {
+                    for (double y = start.getLocation().getY() - radius; y <= start.getLocation().getY() + radius; y++) {
+                        for (double z = start.getLocation().getZ() - radius; z <= start.getLocation().getZ() + radius; z++) {
+                            Location blockLoc = new Location(e.getPlayer().getWorld(), x, y, z);
+                            if (blockLoc.getX() == start.getLocation().getX() && blockLoc.getY() == start.getLocation().getY() && blockLoc.getZ() == start.getLocation().getZ()) {
+                                continue;
+                            }
+
+                            if (blockLoc.getBlock().getType() == Material.CHEST) {
+                                e.setCancelled(true);
+                                fme.msg(TL.COMMAND_GETVAULT_CHESTNEAR);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                fme.msg(TL.COMMAND_GETVAULT_SUCCESS);
+                fme.getFaction().setVault(e.getBlockPlaced().getLocation());
+
+            }
+        }
+    }
+
+
+    HashMap<Player, Boolean> fallMap = new HashMap<>();
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -90,6 +142,18 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
+        fallMap.put(me.getPlayer(), false);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
+            @Override
+            public void run() {
+                if (fallMap.containsKey(me.getPlayer())) {
+                    fallMap.remove(me.getPlayer());
+                }
+
+            }
+        }, 180L);
+
+
         if (me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {
             me.setSpyingChat(false);
             P.p.log(Level.INFO, "Found %s spying chat without permission on login. Disabled their chat spying.", player.getName());
@@ -100,10 +164,25 @@ public class FactionsPlayerListener implements Listener {
             P.p.log(Level.INFO, "Found %s on admin Bypass without permission on login. Disabled it for them.", player.getName());
         }
 
+
         // If they have the permission, don't let them autoleave. Bad inverted setter :\
         me.setAutoLeave(!player.hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
         me.setTakeFallDamage(true);
     }
+
+    @EventHandler
+    public void onPlayerFall(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player) {
+            if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                Player player = (Player) e.getEntity();
+                if (fallMap.containsKey(player)) {
+                    e.setCancelled(true);
+                    fallMap.remove(player);
+                }
+            }
+        }
+    }
+
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -137,6 +216,18 @@ public class FactionsPlayerListener implements Listener {
         }
 
         FScoreboard.remove(me);
+    }
+
+    public String parseAllPlaceholders(String string, Faction faction) {
+        string = string.replace("{Faction}", faction.getTag())
+                .replace("{online}", faction.getOnlinePlayers().size() + "")
+                .replace("{offline}", faction.getFPlayers().size() - faction.getOnlinePlayers().size() + "")
+                .replace("{chunks}", faction.getAllClaims().size() + "")
+                .replace("{power}", faction.getPower() + "")
+                .replace("{leader}", faction.getFPlayerAdmin() + "");
+
+
+        return string;
     }
 
     // Holds the next time a player can have a map shown.
@@ -177,12 +268,36 @@ public class FactionsPlayerListener implements Listener {
         Faction factionFrom = Board.getInstance().getFactionAt(from);
         Faction factionTo = Board.getInstance().getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
-
-        if (p.getConfig().getBoolean("enable-faction-flight", false) && changedFaction) {
-            if (!me.canFlyAtLocation() && me.isFlying()) {
-                me.setFlying(false);
+        if (changedFaction) {
+            Bukkit.getServer().getPluginManager().callEvent(new FPlayerEnteredFactionEvent(factionTo,factionFrom,me));
+            if (P.p.getConfig().getBoolean("Title.Show-Title")) {
+                String title = P.p.getConfig().getString("Title.Format.Title");
+                title = title.replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
+                title = parseAllPlaceholders(title, factionTo);
+                String subTitle = P.p.getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
+                subTitle = parseAllPlaceholders(subTitle, factionTo);
+                me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle));
+            }
+            // enable fly :)
+            if (me.hasFaction()) {
+                if (factionTo == me.getFaction()) {
+                    if (P.p.getConfig().getBoolean("ffly.AutoEnable")) {
+                        CmdFly Fly = new CmdFly();
+                        me.setFlying(true);
+                        Fly.flyMap.put(player.getName(), true);
+                        if (Fly.id == -1) {
+                            if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
+                                Fly.startParticles();
+                            }
+                        }
+                        if (Fly.flyid == -1) {
+                            Fly.startFlyCheck();
+                        }
+                    }
+                }
             }
         }
+
 
         if (me.isMapAutoUpdating()) {
             if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
@@ -237,6 +352,117 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onClose(InventoryCloseEvent e) {
+        FPlayer fme = FPlayers.getInstance().getById(e.getPlayer().getUniqueId().toString());
+        if (fme.isInVault()) {
+            fme.setInVault(false);
+        }
+
+    }
+
+    HashMap<String,Boolean> bannerCooldownMap = new HashMap<>();
+    public static HashMap<String,Location> bannerLocations = new HashMap<>();
+    @EventHandler
+    public void onBannerPlace(BlockPlaceEvent e){
+        if (e.getItemInHand().getType() == Material.BANNER){
+            ItemStack bannerInHand = e.getItemInHand();
+            ItemStack warBanner = P.p.createItem(bannerInHand.getType(),1,bannerInHand.getDurability(),P.p.getConfig().getString("fbanners.Item.Name"),P.p.getConfig().getStringList("fbanners.Item.Lore"));
+            if (warBanner.isSimilar(bannerInHand)){
+                FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
+                if (fme.getFaction().isWilderness()){
+                    fme.msg(TL.WARBANNER_NOFACTION);
+                    e.setCancelled(true);
+                    return;
+                }
+                int bannerTime = P.p.getConfig().getInt("fbanners.Banner-Time")*20;
+
+                Location placedLoc = e.getBlockPlaced().getLocation();
+                FLocation fplacedLoc = new FLocation(placedLoc);
+                if (Board.getInstance().getFactionAt(fplacedLoc).isWarZone() || fme.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY){
+                    if (bannerCooldownMap.containsKey(fme.getTag())){
+                        fme.msg(TL.WARBANNER_COOLDOWN);
+                        e.setCancelled(true);
+                        return;
+                    }
+                    for (FPlayer fplayer : fme.getFaction().getFPlayers()){
+                        //  if (fplayer == fme) { continue; }   //Idk if I wanna not send the title to the player
+                        fplayer.getPlayer().sendTitle(P.p.color(fme.getTag() + " Placed A WarBanner!"),P.p.color("&7use &c/f tpbanner&7 to tp to the banner!"));
+
+                    }
+                    bannerCooldownMap.put(fme.getTag(),true);
+                    bannerLocations.put(fme.getTag(),e.getBlockPlaced().getLocation());
+                    int bannerCooldown = P.p.getConfig().getInt("fbanners.Banner-Place-Cooldown");
+                    final ArmorStand as = (ArmorStand) e.getBlockPlaced().getLocation().add(0.5,1,0.5).getWorld().spawnEntity(e.getBlockPlaced().getLocation().add(0.5,1,0.5), EntityType.ARMOR_STAND); //Spawn the ArmorStand
+                    as.setVisible(false); //Makes the ArmorStand invisible
+                    as.setGravity(false); //Make sure it doesn't fall
+                    as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
+                    as.setCustomName(P.p.color(P.p.getConfig().getString("fbanners.BannerHolo").replace("{Faction}",fme.getTag()))); //Set this to the text you want
+                    as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
+                    final ArmorStand armorStand = as;
+                    final String tag = fme.getTag();
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
+                        @Override
+                        public void run() {
+                            bannerCooldownMap.remove(tag);
+                        }
+                    }, Long.parseLong(bannerCooldown + ""));
+                    final Block banner = e.getBlockPlaced();
+                    final Material bannerType = banner.getType();
+                    final Faction bannerFaction = fme.getFaction();
+                    banner.getWorld().strikeLightningEffect(banner.getLocation());
+                    //  e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_LIGHTNING_IMPACT,2.0F,0.5F);
+                    final int radius = P.p.getConfig().getInt("fbanners.Banner-Effect-Radius");
+                    final List<String> effects = P.p.getConfig().getStringList("fbanners.Effects");
+                    final int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
+                        @Override
+                        public void run() {
+
+                            for (Entity e : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(),radius,255,radius)){
+                                if (e instanceof Player){
+                                    Player player = (Player) e;
+                                    FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
+                                    if (fplayer.getFaction() == bannerFaction){
+                                        for (String effect : effects){
+                                            String[] components = effect.split(":");
+                                            player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(components[0]),100,Integer.parseInt(components[1])));
+                                        }
+                                        ParticleEffect.FLAME.display(1,1,1,1,10,banner.getLocation(),16);
+                                        ParticleEffect.LAVA.display(1,1,1,1,10,banner.getLocation(),16);
+                                        if (banner.getType() != bannerType){
+                                            banner.setType(bannerType);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },0L,20L);
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
+                        @Override
+                        public void run() {
+                            banner.setType(Material.AIR);
+                            as.remove();
+                            banner.getWorld().strikeLightningEffect(banner.getLocation());
+                            Bukkit.getScheduler().cancelTask(affectorTask);
+                            bannerLocations.remove(bannerFaction.getTag());
+                        }
+                    },Long.parseLong(bannerTime + ""));
+                }
+                else {
+                    fme.msg(TL.WARBANNER_INVALIDLOC);
+                    e.setCancelled(true);
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         // only need to check right-clicks and physical as of MC 1.4+; good performance boost
@@ -252,7 +478,6 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (!canPlayerUseBlock(player, block, false)) {
-            System.out.println("Cancelling " + player.getName() + " " + block.getType().name());
             event.setCancelled(true);
             if (Conf.handleExploitInteractionSpam) {
                 String name = player.getName();
@@ -362,13 +587,9 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
-        if (access != null && access != Access.UNDEFINED) {
-            return access == Access.ALLOW;
-        }
-
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
+
 
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
@@ -377,6 +598,11 @@ public class FactionsPlayerListener implements Listener {
             }
 
             return false;
+        }
+        Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
+        if (access != null && access != Access.UNDEFINED) {
+            // TODO: Update this once new access values are added other than just allow / deny.
+            return access == Access.ALLOW;
         }
 
         // Also cancel if player doesn't have ownership rights for this claim
@@ -412,6 +638,23 @@ public class FactionsPlayerListener implements Listener {
 
         if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
             return true;
+        }
+
+        // Dupe fix.
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
+        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand() != null) {
+            switch (player.getItemInHand().getType()) {
+                case CHEST:
+                case SIGN_POST:
+                case TRAPPED_CHEST:
+                case SIGN:
+                case WOOD_DOOR:
+                case IRON_DOOR:
+                    return false;
+                default:
+                    break;
+            }
         }
 
         PermissableAction action = null;
@@ -453,23 +696,6 @@ public class FactionsPlayerListener implements Listener {
         if (access == null || access == Access.DENY) {
             me.msg(TL.GENERIC_NOPERMISSION, action);
             return false;
-        }
-
-        // Dupe fix.
-        Faction myFaction = me.getFaction();
-        Relation rel = myFaction.getRelationTo(otherFaction);
-        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand() != null) {
-            switch (player.getItemInHand().getType()) {
-                case CHEST:
-                case SIGN_POST:
-                case TRAPPED_CHEST:
-                case SIGN:
-                case WOOD_DOOR:
-                case IRON_DOOR:
-                    return false;
-                default:
-                    break;
-            }
         }
 
         // We only care about some material types.
@@ -517,18 +743,6 @@ public class FactionsPlayerListener implements Listener {
                 (Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))) {
             event.setRespawnLocation(home);
         }
-    }
-
-    @EventHandler
-    public void onTeleport(PlayerTeleportEvent event) {
-        FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-        FLocation to = new FLocation(event.getTo());
-
-        // Check the location they're teleporting to and check if they can fly there.
-        if (!me.isAdminBypassing() && me.isFlying() && !me.canFlyAtLocation(to)) {
-            me.setFFlying(false, false);
-        }
-
     }
 
     // For some reason onPlayerInteract() sometimes misses bucket events depending on distance (something like 2-3 blocks away isn't detected),

@@ -27,7 +27,8 @@ public class CmdMod extends FCommand {
         senderMustBePlayer = false;
         senderMustBeMember = true;
         senderMustBeModerator = false;
-        senderMustBeAdmin = true;
+        senderMustBeColeader = true;
+        senderMustBeAdmin = false;
     }
 
     @Override

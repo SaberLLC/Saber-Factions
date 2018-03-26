@@ -50,30 +50,30 @@ public class AsciiCompass {
         }
     }
 
-    public static AsciiCompass.Point getCompassPointForDirection(double inDegrees) {
+    public static Point getCompassPointForDirection(double inDegrees) {
         double degrees = (inDegrees - 180) % 360;
         if (degrees < 0) {
             degrees += 360;
         }
 
         if (0 <= degrees && degrees < 22.5) {
-            return AsciiCompass.Point.N;
+            return Point.N;
         } else if (22.5 <= degrees && degrees < 67.5) {
-            return AsciiCompass.Point.NE;
+            return Point.NE;
         } else if (67.5 <= degrees && degrees < 112.5) {
-            return AsciiCompass.Point.E;
+            return Point.E;
         } else if (112.5 <= degrees && degrees < 157.5) {
-            return AsciiCompass.Point.SE;
+            return Point.SE;
         } else if (157.5 <= degrees && degrees < 202.5) {
-            return AsciiCompass.Point.S;
+            return Point.S;
         } else if (202.5 <= degrees && degrees < 247.5) {
-            return AsciiCompass.Point.SW;
+            return Point.SW;
         } else if (247.5 <= degrees && degrees < 292.5) {
-            return AsciiCompass.Point.W;
+            return Point.W;
         } else if (292.5 <= degrees && degrees < 337.5) {
-            return AsciiCompass.Point.NW;
+            return Point.NW;
         } else if (337.5 <= degrees && degrees < 360.0) {
-            return AsciiCompass.Point.N;
+            return Point.N;
         } else {
             return null;
         }

@@ -1,7 +1,7 @@
 name: Factions
-version: ${project.version}-b${build.number}
+version: ${project.version}-SF-1.0.17
 main: com.massivecraft.factions.P
-authors: [Olof Larsson, Brett Flannigan, drtshock]
+authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage]
 softdepend: [PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop]
 commands:
   factions:
@@ -103,6 +103,10 @@ permissions:
       factions.mapheight: true
       factions.ban: true
       factions.fly: true
+      factions.tnt: true
+      factions.checkpoint: true
+      factions.rules: true
+      factions.setwarp: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:
@@ -286,3 +290,25 @@ permissions:
     description: Ban players from Factions
   factions.fly:
     description: Allow use of /f fly
+  factions.rules:
+    description: add/remove/set rules for your own faction.
+  factions.checkpoint:
+    description: set or go to faction checkpoint
+  factions.tnt:
+    description: add/take from faction bank
+  factions.near:
+    description: get nearby faction members
+  factions.upgrades:
+    description: open upgrade menu
+  factions.freecam:
+    description: enable/disable freecam
+  factions.getvault:
+    description: get faction vault item
+  factions.coleader:
+    description: promote member to co leader
+  factions.tpbanner:
+    description: teleport to banner
+  factions.banner:
+    description: create banner
+  factions.killholos:
+    description: kill invisible holograms

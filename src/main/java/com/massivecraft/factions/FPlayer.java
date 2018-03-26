@@ -237,6 +237,10 @@ public interface FPlayer extends EconomyParticipator {
 
     public boolean attemptClaim(Faction forFaction, FLocation location, boolean notifyFailure);
 
+    public void setInVault(boolean status);
+
+    public boolean isInVault();
+
     public void msg(String str, Object... args);
 
     public String getId();
@@ -274,6 +278,15 @@ public interface FPlayer extends EconomyParticipator {
     public boolean canFlyAtLocation();
 
     public boolean canFlyAtLocation(FLocation location);
+
+    public boolean isEnteringPassword();
+
+    public void setEnteringPassword(boolean toggle, String warp);
+
+    public String getEnteringWarp();
+
+    public boolean checkIfNearbyEnemies();
+
 
     // -------------------------------
     // Warmups

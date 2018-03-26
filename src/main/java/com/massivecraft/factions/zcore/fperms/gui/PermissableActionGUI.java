@@ -62,6 +62,9 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 
         for (String key : section.getConfigurationSection("slots").getKeys(false)) {
             int slot = section.getInt("slots." + key);
+            if (slot == -1) {
+                continue;
+            }
             if (slot + 1 > guiSize || slot < 0) {
                 P.p.log(Level.WARNING, "Invalid slot for: " + key.toUpperCase());
                 continue;
@@ -191,7 +194,9 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
                 }
 
                 backButtonMeta.setLore(lore);
-                backButtonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+                if (!P.p.mc17){
+                    backButtonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+                }
 
                 backButton.setItemMeta(backButtonMeta);
 

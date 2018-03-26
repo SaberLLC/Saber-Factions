@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.earth2me.essentials.Console;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
@@ -38,7 +39,9 @@ public class CmdMoneyBalance extends FCommand {
             return;
         }
 
-        Econ.sendBalanceInfo(fme, faction);
+        if (fme != null) {
+            Econ.sendBalanceInfo(fme, faction);
+        }
     }
 
     @Override

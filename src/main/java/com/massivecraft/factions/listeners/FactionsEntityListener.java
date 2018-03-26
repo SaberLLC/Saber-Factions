@@ -567,6 +567,43 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onHit(EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof Player) {
+            if (e.getEntity() instanceof Player) {
+                Player victim = (Player) e.getEntity();
+                Player attacker = (Player) e.getDamager();
+                FPlayer fvictim = FPlayers.getInstance().getByPlayer(victim);
+                FPlayer fattacker = FPlayers.getInstance().getByPlayer(attacker);
+                if (fattacker.getRelationTo(fvictim) == Relation.TRUCE) {
+                    fattacker.msg(TL.PLAYER_PVP_CANTHURT, fvictim.describeTo(fattacker));
+                    e.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBowHit(EntityDamageByEntityEvent e){
+        if (e.getDamager() instanceof Projectile){
+            if (e.getEntity() instanceof Player){
+                Player damager = (Player) ((Projectile) e.getDamager()).getShooter();
+                Player victim = (Player) e.getEntity();
+                FPlayer fdamager = FPlayers.getInstance().getByPlayer(damager);
+                FPlayer fvictim = FPlayers.getInstance().getByPlayer(victim);
+                if (fvictim.getRelationTo(fdamager) == Relation.TRUCE){
+                    fdamager.msg(TL.PLAYER_PVP_CANTHURT, fvictim.describeTo(fdamager));
+                    e.setCancelled(true);
+                }
+                if (fvictim.getRelationTo(fdamager) == Relation.ENEMY) {
+                    if (fvictim.isFlying()) {
+                        fvictim.setFFlying(false, true);
+                    }
+                }
+            }
+        }
+    }
+
     private boolean stopEndermanBlockManipulation(Location loc) {
         if (loc == null) {
             return false;

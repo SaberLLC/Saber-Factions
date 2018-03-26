@@ -22,6 +22,7 @@ public class CmdMap extends FCommand {
         senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 

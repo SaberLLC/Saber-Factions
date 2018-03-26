@@ -5,11 +5,20 @@ import com.drtshock.playervaults.translations.Lang;
 import com.drtshock.playervaults.vaultmanagement.UUIDVaultManager;
 import com.drtshock.playervaults.vaultmanagement.VaultOperations;
 import com.drtshock.playervaults.vaultmanagement.VaultViewInfo;
+import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
 
 public class CmdVault extends FCommand {
 
@@ -17,7 +26,7 @@ public class CmdVault extends FCommand {
         this.aliases.add("vault");
 
         //this.requiredArgs.add("");
-        this.optionalArgs.put("number", "number");
+
 
         this.permission = Permission.VAULT.node;
         this.disableOnLock = false;
@@ -28,51 +37,41 @@ public class CmdVault extends FCommand {
         senderMustBeAdmin = false;
     }
 
-    @Override
+   @Override
     public void perform() {
-        /*
-             /f vault <number>
-         */
-
-        int number = argAsInt(0, 0); // Default to 0 or show on 0
-
-        Player player = me;
-
-        if (PlayerVaults.getInstance().getInVault().containsKey(player.getUniqueId().toString())) {
-            return; // Already in a vault so they must be trying to dupe.
-        }
-
-        int max = myFaction.getMaxVaults();
-        if (number > max) {
-            me.sendMessage(TL.COMMAND_VAULT_TOOHIGH.format(number, max));
+        if (!P.p.getConfig().getBoolean("fvault.Enabled")){
+            fme.sendMessage("This command is disabled!");
             return;
         }
 
-        // Something like faction-id
-        String vaultName = String.format(Conf.vaultPrefix, myFaction.getId());
-
-        if (number < 1) {
-            // Message about which vaults that Faction has.
-            // List the target
-            YamlConfiguration file = UUIDVaultManager.getInstance().getPlayerVaultFile(vaultName);
-            if (file == null) {
-                sender.sendMessage(Lang.TITLE.toString() + Lang.VAULT_DOES_NOT_EXIST.toString());
-            } else {
-                StringBuilder sb = new StringBuilder();
-                for (String key : file.getKeys(false)) {
-                    sb.append(key.replace("vault", "")).append(" ");
-                }
-
-                sender.sendMessage(Lang.TITLE.toString() + Lang.EXISTING_VAULTS.toString().replaceAll("%p", fme.getTag()).replaceAll("%v", sb.toString().trim()));
-            }
+        if (fme.isInVault()){
+            me.closeInventory();
             return;
-        } // end listing vaults.
-
-        // Attempt to open vault.
-        if (VaultOperations.openOtherVault(player, null, String.valueOf(number))) {
-            // Success
-            PlayerVaults.getInstance().getInVault().put(player.getUniqueId().toString(), new VaultViewInfo(vaultName, number));
         }
+        fme.setInVault(true);
+        Location vaultLocation = fme.getFaction().getVault();
+        if (vaultLocation == null){
+            fme.msg(TL.COMMAND_VAULT_INVALID);
+            return;
+        }
+       FLocation vaultFLocation = new FLocation(vaultLocation);
+        if (Board.getInstance().getFactionAt(vaultFLocation) != fme.getFaction()){
+            fme.getFaction().setVault(null);
+            fme.msg(TL.COMMAND_VAULT_INVALID);
+            return;
+        }
+        if (vaultLocation.getBlock().getType() != Material.CHEST){
+            fme.getFaction().setVault(null);
+            fme.msg(TL.COMMAND_VAULT_INVALID);
+            return;
+        }
+       Chest chest = (Chest) vaultLocation.getBlock().getState();
+       Inventory chestInv = chest.getBlockInventory();
+       fme.msg(TL.COMMAND_VAULT_OPENING);
+       me.openInventory(chestInv);
+
+
+
     }
 
     @Override

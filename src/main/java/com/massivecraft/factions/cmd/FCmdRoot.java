@@ -22,7 +22,6 @@ public class FCmdRoot extends FCommand {
     public CmdDeinvite cmdDeinvite = new CmdDeinvite();
     public CmdDescription cmdDescription = new CmdDescription();
     public CmdDisband cmdDisband = new CmdDisband();
-    public CmdFly cmdFly = new CmdFly();
     public CmdHelp cmdHelp = new CmdHelp();
     public CmdHome cmdHome = new CmdHome();
     public CmdInvite cmdInvite = new CmdInvite();
@@ -82,7 +81,18 @@ public class FCmdRoot extends FCommand {
     public CmdBan cmdban = new CmdBan();
     public CmdUnban cmdUnban = new CmdUnban();
     public CmdBanlist cmdbanlist = new CmdBanlist();
-
+    public CmdRules cmdRules = new CmdRules();
+    public CmdCheckpoint cmdCheckpoint = new CmdCheckpoint();
+    public CmdTnt cmdTnt = new CmdTnt();
+    public CmdNear cmdNear = new CmdNear();
+    public CmdUpgrades cmdUpgrades = new CmdUpgrades();
+    public CmdVault cmdVault = new CmdVault();
+    public CmdGetVault cmdGetVault = new CmdGetVault();
+    public CmdFly cmdFly = new CmdFly();
+    public CmdColeader cmdColeader = new CmdColeader();
+    public CmdBanner cmdBanner = new CmdBanner();
+    public CmdTpBanner cmdTpBanner = new CmdTpBanner();
+    public CmdKillHolograms cmdKillHolograms = new CmdKillHolograms();
     public FCmdRoot() {
         super();
         this.aliases.addAll(Conf.baseCommandAliases);
@@ -117,6 +127,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdDeinvite);
         this.addSubCommand(this.cmdDescription);
         this.addSubCommand(this.cmdDisband);
+
         this.addSubCommand(this.cmdHelp);
         this.addSubCommand(this.cmdHome);
         this.addSubCommand(this.cmdInvite);
@@ -174,6 +185,24 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdban);
         this.addSubCommand(this.cmdUnban);
         this.addSubCommand(this.cmdbanlist);
+        this.addSubCommand(this.cmdRules);
+        this.addSubCommand(this.cmdCheckpoint);
+        this.addSubCommand(this.cmdTnt);
+        this.addSubCommand(this.cmdNear);
+        this.addSubCommand(this.cmdUpgrades);
+        this.addSubCommand(this.cmdVault);
+        this.addSubCommand(this.cmdGetVault);
+        this.addSubCommand(this.cmdColeader);
+        this.addSubCommand(this.cmdBanner);
+        this.addSubCommand(this.cmdTpBanner);
+        this.addSubCommand(this.cmdKillHolograms);
+
+
+
+        if (P.p.getConfig().getBoolean("enable-faction-flight", false)) {
+            this.addSubCommand(this.cmdFly);
+            return;
+        }
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
             P.p.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
         } else {
@@ -181,17 +210,11 @@ public class FCmdRoot extends FCommand {
         }
         if (P.p.isHookedPlayervaults()) {
             P.p.log("Found playervaults hook, adding /f vault and /f setmaxvault commands.");
-            this.addSubCommand(new CmdSetMaxVaults());
-            this.addSubCommand(new CmdVault());
+           // this.addSubCommand(new CmdSetMaxVaults());
+          //  this.addSubCommand(new CmdVault());
+        }else{
+           // this.addSubCommand(new CmdVault());
         }
-
-        if (P.p.getConfig().getBoolean("enable-faction-flight", false)) {
-            this.addSubCommand(this.cmdFly);
-            P.p.log(Level.INFO, "Enabling /f fly command");
-        } else {
-            P.p.log(Level.WARNING, "Faction flight set to false in config.yml. Not enabling /f fly command.");
-        }
-
     }
 
     @Override

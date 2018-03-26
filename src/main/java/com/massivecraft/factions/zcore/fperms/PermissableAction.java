@@ -82,7 +82,7 @@ public enum PermissableAction {
             return new ItemStack(Material.AIR);
         }
 
-        String displayName = replacePlaceholers(section.getString("placeholder-item.name"), fme, permissable);
+        String displayName = replacePlaceholders(section.getString("placeholder-item.name"), fme, permissable);
         List<String> lore = new ArrayList<>();
 
         if (section.getString("materials." + name().toLowerCase().replace('_', '-')) == null) {
@@ -111,7 +111,7 @@ public enum PermissableAction {
         }
 
         for (String loreLine : section.getStringList("placeholder-item.lore")) {
-            lore.add(replacePlaceholers(loreLine, fme, permissable));
+            lore.add(replacePlaceholders(loreLine, fme, permissable));
         }
 
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
@@ -122,7 +122,7 @@ public enum PermissableAction {
         return item;
     }
 
-    public String replacePlaceholers(String string, FPlayer fme, Permissable permissable) {
+    public String replacePlaceholders(String string, FPlayer fme, Permissable permissable) {
         // Run Permissable placeholders
         string = permissable.replacePlaceholders(string);
 

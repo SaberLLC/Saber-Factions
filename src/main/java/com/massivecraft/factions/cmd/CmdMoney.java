@@ -24,6 +24,7 @@ public class CmdMoney extends FCommand {
         senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
 
         this.helpLong.add(p.txt.parseTags(TL.COMMAND_MONEY_LONG.toString()));

@@ -19,6 +19,7 @@ public class CmdPermanentPower extends FCommand {
         senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 

@@ -104,7 +104,17 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
                     doWarmup(warp);
                 }
             } else {
+                fme.setEnteringPassword(true, warp);
                 fme.msg(TL.COMMAND_FWARP_PASSWORD_REQUIRED);
+                Bukkit.getScheduler().runTaskLater(P.p, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (fme.isEnteringPassword()) {
+                            fme.msg(TL.COMMAND_FWARP_PASSWORD_TIMEOUT);
+                            fme.setEnteringPassword(false, "");
+                        }
+                    }
+                }, P.p.getConfig().getInt("fwarp-gui.password-timeout", 5)*20);
             }
         }
     }

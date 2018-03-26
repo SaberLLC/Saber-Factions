@@ -28,12 +28,13 @@ public class CmdPerm extends FCommand {
         this.optionalArgs.put("action", "action");
         this.optionalArgs.put("access", "access");
 
-        this.permission = Permission.PERMISSIONS.node;
+
         this.disableOnLock = true;
 
         senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = true;
     }
 

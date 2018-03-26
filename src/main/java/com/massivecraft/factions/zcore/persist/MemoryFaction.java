@@ -15,11 +15,11 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -178,6 +178,84 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.bans;
     }
 
+    public HashMap<Integer,String> rules = new HashMap<Integer, String>();
+
+    public String getRule(int index){
+        if (rules.size() == 0) return null;
+        return rules.get(index);
+    }
+
+    public HashMap<Integer,String> getRulesMap(){
+        return rules;
+    }
+
+    public void setRule(int index,String rule) {
+        rules.put(index,rule);
+    }
+
+    public void removeRule(int index){
+        HashMap<Integer,String> newRule = rules;
+        newRule.remove(index);
+        rules = newRule;
+    }
+
+    public int tnt;
+
+    public void addTnt(int amt){
+        tnt += amt;
+    }
+
+    public void takeTnt(int amt){
+        tnt -=amt;
+    }
+
+    public int getTnt() { return tnt; }
+
+    public Location checkpoint;
+
+    public LazyLocation vault;
+
+    public Location getVault() {
+        if (vault == null){
+            return null;
+        }
+        return vault.getLocation();
+    }
+    public void setVault(Location vaultLocation){
+        if (vaultLocation == null){
+            vault = null;
+            return;
+        }
+        LazyLocation newlocation = new LazyLocation(vaultLocation);
+        vault = newlocation;
+    }
+
+    public HashMap<String,Integer> upgrades = new HashMap<>();
+
+    public int getUpgrade(String key){
+        if (upgrades.keySet().contains(key)) { return upgrades.get(key);}
+        return 0;
+    }
+
+    public void setUpgrades(String key,int level){ upgrades.put(key,level); }
+
+
+    public void setCheckpoint(Location location){
+        checkpoint = location;
+    }
+    public Location getCheckpoint(){
+        return checkpoint;
+    }
+
+
+    public void clearRules(){
+        rules.clear();
+    }
+
+    public void addRule(String rule){
+        rules.put(rules.size(),rule);
+    }
+
     public boolean getOpen() {
         return open;
     }
@@ -243,6 +321,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.tag = str;
     }
 
+
     public String getComparisonTag() {
         return MiscUtil.getComparisonString(this.tag);
     }
@@ -298,6 +377,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         return aid;
     }
+
 
     public Integer getPermanentPower() {
         return this.permanentPower;
@@ -396,6 +476,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         return Access.UNDEFINED;
     }
+
+
 
     public void setPermission(Permissable permissable, PermissableAction permissableAction, Access access) {
         Map<PermissableAction, Access> accessMap = permissions.get(permissable);

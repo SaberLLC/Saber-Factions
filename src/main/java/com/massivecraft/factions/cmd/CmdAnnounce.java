@@ -22,7 +22,8 @@ public class CmdAnnounce extends FCommand {
 
         senderMustBePlayer = true;
         senderMustBeMember = true;
-        senderMustBeModerator = true;
+        senderMustBeModerator = false;
+        senderMustBeColeader = false;
     }
 
     @Override

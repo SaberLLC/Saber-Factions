@@ -21,6 +21,7 @@ public class CmdPower extends FCommand {
         senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 

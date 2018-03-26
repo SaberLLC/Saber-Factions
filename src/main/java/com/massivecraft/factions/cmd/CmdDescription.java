@@ -23,7 +23,8 @@ public class CmdDescription extends FCommand {
 
         senderMustBePlayer = true;
         senderMustBeMember = false;
-        senderMustBeModerator = true;
+        senderMustBeModerator = false;
+        senderMustBeColeader = true;
         senderMustBeAdmin = false;
     }
 

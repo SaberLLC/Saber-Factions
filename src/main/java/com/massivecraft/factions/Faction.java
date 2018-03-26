@@ -12,6 +12,7 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,6 +56,10 @@ public interface Faction extends EconomyParticipator {
 
     public void deinvite(FPlayer fplayer);
 
+    public void setUpgrades(String key, int level);
+
+    public int getUpgrade(String key);
+
     public boolean isInvited(FPlayer fplayer);
 
     public void ban(FPlayer target, FPlayer banner);
@@ -64,6 +69,32 @@ public interface Faction extends EconomyParticipator {
     public boolean isBanned(FPlayer player);
 
     public Set<BanInfo> getBannedPlayers();
+
+    public HashMap<Integer,String> getRulesMap();
+
+    public void setRule(int index, String rule);
+
+    public void addRule(String rule);
+
+    public void removeRule(int index);
+
+    public void clearRules();
+
+    public void setCheckpoint(Location location);
+
+    public Location getCheckpoint();
+
+    public void addTnt(int amt);
+
+    public void takeTnt(int amt);
+
+    public Location getVault();
+
+    public void setVault(Location vaultLocation);
+
+    public int getTnt();
+
+    public String getRule(int index);
 
     public boolean getOpen();
 

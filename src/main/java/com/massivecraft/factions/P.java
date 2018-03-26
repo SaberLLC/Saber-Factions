@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import com.earth2me.essentials.IEssentials;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -16,24 +15,31 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fupgrades.CropUpgrades;
+import com.massivecraft.factions.zcore.fupgrades.EXPUpgrade;
+import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
+import com.massivecraft.factions.zcore.fupgrades.SpawnerUpgrades;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
+
 
 public class P extends MPlugin {
 
@@ -55,7 +61,29 @@ public class P extends MPlugin {
     }
 
     private Integer AutoLeaveTask = null;
+    public void playSoundForAll(String sound) {
+        for (Player pl : Bukkit.getOnlinePlayers()) {
+            playSound(pl, sound);
+        }
+    }
 
+    public void playSoundForAll(List<String> sounds) {
+        for (Player pl : Bukkit.getOnlinePlayers()) {
+            playSound(pl, sounds);
+        }
+    }
+
+    public void playSound(Player p, List<String> sounds) {
+        for (String sound : sounds) {
+            playSound(p, sound);
+        }
+    }
+
+    public void playSound(Player p, String sound) {
+        float pitch = Float.valueOf(sound.split(":")[1]);
+        sound = sound.split(":")[0];
+        p.playSound(p.getLocation(), Sound.valueOf(sound), pitch, 5.0F);
+    }
     // Commands
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
@@ -68,6 +96,7 @@ public class P extends MPlugin {
         p = this;
     }
 
+    public boolean mc17 = false;
     @Override
     public void onEnable() {
         if (!preEnable()) {
@@ -78,19 +107,8 @@ public class P extends MPlugin {
 
         // Load Conf from disk
         Conf.load();
-
-        // Check for Essentials
-        IEssentials ess = Essentials.setup();
-
-        // We set the option to TRUE by default in the config.yml for new users,
-        // BUT we leave it set to false for users updating that haven't added it to their config.
-        if (ess != null && getConfig().getBoolean("delete-ess-homes", false)) {
-            P.p.log(Level.INFO, "Found Essentials. We'll delete player homes in their old Faction's when kicked.");
-            getServer().getPluginManager().registerEvents(new EssentialsListener(ess), this);
-        }
-
+        Essentials.setup();
         hookedPlayervaults = setupPlayervaults();
-
         FPlayers.getInstance().load();
         Factions.getInstance().load();
         for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
@@ -122,13 +140,22 @@ public class P extends MPlugin {
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
 
+        //Massive stats
+        MassiveStats update = new MassiveStats(this, 60);
+
+
+        mc17 = Bukkit.getServer().getClass().getPackage().getName().contains("1.7");
+
         // Register Event Handlers
         getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new FactionsChatListener(this), this);
         getServer().getPluginManager().registerEvents(new FactionsEntityListener(this), this);
         getServer().getPluginManager().registerEvents(new FactionsExploitListener(), this);
         getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
-
+        getServer().getPluginManager().registerEvents(new FUpgradesGUI(), this);
+        getServer().getPluginManager().registerEvents(new EXPUpgrade(),this);
+        getServer().getPluginManager().registerEvents(new CropUpgrades(),this);
+        getServer().getPluginManager().registerEvents(new SpawnerUpgrades(),this);
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
@@ -186,8 +213,7 @@ public class P extends MPlugin {
         Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
         }.getType();
 
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter()).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
-    }
+        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter()).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);    }
 
     @Override
     public void onDisable() {
@@ -222,7 +248,29 @@ public class P extends MPlugin {
         //Board.getInstance().forceSave(); Not sure why this was there as it's called after the board is already saved.
         Conf.save();
     }
+    public ItemStack createItem(Material material, int amount, short datavalue, String name, List<String> lore) {
+        ItemStack item = new ItemStack(material, amount, datavalue);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(color(name));
+        meta.setLore(colorList(lore));
+        item.setItemMeta(meta);
+        return item;
+    }
 
+    public ItemStack createLazyItem(Material material, int amount, short datavalue, String name, String lore) {
+        ItemStack item = new ItemStack(material, amount, datavalue);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(color(P.p.getConfig().getString(name)));
+        meta.setLore(colorList(P.p.getConfig().getStringList(lore)));
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public Economy getEcon() {
+        RegisteredServiceProvider<Economy> rsp = P.p.getServer().getServicesManager().getRegistration(Economy.class);
+        Economy econ = rsp.getProvider();
+        return econ;
+    }
     @Override
     public boolean logPlayerCommands() {
         return Conf.logPlayerCommands;
@@ -242,6 +290,24 @@ public class P extends MPlugin {
         // otherwise, needs to be handled; presumably another plugin directly ran the command
         String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
         return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
+    }
+
+    public void createTimedHologram(final Location location, String text, Long timeout){
+        ArmorStand as = (ArmorStand) location.add(0.5,1,0.5).getWorld().spawnEntity(location, EntityType.ARMOR_STAND); //Spawn the ArmorStand
+        as.setVisible(false); //Makes the ArmorStand invisible
+        as.setGravity(false); //Make sure it doesn't fall
+        as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
+        as.setCustomName(P.p.color(text)); //Set this to the text you want
+        as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
+        final ArmorStand armorStand = as;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
+            @Override
+            public void run() {
+                Bukkit.broadcastMessage("removing stand");
+                armorStand.remove();
+            }
+        },timeout*20);
+
     }
 
 
@@ -334,6 +400,19 @@ public class P extends MPlugin {
         }
 
         return me.getTitle().trim();
+    }
+
+    public String color(String line) {
+        line = ChatColor.translateAlternateColorCodes('&', line);
+        return line;
+    }
+
+    //colors a string list
+    public List<String> colorList(List<String> lore) {
+        for (int i = 0; i <= lore.size()-1;i++){
+            lore.set(i,color(lore.get(i)));
+        }
+        return lore;
     }
 
     // Get a list of all faction tags (names)

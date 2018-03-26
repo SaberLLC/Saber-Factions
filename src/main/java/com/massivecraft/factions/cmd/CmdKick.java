@@ -29,6 +29,7 @@ public class CmdKick extends FCommand {
         senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 
@@ -62,6 +63,11 @@ public class CmdKick extends FCommand {
 
         if (toKickFaction.isWilderness()) {
             sender.sendMessage(TL.COMMAND_KICK_NONE.toString());
+            return;
+        }
+
+        if ((fme.getRole() == Role.MODERATOR || fme.getRole() == Role.COLEADER) && toKick.getRole() == Role.ADMIN){
+            msg(TL.COMMAND_KICK_INSUFFICIENTRANK);
             return;
         }
 

@@ -20,6 +20,7 @@ public class CmdSetMaxVaults extends FCommand {
         senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 

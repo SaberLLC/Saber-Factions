@@ -24,6 +24,7 @@ public abstract class FCommand extends MCommand<P> {
     public boolean senderMustBeMember;
     public boolean senderMustBeModerator;
     public boolean senderMustBeAdmin;
+    public boolean senderMustBeColeader;
 
     public boolean isMoneyCommand;
 
@@ -38,6 +39,7 @@ public abstract class FCommand extends MCommand<P> {
 
         senderMustBeMember = false;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 
@@ -80,7 +82,7 @@ public abstract class FCommand extends MCommand<P> {
             return false;
         }
 
-        if (!(this.senderMustBeMember || this.senderMustBeModerator || this.senderMustBeAdmin)) {
+        if (!(this.senderMustBeMember || this.senderMustBeModerator || this.senderMustBeAdmin || this.senderMustBeColeader)) {
             return true;
         }
 
@@ -98,10 +100,17 @@ public abstract class FCommand extends MCommand<P> {
             return false;
         }
 
+        if (this.senderMustBeColeader && !fme.getRole().isAtLeast(Role.COLEADER)){
+            sender.sendMessage(p.txt.parse("<b>Only faction coleaders can %s.", this.getHelpShort()));
+            return false;
+        }
+
         if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.ADMIN)) {
             sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
             return false;
         }
+
+
 
         return true;
     }
@@ -257,8 +266,19 @@ public abstract class FCommand extends MCommand<P> {
             return true;
         }
 
-        if (you.getRole().equals(Role.ADMIN)) {
+        if (you.getRole().equals(Role.ADMIN))
+        {
             i.sendMessage(p.txt.parse("<b>Only the faction admin can do that."));
+
+        }
+        else if ((you.getRole().equals(Role.COLEADER)))
+        {
+            if (i == you){
+                return true;
+            } else {
+                i.sendMessage(p.txt.parse("<b>Coleaders can't control each other..."));
+            }
+
         } else if (i.getRole().equals(Role.MODERATOR)) {
             if (i == you) {
                 return true; //Moderators can control themselves

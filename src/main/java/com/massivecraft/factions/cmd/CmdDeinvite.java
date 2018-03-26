@@ -24,6 +24,7 @@ public class CmdDeinvite extends FCommand {
         senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = true;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 

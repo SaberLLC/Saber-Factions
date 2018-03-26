@@ -31,6 +31,7 @@ public class CmdHome extends FCommand {
         senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
+        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 

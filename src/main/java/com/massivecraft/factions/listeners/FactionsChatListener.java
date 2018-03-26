@@ -4,6 +4,8 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -30,6 +32,20 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
         ChatMode chat = me.getChatMode();
+        // Is the player entering a password for a warp?
+        if (me.isEnteringPassword()) {
+            event.setCancelled(true);
+            me.sendMessage(ChatColor.DARK_GRAY + event.getMessage().replaceAll("(?s).", "*"));
+            if (me.getFaction().isWarpPassword(me.getEnteringWarp(), event.getMessage())) {
+                doWarmup(me.getEnteringWarp(), me);
+            } else {
+                // Invalid Password
+                me.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
+            }
+            me.setEnteringPassword(false, "");
+            return;
+        }
+
         //Is it a MOD chat
         if (chat == ChatMode.MOD) {
             Faction myFaction = me.getFaction();
@@ -119,7 +135,7 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         String eventFormat = event.getFormat();
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
-        int InsertIndex = Conf.chatTagInsertIndex;
+        int InsertIndex;
 
         if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
             // we're using the "replace" method of inserting the faction tags
@@ -136,8 +152,12 @@ public class FactionsChatListener implements Listener {
         } else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
             // we're using the "insert before string" method
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
-        } else if (!Conf.alwaysShowChatTag){
-            return;
+        } else {
+            // we'll fall back to using the index place method
+            InsertIndex = Conf.chatTagInsertIndex;
+            if (InsertIndex > eventFormat.length()) {
+                return;
+            }
         }
 
         String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
@@ -173,4 +193,18 @@ public class FactionsChatListener implements Listener {
             event.setFormat(nonColoredMsgFormat);
         }
     }
+
+    private void doWarmup(final String warp, final FPlayer fme) {
+        WarmUpUtil.process(fme, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, new Runnable() {
+            @Override
+            public void run() {
+                Player player = Bukkit.getPlayer(fme.getPlayer().getUniqueId());
+                if (player != null) {
+                    player.teleport(fme.getFaction().getWarp(warp).getLocation());
+                    fme.msg(TL.COMMAND_FWARP_WARPED, warp);
+                }
+            }
+        }, P.p.getConfig().getLong("warmups.f-warp", 0));
+    }
+
 }

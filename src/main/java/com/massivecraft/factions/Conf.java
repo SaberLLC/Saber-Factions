@@ -36,7 +36,8 @@ public class Conf {
     public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
     public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
 
-    public static String prefixAdmin = "**";
+    public static String prefixAdmin = "***";
+    public static String prefixCoLeader = "**";
     public static String prefixMod = "*";
     public static String prefixRecruit = "-";
     public static String prefixNormal = "+";
@@ -73,7 +74,6 @@ public class Conf {
     public static boolean chatTagPadBefore = false;
     public static boolean chatTagPadAfter = true;
     public static String chatTagFormat = "%s" + ChatColor.WHITE;
-    public static boolean alwaysShowChatTag = true;
     public static String factionChatFormat = "%s:" + ChatColor.WHITE + " %s";
     public static String allianceChatFormat = ChatColor.LIGHT_PURPLE + "%s:" + ChatColor.WHITE + " %s";
     public static String truceChatFormat = ChatColor.DARK_PURPLE + "%s:" + ChatColor.WHITE + " %s";
@@ -159,12 +159,6 @@ public class Conf {
     public static Set<String> territoryAllyDenyCommands = new LinkedHashSet<>();
     public static Set<String> warzoneDenyCommands = new LinkedHashSet<>();
     public static Set<String> wildernessDenyCommands = new LinkedHashSet<>();
-
-    public static boolean defaultFlyPermEnemy = false;
-    public static boolean defaultFlyPermNeutral = false;
-    public static boolean defaultFlyPermTruce = false;
-    public static boolean defaultFlyPermAlly = true;
-    public static boolean defaultFlyPermMember = true;
 
     public static boolean territoryDenyBuild = true;
     public static boolean territoryDenyBuildWhenOffline = true;

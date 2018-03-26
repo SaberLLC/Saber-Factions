@@ -1,7 +1,9 @@
 package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.event.FPlayerStoppedFlying;
 import com.massivecraft.factions.event.LandClaimEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
@@ -22,12 +24,10 @@ import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -64,6 +64,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
     protected boolean isFlying = false;
+    protected boolean enteringPassword = false;
+    protected String enteringPasswordWarp = "";
 
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
@@ -594,24 +596,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void sendFactionHereMessage(Faction from) {
         Faction toShow = Board.getInstance().getFactionAt(getLastStoodAt());
-        boolean showTitle = P.p.getConfig().getBoolean("enter-titles.enabled", true);
         boolean showChat = true;
-        Player player = getPlayer();
-
-        if (showTitle && player != null) {
-            int in = P.p.getConfig().getInt("enter-titles.fade-in", 10);
-            int stay = P.p.getConfig().getInt("enter-titles.stay", 70);
-            int out = P.p.getConfig().getInt("enter-titles.fade-out", 20);
-            String title = TL.FACTION_ENTER_TITLE.format(this);
-            String sub = TL.FACTION_ENTER_SUBTITLE.format(toShow.getTag(this));
-
-            // We send null instead of empty because Spigot won't touch the title if it's null, but clears if empty.
-            // We're just trying to be as unintrusive as possible.
-            player.sendTitle(title, sub, in, stay, out);
-
-            showChat = P.p.getConfig().getBoolean("enter-titles.also-show-chat", true);
-        }
-
         if (showInfoBoard(toShow)) {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
             showChat = P.p.getConfig().getBoolean("scoreboard.also-send-chat", true);
@@ -924,6 +909,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         // If leaving fly mode, don't let them take fall damage for x seconds.
         if (!fly) {
             int cooldown = P.p.getConfig().getInt("fly-falldamage-cooldown", 3);
+            CmdFly.flyMap.remove(player.getName());
 
             // If the value is 0 or lower, make them take fall damage.
             // Otherwise, start a timer and have this cancel after a few seconds.
@@ -942,45 +928,47 @@ public abstract class MemoryFPlayer implements FPlayer {
         isFlying = fly;
     }
 
+
+
+
+
+
+
+
+    public boolean inVault = false;
+
+    public boolean isInVault(){
+        return inVault;
+    }
+
+    public void setInVault(boolean status){
+        inVault = status;
+    }
+
     public boolean canFlyAtLocation() {
         return canFlyAtLocation(lastStoodAt);
     }
 
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
-        if (faction.isWilderness() || faction.isSafeZone() || faction.isWarZone()) {
+        if ((!faction.isWilderness() && getPlayer().hasPermission("factions.fly.wilderness")) || (faction.isSafeZone() && getPlayer().hasPermission("factions.fly.safezone") )|| (faction.isWarZone() && getPlayer().hasPermission("factions.fly.warzone"))) {
             return false;
         }
-
-        // Admins can always fly in their territory.
-        // admin bypass (ops) can fly as well.
-        if (isAdminBypassing || (faction == getFaction() && getRole() == Role.ADMIN)) {
+        if (!getPlayer().hasPermission("factions.fly.ally") && getRelationToLocation() == Relation.ALLY) {
+            return false;
+        }
+        if (!getPlayer().hasPermission("factions.fly.truce") && getRelationToLocation() == Relation.TRUCE) {
+            return false;
+        }
+        if (!getPlayer().hasPermission("factions.fly.neutral") && getRelationToLocation() == Relation.NEUTRAL) {
+            return false;
+        }
+        if (faction == getFaction() && getRole() == Role.ADMIN) {
             return true;
         }
 
         Access access = faction.getAccess(this, PermissableAction.FLY);
-
-        if (access == null || access == Access.UNDEFINED) {
-
-            // If access is null or undefined, we'll default to the conf.json
-            switch (faction.getRelationTo(getFaction())) {
-                case ENEMY:
-                    return Conf.defaultFlyPermEnemy;
-                case ALLY:
-                    return Conf.defaultFlyPermAlly;
-                case NEUTRAL:
-                    return Conf.defaultFlyPermNeutral;
-                case TRUCE:
-                    return Conf.defaultFlyPermTruce;
-                case MEMBER:
-                    return Conf.defaultFlyPermMember;
-                default:
-                    return false; // should never reach.
-            }
-
-        }
-
-        return access == Access.ALLOW;
+        return access == null || access == Access.UNDEFINED || access == Access.ALLOW;
     }
 
     public boolean shouldTakeFallDamage() {
@@ -989,6 +977,19 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setTakeFallDamage(boolean fallDamage) {
         this.shouldTakeFallDamage = fallDamage;
+    }
+
+    public boolean isEnteringPassword() {
+        return enteringPassword;
+    }
+
+    public void setEnteringPassword(boolean toggle, String warp) {
+        enteringPassword = toggle;
+        enteringPasswordWarp = warp;
+    }
+
+    public String getEnteringWarp() {
+        return enteringPasswordWarp;
     }
 
     // -------------------------------------------- //
@@ -1101,5 +1102,27 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
         this.warmup = warmup;
         this.warmupTask = taskId;
+    }
+
+    @Override
+    public boolean checkIfNearbyEnemies(){
+        Player me = this.getPlayer();
+        for (Entity e : me.getNearbyEntities(16, 255, 16)) {
+            if (e == null) { continue; }
+            if (e instanceof Player) {
+                Player eplayer = (((Player) e).getPlayer());
+                if (eplayer == null) { continue; }
+                FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
+                if (efplayer == null) { continue; }
+                if (this.getRelationTo(efplayer).equals(Relation.ENEMY)) {
+
+                    this.setFlying(false);
+                    this.msg(TL.COMMAND_FLY_ENEMY_NEAR);
+                    Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

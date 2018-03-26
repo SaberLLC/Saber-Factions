@@ -14,14 +14,11 @@ public class Essentials {
 
     private static IEssentials essentials;
 
-    public static IEssentials setup() {
+    public static void setup() {
         Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
         if (ess != null) {
             essentials = (IEssentials) ess;
-            return essentials;
         }
-
-        return null;
     }
 
     // return false if feature is disabled or Essentials isn't available
