@@ -34,7 +34,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -141,7 +140,7 @@ public class P extends MPlugin {
         startAutoLeaveTask(false);
 
         //Massive stats
-        MassiveStats update = new MassiveStats(this, 60);
+        //MassiveStats update = new MassiveStats(this, 60);
 
 
         mc17 = Bukkit.getServer().getClass().getPackage().getName().contains("1.7");

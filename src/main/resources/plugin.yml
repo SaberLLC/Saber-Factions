@@ -1,5 +1,5 @@
 name: Factions
-version: ${project.version}-SF-1.0.17
+version: ${project.version}-SF-1.0.18
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage]
 softdepend: [PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop]
@@ -38,6 +38,7 @@ permissions:
       factions.join.others: true
       factions.admin.any: true
       factions.mod.any: true
+
   factions.kit.halfmod:
     description: Zones, bypassing, kicking, and chatspy
     children:
@@ -61,6 +62,7 @@ permissions:
     children:
       factions.admin: true
       factions.autoclaim: true
+      factions.promote: true
       factions.chat: true
       factions.claim: true
       factions.claim.line: true
@@ -107,6 +109,9 @@ permissions:
       factions.checkpoint: true
       factions.rules: true
       factions.setwarp: true
+      factions.banner: true
+      factions.vault: true
+      factions.getvault: true
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:

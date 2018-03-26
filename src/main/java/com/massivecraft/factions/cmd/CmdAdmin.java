@@ -36,10 +36,7 @@ public class CmdAdmin extends FCommand {
         if (fyou == null) {
             return;
         }
-        if (fme.getRole() == Role.ADMIN){
-            fme.msg(TL.COMMAND_ADMIN_NOTADMIN);
-            return;
-        }
+
         boolean permAny = Permission.ADMIN_ANY.has(sender, false);
         Faction targetFaction = fyou.getFaction();
 
@@ -47,20 +44,17 @@ public class CmdAdmin extends FCommand {
             msg(TL.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(fme, true));
             return;
         }
-        if ((fyou == fme && fme.getRole() == Role.COLEADER) || (fme.getRole() == Role.COLEADER && fyou.getRole() == Role.ADMIN)){
-            msg(TL.COMMAND_ADMIN_NOTADMIN);
-            return;
-        }
+
         if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
             msg(TL.COMMAND_ADMIN_NOTADMIN);
             return;
         }
 
-
         if (fyou == fme && !permAny) {
             msg(TL.COMMAND_ADMIN_TARGETSELF);
             return;
         }
+
         // only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
         if (fyou.getFaction() != targetFaction) {
             FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(me), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
@@ -70,23 +64,19 @@ public class CmdAdmin extends FCommand {
             }
         }
 
-
-
         FPlayer admin = targetFaction.getFPlayerAdmin();
+
         // if target player is currently admin, demote and replace him
-        if (fyou == admin && fyou.getFaction().getSize() == 1){
-            msg(TL.COMMAND_ADMIN_NOMEMBERS);
-            return;
-        }
         if (fyou == admin) {
             targetFaction.promoteNewLeader();
             msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(fme, true));
             fyou.msg(TL.COMMAND_ADMIN_DEMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fyou, true));
             return;
         }
+
         // promote target player, and demote existing admin if one exists
         if (admin != null) {
-            admin.setRole(Role.COLEADER);
+            admin.setRole(Role.MODERATOR);
         }
         fyou.setRole(Role.ADMIN);
         msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(fme, true));

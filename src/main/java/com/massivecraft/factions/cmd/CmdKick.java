@@ -29,7 +29,6 @@ public class CmdKick extends FCommand {
         senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
-        senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
 
@@ -42,10 +41,18 @@ public class CmdKick extends FCommand {
                 String s = player.getName();
                 msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
             }
-            if (fme.getRole() == Role.ADMIN) {
+            if (fme.getRole().isAtLeast(Role.COLEADER)) {
+                // For both coleader and admin, add mods.
                 for (FPlayer player : myFaction.getFPlayersWhereRole(Role.MODERATOR)) {
                     String s = player.getName();
                     msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
+                }
+                if (fme.getRole() == Role.ADMIN) {
+                    // Only add coleader to this for the leader.
+                    for (FPlayer player : myFaction.getFPlayersWhereRole(Role.COLEADER)) {
+                        String s = player.getName();
+                        msg.then(s + " ").color(ChatColor.RED).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
+                    }
                 }
             }
 
@@ -63,11 +70,6 @@ public class CmdKick extends FCommand {
 
         if (toKickFaction.isWilderness()) {
             sender.sendMessage(TL.COMMAND_KICK_NONE.toString());
-            return;
-        }
-
-        if ((fme.getRole() == Role.MODERATOR || fme.getRole() == Role.COLEADER) && toKick.getRole() == Role.ADMIN){
-            msg(TL.COMMAND_KICK_INSUFFICIENTRANK);
             return;
         }
 
@@ -97,6 +99,14 @@ public class CmdKick extends FCommand {
             }
         }
 
+        Access access = myFaction.getAccess(fme, PermissableAction.KICK);
+        // This statement allows us to check if they've specifically denied it, or default to
+        // the old setting of allowing moderators to kick
+        if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "kick");
+            return;
+        }
+
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
         if (!canAffordCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString())) {
             return;
@@ -121,7 +131,6 @@ public class CmdKick extends FCommand {
         }
 
         if (Conf.logFactionKick) {
-            //TODO:TL
             P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
         }
 
