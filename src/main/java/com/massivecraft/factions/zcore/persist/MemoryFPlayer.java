@@ -27,7 +27,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 
 /**
@@ -1124,5 +1127,26 @@ public abstract class MemoryFPlayer implements FPlayer {
             }
         }
         return false;
+    }
+
+
+    @Override
+    public String getRolePrefix() {
+        if (getRole() == Role.RECRUIT) {
+            return Conf.prefixRecruit;
+        }
+        if (getRole() == Role.NORMAL) {
+            return Conf.prefixNormal;
+        }
+        if (getRole() == Role.MODERATOR) {
+            return Conf.prefixMod;
+        }
+        if (getRole() == Role.COLEADER) {
+            return Conf.prefixCoLeader;
+        }
+        if (getRole() == Role.ADMIN) {
+            return Conf.prefixAdmin;
+        }
+        return null;
     }
 }

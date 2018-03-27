@@ -177,6 +177,9 @@ public interface FPlayer extends EconomyParticipator {
     @Override
     public ChatColor getColorTo(RelationParticipator rp);
 
+
+    public String getRolePrefix();
+
     //----------------------------------------------//
     // Health
     //----------------------------------------------//

@@ -59,10 +59,11 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         guiSize *= 9;
         String guiName = ChatColor.translateAlternateColorCodes('&', section.getString("name", "FactionPerms"));
         actionGUI = Bukkit.createInventory(this, guiSize, guiName);
-
+        boolean disabled = false;
         for (String key : section.getConfigurationSection("slots").getKeys(false)) {
             int slot = section.getInt("slots." + key);
             if (slot == -1) {
+                disabled = true;
                 continue;
             }
             if (slot + 1 > guiSize || slot < 0) {
@@ -92,6 +93,9 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             missingActions.removeAll(actionSlots.values());
 
             for (PermissableAction action : missingActions) {
+                if (disabled) {
+                    break;
+                }
                 if (!usedDummySlots.isEmpty()) {
                     int slot = usedDummySlots.get(0);
                     actionSlots.put(slot, action);

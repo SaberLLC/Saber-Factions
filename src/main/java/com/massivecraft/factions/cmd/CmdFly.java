@@ -11,8 +11,9 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.sql.BatchUpdateException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 public class CmdFly extends FCommand {
 
@@ -182,7 +183,10 @@ public class CmdFly extends FCommand {
         flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
             @Override
             public void run() {
-                for (String name : flyMap.keySet()) {
+                Iterator itr = flyMap.keySet().iterator();
+                while (itr.hasNext()) {
+                    Object nameObj = itr.next();
+                    String name = nameObj + "";
                     Player player = Bukkit.getPlayer(name);
                     if (player == null) { continue;}
                     FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
@@ -212,7 +216,7 @@ public class CmdFly extends FCommand {
                     }
 
 
-                   checkTaskState();
+                    checkTaskState();
                 }
             }
         },20L,20L);

@@ -52,13 +52,12 @@ public class CmdCheckpoint extends FCommand {
         } else {
             fme.msg(TL.COMMAND_CHECKPOINT_CLAIMED);
         }
-        this.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, "Checkpoint", new Runnable() {
+        this.doWarmUp(WarmUpUtil.Warmup.CHECKPOINT, TL.WARMUPS_NOTIFY_TELEPORT, "Checkpoint", new Runnable() {
             @Override
             public void run() {
-                // Create a smoke effect
-                CmdCheckpoint.this.me.teleport(fme.getFaction().getCheckpoint());
+
             }
-        }, this.p.getConfig().getLong("warmups.f-checkpoint", 0));
+        }, this.p.getConfig().getLong("warmups.f-checkpoint", 10));
 
     }
 
