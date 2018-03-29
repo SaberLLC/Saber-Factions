@@ -33,17 +33,23 @@ public class CmdGetVault extends FCommand {
         Location vaultLocation = fme.getFaction().getVault();
         ItemStack vault = P.p.createItem(Material.CHEST, 1, (short) 0, P.p.color(P.p.getConfig().getString("fvault.Item.Name")), P.p.colorList(P.p.getConfig().getStringList("fvault.Item.Lore")));
 
-        if (inventoryContains(me.getInventory(), vault)) {
-            fme.msg(TL.COMMAND_GETVAULT_ALREADYHAVE);
-            return;
-        }
 
+        //check if vault is set
         if (vaultLocation != null) {
             fme.msg(TL.COMMAND_GETVAULT_ALREADYSET);
             return;
         }
 
 
+        //has enough money?
+        int amount = P.p.getConfig().getInt("fvault.Price");
+        if (!fme.hasMoney(amount)) {
+            return;
+        }
+
+
+        //success :)
+        fme.takeMoney(amount);
         me.getInventory().addItem(vault);
         fme.msg(TL.COMMAND_GETVAULT_RECEIVE);
 

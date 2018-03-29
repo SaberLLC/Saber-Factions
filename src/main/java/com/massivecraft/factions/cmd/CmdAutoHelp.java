@@ -22,6 +22,7 @@ public class CmdAutoHelp extends MCommand<P> {
 
     @Override
     public void perform() {
+
         if (this.commandChain.size() == 0) {
             return;
         }

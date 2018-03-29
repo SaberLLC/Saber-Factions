@@ -234,6 +234,7 @@ public enum TL {
     COMMAND_CHECKPOINT_DISABLED("You cannot use checkpoint while disabled!"),
     COMMAND_CHECKPOINT_SET("&cYou have set the faction checkpoint at your Location."),
     COMMAND_CHECKPOINT_GO("&cTeleporting to faction checkpoint"),
+    COMMAND_CHECKPOINT_INVALIDLOCATION("&cInvalid Location! You can set checkpoints in your claims or wilderness."),
     COMMAND_CHECKPOINT_NOT_SET("&cYou have to set the faction checkpoint first."),
     COMMAND_CHECKPOINT_CLAIMED("&cYour current faction checkpoint is claimed, set a new one!"),
     COMMAND_CHECKPOINT_DESCRIPTION("Set or go to your faction checkpoint!"),
@@ -561,6 +562,8 @@ public enum TL {
     COMMAND_GETVAULT_INVALIDLOCATION("&cVault can only be placed in faction land!"),
     COMMAND_GETVAULT_DESCRIPTION("Get the faction vault item!"),
     COMMAND_GETVAULT_RECEIVE("&cYou have recieved a faction vault!"),
+    COMMAND_GETVAULT_NOMONEY("&cYou do not have enough money"),
+    COMMAND_GETVAULT_MONEYTAKE("&c{amount} has been taken from your account"),
 
     COMMAND_SHOW_NOFACTION_SELF("You are not in a faction"),
     COMMAND_SHOW_NOFACTION_OTHER("That's not a faction"),
@@ -606,6 +609,10 @@ public enum TL {
     COMMAND_STUCK_TOSTUCK("to safely teleport %1$s out"),
     COMMAND_STUCK_FORSTUCK("for %1$s initiating a safe teleport out"),
     COMMAND_STUCK_DESCRIPTION("Safely teleports you out of enemy faction"),
+
+    COMMAND_SEECHUNK_ENABLED("&cSee chunk enabled!"),
+    COMMAND_SEECHUNK_DISABLED("&cSeechunk disbaled!"),
+
 
     COMMAND_TAG_TAKEN("<b>That tag is already taken"),
     COMMAND_TAG_TOCHANGE("to change the faction tag"),

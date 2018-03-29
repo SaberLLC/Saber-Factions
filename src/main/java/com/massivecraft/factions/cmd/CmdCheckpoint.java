@@ -37,6 +37,9 @@ public class CmdCheckpoint extends FCommand {
                 fme.getFaction().setCheckpoint(fme.getPlayer().getLocation());
                 fme.msg(TL.COMMAND_CHECKPOINT_SET);
                 return;
+            } else {
+                fme.msg(TL.COMMAND_CHECKPOINT_INVALIDLOCATION);
+                return;
             }
         }
         if (fme.getFaction().getCheckpoint() == null) {
@@ -48,16 +51,16 @@ public class CmdCheckpoint extends FCommand {
 
         if (checkfaction.getId().equals(Factions.getInstance().getWilderness().getId()) || checkfaction.getId().equals(fme.getFaction().getId())) {
             fme.msg(TL.COMMAND_CHECKPOINT_GO);
-            fme.getPlayer().teleport(fme.getFaction().getCheckpoint());
+            this.doWarmUp(WarmUpUtil.Warmup.CHECKPOINT, TL.WARMUPS_NOTIFY_TELEPORT, "Checkpoint", new Runnable() {
+                @Override
+                public void run() {
+                    fme.getPlayer().teleport(fme.getFaction().getCheckpoint());
+                }
+            }, this.p.getConfig().getLong("warmups.f-checkpoint", 0));
         } else {
             fme.msg(TL.COMMAND_CHECKPOINT_CLAIMED);
         }
-        this.doWarmUp(WarmUpUtil.Warmup.CHECKPOINT, TL.WARMUPS_NOTIFY_TELEPORT, "Checkpoint", new Runnable() {
-            @Override
-            public void run() {
 
-            }
-        }, this.p.getConfig().getLong("warmups.f-checkpoint", 10));
 
     }
 

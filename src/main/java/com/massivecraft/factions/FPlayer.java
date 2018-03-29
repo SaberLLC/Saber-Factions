@@ -155,6 +155,9 @@ public interface FPlayer extends EconomyParticipator {
 
     public int getDeaths();
 
+    public void takeMoney(int amt);
+
+    public boolean hasMoney(int amt);
 
     // -------------------------------
     // Relation and relation colors

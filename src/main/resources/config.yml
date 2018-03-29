@@ -193,7 +193,7 @@ warmups:
   # Delay for /f warp
   f-warp: 10
   # Delay for /f fly
-  f-fly: 10
+  f-fly: 0
   #Delay for /f checkpoint's teleport
   f-checkpoint: 10
   #Delay for /f tpbanner
@@ -669,6 +669,7 @@ fnear:
 # +------------------------------------------------------+ #
 fvault:
   Enabled: true
+  Price: 5000
   Item:
     Name: '&e&l*&f&l*&e&l* &e&lFaction Vault &7(Place) &e&l*&f&l*&e&l*'
     Lore:
@@ -853,8 +854,11 @@ see-chunk:
   # If disabled, it will use fake blocks like before (can cause client side lag)
   particles: true
   particle: "BARRIER"
-  # How long should we show these particles? No idea the units, 10 just seemed good.
-  length: 10
+  # For Particle types like barrier, the interval can be much higher. but for redstone etc it has to be low, like 10
+  # Interval between when particles are sent
+  # setting to 10 makes it a constant heartbeat effect
+  # setting to 5, makes it almost solid ( looks better imo but is more intensive)
+  interval: 10
 
 ############################################################
 # +------------------------------------------------------+ #

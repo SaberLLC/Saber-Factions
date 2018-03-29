@@ -2,6 +2,7 @@ package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFly;
+import com.massivecraft.factions.cmd.CmdSeeChunk;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
@@ -11,24 +12,26 @@ import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.Particle.ParticleEffect;
+import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import com.sun.org.apache.xerces.internal.xs.StringList;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -38,6 +41,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
+import org.inventivetalent.particle.ParticleEffect;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -142,6 +146,7 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
+
         fallMap.put(me.getPlayer(), false);
         Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
             @Override
@@ -215,8 +220,13 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
+        if (CmdSeeChunk.seeChunkMap.containsKey(event.getPlayer().getName())) {
+            CmdSeeChunk.seeChunkMap.remove(event.getPlayer().getName());
+        }
+
         FScoreboard.remove(me);
     }
+
 
     public String parseAllPlaceholders(String string, Faction faction) {
         string = string.replace("{Faction}", faction.getTag())
@@ -392,7 +402,7 @@ public class FactionsPlayerListener implements Listener {
                     }
                     bannerCooldownMap.put(fme.getTag(),true);
                     bannerLocations.put(fme.getTag(),e.getBlockPlaced().getLocation());
-                    int bannerCooldown = P.p.getConfig().getInt("fbanners.Banner-Place-Cooldown");
+                    final int bannerCooldown = P.p.getConfig().getInt("fbanners.Banner-Place-Cooldown");
                     final ArmorStand as = (ArmorStand) e.getBlockPlaced().getLocation().add(0.5,1,0.5).getWorld().spawnEntity(e.getBlockPlaced().getLocation().add(0.5,1,0.5), EntityType.ARMOR_STAND); //Spawn the ArmorStand
                     as.setVisible(false); //Makes the ArmorStand invisible
                     as.setGravity(false); //Make sure it doesn't fall
@@ -427,8 +437,9 @@ public class FactionsPlayerListener implements Listener {
                                             String[] components = effect.split(":");
                                             player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(components[0]),100,Integer.parseInt(components[1])));
                                         }
-                                        ParticleEffect.FLAME.display(1,1,1,1,10,banner.getLocation(),16);
-                                        ParticleEffect.LAVA.display(1,1,1,1,10,banner.getLocation(),16);
+                                        ParticleEffect.FLAME.send(Bukkit.getOnlinePlayers(), banner.getLocation(), 1, 1, 1, 1, 10, 16);
+                                        ParticleEffect.LAVA.send(Bukkit.getOnlinePlayers(), banner.getLocation(), 1, 1, 1, 1, 10, 16);
+
                                         if (banner.getType() != bannerType){
                                             banner.setType(bannerType);
                                         }

@@ -63,31 +63,36 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.inventivetalent</groupId>
+            <artifactId>particleapi</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<artifactId>bungeecord-chat</artifactId>
-            		<groupId>net.md-5</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>persistence-api</artifactId>
-            		<groupId>javax.persistence</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>junit</artifactId>
-            		<groupId>junit</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>guava</artifactId>
-            		<groupId>com.google.guava</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>gson</artifactId>
-            		<groupId>com.google.code.gson</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>bungeecord-chat</artifactId>
+                    <groupId>net.md-5</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>persistence-api</artifactId>
+                    <groupId>javax.persistence</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>junit</artifactId>
+                    <groupId>junit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -320,6 +325,10 @@
         <repository>
             <id>vault-repo</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository>
+        <repository>
+            <id>inventive-repo</id>
+            <url>https://repo.inventivetalent.org/content/groups/public/</url>
         </repository>
         <repository>
             <id>ess-repo</id>

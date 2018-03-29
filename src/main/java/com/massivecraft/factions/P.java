@@ -139,9 +139,6 @@ public class P extends MPlugin {
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
 
-        //bStats
-        Metrics metrics = new Metrics(this);
-
 
         mc17 = Bukkit.getServer().getClass().getPackage().getName().contains("1.7");
 

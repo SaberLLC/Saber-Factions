@@ -30,23 +30,14 @@ public class CmdBanner extends FCommand {
 
     @Override
     public void perform() {
-        if (me.getItemInHand().getType() == Material.BANNER) {
-            if (hasMoney(fme, P.p.getConfig().getInt("fbanners.Banner-Cost"))) {
-                if (me.getItemInHand().getAmount() != 1) {
-                    me.getItemInHand().setAmount(me.getItemInHand().getAmount() - 1);
-                }
-                ItemStack bannerInHand = me.getItemInHand();
-                bannerInHand.setAmount(1);
-                removeFromInventory(me.getInventory(), bannerInHand);
-                takeMoney(fme, P.p.getConfig().getInt("fbanners.Banner-Cost"));
-                ItemStack warBanner = P.p.createItem(bannerInHand.getType(), 1, bannerInHand.getDurability(), P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
-                me.getInventory().addItem(warBanner);
-                fme.msg(TL.COMMAND_BANNER_SUCCESS);
-
-            }
-        } else {
-            fme.msg(TL.COMMAND_BANNER_WRONGITEM);
+        if (!fme.hasMoney(P.p.getConfig().getInt("fbanners.Banner-Cost", 5000))) {
+            msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
+            return;
         }
+        takeMoney(fme, P.p.getConfig().getInt("fbanners.Banner-Cost", 5000));
+        ItemStack warBanner = P.p.createItem(Material.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+        me.getInventory().addItem(warBanner);
+        fme.msg(TL.COMMAND_BANNER_SUCCESS);
     }
 
     public boolean hasMoney(FPlayer fme, int amt) {

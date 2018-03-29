@@ -22,6 +22,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -1148,5 +1149,26 @@ public abstract class MemoryFPlayer implements FPlayer {
             return Conf.prefixAdmin;
         }
         return null;
+    }
+
+    @Override
+    public boolean hasMoney(int amt) {
+        Economy econ = P.p.getEcon();
+        if (econ.getBalance((Player) getPlayer()) >= amt) {
+            return true;
+        } else {
+            getPlayer().closeInventory();
+            msg(TL.COMMAND_UPGRADES_NOTENOUGHMONEY);
+            return false;
+        }
+    }
+
+    @Override
+    public void takeMoney(int amt) {
+        if (hasMoney(amt)) {
+            Economy econ = P.p.getEcon();
+            econ.withdrawPlayer(getPlayer(), amt);
+            sendMessage(TL.COMMAND_UPGRADES_MONEYTAKE.toString().replace("{amount}", amt + ""));
+        }
     }
 }

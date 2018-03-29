@@ -3,13 +3,13 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.util.Particle.ParticleEffect;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.inventivetalent.particle.ParticleEffect;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -168,7 +168,8 @@ public class CmdFly extends FCommand {
                     if (!player.isFlying()){
                         continue;
                     }
-                    ParticleEffect.CLOUD.display((float) 0.1,(float) 0.1,(float) 0.1,(float) 0.1,3,player.getLocation(),32);
+
+                    ParticleEffect.CLOUD.send(Bukkit.getOnlinePlayers(), player.getLocation().add(0, -0.35, 0), 0, 0, 0, 0, 3, 16);
 
                 }
                 if (flyMap.keySet().size() == 0){
@@ -176,7 +177,7 @@ public class CmdFly extends FCommand {
                     id = -1;
                 }
             }
-        },20L,40L);
+        }, 10L, 10L);
     }
 
     public void startFlyCheck(){
