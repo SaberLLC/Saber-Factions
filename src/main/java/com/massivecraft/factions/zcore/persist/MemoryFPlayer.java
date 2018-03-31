@@ -1130,6 +1130,79 @@ public abstract class MemoryFPlayer implements FPlayer {
         return false;
     }
 
+    @Override
+    public Boolean canflyinWilderness() {
+        if (getPlayer().hasPermission("factions.fly.wilderness")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public Boolean canflyinWarzone() {
+        if (getPlayer().hasPermission("factions.fly.warzone")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+    @Override
+    public Boolean canflyinSafezone() {
+        if (getPlayer().hasPermission("factions.fly.safezone")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public Boolean canflyinEnemy() {
+        if (getPlayer().hasPermission("factions.fly.enemy")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public Boolean canflyinAlly() {
+        if (getPlayer().hasPermission("factions.fly.ally")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public Boolean canflyinTruce() {
+        if (getPlayer().hasPermission("factions.fly.truce")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+    @Override
+    public Boolean canflyinNeutral() {
+        if (getPlayer().hasPermission("factions.fly.neutral")) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+
+
 
     @Override
     public String getRolePrefix() {

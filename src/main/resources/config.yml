@@ -858,7 +858,8 @@ see-chunk:
   # Interval between when particles are sent
   # setting to 10 makes it a constant heartbeat effect
   # setting to 5, makes it almost solid ( looks better imo but is more intensive)
-  interval: 10
+  interval: 20
+
 
 ############################################################
 # +------------------------------------------------------+ #

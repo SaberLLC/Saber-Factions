@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,6 @@ public class CmdShow extends FCommand {
     public CmdShow() {
         this.aliases.add("show");
         this.aliases.add("who");
-        this.aliases.add("f");
 
         // add defaults to /f show in case config doesnt have it
         defaults.add("{header}");
@@ -48,16 +47,10 @@ public class CmdShow extends FCommand {
     @Override
     public void perform() {
         Faction faction = myFaction;
-
         if (this.argIsSet(0)) {
             faction = this.argAsFaction(0);
         }
         if (faction == null) {
-            return;
-        }
-
-        if (!fme.hasFaction() && fme.getFaction() == faction){
-            fme.msg(TL.COMMAND_SHOW_NEEDFACTION);
             return;
         }
 
@@ -76,65 +69,6 @@ public class CmdShow extends FCommand {
         if (show == null || show.isEmpty()) {
             show = defaults;
         }
-     /*   for (int i = 0; i <= show.size()-1; i ++){
-            if (show.get(i).contains("{description}")){
-                show.set(i,show.get(i).replace("{description}",faction.getDescription()));
-            }
-            if (show.get(i).contains("{online-list}")){
-                String message = "";
-                StringBuilder string = new StringBuilder(message);
-                for (FPlayer fPlayer : faction.getFPlayers()){
-                    Bukkit.broadcastMessage(fPlayer.getTag());
-                    if (fPlayer.getPlayer().isOnline()){
-                        String prefix = "";
-                        if (fPlayer.getRole() == Role.ADMIN){
-                            prefix = Conf.prefixAdmin;
-                        }
-                        if (fPlayer.getRole() == Role.COLEADER){
-                            prefix = Conf.prefixCoLeader;
-                        }
-                        if (fPlayer.getRole() == Role.MODERATOR){
-                            prefix = Conf.prefixMod;
-                        }
-                        if (fPlayer.getRole() == Role.NORMAL){
-                            prefix = Conf.prefixNormal;
-                        }
-                        if (fPlayer.getRole() == Role.RECRUIT){
-                            prefix = Conf.prefixRecruit;
-                        }
-                        string.append(prefix + fPlayer.getName() + ",");
-                    }
-                    if (string.toString().equals("")) { continue; }
-                    show.set(i,show.get(i).replace("{online-list}",string.toString()));
-                }
-            }
-            if (show.get(i).contains("{offline-list}")){
-                String message = "";
-                StringBuilder string = new StringBuilder(message);
-                for (FPlayer fPlayer : faction.getFPlayers()){
-                    if (!fPlayer.getPlayer().isOnline()){
-                        String prefix = "";
-                        if (fPlayer.getRole() == Role.ADMIN){
-                            prefix = Conf.prefixAdmin;
-                        }
-                        if (fPlayer.getRole() == Role.COLEADER){
-                            prefix = Conf.prefixCoLeader;
-                        }
-                        if (fPlayer.getRole() == Role.MODERATOR){
-                            prefix = Conf.prefixMod;
-                        }
-                        if (fPlayer.getRole() == Role.NORMAL){
-                            prefix = Conf.prefixNormal;
-                        }
-                        if (fPlayer.getRole() == Role.RECRUIT){
-                            prefix = Conf.prefixRecruit;
-                        }
-                        string.append(prefix + fPlayer.getName() + ",");
-                    }
-                    show.set(i,show.get(i).replace("{offline-list}",string.toString()));
-                }
-            }
-        }*/
 
         if (!faction.isNormal()) {
             String tag = faction.getTag(fme);
@@ -154,9 +88,11 @@ public class CmdShow extends FCommand {
                 continue; // Due to minimal f show.
             }
 
-            parsed = TagUtil.parsePlaceholders(fme.getPlayer(), parsed);
+            if (fme != null) {
+                parsed = TagUtil.parsePlaceholders(fme.getPlayer(), parsed);
+            }
 
-            if (TagUtil.hasFancy(parsed)) {
+            if (fme != null && TagUtil.hasFancy(parsed)) {
                 List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
                 if (fancy != null) {
                     sendFancyMessage(fancy);

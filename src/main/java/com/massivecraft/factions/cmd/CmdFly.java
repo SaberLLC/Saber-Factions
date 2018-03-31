@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -9,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.inventivetalent.particle.ParticleEffect;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,8 +19,8 @@ public class CmdFly extends FCommand {
 
 
     public static HashMap<String,Boolean> flyMap = new HashMap<String,Boolean>();
-    public int id = -1;
-    public int flyid = -1;
+    public static int id = -1;
+    public static int flyid = -1;
     public CmdFly() {
         super();
         this.aliases.add("fly");
@@ -156,7 +156,7 @@ public class CmdFly extends FCommand {
     }
 
 
-    public void startParticles(){
+    public static void startParticles() {
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
             @Override
             public void run() {
@@ -169,7 +169,8 @@ public class CmdFly extends FCommand {
                         continue;
                     }
 
-                    ParticleEffect.CLOUD.send(Bukkit.getOnlinePlayers(), player.getLocation().add(0, -0.35, 0), 0, 0, 0, 0, 3, 16);
+
+                    ParticleEffect.CLOUD.display(0, 0, 0, 0, 1, player.getLocation().add(0, -0.35, 0), 16);
 
                 }
                 if (flyMap.keySet().size() == 0){
@@ -180,7 +181,7 @@ public class CmdFly extends FCommand {
         }, 10L, 10L);
     }
 
-    public void startFlyCheck(){
+    public static void startFlyCheck() {
         flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
             @Override
             public void run() {
@@ -210,7 +211,7 @@ public class CmdFly extends FCommand {
                     if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
                         if (!checkBypassPerms(fPlayer,player,toFac)){
                             fPlayer.setFlying(false);
-                            flyMap.remove(name);
+                            itr.remove();
                             continue;
                         }
 
@@ -224,8 +225,7 @@ public class CmdFly extends FCommand {
     }
 
 
-
-    private boolean checkBypassPerms(FPlayer fplayer, Player player,Faction toFac){
+    private static boolean checkBypassPerms(FPlayer fplayer, Player player, Faction toFac) {
         if (player.hasPermission("factions.fly.wilderness") && toFac.isWilderness()){
            return true;
         }
@@ -250,15 +250,12 @@ public class CmdFly extends FCommand {
         return false;
     }
 
-    public void checkTaskState(){
+    public static void checkTaskState() {
         if (flyMap.keySet().size() == 0) {
             Bukkit.getScheduler().cancelTask(flyid);
             flyid = -1;
         }
     }
-
-
-
 
 
     private void toggleFlight(final boolean toggle, final Player player) {

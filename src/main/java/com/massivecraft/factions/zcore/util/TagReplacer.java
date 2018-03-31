@@ -279,6 +279,9 @@ public enum TagReplacer {
      * @return if the raw line contains this enums variable
      */
     public boolean contains(String toSearch) {
+        if (tag == null) {
+            return false;
+        }
         return toSearch.contains(tag);
     }
 

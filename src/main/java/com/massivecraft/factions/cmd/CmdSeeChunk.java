@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 
+import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
@@ -11,7 +12,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.inventivetalent.particle.ParticleEffect;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,6 +27,7 @@ public class CmdSeeChunk extends FCommand {
     public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
     Long interval = 10L;
     private int taskID = -1;
+
 
 
     //I remade it cause of people getting mad that I had the same seechunk as drtshock
@@ -46,7 +47,8 @@ public class CmdSeeChunk extends FCommand {
 
         this.useParticles = p.getConfig().getBoolean("see-chunk.particles", true);
         interval = P.p.getConfig().getLong("see-chunk.interval", 10L);
-        effect = ParticleEffect.valueOf(P.p.getConfig().getString("see-chunk.particle", "REDSTONE"));
+        effect = ParticleEffect.fromName(P.p.getConfig().getString("see-chunk.particle", "REDSTONE"));
+
     }
 
     @Override
@@ -101,6 +103,7 @@ public class CmdSeeChunk extends FCommand {
         blockZ = chunkZ * 16;
         showPillar(me, world, blockX, blockZ);
 
+
         blockX = chunkX * 16 + 15;
         blockZ = chunkZ * 16;
         showPillar(me, world, blockX, blockZ);
@@ -123,14 +126,17 @@ public class CmdSeeChunk extends FCommand {
             }
 
             if (useParticles) {
-                //api didnt seem to have anything for a single player, so I used a one player list :P
-                effect.send(onePlayer, loc, 0, 0, 0, 0, 1, 50);
+
+                this.effect.display(0, 0, 0, 0, 3, loc, player);
+
+
             } else {
                 int typeId = blockY % 5 == 0 ? Material.REDSTONE_LAMP_ON.getId() : Material.STAINED_GLASS.getId();
                 VisualizeUtil.addLocation(player, loc, typeId);
             }
         }
     }
+
 
     @Override
     public TL getUsageTranslation() {

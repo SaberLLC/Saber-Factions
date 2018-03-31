@@ -1,5 +1,6 @@
 package com.massivecraft.factions.listeners;
 
+import com.darkblade12.particleeffect.ParticleEffect;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
@@ -41,7 +42,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
-import org.inventivetalent.particle.ParticleEffect;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -240,6 +240,22 @@ public class FactionsPlayerListener implements Listener {
         return string;
     }
 
+    public void enableFly(FPlayer me) {
+        if (P.p.getConfig().getBoolean("ffly.AutoEnable")) {
+
+            me.setFlying(true);
+            CmdFly.flyMap.put(me.getName(), true);
+            if (CmdFly.id == -1) {
+                if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
+                    CmdFly.startParticles();
+                }
+            }
+            if (CmdFly.flyid == -1) {
+                CmdFly.startFlyCheck();
+            }
+        }
+    }
+
     // Holds the next time a player can have a map shown.
     private HashMap<UUID, Long> showTimes = new HashMap<>();
 
@@ -289,24 +305,25 @@ public class FactionsPlayerListener implements Listener {
                 me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle));
             }
             // enable fly :)
-            if (me.hasFaction()) {
+            if (me.hasFaction() && !me.isFlying()) {
                 if (factionTo == me.getFaction()) {
-                    if (P.p.getConfig().getBoolean("ffly.AutoEnable")) {
-                        CmdFly Fly = new CmdFly();
-                        me.setFlying(true);
-                        Fly.flyMap.put(player.getName(), true);
-                        if (Fly.id == -1) {
-                            if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
-                                Fly.startParticles();
-                            }
-                        }
-                        if (Fly.flyid == -1) {
-                            Fly.startFlyCheck();
-                        }
-                    }
+                    enableFly(me);
                 }
+                // bypass checks
+                if ((factionTo.isWilderness() && me.canflyinWilderness()) ||
+                        (factionTo.isWarZone() && me.canflyinWarzone()) ||
+                        (factionTo.isSafeZone() && me.canflyinSafezone()) ||
+                        (factionTo.getRelationTo(me) == Relation.ENEMY && me.canflyinEnemy()) ||
+                        (factionTo.getRelationTo(me) == Relation.ALLY && me.canflyinAlly()) ||
+                        (factionTo.getRelationTo(me) == Relation.TRUCE && me.canflyinTruce()) ||
+                        (factionTo.getRelationTo(me) == Relation.NEUTRAL && me.canflyinNeutral())) {
+                    enableFly(me);
+                }
+
             }
         }
+
+
 
 
         if (me.isMapAutoUpdating()) {
@@ -370,6 +387,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
     }
+
 
     HashMap<String,Boolean> bannerCooldownMap = new HashMap<>();
     public static HashMap<String,Location> bannerLocations = new HashMap<>();
@@ -437,8 +455,8 @@ public class FactionsPlayerListener implements Listener {
                                             String[] components = effect.split(":");
                                             player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(components[0]),100,Integer.parseInt(components[1])));
                                         }
-                                        ParticleEffect.FLAME.send(Bukkit.getOnlinePlayers(), banner.getLocation(), 1, 1, 1, 1, 10, 16);
-                                        ParticleEffect.LAVA.send(Bukkit.getOnlinePlayers(), banner.getLocation(), 1, 1, 1, 1, 10, 16);
+                                        ParticleEffect.LAVA.display(1, 1, 1, 1, 10, banner.getLocation(), 16);
+                                        ParticleEffect.FLAME.display(1, 1, 1, 1, 10, banner.getLocation(), 16);
 
                                         if (banner.getType() != bannerType){
                                             banner.setType(bannerType);

@@ -159,6 +159,23 @@ public interface FPlayer extends EconomyParticipator {
 
     public boolean hasMoney(int amt);
 
+
+    // Fly Checks
+
+    public Boolean canflyinWilderness();
+
+    public Boolean canflyinWarzone();
+
+    public Boolean canflyinSafezone();
+
+    public Boolean canflyinEnemy();
+
+    public Boolean canflyinAlly();
+
+    public Boolean canflyinTruce();
+
+    public Boolean canflyinNeutral();
+
     // -------------------------------
     // Relation and relation colors
     // -------------------------------

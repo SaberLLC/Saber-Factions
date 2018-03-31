@@ -99,7 +99,17 @@ public class FactionsEntityListener implements Listener {
 
             Entity damagee = sub.getEntity();
             Entity damager = sub.getDamager();
-
+            if (damagee instanceof Player) {
+                if (damager instanceof Player) {
+                    FPlayer fdamager = FPlayers.getInstance().getByPlayer((Player) damager);
+                    FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damagee);
+                    if ((fdamagee.getRelationTo(fdamager) == Relation.ALLY) ||
+                            (fdamagee.getRelationTo(fdamager) == Relation.TRUCE) ||
+                            (fdamagee.getFaction() == fdamager.getFaction())) {
+                        return;
+                    }
+                }
+            }
             if (damagee != null && damagee instanceof Player) {
                 cancelFStuckTeleport((Player) damagee);
                 cancelFFly((Player) damagee);
@@ -587,17 +597,20 @@ public class FactionsEntityListener implements Listener {
     public void onBowHit(EntityDamageByEntityEvent e){
         if (e.getDamager() instanceof Projectile){
             if (e.getEntity() instanceof Player){
-                Player damager = (Player) ((Projectile) e.getDamager()).getShooter();
-                Player victim = (Player) e.getEntity();
-                FPlayer fdamager = FPlayers.getInstance().getByPlayer(damager);
-                FPlayer fvictim = FPlayers.getInstance().getByPlayer(victim);
-                if (fvictim.getRelationTo(fdamager) == Relation.TRUCE){
-                    fdamager.msg(TL.PLAYER_PVP_CANTHURT, fvictim.describeTo(fdamager));
-                    e.setCancelled(true);
-                }
-                if (fvictim.getRelationTo(fdamager) == Relation.ENEMY) {
-                    if (fvictim.isFlying()) {
-                        fvictim.setFFlying(false, true);
+                Projectile arrow = ((Projectile) e.getDamager());
+                if (arrow.getShooter() instanceof Player) {
+                    Player damager = (Player) ((Projectile) e.getDamager()).getShooter();
+                    Player victim = (Player) e.getEntity();
+                    FPlayer fdamager = FPlayers.getInstance().getByPlayer(damager);
+                    FPlayer fvictim = FPlayers.getInstance().getByPlayer(victim);
+                    if (fvictim.getRelationTo(fdamager) == Relation.TRUCE) {
+                        fdamager.msg(TL.PLAYER_PVP_CANTHURT, fvictim.describeTo(fdamager));
+                        e.setCancelled(true);
+                    }
+                    if (fvictim.getRelationTo(fdamager) == Relation.ENEMY) {
+                        if (fvictim.isFlying()) {
+                            fvictim.setFFlying(false, true);
+                        }
                     }
                 }
             }
