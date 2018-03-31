@@ -47,10 +47,6 @@
                             <pattern>com.google.gson</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.com.google.gson</shadedPattern>
                         </relocation>
-                        <relocation>
-                            <pattern>com.darkblade12</pattern>
-                            <shadedPattern>com.massivecraft.factions.shade.com.darkblade12</shadedPattern>
-                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -66,11 +62,6 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>com.darkblade12</groupId>
-            <artifactId>particleeffect</artifactId>
-            <version>1.7.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>

@@ -610,8 +610,8 @@ public enum TL {
     COMMAND_STUCK_FORSTUCK("for %1$s initiating a safe teleport out"),
     COMMAND_STUCK_DESCRIPTION("Safely teleports you out of enemy faction"),
 
-    COMMAND_SEECHUNK_ENABLED("&cSee chunk enabled!"),
-    COMMAND_SEECHUNK_DISABLED("&cSeechunk disbaled!"),
+    COMMAND_SEECHUNK_ENABLED("&cSeechunk enabled!"),
+    COMMAND_SEECHUNK_DISABLED("&cSeechunk disabled!"),
 
 
     COMMAND_TAG_TAKEN("<b>That tag is already taken"),

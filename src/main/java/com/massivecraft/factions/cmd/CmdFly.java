@@ -1,11 +1,12 @@
 package com.massivecraft.factions.cmd;
 
-import com.darkblade12.particleeffect.ParticleEffect;
+
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.particles.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
@@ -160,8 +161,9 @@ public class CmdFly extends FCommand {
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
             @Override
             public void run() {
-                for(String name : flyMap.keySet()){
-                    Player player = Bukkit.getPlayer(name);
+                Iterator<String> itr = flyMap.keySet().iterator();
+                while (itr.hasNext()) {
+                    Player player = Bukkit.getPlayer(itr.next());
                     if (player == null){
                         continue;
                     }
@@ -169,9 +171,7 @@ public class CmdFly extends FCommand {
                         continue;
                     }
 
-
                     ParticleEffect.CLOUD.display(0, 0, 0, 0, 1, player.getLocation().add(0, -0.35, 0), 16);
-
                 }
                 if (flyMap.keySet().size() == 0){
                     Bukkit.getScheduler().cancelTask(id);
