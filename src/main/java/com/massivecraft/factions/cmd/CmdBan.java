@@ -3,10 +3,10 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -66,6 +66,15 @@ public class CmdBan extends FCommand {
             fme.msg(TL.COMMAND_BAN_INSUFFICIENTRANK, target.getName());
             return;
         }
+
+        for (BanInfo banInfo : myFaction.getBannedPlayers()) {
+            if (banInfo.getBanned().equals(target.getId())) {
+                msg(TL.COMMAND_BAN_ALREADYBANNED);
+                return;
+            }
+        }
+
+
 
         // Ban the user.
         myFaction.ban(target, fme);

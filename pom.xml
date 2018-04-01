@@ -47,6 +47,10 @@
                             <pattern>com.google.gson</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.com.google.gson</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.darkblade12</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.com.darkblade12</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
@@ -96,10 +100,10 @@
             <version>1.6</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<artifactId>bukkit</artifactId>
-            		<groupId>org.bukkit</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>bukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -108,38 +112,38 @@
             <version>6.1.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<artifactId>bukkit</artifactId>
-            		<groupId>org.bukkit</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>bukkit-classloader-check</artifactId>
-            		<groupId>com.sk89q.spigot</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>commandbook</artifactId>
-            		<groupId>com.sk89q</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>jsr305</artifactId>
-            		<groupId>com.google.code.findbugs</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>js</artifactId>
-            		<groupId>rhino</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>truezip</artifactId>
-            		<groupId>de.schlichtherle</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>jchronic</artifactId>
-            		<groupId>com.sk89q</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>worldedit</artifactId>
-            		<groupId>com.sk89q</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>bukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>bukkit-classloader-check</artifactId>
+                    <groupId>com.sk89q.spigot</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>commandbook</artifactId>
+                    <groupId>com.sk89q</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>js</artifactId>
+                    <groupId>rhino</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>truezip</artifactId>
+                    <groupId>de.schlichtherle</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jchronic</artifactId>
+                    <groupId>com.sk89q</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>worldedit</artifactId>
+                    <groupId>com.sk89q</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -148,54 +152,54 @@
             <version>6.1.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<artifactId>bukkit</artifactId>
-            		<groupId>org.bukkit</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>jsr305</artifactId>
-            		<groupId>com.google.code.findbugs</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>bukkit-classloader-check</artifactId>
-            		<groupId>org.sk89q.bukkit</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>dummypermscompat</artifactId>
-            		<groupId>com.sk89q</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>jchronic</artifactId>
-            		<groupId>com.sk89q</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>js</artifactId>
-            		<groupId>rhino</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>truezip</artifactId>
-            		<groupId>de.schlichtherle</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>jlibnoise</artifactId>
-            		<groupId>com.sk89q.lib</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>paranamer</artifactId>
-            		<groupId>com.thoughtworks.paranamer</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>guava</artifactId>
-            		<groupId>com.google.guava</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>gson</artifactId>
-            		<groupId>com.google.code.gson</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>snakeyaml</artifactId>
-            		<groupId>org.yaml</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>bukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>bukkit-classloader-check</artifactId>
+                    <groupId>org.sk89q.bukkit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>dummypermscompat</artifactId>
+                    <groupId>com.sk89q</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jchronic</artifactId>
+                    <groupId>com.sk89q</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>js</artifactId>
+                    <groupId>rhino</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>truezip</artifactId>
+                    <groupId>de.schlichtherle</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jlibnoise</artifactId>
+                    <groupId>com.sk89q.lib</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>paranamer</artifactId>
+                    <groupId>com.thoughtworks.paranamer</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>snakeyaml</artifactId>
+                    <groupId>org.yaml</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -210,18 +214,18 @@
             <version>2.0.1</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<artifactId>bukkit</artifactId>
-            		<groupId>org.bukkit</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>lombok</artifactId>
-            		<groupId>org.projectlombok</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>Essentials</artifactId>
-            		<groupId>net.ess3</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>bukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>lombok</artifactId>
+                    <groupId>org.projectlombok</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>Essentials</artifactId>
+                    <groupId>net.ess3</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -230,10 +234,10 @@
             <version>0.4.0-SNAPSHOT</version>
             <scope>compile</scope>
             <exclusions>
-            	<exclusion>
-            		<artifactId>gson</artifactId>
-            		<groupId>com.google.code.gson</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -242,34 +246,34 @@
             <version>2.0</version>
             <scope>provided</scope>
             <exclusions>
-            	<exclusion>
-            		<artifactId>bukkit</artifactId>
-            		<groupId>org.bukkit</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>Permissions</artifactId>
-            		<groupId>com.nijikokun.bukkit</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>bPermissions</artifactId>
-            		<groupId>de.bananaco</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>EssentialsGroupManager</artifactId>
-            		<groupId>org.anjocaido</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>spoutpluginapi</artifactId>
-            		<groupId>org.getspout</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>PermissionsBukkit</artifactId>
-            		<groupId>com.platymuus.bukkit.permissions</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>PermissionsEx</artifactId>
-            		<groupId>ru.tehkode</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>bukkit</artifactId>
+                    <groupId>org.bukkit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>Permissions</artifactId>
+                    <groupId>com.nijikokun.bukkit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>bPermissions</artifactId>
+                    <groupId>de.bananaco</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>EssentialsGroupManager</artifactId>
+                    <groupId>org.anjocaido</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>spoutpluginapi</artifactId>
+                    <groupId>org.getspout</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>PermissionsBukkit</artifactId>
+                    <groupId>com.platymuus.bukkit.permissions</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>PermissionsEx</artifactId>
+                    <groupId>ru.tehkode</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -320,10 +324,6 @@
         <repository>
             <id>vault-repo</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
-        </repository>
-        <repository>
-            <id>inventive-repo</id>
-            <url>https://repo.inventivetalent.org/content/groups/public/</url>
         </repository>
         <repository>
             <id>ess-repo</id>

@@ -18,9 +18,9 @@ import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
+import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import com.massivecraft.factions.zcore.util.particles.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -311,13 +311,14 @@ public class FactionsPlayerListener implements Listener {
                     enableFly(me);
                 }
                 // bypass checks
+                Relation relationTo = factionTo.getRelationTo(me);
                 if ((factionTo.isWilderness() && me.canflyinWilderness()) ||
                         (factionTo.isWarZone() && me.canflyinWarzone()) ||
                         (factionTo.isSafeZone() && me.canflyinSafezone()) ||
-                        (factionTo.getRelationTo(me) == Relation.ENEMY && me.canflyinEnemy()) ||
-                        (factionTo.getRelationTo(me) == Relation.ALLY && me.canflyinAlly()) ||
-                        (factionTo.getRelationTo(me) == Relation.TRUCE && me.canflyinTruce()) ||
-                        (factionTo.getRelationTo(me) == Relation.NEUTRAL && me.canflyinNeutral())) {
+                        (relationTo == Relation.ENEMY && me.canflyinEnemy()) ||
+                        (relationTo == Relation.ALLY && me.canflyinAlly()) ||
+                        (relationTo == Relation.TRUCE && me.canflyinTruce()) ||
+                        (relationTo == Relation.NEUTRAL && me.canflyinNeutral())) {
                     enableFly(me);
                 }
 

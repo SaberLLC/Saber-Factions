@@ -1,13 +1,12 @@
 package com.massivecraft.factions.cmd;
 
 
-
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.particles.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,6 +22,7 @@ public class CmdSeeChunk extends FCommand {
 
     private boolean useParticles;
     private int length;
+
     private ParticleEffect effect;
     //Used a hashmap cuz imma make a particle selection gui later, will store it where the boolean is rn.
     public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
@@ -125,12 +125,8 @@ public class CmdSeeChunk extends FCommand {
             if (loc.getBlock().getType() != Material.AIR) {
                 continue;
             }
-
             if (useParticles) {
-
-                this.effect.display(0, 0, 0, 0, 3, loc, player);
-
-
+                this.effect.display(0, 0, 0, 0, 1, loc, player);
             } else {
                 int typeId = blockY % 5 == 0 ? Material.REDSTONE_LAMP_ON.getId() : Material.STAINED_GLASS.getId();
                 VisualizeUtil.addLocation(player, loc, typeId);

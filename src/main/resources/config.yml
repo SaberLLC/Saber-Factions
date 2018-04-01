@@ -61,7 +61,6 @@ warp-cost:
 # Faction Fly
 # Enable Faction Fly:
 enable-faction-flight: true
-fly-falldamage-cooldown: 10
 ffly:
   Particles:
     Enabled: true
@@ -72,7 +71,7 @@ ffly:
 # If a player leaves fly (out of territory or took damage)
 # how long should they not take fall damage for?
 # Set to 0 to have them always take fall damage.
-fly-falldamage-cooldown: 3
+fly-falldamage-cooldown: 10
 
 # Pistons
 # Should we disable pistons in Faction territory? This will prevent people from doing something like:

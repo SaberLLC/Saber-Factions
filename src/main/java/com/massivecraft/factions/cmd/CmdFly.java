@@ -5,15 +5,14 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.particles.ParticleEffect;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class CmdFly extends FCommand {
@@ -31,6 +30,81 @@ public class CmdFly extends FCommand {
         this.permission = Permission.FLY.node;
         this.senderMustBeMember = true;
         this.senderMustBeModerator = false;
+    }
+
+    public static void startParticles() {
+        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
+            @Override
+            public void run() {
+                for (String name : flyMap.keySet()) {
+                    Player player = Bukkit.getPlayer(name);
+                    if (player == null) {
+                        continue;
+                    }
+                    if (!player.isFlying()) {
+                        continue;
+                    }
+
+                    ParticleEffect.CLOUD.display(0, 0, 0, 0, 1, player.getLocation().add(0, -0.35, 0), 16);
+                }
+                if (flyMap.keySet().size() == 0) {
+                    Bukkit.getScheduler().cancelTask(id);
+                    id = -1;
+                }
+            }
+        }, 10L, 10L);
+    }
+
+    public static void startFlyCheck() {
+        flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
+            @Override
+            public void run() {
+                for (String name : flyMap.keySet()) {
+                    Player player = Bukkit.getPlayer(name);
+                    if (player == null) {
+                        continue;
+                    }
+                    if (!player.isFlying()) {
+                        continue;
+                    }
+                    FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+
+                    if (fPlayer == null) {
+                        continue;
+                    }
+                    if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+                        continue;
+                    }
+                    Faction myFaction = fPlayer.getFaction();
+                    if (myFaction.isWilderness()) {
+                        fPlayer.setFlying(false);
+                        flyMap.remove(name);
+                        continue;
+                    }
+                    if (fPlayer.checkIfNearbyEnemies()) {
+                        continue;
+                    }
+                    FLocation myFloc = new FLocation(player.getLocation());
+                    Faction toFac = Board.getInstance().getFactionAt(myFloc);
+                    if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
+                        if (!checkBypassPerms(fPlayer, player, toFac)) {
+                            fPlayer.setFlying(false);
+                            flyMap.remove(name);
+                            continue;
+                        }
+                    }
+                    checkTaskState();
+                }
+            }
+        }, 20L, 20L);
+    }
+
+    public boolean isInFlightChecker(Player player) {
+        if (flyMap.containsKey(player.getName())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -117,7 +191,7 @@ public class CmdFly extends FCommand {
 
             }
 
-            toggleFlight(!fme.isFlying(),me);
+            toggleFlight(!fme.isFlying(), me);
         } else if (args.size() == 1) {
             if (!fme.canFlyAtLocation() && argAsBool(0)) {
                 if (!me.hasPermission("factions.fly.wilderness") && toFac.isWilderness()) {
@@ -146,82 +220,6 @@ public class CmdFly extends FCommand {
 
             toggleFlight(argAsBool(0),me);
         }
-    }
-
-    public boolean isInFlightChecker(Player player){
-        if (flyMap.containsKey(player.getName())){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    public static void startParticles() {
-        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
-            @Override
-            public void run() {
-                Iterator<String> itr = flyMap.keySet().iterator();
-                while (itr.hasNext()) {
-                    Player player = Bukkit.getPlayer(itr.next());
-                    if (player == null){
-                        continue;
-                    }
-                    if (!player.isFlying()){
-                        continue;
-                    }
-
-                    ParticleEffect.CLOUD.display(0, 0, 0, 0, 1, player.getLocation().add(0, -0.35, 0), 16);
-                }
-                if (flyMap.keySet().size() == 0){
-                    Bukkit.getScheduler().cancelTask(id);
-                    id = -1;
-                }
-            }
-        }, 10L, 10L);
-    }
-
-    public static void startFlyCheck() {
-        flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
-            @Override
-            public void run() {
-                Iterator itr = flyMap.keySet().iterator();
-                while (itr.hasNext()) {
-                    Object nameObj = itr.next();
-                    String name = nameObj + "";
-                    Player player = Bukkit.getPlayer(name);
-                    if (player == null) { continue;}
-                    FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-
-                    if (fPlayer == null) { continue; }
-                    if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR){
-                        continue;
-                    }
-                    Faction myFaction = fPlayer.getFaction();
-                    if (myFaction.isWilderness()){
-                        fPlayer.setFlying(false);
-                        flyMap.remove(name);
-                        continue;
-                    }
-                    if(fPlayer.checkIfNearbyEnemies()){
-                        continue;
-                    }
-                    FLocation myFloc = new FLocation(player.getLocation());
-                    Faction toFac = Board.getInstance().getFactionAt(myFloc);
-                    if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-                        if (!checkBypassPerms(fPlayer,player,toFac)){
-                            fPlayer.setFlying(false);
-                            itr.remove();
-                            continue;
-                        }
-
-                    }
-
-
-                    checkTaskState();
-                }
-            }
-        },20L,20L);
     }
 
 
@@ -257,10 +255,10 @@ public class CmdFly extends FCommand {
         }
     }
 
-
     private void toggleFlight(final boolean toggle, final Player player) {
         if (!toggle) {
             fme.setFlying(false);
+
             flyMap.remove(player.getName());
             return;
         }

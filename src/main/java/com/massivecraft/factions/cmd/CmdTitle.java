@@ -30,6 +30,7 @@ public class CmdTitle extends FCommand {
             return;
         }
 
+
         args.remove(0);
         String title = TextUtil.implode(args, " ");
 
