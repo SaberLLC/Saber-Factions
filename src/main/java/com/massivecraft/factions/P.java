@@ -11,6 +11,7 @@ import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
+import com.massivecraft.factions.util.Particles.ReflectionUtils;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -142,7 +143,10 @@ public class P extends MPlugin {
         //massive stats
         MassiveStats massive = new MassiveStats(this);
 
-        mc17 = Bukkit.getServer().getClass().getPackage().getName().contains("1.7");
+        int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
+        if (version == 7) {
+            mc17 = true;
+        }
 
         // Register Event Handlers
         getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);

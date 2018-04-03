@@ -906,6 +906,10 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         if (!damage) {
             msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
+            if (!fly) {
+                sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", P.p.getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
+            }
+
         } else {
             msg(TL.COMMAND_FLY_DAMAGE);
         }
@@ -1132,72 +1136,44 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     @Override
     public Boolean canflyinWilderness() {
-        if (getPlayer().hasPermission("factions.fly.wilderness")) {
-            return true;
-        } else {
-            return false;
-        }
+        return getPlayer().hasPermission("factions.fly.wilderness");
 
     }
 
     @Override
     public Boolean canflyinWarzone() {
-        if (getPlayer().hasPermission("factions.fly.warzone")) {
-            return true;
-        } else {
-            return false;
-        }
+        return getPlayer().hasPermission("factions.fly.warzone");
 
     }
 
 
     @Override
     public Boolean canflyinSafezone() {
-        if (getPlayer().hasPermission("factions.fly.safezone")) {
-            return true;
-        } else {
-            return false;
-        }
+        return getPlayer().hasPermission("factions.fly.safezone");
 
     }
 
     @Override
     public Boolean canflyinEnemy() {
-        if (getPlayer().hasPermission("factions.fly.enemy")) {
-            return true;
-        } else {
-            return false;
-        }
+        return getPlayer().hasPermission("factions.fly.enemy");
 
     }
 
     @Override
     public Boolean canflyinAlly() {
-        if (getPlayer().hasPermission("factions.fly.ally")) {
-            return true;
-        } else {
-            return false;
-        }
+        return getPlayer().hasPermission("factions.fly.ally");
 
     }
 
     @Override
     public Boolean canflyinTruce() {
-        if (getPlayer().hasPermission("factions.fly.truce")) {
-            return true;
-        } else {
-            return false;
-        }
+        return getPlayer().hasPermission("factions.fly.truce");
 
     }
 
     @Override
     public Boolean canflyinNeutral() {
-        if (getPlayer().hasPermission("factions.fly.neutral")) {
-            return true;
-        } else {
-            return false;
-        }
+        return getPlayer().hasPermission("factions.fly.neutral");
 
     }
 
@@ -1227,7 +1203,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     @Override
     public boolean hasMoney(int amt) {
         Economy econ = P.p.getEcon();
-        if (econ.getBalance((Player) getPlayer()) >= amt) {
+        if (econ.getBalance(getPlayer()) >= amt) {
             return true;
         } else {
             getPlayer().closeInventory();

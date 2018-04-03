@@ -108,6 +108,26 @@ public class FactionsEntityListener implements Listener {
                             (fdamagee.getFaction() == fdamager.getFaction())) {
                         return;
                     }
+                } else {
+                    // this triggers if damagee is a player and damager is  mob ( so like if a skeleton hits u )
+                    if (damager instanceof Projectile) {
+                        // this will trigger if the damager is a projectile
+                        if (((Projectile) damager).getShooter() instanceof Player) {
+                            Player damagerPlayer = (Player) ((Projectile) damager).getShooter();
+                            FPlayer fdamager = FPlayers.getInstance().getByPlayer(damagerPlayer);
+                            FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damagee);
+                            Relation relation = fdamager.getRelationTo(fdamagee);
+                            if (relation == Relation.ALLY || relation == Relation.TRUCE ||
+                                    fdamager.getFaction() == fdamagee.getFaction()) {
+                                // this should disable the fly so
+                                return;
+                            }
+                        } else {
+                            // this should trigger if the attacker shootin the arrow is a mob
+                            return;
+                        }
+
+                    }
                 }
             }
             if (damagee != null && damagee instanceof Player) {

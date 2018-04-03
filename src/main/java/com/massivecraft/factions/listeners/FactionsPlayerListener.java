@@ -14,11 +14,11 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FactionGUI;
+import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
-import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -395,6 +395,9 @@ public class FactionsPlayerListener implements Listener {
     public static HashMap<String,Location> bannerLocations = new HashMap<>();
     @EventHandler
     public void onBannerPlace(BlockPlaceEvent e){
+        if (P.p.mc17) {
+            return;
+        }
         if (e.getItemInHand().getType() == Material.BANNER){
             ItemStack bannerInHand = e.getItemInHand();
             ItemStack warBanner = P.p.createItem(bannerInHand.getType(),1,bannerInHand.getDurability(),P.p.getConfig().getString("fbanners.Item.Name"),P.p.getConfig().getStringList("fbanners.Item.Lore"));

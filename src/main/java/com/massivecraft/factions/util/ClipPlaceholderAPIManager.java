@@ -18,12 +18,12 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
     // Identifier for this expansion
     @Override
     public String getIdentifier() {
-        return "factionsuuid";
+        return "savagefactions";
     }
 
     @Override
     public String getAuthor() {
-        return "drtshock";
+        return "prosavage";
     }
 
     // Since we are registering this expansion from the dependency, this can be null
@@ -90,6 +90,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(fPlayer.getKills());
             case "player_deaths":
                 return String.valueOf(fPlayer.getDeaths());
+            case "player_role_prefix":
+                return String.valueOf(fPlayer.getRolePrefix());
             case "player_role":
                 return fPlayer.hasFaction() ? fPlayer.getRole().getPrefix() : "";
             // Then Faction stuff
@@ -152,6 +154,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(faction.getDeaths());
             case "faction_maxvaults":
                 return String.valueOf(faction.getMaxVaults());
+
         }
 
         return null;
