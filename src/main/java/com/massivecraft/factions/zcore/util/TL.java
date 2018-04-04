@@ -172,6 +172,7 @@ public enum TL {
     COMMAND_BANNER_NOTENOUGHMONEY("&c&l[!] &7You do&c not&7 have enough money"),
     COMMAND_BANNER_MONEYTAKE("&c&l[!] $&c{amount} &7has been taken from your account."),
     COMMAND_BANNER_SUCCESS("&c&l[!] &7You have created a &c&lWarBanner!"),
+    COMMAND_BANNER_DISABLED("&c&l[!] &7Buying&c warbanners&7 is &cdisabled!"),
 
     COMMAND_TPBANNER_NOTSET("&c&l[!] &7Your faction &cdoes not &7have a &c&lWarBanner &7placed!"),
     COMMAND_TPBANNER_SUCCESS("&c&l[!] &cTeleporting &7to your factions's &c&lWarBanner"),
@@ -343,9 +344,9 @@ public enum TL {
     COMMAND_KICK_NEGATIVEPOWER("&c&l[!]&7 You &ccannot &7kick that member until their power is &apositive&7."),
     COMMAND_KICK_TOKICK("to kick someone from the faction"),
     COMMAND_KICK_FORKICK("for kicking someone from the faction"),
-    COMMAND_KICK_FACTION("&c&l[!]&7 %1$s<i> kicked %2$s<i> from the faction!"), //message given to faction members
+    COMMAND_KICK_FACTION("&c&l[!]&7 %1$s&7 kicked %2$s&c from the faction!"), //message given to faction members
     COMMAND_KICK_KICKS("&c&l[!]&7 You kicked &c%1$s&7 from the faction&c %2$s&7!"), //kicker perspective
-    COMMAND_KICK_KICKED("&c&l[!]&7 &c%1$s<i> &7kicked you from&c %2$&7!"), //kicked player perspective
+    COMMAND_KICK_KICKED("&c&l[!]&7 &c%1$s &7kicked you from&c %2$s&7!"), //kicked player perspective
     COMMAND_KICK_DESCRIPTION("Kick a player from the faction"),
 
     COMMAND_LIST_FACTIONLIST("&c&l[!]&7 Faction List "),
@@ -553,12 +554,12 @@ public enum TL {
     COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
 
     COMMAND_VAULT_DESCRIPTION("Open your placed faction vault!"),
-    COMMAND_VAULT_INVALID("&cYour vault was either claimed, broken, or has not been placed yet."),
-    COMMAND_VAULT_OPENING("&cOpening faction vault."),
+    COMMAND_VAULT_INVALID("&c&l[!]&7 Your vault was either&c claimed&7, &cbroken&7, or has&c not been&7 placed yet."),
+    COMMAND_VAULT_OPENING("&c&l[!]&7 Opening faction vault."),
 
-    COMMAND_GETVAULT_ALREADYSET("&cVault has already been set!"),
-    COMMAND_GETVAULT_ALREADYHAVE("&cYou already have a vault in your inventory!"),
-    COMMAND_GETVAULT_CHESTNEAR("&cThere is a chest nearby"),
+    COMMAND_GETVAULT_ALREADYSET("&c&l[!]&7 Vault has already been set!"),
+    COMMAND_GETVAULT_ALREADYHAVE("&c&l[!]&7 You already have a vault in your inventory!"),
+    COMMAND_GETVAULT_CHESTNEAR("&c&l[!]&7 &7There is a chest &cnearby"),
     COMMAND_GETVAULT_SUCCESS("&cSucessfully set vault."),
     COMMAND_GETVAULT_INVALIDLOCATION("&cVault can only be placed in faction land!"),
     COMMAND_GETVAULT_DESCRIPTION("Get the faction vault item!"),
@@ -641,6 +642,7 @@ public enum TL {
     COMMAND_TNT_DISABLED_MSG("&cThis command is disabled!"),
     COMMAND_TNT_INVALID_NUM("The amount needs to be a number!"),
     COMMAND_TNT_DEPOSIT_SUCCESS("&cSuccessfully deposited tnt."),
+    COMMAND_TNT_EXCEEDLIMIT("&cThis exceeds the bank limit!"),
     COMMAND_TNT_WIDTHDRAW_SUCCESS("&cSuccessfully withdrew tnt."),
     COMMAND_TNT_WIDTHDRAW_NOTENOUGH("&cNot enough tnt in bank."),
     COMMAND_TNT_DEPOSIT_NOTENOUGH("&cNot enough tnt in tnt inventory."),
@@ -671,6 +673,7 @@ public enum TL {
     COMMAND_UNCLAIMALL_UNCLAIMED("%1$s<i> unclaimed ALL of your faction's land."),
     COMMAND_UNCLAIMALL_LOG("%1$s unclaimed everything for the faction: %2$s"),
     COMMAND_UNCLAIMALL_DESCRIPTION("Unclaim all of your factions land"),
+    COMMAND_UNCLAIM_CLICKTOUNCLAIM("Click to unclaim &2(%1$d, %2$d)"),
 
     COMMAND_VERSION_VERSION("<i>You are running %1$s"),
     COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),

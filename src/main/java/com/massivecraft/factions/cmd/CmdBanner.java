@@ -30,6 +30,10 @@ public class CmdBanner extends FCommand {
 
     @Override
     public void perform() {
+        if (!P.p.getConfig().getBoolean("fbanners.Enabled")) {
+
+            return;
+        }
         if (!fme.hasMoney(P.p.getConfig().getInt("fbanners.Banner-Cost", 5000))) {
             msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
             return;
@@ -42,7 +46,7 @@ public class CmdBanner extends FCommand {
 
     public boolean hasMoney(FPlayer fme, int amt) {
         Economy econ = P.p.getEcon();
-        if (econ.getBalance((Player) fme.getPlayer()) >= amt) {
+        if (econ.getBalance(fme.getPlayer()) >= amt) {
             return true;
         } else {
             fme.msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);

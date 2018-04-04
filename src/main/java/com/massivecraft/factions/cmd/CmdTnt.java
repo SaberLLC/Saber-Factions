@@ -61,8 +61,13 @@ public class CmdTnt extends FCommand {
                     return;
                 }
                 ItemStack tnt = new ItemStack(Material.TNT, amount);
+                if (fme.getFaction().getTnt() + amount > P.p.getConfig().getInt("ftnt.Bank-Limit")) {
+                    msg(TL.COMMAND_TNT_EXCEEDLIMIT);
+                    return;
+                }
                 removeFromInventory(me.getInventory(), tnt);
                 me.updateInventory();
+
                 fme.getFaction().addTnt(amount);
                 fme.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
                 fme.sendMessage(P.p.color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", fme.getFaction().getTnt() + "")));

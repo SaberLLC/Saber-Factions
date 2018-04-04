@@ -145,6 +145,7 @@ public class P extends MPlugin {
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         if (version == 7) {
+            P.p.log("Version 1.7 found, disabling banner placement.");
             mc17 = true;
         }
 

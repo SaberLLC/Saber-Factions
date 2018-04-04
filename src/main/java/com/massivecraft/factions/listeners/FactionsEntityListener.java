@@ -109,6 +109,7 @@ public class FactionsEntityListener implements Listener {
                         return;
                     }
                 } else {
+
                     // this triggers if damagee is a player and damager is  mob ( so like if a skeleton hits u )
                     if (damager instanceof Projectile) {
                         // this will trigger if the damager is a projectile
@@ -128,6 +129,13 @@ public class FactionsEntityListener implements Listener {
                         }
 
                     }
+                }
+            } else {
+                //this one should trigger if something other than a player takes damage
+                if (damager instanceof Player) {
+                    // now itll only go here if the damage is dealt by a player
+                    return;
+                    // we cancel it so fly isnt removed when you hit a mob etc
                 }
             }
             if (damagee != null && damagee instanceof Player) {
@@ -243,6 +251,7 @@ public class FactionsEntityListener implements Listener {
             }
         }
     }
+
 
     // mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

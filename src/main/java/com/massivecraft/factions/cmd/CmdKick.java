@@ -125,19 +125,17 @@ public class CmdKick extends FCommand {
         }
 
         toKickFaction.msg(TL.COMMAND_KICK_FACTION, fme.describeTo(toKickFaction, true), toKick.describeTo(toKickFaction, true));
+
         toKick.msg(TL.COMMAND_KICK_KICKED, fme.describeTo(toKick, true), toKickFaction.describeTo(toKick));
         if (toKickFaction != myFaction) {
             fme.msg(TL.COMMAND_KICK_KICKS, toKick.describeTo(fme), toKickFaction.describeTo(fme));
         }
-
         if (Conf.logFactionKick) {
             P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
         }
-
         if (toKick.getRole() == Role.ADMIN) {
             toKickFaction.promoteNewLeader();
         }
-
         toKickFaction.deinvite(toKick);
         toKick.resetFactionData();
     }

@@ -285,15 +285,15 @@ public abstract class MemoryBoard extends Board {
                     Relation relation = fplayer.getRelationTo(factionHere);
                     if (factionHere.isWilderness()) {
                         row.then("-").color(Conf.colorWilderness);
-                        // Check for claimat position and if so, let them claim at ;D //TODO: Fix this
-                        if (false) { //fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
-                            row.tooltip(TL.CLAIM_CLICK_TO_CLAIM.format(dx, dz))
-                                    .command(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx, dz));
+                        // Lol someone didnt add the x and z making it claim the wrong position Can i copyright this xD
+                        if (fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
+                            row.tooltip(TL.CLAIM_CLICK_TO_CLAIM.format(dx + topLeft.getX(), dz + topLeft.getZ()))
+                                    .command(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx + topLeft.getX(), dz + topLeft.getZ()));
                         }
                     } else if (factionHere.isSafeZone()) {
-                        row.then("+").color(Conf.colorSafezone);
+                        row.then("+").color(Conf.colorSafezone).tooltip(oneLineToolTip(factionHere, fplayer));
                     } else if (factionHere.isWarZone()) {
-                        row.then("+").color(Conf.colorWar);
+                        row.then("+").color(Conf.colorWar).tooltip(oneLineToolTip(factionHere, fplayer));
                     } else if (factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
                             (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
                             (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))) {
@@ -302,7 +302,9 @@ public abstract class MemoryBoard extends Board {
                         }
                         char tag = fList.get(factionHere.getTag());
 
-                        row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));
+                        //row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));
+                        //changed out with a performance friendly one line tooltip :D
+                        row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(oneLineToolTip(factionHere, fplayer));
                     } else {
                         row.then("-").color(ChatColor.GRAY);
                     }
@@ -321,6 +323,10 @@ public abstract class MemoryBoard extends Board {
         }
 
         return ret;
+    }
+
+    private List<String> oneLineToolTip(Faction faction, FPlayer to) {
+        return Arrays.asList(faction.describeTo(to));
     }
 
     private List<String> getToolTip(Faction faction, FPlayer to) {
