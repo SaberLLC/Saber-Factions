@@ -4,9 +4,9 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public interface EconomyParticipator extends RelationParticipator {
 
-    String getAccountId();
+    public String getAccountId();
 
-    void msg(String str, Object... args);
+    public void msg(String str, Object... args);
 
-    void msg(TL translation, Object... args);
+    public void msg(TL translation, Object... args);
 }
