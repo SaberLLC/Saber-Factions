@@ -1103,7 +1103,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     @Override
     public boolean checkIfNearbyEnemies(){
         Player me = this.getPlayer();
-        for (Entity e : me.getNearbyEntities(16, 255, 16)) {
+        int radius = Conf.enemyFlyCheckRadius;
+        for (Entity e : me.getNearbyEntities(radius, 255, radius)) {
             if (e == null) { continue; }
             if (e instanceof Player) {
                 Player eplayer = (((Player) e).getPlayer());
@@ -1125,7 +1126,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     @Override
     public Boolean canflyinWilderness() {
         return getPlayer().hasPermission("factions.fly.wilderness");
-
     }
 
     @Override
@@ -1164,6 +1164,19 @@ public abstract class MemoryFPlayer implements FPlayer {
         return getPlayer().hasPermission("factions.fly.neutral");
 
     }
+
+    boolean inspectMode = false;
+
+    @Override
+    public boolean isInspectMode(){
+        return inspectMode;
+    }
+
+    @Override
+    public void setInspectMode( boolean status){
+        inspectMode = status;
+    }
+
 
 
 

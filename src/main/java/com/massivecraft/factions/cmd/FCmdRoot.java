@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.util.TL;
+import net.coreprotect.CoreProtect;
 import org.bukkit.Bukkit;
 
 import java.util.Collections;
@@ -93,6 +94,10 @@ public class FCmdRoot extends FCommand {
     public CmdBanner cmdBanner = new CmdBanner();
     public CmdTpBanner cmdTpBanner = new CmdTpBanner();
     public CmdKillHolograms cmdKillHolograms = new CmdKillHolograms();
+    public  CmdInspect cmdInspect = new CmdInspect();
+
+
+
     public FCmdRoot() {
         super();
         this.aliases.addAll(Conf.baseCommandAliases);
@@ -197,7 +202,12 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdTpBanner);
         this.addSubCommand(this.cmdKillHolograms);
 
-
+        if (CoreProtect.getInstance() != null){
+            P.p.log("Found CoreProtect, enabling Inspect");
+            this.addSubCommand(this.cmdInspect);
+        } else {
+            P.p.log("CoreProtect not found, disabling Inspect");
+        }
 
         if (P.p.getConfig().getBoolean("enable-faction-flight", false)) {
             this.addSubCommand(this.cmdFly);

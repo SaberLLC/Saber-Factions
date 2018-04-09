@@ -159,6 +159,12 @@ public interface FPlayer extends EconomyParticipator {
 
     public boolean hasMoney(int amt);
 
+    //inspect Stuff
+
+    public boolean isInspectMode();
+
+    public void setInspectMode(boolean status);
+
 
     // Fly Checks
 

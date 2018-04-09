@@ -21,6 +21,8 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -257,6 +259,51 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
+    //inspect
+    @EventHandler
+    public void onInspect(PlayerInteractEvent e){
+        if (e.getAction().name().contains("BLOCK")){
+            FPlayer fplayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
+            if (!fplayer.isInspectMode()){
+                return;
+            }
+            if (!fplayer.isAdminBypassing()){
+                if (fplayer.getFaction() != Board.getInstance().getFactionAt(new FLocation(e.getPlayer().getLocation()))){
+                    fplayer.msg(TL.COMMAND_INSPECT_NOTINCLAIM);
+                    return;
+                }
+            } else {
+                fplayer.msg(TL.COMMAND_INSPECT_BYPASS);
+            }
+            List<String[]> info = CoreProtect.getInstance().getAPI().blockLookup(e.getClickedBlock(),0);
+            if (info.size() == 0) {
+                e.getPlayer().sendMessage(TL.COMMAND_INSPECT_NODATA.toString());
+                return;
+            }
+            Player player = e.getPlayer();
+            CoreProtectAPI coAPI = CoreProtect.getInstance().getAPI();
+            player.sendMessage(TL.COMMAND_INSPECT_HEADER.toString().replace("{x}",e.getClickedBlock().getX() + "")
+            .replace("{y}",e.getClickedBlock().getY() + "")
+            .replace("{z}",e.getClickedBlock().getZ() + ""));
+            String rowFormat = TL.COMMAND_INSPECT_ROW.toString();
+            for (int i = 0; i < info.size(); i++){
+                CoreProtectAPI.ParseResult row = coAPI.parseResult((String[])info.get(0));
+                player.sendMessage(rowFormat
+                .replace("{time}",convertTime(row.getTime()))
+                .replace("{action}",row.getActionString())
+                .replace("{player}",row.getPlayer())
+                .replace("{block-type}",row.getType().toString().toLowerCase()));
+            }
+
+        }
+    }
+
+    private String convertTime(int time)
+    {
+        String result = String.valueOf(Math.round((System.currentTimeMillis() / 1000L - time) / 36.0D) / 100.0D);
+        return (result.length() == 3 ? result + "0" : result) + "/hrs ago";
+    }
+
     // Holds the next time a player can have a map shown.
     private HashMap<UUID, Long> showTimes = new HashMap<>();
 
@@ -318,7 +365,7 @@ public class FactionsPlayerListener implements Listener {
                         (relationTo == Relation.ENEMY && me.canflyinEnemy()) ||
                         (relationTo == Relation.ALLY && me.canflyinAlly()) ||
                         (relationTo == Relation.TRUCE && me.canflyinTruce()) ||
-                        (relationTo == Relation.NEUTRAL && me.canflyinNeutral())) {
+                        (relationTo == Relation.NEUTRAL && me.canflyinNeutral() && !isSystemFaction(factionTo))) {
                     enableFly(me);
                 }
 
@@ -388,6 +435,12 @@ public class FactionsPlayerListener implements Listener {
             fme.setInVault(false);
         }
 
+    }
+
+    public static Boolean isSystemFaction(Faction faction) {
+        return faction.isSafeZone() ||
+                faction.isWarZone() ||
+                faction.isWilderness();
     }
 
 

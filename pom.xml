@@ -318,6 +318,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>net.coreprotect</groupId>
+            <artifactId>CoreProtect</artifactId>
+            <version>2</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -348,6 +354,10 @@
         <repository>
             <id>mvdw-software</id>
             <url>http://repo.mvdw-software.be/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>ProSavage</id>
+            <url>https://www.myget.org/F/prosavage/maven/</url>
         </repository>
     </repositories>
 </project>

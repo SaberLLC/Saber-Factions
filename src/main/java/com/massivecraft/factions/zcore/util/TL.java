@@ -285,6 +285,7 @@ public enum TL {
     COMMAND_FLY_NO_ACCESS("&c&l[!]&7 &cCannot fly &7in territory of %1$s"),
     COMMAND_FLY_ENEMY_NEAR("&c&l[!]&7 Flight has been&c disabled&7 an enemy is nearby"),
     COMMAND_FLY_CHECK_ENEMY("&c&l[!]&7 Cannot fly here, an enemy is &cnearby"),
+    COMMAND_FLY_NO_EPEARL("&c&l[!] &7You &ccannot&7 throw enderpearls while flying!"),
 
     COMMAND_FWARP_CLICKTOWARP("&c&l[!]&7 Click to &cwarp!"),
     COMMAND_FWARP_COMMANDFORMAT("&c&l[!]&7 /f warp <warpname> &c[password]"),
@@ -307,6 +308,15 @@ public enum TL {
     COMMAND_HOME_TOTELEPORT("to teleport to your faction home"),
     COMMAND_HOME_FORTELEPORT("for teleporting to your faction home"),
     COMMAND_HOME_DESCRIPTION("Teleport to the faction home"),
+
+    COMMAND_INSPECT_DISABLED("&c&l[!]&7 Inspect mode is now &cdisabled."),
+    COMMAND_INSPECT_ENABLED("&c&l[!]&7 Inspect mode is now &aEnabled."),
+    COMMAND_INSPECT_HEADER("&c&m---&7Inspect Data&c&m---&c//&7x:{x},y:{y},z:{z}"),
+    COMMAND_INSPECT_ROW("&c{time} &7// &c{action} &7// &c{player} &7// &c{block-type}"),
+    COMMAND_INSPECT_NODATA("&c&l[!]&7 &7No Data was found!"),
+    COMMAND_INSPECT_NOTINCLAIM("&c&l[!]&7 &7You can &conly&7 inspect in &cyour &7claims!"),
+    COMMAND_INSPECT_BYPASS("&c&l[!]&7 Inspecting in &cbypass&7 mode"),
+    COMMAND_INSPECT_DESCRIPTION("Inspect blocks!"),
 
     COMMAND_INVITE_TOINVITE("to invite someone"),
     COMMAND_INVITE_FORINVITE("for inviting someone"),
@@ -675,7 +685,8 @@ public enum TL {
     COMMAND_UNCLAIMALL_DESCRIPTION("Unclaim all of your factions land"),
     COMMAND_UNCLAIM_CLICKTOUNCLAIM("Click to unclaim &2(%1$d, %2$d)"),
 
-    COMMAND_VERSION_VERSION("<i>You are running %1$s"),
+    COMMAND_VERSION_NAME("&c&l[!]&7 SavageFactions &c» &7By ProSavage"),
+    COMMAND_VERSION_VERSION("&7Version &c» &7%1$s"),
     COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
 
     COMMAND_WARUNCLAIMALL_DESCRIPTION("Unclaim all warzone land"),

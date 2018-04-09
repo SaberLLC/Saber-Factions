@@ -25,6 +25,7 @@ public class CmdVersion extends FCommand {
 
     @Override
     public void perform() {
+        msg(TL.COMMAND_VERSION_NAME); // Did this so people can differentiate between SavageFactions and FactionsUUID (( Requested Feature ))
         msg(TL.COMMAND_VERSION_VERSION, P.p.getDescription().getFullName());
     }
 

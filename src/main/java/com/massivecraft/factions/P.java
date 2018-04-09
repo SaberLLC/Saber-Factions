@@ -21,6 +21,8 @@ import com.massivecraft.factions.zcore.fupgrades.EXPUpgrade;
 import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
 import com.massivecraft.factions.zcore.fupgrades.SpawnerUpgrades;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import net.coreprotect.CoreProtect;
+import net.coreprotect.CoreProtectAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
@@ -47,6 +49,8 @@ public class P extends MPlugin {
     // Single 4 life.
     public static P p;
     public static Permission perms = null;
+
+
 
     // Persistence related
     private boolean locked = false;
@@ -123,6 +127,11 @@ public class P extends MPlugin {
         Board.getInstance().load();
         Board.getInstance().clean();
 
+        //inspect stuff
+        if (!initCoreProtect()){
+            P.p.log("Inspect will be disabled, you need coreprotect installed for it to function!");
+        }
+
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
         this.cmdAutoHelp = new CmdAutoHelp();
@@ -161,6 +170,10 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(new SpawnerUpgrades(),this);
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
+
+
+
+
 
         setupPlaceholderAPI();
         postEnable();
@@ -334,6 +347,20 @@ public class P extends MPlugin {
     public boolean shouldLetFactionsHandleThisChat(AsyncPlayerChatEvent event) {
         return event != null && (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
     }
+
+
+    //Inspect stuff
+    private boolean initCoreProtect()
+    {
+        if (!getServer().getPluginManager().isPluginEnabled("CoreProtect")) {
+            return false;
+        }
+        CoreProtectAPI coreProtectAPI = CoreProtect.getInstance().getAPI();
+        return true;
+    }
+
+
+
 
     // Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
     // local chat, or anything else which targets individual recipients, so Faction Chat can be done

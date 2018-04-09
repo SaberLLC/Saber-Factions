@@ -79,6 +79,9 @@ public class Conf {
     public static String truceChatFormat = ChatColor.DARK_PURPLE + "%s:" + ChatColor.WHITE + " %s";
     public static String modChatFormat = ChatColor.RED + "%s:" + ChatColor.WHITE + " %s";
 
+    public static int enemyFlyCheckRadius = 16;
+    public static boolean noEnderpearlsInFly = false;
+
     public static boolean broadcastDescriptionChanges = false;
     public static boolean broadcastTagChanges = false;
 

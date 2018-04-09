@@ -7,6 +7,7 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.TravelAgent;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -19,6 +20,7 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -247,6 +249,21 @@ public class FactionsEntityListener implements Listener {
                     if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
                         target.breakNaturally();
                     }
+                }
+            }
+        }
+    }
+
+    //For disabling enderpearl throws
+    @EventHandler
+    public void onPearl(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        if (player.getItemInHand().getType() == Material.ENDER_PEARL) {
+            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+            if (fPlayer.isFlying()){
+                if (!Conf.noEnderpearlsInFly){
+                    fPlayer.msg(TL.COMMAND_FLY_NO_EPEARL);
+                    e.setCancelled(true);
                 }
             }
         }

@@ -14,6 +14,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,48 +61,48 @@ public class CmdFly extends FCommand {
     public static void startFlyCheck() {
         flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
             @Override
-            public void run() {
+            public void run() throws ConcurrentModificationException { //threw the exception for now, until I recode fly :( Cringe.
                 checkTaskState();
                 if (flyMap.keySet().size() != 0) {
-                    for (String name : flyMap.keySet()) {
-                        if (name == null) {
-                            continue;
-                        }
-                        Player player = Bukkit.getPlayer(name);
-                        if (player == null) {
-                            continue;
-                        }
-                        if (!player.isFlying()) {
-                            continue;
-                        }
-                        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+                        for (String name : flyMap.keySet()) {
+                            if (name == null) {
+                                continue;
+                            }
+                            Player player = Bukkit.getPlayer(name);
+                            if (player == null) {
+                                continue;
+                            }
+                            if (!player.isFlying()) {
+                                continue;
+                            }
+                            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
 
-                        if (fPlayer == null) {
-                            continue;
-                        }
-                        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
-                            continue;
-                        }
-                        Faction myFaction = fPlayer.getFaction();
-                        if (myFaction.isWilderness()) {
-                            fPlayer.setFlying(false);
-                            flyMap.remove(name);
-                            continue;
-                        }
-                        if (fPlayer.checkIfNearbyEnemies()) {
-                            continue;
-                        }
-                        FLocation myFloc = new FLocation(player.getLocation());
-                        Faction toFac = Board.getInstance().getFactionAt(myFloc);
-                        if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-                            if (!checkBypassPerms(fPlayer, player, toFac)) {
+                            if (fPlayer == null) {
+                                continue;
+                            }
+                            if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+                                continue;
+                            }
+                            Faction myFaction = fPlayer.getFaction();
+                            if (myFaction.isWilderness()) {
                                 fPlayer.setFlying(false);
                                 flyMap.remove(name);
                                 continue;
                             }
-                        }
+                            if (fPlayer.checkIfNearbyEnemies()) {
+                                continue;
+                            }
+                            FLocation myFloc = new FLocation(player.getLocation());
+                            Faction toFac = Board.getInstance().getFactionAt(myFloc);
+                            if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
+                                if (!checkBypassPerms(fPlayer, player, toFac)) {
+                                    fPlayer.setFlying(false);
+                                    flyMap.remove(name);
+                                    continue;
+                                }
+                            }
 
-                    }
+                        }
                 }
 
             }
