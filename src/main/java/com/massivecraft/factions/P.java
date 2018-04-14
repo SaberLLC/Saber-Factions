@@ -128,9 +128,7 @@ public class P extends MPlugin {
         Board.getInstance().clean();
 
         //inspect stuff
-        if (!initCoreProtect()){
-            P.p.log("Inspect will be disabled, you need coreprotect installed for it to function!");
-        }
+
 
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
@@ -349,15 +347,7 @@ public class P extends MPlugin {
     }
 
 
-    //Inspect stuff
-    private boolean initCoreProtect()
-    {
-        if (!getServer().getPluginManager().isPluginEnabled("CoreProtect")) {
-            return false;
-        }
-        CoreProtectAPI coreProtectAPI = CoreProtect.getInstance().getAPI();
-        return true;
-    }
+
 
 
 

@@ -1,6 +1,7 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
@@ -143,10 +144,20 @@ public class FactionsEntityListener implements Listener {
             if (damagee != null && damagee instanceof Player) {
                 cancelFStuckTeleport((Player) damagee);
                 cancelFFly((Player) damagee);
+                FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damagee);
+                if (fplayer.isInspectMode()){
+                    fplayer.setInspectMode(false);
+                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED);
+                }
             }
             if (damager instanceof Player) {
                 cancelFStuckTeleport((Player) damager);
                 cancelFFly((Player) damager);
+                FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
+                if (fplayer.isInspectMode()){
+                    fplayer.setInspectMode(false);
+                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED);
+                }
             }
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone

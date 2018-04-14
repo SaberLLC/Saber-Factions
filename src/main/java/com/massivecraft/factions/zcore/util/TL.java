@@ -310,6 +310,7 @@ public enum TL {
     COMMAND_HOME_DESCRIPTION("Teleport to the faction home"),
 
     COMMAND_INSPECT_DISABLED("&c&l[!]&7 Inspect mode is now &cdisabled."),
+    COMMAND_INSPECT_DISABLED_NOFAC("&c&l[!]&7 Inspect mode is now &cdisabled,&7 because you &cdo not have a faction!"),
     COMMAND_INSPECT_ENABLED("&c&l[!]&7 Inspect mode is now &aEnabled."),
     COMMAND_INSPECT_HEADER("&c&m---&7Inspect Data&c&m---&c//&7x:{x},y:{y},z:{z}"),
     COMMAND_INSPECT_ROW("&c{time} &7// &c{action} &7// &c{player} &7// &c{block-type}"),
@@ -660,6 +661,7 @@ public enum TL {
     COMMAND_TNT_POSITIVE("&cPlease use positive numbers!"),
     COMMAND_TNT_DESCRIPTION("add/widthraw from faction's tnt bank"),
 
+
     COMMAND_UNBAN_DESCRIPTION("Unban someone from your Faction"),
     COMMAND_UNBAN_NOTBANNED("&7%s &cisn't banned. Not doing anything."),
     COMMAND_UNBAN_UNBANNED("&e%1$s &cunbanned &7%2$s"),
@@ -748,6 +750,7 @@ public enum TL {
     CLAIM_OUTSIDEWORLDBORDER("<i>Your claim is outside the border."),
     CLAIM_OUTSIDEBORDERBUFFER("<i>Your claim is outside the border. %d chunks away world edge required."),
     CLAIM_CLICK_TO_CLAIM("Click to try to claim &2(%1$d, %2$d)"),
+    CLAIM_MAP_OUTSIDEBORDER("&cThis claim is outside the worldborder!"),
     CLAIM_YOUAREHERE("You are here"),
 
     /**
@@ -898,7 +901,7 @@ public enum TL {
     FACTION_LEAVE("faction-leave", "<a>Leaving %1$s, <a>Entering %2$s"),
     FACTIONS_ANNOUNCEMENT_TOP("faction-announcement-top", "&d--Unread Faction Announcements--"),
     FACTIONS_ANNOUNCEMENT_BOTTOM("faction-announcement-bottom", "&d--Unread Faction Announcements--"),
-    DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r"),
+    DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r {player-name}"),
     FACTION_LOGIN("faction-login", "&e%1$s &9logged in."),
     FACTION_LOGOUT("faction-logout", "&e%1$s &9logged out.."),
     NOFACTION_PREFIX("nofactions-prefix", "&6[&a4-&6]&r"),

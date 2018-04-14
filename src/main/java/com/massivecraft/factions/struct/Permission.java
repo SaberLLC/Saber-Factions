@@ -99,6 +99,7 @@ public enum Permission {
     TPBANNER("tpbanner"),
     KILLHOLOS("killholos"),
     INSPECT("inspect"),
+    TNTFILL("tntfill"),
     WARP("warp");
 
     public final String node;

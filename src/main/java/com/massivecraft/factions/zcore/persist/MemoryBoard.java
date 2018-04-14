@@ -250,6 +250,8 @@ public abstract class MemoryBoard extends Board {
         ArrayList<FancyMessage> ret = new ArrayList<>();
         Faction factionLoc = getFactionAt(flocation);
         ret.add(new FancyMessage(P.p.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
+        int buffer = P.p.getConfig().getInt("world-border.buffer", 0);
+
 
         // Get the compass
         ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.RED, P.p.txt.parse("<a>"));
@@ -283,7 +285,9 @@ public abstract class MemoryBoard extends Board {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = fplayer.getRelationTo(factionHere);
-                    if (factionHere.isWilderness()) {
+                    if (flocationHere.isOutsideWorldBorder(buffer)){
+                        row.then("-").color(ChatColor.BLACK).tooltip(TL.CLAIM_MAP_OUTSIDEBORDER.toString());
+                    } else if (factionHere.isWilderness()) {
                         row.then("-").color(Conf.colorWilderness);
                         // Lol someone didnt add the x and z making it claim the wrong position Can i copyright this xD
                         if (fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {

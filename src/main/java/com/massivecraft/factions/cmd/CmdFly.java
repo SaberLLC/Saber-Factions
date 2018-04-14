@@ -47,15 +47,21 @@ public class CmdFly extends FCommand {
                     if (!player.isFlying()) {
                         continue;
                     }
+                    if (player.getGameMode() == GameMode.SPECTATOR){
+                        continue;
+                    }
+                    if (FPlayers.getInstance().getByPlayer(player).isVanished()){
+                        continue;
+                    }
 
-                    ParticleEffect.CLOUD.display(0, 0, 0, 0, 1, player.getLocation().add(0, -0.35, 0), 16);
+                    ParticleEffect.CLOUD.display((float) 0, (float)  0, (float)  0, (float)  0, 3, player.getLocation().add(0, -0.35, 0), 16);
                 }
                 if (flyMap.keySet().size() == 0) {
                     Bukkit.getScheduler().cancelTask(id);
                     id = -1;
                 }
             }
-        }, 10L, 10L);
+        }, 10L, 3L);
     }
 
     public static void startFlyCheck() {
@@ -76,7 +82,6 @@ public class CmdFly extends FCommand {
                                 continue;
                             }
                             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-
                             if (fPlayer == null) {
                                 continue;
                             }

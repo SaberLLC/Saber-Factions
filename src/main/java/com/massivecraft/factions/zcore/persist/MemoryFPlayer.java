@@ -724,7 +724,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(flocation)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = P.p.txt.parse(TL.CLAIM_PROTECTED.toString());
-        } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
+        } else if(flocation.isOutsideWorldBorder(P.p.getConfig().getInt("world-border.buffer", 0))){
+            error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
+        }
+        else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
             error = P.p.txt.parse(TL.CLAIM_DISABLED.toString());
         } else if (this.isAdminBypassing()) {
             return true;

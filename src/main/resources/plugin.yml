@@ -1,5 +1,5 @@
 name: Factions
-version: ${project.version}-SF-1.0.23-BETA
+version: ${project.version}-SF-1.1-STABLE
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage]
 softdepend: [CoreProtect, PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop]

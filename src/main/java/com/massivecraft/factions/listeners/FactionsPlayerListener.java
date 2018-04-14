@@ -267,7 +267,13 @@ public class FactionsPlayerListener implements Listener {
             if (!fplayer.isInspectMode()){
                 return;
             }
+            e.setCancelled(true);
             if (!fplayer.isAdminBypassing()){
+                if (!fplayer.hasFaction()){
+                    fplayer.setInspectMode(false);
+                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED_NOFAC);
+                    return;
+                }
                 if (fplayer.getFaction() != Board.getInstance().getFactionAt(new FLocation(e.getPlayer().getLocation()))){
                     fplayer.msg(TL.COMMAND_INSPECT_NOTINCLAIM);
                     return;

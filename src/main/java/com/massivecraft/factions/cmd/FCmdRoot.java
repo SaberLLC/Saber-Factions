@@ -202,7 +202,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdTpBanner);
         this.addSubCommand(this.cmdKillHolograms);
 
-        if (CoreProtect.getInstance() != null){
+        if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null){
             P.p.log("Found CoreProtect, enabling Inspect");
             this.addSubCommand(this.cmdInspect);
         } else {

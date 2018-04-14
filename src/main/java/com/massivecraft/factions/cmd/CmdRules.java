@@ -52,8 +52,8 @@ public class CmdRules extends FCommand {
             if (args.get(0).equalsIgnoreCase("set")) {
                 fme.msg(TL.COMMAND_RULES_SET_INVALIDARGS);
             }
-            if (args.get(0).equalsIgnoreCase("add")) {
-                fme.msg(TL.COMMAND_RULES_ADD_INVALIDARGS);
+            if (args.get(0).equalsIgnoreCase("remove")) {
+                fme.msg(TL.COMMAND_RULES_REMOVE_INVALIDARGS);
             }
             if (args.get(0).equalsIgnoreCase("clear")) {
                 fme.getFaction().clearRules();
