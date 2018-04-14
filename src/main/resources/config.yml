@@ -849,17 +849,9 @@ Title:
 
     
 # /f seechunk options
-# Get a list of particle effects here:
-# https://github.com/DarkBlade12/ParticleEffect/blob/master/src/main/java/com/darkblade12/particleeffect/ParticleEffect.java
 see-chunk:
-  # If disabled, it will use fake blocks like before (can cause client side lag)
   particles: true
-  particle: "BARRIER"
-  # For Particle types like barrier, the interval can be much higher. but for redstone etc it has to be low, like 10
-  # Interval between when particles are sent
-  # setting to 10 makes it a constant heartbeat effect
-  # setting to 5, makes it almost solid ( looks better imo but is more intensive)
-  interval: 20
+  interval: 5
 
 
 ############################################################

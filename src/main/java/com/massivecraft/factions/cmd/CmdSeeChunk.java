@@ -48,7 +48,9 @@ public class CmdSeeChunk extends FCommand {
 
         this.useParticles = p.getConfig().getBoolean("see-chunk.particles", true);
         interval = P.p.getConfig().getLong("see-chunk.interval", 10L);
-        effect = ParticleEffect.fromName(P.p.getConfig().getString("see-chunk.particle", "REDSTONE"));
+        if (effect == null){
+            effect = ParticleEffect.REDSTONE;
+        }
 
     }
 
