@@ -147,7 +147,7 @@ public class FactionsEntityListener implements Listener {
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damagee);
                 if (fplayer.isInspectMode()){
                     fplayer.setInspectMode(false);
-                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED);
+                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
                 }
             }
             if (damager instanceof Player) {
@@ -156,7 +156,7 @@ public class FactionsEntityListener implements Listener {
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
                 if (fplayer.isInspectMode()){
                     fplayer.setInspectMode(false);
-                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED);
+                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
                 }
             }
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {

@@ -309,7 +309,7 @@ public enum TL {
     COMMAND_HOME_FORTELEPORT("for teleporting to your faction home"),
     COMMAND_HOME_DESCRIPTION("Teleport to the faction home"),
 
-    COMMAND_INSPECT_DISABLED("&c&l[!]&7 Inspect mode is now &cdisabled."),
+    COMMAND_INSPECT_DISABLED_MSG("&c&l[!]&7 Inspect mode is now &cdisabled."),
     COMMAND_INSPECT_DISABLED_NOFAC("&c&l[!]&7 Inspect mode is now &cdisabled,&7 because you &cdo not have a faction!"),
     COMMAND_INSPECT_ENABLED("&c&l[!]&7 Inspect mode is now &aEnabled."),
     COMMAND_INSPECT_HEADER("&c&m---&7Inspect Data&c&m---&c//&7x:{x},y:{y},z:{z}"),
@@ -901,7 +901,7 @@ public enum TL {
     FACTION_LEAVE("faction-leave", "<a>Leaving %1$s, <a>Entering %2$s"),
     FACTIONS_ANNOUNCEMENT_TOP("faction-announcement-top", "&d--Unread Faction Announcements--"),
     FACTIONS_ANNOUNCEMENT_BOTTOM("faction-announcement-bottom", "&d--Unread Faction Announcements--"),
-    DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r {player-name}"),
+    DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}]"),
     FACTION_LOGIN("faction-login", "&e%1$s &9logged in."),
     FACTION_LOGOUT("faction-logout", "&e%1$s &9logged out.."),
     NOFACTION_PREFIX("nofactions-prefix", "&6[&a4-&6]&r"),

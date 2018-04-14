@@ -25,7 +25,7 @@ public class CmdInspect extends FCommand
     public void perform(){
         if (fme.isInspectMode()){
             fme.setInspectMode(false);
-            msg(TL.COMMAND_INSPECT_DISABLED);
+            msg(TL.COMMAND_INSPECT_DISABLED_MSG);
         } else {
             fme.setInspectMode(true);
             msg(TL.COMMAND_INSPECT_ENABLED);
