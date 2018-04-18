@@ -34,6 +34,7 @@ public class CmdTntFill extends FCommand {
 
     @Override
     public void perform(){
+        msg(TL.COMMAND_TNTFILL_HEADER);
         int radius = argAsInt(0,16);
         int amount = argAsInt(1,16);
         if (radius > P.p.getConfig().getInt("Tntfill.max-radius")){
