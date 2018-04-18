@@ -232,6 +232,9 @@ public enum TL {
     COMMAND_CONVERT_BACKEND_INVALID("&c&l[!]&7 Invalid backend"),
     COMMAND_CONVERT_DESCRIPTION("Convert the plugin backend"),
 
+    COMMAND_COORDS_MESSAGE("&c&l[!] &7{player}&7's coords are &c{x}&7,&c{y}&7,&c{z}&7 in &c{world}"),
+    COMMAND_COORDS_DESCRIPTION("broadcast your coords to your faction"),
+
     COMMAND_CHECKPOINT_DISABLED("&c&l[!]&7 You &ccannot&7 use checkpoint while its&c disabled&7!"),
     COMMAND_CHECKPOINT_SET("&c&l[!]&7 You have &cset&7 the &cfaction checkpoint&7 at your &cLocation&7."),
     COMMAND_CHECKPOINT_GO("&c&l[!]&7 &cTeleporting&7 to &cfaction checkpoint"),
@@ -372,6 +375,10 @@ public enum TL {
 
     COMMAND_LOGINS_TOGGLE("&c&l[!]&7 Set login / logout notifications for Faction members to: &c%s"),
     COMMAND_LOGINS_DESCRIPTION("Toggle(?) login / logout notifications for Faction members"),
+
+    COMMAND_LOWPOWER_HEADER("&8&m--------&8<Players with power under {maxpower}&8>&8&m---------"),
+    COMMAND_LOWPOWER_FORMAT("&c{player} &8(&c{player_power}&8/&c{maxpower}&8)"),
+    COMMAND_LOWPOWER_DESCRIPTION("Shows a list of players in your faction with lower power levels"),
 
     COMMAND_MAP_TOSHOW("to show the map"),
     COMMAND_MAP_FORSHOW("for showing the map"),
@@ -604,6 +611,11 @@ public enum TL {
     COMMAND_SHOW_EXEMPT("<b>This faction is exempt and cannot be seen."),
     COMMAND_SHOW_NEEDFACTION("&cYou need to join a faction to view your own!"),
 
+    COMMAND_SHOWCLAIMS_HEADER("&8&m-------------&8<{faction}'s claims&8>&8&m-------------"),
+    COMMAND_SHOWCLAIMS_FORMAT("&8[{world}]: {chunks}"),
+    COMMAND_SHOWCLAIMS_CHUNKSFORMAT("&8(&c{x}&8,&c{z}&8)"),
+    COMMAND_SHOWCLAIMS_DESCRIPTION("show your factions claims!"),
+
     COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
     COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
     COMMAND_SHOWINVITES_DESCRIPTION("Show pending faction invites"),
@@ -661,6 +673,12 @@ public enum TL {
     COMMAND_TNT_POSITIVE("&cPlease use positive numbers!"),
     COMMAND_TNT_DESCRIPTION("add/widthraw from faction's tnt bank"),
 
+    COMMAND_TNTFILL_SUCCESS("&c&l[!] &7Filled &c{amount}&7 Tnt in dispenser at {x} {y} {z}"),
+    COMMAND_TNTFILL_NOTENOUGH("&c&l[!] &7Not enough tnt in inventory."),
+    COMMAND_TNTFILL_RADIUSMAX("&c&l[!] &7The max radius is {max}"),
+    COMMAND_TNTFILL_AMOUNTMAX("&c&l[!] &7The max amount is {max}"),
+    COMMAND_TNTFILL_MOD("&c&l[!] &7Tnt will be used from the faction bank because you dont have the specified amount in your inventory and you are a {role}"),
+    COMMAND_TNTFILL_DESCRIPTION("Fill tnt into dispensers around you"),
 
     COMMAND_UNBAN_DESCRIPTION("Unban someone from your Faction"),
     COMMAND_UNBAN_NOTBANNED("&7%s &cisn't banned. Not doing anything."),

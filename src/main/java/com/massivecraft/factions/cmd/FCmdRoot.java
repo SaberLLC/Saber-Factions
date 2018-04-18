@@ -94,7 +94,11 @@ public class FCmdRoot extends FCommand {
     public CmdBanner cmdBanner = new CmdBanner();
     public CmdTpBanner cmdTpBanner = new CmdTpBanner();
     public CmdKillHolograms cmdKillHolograms = new CmdKillHolograms();
-    public  CmdInspect cmdInspect = new CmdInspect();
+    public CmdInspect cmdInspect = new CmdInspect();
+    public CmdCoords cmdCoords = new CmdCoords();
+    public CmdShowClaims cmdShowClaims = new CmdShowClaims();
+    public CmdLowPower cmdLowPower = new CmdLowPower();
+    public CmdTntFill cmdTntFill = new CmdTntFill();
 
 
 
@@ -201,6 +205,10 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdBanner);
         this.addSubCommand(this.cmdTpBanner);
         this.addSubCommand(this.cmdKillHolograms);
+        this.addSubCommand(this.cmdCoords);
+        this.addSubCommand(this.cmdShowClaims);
+        this.addSubCommand(this.cmdLowPower);
+        this.addSubCommand(this.cmdTntFill);
 
         if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null){
             P.p.log("Found CoreProtect, enabling Inspect");

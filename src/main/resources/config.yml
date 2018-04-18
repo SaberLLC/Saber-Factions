@@ -346,12 +346,15 @@ help:
      - '&e/f join &f<name> &8- &7Join to the faction.'
      - '&e/f list &8- &7List all factions.'
      - '&e/f top &8- &7View the richest factions.'
-     - '&e/f map &8- &7Map of the surrounding area.'
+     - '&e/f map &8- &7Map of the surrounding area, click chunks to claim.'
      - '&e/f sethome &8- &7Teleport to faction home.'
      - '&e/f home &8- &7Set your faction home.'
      - '&e/f ban &8- &7Ban a member from your faction.'
      - '&e/f unban &8- &7Unban a member from your faction.'
      - '&e/f banlist &8- &7List banned players from your faction.'
+     - '&e/f lowpower &8- &7List player with power under max from your faction.'
+     - '&e/f coords &8- &7Broadcast your location to your faction.'
+     - '&e/f showclaims &8- &7List all claims from your faction.'
      - '&7&m--------------------&r &e/f help 2 &7&m-----------------------'
     '2':
      - '&7&m----------------------------------------------------'
@@ -363,7 +366,9 @@ help:
      - '&e/f claim &8- &7Claim a land for your faction.'
      - '&e/f unclaim &8- &7Unclaim land from your faction.'
      - '&e/f kick &f<playerName> &8- &7Kick player from your faction.'
-     - '&e/f mod &f<playerName> &8- &7Set player role in faction.'
+     - '&e/f mod &f<playerName> &8- &7Set player to mod role in faction.'
+     - '&e/f coleader &f<playerName> &8- &7Set player to coleader role in faction.'
+     - '&e/f leader &f<playerName> &8- &7Set player role to leader in faction.'
      - '&e/f chat &f<Faction | Ally | Public> &8- &7Switch to Faction/Ally/Public chat.'
      - '&e/f warp &8- &7Opens the warp menu.'
      - '&e/f setwarp &8- &7Set a warp.'
@@ -853,6 +858,10 @@ see-chunk:
   particles: true
   interval: 5
 
+
+Tntfill:
+  max-radius: 32
+  max-amount: 64
 
 ############################################################
 # +------------------------------------------------------+ #

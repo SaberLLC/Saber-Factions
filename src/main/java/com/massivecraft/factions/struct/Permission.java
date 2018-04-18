@@ -100,6 +100,8 @@ public enum Permission {
     KILLHOLOS("killholos"),
     INSPECT("inspect"),
     TNTFILL("tntfill"),
+    COORD("coords"),
+    SHOWCLAIMS("showclaims"),
     WARP("warp");
 
     public final String node;
