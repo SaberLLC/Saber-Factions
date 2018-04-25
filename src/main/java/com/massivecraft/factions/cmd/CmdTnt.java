@@ -2,6 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,6 +18,7 @@ public class CmdTnt extends FCommand {
 
         this.optionalArgs.put("add/take", "");
         this.optionalArgs.put("amount", "number");
+
 
         this.permission = Permission.TNT.node;
         this.disableOnLock = true;
@@ -32,6 +35,13 @@ public class CmdTnt extends FCommand {
             fme.msg(TL.COMMAND_TNT_DISABLED_MSG);
             return;
         }
+
+        Access access = fme.getFaction().getAccess(fme, PermissableAction.TNTBANK);
+        if (access.equals(Access.DENY)) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "tntbank");
+        }
+
+
         if (args.size() == 2) {
             if (args.get(0).equalsIgnoreCase("add")) {
                 int testNumber = -1;

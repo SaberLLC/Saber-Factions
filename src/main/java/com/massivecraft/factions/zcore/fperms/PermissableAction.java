@@ -34,7 +34,10 @@ public enum PermissableAction {
     PROMOTE("promote"),
     SETWARP("setwarp"),
     WARP("warp"),
-    FLY("fly"),;
+    FLY("fly"),
+    VAULT("vault"),
+    TNTBANK("tntbank"),
+    TNTFILL("tntfill");
 
     private String name;
 

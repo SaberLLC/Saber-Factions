@@ -73,7 +73,8 @@ public class CmdStuck extends FCommand {
                         public boolean work() {
                             FLocation chunk = currentFLocation();
                             Faction faction = board.getFactionAt(chunk);
-                            if (faction.isWilderness()) {
+                            int buffer = P.p.getConfig().getInt("world-border.buffer", 0);
+                            if (faction.isWilderness() && !chunk.isOutsideWorldBorder(buffer)) {
                                 int cx = FLocation.chunkToBlock((int) chunk.getX());
                                 int cz = FLocation.chunkToBlock((int) chunk.getZ());
                                 int y = world.getHighestBlockYAt(cx, cz);

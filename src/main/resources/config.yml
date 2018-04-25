@@ -501,6 +501,9 @@ fperm-gui:
       ban: 27
       disband: 28
       fly: 29
+      vault: 30
+      tntbank: 31
+      tntfill: 32
     # Material to show, if the material is colorable eg: Wool, Stained Clay it will update with it's access color
     materials:
       build: STAINED_CLAY
@@ -524,6 +527,9 @@ fperm-gui:
       ban: STAINED_CLAY
       disband: STAINED_CLAY
       fly: STAINED_CLAY
+      vault: STAINED_CLAY
+      tntbank: STAINED_CLAY
+      tntfill: STAINED_CLAY
     # Same dummy items format as above
     dummy-items:
       '0':
@@ -536,9 +542,6 @@ fperm-gui:
       - 8
       - 29
       - 30
-      - 31
-      - 32
-      - 33
       - 34
       - 35
     # {action} Action name eg: Setwarp, Kick

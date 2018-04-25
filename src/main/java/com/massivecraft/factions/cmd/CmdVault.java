@@ -10,6 +10,8 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -39,9 +41,14 @@ public class CmdVault extends FCommand {
 
    @Override
     public void perform() {
+
         if (!P.p.getConfig().getBoolean("fvault.Enabled")){
             fme.sendMessage("This command is disabled!");
             return;
+        }
+       Access access = fme.getFaction().getAccess(fme, PermissableAction.VAULT);
+        if (access.equals(Access.DENY)) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "vault");
         }
 
         if (fme.isInVault()){

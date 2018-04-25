@@ -51,7 +51,7 @@ public class P extends MPlugin {
     public static Permission perms = null;
 
 
-
+    ItemStack item = new ItemStack(Material.CAKE);
     // Persistence related
     private boolean locked = false;
 

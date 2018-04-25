@@ -674,7 +674,7 @@ public enum TL {
     COMMAND_TNT_DESCRIPTION("add/widthraw from faction's tnt bank"),
 
     COMMAND_TNTFILL_HEADER("&c&l[!] &7Filling tnt in dispensers..."),
-    COMMAND_TNTFILL_SUCCESS("&c&l[!] &7Filled &c{amount}&7 Tnt in dispenser at {x} {y} {z}"),
+    COMMAND_TNTFILL_SUCCESS("&c&l[!] &7Filled &c{amount}&7 Tnt in &c{dispensers} &7dispensers"),
     COMMAND_TNTFILL_NOTENOUGH("&c&l[!] &7Not enough tnt in inventory."),
     COMMAND_TNTFILL_RADIUSMAX("&c&l[!] &7The max radius is {max}"),
     COMMAND_TNTFILL_AMOUNTMAX("&c&l[!] &7The max amount is {max}"),
