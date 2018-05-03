@@ -247,7 +247,10 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+        if (!P.p.mc17) {
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+        }
+
 
         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', dummySection.getString("name", " ")));
 

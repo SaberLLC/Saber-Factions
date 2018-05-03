@@ -14,14 +14,14 @@ public class Conf {
     public static boolean allowNoSlashCommand = true;
 
     // Colors
-    public static ChatColor colorMember = ChatColor.DARK_GREEN;
+    public static ChatColor colorMember = ChatColor.GREEN;
     public static ChatColor colorAlly = ChatColor.LIGHT_PURPLE;
     public static ChatColor colorTruce = ChatColor.DARK_PURPLE;
     public static ChatColor colorNeutral = ChatColor.WHITE;
     public static ChatColor colorEnemy = ChatColor.RED;
 
     public static ChatColor colorPeaceful = ChatColor.GOLD;
-    public static ChatColor colorWilderness = ChatColor.DARK_GREEN;
+    public static ChatColor colorWilderness = ChatColor.GRAY;
     public static ChatColor colorSafezone = ChatColor.GOLD;
     public static ChatColor colorWar = ChatColor.DARK_RED;
 

@@ -134,7 +134,10 @@ public enum Role implements Permissable {
 
         itemMeta.setDisplayName(displayName);
         itemMeta.setLore(lore);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        if (!P.p.mc17) {
+            itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        }
+
         item.setItemMeta(itemMeta);
 
         return item;

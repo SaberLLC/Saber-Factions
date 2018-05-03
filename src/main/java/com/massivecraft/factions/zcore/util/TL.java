@@ -706,7 +706,7 @@ public enum TL {
     COMMAND_UNCLAIMALL_DESCRIPTION("Unclaim all of your factions land"),
     COMMAND_UNCLAIM_CLICKTOUNCLAIM("Click to unclaim &2(%1$d, %2$d)"),
 
-    COMMAND_VERSION_NAME("&c&l[!]&7 SavageFactions &c» &7By ProSavage"),
+    COMMAND_VERSION_NAME("&c&l[!]&7 &c&k||| &r&4SavageFactions&7 &c&k|||&r &c» &7By ProSavage"),
     COMMAND_VERSION_VERSION("&7Version &c» &7%1$s"),
     COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
 
@@ -778,6 +778,7 @@ public enum TL {
     GENERIC_YOU("you"),
     GENERIC_YOURFACTION("your faction"),
     GENERIC_NOPERMISSION("<b>You don't have permission to %1$s."),
+    GENERIC_FPERM_NOPERMISSION("&7Your faction leader does not allow you to %1$s."),
     GENERIC_DOTHAT("do that"),  //Ugh nuke this from high orbit
     GENERIC_NOPLAYERMATCH("<b>No player match found for \"<p>%1$s<b>\"."),
     GENERIC_NOPLAYERFOUND("<b>No player \"<p>%1$s<b>\" could not be found."),

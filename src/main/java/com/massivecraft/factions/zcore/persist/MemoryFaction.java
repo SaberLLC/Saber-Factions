@@ -15,11 +15,11 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -550,7 +550,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.powerBoost = 0.0;
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
-        this.defaultRole = Role.NORMAL;
+        this.defaultRole = Role.RECRUIT;
 
         resetPerms(); // Reset on new Faction so it has default values.
     }

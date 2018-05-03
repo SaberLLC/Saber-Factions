@@ -15,13 +15,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CmdFly extends FCommand {
 
 
-    public static HashMap<String,Boolean> flyMap = new HashMap<String,Boolean>();
+    public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<String, Boolean>();
     public static int id = -1;
     public static int flyid = -1;
     public CmdFly() {

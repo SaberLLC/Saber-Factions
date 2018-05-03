@@ -232,7 +232,10 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             }
 
             ItemMeta meta = dummyItem.getItemMeta();
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+            if (!P.p.mc17) {
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+            }
+
             dummyItem.setItemMeta(meta);
 
             List<Integer> dummySlots = section.getIntegerList("dummy-items." + key);
@@ -284,7 +287,10 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         }
 
         itemMeta.setLore(lore);
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+        if (!P.p.mc17) {
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+        }
+
 
         itemStack.setItemMeta(itemMeta);
 

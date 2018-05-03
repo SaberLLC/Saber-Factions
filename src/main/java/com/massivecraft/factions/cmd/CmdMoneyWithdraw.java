@@ -31,6 +31,7 @@ public class CmdMoneyWithdraw extends FCommand {
 
     @Override
     public void perform() {
+
         double amount = this.argAsDouble(0, 0d);
         EconomyParticipator faction = this.argAsFaction(1, myFaction);
         if (faction == null) {

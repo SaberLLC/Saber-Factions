@@ -182,7 +182,10 @@ public class FUpgradesGUI implements Listener {
         ItemStack expItem = P.p.createItem(expMaterial, expAmt, expData, expName, expLore);
         if (expLevel >= 1) {
             ItemMeta itemMeta = expItem.getItemMeta();
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            if (!P.p.mc17) {
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             expItem.setItemMeta(itemMeta);
         }
@@ -220,7 +223,10 @@ public class FUpgradesGUI implements Listener {
         cropItem.getItemMeta().setLore(cropLore);
         if (cropLevel >= 1) {
             ItemMeta itemMeta = cropItem.getItemMeta();
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            if (!P.p.mc17) {
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             cropItem.setItemMeta(itemMeta);
         }
@@ -233,7 +239,10 @@ public class FUpgradesGUI implements Listener {
         spawnerItem.getItemMeta().setLore(spawnerLore);
         if (spawnerLevel >= 1) {
             ItemMeta itemMeta = spawnerItem.getItemMeta();
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            if (!P.p.mc17) {
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             spawnerItem.setItemMeta(itemMeta);
         }
@@ -248,7 +257,7 @@ public class FUpgradesGUI implements Listener {
 
     public boolean hasMoney(FPlayer fme, int amt) {
         Economy econ = P.p.getEcon();
-        if (econ.getBalance((Player) fme.getPlayer()) >= amt) {
+        if (econ.getBalance(fme.getPlayer()) >= amt) {
             return true;
         } else {
             fme.getPlayer().closeInventory();

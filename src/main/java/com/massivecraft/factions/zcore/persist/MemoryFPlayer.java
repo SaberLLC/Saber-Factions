@@ -794,73 +794,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         return attemptClaim(forFaction, new FLocation(location), notifyFailure);
     }
 
-    public boolean attemptClaim(Faction forFaction, FLocation flocation, boolean notifyFailure) {
-        // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
-        // return value is false on failure, true on success
-
-        Faction currentFaction = Board.getInstance().getFactionAt(flocation);
-
-        int ownedLand = forFaction.getLandRounded();
-
-        if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure)) {
-            return false;
-        }
-
-        // if economy is enabled and they're not on the bypass list, make sure they can pay
-        boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone();
-        double cost = 0.0;
-        EconomyParticipator payee = null;
-        if (mustPay) {
-            cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
-
-            if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, forFaction)) {
-                cost += Conf.econClaimUnconnectedFee;
-            }
-
-            if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts && this.hasFaction()) {
-                payee = this.getFaction();
-            } else {
-                payee = this;
-            }
-
-            if (!Econ.hasAtLeast(payee, cost, TL.CLAIM_TOCLAIM.toString())) {
-                return false;
-            }
-        }
-
-        LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
-        Bukkit.getServer().getPluginManager().callEvent(claimEvent);
-        if (claimEvent.isCancelled()) {
-            return false;
-        }
-
-        // then make 'em pay (if applicable)
-        if (mustPay && !Econ.modifyMoney(payee, -cost, TL.CLAIM_TOCLAIM.toString(), TL.CLAIM_FORCLAIM.toString())) {
-            return false;
-        }
-
-        // Was an over claim
-        if (currentFaction.isNormal() && currentFaction.hasLandInflation()) {
-            // Give them money for over claiming.
-            Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
-        }
-
-        // announce success
-        Set<FPlayer> informTheseFPlayers = new HashSet<>();
-        informTheseFPlayers.add(this);
-        informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
-        for (FPlayer fp : informTheseFPlayers) {
-            fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
-        }
-
-        Board.getInstance().setFactionAt(forFaction, flocation);
-
-        if (Conf.logLandClaims) {
-            P.p.log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
-        }
-
-        return true;
-    }
+    boolean playerAlerts = false;
 
     public boolean shouldBeSaved() {
         return this.hasFaction() || (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(Conf.powerPlayerStarting));
@@ -1180,8 +1114,74 @@ public abstract class MemoryFPlayer implements FPlayer {
         inspectMode = status;
     }
 
+    public boolean attemptClaim(Faction forFaction, FLocation flocation, boolean notifyFailure) {
+        // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
+        // return value is false on failure, true on success
+
+        Faction currentFaction = Board.getInstance().getFactionAt(flocation);
+
+        int ownedLand = forFaction.getLandRounded();
+
+        if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure)) {
+            return false;
+        }
+
+        // if economy is enabled and they're not on the bypass list, make sure they can pay
+        boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone();
+        double cost = 0.0;
+        EconomyParticipator payee = null;
+        if (mustPay) {
+            cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 
 
+            if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, forFaction)) {
+                cost += Conf.econClaimUnconnectedFee;
+            }
+
+            if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts && this.hasFaction()) {
+                payee = this.getFaction();
+            } else {
+                payee = this;
+            }
+
+            if (!Econ.hasAtLeast(payee, cost, TL.CLAIM_TOCLAIM.toString())) {
+                return false;
+            }
+        }
+
+        LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
+        Bukkit.getServer().getPluginManager().callEvent(claimEvent);
+        if (claimEvent.isCancelled()) {
+            return false;
+        }
+
+        // then make 'em pay (if applicable)
+        if (mustPay && !Econ.modifyMoney(payee, -cost, TL.CLAIM_TOCLAIM.toString(), TL.CLAIM_FORCLAIM.toString())) {
+            return false;
+        }
+
+        // Was an over claim
+        if (currentFaction.isNormal() && currentFaction.hasLandInflation()) {
+            // Give them money for over claiming.
+            Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
+        }
+
+        // announce success
+        Set<FPlayer> informTheseFPlayers = new HashSet<>();
+        informTheseFPlayers.add(this);
+        informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
+        for (FPlayer fp : informTheseFPlayers) {
+            fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+        }
+
+        Board.getInstance().setFactionAt(forFaction, flocation);
+
+        if (Conf.logLandClaims) {
+            P.p.log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
+        }
+
+        return true;
+    }
 
 
     @Override

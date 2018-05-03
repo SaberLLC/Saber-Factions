@@ -37,7 +37,9 @@ public enum PermissableAction {
     FLY("fly"),
     VAULT("vault"),
     TNTBANK("tntbank"),
-    TNTFILL("tntfill");
+    TNTFILL("tntfill"),
+    WIDTHDRAW("widthdraw"),
+    DEPOSIT("deposit");
 
     private String name;
 
@@ -117,7 +119,10 @@ public enum PermissableAction {
             lore.add(replacePlaceholders(loreLine, fme, permissable));
         }
 
-        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+        if (!P.p.mc17) {
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+        }
+
         itemMeta.setDisplayName(displayName);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);

@@ -293,7 +293,7 @@ public class FactionsPlayerListener implements Listener {
             .replace("{z}",e.getClickedBlock().getZ() + ""));
             String rowFormat = TL.COMMAND_INSPECT_ROW.toString();
             for (int i = 0; i < info.size(); i++){
-                CoreProtectAPI.ParseResult row = coAPI.parseResult((String[])info.get(0));
+                CoreProtectAPI.ParseResult row = coAPI.parseResult(info.get(0));
                 player.sendMessage(rowFormat
                 .replace("{time}",convertTime(row.getTime()))
                 .replace("{action}",row.getActionString())
@@ -356,7 +356,10 @@ public class FactionsPlayerListener implements Listener {
                 title = parseAllPlaceholders(title, factionTo);
                 String subTitle = P.p.getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
                 subTitle = parseAllPlaceholders(subTitle, factionTo);
-                me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle));
+                if (!P.p.mc17) {
+                    me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle));
+                }
+
             }
             // enable fly :)
             if (me.hasFaction() && !me.isFlying()) {

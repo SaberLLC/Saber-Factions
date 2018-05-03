@@ -21,8 +21,6 @@ import com.massivecraft.factions.zcore.fupgrades.EXPUpgrade;
 import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
 import com.massivecraft.factions.zcore.fupgrades.SpawnerUpgrades;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import net.coreprotect.CoreProtect;
-import net.coreprotect.CoreProtectAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
@@ -152,7 +150,7 @@ public class P extends MPlugin {
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         if (version == 7) {
-            P.p.log("Version 1.7 found, disabling banner placement.");
+            P.p.log("Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
             mc17 = true;
         }
 
