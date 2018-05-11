@@ -49,12 +49,14 @@ public class CmdBanner extends FCommand {
             warmeta.setDisplayName(P.p.color(P.p.getConfig().getString("fbanners.Item.Name")));
             warmeta.setLore(P.p.colorList(P.p.getConfig().getStringList("fbanners.Item.Lore")));
             warBanner.setItemMeta(warmeta);
-            me.getInventory().addItem(warBanner);
+
 
         } else {
             warBanner = P.p.createItem(Material.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
         }
         fme.msg(TL.COMMAND_BANNER_SUCCESS);
+        warBanner.setAmount(1);
+        me.getInventory().addItem(warBanner);
     }
 
 
