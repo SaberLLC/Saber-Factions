@@ -207,62 +207,91 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
-        Location loc = event.getLocation();
+		// Before we need to check the location where the block is placed
+		if (!this.checkExplosionForBlock(event, event.getLocation().getBlock())) {
+			event.setCancelled(true);
+			return;
+		}
+
+		Entity boomer = event.getEntity();
+		Iterator<Block> blockList = event.blockList().iterator();
+
+		// Loop the blocklist to run checks on each aimed block
+		while (blockList.hasNext()) {
+			Block block = blockList.next();
+
+			if (!this.checkExplosionForBlock(event, block)) {
+				// The block don't have to explode
+				blockList.remove();
+			}
+		}
+
+		// Cancel the event if no block will explode
+		if (event.blockList().isEmpty()) {
+			event.setCancelled(true);
+
+		// Or handle the exploit of TNT in water/lava
+		} else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
+			// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
+			// this change below provides workaround for waterwalling providing perfect protection,
+			// and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
+			Block center = event.getLocation().getBlock();
+
+			if (center.isLiquid()) {
+				// a single surrounding block in all 6 directions is broken if the material is weak enough
+				List<Block> targets = new ArrayList<>();
+				targets.add(center.getRelative(0, 0, 1));
+				targets.add(center.getRelative(0, 0, -1));
+				targets.add(center.getRelative(0, 1, 0));
+				targets.add(center.getRelative(0, -1, 0));
+				targets.add(center.getRelative(1, 0, 0));
+				targets.add(center.getRelative(-1, 0, 0));
+				for (Block target : targets) {
+					int id = target.getTypeId();
+					// ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
+					if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
+						target.breakNaturally();
+					}
+				}
+			}
+		}
+    }
+
+    private boolean checkExplosionForBlock(EntityExplodeEvent event, Block block) {
         Entity boomer = event.getEntity();
-        Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
+        Faction faction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
 
         if (faction.noExplosionsInTerritory() || (faction.isPeaceful() && Conf.peacefulTerritoryDisableBoom)) {
             // faction is peaceful and has explosions set to disabled
-            event.setCancelled(true);
-            return;
+            return false;
         }
 
         boolean online = faction.hasPlayersOnline();
 
-        //TODO: :(
-        if (boomer instanceof Creeper && ((faction.isWilderness() && Conf.wildernessBlockCreepers && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
+        if (boomer instanceof Creeper && ((faction.isWilderness() && Conf.wildernessBlockCreepers && !Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) ||
                 (faction.isNormal() && (online ? Conf.territoryBlockCreepers : Conf.territoryBlockCreepersWhenOffline)) ||
                 (faction.isWarZone() && Conf.warZoneBlockCreepers) ||
                 faction.isSafeZone())) {
             // creeper which needs prevention
-            event.setCancelled(true);
+            return false;
         } else if (
             // it's a bit crude just using fireball protection for Wither boss too, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
-                (boomer instanceof Fireball || boomer instanceof WitherSkull || boomer instanceof Wither) && ((faction.isWilderness() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
+                (boomer instanceof Fireball || boomer instanceof WitherSkull || boomer instanceof Wither) && ((faction.isWilderness() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) ||
                         (faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline)) ||
                         (faction.isWarZone() && Conf.warZoneBlockFireballs) ||
                         faction.isSafeZone())) {
             // ghast fireball which needs prevention
-            event.setCancelled(true);
-        } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && ((faction.isWilderness() && Conf.wildernessBlockTNT && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
-                (faction.isNormal() && (online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline)) ||
-                (faction.isWarZone() && Conf.warZoneBlockTNT) ||
-                (faction.isSafeZone() && Conf.safeZoneBlockTNT))) {
+            return false;
+        } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && ((faction.isWilderness() && Conf.wildernessBlockTNT && !Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) ||
+                    (faction.isNormal() && (online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline)) ||
+                    (faction.isWarZone() && Conf.warZoneBlockTNT) ||
+                    (faction.isSafeZone() && Conf.safeZoneBlockTNT))) {
             // TNT which needs prevention
-            event.setCancelled(true);
-        } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
-            // TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
-            // this change below provides workaround for waterwalling providing perfect protection,
-            // and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
-            Block center = loc.getBlock();
-            if (center.isLiquid()) {
-                // a single surrounding block in all 6 directions is broken if the material is weak enough
-                List<Block> targets = new ArrayList<>();
-                targets.add(center.getRelative(0, 0, 1));
-                targets.add(center.getRelative(0, 0, -1));
-                targets.add(center.getRelative(0, 1, 0));
-                targets.add(center.getRelative(0, -1, 0));
-                targets.add(center.getRelative(1, 0, 0));
-                targets.add(center.getRelative(-1, 0, 0));
-                for (Block target : targets) {
-                    int id = target.getTypeId();
-                    // ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
-                    if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
-                        target.breakNaturally();
-                    }
-                }
-            }
+            return false;
         }
+
+        // No condition retained, destroy the block!
+        return true;
     }
 
     //For disabling enderpearl throws
