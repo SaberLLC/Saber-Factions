@@ -1,14 +1,12 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.TravelAgent;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -21,7 +19,6 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -282,31 +279,13 @@ public class FactionsEntityListener implements Listener {
                         faction.isSafeZone())) {
             // ghast fireball which needs prevention
             return false;
-        } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && ((faction.isWilderness() && Conf.wildernessBlockTNT && !Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) ||
-                    (faction.isNormal() && (online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline)) ||
-                    (faction.isWarZone() && Conf.warZoneBlockTNT) ||
-                    (faction.isSafeZone() && Conf.safeZoneBlockTNT))) {
-            // TNT which needs prevention
-            return false;
-        }
+        } else
+            return (!(boomer instanceof TNTPrimed) && !(boomer instanceof ExplosiveMinecart)) || ((!faction.isWilderness() || !Conf.wildernessBlockTNT || Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) &&
+                    (!faction.isNormal() || (online ? !Conf.territoryBlockTNT : !Conf.territoryBlockTNTWhenOffline)) &&
+                    (!faction.isWarZone() || !Conf.warZoneBlockTNT) &&
+                    (!faction.isSafeZone() || !Conf.safeZoneBlockTNT));
 
         // No condition retained, destroy the block!
-        return true;
-    }
-
-    //For disabling enderpearl throws
-    @EventHandler
-    public void onPearl(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        if (player.getItemInHand().getType() == Material.ENDER_PEARL) {
-            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-            if (fPlayer.isFlying()){
-                if (!Conf.noEnderpearlsInFly){
-                    fPlayer.msg(TL.COMMAND_FLY_NO_EPEARL);
-                    e.setCancelled(true);
-                }
-            }
-        }
     }
 
 
