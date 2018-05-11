@@ -1,12 +1,14 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.TravelAgent;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -19,6 +21,7 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -204,55 +207,55 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
-        Entity boomer = event.getEntity();
+		Entity boomer = event.getEntity();
 
-        // Before we need to check the location where the block is placed
-        if (!this.checkExplosionForBlock(boomer, event.getLocation().getBlock())) {
-            event.setCancelled(true);
-            return;
-        }
+		// Before we need to check the location where the block is placed
+		if (!this.checkExplosionForBlock(boomer, event.getLocation().getBlock())) {
+			event.setCancelled(true);
+			return;
+		}
 
-        // Loop the blocklist to run checks on each aimed block
-        Iterator<Block> blockList = event.blockList().iterator();
+		// Loop the blocklist to run checks on each aimed block
+		Iterator<Block> blockList = event.blockList().iterator();
 
-        while (blockList.hasNext()) {
-            Block block = blockList.next();
+		while (blockList.hasNext()) {
+			Block block = blockList.next();
 
-            if (!this.checkExplosionForBlock(boomer, block)) {
-                // The block don't have to explode
-                blockList.remove();
-            }
-        }
+			if (!this.checkExplosionForBlock(boomer, block)) {
+				// The block don't have to explode
+				blockList.remove();
+			}
+		}
 
-        // Cancel the event if no block will explode
-        if (event.blockList().isEmpty()) {
-            event.setCancelled(true);
+		// Cancel the event if no block will explode
+		if (event.blockList().isEmpty()) {
+			event.setCancelled(true);
 
-            // Or handle the exploit of TNT in water/lava
-        } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
-            // TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
-            // this change below provides workaround for waterwalling providing perfect protection,
-            // and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
-            Block center = event.getLocation().getBlock();
+		// Or handle the exploit of TNT in water/lava
+		} else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
+			// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
+			// this change below provides workaround for waterwalling providing perfect protection,
+			// and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
+			Block center = event.getLocation().getBlock();
 
-            if (center.isLiquid()) {
-                // a single surrounding block in all 6 directions is broken if the material is weak enough
-                List<Block> targets = new ArrayList<>();
-                targets.add(center.getRelative(0, 0, 1));
-                targets.add(center.getRelative(0, 0, -1));
-                targets.add(center.getRelative(0, 1, 0));
-                targets.add(center.getRelative(0, -1, 0));
-                targets.add(center.getRelative(1, 0, 0));
-                targets.add(center.getRelative(-1, 0, 0));
-                for (Block target : targets) {
-                    int id = target.getTypeId();
-                    // ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
-                    if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
-                        target.breakNaturally();
-                    }
-                }
-            }
-        }
+			if (center.isLiquid()) {
+				// a single surrounding block in all 6 directions is broken if the material is weak enough
+				List<Block> targets = new ArrayList<>();
+				targets.add(center.getRelative(0, 0, 1));
+				targets.add(center.getRelative(0, 0, -1));
+				targets.add(center.getRelative(0, 1, 0));
+				targets.add(center.getRelative(0, -1, 0));
+				targets.add(center.getRelative(1, 0, 0));
+				targets.add(center.getRelative(-1, 0, 0));
+				for (Block target : targets) {
+					int id = target.getTypeId();
+					// ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
+					if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
+						target.breakNaturally();
+					}
+				}
+			}
+		}
     }
 
     private boolean checkExplosionForBlock(Entity boomer, Block block) {
@@ -279,16 +282,32 @@ public class FactionsEntityListener implements Listener {
                         faction.isSafeZone())) {
             // ghast fireball which needs prevention
             return false;
-        } else
-            return (!(boomer instanceof TNTPrimed) && !(boomer instanceof ExplosiveMinecart)) || ((!faction.isWilderness() || !Conf.wildernessBlockTNT || Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) &&
-                    (!faction.isNormal() || (online ? !Conf.territoryBlockTNT : !Conf.territoryBlockTNTWhenOffline)) &&
-                    (!faction.isWarZone() || !Conf.warZoneBlockTNT) &&
-                    (!faction.isSafeZone() || !Conf.safeZoneBlockTNT));
+        } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && ((faction.isWilderness() && Conf.wildernessBlockTNT && !Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) ||
+                    (faction.isNormal() && (online ? Conf.territoryBlockTNT : Conf.territoryBlockTNTWhenOffline)) ||
+                    (faction.isWarZone() && Conf.warZoneBlockTNT) ||
+                    (faction.isSafeZone() && Conf.safeZoneBlockTNT))) {
+            // TNT which needs prevention
+            return false;
+        }
 
         // No condition retained, destroy the block!
+        return true;
     }
 
-
+    //For disabling enderpearl throws
+    @EventHandler
+    public void onPearl(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        if (player.getItemInHand().getType() == Material.ENDER_PEARL) {
+            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+            if (fPlayer.isFlying()){
+                if (!Conf.noEnderpearlsInFly){
+                    fPlayer.msg(TL.COMMAND_FLY_NO_EPEARL);
+                    e.setCancelled(true);
+                }
+            }
+        }
+    }
 
 
     // mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
