@@ -204,55 +204,55 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
-		Entity boomer = event.getEntity();
+        Entity boomer = event.getEntity();
 
-		// Before we need to check the location where the block is placed
-		if (!this.checkExplosionForBlock(boomer, event.getLocation().getBlock())) {
-			event.setCancelled(true);
-			return;
-		}
+        // Before we need to check the location where the block is placed
+        if (!this.checkExplosionForBlock(boomer, event.getLocation().getBlock())) {
+            event.setCancelled(true);
+            return;
+        }
 
-		// Loop the blocklist to run checks on each aimed block
-		Iterator<Block> blockList = event.blockList().iterator();
+        // Loop the blocklist to run checks on each aimed block
+        Iterator<Block> blockList = event.blockList().iterator();
 
-		while (blockList.hasNext()) {
-			Block block = blockList.next();
+        while (blockList.hasNext()) {
+            Block block = blockList.next();
 
-			if (!this.checkExplosionForBlock(boomer, block)) {
-				// The block don't have to explode
-				blockList.remove();
-			}
-		}
+            if (!this.checkExplosionForBlock(boomer, block)) {
+                // The block don't have to explode
+                blockList.remove();
+            }
+        }
 
-		// Cancel the event if no block will explode
-		if (event.blockList().isEmpty()) {
-			event.setCancelled(true);
+        // Cancel the event if no block will explode
+        if (event.blockList().isEmpty()) {
+            event.setCancelled(true);
 
-		// Or handle the exploit of TNT in water/lava
-		} else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
-			// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
-			// this change below provides workaround for waterwalling providing perfect protection,
-			// and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
-			Block center = event.getLocation().getBlock();
+            // Or handle the exploit of TNT in water/lava
+        } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
+            // TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
+            // this change below provides workaround for waterwalling providing perfect protection,
+            // and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
+            Block center = event.getLocation().getBlock();
 
-			if (center.isLiquid()) {
-				// a single surrounding block in all 6 directions is broken if the material is weak enough
-				List<Block> targets = new ArrayList<>();
-				targets.add(center.getRelative(0, 0, 1));
-				targets.add(center.getRelative(0, 0, -1));
-				targets.add(center.getRelative(0, 1, 0));
-				targets.add(center.getRelative(0, -1, 0));
-				targets.add(center.getRelative(1, 0, 0));
-				targets.add(center.getRelative(-1, 0, 0));
-				for (Block target : targets) {
-					int id = target.getTypeId();
-					// ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
-					if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
-						target.breakNaturally();
-					}
-				}
-			}
-		}
+            if (center.isLiquid()) {
+                // a single surrounding block in all 6 directions is broken if the material is weak enough
+                List<Block> targets = new ArrayList<>();
+                targets.add(center.getRelative(0, 0, 1));
+                targets.add(center.getRelative(0, 0, -1));
+                targets.add(center.getRelative(0, 1, 0));
+                targets.add(center.getRelative(0, -1, 0));
+                targets.add(center.getRelative(1, 0, 0));
+                targets.add(center.getRelative(-1, 0, 0));
+                for (Block target : targets) {
+                    int id = target.getTypeId();
+                    // ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
+                    if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
+                        target.breakNaturally();
+                    }
+                }
+            }
+        }
     }
 
     private boolean checkExplosionForBlock(Entity boomer, Block block) {

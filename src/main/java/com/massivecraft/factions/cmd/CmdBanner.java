@@ -46,8 +46,8 @@ public class CmdBanner extends FCommand {
         ItemStack warBanner = fme.getFaction().getBanner();
         if (warBanner != null) {
             ItemMeta warmeta = warBanner.getItemMeta();
-            warmeta.setDisplayName(P.p.getConfig().getString("fbanners.Item.Name"));
-            warmeta.setLore(P.p.getConfig().getStringList("fbanners.Item.Lore"));
+            warmeta.setDisplayName(P.p.color(P.p.getConfig().getString("fbanners.Item.Name")));
+            warmeta.setLore(P.p.colorList(P.p.getConfig().getStringList("fbanners.Item.Lore")));
             warBanner.setItemMeta(warmeta);
             me.getInventory().addItem(warBanner);
 

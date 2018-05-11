@@ -99,7 +99,7 @@ public class FCmdRoot extends FCommand {
     public CmdLowPower cmdLowPower = new CmdLowPower();
     public CmdTntFill cmdTntFill = new CmdTntFill();
     public CmdChest cmdChest = new CmdChest();
-
+    public CmdSetBanner cmdSetBanner = new CmdSetBanner();
 
 
     public FCmdRoot() {
@@ -210,6 +210,8 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdLowPower);
         this.addSubCommand(this.cmdTntFill);
         this.addSubCommand(this.cmdChest);
+        this.addSubCommand(this.cmdSetBanner);
+
 
         if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null){
             P.p.log("Found CoreProtect, enabling Inspect");
