@@ -43,11 +43,15 @@ public class FUpgradesGUI implements Listener {
         }
         List<Integer> spawnerSlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.Spawners.SpawnerItem.slots");
         for (int i = 0; i <= spawnerSlots.size() - 1; i++) {
-            inventory.setItem(spawnerSlots.get(i), items[0]);
+            inventory.setItem(spawnerSlots.get(i), items[1]);
         }
         List<Integer> expSlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.EXP.EXPItem.slots");
         for (int i = 0; i <= expSlots.size() - 1; i++) {
-            inventory.setItem(expSlots.get(i), items[1]);
+            inventory.setItem(expSlots.get(i), items[0]);
+        }
+        List<Integer> chestSlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.Chest.ChestItem.slots");
+        for (int i = 0; i <= chestSlots.size() - 1; i++) {
+            inventory.setItem(chestSlots.get(i), items[3]);
         }
         fme.getPlayer().openInventory(inventory);
     }
@@ -63,6 +67,7 @@ public class FUpgradesGUI implements Listener {
             ItemStack[] items = buildItems(fme);
             ItemStack cropItem = items[2];
             ItemStack expItem = items[0];
+            ItemStack chestitem = items[3];
             ItemStack spawnerItem = items[1];
             int cropLevel = fme.getFaction().getUpgrade("Crop");
             if (e.getCurrentItem().equals(cropItem)) {
@@ -164,7 +169,41 @@ public class FUpgradesGUI implements Listener {
                     fme.getPlayer().closeInventory();
                 }
             }
+            int chestLevel = fme.getFaction().getUpgrade("Chest");
+            if (e.getCurrentItem().equals(chestitem)) {
+                if (expLevel == 3) {
+                    return;
+                }
+                if (chestLevel == 2) {
+                    int cost = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-3");
+                    if (!hasMoney(fme, cost)) {
+                        return;
+                    }
+                    takeMoney(fme, cost);
+                    fme.getFaction().setUpgrades("Chest", 3);
+                    fme.getPlayer().closeInventory();
+                }
+                if (chestLevel == 1) {
+                    int cost = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-2");
+                    if (!hasMoney(fme, cost)) {
+                        return;
+                    }
+                    takeMoney(fme, cost);
+                    fme.getFaction().setUpgrades("Chest", 2);
+                    fme.getPlayer().closeInventory();
+                }
+                if (chestLevel == 0) {
+                    int cost = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-1");
+                    if (!hasMoney(fme, cost)) {
+                        return;
+                    }
+                    takeMoney(fme, cost);
+                    fme.getFaction().setUpgrades("Chest", 1);
+                    fme.getPlayer().closeInventory();
+                }
+            }
         }
+
 
 
     }
@@ -182,10 +221,7 @@ public class FUpgradesGUI implements Listener {
         ItemStack expItem = P.p.createItem(expMaterial, expAmt, expData, expName, expLore);
         if (expLevel >= 1) {
             ItemMeta itemMeta = expItem.getItemMeta();
-            if (!P.p.mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             expItem.setItemMeta(itemMeta);
         }
@@ -223,10 +259,7 @@ public class FUpgradesGUI implements Listener {
         cropItem.getItemMeta().setLore(cropLore);
         if (cropLevel >= 1) {
             ItemMeta itemMeta = cropItem.getItemMeta();
-            if (!P.p.mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             cropItem.setItemMeta(itemMeta);
         }
@@ -239,10 +272,7 @@ public class FUpgradesGUI implements Listener {
         spawnerItem.getItemMeta().setLore(spawnerLore);
         if (spawnerLevel >= 1) {
             ItemMeta itemMeta = spawnerItem.getItemMeta();
-            if (!P.p.mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             spawnerItem.setItemMeta(itemMeta);
         }
@@ -251,7 +281,35 @@ public class FUpgradesGUI implements Listener {
         } else if (spawnerLevel == 3) {
             spawnerItem.setAmount(3);
         }
-        ItemStack[] items = {expItem, spawnerItem, cropItem};
+        Material chestMaterial = Material.getMaterial(P.p.getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Type"));
+        int chesttAmt = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Amount");
+        short chestData = Short.parseShort(P.p.getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Damage") + "");
+        String chestName = P.p.color(P.p.getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Name", "&e&lUpgrade Chest Size"));
+        List<String> chestLore = P.p.colorList(P.p.getConfig().getStringList("fupgrades.MainMenu.Chest.ChestItem.Lore"));
+        int chestlevel = fme.getFaction().getUpgrade("Chest");
+        for (int i = 0; i <= chestLore.size() - 1; i++) {
+            String line = chestLore.get(i);
+            line = line.replace("{level}", chestlevel + "");
+            chestLore.set(i, line);
+
+        }
+
+        ItemStack chestItem = P.p.createItem(chestMaterial, chesttAmt, chestData, chestName, chestLore);
+
+        if (chestlevel >= 1) {
+            ItemMeta itemMeta = chestItem.getItemMeta();
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+            chestItem.setItemMeta(itemMeta);
+        }
+        if (chestlevel == 2) {
+            chestItem.setAmount(2);
+        } else if (chestlevel == 3) {
+            chestItem.setAmount(3);
+        }
+
+
+        ItemStack[] items = {expItem, spawnerItem, cropItem, chestItem};
         return items;
     }
 

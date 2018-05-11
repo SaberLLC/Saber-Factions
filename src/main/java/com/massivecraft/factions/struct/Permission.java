@@ -102,7 +102,8 @@ public enum Permission {
     TNTFILL("tntfill"),
     COORD("coords"),
     SHOWCLAIMS("showclaims"),
-    WARP("warp");
+    WARP("warp"),
+    CHEST("Chest");
 
     public final String node;
 

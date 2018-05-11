@@ -548,6 +548,11 @@ public enum TL {
 
     COMMAND_SCOREBOARD_DESCRIPTION("Scoreboardy things"),
 
+    COMMAND_SETBANNER_SUCCESS("&c&l[!] &7Banner Pattern Set!"),
+    COMMAND_SETBANNER_NOTBANNER("&c&l[!] &7The item is &cnot&7 a banner!"),
+    COMMAND_SETBANNER_DESCRIPTION("set banner pattern for your faction"),
+
+
     COMMAND_SETDEFAULTROLE_DESCRIPTION("/f defaultrole <role> - set your Faction's default role."),
     COMMAND_SETDEFAULTROLE_NOTTHATROLE("&c&l[!]&7 You cannot set the default to admin."),
     COMMAND_SETDEFAULTROLE_SUCCESS("Set default role of your faction to %1$s"),

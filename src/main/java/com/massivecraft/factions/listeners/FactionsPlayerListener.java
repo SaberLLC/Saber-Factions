@@ -300,7 +300,22 @@ public class FactionsPlayerListener implements Listener {
                 .replace("{player}",row.getPlayer())
                 .replace("{block-type}",row.getType().toString().toLowerCase()));
             }
+        }
+    }
 
+
+    //For disabling enderpearl throws
+    @EventHandler
+    public void onPearl(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        if (player.getItemInHand().getType() == Material.ENDER_PEARL) {
+            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+            if (fPlayer.isFlying()) {
+                if (Conf.noEnderpearlsInFly) {
+                    fPlayer.msg(TL.COMMAND_FLY_NO_EPEARL);
+                    e.setCancelled(true);
+                }
+            }
         }
     }
 
@@ -308,6 +323,18 @@ public class FactionsPlayerListener implements Listener {
     {
         String result = String.valueOf(Math.round((System.currentTimeMillis() / 1000L - time) / 36.0D) / 100.0D);
         return (result.length() == 3 ? result + "0" : result) + "/hrs ago";
+    }
+
+
+    @EventHandler
+    public void onCloseChest(InventoryCloseEvent e) {
+        if (e.getInventory().getTitle() == null) {
+            return;
+        }
+
+        if (e.getInventory().getTitle().equalsIgnoreCase(P.p.color(P.p.getConfig().getString("fchest.Inventory-Title")))) {
+            FPlayers.getInstance().getByPlayer((Player) e.getPlayer()).getFaction().setChest(e.getInventory());
+        }
     }
 
     // Holds the next time a player can have a map shown.
@@ -357,7 +384,15 @@ public class FactionsPlayerListener implements Listener {
                 String subTitle = P.p.getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
                 subTitle = parseAllPlaceholders(subTitle, factionTo);
                 if (!P.p.mc17) {
-                    me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle));
+                    if (!P.p.mc18) {
+                        me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle), P.p.getConfig().getInt("Title.Options.FadeInTime"),
+                                P.p.getConfig().getInt("Title.Options.ShowTime"),
+                                P.p.getConfig().getInt("Title.Options.FadeOutTime"));
+                    } else {
+                        me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle));
+                    }
+
+
                 }
 
             }

@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.util.TL;
-import net.coreprotect.CoreProtect;
 import org.bukkit.Bukkit;
 
 import java.util.Collections;
@@ -99,6 +98,7 @@ public class FCmdRoot extends FCommand {
     public CmdShowClaims cmdShowClaims = new CmdShowClaims();
     public CmdLowPower cmdLowPower = new CmdLowPower();
     public CmdTntFill cmdTntFill = new CmdTntFill();
+    public CmdChest cmdChest = new CmdChest();
 
 
 
@@ -209,6 +209,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdShowClaims);
         this.addSubCommand(this.cmdLowPower);
         this.addSubCommand(this.cmdTntFill);
+        this.addSubCommand(this.cmdChest);
 
         if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null){
             P.p.log("Found CoreProtect, enabling Inspect");

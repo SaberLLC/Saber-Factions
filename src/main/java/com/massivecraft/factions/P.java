@@ -99,6 +99,9 @@ public class P extends MPlugin {
     }
 
     public boolean mc17 = false;
+    public boolean mc18 = false;
+
+
     @Override
     public void onEnable() {
         if (!preEnable()) {
@@ -150,8 +153,11 @@ public class P extends MPlugin {
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         if (version == 7) {
-            P.p.log("Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+            P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
             mc17 = true;
+        } else if (version == 8) {
+            P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+            mc18 = true;
         }
 
         // Register Event Handlers
@@ -343,11 +349,6 @@ public class P extends MPlugin {
     public boolean shouldLetFactionsHandleThisChat(AsyncPlayerChatEvent event) {
         return event != null && (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
     }
-
-
-
-
-
 
 
     // Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,

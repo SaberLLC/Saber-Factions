@@ -70,6 +70,16 @@ public class FactionsBlockListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
+            return;
+        }
+        FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
+        if (event.getBlock().getType() == Material.MOB_SPAWNER) {
+            Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
+            if (access.equals(Access.DENY) || access.equals(Access.UNDEFINED)) {
+                fme.msg(TL.GENERIC_NOPERMISSION, "mine spawners");
+                event.setCancelled(true);
+
+            }
         }
     }
 

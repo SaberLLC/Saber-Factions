@@ -169,18 +169,18 @@ public class TextUtil {
     // Paging and chrome-tools like titleize
     // -------------------------------------------- //
 
-    private final static String titleizeLine = repeat("_", 52);
+    private final static String titleizeLine = repeat("-", 52);
     private final static int titleizeBalance = -1;
 
     public String titleize(String str) {
-        String center = ".[ " + parseTags("<l>") + str + parseTags("<a>") + " ].";
+        String center = ChatColor.DARK_GRAY + "< " + parseTags("<l>") + str + parseTags("<a>") + ChatColor.DARK_GRAY + " >";
         int centerlen = ChatColor.stripColor(center).length();
         int pivot = titleizeLine.length() / 2;
         int eatLeft = (centerlen / 2) - titleizeBalance;
         int eatRight = (centerlen - eatLeft) + titleizeBalance;
 
         if (eatLeft < pivot) {
-            return parseTags("<a>") + titleizeLine.substring(0, pivot - eatLeft) + center + titleizeLine.substring(pivot + eatRight);
+            return parseTags("<a>") + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + titleizeLine.substring(0, pivot - eatLeft) + center + ChatColor.DARK_GRAY + ChatColor.STRIKETHROUGH + titleizeLine.substring(pivot + eatRight);
         } else {
             return parseTags("<a>") + center;
         }

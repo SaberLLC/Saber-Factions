@@ -27,7 +27,6 @@ public enum PermissableAction {
     KICK("kick"),
     ITEM("items"), // generic for most items
     SETHOME("sethome"),
-    WITHDRAW("withdraw"),
     TERRITORY("territory"),
     ACCESS("access"),
     DISBAND("disband"),
@@ -38,8 +37,9 @@ public enum PermissableAction {
     VAULT("vault"),
     TNTBANK("tntbank"),
     TNTFILL("tntfill"),
-    WIDTHDRAW("widthdraw"),
-    DEPOSIT("deposit");
+    WITHDRAW("withdraw"),
+    CHEST("chest"),
+    SPAWNER("spawner");
 
     private String name;
 

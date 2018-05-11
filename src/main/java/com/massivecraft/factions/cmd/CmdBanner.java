@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class CmdBanner extends FCommand {
     public CmdBanner() {
@@ -39,10 +40,23 @@ public class CmdBanner extends FCommand {
             return;
         }
         takeMoney(fme, P.p.getConfig().getInt("fbanners.Banner-Cost", 5000));
-        ItemStack warBanner = P.p.createItem(Material.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
-        me.getInventory().addItem(warBanner);
+
+        //ItemStack warBanner = P.p.createItem(Material.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+        //BannerMeta bannerMeta = (BannerMeta) warBanner.getItemMeta();
+        ItemStack warBanner = fme.getFaction().getBanner();
+        if (warBanner != null) {
+            ItemMeta warmeta = warBanner.getItemMeta();
+            warmeta.setDisplayName(P.p.getConfig().getString("fbanners.Item.Name"));
+            warmeta.setLore(P.p.getConfig().getStringList("fbanners.Item.Lore"));
+            warBanner.setItemMeta(warmeta);
+            me.getInventory().addItem(warBanner);
+
+        } else {
+            warBanner = P.p.createItem(Material.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+        }
         fme.msg(TL.COMMAND_BANNER_SUCCESS);
     }
+
 
     public boolean hasMoney(FPlayer fme, int amt) {
         Economy econ = P.p.getEcon();
