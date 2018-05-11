@@ -207,20 +207,21 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
+		Entity boomer = event.getEntity();
+
 		// Before we need to check the location where the block is placed
-		if (!this.checkExplosionForBlock(event, event.getLocation().getBlock())) {
+		if (!this.checkExplosionForBlock(boomer, event.getLocation().getBlock())) {
 			event.setCancelled(true);
 			return;
 		}
 
-		Entity boomer = event.getEntity();
+		// Loop the blocklist to run checks on each aimed block
 		Iterator<Block> blockList = event.blockList().iterator();
 
-		// Loop the blocklist to run checks on each aimed block
 		while (blockList.hasNext()) {
 			Block block = blockList.next();
 
-			if (!this.checkExplosionForBlock(event, block)) {
+			if (!this.checkExplosionForBlock(boomer, block)) {
 				// The block don't have to explode
 				blockList.remove();
 			}
@@ -257,8 +258,7 @@ public class FactionsEntityListener implements Listener {
 		}
     }
 
-    private boolean checkExplosionForBlock(EntityExplodeEvent event, Block block) {
-        Entity boomer = event.getEntity();
+    private boolean checkExplosionForBlock(Entity boomer, Block block) {
         Faction faction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
 
         if (faction.noExplosionsInTerritory() || (faction.isPeaceful() && Conf.peacefulTerritoryDisableBoom)) {
