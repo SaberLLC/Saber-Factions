@@ -337,6 +337,17 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onCloseChest(InventoryClickEvent e) {
+        if (e.getInventory().getTitle() == null || e.getClickedInventory() == null) {
+            return;
+        }
+
+        if (e.getInventory().getTitle().equalsIgnoreCase(P.p.color(P.p.getConfig().getString("fchest.Inventory-Title")))) {
+            FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked()).getFaction().setChest(e.getInventory());
+        }
+    }
+
     // Holds the next time a player can have a map shown.
     private HashMap<UUID, Long> showTimes = new HashMap<>();
 

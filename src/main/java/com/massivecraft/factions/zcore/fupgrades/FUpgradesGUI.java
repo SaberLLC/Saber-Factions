@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.fupgrades;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.util.TL;
 import net.milkbowl.vault.economy.Economy;
@@ -171,7 +172,7 @@ public class FUpgradesGUI implements Listener {
             }
             int chestLevel = fme.getFaction().getUpgrade("Chest");
             if (e.getCurrentItem().equals(chestitem)) {
-                if (expLevel == 3) {
+                if (chestLevel == 3) {
                     return;
                 }
                 if (chestLevel == 2) {
@@ -181,6 +182,7 @@ public class FUpgradesGUI implements Listener {
                     }
                     takeMoney(fme, cost);
                     fme.getFaction().setUpgrades("Chest", 3);
+                    closeChests(fme.getFaction());
                     fme.getPlayer().closeInventory();
                 }
                 if (chestLevel == 1) {
@@ -190,6 +192,7 @@ public class FUpgradesGUI implements Listener {
                     }
                     takeMoney(fme, cost);
                     fme.getFaction().setUpgrades("Chest", 2);
+                    closeChests(fme.getFaction());
                     fme.getPlayer().closeInventory();
                 }
                 if (chestLevel == 0) {
@@ -199,6 +202,7 @@ public class FUpgradesGUI implements Listener {
                     }
                     takeMoney(fme, cost);
                     fme.getFaction().setUpgrades("Chest", 1);
+                    closeChests(fme.getFaction());
                     fme.getPlayer().closeInventory();
                 }
             }
@@ -208,7 +212,19 @@ public class FUpgradesGUI implements Listener {
 
     }
 
-    public ItemStack[] buildItems(FPlayer fme) {
+    private void closeChests(Faction faction) {
+        for (Player player : faction.getOnlinePlayers()) {
+            if (player.getInventory().getTitle() == null) {
+                return;
+            }
+            String invName = P.p.color(P.p.getConfig().getString("fchest.Inventory-Title"));
+            if (player.getInventory().getTitle().equalsIgnoreCase(invName)) {
+                player.closeInventory();
+            }
+        }
+    }
+
+    private ItemStack[] buildItems(FPlayer fme) {
         Material expMaterial = Material.getMaterial(P.p.getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Type"));
         int expAmt = P.p.getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Amount");
         short expData = Short.parseShort(P.p.getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Damage") + "");
@@ -313,7 +329,7 @@ public class FUpgradesGUI implements Listener {
         return items;
     }
 
-    public boolean hasMoney(FPlayer fme, int amt) {
+    private boolean hasMoney(FPlayer fme, int amt) {
         Economy econ = P.p.getEcon();
         if (econ.getBalance(fme.getPlayer()) >= amt) {
             return true;
@@ -324,7 +340,7 @@ public class FUpgradesGUI implements Listener {
         }
     }
 
-    public void takeMoney(FPlayer fme, int amt) {
+    private void takeMoney(FPlayer fme, int amt) {
         if (hasMoney(fme, amt)) {
             Economy econ = P.p.getEcon();
             econ.withdrawPlayer(fme.getPlayer(), amt);
