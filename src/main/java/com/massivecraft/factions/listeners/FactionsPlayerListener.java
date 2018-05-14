@@ -42,6 +42,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
@@ -506,11 +507,21 @@ public class FactionsPlayerListener implements Listener {
         if (P.p.mc17) {
             return;
         }
+
         if (e.getItemInHand().getType() == Material.BANNER){
             ItemStack bannerInHand = e.getItemInHand();
-            ItemStack warBanner = P.p.createItem(bannerInHand.getType(),1,bannerInHand.getDurability(),P.p.getConfig().getString("fbanners.Item.Name"),P.p.getConfig().getStringList("fbanners.Item.Lore"));
-            if (warBanner.isSimilar(bannerInHand)){
-                FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
+            FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
+            ItemStack warBanner = fme.getFaction().getBanner();
+            if (warBanner != null) {
+                ItemMeta warmeta = warBanner.getItemMeta();
+                warmeta.setDisplayName(P.p.color(P.p.getConfig().getString("fbanners.Item.Name")));
+                warmeta.setLore(P.p.colorList(P.p.getConfig().getStringList("fbanners.Item.Lore")));
+                warBanner.setItemMeta(warmeta);
+            } else {
+                warBanner = P.p.createItem(Material.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+            }
+            if (warBanner.isSimilar(bannerInHand)) {
+
                 if (fme.getFaction().isWilderness()){
                     fme.msg(TL.WARBANNER_NOFACTION);
                     e.setCancelled(true);

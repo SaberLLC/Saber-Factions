@@ -881,9 +881,9 @@ fupgrades:
     Chest:
       Chest-Size:
       # This is rows
-        level-1: 1
-        level-2: 2
-        level-3: 3
+        level-1: 2
+        level-2: 3
+        level-3: 4
       Cost:
         level-1: 1000000
         level-2: 2000000

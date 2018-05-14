@@ -73,9 +73,12 @@ public class FactionsBlockListener implements Listener {
             return;
         }
         FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
+        if (!fme.hasFaction()) {
+            return;
+        }
         if (event.getBlock().getType() == Material.MOB_SPAWNER) {
             Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
-            if (access.equals(Access.DENY) || access.equals(Access.UNDEFINED)) {
+            if (access.equals(Access.DENY)) {
                 fme.msg(TL.GENERIC_NOPERMISSION, "mine spawners");
                 event.setCancelled(true);
 
