@@ -134,9 +134,9 @@ public class FactionsEntityListener implements Listener {
                 // Protect armor stands/item frames from being damaged in protected territories
                 if (damagee.getType() == EntityType.ITEM_FRAME || damagee.getType() == EntityType.ARMOR_STAND) {
                 	// Manage projectiles launched by players
-					if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
-						damager = (Entity) ((Projectile) damager).getShooter();
-					}
+                    if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
+                        damager = (Entity) ((Projectile) damager).getShooter();
+                    }
 
                     // Run the check for a player
                     if (damager instanceof Player) {
@@ -154,10 +154,10 @@ public class FactionsEntityListener implements Listener {
                         }
                     } else {
                         // we don't want to let mobs/arrows destroy item frames/armor stands
-						// so we only have to run the check as if there had been an explosion at the damager location
-						if (!this.checkExplosionForBlock(damager, damagee.getLocation().getBlock())) {
-							event.setCancelled(true);
-						}
+                        // so we only have to run the check as if there had been an explosion at the damager location
+                        if (!this.checkExplosionForBlock(damager, damagee.getLocation().getBlock())) {
+                            event.setCancelled(true);
+                        }
                     }
 
                     // we don't need to go after

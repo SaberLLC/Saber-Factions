@@ -675,19 +675,19 @@ public class FactionsPlayerListener implements Listener {
     }
 
     // For disabling interactions with armor stands in another faction's territory
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
-		Entity entity = event.getRightClicked();
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
+        Entity entity = event.getRightClicked();
 
-		// only need to check for armor stand and item frames
-		if (entity.getType() != EntityType.ARMOR_STAND) {
-			return;
-		}
+        // only need to check for armor stand and item frames
+        if (entity.getType() != EntityType.ARMOR_STAND) {
+            return;
+        }
 
-		if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), entity.getLocation(), "use armor stands", false)) {
-			event.setCancelled(true);
-		}
-	}
+        if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), entity.getLocation(), "use armor stands", false)) {
+            event.setCancelled(true);
+        }
+    }
 
     // for handling people who repeatedly spam attempts to open a door (or similar) in another faction's territory
     private Map<String, InteractAttemptSpam> interactSpammers = new HashMap<>();
