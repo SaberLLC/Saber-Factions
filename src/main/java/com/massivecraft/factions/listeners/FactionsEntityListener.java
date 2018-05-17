@@ -133,6 +133,11 @@ public class FactionsEntityListener implements Listener {
             } else {
                 // Protect armor stands/item frames from being damaged in protected territories
                 if (damagee.getType() == EntityType.ITEM_FRAME || damagee.getType() == EntityType.ARMOR_STAND) {
+                	// Manage projectiles launched by players
+					if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
+						damager = (Entity) ((Projectile) damager).getShooter();
+					}
+
                     // Run the check for a player
                     if (damager instanceof Player) {
                         // Generate the action message.
@@ -612,6 +617,8 @@ public class FactionsEntityListener implements Listener {
     public void onPaintingPlace(HangingPlaceEvent event) {
         if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "place paintings", false)) {
             event.setCancelled(true);
+            // Fix: update player's inventory to avoid items glitches
+            event.getPlayer().updateInventory();
         }
     }
 
