@@ -411,7 +411,6 @@ public class Conf {
         territoryDenyUseageMaterials.add(Material.BUCKET);
         territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
-        territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
 
         territoryProtectedMaterialsWhenOffline.add(Material.WOODEN_DOOR);
         territoryProtectedMaterialsWhenOffline.add(Material.TRAP_DOOR);
@@ -438,7 +437,6 @@ public class Conf {
         territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
 
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
         safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
