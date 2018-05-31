@@ -131,6 +131,39 @@ public class FactionsEntityListener implements Listener {
                     }
                 }
             } else {
+                // Protect armor stands/item frames from being damaged in protected territories
+                if (damagee.getType() == EntityType.ITEM_FRAME || damagee.getType() == EntityType.ARMOR_STAND) {
+                	// Manage projectiles launched by players
+                    if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
+                        damager = (Entity) ((Projectile) damager).getShooter();
+                    }
+
+                    // Run the check for a player
+                    if (damager instanceof Player) {
+                        // Generate the action message.
+                        String entityAction;
+
+                        if (damagee.getType() == EntityType.ITEM_FRAME) {
+                            entityAction = "item frames";
+                        } else {
+                            entityAction = "armor stands";
+                        }
+
+                        if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damagee.getLocation(), "destroy " + entityAction, false)) {
+                            event.setCancelled(true);
+                        }
+                    } else {
+                        // we don't want to let mobs/arrows destroy item frames/armor stands
+                        // so we only have to run the check as if there had been an explosion at the damager location
+                        if (!this.checkExplosionForBlock(damager, damagee.getLocation().getBlock())) {
+                            event.setCancelled(true);
+                        }
+                    }
+
+                    // we don't need to go after
+                    return;
+                }
+
                 //this one should trigger if something other than a player takes damage
                 if (damager instanceof Player) {
                     // now itll only go here if the damage is dealt by a player
@@ -584,6 +617,8 @@ public class FactionsEntityListener implements Listener {
     public void onPaintingPlace(HangingPlaceEvent event) {
         if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "place paintings", false)) {
             event.setCancelled(true);
+            // Fix: update player's inventory to avoid items glitches
+            event.getPlayer().updateInventory();
         }
     }
 
