@@ -617,7 +617,7 @@ public enum TL {
     COMMAND_SHOW_NEEDFACTION("&cYou need to join a faction to view your own!"),
 
     COMMAND_SHOWCLAIMS_HEADER("&8&m-------------&8<{faction}'s claims&8>&8&m-------------"),
-    COMMAND_SHOWCLAIMS_FORMAT("&8[{world}]: {chunks}"),
+    COMMAND_SHOWCLAIMS_FORMAT("&8[{world}]:"),
     COMMAND_SHOWCLAIMS_CHUNKSFORMAT("&8(&c{x}&8,&c{z}&8)"),
     COMMAND_SHOWCLAIMS_DESCRIPTION("show your factions claims!"),
 

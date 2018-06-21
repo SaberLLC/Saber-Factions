@@ -408,6 +408,12 @@ public class FactionsPlayerListener implements Listener {
                 }
 
             }
+
+            if (!P.p.factionsFlight) {
+                return;
+            }
+
+
             // enable fly :)
             if (me.hasFaction() && !me.isFlying()) {
                 if (factionTo == me.getFaction()) {

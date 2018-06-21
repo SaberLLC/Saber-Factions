@@ -47,8 +47,10 @@ public class CmdFly extends FCommand {
                     if (!player.isFlying()) {
                         continue;
                     }
-                    if (player.getGameMode() == GameMode.SPECTATOR){
-                        continue;
+                    if (!P.p.mc17) {
+                        if (player.getGameMode() == GameMode.SPECTATOR){
+                            continue;
+                        }
                     }
                     if (FPlayers.getInstance().getByPlayer(player).isVanished()){
                         continue;

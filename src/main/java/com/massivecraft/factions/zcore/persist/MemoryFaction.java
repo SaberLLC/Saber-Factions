@@ -28,8 +28,8 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-import static com.massivecraft.factions.zcore.util.InventoryUtil.InventoryToString;
-import static com.massivecraft.factions.zcore.util.InventoryUtil.StringToInventory;
+import static com.massivecraft.factions.util.InventoryUtil.InventoryToString;
+import static com.massivecraft.factions.util.InventoryUtil.StringToInventory;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected String id = null;

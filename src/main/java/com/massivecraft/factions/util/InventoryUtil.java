@@ -1,5 +1,7 @@
-package com.massivecraft.factions.zcore.util;
+package com.massivecraft.factions.util;
 
+import com.massivecraft.factions.zcore.nbtapi.NBTItem;
+import com.massivecraft.factions.zcore.nbtapi.NBTType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -7,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
+import java.util.Set;
 
 public class InventoryUtil {
 
@@ -44,6 +47,16 @@ public class InventoryUtil {
                     }
                 }
 
+
+
+/*
+                NBTItem nbtItem = new NBTItem(is);
+                Set<String> nbtKeySet = nbtItem.getKeys();
+
+                for (String nbtKey : nbtKeySet) {
+                    serializedItemStack.append(":n@" + nbtKey + "@" + nbtItem.getType(nbtKey).getId() + "@" + )
+                }
+*/
                 // serialization += i + "#" + serializedItemStack + ";";
                 serialization.append(i + "#" + serializedItemStack + ";");
             }
@@ -86,5 +99,9 @@ public class InventoryUtil {
 
         return deserializedInventory;
     }
+
+
+
+
 
 }

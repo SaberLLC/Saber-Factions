@@ -1,7 +1,8 @@
-# FactionsUUID by drtshock
-# Report issues https://github.com/drtshock/Factions/issues?state=open
-# Live support http://webchat.esper.net/?channels=factions&prompt=1
-# Website https://www.spigotmc.org/resources/factionsuuid.1035/
+# SavageFactions by ProSavage
+# Report issues https://github.com/ProSavage/SavageFactions/issues/new
+# Live support https://github.com/ProSavage/SavageFactions/issues/new
+# Spigot Site:  https://www.spigotmc.org/resources/savagefactions-factionsuuid-reimagined-1-7-1-12.52891/
+# Website: https://www.prosavage.net/
 
 # Made with love <3
 
@@ -145,7 +146,7 @@ scoreboard:
 # {maxPower} - player's max power.
 # {powerBoost} - player's powerboost.
 
-  default-enabled: true # Default to false to keep original functionality.
+  default-enabled: false # Default to false to keep original functionality.
   default-title: "&cSavageFactions" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
   default-update-interval: 2 # in seconds.
 

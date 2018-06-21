@@ -49,6 +49,10 @@ public class P extends MPlugin {
     public static Permission perms = null;
 
 
+
+    public boolean PlaceholderApi;
+
+
     ItemStack item = new ItemStack(Material.CAKE);
     // Persistence related
     private boolean locked = false;
@@ -100,6 +104,7 @@ public class P extends MPlugin {
 
     public boolean mc17 = false;
     public boolean mc18 = false;
+    public boolean factionsFlight = false;
 
 
     @Override
@@ -160,6 +165,10 @@ public class P extends MPlugin {
             mc18 = true;
         }
 
+        if (P.p.getConfig().getBoolean("enable-faction-flight")) {
+            factionsFlight = true;
+        }
+
         // Register Event Handlers
         getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new FactionsChatListener(this), this);
@@ -187,8 +196,13 @@ public class P extends MPlugin {
         if (clip != null && clip.isEnabled()) {
             this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
             if (this.clipPlaceholderAPIManager.register()) {
+                PlaceholderApi = true;
                 log(Level.INFO, "Successfully registered placeholders with PlaceholderAPI.");
+            } else {
+                PlaceholderApi = false;
             }
+        } else {
+            PlaceholderApi = false;
         }
 
         Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
