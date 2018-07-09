@@ -261,22 +261,20 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return inventory;
         } else {
             //long startTime = System.nanoTime();
-            Inventory contents = StringToInventory(chestSerialized);
-            inventory.setContents(contents.getContents());
-            //  long endTime = System.nanoTime();
-            //   long duration = (endTime - startTime);
-            //   Bukkit.broadcastMessage("chest deserialization time: " + duration + " nano seconds");
+            ItemStack[] contents = new ItemStack[0];
+            try {
+                contents = StringToInventory(chestSerialized);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            inventory.setContents(contents);
             return inventory;
         }
     }
 
     @Override
     public void setChest(Inventory inventory) {
-        // long startTime = System.nanoTime();
-        chestSerialized = InventoryToString(inventory);
-        //  long endTime = System.nanoTime();
-        // long duration = (endTime - startTime);
-        // Bukkit.broadcastMessage("chest serialization time: " + duration + " nano seconds");
+        chestSerialized = InventoryToString(inventory.getContents());
     }
 
 
