@@ -1,107 +1,51 @@
-package com.massivecraft.factions.util;
+package com.massivecraft.factions.zcore.util;
 
-import com.massivecraft.factions.zcore.nbtapi.NBTItem;
-import com.massivecraft.factions.zcore.nbtapi.NBTType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 
 public class InventoryUtil {
 
 
-    public static String InventoryToString(Inventory invInventory) {
-        // String serialization = invInventory.getSize() + ";";
-        StringBuilder serialization = new StringBuilder(invInventory.getSize() + ";");
-        for (int i = 0; i < invInventory.getSize(); i++) {
-            ItemStack is = invInventory.getItem(i);
-            if (is != null) {
-                // String serializedItemStack = new String();
-                StringBuilder serializedItemStack = new StringBuilder();
-
-                String isType = String.valueOf(is.getType().getId());
-                // serializedItemStack += "t@" + isType;
-                serializedItemStack.append("t@" + isType);
-
-                if (is.getDurability() != 0) {
-                    String isDurability = String.valueOf(is.getDurability());
-                    //serializedItemStack += ":d@" + isDurability;
-                    serializedItemStack.append(":d@" + isDurability);
-                }
-
-                if (is.getAmount() != 1) {
-                    String isAmount = String.valueOf(is.getAmount());
-                    //serializedItemStack += ":a@" + isAmount;
-                    serializedItemStack.append(":a@" + isAmount);
-                }
-
-                Map<Enchantment, Integer> isEnch = is.getEnchantments();
-                if (isEnch.size() > 0) {
-                    for (Map.Entry<Enchantment, Integer> ench : isEnch.entrySet()) {
-                        // serializedItemStack += ":e@" + ench.getKey().getId() + "@" + ench.getValue();
-                        serializedItemStack.append(":e@" + ench.getKey().getId() + "@" + ench.getValue());
-                    }
-                }
-
-
-
-/*
-                NBTItem nbtItem = new NBTItem(is);
-                Set<String> nbtKeySet = nbtItem.getKeys();
-
-                for (String nbtKey : nbtKeySet) {
-                    serializedItemStack.append(":n@" + nbtKey + "@" + nbtItem.getType(nbtKey).getId() + "@" + )
-                }
-*/
-                // serialization += i + "#" + serializedItemStack + ";";
-                serialization.append(i + "#" + serializedItemStack + ";");
+    public static String InventoryToString(ItemStack[] items) throws IllegalStateException {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+            dataOutput.writeInt(items.length);
+            for (int i = 0; i < items.length; i++) {
+                dataOutput.writeObject(items[i]);
             }
+            dataOutput.close();
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+        } catch (Exception e) {
+            throw new IllegalStateException("Unable to save item stacks.", e);
         }
-        return serialization.toString();
     }
 
-    public static Inventory StringToInventory(String invString) {
-        String[] serializedBlocks = invString.split(";");
-        String invInfo = serializedBlocks[0];
-        Inventory deserializedInventory = Bukkit.getServer().createInventory(null, Integer.valueOf(invInfo));
-
-        for (int i = 1; i < serializedBlocks.length; i++) {
-            String[] serializedBlock = serializedBlocks[i].split("#");
-            int stackPosition = Integer.valueOf(serializedBlock[0]);
-
-            if (stackPosition >= deserializedInventory.getSize()) {
-                continue;
+    public static ItemStack[] StringToInventory(String data) throws IOException {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+            ItemStack[] items = new ItemStack[dataInput.readInt()];
+            for (int i = 0; i < items.length; i++) {
+                items[i] = (ItemStack) dataInput.readObject();
             }
-
-            ItemStack is = null;
-            Boolean createdItemStack = false;
-
-            String[] serializedItemStack = serializedBlock[1].split(":");
-            for (String itemInfo : serializedItemStack) {
-                String[] itemAttribute = itemInfo.split("@");
-                if (itemAttribute[0].equals("t")) {
-                    is = new ItemStack(Material.getMaterial(Integer.valueOf(itemAttribute[1])));
-                    createdItemStack = true;
-                } else if (itemAttribute[0].equals("d") && createdItemStack) {
-                    is.setDurability(Short.valueOf(itemAttribute[1]));
-                } else if (itemAttribute[0].equals("a") && createdItemStack) {
-                    is.setAmount(Integer.valueOf(itemAttribute[1]));
-                } else if (itemAttribute[0].equals("e") && createdItemStack) {
-                    is.addEnchantment(Enchantment.getById(Integer.valueOf(itemAttribute[1])), Integer.valueOf(itemAttribute[2]));
-                }
-            }
-            deserializedInventory.setItem(stackPosition, is);
+            dataInput.close();
+            return items;
+        } catch (ClassNotFoundException e) {
+            throw new IOException("Unable to decode class type.", e);
         }
-
-        return deserializedInventory;
     }
-
-
-
-
 
 }
