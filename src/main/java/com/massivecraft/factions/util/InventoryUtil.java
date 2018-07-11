@@ -1,4 +1,4 @@
-package com.massivecraft.factions.zcore.util;
+package com.massivecraft.factions.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
