@@ -85,8 +85,11 @@ public class CmdCreate extends FCommand {
         // join event cannot be cancelled or you'll have an empty faction
 
         // finish setting up the FPlayer
-        fme.setRole(Role.ADMIN);
         fme.setFaction(faction);
+        // We should consider adding the role just AFTER joining the faction.
+        // That way we don't have to mess up deleting more stuff.
+        // And prevent the user from being returned to NORMAL after deleting his old faction.
+        fme.setRole(Role.ADMIN);
 
         for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
             follower.msg(TL.COMMAND_CREATE_CREATED, fme.describeTo(follower, true), faction.getTag(follower));

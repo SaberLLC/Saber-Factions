@@ -49,6 +49,7 @@ public class CmdVault extends FCommand {
        Access access = fme.getFaction().getAccess(fme, PermissableAction.VAULT);
         if (access.equals(Access.DENY)) {
             fme.msg(TL.GENERIC_NOPERMISSION, "vault");
+            return;
         }
 
         if (fme.isInVault()){
