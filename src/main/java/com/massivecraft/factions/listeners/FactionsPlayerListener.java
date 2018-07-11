@@ -387,6 +387,8 @@ public class FactionsPlayerListener implements Listener {
         Faction factionFrom = Board.getInstance().getFactionAt(from);
         Faction factionTo = Board.getInstance().getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
+
+
         if (changedFaction) {
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerEnteredFactionEvent(factionTo,factionFrom,me));
             if (P.p.getConfig().getBoolean("Title.Show-Title")) {
@@ -438,6 +440,7 @@ public class FactionsPlayerListener implements Listener {
 
 
         if (me.isMapAutoUpdating()) {
+            Bukkit.broadcastMessage("");
             if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
                 if (P.p.getConfig().getBoolean("findfactionsexploit.log", false)) {
                     P.p.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
