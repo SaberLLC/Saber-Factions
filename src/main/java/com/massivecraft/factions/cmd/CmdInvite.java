@@ -48,7 +48,7 @@ public class CmdInvite extends FCommand {
             return;
         }
 
-        Access access = myFaction.getAccess(target, PermissableAction.INVITE);
+        Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
         if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
             fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "invite");
             return;
