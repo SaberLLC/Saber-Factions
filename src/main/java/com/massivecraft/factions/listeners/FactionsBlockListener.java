@@ -108,9 +108,10 @@ public class FactionsBlockListener implements Listener {
             if (access == Access.DENY) {
                 me.msg(TL.GENERIC_NOPERMISSION, action);
                 return false;
-            }
-
-            return true; // has to be allow
+            } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) return false;
+            else
+                // the perm is true, so it can build
+                return true; // has to be allow
         }
 
         // cancel building/destroying in other territory?
