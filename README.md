@@ -1,19 +1,10 @@
 SavageFactions
 
+How To Compile Factions Correctly Linked
+https://www.youtube.com/watch?v=fnDwjA2gX-E&t=32s
 
-You may also read the documentation ingame as the plugin ships with an ingame help manual. Read the help pages like this:
-
-* `/f help 1`
-* `/f help 2`
-* `/f help 3`
-
-Note that you may optionally skip the slash and just write
-
-* `f`
-
-Installing
 ----------
-1. Download the latest release [on Spigot](https://www.spigotmc.org/resources/factionsuuid.1035/)<br>
+1. Download the latest release [on Spigot](https://www.spigotmc.org/resources/savagefactions-factionsuuid-reimagined-1-7-1-12.52891/)<br>
 1. Put Factions.jar in the plugins folder.
 
 A default config file will be created on the first run.
