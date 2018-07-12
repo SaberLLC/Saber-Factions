@@ -1,6 +1,6 @@
 SavageFactions
 
-How To Compile Factions Correctly Linked Below
+How To Compile Factions Correctly Linked
 https://www.youtube.com/watch?v=fnDwjA2gX-E&t=32s
 
 ----------
