@@ -209,7 +209,6 @@ public class FUpgradesGUI implements Listener {
         }
 
 
-
     }
 
     private void closeChests(Faction faction) {
@@ -237,7 +236,9 @@ public class FUpgradesGUI implements Listener {
         ItemStack expItem = P.p.createItem(expMaterial, expAmt, expData, expName, expLore);
         if (expLevel >= 1) {
             ItemMeta itemMeta = expItem.getItemMeta();
-            if (!P.p.mc17) { itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); }
+            if (!P.p.mc17) {
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             expItem.setItemMeta(itemMeta);
         }
@@ -275,7 +276,9 @@ public class FUpgradesGUI implements Listener {
         cropItem.getItemMeta().setLore(cropLore);
         if (cropLevel >= 1) {
             ItemMeta itemMeta = cropItem.getItemMeta();
-            if (!P.p.mc17) { itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); }
+            if (!P.p.mc17) {
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             cropItem.setItemMeta(itemMeta);
         }
@@ -288,7 +291,9 @@ public class FUpgradesGUI implements Listener {
         spawnerItem.getItemMeta().setLore(spawnerLore);
         if (spawnerLevel >= 1) {
             ItemMeta itemMeta = spawnerItem.getItemMeta();
-            if (!P.p.mc17) { itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); }
+            if (!P.p.mc17) {
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             spawnerItem.setItemMeta(itemMeta);
         }
@@ -314,7 +319,9 @@ public class FUpgradesGUI implements Listener {
 
         if (chestlevel >= 1) {
             ItemMeta itemMeta = chestItem.getItemMeta();
-            if (!P.p.mc17) { itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS); }
+            if (!P.p.mc17) {
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             chestItem.setItemMeta(itemMeta);
         }

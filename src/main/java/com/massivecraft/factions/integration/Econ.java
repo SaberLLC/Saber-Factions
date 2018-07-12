@@ -23,6 +23,7 @@ import java.util.logging.Level;
 
 public class Econ {
 
+    private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
     private static Economy econ = null;
 
     public static void setup() {
@@ -60,7 +61,6 @@ public class Econ {
     public static boolean isSetup() {
         return econ != null;
     }
-
 
     public static void modifyUniverseMoney(double delta) {
         if (!shouldBeUsed()) {
@@ -369,15 +369,15 @@ public class Econ {
         return amount;
     }
 
-    // calculate refund amount for all owned land
-    public static double calculateTotalLandRefund(int ownedLand) {
-        return calculateTotalLandValue(ownedLand) * Conf.econClaimRefundMultiplier;
-    }
-
 
     // -------------------------------------------- //
     // Standard account management methods
     // -------------------------------------------- //
+
+    // calculate refund amount for all owned land
+    public static double calculateTotalLandRefund(int ownedLand) {
+        return calculateTotalLandValue(ownedLand) * Conf.econClaimRefundMultiplier;
+    }
 
     public static boolean hasAccount(String name) {
         return econ.hasAccount(name);
@@ -386,8 +386,6 @@ public class Econ {
     public static double getBalance(String account) {
         return econ.getBalance(account);
     }
-
-    private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
 
     public static String getFriendlyBalance(UUID uuid) {
         OfflinePlayer offline = Bukkit.getOfflinePlayer(uuid);

@@ -20,51 +20,6 @@ import java.util.Map.Entry;
 
 public abstract class MemoryBoard extends Board {
 
-    public class MemoryBoardMap extends HashMap<FLocation, String> {
-        private static final long serialVersionUID = -6689617828610585368L;
-
-        Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
-
-        @Override
-        public String put(FLocation floc, String factionId) {
-            String previousValue = super.put(floc, factionId);
-            if (previousValue != null) {
-                factionToLandMap.remove(previousValue, floc);
-            }
-
-            factionToLandMap.put(factionId, floc);
-            return previousValue;
-        }
-
-        @Override
-        public String remove(Object key) {
-            String result = super.remove(key);
-            if (result != null) {
-                FLocation floc = (FLocation) key;
-                factionToLandMap.remove(result, floc);
-            }
-
-            return result;
-        }
-
-        @Override
-        public void clear() {
-            super.clear();
-            factionToLandMap.clear();
-        }
-
-        public int getOwnedLandCount(String factionId) {
-            return factionToLandMap.get(factionId).size();
-        }
-
-        public void removeFaction(String factionId) {
-            Collection<FLocation> flocations = factionToLandMap.removeAll(factionId);
-            for (FLocation floc : flocations) {
-                super.remove(floc);
-            }
-        }
-    }
-
     public MemoryBoardMap flocationIds = new MemoryBoardMap();
 
     //----------------------------------------------//
@@ -198,11 +153,6 @@ public abstract class MemoryBoard extends Board {
         return false;
     }
 
-
-    //----------------------------------------------//
-    // Cleaner. Remove orphaned foreign keys
-    //----------------------------------------------//
-
     public void clean() {
         Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
         while (iter.hasNext()) {
@@ -214,13 +164,18 @@ public abstract class MemoryBoard extends Board {
         }
     }
 
+
     //----------------------------------------------//
-    // Coord count
+    // Cleaner. Remove orphaned foreign keys
     //----------------------------------------------//
 
     public int getFactionCoordCount(String factionId) {
         return flocationIds.getOwnedLandCount(factionId);
     }
+
+    //----------------------------------------------//
+    // Coord count
+    //----------------------------------------------//
 
     public int getFactionCoordCount(Faction faction) {
         return getFactionCoordCount(faction.getId());
@@ -236,10 +191,6 @@ public abstract class MemoryBoard extends Board {
         }
         return ret;
     }
-
-    //----------------------------------------------//
-    // Map generation
-    //----------------------------------------------//
 
     /**
      * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
@@ -285,7 +236,7 @@ public abstract class MemoryBoard extends Board {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = fplayer.getRelationTo(factionHere);
-                    if (flocationHere.isOutsideWorldBorder(buffer)){
+                    if (flocationHere.isOutsideWorldBorder(buffer)) {
                         row.then("-").color(ChatColor.BLACK).tooltip(TL.CLAIM_MAP_OUTSIDEBORDER.toString());
                     } else if (factionHere.isWilderness()) {
                         row.then("-").color(Conf.colorWilderness);
@@ -328,6 +279,10 @@ public abstract class MemoryBoard extends Board {
 
         return ret;
     }
+
+    //----------------------------------------------//
+    // Map generation
+    //----------------------------------------------//
 
     private List<String> oneLineToolTip(Faction faction, FPlayer to) {
         return Arrays.asList(faction.describeTo(to));
@@ -386,4 +341,49 @@ public abstract class MemoryBoard extends Board {
     }
 
     public abstract void convertFrom(MemoryBoard old);
+
+    public class MemoryBoardMap extends HashMap<FLocation, String> {
+        private static final long serialVersionUID = -6689617828610585368L;
+
+        Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
+
+        @Override
+        public String put(FLocation floc, String factionId) {
+            String previousValue = super.put(floc, factionId);
+            if (previousValue != null) {
+                factionToLandMap.remove(previousValue, floc);
+            }
+
+            factionToLandMap.put(factionId, floc);
+            return previousValue;
+        }
+
+        @Override
+        public String remove(Object key) {
+            String result = super.remove(key);
+            if (result != null) {
+                FLocation floc = (FLocation) key;
+                factionToLandMap.remove(result, floc);
+            }
+
+            return result;
+        }
+
+        @Override
+        public void clear() {
+            super.clear();
+            factionToLandMap.clear();
+        }
+
+        public int getOwnedLandCount(String factionId) {
+            return factionToLandMap.get(factionId).size();
+        }
+
+        public void removeFaction(String factionId) {
+            Collection<FLocation> flocations = factionToLandMap.removeAll(factionId);
+            for (FLocation floc : flocations) {
+                super.remove(floc);
+            }
+        }
+    }
 }

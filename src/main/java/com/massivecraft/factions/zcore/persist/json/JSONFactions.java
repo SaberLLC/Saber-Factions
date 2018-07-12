@@ -23,25 +23,24 @@ import java.util.logging.Level;
 public class JSONFactions extends MemoryFactions {
     // Info on how to persist
     private final Gson gson;
+    private final File file;
+
+    public JSONFactions() {
+        this.file = new File(P.p.getDataFolder(), "factions.json");
+        this.gson = P.p.gson;
+        this.nextId = 1;
+    }
 
     public Gson getGson() {
         return gson;
-    }
-
-    private final File file;
-
-    public File getFile() {
-        return file;
     }
 
     // -------------------------------------------- //
     // CONSTRUCTORS
     // -------------------------------------------- //
 
-    public JSONFactions() {
-        this.file = new File(P.p.getDataFolder(), "factions.json");
-        this.gson = P.p.gson;
-        this.nextId = 1;
+    public File getFile() {
+        return file;
     }
 
     public void forceSave() {

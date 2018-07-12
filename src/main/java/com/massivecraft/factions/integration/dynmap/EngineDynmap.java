@@ -41,17 +41,64 @@ public class EngineDynmap {
     // -------------------------------------------- //
 
     private static EngineDynmap i = new EngineDynmap();
+    public DynmapAPI dynmapApi;
+    public MarkerAPI markerApi;
+    public MarkerSet markerset;
+    private EngineDynmap() {
+    }
 
     public static EngineDynmap getInstance() {
         return i;
     }
 
-    private EngineDynmap() {
+    public static String getHtmlPlayerString(Collection<FPlayer> playersOfficersList) {
+        StringBuilder ret = new StringBuilder();
+        for (FPlayer fplayer : playersOfficersList) {
+            if (ret.length() > 0) {
+                ret.append(", ");
+            }
+            ret.append(getHtmlPlayerName(fplayer));
+        }
+        return ret.toString();
     }
 
-    public DynmapAPI dynmapApi;
-    public MarkerAPI markerApi;
-    public MarkerSet markerset;
+    public static String getHtmlPlayerName(FPlayer fplayer) {
+        if (fplayer == null) {
+            return "none";
+        }
+        return escapeHtml(fplayer.getName());
+    }
+
+    public static String escapeHtml(String string) {
+        StringBuilder out = new StringBuilder(Math.max(16, string.length()));
+        for (int i = 0; i < string.length(); i++) {
+            char c = string.charAt(i);
+            if (c > 127 || c == '"' || c == '<' || c == '>' || c == '&') {
+                out.append("&#");
+                out.append((int) c);
+                out.append(';');
+            } else {
+                out.append(c);
+            }
+        }
+        return out.toString();
+    }
+
+    // Thread Safe / Asynchronous: Yes
+    public static void info(String msg) {
+        String message = DYNMAP_INTEGRATION + msg;
+        System.out.println(message);
+    }
+
+    // -------------------------------------------- //
+    // UPDATE: HOMES
+    // -------------------------------------------- //
+
+    // Thread Safe / Asynchronous: Yes
+    public static void severe(String msg) {
+        String message = DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg;
+        System.out.println(message);
+    }
 
     public void init() {
         Plugin dynmap = Bukkit.getServer().getPluginManager().getPlugin("dynmap");
@@ -93,6 +140,10 @@ public class EngineDynmap {
             }
         }, 100L, 100L);
     }
+
+    // -------------------------------------------- //
+    // UPDATE: AREAS
+    // -------------------------------------------- //
 
     // Thread Safe / Asynchronous: No
     public boolean updateCore() {
@@ -137,10 +188,6 @@ public class EngineDynmap {
         }
         return true;
     }
-
-    // -------------------------------------------- //
-    // UPDATE: HOMES
-    // -------------------------------------------- //
 
     // Thread Safe / Asynchronous: Yes
     public Map<String, TempMarker> createHomes() {
@@ -208,7 +255,7 @@ public class EngineDynmap {
     }
 
     // -------------------------------------------- //
-    // UPDATE: AREAS
+    // UPDATE: PLAYERSET
     // -------------------------------------------- //
 
     // Thread Safe: YES
@@ -449,6 +496,10 @@ public class EngineDynmap {
         return ret;
     }
 
+    // -------------------------------------------- //
+    // UTIL & SHARED
+    // -------------------------------------------- //
+
     // Thread Safe: NO
     public void updateAreas(Map<String, TempAreaMarker> areas) {
         // Map Current
@@ -481,10 +532,6 @@ public class EngineDynmap {
             marker.deleteMarker();
         }
     }
-
-    // -------------------------------------------- //
-    // UPDATE: PLAYERSET
-    // -------------------------------------------- //
 
     // Thread Safe / Asynchronous: Yes
     public String createPlayersetId(Faction faction) {
@@ -589,10 +636,6 @@ public class EngineDynmap {
         }
     }
 
-    // -------------------------------------------- //
-    // UTIL & SHARED
-    // -------------------------------------------- //
-
     // Thread Safe / Asynchronous: Yes
     private String getDescription(Faction faction) {
         String ret = "<div class=\"regioninfo\">" + Conf.dynmapDescription + "</div>";
@@ -653,39 +696,6 @@ public class EngineDynmap {
         return ret;
     }
 
-    public static String getHtmlPlayerString(Collection<FPlayer> playersOfficersList) {
-        StringBuilder ret = new StringBuilder();
-        for (FPlayer fplayer : playersOfficersList) {
-            if (ret.length() > 0) {
-                ret.append(", ");
-            }
-            ret.append(getHtmlPlayerName(fplayer));
-        }
-        return ret.toString();
-    }
-
-    public static String getHtmlPlayerName(FPlayer fplayer) {
-        if (fplayer == null) {
-            return "none";
-        }
-        return escapeHtml(fplayer.getName());
-    }
-
-    public static String escapeHtml(String string) {
-        StringBuilder out = new StringBuilder(Math.max(16, string.length()));
-        for (int i = 0; i < string.length(); i++) {
-            char c = string.charAt(i);
-            if (c > 127 || c == '"' || c == '<' || c == '>' || c == '&') {
-                out.append("&#");
-                out.append((int) c);
-                out.append(';');
-            } else {
-                out.append(c);
-            }
-        }
-        return out.toString();
-    }
-
     // Thread Safe / Asynchronous: Yes
     private boolean isVisible(Faction faction, String world) {
         if (faction == null) {
@@ -727,22 +737,6 @@ public class EngineDynmap {
         return Conf.dynmapDefaultStyle;
     }
 
-    // Thread Safe / Asynchronous: Yes
-    public static void info(String msg) {
-        String message = DYNMAP_INTEGRATION + msg;
-        System.out.println(message);
-    }
-
-    // Thread Safe / Asynchronous: Yes
-    public static void severe(String msg) {
-        String message = DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg;
-        System.out.println(message);
-    }
-
-    enum Direction {
-        XPLUS, ZPLUS, XMINUS, ZMINUS
-    }
-
     // Find all contiguous blocks, set in target and clear in source
     private int floodFillTarget(TileFlags source, TileFlags destination, int x, int y) {
         int cnt = 0;
@@ -772,5 +766,9 @@ public class EngineDynmap {
             }
         }
         return cnt;
+    }
+
+    enum Direction {
+        XPLUS, ZPLUS, XMINUS, ZMINUS
     }
 }

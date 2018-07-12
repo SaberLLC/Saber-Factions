@@ -49,8 +49,8 @@ public class CmdUnclaim extends FCommand {
             }
 
             new SpiralTask(new FLocation(me), radius) {
-                private int failCount = 0;
                 private final int limit = Conf.radiusClaimFailureLimit - 1;
+                private int failCount = 0;
 
                 @Override
                 public boolean work() {

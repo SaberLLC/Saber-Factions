@@ -26,55 +26,28 @@ public abstract class MCommand<T extends MPlugin> {
 
     // The sub-commands to this command
     public List<MCommand<?>> subCommands;
-
-    public void addSubCommand(MCommand<?> subCommand) {
-        subCommand.commandChain.addAll(this.commandChain);
-        subCommand.commandChain.add(this);
-        this.subCommands.add(subCommand);
-    }
-
     // The different names this commands will react to
     public List<String> aliases;
     public boolean allowNoSlashAccess;
-
     // Information on the args
     public List<String> requiredArgs;
     public LinkedHashMap<String, String> optionalArgs;
     public boolean errorOnToManyArgs = true;
-
-    // FIELD: Help Short
-    // This field may be left blank and will in such case be loaded from the permissions node instead.
-    // Thus make sure the permissions node description is an action description like "eat hamburgers" or "do admin stuff".
-    private String helpShort;
-
-    public void setHelpShort(String val) {
-        this.helpShort = val;
-    }
-
-    public String getHelpShort() {
-        if (this.helpShort == null) {
-            return getUsageTranslation().toString();
-        }
-
-        return this.helpShort;
-    }
-
-    public abstract TL getUsageTranslation();
-
     public List<String> helpLong;
     public CommandVisibility visibility;
-
     // Some information on permissions
     public boolean senderMustBePlayer;
     public String permission;
-
     // Information available on execution of the command
     public CommandSender sender; // Will always be set
     public Player me; // Will only be set when the sender is a player
     public boolean senderIsConsole;
     public List<String> args; // Will contain the arguments, or and empty list if there are none.
     public List<MCommand<?>> commandChain = new ArrayList<>(); // The command chain used to execute this command
-
+    // FIELD: Help Short
+    // This field may be left blank and will in such case be loaded from the permissions node instead.
+    // Thus make sure the permissions node description is an action description like "eat hamburgers" or "do admin stuff".
+    private String helpShort;
     public MCommand(T p) {
         this.p = p;
 
@@ -92,6 +65,26 @@ public abstract class MCommand<T extends MPlugin> {
         this.helpLong = new ArrayList<>();
         this.visibility = CommandVisibility.VISIBLE;
     }
+
+    public void addSubCommand(MCommand<?> subCommand) {
+        subCommand.commandChain.addAll(this.commandChain);
+        subCommand.commandChain.add(this);
+        this.subCommands.add(subCommand);
+    }
+
+    public String getHelpShort() {
+        if (this.helpShort == null) {
+            return getUsageTranslation().toString();
+        }
+
+        return this.helpShort;
+    }
+
+    public void setHelpShort(String val) {
+        this.helpShort = val;
+    }
+
+    public abstract TL getUsageTranslation();
 
     // The commandChain is a list of the parent command chain used to get to this command.
     public void execute(CommandSender sender, List<String> args, List<MCommand<?>> commandChain) {

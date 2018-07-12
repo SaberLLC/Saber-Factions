@@ -10,33 +10,22 @@ import java.util.regex.Pattern;
 
 public class TextUtil {
 
-    public Map<String, String> tags;
-
-    public TextUtil() {
-        this.tags = new HashMap<>();
-    }
+    public static final transient Pattern patternTag = Pattern.compile("<([a-zA-Z0-9_]*)>");
+    private final static String titleizeLine = repeat("-", 52);
 
     // -------------------------------------------- //
     // Top-level parsing functions.
     // -------------------------------------------- //
-
-    public String parse(String str, Object... args) {
-        return String.format(this.parse(str), args);
-    }
-
-    public String parse(String str) {
-        return this.parseTags(parseColor(str));
-    }
+    private final static int titleizeBalance = -1;
+    public Map<String, String> tags;
 
     // -------------------------------------------- //
     // Tag parsing
     // -------------------------------------------- //
 
-    public String parseTags(String str) {
-        return replaceTags(str, this.tags);
+    public TextUtil() {
+        this.tags = new HashMap<>();
     }
-
-    public static final transient Pattern patternTag = Pattern.compile("<([a-zA-Z0-9_]*)>");
 
     public static String replaceTags(String str, Map<String, String> tags) {
         StringBuffer ret = new StringBuffer();
@@ -52,14 +41,6 @@ public class TextUtil {
         }
         matcher.appendTail(ret);
         return ret.toString();
-    }
-
-    // -------------------------------------------- //
-    // Fancy parsing
-    // -------------------------------------------- //
-
-    public FancyMessage parseFancy(String prefix) {
-        return toFancy(parse(prefix));
     }
 
     public static FancyMessage toFancy(String first) {
@@ -101,7 +82,7 @@ public class TextUtil {
     }
 
     // -------------------------------------------- //
-    // Color parsing
+    // Fancy parsing
     // -------------------------------------------- //
 
     public static String parseColor(String string) {
@@ -118,6 +99,10 @@ public class TextUtil {
         return string;
     }
 
+    // -------------------------------------------- //
+    // Color parsing
+    // -------------------------------------------- //
+
     public static String parseColorAcc(String string) {
         return string.replace("`e", "").replace("`r", ChatColor.RED.toString()).replace("`R", ChatColor.DARK_RED.toString()).replace("`y", ChatColor.YELLOW.toString()).replace("`Y", ChatColor.GOLD.toString()).replace("`g", ChatColor.GREEN.toString()).replace("`G", ChatColor.DARK_GREEN.toString()).replace("`a", ChatColor.AQUA.toString()).replace("`A", ChatColor.DARK_AQUA.toString()).replace("`b", ChatColor.BLUE.toString()).replace("`B", ChatColor.DARK_BLUE.toString()).replace("`p", ChatColor.LIGHT_PURPLE.toString()).replace("`P", ChatColor.DARK_PURPLE.toString()).replace("`k", ChatColor.BLACK.toString()).replace("`s", ChatColor.GRAY.toString()).replace("`S", ChatColor.DARK_GRAY.toString()).replace("`w", ChatColor.WHITE.toString());
     }
@@ -125,10 +110,6 @@ public class TextUtil {
     public static String parseColorTags(String string) {
         return string.replace("<empty>", "").replace("<black>", "\u00A70").replace("<navy>", "\u00A71").replace("<green>", "\u00A72").replace("<teal>", "\u00A73").replace("<red>", "\u00A74").replace("<purple>", "\u00A75").replace("<gold>", "\u00A76").replace("<silver>", "\u00A77").replace("<gray>", "\u00A78").replace("<blue>", "\u00A79").replace("<lime>", "\u00A7a").replace("<aqua>", "\u00A7b").replace("<rose>", "\u00A7c").replace("<pink>", "\u00A7d").replace("<yellow>", "\u00A7e").replace("<white>", "\u00A7f");
     }
-
-    // -------------------------------------------- //
-    // Standard utils like UCFirst, implode and repeat.
-    // -------------------------------------------- //
 
     public static String upperCaseFirst(String string) {
         return string.substring(0, 1).toUpperCase() + string.substring(1);
@@ -145,6 +126,10 @@ public class TextUtil {
         return ret.toString();
     }
 
+    // -------------------------------------------- //
+    // Standard utils like UCFirst, implode and repeat.
+    // -------------------------------------------- //
+
     public static String repeat(String s, int times) {
         if (times <= 0) {
             return "";
@@ -152,10 +137,6 @@ public class TextUtil {
             return s + repeat(s, times - 1);
         }
     }
-
-    // -------------------------------------------- //
-    // Material name tools
-    // -------------------------------------------- //
 
     public static String getMaterialName(Material material) {
         return material.toString().replace('_', ' ').toLowerCase();
@@ -166,11 +147,55 @@ public class TextUtil {
     }
 
     // -------------------------------------------- //
+    // Material name tools
+    // -------------------------------------------- //
+
+    public static String getBestStartWithCI(Collection<String> candidates, String start) {
+        String ret = null;
+        int best = 0;
+
+        start = start.toLowerCase();
+        int minlength = start.length();
+        for (String candidate : candidates) {
+            if (candidate.length() < minlength) {
+                continue;
+            }
+            if (!candidate.toLowerCase().startsWith(start)) {
+                continue;
+            }
+
+            // The closer to zero the better
+            int lendiff = candidate.length() - minlength;
+            if (lendiff == 0) {
+                return candidate;
+            }
+            if (lendiff < best || best == 0) {
+                best = lendiff;
+                ret = candidate;
+            }
+        }
+        return ret;
+    }
+
+    public String parse(String str, Object... args) {
+        return String.format(this.parse(str), args);
+    }
+
+    // -------------------------------------------- //
     // Paging and chrome-tools like titleize
     // -------------------------------------------- //
 
-    private final static String titleizeLine = repeat("-", 52);
-    private final static int titleizeBalance = -1;
+    public String parse(String str) {
+        return this.parseTags(parseColor(str));
+    }
+
+    public String parseTags(String str) {
+        return replaceTags(str, this.tags);
+    }
+
+    public FancyMessage parseFancy(String prefix) {
+        return toFancy(parse(prefix));
+    }
 
     public String titleize(String str) {
         String center = ChatColor.DARK_GRAY + "< " + parseTags("<l>") + str + parseTags("<a>") + ChatColor.DARK_GRAY + " >";
@@ -210,33 +235,6 @@ public class TextUtil {
 
         ret.addAll(lines.subList(from, to));
 
-        return ret;
-    }
-
-    public static String getBestStartWithCI(Collection<String> candidates, String start) {
-        String ret = null;
-        int best = 0;
-
-        start = start.toLowerCase();
-        int minlength = start.length();
-        for (String candidate : candidates) {
-            if (candidate.length() < minlength) {
-                continue;
-            }
-            if (!candidate.toLowerCase().startsWith(start)) {
-                continue;
-            }
-
-            // The closer to zero the better
-            int lendiff = candidate.length() - minlength;
-            if (lendiff == 0) {
-                return candidate;
-            }
-            if (lendiff < best || best == 0) {
-                best = lendiff;
-                ret = candidate;
-            }
-        }
         return ret;
     }
 }

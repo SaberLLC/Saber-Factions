@@ -26,14 +26,11 @@ import java.util.logging.Level;
 
 public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 
+    private final ConfigurationSection section;
     private Inventory relationGUI;
     private FPlayer fme;
-
     private int guiSize;
-
     private HashMap<Integer, Permissable> relationSlots = new HashMap<>();
-
-    private final ConfigurationSection section;
 
 
     public PermissableRelationGUI(FPlayer fme) {

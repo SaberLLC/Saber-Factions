@@ -29,6 +29,7 @@ import java.util.*;
 
 public class FactionsEntityListener implements Listener {
 
+    private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
     public P p;
 
     public FactionsEntityListener(P p) {
@@ -142,7 +143,7 @@ public class FactionsEntityListener implements Listener {
                 cancelFStuckTeleport((Player) damagee);
                 cancelFFly((Player) damagee);
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damagee);
-                if (fplayer.isInspectMode()){
+                if (fplayer.isInspectMode()) {
                     fplayer.setInspectMode(false);
                     fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
                 }
@@ -151,7 +152,7 @@ public class FactionsEntityListener implements Listener {
                 cancelFStuckTeleport((Player) damager);
                 cancelFFly((Player) damager);
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
-                if (fplayer.isInspectMode()){
+                if (fplayer.isInspectMode()) {
                     fplayer.setInspectMode(false);
                     fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
                 }
@@ -288,7 +289,6 @@ public class FactionsEntityListener implements Listener {
         // No condition retained, destroy the block!
     }
 
-
     // mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
@@ -297,8 +297,6 @@ public class FactionsEntityListener implements Listener {
             event.setCancelled(true);
         }
     }
-
-    private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPotionSplashEvent(PotionSplashEvent event) {
@@ -659,9 +657,9 @@ public class FactionsEntityListener implements Listener {
     }
 
     @EventHandler
-    public void onBowHit(EntityDamageByEntityEvent e){
-        if (e.getDamager() instanceof Projectile){
-            if (e.getEntity() instanceof Player){
+    public void onBowHit(EntityDamageByEntityEvent e) {
+        if (e.getDamager() instanceof Projectile) {
+            if (e.getEntity() instanceof Player) {
                 Projectile arrow = ((Projectile) e.getDamager());
                 if (arrow.getShooter() instanceof Player) {
                     Player damager = (Player) ((Projectile) e.getDamager()).getShooter();

@@ -47,6 +47,7 @@ import java.util.UUID;
 
 public abstract class MemoryFPlayer implements FPlayer {
 
+    public boolean inVault = false;
     protected String factionId;
     protected Role role;
     protected String title;
@@ -70,7 +71,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean isFlying = false;
     protected boolean enteringPassword = false;
     protected String enteringPasswordWarp = "";
-
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
     protected transient Faction autoClaimFor;
@@ -79,6 +79,56 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean loginPvpDisabled;
     protected transient long lastFrostwalkerMessage;
     protected transient boolean shouldTakeFallDamage = true;
+    boolean playerAlerts = false;
+    boolean inspectMode = false;
+
+    public MemoryFPlayer() {
+    }
+
+    public MemoryFPlayer(String id) {
+        this.id = id;
+        this.resetFactionData(false);
+        this.power = Conf.powerPlayerStarting;
+        this.lastPowerUpdateTime = System.currentTimeMillis();
+        this.lastLoginTime = System.currentTimeMillis();
+        this.mapAutoUpdating = false;
+        this.autoClaimFor = null;
+        this.autoSafeZoneEnabled = false;
+        this.autoWarZoneEnabled = false;
+        this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
+        this.powerBoost = 0.0;
+        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", false);
+        this.kills = 0;
+        this.deaths = 0;
+        this.mapHeight = Conf.mapHeight;
+
+        if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.getInstance().isValidFactionId(Conf.newPlayerStartingFactionID)) {
+            this.factionId = Conf.newPlayerStartingFactionID;
+        }
+    }
+
+    public MemoryFPlayer(MemoryFPlayer other) {
+        this.factionId = other.factionId;
+        this.id = other.id;
+        this.power = other.power;
+        this.lastLoginTime = other.lastLoginTime;
+        this.mapAutoUpdating = other.mapAutoUpdating;
+        this.autoClaimFor = other.autoClaimFor;
+        this.autoSafeZoneEnabled = other.autoSafeZoneEnabled;
+        this.autoWarZoneEnabled = other.autoWarZoneEnabled;
+        this.loginPvpDisabled = other.loginPvpDisabled;
+        this.powerBoost = other.powerBoost;
+        this.role = other.role;
+        this.title = other.title;
+        this.chatMode = other.chatMode;
+        this.spyingChat = other.spyingChat;
+        this.lastStoodAt = other.lastStoodAt;
+        this.isAdminBypassing = other.isAdminBypassing;
+        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", true);
+        this.kills = other.kills;
+        this.deaths = other.deaths;
+        this.mapHeight = Conf.mapHeight;
+    }
 
     public void login() {
         this.kills = getPlayer().getStatistic(Statistic.PLAYER_KILLS);
@@ -97,14 +147,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         return Factions.getInstance().getFactionById(this.factionId);
     }
 
-    public String getFactionId() {
-        return this.factionId;
-    }
-
-    public boolean hasFaction() {
-        return !factionId.equals("0");
-    }
-
     public void setFaction(Faction faction) {
         Faction oldFaction = this.getFaction();
         if (oldFaction != null) {
@@ -112,6 +154,14 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
         faction.addFPlayer(this);
         this.factionId = faction.getId();
+    }
+
+    public String getFactionId() {
+        return this.factionId;
+    }
+
+    public boolean hasFaction() {
+        return !factionId.equals("0");
     }
 
     public void setMonitorJoins(boolean monitor) {
@@ -209,10 +259,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.isAdminBypassing = val;
     }
 
-    public void setChatMode(ChatMode chatMode) {
-        this.chatMode = chatMode;
-    }
-
     public ChatMode getChatMode() {
         if (this.factionId.equals("0") || !Conf.factionOnlyChat) {
             this.chatMode = ChatMode.PUBLIC;
@@ -220,73 +266,33 @@ public abstract class MemoryFPlayer implements FPlayer {
         return chatMode;
     }
 
-    public void setIgnoreAllianceChat(boolean ignore) {
-        this.ignoreAllianceChat = ignore;
+    public void setChatMode(ChatMode chatMode) {
+        this.chatMode = chatMode;
     }
 
     public boolean isIgnoreAllianceChat() {
         return ignoreAllianceChat;
     }
 
-    public void setSpyingChat(boolean chatSpying) {
-        this.spyingChat = chatSpying;
+    public void setIgnoreAllianceChat(boolean ignore) {
+        this.ignoreAllianceChat = ignore;
     }
 
     public boolean isSpyingChat() {
         return spyingChat;
     }
 
+    public void setSpyingChat(boolean chatSpying) {
+        this.spyingChat = chatSpying;
+    }
+
+    // -------------------------------------------- //
+    // Getters And Setters
+    // -------------------------------------------- //
+
     // FIELD: account
     public String getAccountId() {
         return this.getId();
-    }
-
-    public MemoryFPlayer() {
-    }
-
-    public MemoryFPlayer(String id) {
-        this.id = id;
-        this.resetFactionData(false);
-        this.power = Conf.powerPlayerStarting;
-        this.lastPowerUpdateTime = System.currentTimeMillis();
-        this.lastLoginTime = System.currentTimeMillis();
-        this.mapAutoUpdating = false;
-        this.autoClaimFor = null;
-        this.autoSafeZoneEnabled = false;
-        this.autoWarZoneEnabled = false;
-        this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
-        this.powerBoost = 0.0;
-        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", false);
-        this.kills = 0;
-        this.deaths = 0;
-        this.mapHeight = Conf.mapHeight;
-
-        if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.getInstance().isValidFactionId(Conf.newPlayerStartingFactionID)) {
-            this.factionId = Conf.newPlayerStartingFactionID;
-        }
-    }
-
-    public MemoryFPlayer(MemoryFPlayer other) {
-        this.factionId = other.factionId;
-        this.id = other.id;
-        this.power = other.power;
-        this.lastLoginTime = other.lastLoginTime;
-        this.mapAutoUpdating = other.mapAutoUpdating;
-        this.autoClaimFor = other.autoClaimFor;
-        this.autoSafeZoneEnabled = other.autoSafeZoneEnabled;
-        this.autoWarZoneEnabled = other.autoWarZoneEnabled;
-        this.loginPvpDisabled = other.loginPvpDisabled;
-        this.powerBoost = other.powerBoost;
-        this.role = other.role;
-        this.title = other.title;
-        this.chatMode = other.chatMode;
-        this.spyingChat = other.spyingChat;
-        this.lastStoodAt = other.lastStoodAt;
-        this.isAdminBypassing = other.isAdminBypassing;
-        this.showScoreboard = P.p.getConfig().getBoolean("scoreboard.default-enabled", true);
-        this.kills = other.kills;
-        this.deaths = other.deaths;
-        this.mapHeight = Conf.mapHeight;
     }
 
     public void resetFactionData(boolean doSpoutUpdate) {
@@ -310,11 +316,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.resetFactionData(true);
     }
 
-    // -------------------------------------------- //
-    // Getters And Setters
-    // -------------------------------------------- //
-
-
     public long getLastLoginTime() {
         return lastLoginTime;
     }
@@ -336,6 +337,12 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.mapAutoUpdating = mapAutoUpdating;
     }
 
+    //----------------------------------------------//
+    // Title, Name, Faction Tag and Chat
+    //----------------------------------------------//
+
+    // Base:
+
     public boolean hasLoginPvpDisabled() {
         if (!loginPvpDisabled) {
             return false;
@@ -355,12 +362,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.lastStoodAt = flocation;
     }
 
-    //----------------------------------------------//
-    // Title, Name, Faction Tag and Chat
-    //----------------------------------------------//
-
-    // Base:
-
     public String getTitle() {
         return this.hasFaction() ? title : TL.NOFACTION_PREFIX.toString();
     }
@@ -373,6 +374,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         this.title = title;
     }
+
+    // Base concatenations:
 
     public String getName() {
         if (this.name == null) {
@@ -393,7 +396,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         return this.hasFaction() ? this.getFaction().getTag() : "";
     }
 
-    // Base concatenations:
+    // Colored concatenations:
+    // These are used in information messages
 
     public String getNameAndSomething(String something) {
         String ret = this.role.getPrefix();
@@ -408,12 +412,12 @@ public abstract class MemoryFPlayer implements FPlayer {
         return this.getNameAndSomething(this.getTitle());
     }
 
+    // Chat Tag:
+    // These are injected into the format of global chat messages.
+
     public String getNameAndTag() {
         return this.getNameAndSomething(this.getTag());
     }
-
-    // Colored concatenations:
-    // These are used in information messages
 
     public String getNameAndTitle(Faction faction) {
         return this.getColorTo(faction) + this.getNameAndTitle();
@@ -423,9 +427,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         return this.getColorTo(fplayer) + this.getNameAndTitle();
     }
 
-    // Chat Tag:
-    // These are injected into the format of global chat messages.
-
     public String getChatTag() {
         return this.hasFaction() ? String.format(Conf.chatTagFormat, this.getRole().getPrefix() + this.getTag()) : TL.NOFACTION_PREFIX.toString();
     }
@@ -434,6 +435,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     public String getChatTag(Faction faction) {
         return this.hasFaction() ? this.getRelationTo(faction).getColor() + getChatTag() : "";
     }
+
+    // -------------------------------
+    // Relation and relation colors
+    // -------------------------------
 
     public String getChatTag(MemoryFPlayer fplayer) {
         return this.hasFaction() ? this.getColorTo(fplayer) + getChatTag() : "";
@@ -447,10 +452,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         return isOnline() ? getPlayer().getStatistic(Statistic.DEATHS) : this.deaths;
 
     }
-
-    // -------------------------------
-    // Relation and relation colors
-    // -------------------------------
 
     @Override
     public String describeTo(RelationParticipator that, boolean ucfirst) {
@@ -491,7 +492,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
         player.setHealth(player.getHealth() + amnt);
     }
-
 
     //----------------------------------------------//
     // Power
@@ -610,6 +610,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
     }
 
+    // -------------------------------
+    // Actions
+    // -------------------------------
+
     /**
      * Check if the scoreboard should be shown. Simple method to be used by above method.
      *
@@ -629,10 +633,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setShowScoreboard(boolean show) {
         this.showScoreboard = show;
     }
-
-    // -------------------------------
-    // Actions
-    // -------------------------------
 
     public void leave(boolean makePay) {
         Faction myFaction = this.getFaction();
@@ -724,10 +724,9 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(flocation)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = P.p.txt.parse(TL.CLAIM_PROTECTED.toString());
-        } else if(flocation.isOutsideWorldBorder(P.p.getConfig().getInt("world-border.buffer", 0))){
+        } else if (flocation.isOutsideWorldBorder(P.p.getConfig().getInt("world-border.buffer", 0))) {
             error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
-        }
-        else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
+        } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
             error = P.p.txt.parse(TL.CLAIM_DISABLED.toString());
         } else if (this.isAdminBypassing()) {
             return true;
@@ -793,8 +792,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure) {
         return attemptClaim(forFaction, new FLocation(location), notifyFailure);
     }
-
-    boolean playerAlerts = false;
 
     public boolean shouldBeSaved() {
         return this.hasFaction() || (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(Conf.powerPlayerStarting));
@@ -873,20 +870,11 @@ public abstract class MemoryFPlayer implements FPlayer {
         isFlying = fly;
     }
 
-
-
-
-
-
-
-
-    public boolean inVault = false;
-
-    public boolean isInVault(){
+    public boolean isInVault() {
         return inVault;
     }
 
-    public void setInVault(boolean status){
+    public void setInVault(boolean status) {
         inVault = status;
     }
 
@@ -921,13 +909,13 @@ public abstract class MemoryFPlayer implements FPlayer {
         enteringPasswordWarp = warp;
     }
 
-    public String getEnteringWarp() {
-        return enteringPasswordWarp;
-    }
-
     // -------------------------------------------- //
     // Message Sending Helpers
     // -------------------------------------------- //
+
+    public String getEnteringWarp() {
+        return enteringPasswordWarp;
+    }
 
     public void sendMessage(String msg) {
         if (msg.contains("{null}")) {
@@ -963,7 +951,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void sendFancyMessage(List<FancyMessage> messages) {
         Player player = getPlayer();
-        if (player == null || !player.isOnGround()) {
+        if (player == null) {
             return;
         }
 
@@ -998,12 +986,12 @@ public abstract class MemoryFPlayer implements FPlayer {
         return id;
     }
 
-    public abstract void remove();
-
     @Override
     public void setId(String id) {
         this.id = id;
     }
+
+    public abstract void remove();
 
     @Override
     public void clearWarmup() {
@@ -1038,16 +1026,22 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     @Override
-    public boolean checkIfNearbyEnemies(){
+    public boolean checkIfNearbyEnemies() {
         Player me = this.getPlayer();
         int radius = Conf.enemyFlyCheckRadius;
         for (Entity e : me.getNearbyEntities(radius, 255, radius)) {
-            if (e == null) { continue; }
+            if (e == null) {
+                continue;
+            }
             if (e instanceof Player) {
                 Player eplayer = (((Player) e).getPlayer());
-                if (eplayer == null) { continue; }
+                if (eplayer == null) {
+                    continue;
+                }
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer == null) { continue; }
+                if (efplayer == null) {
+                    continue;
+                }
                 if (this.getRelationTo(efplayer).equals(Relation.ENEMY)) {
 
                     this.setFlying(false);
@@ -1070,7 +1064,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         return getPlayer().hasPermission("factions.fly.warzone");
 
     }
-
 
     @Override
     public Boolean canflyinSafezone() {
@@ -1102,15 +1095,13 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     }
 
-    boolean inspectMode = false;
-
     @Override
-    public boolean isInspectMode(){
+    public boolean isInspectMode() {
         return inspectMode;
     }
 
     @Override
-    public void setInspectMode( boolean status){
+    public void setInspectMode(boolean status) {
         inspectMode = status;
     }
 

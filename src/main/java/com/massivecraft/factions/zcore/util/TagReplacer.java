@@ -86,18 +86,29 @@ public enum TagReplacer {
     private TagType type;
     private String tag;
 
-    protected enum TagType {
-        FANCY(0), PLAYER(1), FACTION(2), GENERAL(3);
-        public int id;
-
-        TagType(int id) {
-            this.id = id;
-        }
-    }
-
     TagReplacer(TagType type, String tag) {
         this.type = type;
         this.tag = tag;
+    }
+
+    /**
+     * Returns a list of all the variables we can use for this type<br>
+     *
+     * @param type the type we want
+     * @return a list of all the variables with this type
+     */
+    protected static List<TagReplacer> getByType(TagType type) {
+        List<TagReplacer> tagReplacers = new ArrayList<>();
+        for (TagReplacer tagReplacer : TagReplacer.values()) {
+            if (type == TagType.FANCY) {
+                if (tagReplacer.type == TagType.FANCY) {
+                    tagReplacers.add(tagReplacer);
+                }
+            } else if (tagReplacer.type.id >= type.id) {
+                tagReplacers.add(tagReplacer);
+            }
+        }
+        return tagReplacers;
     }
 
     /**
@@ -246,26 +257,6 @@ public enum TagReplacer {
     }
 
     /**
-     * Returns a list of all the variables we can use for this type<br>
-     *
-     * @param type the type we want
-     * @return a list of all the variables with this type
-     */
-    protected static List<TagReplacer> getByType(TagType type) {
-        List<TagReplacer> tagReplacers = new ArrayList<>();
-        for (TagReplacer tagReplacer : TagReplacer.values()) {
-            if (type == TagType.FANCY) {
-                if (tagReplacer.type == TagType.FANCY) {
-                    tagReplacers.add(tagReplacer);
-                }
-            } else if (tagReplacer.type.id >= type.id) {
-                tagReplacers.add(tagReplacer);
-            }
-        }
-        return tagReplacers;
-    }
-
-    /**
      * @param original raw line with variables
      * @param value    what to replace var in raw line with
      * @return the string with the new value
@@ -292,5 +283,14 @@ public enum TagReplacer {
      */
     public String getTag() {
         return this.tag;
+    }
+
+    protected enum TagType {
+        FANCY(0), PLAYER(1), FACTION(2), GENERAL(3);
+        public int id;
+
+        TagType(int id) {
+            this.id = id;
+        }
     }
 }

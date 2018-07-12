@@ -4,11 +4,10 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class CmdCoords extends FCommand {
 
-    public CmdCoords(){
+    public CmdCoords() {
         super();
         this.aliases.add("coords");
         this.aliases.add("coord");
@@ -24,11 +23,11 @@ public class CmdCoords extends FCommand {
     }
 
     @Override
-    public void perform(){
+    public void perform() {
         Location location = fme.getPlayer().getLocation();
-        String message = TL.COMMAND_COORDS_MESSAGE.toString().replace("{player}",fme.getPlayer().getDisplayName()).replace("{x}",(int) location.getX() + "")
-                .replace("{y}",(int) location.getY() + "").replace("{z}",(int) location.getZ() + "").replace("{world}",location.getWorld().getName());
-        for (FPlayer fPlayer : fme.getFaction().getFPlayers()){
+        String message = TL.COMMAND_COORDS_MESSAGE.toString().replace("{player}", fme.getPlayer().getDisplayName()).replace("{x}", (int) location.getX() + "")
+                .replace("{y}", (int) location.getY() + "").replace("{z}", (int) location.getZ() + "").replace("{world}", location.getWorld().getName());
+        for (FPlayer fPlayer : fme.getFaction().getFPlayers()) {
             fPlayer.sendMessage(message);
         }
     }

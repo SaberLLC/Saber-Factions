@@ -27,16 +27,32 @@ import java.util.logging.Level;
 
 public abstract class MPlugin extends JavaPlugin {
 
+    // Persist related
+    public final Gson gson = this.getGsonBuilder().create();
     // Some utils
     public Persist persist;
     public TextUtil txt;
     public PermUtil perm;
-
-    // Persist related
-    public final Gson gson = this.getGsonBuilder().create();
+    public String refCommand = "";
+    //holds f stuck taskids
+    public Map<UUID, Integer> stuckMap = new HashMap<>();
+    // These are not supposed to be used directly.
+    // They are loaded and used through the TextUtil instance for the plugin.
+    public Map<String, String> rawTags = new LinkedHashMap<>();
+    protected boolean loadSuccessful = false;
     private Integer saveTask = null;
     private boolean autoSave = true;
-    protected boolean loadSuccessful = false;
+    // Listeners
+    private MPluginSecretPlayerListener mPluginSecretPlayerListener;
+
+    // Our stored base commands
+    private List<MCommand<?>> baseCommands = new ArrayList<>();
+    // holds f stuck start times
+    private Map<UUID, Long> timers = new HashMap<>();
+    // -------------------------------------------- //
+    // ENABLE
+    // -------------------------------------------- //
+    private long timeEnableStart;
 
     public boolean getAutoSave() {
         return this.autoSave;
@@ -46,28 +62,9 @@ public abstract class MPlugin extends JavaPlugin {
         this.autoSave = val;
     }
 
-    public String refCommand = "";
-
-    // Listeners
-    private MPluginSecretPlayerListener mPluginSecretPlayerListener;
-
-    // Our stored base commands
-    private List<MCommand<?>> baseCommands = new ArrayList<>();
-
     public List<MCommand<?>> getBaseCommands() {
         return this.baseCommands;
     }
-
-    // holds f stuck start times
-    private Map<UUID, Long> timers = new HashMap<>();
-
-    //holds f stuck taskids
-    public Map<UUID, Integer> stuckMap = new HashMap<>();
-
-    // -------------------------------------------- //
-    // ENABLE
-    // -------------------------------------------- //
-    private long timeEnableStart;
 
     public boolean preEnable() {
         log("=== ENABLE START ===");
@@ -193,28 +190,24 @@ public abstract class MPlugin extends JavaPlugin {
         log("Disabled");
     }
 
-    public void suicide() {
-        log("Now I suicide!");
-        this.getServer().getPluginManager().disablePlugin(this);
-    }
-
     // -------------------------------------------- //
     // Some inits...
     // You are supposed to override these in the plugin if you aren't satisfied with the defaults
     // The goal is that you always will be satisfied though.
     // -------------------------------------------- //
 
-    public GsonBuilder getGsonBuilder() {
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
+    public void suicide() {
+        log("Now I suicide!");
+        this.getServer().getPluginManager().disablePlugin(this);
     }
 
     // -------------------------------------------- //
     // LANG AND TAGS
     // -------------------------------------------- //
 
-    // These are not supposed to be used directly.
-    // They are loaded and used through the TextUtil instance for the plugin.
-    public Map<String, String> rawTags = new LinkedHashMap<>();
+    public GsonBuilder getGsonBuilder() {
+        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
+    }
 
     public void addRawTags() {
         this.rawTags.put("l", "<green>"); // logo

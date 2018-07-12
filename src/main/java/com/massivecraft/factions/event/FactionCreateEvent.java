@@ -24,6 +24,10 @@ public class FactionCreateEvent extends Event implements Cancellable {
         this.cancelled = false;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     public FPlayer getFPlayer() {
         return FPlayers.getInstance().getByPlayer(sender);
     }
@@ -33,10 +37,6 @@ public class FactionCreateEvent extends Event implements Cancellable {
     }
 
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 

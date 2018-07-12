@@ -15,6 +15,7 @@ import java.util.Map;
 
 public final class EnumTypeAdapter<T extends Enum<T>> extends TypeAdapter<T> {
 
+    public static final TypeAdapterFactory ENUM_FACTORY = newEnumTypeHierarchyFactory();
     private final Map<String, T> nameToConstant = new HashMap<>();
     private final Map<T, String> constantToName = new HashMap<>();
 
@@ -34,20 +35,6 @@ public final class EnumTypeAdapter<T extends Enum<T>> extends TypeAdapter<T> {
         }
     }
 
-    public T read(JsonReader in) throws IOException {
-        if (in.peek() == JsonToken.NULL) {
-            in.nextNull();
-            return null;
-        }
-        return nameToConstant.get(in.nextString());
-    }
-
-    public void write(JsonWriter out, T value) throws IOException {
-        out.value(value == null ? null : constantToName.get(value));
-    }
-
-    public static final TypeAdapterFactory ENUM_FACTORY = newEnumTypeHierarchyFactory();
-
     public static <TT> TypeAdapterFactory newEnumTypeHierarchyFactory() {
         return new TypeAdapterFactory() {
             @SuppressWarnings({"rawtypes", "unchecked"})
@@ -62,6 +49,18 @@ public final class EnumTypeAdapter<T extends Enum<T>> extends TypeAdapter<T> {
                 return (TypeAdapter<T>) new EnumTypeAdapter(rawType);
             }
         };
+    }
+
+    public T read(JsonReader in) throws IOException {
+        if (in.peek() == JsonToken.NULL) {
+            in.nextNull();
+            return null;
+        }
+        return nameToConstant.get(in.nextString());
+    }
+
+    public void write(JsonWriter out, T value) throws IOException {
+        out.value(value == null ? null : constantToName.get(value));
     }
 
 }

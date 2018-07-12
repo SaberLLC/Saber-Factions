@@ -13,13 +13,21 @@ import java.util.*;
 public class FTeamWrapper {
     private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<>();
     private static final List<FScoreboard> tracking = new ArrayList<>();
-    private static int factionTeamPtr;
     private static final Set<Faction> updating = new HashSet<>();
-
+    private static int factionTeamPtr;
     private final Map<FScoreboard, Team> teams = new HashMap<>();
     private final String teamName;
     private final Faction faction;
     private final Set<OfflinePlayer> members = new HashSet<>();
+
+    private FTeamWrapper(Faction faction) {
+        this.teamName = "faction_" + (factionTeamPtr++);
+        this.faction = faction;
+
+        for (FScoreboard fboard : tracking) {
+            add(fboard);
+        }
+    }
 
     public static void applyUpdatesLater(final Faction faction) {
         if (!FScoreboard.isSupportedByServer()) {
@@ -130,16 +138,6 @@ public class FTeamWrapper {
         }
     }
 
-
-    private FTeamWrapper(Faction faction) {
-        this.teamName = "faction_" + (factionTeamPtr++);
-        this.faction = faction;
-
-        for (FScoreboard fboard : tracking) {
-            add(fboard);
-        }
-    }
-
     private void add(FScoreboard fboard) {
         Scoreboard board = fboard.getScoreboard();
         Team team = board.registerNewTeam(teamName);
@@ -171,8 +169,8 @@ public class FTeamWrapper {
 
             String prefix = TL.DEFAULT_PREFIX.toString();
             if (P.p.PlaceholderApi) {
-                prefix = PlaceholderAPI.setPlaceholders(fplayer.getPlayer(),prefix);
-                prefix = PlaceholderAPI.setBracketPlaceholders(fplayer.getPlayer(),prefix);
+                prefix = PlaceholderAPI.setPlaceholders(fplayer.getPlayer(), prefix);
+                prefix = PlaceholderAPI.setBracketPlaceholders(fplayer.getPlayer(), prefix);
             }
             prefix = prefix.replace("{relationcolor}", faction.getRelationTo(fplayer).getColor().toString());
             prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min("{faction}".length() + 16 - prefix.length(), faction.getTag().length())));

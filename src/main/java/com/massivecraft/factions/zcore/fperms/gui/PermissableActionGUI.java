@@ -24,18 +24,14 @@ import java.util.logging.Level;
 
 public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 
+    private final ConfigurationSection section;
     private Inventory actionGUI;
     private FPlayer fme;
-
     private int guiSize;
-
     private Permissable permissable;
-
     private HashMap<Integer, PermissableAction> actionSlots = new HashMap<>();
     private HashMap<Integer, SpecialItem> specialSlots = new HashMap<>();
     private ArrayList<Integer> usedDummySlots = new ArrayList<>();
-
-    private final ConfigurationSection section;
 
     public PermissableActionGUI(FPlayer fme, Permissable permissable) {
         this.fme = fme;
@@ -198,7 +194,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
                 }
 
                 backButtonMeta.setLore(lore);
-                if (!P.p.mc17){
+                if (!P.p.mc17) {
                     backButtonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
                 }
 

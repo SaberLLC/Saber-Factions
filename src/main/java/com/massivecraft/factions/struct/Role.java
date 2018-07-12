@@ -16,7 +16,7 @@ import java.util.List;
 
 public enum Role implements Permissable {
     ADMIN(4, TL.ROLE_ADMIN),
-    COLEADER(3,TL.ROLE_COLEADER),
+    COLEADER(3, TL.ROLE_COLEADER),
     MODERATOR(2, TL.ROLE_MODERATOR),
     NORMAL(1, TL.ROLE_NORMAL),
     RECRUIT(0, TL.ROLE_RECRUIT);
@@ -30,14 +30,6 @@ public enum Role implements Permissable {
         this.value = value;
         this.nicename = translation.toString();
         this.translation = translation;
-    }
-
-    public boolean isAtLeast(Role role) {
-        return this.value >= role.value;
-    }
-
-    public boolean isAtMost(Role role) {
-        return this.value <= role.value;
     }
 
     public static Role getRelative(Role role, int relative) {
@@ -54,7 +46,7 @@ public enum Role implements Permissable {
                 return MODERATOR;
             case 3:
                 return COLEADER;
-            case  4:
+            case 4:
                 return ADMIN;
         }
 
@@ -79,6 +71,14 @@ public enum Role implements Permissable {
         }
 
         return null;
+    }
+
+    public boolean isAtLeast(Role role) {
+        return this.value >= role.value;
+    }
+
+    public boolean isAtMost(Role role) {
+        return this.value <= role.value;
     }
 
     @Override

@@ -24,17 +24,13 @@ import java.util.logging.Level;
 
 public class WarpGUI implements InventoryHolder, FactionGUI {
 
+    private final ConfigurationSection section;
+    int guiSize;
     private Inventory warpGUI;
     private FPlayer fme;
-
-    int guiSize;
-
     private HashMap<Integer, String> warpSlots = new HashMap<>();
     private int maxWarps;
-
     private List<Integer> dummySlots = new ArrayList<>();
-
-    private final ConfigurationSection section;
 
     public WarpGUI(FPlayer fme) {
         this.fme = fme;
@@ -114,7 +110,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
                             fme.setEnteringPassword(false, "");
                         }
                     }
-                }, P.p.getConfig().getInt("fwarp-gui.password-timeout", 5)*20);
+                }, P.p.getConfig().getInt("fwarp-gui.password-timeout", 5) * 20);
             }
         }
     }

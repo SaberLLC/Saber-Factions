@@ -11,11 +11,6 @@ import java.util.Set;
 public abstract class Board {
     protected static Board instance = getBoardImpl();
 
-    //----------------------------------------------//
-    // Get and Set
-    //----------------------------------------------//
-    public abstract String getIdAt(FLocation flocation);
-
     private static Board getBoardImpl() {
         switch (Conf.backEnd) {
             case JSON:
@@ -27,6 +22,11 @@ public abstract class Board {
     public static Board getInstance() {
         return instance;
     }
+
+    //----------------------------------------------//
+    // Get and Set
+    //----------------------------------------------//
+    public abstract String getIdAt(FLocation flocation);
 
     public abstract Faction getFactionAt(FLocation flocation);
 

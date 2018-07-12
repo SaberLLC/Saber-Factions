@@ -1,8 +1,8 @@
 package com.massivecraft.factions.zcore.nbtapi;
 
-import java.util.Set;
-
 import com.massivecraft.factions.zcore.nbtapi.utils.MinecraftVersion;
+
+import java.util.Set;
 
 
 public class NBTCompound {
@@ -31,10 +31,10 @@ public class NBTCompound {
         return parent;
     }
 
-    public void mergeCompound(NBTCompound comp){
+    public void mergeCompound(NBTCompound comp) {
         NBTReflectionUtil.addOtherNBTCompound(this, comp);
     }
-    
+
     public void setString(String key, String value) {
         NBTReflectionUtil.setString(this, key, value);
     }
@@ -185,8 +185,8 @@ public class NBTCompound {
             return result + "-" + key + ": " + getContent(key) + System.lineSeparator();
         }
     }
-    
-    public String asNBTString(){
+
+    public String asNBTString() {
         return NBTReflectionUtil.gettoCompount(getCompound(), this).toString();
     }
 

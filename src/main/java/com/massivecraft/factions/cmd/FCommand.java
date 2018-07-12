@@ -100,7 +100,7 @@ public abstract class FCommand extends MCommand<P> {
             return false;
         }
 
-        if (this.senderMustBeColeader && !fme.getRole().isAtLeast(Role.COLEADER)){
+        if (this.senderMustBeColeader && !fme.getRole().isAtLeast(Role.COLEADER)) {
             sender.sendMessage(p.txt.parse("<b>Only faction coleaders can %s.", this.getHelpShort()));
             return false;
         }
@@ -109,7 +109,6 @@ public abstract class FCommand extends MCommand<P> {
             sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
             return false;
         }
-
 
 
         return true;
@@ -266,14 +265,11 @@ public abstract class FCommand extends MCommand<P> {
             return true;
         }
 
-        if (you.getRole().equals(Role.ADMIN))
-        {
+        if (you.getRole().equals(Role.ADMIN)) {
             i.sendMessage(p.txt.parse("<b>Only the faction admin can do that."));
 
-        }
-        else if ((you.getRole().equals(Role.COLEADER)))
-        {
-            if (i == you){
+        } else if ((you.getRole().equals(Role.COLEADER))) {
+            if (i == you) {
                 return true;
             } else {
                 i.sendMessage(p.txt.parse("<b>Coleaders can't control each other..."));

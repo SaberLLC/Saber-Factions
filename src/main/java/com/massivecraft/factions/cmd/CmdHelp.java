@@ -13,6 +13,8 @@ import java.util.List;
 
 public class CmdHelp extends FCommand {
 
+    public ArrayList<ArrayList<String>> helpPages;
+
     public CmdHelp() {
         super();
         this.aliases.add("help");
@@ -31,6 +33,10 @@ public class CmdHelp extends FCommand {
         senderMustBeColeader = false;
         senderMustBeAdmin = false;
     }
+
+    //----------------------------------------------//
+    // Build the help pages
+    //----------------------------------------------//
 
     @Override
     public void perform() {
@@ -69,12 +75,6 @@ public class CmdHelp extends FCommand {
             sendMessage(P.p.txt.parse(helpLine));
         }
     }
-
-    //----------------------------------------------//
-    // Build the help pages
-    //----------------------------------------------//
-
-    public ArrayList<ArrayList<String>> helpPages;
 
     public void updateHelp() {
         helpPages = new ArrayList<>();

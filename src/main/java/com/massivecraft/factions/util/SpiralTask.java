@@ -59,6 +59,10 @@ public abstract class SpiralTask implements Runnable {
         this.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(P.p, this, 2, 2));
     }
 
+    private static long now() {
+        return System.currentTimeMillis();
+    }
+
     /*
      * This is where the necessary work is done; you'll need to override this method with whatever you want
      * done at each chunk in the spiral pattern.
@@ -88,15 +92,15 @@ public abstract class SpiralTask implements Runnable {
         return x;
     }
 
-    public final int getZ() {
-        return z;
-    }
-
 
 
     /*
      * Below are the guts of the class, which you normally wouldn't need to mess with.
      */
+
+    public final int getZ() {
+        return z;
+    }
 
     public final void setTaskID(int ID) {
         if (ID == -1) {
@@ -201,9 +205,5 @@ public abstract class SpiralTask implements Runnable {
     // is this task still valid/workable?
     public final boolean valid() {
         return taskID != -1;
-    }
-
-    private static long now() {
-        return System.currentTimeMillis();
     }
 }

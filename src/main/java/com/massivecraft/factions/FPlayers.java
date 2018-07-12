@@ -9,8 +9,6 @@ import java.util.Collection;
 public abstract class FPlayers {
     protected static FPlayers instance = getFPlayersImpl();
 
-    public abstract void clean();
-
     public static FPlayers getInstance() {
         return instance;
     }
@@ -22,6 +20,8 @@ public abstract class FPlayers {
         }
         return null;
     }
+
+    public abstract void clean();
 
     public abstract Collection<FPlayer> getOnlinePlayers();
 

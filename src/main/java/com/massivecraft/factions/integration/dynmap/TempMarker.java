@@ -23,6 +23,18 @@ public class TempMarker {
     // CREATE
     // -------------------------------------------- //
 
+    public static MarkerIcon getMarkerIcon(MarkerAPI markerApi, String name) {
+        MarkerIcon ret = markerApi.getMarkerIcon(name);
+        if (ret == null) {
+            ret = markerApi.getMarkerIcon(Conf.DYNMAP_STYLE_HOME_MARKER);
+        }
+        return ret;
+    }
+
+    // -------------------------------------------- //
+    // UPDATE
+    // -------------------------------------------- //
+
     public Marker create(MarkerAPI markerApi, MarkerSet markerset, String markerId) {
         Marker ret = markerset.createMarker(markerId, this.label, this.world, this.x, this.y, this.z, getMarkerIcon(markerApi, this.iconName), false // not persistent
         );
@@ -37,7 +49,7 @@ public class TempMarker {
     }
 
     // -------------------------------------------- //
-    // UPDATE
+    // UTIL
     // -------------------------------------------- //
 
     public void update(MarkerAPI markerApi, Marker marker) {
@@ -57,18 +69,6 @@ public class TempMarker {
         if (!marker.getDescription().equals(this.description)) {
             marker.setDescription(this.description);
         }
-    }
-
-    // -------------------------------------------- //
-    // UTIL
-    // -------------------------------------------- //
-
-    public static MarkerIcon getMarkerIcon(MarkerAPI markerApi, String name) {
-        MarkerIcon ret = markerApi.getMarkerIcon(name);
-        if (ret == null) {
-            ret = markerApi.getMarkerIcon(Conf.DYNMAP_STYLE_HOME_MARKER);
-        }
-        return ret;
     }
 
 }

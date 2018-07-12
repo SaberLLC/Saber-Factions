@@ -20,15 +20,13 @@ import java.util.List;
 
 public class CmdSeeChunk extends FCommand {
 
-    private boolean useParticles;
-    private int length;
-
-    private ParticleEffect effect;
     //Used a hashmap cuz imma make a particle selection gui later, will store it where the boolean is rn.
     public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
     Long interval = 10L;
+    private boolean useParticles;
+    private int length;
+    private ParticleEffect effect;
     private int taskID = -1;
-
 
 
     //I remade it cause of people getting mad that I had the same seechunk as drtshock
@@ -48,7 +46,7 @@ public class CmdSeeChunk extends FCommand {
 
         this.useParticles = p.getConfig().getBoolean("see-chunk.particles", true);
         interval = P.p.getConfig().getLong("see-chunk.interval", 10L);
-        if (effect == null){
+        if (effect == null) {
             effect = ParticleEffect.REDSTONE;
         }
 

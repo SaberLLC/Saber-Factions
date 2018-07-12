@@ -6,12 +6,8 @@ import org.bukkit.event.Cancellable;
 
 public class FPlayerLeaveEvent extends FactionPlayerEvent implements Cancellable {
 
-    private PlayerLeaveReason reason;
     boolean cancelled = false;
-
-    public enum PlayerLeaveReason {
-        KICKED, DISBAND, RESET, JOINOTHER, LEAVE, BANNED
-    }
+    private PlayerLeaveReason reason;
 
     public FPlayerLeaveEvent(FPlayer p, Faction f, PlayerLeaveReason r) {
         super(f, p);
@@ -36,5 +32,9 @@ public class FPlayerLeaveEvent extends FactionPlayerEvent implements Cancellable
     public void setCancelled(boolean c) {
         // Don't let them cancel factions disbanding.
         cancelled = reason != PlayerLeaveReason.DISBAND && reason != PlayerLeaveReason.RESET && c;
+    }
+
+    public enum PlayerLeaveReason {
+        KICKED, DISBAND, RESET, JOINOTHER, LEAVE, BANNED
     }
 }

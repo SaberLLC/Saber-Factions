@@ -730,7 +730,6 @@ public enum TL {
     COMMAND_RULES_CLEAR_SUCCESS("&cRule cleared successfully!"),
 
 
-
     /**
      * Leaving - This is accessed through a command, and so it MAY need a COMMAND_* slug :s
      */
@@ -809,7 +808,6 @@ public enum TL {
     GENERIC_FACTIONTAG_TOOLONG("<i>The faction tag can't be longer than <h>%s<i> chars."),
     GENERIC_FACTIONTAG_ALPHANUMERIC("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed."),
     GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
-
 
 
     WARBANNER_NOFACTION("&cYou need a faction to use a warbanner!"),
@@ -945,10 +943,10 @@ public enum TL {
     WARMUPS_ALREADY("&cYou are already warming up."),
     WARMUPS_CANCELLED("&cYou have cancelled your warmup.");
 
+    public static SimpleDateFormat sdf;
+    private static YamlConfiguration LANG;
     private String path;
     private String def;
-    private static YamlConfiguration LANG;
-    public static SimpleDateFormat sdf;
 
     /**
      * Lang enum constructor.

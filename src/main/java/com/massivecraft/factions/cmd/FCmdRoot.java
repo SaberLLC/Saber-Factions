@@ -213,7 +213,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdSetBanner);
 
 
-        if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null){
+        if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null) {
             P.p.log("Found CoreProtect, enabling Inspect");
             this.addSubCommand(this.cmdInspect);
         } else {
@@ -231,10 +231,10 @@ public class FCmdRoot extends FCommand {
         }
         if (P.p.isHookedPlayervaults()) {
             P.p.log("Found playervaults hook, adding /f vault and /f setmaxvault commands.");
-           // this.addSubCommand(new CmdSetMaxVaults());
-          //  this.addSubCommand(new CmdVault());
-        }else{
-           // this.addSubCommand(new CmdVault());
+            // this.addSubCommand(new CmdSetMaxVaults());
+            //  this.addSubCommand(new CmdVault());
+        } else {
+            // this.addSubCommand(new CmdVault());
         }
     }
 

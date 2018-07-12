@@ -27,6 +27,32 @@ public class TempAreaMarker {
     // CREATE
     // -------------------------------------------- //
 
+    public static boolean equals(AreaMarker marker, double x[], double z[]) {
+        int length = marker.getCornerCount();
+
+        if (x.length != length) {
+            return false;
+        }
+        if (z.length != length) {
+            return false;
+        }
+
+        for (int i = 0; i < length; i++) {
+            if (marker.getCornerX(i) != x[i]) {
+                return false;
+            }
+            if (marker.getCornerZ(i) != z[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // -------------------------------------------- //
+    // UPDATE
+    // -------------------------------------------- //
+
     public AreaMarker create(MarkerSet markerset, String markerId) {
         AreaMarker ret = markerset.createAreaMarker(markerId, this.label, false, this.world, this.x, this.z, false // not persistent
         );
@@ -51,7 +77,7 @@ public class TempAreaMarker {
     }
 
     // -------------------------------------------- //
-    // UPDATE
+    // UTIL
     // -------------------------------------------- //
 
     public void update(AreaMarker marker) {
@@ -85,32 +111,6 @@ public class TempAreaMarker {
         if (marker.getBoostFlag() != this.boost) {
             marker.setBoostFlag(this.boost);
         }
-    }
-
-    // -------------------------------------------- //
-    // UTIL
-    // -------------------------------------------- //
-
-    public static boolean equals(AreaMarker marker, double x[], double z[]) {
-        int length = marker.getCornerCount();
-
-        if (x.length != length) {
-            return false;
-        }
-        if (z.length != length) {
-            return false;
-        }
-
-        for (int i = 0; i < length; i++) {
-            if (marker.getCornerX(i) != x[i]) {
-                return false;
-            }
-            if (marker.getCornerZ(i) != z[i]) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
 }

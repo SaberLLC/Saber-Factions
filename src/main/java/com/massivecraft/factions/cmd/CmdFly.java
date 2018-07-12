@@ -24,6 +24,7 @@ public class CmdFly extends FCommand {
     public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<String, Boolean>();
     public static int id = -1;
     public static int flyid = -1;
+
     public CmdFly() {
         super();
         this.aliases.add("fly");
@@ -48,15 +49,15 @@ public class CmdFly extends FCommand {
                         continue;
                     }
                     if (!P.p.mc17) {
-                        if (player.getGameMode() == GameMode.SPECTATOR){
+                        if (player.getGameMode() == GameMode.SPECTATOR) {
                             continue;
                         }
                     }
-                    if (FPlayers.getInstance().getByPlayer(player).isVanished()){
+                    if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
                         continue;
                     }
 
-                    ParticleEffect.CLOUD.display((float) 0, (float)  0, (float)  0, (float)  0, 3, player.getLocation().add(0, -0.35, 0), 16);
+                    ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, -0.35, 0), 16);
                 }
                 if (flyMap.keySet().size() == 0) {
                     Bukkit.getScheduler().cancelTask(id);
@@ -72,44 +73,44 @@ public class CmdFly extends FCommand {
             public void run() throws ConcurrentModificationException { //threw the exception for now, until I recode fly :( Cringe.
                 checkTaskState();
                 if (flyMap.keySet().size() != 0) {
-                        for (String name : flyMap.keySet()) {
-                            if (name == null) {
-                                continue;
-                            }
-                            Player player = Bukkit.getPlayer(name);
-                            if (player == null) {
-                                continue;
-                            }
-                            if (!player.isFlying()) {
-                                continue;
-                            }
-                            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-                            if (fPlayer == null) {
-                                continue;
-                            }
-                            if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
-                                continue;
-                            }
-                            Faction myFaction = fPlayer.getFaction();
-                            if (myFaction.isWilderness()) {
+                    for (String name : flyMap.keySet()) {
+                        if (name == null) {
+                            continue;
+                        }
+                        Player player = Bukkit.getPlayer(name);
+                        if (player == null) {
+                            continue;
+                        }
+                        if (!player.isFlying()) {
+                            continue;
+                        }
+                        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+                        if (fPlayer == null) {
+                            continue;
+                        }
+                        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+                            continue;
+                        }
+                        Faction myFaction = fPlayer.getFaction();
+                        if (myFaction.isWilderness()) {
+                            fPlayer.setFlying(false);
+                            flyMap.remove(name);
+                            continue;
+                        }
+                        if (fPlayer.checkIfNearbyEnemies()) {
+                            continue;
+                        }
+                        FLocation myFloc = new FLocation(player.getLocation());
+                        Faction toFac = Board.getInstance().getFactionAt(myFloc);
+                        if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
+                            if (!checkBypassPerms(fPlayer, player, toFac)) {
                                 fPlayer.setFlying(false);
                                 flyMap.remove(name);
                                 continue;
                             }
-                            if (fPlayer.checkIfNearbyEnemies()) {
-                                continue;
-                            }
-                            FLocation myFloc = new FLocation(player.getLocation());
-                            Faction toFac = Board.getInstance().getFactionAt(myFloc);
-                            if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-                                if (!checkBypassPerms(fPlayer, player, toFac)) {
-                                    fPlayer.setFlying(false);
-                                    flyMap.remove(name);
-                                    continue;
-                                }
-                            }
-
                         }
+
+                    }
                 }
 
             }
@@ -139,14 +140,21 @@ public class CmdFly extends FCommand {
         return ((player.hasPermission("factions.fly.neutral") || access == Access.ALLOW) && toFac.getRelationTo(fplayer.getFaction()) == Relation.NEUTRAL && !isSystemFaction(toFac));
     }
 
-    public boolean isInFlightChecker(Player player) {
-        return flyMap.containsKey(player.getName());
-    }
-
     public static Boolean isSystemFaction(Faction faction) {
         return faction.isSafeZone() ||
                 faction.isWarZone() ||
                 faction.isWilderness();
+    }
+
+    public static void checkTaskState() {
+        if (flyMap.keySet().size() == 0) {
+            Bukkit.getScheduler().cancelTask(flyid);
+            flyid = -1;
+        }
+    }
+
+    public boolean isInFlightChecker(Player player) {
+        return flyMap.containsKey(player.getName());
     }
 
     @Override
@@ -159,7 +167,7 @@ public class CmdFly extends FCommand {
 
         FLocation myfloc = new FLocation(me.getLocation());
         Faction toFac = Board.getInstance().getFactionAt(myfloc);
-        if (Board.getInstance().getFactionAt(myfloc) != fme.getFaction()){
+        if (Board.getInstance().getFactionAt(myfloc) != fme.getFaction()) {
             if (!me.hasPermission("factions.fly.wilderness") && toFac.isWilderness()) {
                 fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(myfloc).getTag(fme));
                 return;
@@ -193,17 +201,13 @@ public class CmdFly extends FCommand {
         }
 
 
-
-        List<Entity> entities = me.getNearbyEntities(16,256,16);
-        for (int i = 0; i <= entities.size() -1;i++)
-        {
-            if (entities.get(i) instanceof Player)
-            {
+        List<Entity> entities = me.getNearbyEntities(16, 256, 16);
+        for (int i = 0; i <= entities.size() - 1; i++) {
+            if (entities.get(i) instanceof Player) {
                 Player eplayer = (Player) entities.get(i);
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer.getRelationTo(fme) == Relation.ENEMY)
-                {
-                   fme.msg(TL.COMMAND_FLY_CHECK_ENEMY);
+                if (efplayer.getRelationTo(fme) == Relation.ENEMY) {
+                    fme.msg(TL.COMMAND_FLY_CHECK_ENEMY);
                     return;
                 }
             }
@@ -213,14 +217,7 @@ public class CmdFly extends FCommand {
         if (args.size() == 0) {
             toggleFlight(!fme.isFlying(), me);
         } else if (args.size() == 1) {
-            toggleFlight(argAsBool(0),me);
-        }
-    }
-
-    public static void checkTaskState() {
-        if (flyMap.keySet().size() == 0) {
-            Bukkit.getScheduler().cancelTask(flyid);
-            flyid = -1;
+            toggleFlight(argAsBool(0), me);
         }
     }
 
@@ -237,13 +234,13 @@ public class CmdFly extends FCommand {
                 @Override
                 public void run() {
                     fme.setFlying(true);
-                    flyMap.put(player.getName(),true);
-                    if (id == -1){
-                        if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")){
+                    flyMap.put(player.getName(), true);
+                    if (id == -1) {
+                        if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
                             startParticles();
                         }
                     }
-                    if (flyid == -1){
+                    if (flyid == -1) {
                         startFlyCheck();
                     }
                 }

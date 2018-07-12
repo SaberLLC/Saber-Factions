@@ -75,7 +75,6 @@ public class CmdBan extends FCommand {
         }
 
 
-
         // Ban the user.
         myFaction.ban(target, fme);
         myFaction.deinvite(target); // can't hurt

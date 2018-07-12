@@ -23,6 +23,12 @@ import java.util.logging.Level;
 public class JSONFPlayers extends MemoryFPlayers {
     // Info on how to persist
     private Gson gson;
+    private File file;
+
+    public JSONFPlayers() {
+        file = new File(P.p.getDataFolder(), "players.json");
+        gson = P.p.gson;
+    }
 
     public Gson getGson() {
         return gson;
@@ -30,13 +36,6 @@ public class JSONFPlayers extends MemoryFPlayers {
 
     public void setGson(Gson gson) {
         this.gson = gson;
-    }
-
-    private File file;
-
-    public JSONFPlayers() {
-        file = new File(P.p.getDataFolder(), "players.json");
-        gson = P.p.gson;
     }
 
     public void convertFrom(MemoryFPlayers old) {

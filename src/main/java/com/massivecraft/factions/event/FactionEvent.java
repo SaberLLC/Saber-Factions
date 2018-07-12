@@ -16,6 +16,10 @@ public class FactionEvent extends Event {
         this.faction = faction;
     }
 
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
+
     /**
      * Get the Faction involved in the event.
      *
@@ -26,10 +30,6 @@ public class FactionEvent extends Event {
     }
 
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 

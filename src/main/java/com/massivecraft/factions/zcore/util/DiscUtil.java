@@ -20,7 +20,7 @@ public class DiscUtil {
     // -------------------------------------------- //
     // BYTE
     // -------------------------------------------- //
-
+    private static HashMap<String, Lock> locks = new HashMap<>();
 
     public static byte[] readBytes(File file) throws IOException {
         int length = (int) file.length();
@@ -34,29 +34,27 @@ public class DiscUtil {
         return output;
     }
 
+    // -------------------------------------------- //
+    // STRING
+    // -------------------------------------------- //
+
     public static void writeBytes(File file, byte[] bytes) throws IOException {
         FileOutputStream out = new FileOutputStream(file);
         out.write(bytes);
         out.close();
     }
 
-    // -------------------------------------------- //
-    // STRING
-    // -------------------------------------------- //
-
     public static void write(File file, String content) throws IOException {
         writeBytes(file, utf8(content));
-    }
-
-    public static String read(File file) throws IOException {
-        return utf8(readBytes(file));
     }
 
     // -------------------------------------------- //
     // CATCH
     // -------------------------------------------- //
 
-    private static HashMap<String, Lock> locks = new HashMap<>();
+    public static String read(File file) throws IOException {
+        return utf8(readBytes(file));
+    }
 
     public static boolean writeCatch(final File file, final String content, boolean sync) {
         String name = file.getName();

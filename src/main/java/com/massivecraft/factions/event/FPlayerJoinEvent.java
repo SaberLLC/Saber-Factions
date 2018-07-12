@@ -12,10 +12,6 @@ public class FPlayerJoinEvent extends FactionPlayerEvent implements Cancellable 
     PlayerJoinReason reason;
     boolean cancelled = false;
 
-    public enum PlayerJoinReason {
-        CREATE, LEADER, COMMAND
-    }
-
     public FPlayerJoinEvent(FPlayer fp, Faction f, PlayerJoinReason r) {
         super(f, fp);
         reason = r;
@@ -38,5 +34,9 @@ public class FPlayerJoinEvent extends FactionPlayerEvent implements Cancellable 
     @Override
     public void setCancelled(boolean c) {
         cancelled = c;
+    }
+
+    public enum PlayerJoinReason {
+        CREATE, LEADER, COMMAND
     }
 }

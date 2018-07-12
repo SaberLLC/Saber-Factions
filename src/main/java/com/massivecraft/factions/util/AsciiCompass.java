@@ -7,49 +7,6 @@ import java.util.ArrayList;
 
 public class AsciiCompass {
 
-    public enum Point {
-
-        N('N'),
-        NE('/'),
-        E('E'),
-        SE('\\'),
-        S('S'),
-        SW('/'),
-        W('W'),
-        NW('\\');
-
-        public final char asciiChar;
-
-        Point(final char asciiChar) {
-            this.asciiChar = asciiChar;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(this.asciiChar);
-        }
-
-        public String getTranslation() {
-            if (this == N) {
-                return TL.COMPASS_SHORT_NORTH.toString();
-            }
-            if (this == E) {
-                return TL.COMPASS_SHORT_EAST.toString();
-            }
-            if (this == S) {
-                return TL.COMPASS_SHORT_SOUTH.toString();
-            }
-            if (this == W) {
-                return TL.COMPASS_SHORT_WEST.toString();
-            }
-            return toString();
-        }
-
-        public String toString(boolean isActive, ChatColor colorActive, String colorDefault) {
-            return (isActive ? colorActive : colorDefault) + getTranslation();
-        }
-    }
-
     public static Point getCompassPointForDirection(double inDegrees) {
         double degrees = (inDegrees - 180) % 360;
         if (degrees < 0) {
@@ -106,5 +63,48 @@ public class AsciiCompass {
 
     public static ArrayList<String> getAsciiCompass(double inDegrees, ChatColor colorActive, String colorDefault) {
         return getAsciiCompass(getCompassPointForDirection(inDegrees), colorActive, colorDefault);
+    }
+
+    public enum Point {
+
+        N('N'),
+        NE('/'),
+        E('E'),
+        SE('\\'),
+        S('S'),
+        SW('/'),
+        W('W'),
+        NW('\\');
+
+        public final char asciiChar;
+
+        Point(final char asciiChar) {
+            this.asciiChar = asciiChar;
+        }
+
+        @Override
+        public String toString() {
+            return String.valueOf(this.asciiChar);
+        }
+
+        public String getTranslation() {
+            if (this == N) {
+                return TL.COMPASS_SHORT_NORTH.toString();
+            }
+            if (this == E) {
+                return TL.COMPASS_SHORT_EAST.toString();
+            }
+            if (this == S) {
+                return TL.COMPASS_SHORT_SOUTH.toString();
+            }
+            if (this == W) {
+                return TL.COMPASS_SHORT_WEST.toString();
+            }
+            return toString();
+        }
+
+        public String toString(boolean isActive, ChatColor colorActive, String colorDefault) {
+            return (isActive ? colorActive : colorDefault) + getTranslation();
+        }
     }
 }

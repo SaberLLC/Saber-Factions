@@ -22,6 +22,20 @@ public class FScoreboard {
     private FSidebarProvider temporaryProvider;
     private boolean removed = false;
 
+    private FScoreboard(FPlayer fplayer) {
+        this.fplayer = fplayer;
+
+        if (isSupportedByServer()) {
+            this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+            this.bufferedObjective = new BufferedObjective(scoreboard);
+
+            fplayer.getPlayer().setScoreboard(scoreboard);
+        } else {
+            this.scoreboard = null;
+            this.bufferedObjective = null;
+        }
+    }
+
     // Glowstone doesn't support scoreboards.
     // All references to this and related workarounds can be safely
     // removed when scoreboards are supported.
@@ -54,20 +68,6 @@ public class FScoreboard {
 
     public static FScoreboard get(Player player) {
         return fscoreboards.get(FPlayers.getInstance().getByPlayer(player));
-    }
-
-    private FScoreboard(FPlayer fplayer) {
-        this.fplayer = fplayer;
-
-        if (isSupportedByServer()) {
-            this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-            this.bufferedObjective = new BufferedObjective(scoreboard);
-
-            fplayer.getPlayer().setScoreboard(scoreboard);
-        } else {
-            this.scoreboard = null;
-            this.bufferedObjective = null;
-        }
     }
 
     protected FPlayer getFPlayer() {

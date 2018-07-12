@@ -3,9 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
-public class CmdInspect extends FCommand
-{
-    public CmdInspect(){
+public class CmdInspect extends FCommand {
+    public CmdInspect() {
         super();
         this.aliases.add("inspect");
         this.aliases.add("ins");
@@ -22,8 +21,8 @@ public class CmdInspect extends FCommand
 
 
     @Override
-    public void perform(){
-        if (fme.isInspectMode()){
+    public void perform() {
+        if (fme.isInspectMode()) {
             fme.setInspectMode(false);
             msg(TL.COMMAND_INSPECT_DISABLED_MSG);
         } else {

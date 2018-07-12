@@ -49,13 +49,24 @@ public class P extends MPlugin {
     public static Permission perms = null;
 
 
-
     public boolean PlaceholderApi;
-
-
+    // Commands
+    public FCmdRoot cmdBase;
+    public CmdAutoHelp cmdAutoHelp;
+    public boolean mc17 = false;
+    public boolean mc18 = false;
+    public boolean factionsFlight = false;
     ItemStack item = new ItemStack(Material.CAKE);
     // Persistence related
     private boolean locked = false;
+    private Integer AutoLeaveTask = null;
+    private boolean hookedPlayervaults;
+    private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
+    private boolean mvdwPlaceholderAPIManager = false;
+
+    public P() {
+        p = this;
+    }
 
     public boolean getLocked() {
         return this.locked;
@@ -66,7 +77,6 @@ public class P extends MPlugin {
         this.setAutoSave(val);
     }
 
-    private Integer AutoLeaveTask = null;
     public void playSoundForAll(String sound) {
         for (Player pl : Bukkit.getOnlinePlayers()) {
             playSound(pl, sound);
@@ -90,22 +100,6 @@ public class P extends MPlugin {
         sound = sound.split(":")[0];
         p.playSound(p.getLocation(), Sound.valueOf(sound), pitch, 5.0F);
     }
-    // Commands
-    public FCmdRoot cmdBase;
-    public CmdAutoHelp cmdAutoHelp;
-
-    private boolean hookedPlayervaults;
-    private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
-    private boolean mvdwPlaceholderAPIManager = false;
-
-    public P() {
-        p = this;
-    }
-
-    public boolean mc17 = false;
-    public boolean mc18 = false;
-    public boolean factionsFlight = false;
-
 
     @Override
     public void onEnable() {
@@ -176,14 +170,11 @@ public class P extends MPlugin {
         getServer().getPluginManager().registerEvents(new FactionsExploitListener(), this);
         getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
         getServer().getPluginManager().registerEvents(new FUpgradesGUI(), this);
-        getServer().getPluginManager().registerEvents(new EXPUpgrade(),this);
-        getServer().getPluginManager().registerEvents(new CropUpgrades(),this);
-        getServer().getPluginManager().registerEvents(new SpawnerUpgrades(),this);
+        getServer().getPluginManager().registerEvents(new EXPUpgrade(), this);
+        getServer().getPluginManager().registerEvents(new CropUpgrades(), this);
+        getServer().getPluginManager().registerEvents(new SpawnerUpgrades(), this);
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
-
-
-
 
 
         setupPlaceholderAPI();
@@ -245,7 +236,8 @@ public class P extends MPlugin {
         Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
         }.getType();
 
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter()).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);    }
+        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter()).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
+    }
 
     @Override
     public void onDisable() {
@@ -280,6 +272,7 @@ public class P extends MPlugin {
         //Board.getInstance().forceSave(); Not sure why this was there as it's called after the board is already saved.
         Conf.save();
     }
+
     public ItemStack createItem(Material material, int amount, short datavalue, String name, List<String> lore) {
         ItemStack item = new ItemStack(material, amount, datavalue);
         ItemMeta meta = item.getItemMeta();
@@ -303,6 +296,7 @@ public class P extends MPlugin {
         Economy econ = rsp.getProvider();
         return econ;
     }
+
     @Override
     public boolean logPlayerCommands() {
         return Conf.logPlayerCommands;
@@ -324,8 +318,8 @@ public class P extends MPlugin {
         return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
     }
 
-    public void createTimedHologram(final Location location, String text, Long timeout){
-        ArmorStand as = (ArmorStand) location.add(0.5,1,0.5).getWorld().spawnEntity(location, EntityType.ARMOR_STAND); //Spawn the ArmorStand
+    public void createTimedHologram(final Location location, String text, Long timeout) {
+        ArmorStand as = (ArmorStand) location.add(0.5, 1, 0.5).getWorld().spawnEntity(location, EntityType.ARMOR_STAND); //Spawn the ArmorStand
         as.setVisible(false); //Makes the ArmorStand invisible
         as.setGravity(false); //Make sure it doesn't fall
         as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
@@ -338,7 +332,7 @@ public class P extends MPlugin {
                 Bukkit.broadcastMessage("removing stand");
                 armorStand.remove();
             }
-        },timeout*20);
+        }, timeout * 20);
 
     }
 
@@ -442,8 +436,8 @@ public class P extends MPlugin {
 
     //colors a string list
     public List<String> colorList(List<String> lore) {
-        for (int i = 0; i <= lore.size()-1;i++){
-            lore.set(i,color(lore.get(i)));
+        for (int i = 0; i <= lore.size() - 1; i++) {
+            lore.set(i, color(lore.get(i)));
         }
         return lore;
     }
