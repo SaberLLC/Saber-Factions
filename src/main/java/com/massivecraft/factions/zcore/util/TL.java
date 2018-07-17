@@ -677,6 +677,9 @@ public enum TL {
     COMMAND_TNT_AMOUNT("&cYour faction has {amount} tnt in the tnt bank."),
     COMMAND_TNT_POSITIVE("&cPlease use positive numbers!"),
     COMMAND_TNT_DESCRIPTION("add/widthraw from faction's tnt bank"),
+    COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE("&cNot enough space in your inventory."),
+    COMMAND_TNT_ADD_DESCRIPTION("&b/f tnt add&3 <amount>"),
+    COMMAND_TNT_TAKE_DESCRIPTION("&b/f tnt take&3 <amount>"),
 
     COMMAND_TNTFILL_HEADER("&c&l[!] &7Filling tnt in dispensers..."),
     COMMAND_TNTFILL_SUCCESS("&c&l[!] &7Filled &c{amount}&7 Tnt in &c{dispensers} &7dispensers"),

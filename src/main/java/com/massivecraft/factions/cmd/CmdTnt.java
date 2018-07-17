@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -9,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 public class CmdTnt extends FCommand {
     public CmdTnt() {
@@ -37,13 +37,14 @@ public class CmdTnt extends FCommand {
         }
 
         Access access = fme.getFaction().getAccess(fme, PermissableAction.TNTBANK);
-        if (access.equals(Access.DENY)) {
+        if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
             fme.msg(TL.GENERIC_NOPERMISSION, "tntbank");
+            return;
         }
 
 
         if (args.size() == 2) {
-            if (args.get(0).equalsIgnoreCase("add")) {
+            if (args.get(0).equalsIgnoreCase("add") || args.get(0).equalsIgnoreCase("a")) {
                 int testNumber = -1;
                 try {
                     testNumber = Integer.parseInt(args.get(1));
@@ -84,7 +85,7 @@ public class CmdTnt extends FCommand {
                 return;
 
             }
-            if (args.get(0).equalsIgnoreCase("take")) {
+            if (args.get(0).equalsIgnoreCase("take") || args.get(0).equalsIgnoreCase("t")) {
                 int testNumber = -1;
                 try {
                     testNumber = Integer.parseInt(args.get(1));
@@ -103,12 +104,12 @@ public class CmdTnt extends FCommand {
                 }
                 int fullStacks = amount / 64;
                 int remainderAmt = amount % 64;
-                if ((remainderAmt == 0 && getEmptySlots(me) <= fullStacks)) {
-                    fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
+                if ((remainderAmt == 0 && !hasAvaliableSlot(me, fullStacks))) {
+                    fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE);
                     return;
                 }
-                if (getEmptySlots(me) + 1 <= fullStacks) {
-                    fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
+                if (hasAvaliableSlot(me, fullStacks + 1)) {
+                    fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE);
                     return;
                 }
                 ItemStack tnt64 = new ItemStack(Material.TNT, 64);
@@ -123,6 +124,9 @@ public class CmdTnt extends FCommand {
                 me.updateInventory();
                 fme.msg(TL.COMMAND_TNT_WIDTHDRAW_SUCCESS);
             }
+        } else if (args.size() == 1) {
+            fme.msg(TL.GENERIC_ARGS_TOOFEW);
+            fme.msg(args.get(0).equalsIgnoreCase("take") || args.get(0).equalsIgnoreCase("t") ? TL.COMMAND_TNT_TAKE_DESCRIPTION : TL.COMMAND_TNT_ADD_DESCRIPTION);
         }
         fme.sendMessage(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", fme.getFaction().getTnt() + ""));
     }
@@ -142,6 +146,15 @@ public class CmdTnt extends FCommand {
         return false;
     }
 
+    public boolean hasAvaliableSlot(Player player, int howmany) {
+        Integer check = 0;
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item == null) {
+                check++;
+            }
+        }
+        return check >= howmany;
+    }
 
     public void removeFromInventory(Inventory inventory, ItemStack item) {
         int amt = item.getAmount();
@@ -161,17 +174,6 @@ public class CmdTnt extends FCommand {
             }
         }
         inventory.setContents(items);
-    }
-
-    public int getEmptySlots(Player p) {
-        PlayerInventory inventory = p.getInventory();
-        ItemStack[] cont = inventory.getContents();
-        int i = 0;
-        for (ItemStack item : cont)
-            if (item != null && item.getType() != Material.AIR) {
-                i++;
-            }
-        return 36 - i;
     }
 
     @Override
