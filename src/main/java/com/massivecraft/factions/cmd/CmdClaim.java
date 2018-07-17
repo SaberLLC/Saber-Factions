@@ -5,6 +5,8 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.SpiralTask;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 
@@ -33,6 +35,15 @@ public class CmdClaim extends FCommand {
         // Read and validate input
         int radius = this.argAsInt(0, 1); // Default to 1
         final Faction forFaction = this.argAsFaction(1, myFaction); // Default to own
+
+        if (!fme.isAdminBypassing()) {
+            Access access = forFaction.getAccess(fme, PermissableAction.TERRITORY);
+            if (access == Access.DENY) {
+                fme.msg(TL.GENERIC_NOPERMISSION, "change faction territory!");
+                return;
+            }
+        }
+
 
         if (radius < 1) {
             msg(TL.COMMAND_CLAIM_INVALIDRADIUS);

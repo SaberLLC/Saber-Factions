@@ -240,7 +240,9 @@ public class FactionsPlayerListener implements Listener {
 
         // F PERM check runs through before other checks.
         Access access = otherFaction.getAccess(me, action);
-        if (access == null || access == Access.DENY) {
+        if (action == PermissableAction.CONTAINER && (access == Access.UNDEFINED || access == Access.ALLOW) && me.getFaction() == otherFaction) {
+            return true;
+        } else if (access == null || access == Access.DENY) {
             me.msg(TL.GENERIC_NOPERMISSION, action);
             return false;
         }

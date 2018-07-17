@@ -734,6 +734,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             return true;
         } else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
             return true;
+        } else if (forFaction.getAccess(this,PermissableAction.TERRITORY) == Access.ALLOW) {
+            return true;
         } else if (myFaction != forFaction) {
             error = P.p.txt.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
         } else if (forFaction == currentFaction) {
