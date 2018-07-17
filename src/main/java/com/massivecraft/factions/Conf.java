@@ -56,6 +56,7 @@ public class Conf {
     public static boolean showMapFactionKey = true;
     public static boolean showNeutralFactionsOnMap = true;
     public static boolean showEnemyFactionsOnMap = true;
+    public static boolean showTrucesFactionsOnMap = true;
     // Disallow joining/leaving/kicking while power is negative
     public static boolean canLeaveWithNegativePower = true;
     // Configuration for faction-only chat
