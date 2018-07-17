@@ -54,11 +54,14 @@ public class FactionsChatListener implements Listener {
             String message = String.format(Conf.modChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
 
             //Send to all mods
-            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                if (myFaction == fplayer.getFaction() && fplayer.getRole().isAtLeast(Role.MODERATOR)) {
-                    fplayer.sendMessage(message);
-                } else if (fplayer.isSpyingChat() && me != fplayer) {
-                    fplayer.sendMessage("[MCspy]: " + message);
+            if (me.getRole().isAtLeast(Role.MODERATOR)) {
+                // Iterates only through the factions' members so we enhance performance.
+                for (FPlayer fplayer : myFaction.getFPlayers()) {
+                    if (fplayer.getRole().isAtLeast(Role.MODERATOR)) {
+                        fplayer.sendMessage(message);
+                    } else if (fplayer.isSpyingChat() && me != fplayer) {
+                        fplayer.sendMessage("[MCspy]: " + message);
+                    }
                 }
             }
 
