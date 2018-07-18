@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -24,124 +25,6 @@ public class FactionsBlockListener implements Listener {
 
     public FactionsBlockListener(P p) {
         this.p = p;
-    }
-
-    public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
-        String name = player.getName();
-        if (Conf.playersWhoBypassAllProtection.contains(name)) {
-            return true;
-        }
-
-        FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
-        if (me.isAdminBypassing()) {
-            return true;
-        }
-
-        FLocation loc = new FLocation(location);
-        Faction otherFaction = Board.getInstance().getFactionAt(loc);
-
-        if (otherFaction.isWilderness()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
-                return true;
-            }
-
-            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
-                return true; // This is not faction territory. Use whatever you like here.
-            }
-
-            if (!justCheck) {
-                me.msg("<b>You can't " + action + " in the wilderness.");
-            }
-
-            return false;
-        } else if (otherFaction.isSafeZone()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
-                return true;
-            }
-
-            if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player)) {
-                return true;
-            }
-
-            if (!justCheck) {
-                me.msg("<b>You can't " + action + " in a safe zone.");
-            }
-
-            return false;
-        } else if (otherFaction.isWarZone()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
-                return true;
-            }
-
-            if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player)) {
-                return true;
-            }
-
-            if (!justCheck) {
-                me.msg("<b>You can't " + action + " in a war zone.");
-            }
-
-            return false;
-        }
-        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
-            return true;
-        }
-
-        Faction myFaction = me.getFaction();
-        Relation rel = myFaction.getRelationTo(otherFaction);
-        boolean online = otherFaction.hasPlayersOnline();
-        boolean pain = !justCheck && rel.confPainBuild(online);
-        boolean deny = rel.confDenyBuild(online);
-
-        // hurt the player for building/destroying in other territory?
-        if (pain) {
-            player.damage(Conf.actionDeniedPainAmount);
-
-            if (!deny) {
-                me.msg("<b>It is painful to try to " + action + " in the territory of " + otherFaction.getTag(myFaction));
-            }
-        }
-
-        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
-        if (access != null && access != Access.UNDEFINED) {
-            // TODO: Update this once new access values are added other than just allow / deny.
-            if (access == Access.DENY) {
-                me.msg(TL.GENERIC_NOPERMISSION, action);
-                return false;
-            } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) return false;
-            else
-                // the perm is true, so it can build
-                return true; // has to be allow
-        }
-
-        // cancel building/destroying in other territory?
-        if (deny) {
-            if (!justCheck) {
-                me.msg("<b>You can't " + action + " in the territory of " + otherFaction.getTag(myFaction));
-            }
-
-            return false;
-        }
-
-        // Also cancel and/or cause pain if player doesn't have ownership rights for this claim
-        if (Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && !otherFaction.playerHasOwnershipRights(me, loc)) {
-            if (!pain && Conf.ownedAreaPainBuild && !justCheck) {
-                player.damage(Conf.actionDeniedPainAmount);
-
-                if (!Conf.ownedAreaDenyBuild) {
-                    me.msg("<b>It is painful to try to " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
-                }
-            }
-            if (Conf.ownedAreaDenyBuild) {
-                if (!justCheck) {
-                    me.msg("<b>You can't " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
-                }
-
-                return false;
-            }
-        }
-
-        return true;
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -306,5 +189,122 @@ public class FactionsBlockListener implements Listener {
         Relation rel = pistonFaction.getRelationTo(otherFaction);
 
         return !rel.confDenyBuild(otherFaction.hasPlayersOnline());
+    }
+
+    public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
+        String name = player.getName();
+        if (Conf.playersWhoBypassAllProtection.contains(name)) {
+            return true;
+        }
+
+        FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
+        if (me.isAdminBypassing()) {
+            return true;
+        }
+
+        FLocation loc = new FLocation(location);
+        Faction otherFaction = Board.getInstance().getFactionAt(loc);
+
+        if (otherFaction.isWilderness()) {
+            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
+                return true;
+            }
+
+            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
+                return true; // This is not faction territory. Use whatever you like here.
+            }
+
+            if (!justCheck) {
+                me.msg("<b>You can't " + action + " in the wilderness.");
+            }
+
+            return false;
+        } else if (otherFaction.isSafeZone()) {
+            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
+                return true;
+            }
+
+            if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player)) {
+                return true;
+            }
+
+            if (!justCheck) {
+                me.msg("<b>You can't " + action + " in a safe zone.");
+            }
+
+            return false;
+        } else if (otherFaction.isWarZone()) {
+            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
+                return true;
+            }
+
+            if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player)) {
+                return true;
+            }
+
+            if (!justCheck) {
+                me.msg("<b>You can't " + action + " in a war zone.");
+            }
+
+            return false;
+        }
+        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+            return true;
+        }
+
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
+        boolean online = otherFaction.hasPlayersOnline();
+        boolean pain = !justCheck && rel.confPainBuild(online);
+        boolean deny = rel.confDenyBuild(online);
+
+        // hurt the player for building/destroying in other territory?
+        if (pain) {
+            player.damage(Conf.actionDeniedPainAmount);
+
+            if (!deny) {
+                me.msg("<b>It is painful to try to " + action + " in the territory of " + otherFaction.getTag(myFaction));
+            }
+        }
+
+
+        // cancel building/destroying in other territory?
+        if (deny) {
+            if (!justCheck) {
+                me.msg("<b>You can't " + action + " in the territory of " + otherFaction.getTag(myFaction));
+            }
+
+            return false;
+        }
+
+        // Also cancel and/or cause pain if player doesn't have ownership rights for this claim
+        if (Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && !otherFaction.playerHasOwnershipRights(me, loc)) {
+            if (!pain && Conf.ownedAreaPainBuild && !justCheck) {
+                player.damage(Conf.actionDeniedPainAmount);
+                if (!Conf.ownedAreaDenyBuild) {
+                    me.msg("<b>It is painful to try to " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
+                }
+            }
+            if (Conf.ownedAreaDenyBuild) {
+                if (!justCheck) {
+                    me.msg("<b>You can't " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
+                    return false;
+                }
+            }
+        }
+
+        // Check the permission just after making sure the land isn't owned by someone else to avoid bypass.
+        Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
+        if (access != Access.ALLOW && me.getRole() != Role.ADMIN) {
+            // TODO: Update this once new access values are added other than just allow / deny.
+            if (access == Access.DENY) {
+                me.msg(TL.GENERIC_NOPERMISSION, action);
+                return false;
+            } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
+                me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+                return false;
+            }
+        }
+        return true;
     }
 }

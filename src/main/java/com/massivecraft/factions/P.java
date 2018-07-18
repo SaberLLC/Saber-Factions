@@ -236,7 +236,11 @@ public class P extends MPlugin {
         Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
         }.getType();
 
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter()).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
+        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+                .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
+                .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
+                .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
+                .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
     @Override
@@ -245,6 +249,7 @@ public class P extends MPlugin {
         if (this.loadSuccessful) {
             Conf.save();
         }
+
         if (AutoLeaveTask != null) {
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
             AutoLeaveTask = null;

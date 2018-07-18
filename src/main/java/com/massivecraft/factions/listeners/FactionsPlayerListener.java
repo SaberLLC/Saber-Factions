@@ -80,6 +80,7 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
+
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
         if (me.isAdminBypassing()) {
             return true;
@@ -87,7 +88,16 @@ public class FactionsPlayerListener implements Listener {
 
         FLocation loc = new FLocation(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
 
+        // Also cancel if player doesn't have ownership rights for this claim
+        if (Conf.ownedAreasEnabled && myFaction == otherFaction && !myFaction.playerHasOwnershipRights(me, loc)) {
+            if (!justCheck) {
+                me.msg("<b>You can't use that in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
+            }
+            return false;
+        }
         if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
             return true;
         }
@@ -134,10 +144,6 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        Faction myFaction = me.getFaction();
-        Relation rel = myFaction.getRelationTo(otherFaction);
-
-
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
             if (!justCheck) {
@@ -146,19 +152,19 @@ public class FactionsPlayerListener implements Listener {
 
             return false;
         }
+
         Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
-            return access == Access.ALLOW;
-        }
-
-        // Also cancel if player doesn't have ownership rights for this claim
-        if (Conf.ownedAreasEnabled && Conf.ownedAreaDenyUseage && !otherFaction.playerHasOwnershipRights(me, loc)) {
-            if (!justCheck) {
-                me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
+            if ((myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && myFaction.getOwnerListString(loc).contains(player.getName()))) {
+                return true;
+            } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
+                me.msg("<b>You can't use items in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+                return false;
+            } else if (access == Access.DENY) {
+                me.msg(TL.GENERIC_NOPERMISSION, PermissableAction.ITEM);
+                return false;
             }
-
-            return false;
         }
 
         return true;
@@ -175,8 +181,12 @@ public class FactionsPlayerListener implements Listener {
         }
 
         Material material = block.getType();
+        // Dupe fix.
         FLocation loc = new FLocation(block);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
+        Faction myFaction = me.getFaction();
+        Relation rel = myFaction.getRelationTo(otherFaction);
+
 
         // no door/chest/whatever protection in wilderness, war zones, or safe zones
         if (!otherFaction.isNormal()) {
@@ -187,10 +197,7 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        // Dupe fix.
-        Faction myFaction = me.getFaction();
-        Relation rel = myFaction.getRelationTo(otherFaction);
-        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand() != null) {
+        if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand().getType() != null) {
             switch (player.getItemInHand().getType()) {
                 case CHEST:
                 case SIGN_POST:
@@ -223,6 +230,12 @@ public class FactionsPlayerListener implements Listener {
             case TRAP_DOOR:
             case WOOD_DOOR:
             case WOODEN_DOOR:
+            case FENCE_GATE:
+            case ACACIA_FENCE_GATE:
+            case BIRCH_FENCE_GATE:
+            case DARK_OAK_FENCE_GATE:
+            case JUNGLE_FENCE_GATE:
+            case SPRUCE_FENCE_GATE:
                 action = PermissableAction.DOOR;
                 break;
             case CHEST:
@@ -237,16 +250,6 @@ public class FactionsPlayerListener implements Listener {
                 }
                 break;
         }
-
-        // F PERM check runs through before other checks.
-        Access access = otherFaction.getAccess(me, action);
-        if (action == PermissableAction.CONTAINER && (access == Access.UNDEFINED || access == Access.ALLOW) && me.getFaction() == otherFaction) {
-            return true;
-        } else if (access == null || access == Access.DENY) {
-            me.msg(TL.GENERIC_NOPERMISSION, action);
-            return false;
-        }
-
         // We only care about some material types.
         if (otherFaction.hasPlayersOnline()) {
             if (!Conf.territoryProtectedMaterials.contains(material)) {
@@ -263,19 +266,22 @@ public class FactionsPlayerListener implements Listener {
             if (!justCheck) {
                 me.msg(TL.PLAYER_USE_TERRITORY, (material == Material.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
-
             return false;
         }
 
-        // Also cancel if player doesn't have ownership rights for this claim
-        if (Conf.ownedAreasEnabled && Conf.ownedAreaProtectMaterials && !otherFaction.playerHasOwnershipRights(me, loc)) {
-            if (!justCheck) {
-                me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
+        Access access = otherFaction.getAccess(me, action);
+        if (access != Access.ALLOW && me.getRole() != Role.ADMIN) {
+            // TODO: Update this once new access values are added other than just allow / deny.
+            if ((myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && myFaction.getOwnerListString(loc).contains(player.getName()))) {
+                return true;
+            } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
+                me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+                return false;
+            } else if (access == Access.DENY) {
+                me.msg(TL.GENERIC_NOPERMISSION, action);
+                return false;
             }
-
-            return false;
         }
-
         return true;
     }
 
@@ -443,9 +449,7 @@ public class FactionsPlayerListener implements Listener {
         Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
             @Override
             public void run() {
-                if (fallMap.containsKey(me.getPlayer())) {
-                    fallMap.remove(me.getPlayer());
-                }
+                fallMap.remove(me.getPlayer());
 
             }
         }, 180L);
@@ -511,9 +515,7 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        if (CmdSeeChunk.seeChunkMap.containsKey(event.getPlayer().getName())) {
-            CmdSeeChunk.seeChunkMap.remove(event.getPlayer().getName());
-        }
+        CmdSeeChunk.seeChunkMap.remove(event.getPlayer().getName());
 
         FScoreboard.remove(me);
     }
@@ -887,6 +889,24 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
+        /// Prevents the use of montster eggs in oned land.
+        /*if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (event.hasItem() || event.hasBlock()) {
+                ItemStack itemStack = event.getItem();
+                if (itemStack.getType() == Material.MONSTER_EGG) {
+                    FLocation loc = new FLocation(event.getClickedBlock().getLocation());
+                    Faction faction = Board.getInstance().getFactionAt(loc);
+                    FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
+                    if (Conf.ownedAreasEnabled && !faction.playerHasOwnershipRights(me, loc)) {
+                        if (Conf.ownedAreaDenyBuild) {
+                            me.msg("<b>You can't use spawn eggs in this territory, it is owned by: " + faction.getOwnerListString(loc));
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+                }
+            }
+        }*/
         // only need to check right-clicks and physical as of MC 1.4+; good performance boost
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) {
             return;
@@ -926,7 +946,6 @@ public class FactionsPlayerListener implements Listener {
             event.setCancelled(true);
         }
     }
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());

@@ -35,6 +35,7 @@ public class CmdSetDefaultRole extends FCommand {
             return;
         }
 
+
         myFaction.setDefaultRole(target);
         msg(TL.COMMAND_SETDEFAULTROLE_SUCCESS, target.nicename);
     }
