@@ -1,9 +1,12 @@
 package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -137,9 +140,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void removeAnnouncements(FPlayer fPlayer) {
-        if (announcements.containsKey(fPlayer.getId())) {
-            announcements.remove(fPlayer.getId());
-        }
+        announcements.remove(fPlayer.getId());
     }
 
     public ConcurrentHashMap<String, LazyLocation> getWarps() {
@@ -223,6 +224,54 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 iter.remove();
             }
         }
+    }
+
+
+    public void disband(Player disbander) {
+
+        boolean disbanderIsConsole = disbander == null;
+        FPlayer fdisbander = FPlayers.getInstance().getByOfflinePlayer(disbander);
+
+        FactionDisbandEvent disbandEvent = new FactionDisbandEvent(disbander, this.getId());
+        Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
+        if (disbandEvent.isCancelled()) {
+            return;
+        }
+
+        // Send FPlayerLeaveEvent for each player in the faction
+        for (FPlayer fplayer : this.getFPlayers()) {
+            Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, this, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
+        }
+
+        // Inform all players
+        for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+            String who = disbanderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fdisbander.describeTo(fplayer);
+            if (fplayer.getFaction() == this) {
+                fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, who);
+            } else {
+                fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, who, this.getTag(fplayer));
+            }
+        }
+        if (Conf.logFactionDisband) {
+            //TODO: Format this correctly and translate.
+            P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") was disbanded by " + (disbanderIsConsole ? "console command" : fdisbander.getName()) + ".");
+        }
+
+        if (Econ.shouldBeUsed() && !disbanderIsConsole) {
+            //Give all the faction's money to the disbander
+            double amount = Econ.getBalance(this.getAccountId());
+            Econ.transferMoney(fdisbander, this, fdisbander, amount, false);
+
+            if (amount > 0.0) {
+                String amountString = Econ.moneyString(amount);
+                msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
+                //TODO: Format this correctly and translate
+                P.p.log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
+            }
+        }
+
+        Factions.getInstance().removeFaction(this.getId());
+        FTeamWrapper.applyUpdates(this);
     }
 
     public boolean isBanned(FPlayer player) {

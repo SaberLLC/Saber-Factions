@@ -198,6 +198,8 @@ public interface Faction extends EconomyParticipator {
 
     void resetPerms();
 
+    void disband(Player disbander);
+
     // -------------------------------
     // Relation and relation colors
     // -------------------------------
