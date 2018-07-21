@@ -108,7 +108,7 @@ public class CmdTnt extends FCommand {
                     fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE);
                     return;
                 }
-                if (hasAvaliableSlot(me, fullStacks + 1)) {
+                if (!hasAvaliableSlot(me, fullStacks + 1)) {
                     fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE);
                     return;
                 }
