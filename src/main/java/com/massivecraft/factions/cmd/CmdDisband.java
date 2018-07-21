@@ -1,12 +1,21 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
+
+import java.util.HashMap;
 
 
 public class CmdDisband extends FCommand {
+
+
+    private static HashMap<String, String> disbandMap = new HashMap<>();
+
+
 
     public CmdDisband() {
         super();
@@ -54,8 +63,26 @@ public class CmdDisband extends FCommand {
             return;
         }
 
-        //Success
-        faction.disband(me);
+
+        // check for tnt before disbanding.
+
+        if (!disbandMap.containsKey(me.getUniqueId().toString()) && faction.getTnt() > 0) {
+            msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", faction.getTnt() + ""));
+            disbandMap.put(me.getUniqueId().toString(), faction.getId());
+            Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
+                @Override
+                public void run() {
+                    disbandMap.remove(me.getUniqueId().toString());
+                }
+            }, 200L);
+        } else {
+            //Check if the faction we asked confirmation for is the one being disbanded.
+            if (faction.getId().equals(disbandMap.get(me.getUniqueId().toString())) || faction.getTnt() == 0) {
+                faction.disband(me);
+            }
+        }
+
+
     }
 
     @Override
