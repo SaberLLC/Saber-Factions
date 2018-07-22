@@ -130,15 +130,17 @@ public class CmdUnclaim extends FCommand {
         }
 
 
+
         if (targetFaction.getAccess(fme,PermissableAction.TERRITORY) == Access.DENY) {
             return false;
         }
+
 
         if (!assertHasFaction()) {
             return false;
         }
 
-        if (targetFaction.getAccess(fme,PermissableAction.TERRITORY) != Access.ALLOW || !assertMinRole(Role.MODERATOR)) {
+        if (targetFaction.getAccess(fme, PermissableAction.TERRITORY) != Access.ALLOW && !assertMinRole(Role.MODERATOR)) {
             return false;
         }
 
@@ -147,6 +149,7 @@ public class CmdUnclaim extends FCommand {
             msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
             return false;
         }
+
 
         LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, fme);
         Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
