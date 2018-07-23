@@ -11,15 +11,15 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class EXPUpgrade implements Listener {
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
-        Location loc = e.getEntity().getLocation();
-        Faction wild = Factions.getInstance().getWilderness();
-        FLocation floc = new FLocation(loc);
-        Faction faction = Board.getInstance().getFactionAt(floc);
         Entity killer = e.getEntity().getKiller();
         Player player = (Player) killer;
         if (player == null) {
             return;
         }
+        Location loc = e.getEntity().getLocation();
+        Faction wild = Factions.getInstance().getWilderness();
+        FLocation floc = new FLocation(loc);
+        Faction faction = Board.getInstance().getFactionAt(floc);
         if (faction != wild) {
             int level = faction.getUpgrade("Exp");
             if (level != 0) {
@@ -35,12 +35,11 @@ public class EXPUpgrade implements Listener {
                     double multiplier = P.p.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
                     spawnMoreExp(e, multiplier);
                 }
-
             }
         }
     }
 
-    public void spawnMoreExp(EntityDeathEvent e, double multiplier) {
+    private void spawnMoreExp(EntityDeathEvent e, double multiplier) {
         double newExp = e.getDroppedExp() * multiplier;
         int newExpInt = (int) newExp;
         e.setDroppedExp(newExpInt);
