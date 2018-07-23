@@ -176,6 +176,16 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
+        if (P.p.getDescription().getFullName().contains("BETA")) {
+            divider();
+            System.out.println("You are using a BETA version of the plugin!");
+            System.out.println("This comes with risks of small bugs in newer features!");
+            System.out.println("For support head to: https://github.com/ProSavage/SavageFactions/issues");
+            divider();
+        }
+
+
+
 
         setupPlaceholderAPI();
         postEnable();
@@ -241,6 +251,12 @@ public class P extends MPlugin {
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
+    }
+
+    private void divider() {
+        System.out.println("  .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-");
+        System.out.println(" / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\");
+        System.out.println("`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'");
     }
 
     @Override
