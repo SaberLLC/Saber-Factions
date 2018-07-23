@@ -11,6 +11,7 @@ import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.InventoryUtil;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
@@ -26,14 +27,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
-
-import static com.massivecraft.factions.util.InventoryUtil.InventoryToString;
-import static com.massivecraft.factions.util.InventoryUtil.StringToInventory;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public HashMap<Integer, String> rules = new HashMap<Integer, String>();
@@ -359,11 +356,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         } else {
             //long startTime = System.nanoTime();
             ItemStack[] contents = new ItemStack[0];
-            try {
-                contents = StringToInventory(chestSerialized);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            contents = InventoryUtil.fromBase64(chestSerialized).getContents();
+
             inventory.setContents(contents);
             return inventory;
         }
@@ -371,7 +366,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     @Override
     public void setChest(Inventory inventory) {
-        chestSerialized = InventoryToString(inventory.getContents());
+        chestSerialized = InventoryUtil.toBase64(inventory);
     }
 
     @Override
