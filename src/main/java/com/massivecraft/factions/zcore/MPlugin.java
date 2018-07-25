@@ -171,7 +171,7 @@ public abstract class MPlugin extends JavaPlugin {
             conf.save(lang);
         } catch (IOException e) {
             getLogger().log(Level.WARNING, "Factions: Failed to save lang.yml.");
-            getLogger().log(Level.WARNING, "Factions: Report this stack trace to drtshock.");
+            getLogger().log(Level.WARNING, "Factions: Report this stack trace to prosavage.");
             e.printStackTrace();
         }
     }

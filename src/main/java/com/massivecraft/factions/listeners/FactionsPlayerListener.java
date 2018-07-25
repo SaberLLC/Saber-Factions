@@ -520,7 +520,7 @@ public class FactionsPlayerListener implements Listener {
         FScoreboard.remove(me);
     }
 
-    public String parseAllPlaceholders(String string, Faction faction) {
+    public String parseAllPlaceholders(String string, Faction faction, Player player) {
         string = string.replace("{Faction}", faction.getTag())
                 .replace("{online}", faction.getOnlinePlayers().size() + "")
                 .replace("{offline}", faction.getFPlayers().size() - faction.getOnlinePlayers().size() + "")
@@ -677,9 +677,9 @@ public class FactionsPlayerListener implements Listener {
             if (P.p.getConfig().getBoolean("Title.Show-Title")) {
                 String title = P.p.getConfig().getString("Title.Format.Title");
                 title = title.replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
-                title = parseAllPlaceholders(title, factionTo);
+                title = parseAllPlaceholders(title, factionTo, player);
                 String subTitle = P.p.getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
-                subTitle = parseAllPlaceholders(subTitle, factionTo);
+                subTitle = parseAllPlaceholders(subTitle, factionTo, player);
                 if (!P.p.mc17) {
                     if (!P.p.mc18) {
                         me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle), P.p.getConfig().getInt("Title.Options.FadeInTime"),

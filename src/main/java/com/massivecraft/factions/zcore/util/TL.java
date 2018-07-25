@@ -779,6 +779,7 @@ public enum TL {
     CLAIM_CLICK_TO_CLAIM("Click to try to claim &2(%1$d, %2$d)"),
     CLAIM_MAP_OUTSIDEBORDER("&cThis claim is outside the worldborder!"),
     CLAIM_YOUAREHERE("You are here"),
+    CLAIM_NO_TERRITORY_PERM("You do not have permission from your faction leader to do this!"),
 
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class

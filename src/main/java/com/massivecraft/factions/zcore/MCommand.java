@@ -141,7 +141,6 @@ public abstract class MCommand<T extends MPlugin> {
     // TODO: There should be a boolean for silence
     public boolean validCall(CommandSender sender, List<String> args) {
         return validSenderType(sender, true) && validSenderPermissions(sender, true) && validArgs(args, sender);
-
     }
 
     public boolean isEnabled() {

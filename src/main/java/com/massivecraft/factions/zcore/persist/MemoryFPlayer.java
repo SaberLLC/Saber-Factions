@@ -734,7 +734,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return true;
         } else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
             return true;
-        } else if (forFaction.getAccess(this,PermissableAction.TERRITORY) == Access.ALLOW) {
+        } else if (currentFaction.getAccess(this, PermissableAction.TERRITORY) == Access.ALLOW) {
             return true;
         } else if (myFaction != forFaction) {
             error = P.p.txt.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
@@ -1111,13 +1111,17 @@ public abstract class MemoryFPlayer implements FPlayer {
         // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
         // return value is false on failure, true on success
 
+
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
 
         int ownedLand = forFaction.getLandRounded();
 
+
         if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure)) {
+
             return false;
         }
+
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
         boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone();
