@@ -20,6 +20,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
@@ -521,6 +522,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public String parseAllPlaceholders(String string, Faction faction, Player player) {
+        string = TagUtil.parsePlaceholders(player, string);
         string = string.replace("{Faction}", faction.getTag())
                 .replace("{online}", faction.getOnlinePlayers().size() + "")
                 .replace("{offline}", faction.getFPlayers().size() - faction.getOnlinePlayers().size() + "")
