@@ -724,6 +724,7 @@ public enum TL {
     COMMAND_WARUNCLAIMALL_SUCCESS("<i>You unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
+
     COMMAND_RULES_DISABLED_MSG("&cThis command is disabled!"),
     COMMAND_RULES_DESCRIPTION("set/remove/add rules!"),
     COMMAND_RULES_ADD_INVALIDARGS("Please include a rule!"),

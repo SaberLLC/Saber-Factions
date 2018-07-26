@@ -44,6 +44,9 @@ public class CmdWarunclaimall extends FCommand {
             Board.getInstance().unclaimAllInWorld(id, world);
         }
 
+        fme.msg(TL.COMMAND_WARUNCLAIMALL_SUCCESS);
+
+
         if (Conf.logLandUnclaims) {
             P.p.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
         }
