@@ -122,7 +122,7 @@ public class FactionsBlockListener implements Listener {
     public void onVaultPlace(BlockPlaceEvent e) {
         if (e.getItemInHand().getType() == Material.CHEST) {
             ItemStack vault = P.p.createItem(Material.CHEST, 1, (short) 0, P.p.color(P.p.getConfig().getString("fvault.Item.Name")), P.p.colorList(P.p.getConfig().getStringList("fvault.Item.Lore")));
-            if (e.getItemInHand().equals(vault)) {
+            if (e.getItemInHand().isSimilar(vault)) {
                 FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
                 if (fme.getFaction().getVault() != null) {
                     fme.msg(TL.COMMAND_GETVAULT_ALREADYSET);
