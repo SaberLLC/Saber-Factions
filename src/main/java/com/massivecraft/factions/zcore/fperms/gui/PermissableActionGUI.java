@@ -47,9 +47,9 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         }
 
         guiSize = section.getInt("rows", 3);
-        if (guiSize > 5) {
-            guiSize = 5;
-            P.p.log(Level.INFO, "Action GUI size out of bounds, defaulting to 5");
+        if (guiSize > 6) {
+            guiSize = 6;
+            P.p.log(Level.INFO, "Action GUI size out of bounds, defaulting to 6");
         }
 
         guiSize *= 9;
