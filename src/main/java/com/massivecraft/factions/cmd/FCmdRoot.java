@@ -222,20 +222,14 @@ public class FCmdRoot extends FCommand {
 
         if (P.p.getConfig().getBoolean("enable-faction-flight", false)) {
             this.addSubCommand(this.cmdFly);
-            return;
         }
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
             P.p.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
         } else {
+            P.p.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
             this.addSubCommand(this.cmdTop);
         }
-        if (P.p.isHookedPlayervaults()) {
-            P.p.log("Found playervaults hook, adding /f vault and /f setmaxvault commands.");
-            // this.addSubCommand(new CmdSetMaxVaults());
-            //  this.addSubCommand(new CmdVault());
-        } else {
-            // this.addSubCommand(new CmdVault());
-        }
+
     }
 
     @Override
