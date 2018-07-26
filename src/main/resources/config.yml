@@ -939,7 +939,7 @@ Title:
   # You can configure the time in 1.9 or higher! The values are in seconds
   Options:
     FadeInTime: 1
-    ShowTime: 1
+    ShowTime: 10
     FadeOutTime: 1
   Format:
     Title: '{Faction}'
