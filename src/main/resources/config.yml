@@ -517,8 +517,8 @@ fperm-gui:
       tntfill: 41
       chest: 42
       spawner: 38
-      claim: 49
-    # Material to show, if the material is colorable eg: Wool, Stained Clay it will update with it's access color
+
+      # Material to show, if the material is colorable eg: Wool, Stained Clay it will update with it's access color
     materials:
       build: STAINED_GLASS
       destroy: STAINED_GLASS
@@ -546,7 +546,6 @@ fperm-gui:
       tntfill: STAINED_GLASS
       chest: STAINED_GLASS
       spawner: STAINED_GLASS
-      claim: STAINED_GLASS
     # Same dummy items format as above
     dummy-items:
       '0':
