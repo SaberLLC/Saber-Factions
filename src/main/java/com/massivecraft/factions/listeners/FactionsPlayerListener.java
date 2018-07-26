@@ -359,48 +359,9 @@ public class FactionsPlayerListener implements Listener {
         return false;
     }
 
-    @EventHandler
-    public void onVaultPlace(BlockPlaceEvent e) {
-        if (e.getItemInHand().getType() == Material.CHEST) {
-            ItemStack vault = P.p.createItem(Material.CHEST, 1, (short) 0, P.p.color(P.p.getConfig().getString("fvault.Item.Name")), P.p.colorList(P.p.getConfig().getStringList("fvault.Item.Lore")));
-            if (e.getItemInHand().equals(vault)) {
-                FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
-                if (fme.getFaction().getVault() != null) {
-                    fme.msg(TL.COMMAND_GETVAULT_ALREADYSET);
-                    e.setCancelled(true);
-                    return;
-                }
-                FLocation flocation = new FLocation(e.getBlockPlaced().getLocation());
-                if (Board.getInstance().getFactionAt(flocation) != fme.getFaction()) {
-                    fme.msg(TL.COMMAND_GETVAULT_INVALIDLOCATION);
-                    e.setCancelled(true);
-                    return;
-                }
-                Block start = e.getBlockPlaced();
-                int radius = 1;
-                for (double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++) {
-                    for (double y = start.getLocation().getY() - radius; y <= start.getLocation().getY() + radius; y++) {
-                        for (double z = start.getLocation().getZ() - radius; z <= start.getLocation().getZ() + radius; z++) {
-                            Location blockLoc = new Location(e.getPlayer().getWorld(), x, y, z);
-                            if (blockLoc.getX() == start.getLocation().getX() && blockLoc.getY() == start.getLocation().getY() && blockLoc.getZ() == start.getLocation().getZ()) {
-                                continue;
-                            }
 
-                            if (blockLoc.getBlock().getType() == Material.CHEST) {
-                                e.setCancelled(true);
-                                fme.msg(TL.COMMAND_GETVAULT_CHESTNEAR);
-                                return;
-                            }
-                        }
-                    }
-                }
 
-                fme.msg(TL.COMMAND_GETVAULT_SUCCESS);
-                fme.getFaction().setVault(e.getBlockPlaced().getLocation());
 
-            }
-        }
-    }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
