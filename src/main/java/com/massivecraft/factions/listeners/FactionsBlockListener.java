@@ -145,7 +145,9 @@ public class FactionsBlockListener implements Listener {
                                 continue;
                             }
 
-                            if (blockLoc.getBlock().getType() == Material.CHEST) {
+                            Material blockMaterial = blockLoc.getBlock().getType();
+
+                            if (blockMaterial == Material.CHEST || (P.p.getConfig().getBoolean("fvault.No-Hoppers-near-vault") && blockMaterial == Material.HOPPER)) {
                                 e.setCancelled(true);
                                 fme.msg(TL.COMMAND_GETVAULT_CHESTNEAR);
                                 return;
@@ -159,6 +161,45 @@ public class FactionsBlockListener implements Listener {
 
             }
         }
+    }
+
+    @EventHandler
+    public void onHopperPlace(BlockPlaceEvent e) {
+
+        if (e.getItemInHand().getType() != Material.HOPPER && !P.p.getConfig().getBoolean("fvault.No-Hoppers-near-vault")) {
+            return;
+        }
+
+        Faction factionAt = Board.getInstance().getFactionAt(new FLocation(e.getBlockPlaced().getLocation()));
+
+        if (factionAt.isWilderness() || factionAt.getVault() == null) {
+            return;
+        }
+
+
+        FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
+
+        Block start = e.getBlockPlaced();
+        int radius = 1;
+        for (double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++) {
+            for (double y = start.getLocation().getY() - radius; y <= start.getLocation().getY() + radius; y++) {
+                for (double z = start.getLocation().getZ() - radius; z <= start.getLocation().getZ() + radius; z++) {
+                    Location blockLoc = new Location(e.getPlayer().getWorld(), x, y, z);
+                    if (blockLoc.getX() == start.getLocation().getX() && blockLoc.getY() == start.getLocation().getY() && blockLoc.getZ() == start.getLocation().getZ()) {
+                        continue;
+                    }
+
+                    if (blockLoc.getBlock().getType() == Material.CHEST) {
+                        if (factionAt.getVault().equals(blockLoc)) {
+                            e.setCancelled(true);
+                            fme.msg(TL.COMMAND_VAULT_NO_HOPPER);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

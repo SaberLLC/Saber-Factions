@@ -721,6 +721,7 @@ fnear:
 # +------------------------------------------------------+ #
 fvault:
   Enabled: true
+  No-Hoppers-near-vault: true
   Price: 5000
   Item:
     Name: '&e&l*&f&l*&e&l* &e&lFaction Vault &7(Place) &e&l*&f&l*&e&l*'

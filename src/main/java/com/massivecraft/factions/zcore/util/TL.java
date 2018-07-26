@@ -580,10 +580,11 @@ public enum TL {
     COMMAND_VAULT_DESCRIPTION("Open your placed faction vault!"),
     COMMAND_VAULT_INVALID("&c&l[!]&7 Your vault was either&c claimed&7, &cbroken&7, or has&c not been&7 placed yet."),
     COMMAND_VAULT_OPENING("&c&l[!]&7 Opening faction vault."),
+    COMMAND_VAULT_NO_HOPPER("&c&l[!] &7You cannot place a hopper near a vault!"),
 
     COMMAND_GETVAULT_ALREADYSET("&c&l[!]&7 Vault has already been set!"),
     COMMAND_GETVAULT_ALREADYHAVE("&c&l[!]&7 You already have a vault in your inventory!"),
-    COMMAND_GETVAULT_CHESTNEAR("&c&l[!]&7 &7There is a chest &cnearby"),
+    COMMAND_GETVAULT_CHESTNEAR("&c&l[!]&7 &7There is a chest or hopper &cnearby"),
     COMMAND_GETVAULT_SUCCESS("&cSucessfully set vault."),
     COMMAND_GETVAULT_INVALIDLOCATION("&cVault can only be placed in faction land!"),
     COMMAND_GETVAULT_DESCRIPTION("Get the faction vault item!"),
