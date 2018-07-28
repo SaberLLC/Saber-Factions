@@ -128,8 +128,8 @@ public class CmdSeeChunk extends FCommand {
             if (useParticles) {
                 this.effect.display(0, 0, 0, 0, 1, loc, player);
             } else {
-                int typeId = blockY % 5 == 0 ? Material.REDSTONE_LAMP_ON.getId() : Material.STAINED_GLASS.getId();
-                VisualizeUtil.addLocation(player, loc, typeId);
+                Material type = blockY % 5 == 0 ? Material.LEGACY_REDSTONE_LAMP_ON : Material.LEGACY_STAINED_GLASS;
+                VisualizeUtil.addLocation(player, loc, type);
             }
         }
     }

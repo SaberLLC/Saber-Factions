@@ -20,7 +20,7 @@ public class CmdSetBanner extends FCommand {
     }
 
     public void perform() {
-        if (me.getItemInHand().getType() != Material.BANNER) {
+        if (me.getItemInHand().getType() != Material.LEGACY_BANNER) {
             fme.msg(TL.COMMAND_SETBANNER_NOTBANNER);
             return;
         }

@@ -51,6 +51,7 @@ import org.bukkit.util.NumberConversions;
 import java.util.*;
 import java.util.logging.Level;
 
+
 public class FactionsPlayerListener implements Listener {
 
     public static HashMap<String, Location> bannerLocations = new HashMap<>();
@@ -201,10 +202,10 @@ public class FactionsPlayerListener implements Listener {
         if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand().getType() != null) {
             switch (player.getItemInHand().getType()) {
                 case CHEST:
-                case SIGN_POST:
+                case LEGACY_TRAP_DOOR:
                 case TRAPPED_CHEST:
                 case SIGN:
-                case WOOD_DOOR:
+                case LEGACY_WOOD_DOOR:
                 case IRON_DOOR:
                     return false;
                 default:
@@ -219,7 +220,7 @@ public class FactionsPlayerListener implements Listener {
                 action = PermissableAction.LEVER;
                 break;
             case STONE_BUTTON:
-            case WOOD_BUTTON:
+            case LEGACY_WOOD_BUTTON:
                 action = PermissableAction.BUTTON;
                 break;
             case DARK_OAK_DOOR:
@@ -228,10 +229,10 @@ public class FactionsPlayerListener implements Listener {
             case IRON_DOOR:
             case JUNGLE_DOOR:
             case SPRUCE_DOOR:
-            case TRAP_DOOR:
-            case WOOD_DOOR:
-            case WOODEN_DOOR:
-            case FENCE_GATE:
+            case LEGACY_TRAP_DOOR:
+            case LEGACY_WOOD_DOOR:
+            case LEGACY_WOODEN_DOOR:
+            case LEGACY_FENCE_GATE:
             case ACACIA_FENCE_GATE:
             case BIRCH_FENCE_GATE:
             case DARK_OAK_FENCE_GATE:
@@ -265,7 +266,7 @@ public class FactionsPlayerListener implements Listener {
         // You may use any block unless it is another faction's territory...
         if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
             if (!justCheck) {
-                me.msg(TL.PLAYER_USE_TERRITORY, (material == Material.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_USE_TERRITORY, (material == Material.LEGACY_SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
             return false;
         }
@@ -750,7 +751,7 @@ public class FactionsPlayerListener implements Listener {
             return;
         }
 
-        if (e.getItemInHand().getType() == Material.BANNER) {
+        if (e.getItemInHand().getType() == Material.LEGACY_BANNER) {
             ItemStack bannerInHand = e.getItemInHand();
             FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
             ItemStack warBanner = fme.getFaction().getBanner();
@@ -760,7 +761,7 @@ public class FactionsPlayerListener implements Listener {
                 warmeta.setLore(P.p.colorList(P.p.getConfig().getStringList("fbanners.Item.Lore")));
                 warBanner.setItemMeta(warmeta);
             } else {
-                warBanner = P.p.createItem(Material.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+                warBanner = P.p.createItem(Material.LEGACY_BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
             }
             if (warBanner.isSimilar(bannerInHand)) {
 

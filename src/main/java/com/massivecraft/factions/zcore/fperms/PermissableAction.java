@@ -95,7 +95,7 @@ public enum PermissableAction {
         }
         Material material = Material.matchMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-')));
         if (material == null) {
-            material = Material.STAINED_CLAY;
+            material = Material.LEGACY_STAINED_CLAY;
         }
 
         Access access = fme.getFaction().getAccess(permissable, this);
