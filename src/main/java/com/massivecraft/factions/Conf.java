@@ -20,6 +20,8 @@ public class Conf {
     public static final transient boolean DYNMAP_STYLE_BOOST = false;
     public static List<String> baseCommandAliases = new ArrayList<>();
     public static boolean allowNoSlashCommand = true;
+    public static Set<String> allowedStealthFactions = new LinkedHashSet<>();
+
     // Colors
     public static ChatColor colorMember = ChatColor.GREEN;
     public static ChatColor colorAlly = ChatColor.LIGHT_PURPLE;
@@ -76,7 +78,7 @@ public class Conf {
     public static String allianceChatFormat = ChatColor.LIGHT_PURPLE + "%s:" + ChatColor.WHITE + " %s";
     public static String truceChatFormat = ChatColor.DARK_PURPLE + "%s:" + ChatColor.WHITE + " %s";
     public static String modChatFormat = ChatColor.RED + "%s:" + ChatColor.WHITE + " %s";
-    public static int enemyFlyCheckRadius = 16;
+    public static int stealthFlyCheckRadius = 32;
     public static boolean noEnderpearlsInFly = false;
     public static boolean broadcastDescriptionChanges = false;
     public static boolean broadcastTagChanges = false;

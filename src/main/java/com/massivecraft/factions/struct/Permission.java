@@ -76,6 +76,7 @@ public enum Permission {
     SETHOME_ANY("sethome.any"),
     SHOW("show"),
     STATUS("status"),
+    STEALTH("stealth"),
     STUCK("stuck"),
     TAG("tag"),
     TNT("tnt"),

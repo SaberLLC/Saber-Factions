@@ -206,12 +206,13 @@ public class CmdFly extends FCommand {
             if (entities.get(i) instanceof Player) {
                 Player eplayer = (Player) entities.get(i);
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer.getRelationTo(fme) == Relation.ENEMY) {
+                if (efplayer.getRelationTo(fme) == Relation.ENEMY && !efplayer.isStealthEnabled()) {
                     fme.msg(TL.COMMAND_FLY_CHECK_ENEMY);
                     return;
                 }
             }
         }
+
 
 
         if (args.size() == 0) {

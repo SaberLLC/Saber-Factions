@@ -27,6 +27,11 @@ import java.util.List;
  */
 
 public interface FPlayer extends EconomyParticipator {
+
+    boolean isStealthEnabled();
+
+    void setStealth(boolean isStealthEnabled);
+
     void login();
 
     void logout();

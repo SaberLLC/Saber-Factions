@@ -632,6 +632,10 @@ public enum TL {
     COMMAND_STATUS_AGOSUFFIX(" ago."),
     COMMAND_STATUS_DESCRIPTION("Show the status of a player"),
 
+    COMMAND_STEALTH_DESCRIPTION("Enable and Disable Stealth Mode"),
+    COMMAND_STEALTH_ENABLE(    "&2Stealth &8» &7You will no longer disable nearby players fly."),
+    COMMAND_STEALTH_DISABLE("&2Stealth &8» &7You will now disable other nearby players fly."),
+
     COMMAND_STUCK_TIMEFORMAT("m 'minutes', s 'seconds.'"),
     COMMAND_STUCK_CANCELLED("<a>Teleport cancelled because you were damaged"),
     COMMAND_STUCK_OUTSIDE("<a>Teleport cancelled because you left <i>%1$d <a>block radius"),

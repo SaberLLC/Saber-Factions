@@ -79,10 +79,18 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean loginPvpDisabled;
     protected transient long lastFrostwalkerMessage;
     protected transient boolean shouldTakeFallDamage = true;
+    protected boolean isStealthEnabled = false;
     boolean playerAlerts = false;
     boolean inspectMode = false;
 
     public MemoryFPlayer() {
+    }
+    public boolean isStealthEnabled() {
+        return this.isStealthEnabled;
+    }
+
+    public void setStealth(boolean stealth) {
+        this.isStealthEnabled = stealth;
     }
 
     public MemoryFPlayer(String id) {
@@ -1028,24 +1036,17 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     @Override
-    public boolean checkIfNearbyEnemies() {
+    public boolean checkIfNearbyEnemies(){
         Player me = this.getPlayer();
-        int radius = Conf.enemyFlyCheckRadius;
+        int radius = Conf.stealthFlyCheckRadius;
         for (Entity e : me.getNearbyEntities(radius, 255, radius)) {
-            if (e == null) {
-                continue;
-            }
+            if (e == null) { continue; }
             if (e instanceof Player) {
                 Player eplayer = (((Player) e).getPlayer());
-                if (eplayer == null) {
-                    continue;
-                }
+                if (eplayer == null) { continue; }
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer == null) {
-                    continue;
-                }
-                if (this.getRelationTo(efplayer).equals(Relation.ENEMY)) {
-
+                if (efplayer == null) { continue; }
+                if (Conf.allowedStealthFactions != null && !efplayer.isStealthEnabled()) {
                     this.setFlying(false);
                     this.msg(TL.COMMAND_FLY_ENEMY_NEAR);
                     Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));

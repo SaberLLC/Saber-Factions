@@ -318,5 +318,7 @@ permissions:
     description: create banner
   factions.killholos:
     description: kill invisible holograms
+  factions.stealth:
+    description: Enter faction stealth mode
   factions.coords:
     description: broadcast your coords to the player

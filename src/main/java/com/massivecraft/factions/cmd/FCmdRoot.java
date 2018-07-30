@@ -51,6 +51,7 @@ public class FCmdRoot extends FCommand {
     public CmdSethome cmdSethome = new CmdSethome();
     public CmdShow cmdShow = new CmdShow();
     public CmdStatus cmdStatus = new CmdStatus();
+    public CmdStealth cmdStealth = new CmdStealth();
     public CmdStuck cmdStuck = new CmdStuck();
     public CmdTag cmdTag = new CmdTag();
     public CmdTitle cmdTitle = new CmdTitle();
@@ -166,6 +167,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdSethome);
         this.addSubCommand(this.cmdShow);
         this.addSubCommand(this.cmdStatus);
+        this.addSubCommand(this.cmdStealth);
         this.addSubCommand(this.cmdStuck);
         this.addSubCommand(this.cmdTag);
         this.addSubCommand(this.cmdTitle);
