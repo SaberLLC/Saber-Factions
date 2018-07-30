@@ -7,10 +7,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -126,7 +123,13 @@ public class CmdSeeChunk extends FCommand {
                 continue;
             }
             if (useParticles) {
-                this.effect.display(0, 0, 0, 0, 1, loc, player);
+                if (P.p.useNonPacketParticles) {
+                    player.spawnParticle(Particle.REDSTONE, loc, 0, new Particle.DustOptions(Color.RED, 1));
+                } else {
+                    this.effect.display(0, 0, 0, 0, 1, loc, player);
+                }
+
+
             } else {
                 Material type = blockY % 5 == 0 ? Material.LEGACY_REDSTONE_LAMP_ON : Material.LEGACY_STAINED_GLASS;
                 VisualizeUtil.addLocation(player, loc, type);

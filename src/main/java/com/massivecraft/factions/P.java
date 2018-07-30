@@ -55,6 +55,7 @@ public class P extends MPlugin {
     public CmdAutoHelp cmdAutoHelp;
     public boolean mc17 = false;
     public boolean mc18 = false;
+    public boolean useNonPacketParticles = false;
     public boolean factionsFlight = false;
     ItemStack item = new ItemStack(Material.CAKE);
     // Persistence related
@@ -150,6 +151,7 @@ public class P extends MPlugin {
         //massive stats
         MassiveStats massive = new MassiveStats(this);
 
+
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         if (version == 7) {
             P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
@@ -157,6 +159,9 @@ public class P extends MPlugin {
         } else if (version == 8) {
             P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
             mc18 = true;
+        } else if (version > 8) {
+            useNonPacketParticles = true;
+            P.p.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
         }
 
         if (P.p.getConfig().getBoolean("enable-faction-flight")) {
