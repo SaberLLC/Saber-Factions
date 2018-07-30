@@ -124,7 +124,7 @@ public class CmdSeeChunk extends FCommand {
             }
             if (useParticles) {
                 if (P.p.useNonPacketParticles) {
-                    player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(0, -0.35, 0), 0,new Particle.DustOptions(Color.RED,1));
+                    player.spawnParticle(Particle.REDSTONE, loc, 0, new Particle.DustOptions(Color.RED, 1));
                 } else {
                     this.effect.display(0, 0, 0, 0, 1, loc, player);
                 }
