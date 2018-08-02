@@ -30,12 +30,12 @@ public class CmdChest extends FCommand {
             fme.sendMessage("This command is disabled!");
             return;
         }
-        Access access = fme.getFaction().getAccess(fme, PermissableAction.CHEST);
-        if (access.equals(Access.DENY)) {
+        // This permission check is way too explicit but it's clean
+        Access access = myFaction.getAccess(fme, PermissableAction.CHEST);
+        if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
             fme.msg(TL.GENERIC_NOPERMISSION, "chest");
+            return;
         }
-        //debug Bukkit.broadcastMessage(fme.getFaction().getUpgrade("Chest") + "");
-
         me.openInventory(fme.getFaction().getChest());
 
 
