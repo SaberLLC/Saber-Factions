@@ -29,6 +29,7 @@ public enum PermissableAction {
     SETHOME("sethome"),
     TERRITORY("territory"),
     ACCESS("access"),
+    HOME("home"),
     DISBAND("disband"),
     PROMOTE("promote"),
     SETWARP("setwarp"),
