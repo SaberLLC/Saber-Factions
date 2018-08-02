@@ -50,11 +50,12 @@ public class CmdInvite extends FCommand {
 
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
-            if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
-                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "invite");
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
                 return;
             }
         }
+
         if (myFaction.isInvited(target)) {
             fme.msg(TL.COMMAND_INVITE_ALREADYINVITED, target.getName());
             return;

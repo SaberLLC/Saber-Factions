@@ -360,10 +360,6 @@ public class FactionsPlayerListener implements Listener {
         return false;
     }
 
-
-
-
-
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
         initPlayer(event.getPlayer());

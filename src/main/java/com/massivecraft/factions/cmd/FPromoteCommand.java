@@ -38,20 +38,36 @@ public class FPromoteCommand extends FCommand {
             return;
         }
 
-        Access access = myFaction.getAccess(fme.getRole(), PermissableAction.PROMOTE);
-
-        // Well this is messy.
-        if (access == null || access == Access.UNDEFINED) {
-            if (!assertMinRole(Role.MODERATOR)) {
-                return;
-            }
-        } else if (access == Access.DENY) {
-            msg(TL.COMMAND_NOACCESS);
-            return;
-        }
-
         Role current = target.getRole();
         Role promotion = Role.getRelative(current, +relative);
+
+        // Now it ain't that messy
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.PROMOTE);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_NOPERMISSION, "manage ranks");
+                return;
+            }
+            if (target == fme) {
+                fme.msg(TL.COMMAND_PROMOTE_NOTSELF);
+                return;
+            }
+            // Don't allow people to manage role of their same rank
+            if (fme.getRole() == current) {
+                fme.msg(TL.COMMAND_PROMOTE_NOT_SAME);
+                return;
+            }
+            // Don't allow people to promote people to their same or higher rank.
+            if (fme.getRole().value <= promotion.value) {
+                fme.msg(TL.COMMAND_PROMOTE_NOT_ALLOWED);
+                return;
+            }
+        }
+        
+        if (promotion == null) {
+            fme.msg(TL.COMMAND_PROMOTE_NOTTHATPLAYER);
+            return;
+        }
 
         if (promotion == null) {
             fme.msg(TL.COMMAND_PROMOTE_NOTTHATPLAYER);

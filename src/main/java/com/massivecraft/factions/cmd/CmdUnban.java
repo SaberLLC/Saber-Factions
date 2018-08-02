@@ -26,21 +26,10 @@ public class CmdUnban extends FCommand {
 
     @Override
     public void perform() {
-        Access access = myFaction.getAccess(fme, PermissableAction.BAN);
-        if (access == Access.DENY) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "ban");
-            return;
-        }
-
-        // Can the player set the home for this faction?
-        // Check for ALLOW access as well before we check for role.
-        // TODO: no more duplicate code :(
-        if (access != Access.ALLOW) {
-            if (!Permission.BAN.has(sender) && !(assertMinRole(Role.MODERATOR))) {
-                return;
-            }
-        } else {
-            if (!Permission.BAN.has(sender, true)) {
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.BAN);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN && !Permission.BAN.has(sender, true)) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage bans");
                 return;
             }
         }

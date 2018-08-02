@@ -36,12 +36,13 @@ public class CmdTnt extends FCommand {
             return;
         }
 
-        Access access = fme.getFaction().getAccess(fme, PermissableAction.TNTBANK);
-        if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "tntbank");
-            return;
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.TNTBANK);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "use tnt bank");
+                return;
+            }
         }
-
 
         if (args.size() == 2) {
             if (args.get(0).equalsIgnoreCase("add") || args.get(0).equalsIgnoreCase("a")) {
