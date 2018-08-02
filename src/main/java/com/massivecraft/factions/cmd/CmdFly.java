@@ -54,9 +54,7 @@ public class CmdFly extends FCommand {
                             continue;
                         }
                     }
-                    if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
-                        continue;
-                    }
+                   
 
                     if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
                         // Actually, vanished players (such as admins) should not display particles to prevent others from knowing their vanished assistance for moderation.
