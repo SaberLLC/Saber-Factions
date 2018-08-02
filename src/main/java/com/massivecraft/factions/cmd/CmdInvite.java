@@ -65,24 +65,22 @@ public class CmdInvite extends FCommand {
         }
 
         myFaction.invite(target);
-        if (!target.isOnline()) {
-            return;
+        // Send the invitation to the target player when online, otherwise just ignore
+        if (target.isOnline()) {
+            // Tooltips, colors, and commands only apply to the string immediately before it.
+            FancyMessage message = new FancyMessage(fme.describeTo(target, true))
+                    .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
+                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag())
+                    .then(TL.COMMAND_INVITE_INVITEDYOU.toString())
+                    .color(ChatColor.YELLOW)
+                    .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
+                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag())
+                    .then(myFaction.describeTo(target)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
+                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag());
+
+            message.send(target.getPlayer());
         }
-
-        // Tooltips, colors, and commands only apply to the string immediately before it.
-        FancyMessage message = new FancyMessage(fme.describeTo(target, true))
-                .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag())
-                .then(TL.COMMAND_INVITE_INVITEDYOU.toString())
-                .color(ChatColor.YELLOW)
-                .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag())
-                .then(myFaction.describeTo(target)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag());
-
-        message.send(target.getPlayer());
-
-        //you.msg("%s<i> invited you to %s", fme.describeTo(you, true), myFaction.describeTo(you));
+        
         myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), target.describeTo(myFaction));
     }
 
