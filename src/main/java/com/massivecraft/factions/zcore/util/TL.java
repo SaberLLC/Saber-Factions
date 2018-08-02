@@ -329,6 +329,7 @@ public enum TL {
     COMMAND_INVITE_INVITEDYOU("&chas invited you to join "),
     COMMAND_INVITE_INVITED("&c&l[!]&7 &c%1$s&7 invited &c%2$s&7 to your faction."),
     COMMAND_INVITE_ALREADYMEMBER("&c&l[!]&7 &c%1$s&7 is already a member of&c %2$s"),
+    COMMAND_INVITE_ALREADYINVITED("&c&l[!]&7 &c%1$s&7 has already been invited"),
     COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
     COMMAND_INVITE_BANNED("&c&l[!]&7 &7%1$s &cis banned &7from your Faction. &cNot &7sending an invite."),
 

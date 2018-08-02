@@ -48,12 +48,17 @@ public class CmdInvite extends FCommand {
             return;
         }
 
-        Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
-        if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
-            fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "invite");
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
+            if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "invite");
+                return;
+            }
+        }
+        if (myFaction.isInvited(target)) {
+            fme.msg(TL.COMMAND_INVITE_ALREADYINVITED, target.getName());
             return;
         }
-
         if (myFaction.isBanned(target)) {
             fme.msg(TL.COMMAND_INVITE_BANNED, target.getName());
             return;
