@@ -188,6 +188,7 @@ public enum TL {
     COMMAND_CHAT_MODE_TRUCE("&c&l[!] &5Truce &7only chat mode."),
     COMMAND_CHAT_MODE_FACTION("&c&l[!] &aFaction&7 only chat mode."),
     COMMAND_CHAT_MODE_MOD("&c&l[!] &dMod &7only chat mode."),
+    COMMAND_CHAT_MOD_ONLY("&c&l[!] &7Only Mods can talk through this chat mode."),
 
     COMMAND_CHATSPY_ENABLE("&c&l[!] &7You have &cenabled &7chat spying mode."),
     COMMAND_CHATSPY_ENABLELOG(" has ENABLED chat spying mode."),

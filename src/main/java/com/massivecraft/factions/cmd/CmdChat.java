@@ -37,8 +37,12 @@ public class CmdChat extends FCommand {
 
         if (modeString != null) {
             modeString = modeString.toLowerCase();
-            if (modeString.startsWith("m")) {
+            // Only allow Mods and higher rank to switch to this channel.
+            if (modeString.startsWith("m") && fme.getRole().isAtLeast(Role.MODERATOR)) {
                 modeTarget = ChatMode.MOD;
+            } else if (modeString.startsWith("m") && !fme.getRole().isAtLeast(Role.MODERATOR)) {
+                msg(TL.COMMAND_CHAT_MOD_ONLY);
+                return;
             } else if (modeString.startsWith("p")) {
                 modeTarget = ChatMode.PUBLIC;
             } else if (modeString.startsWith("a")) {
