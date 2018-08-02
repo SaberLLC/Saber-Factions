@@ -58,6 +58,14 @@ public class CmdFly extends FCommand {
                         continue;
                     }
 
+                    if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
+                        // Actually, vanished players (such as admins) should not display particles to prevent others from knowing their vanished assistance for moderation.
+                        // But we can keep it as a config.
+                        if (P.p.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
+                            return;
+                        }
+                        continue;
+                    }
                     if (P.p.useNonPacketParticles) {
                         // 1.9+ based servers will use the built in particleAPI instead of packet based.
                         // any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
