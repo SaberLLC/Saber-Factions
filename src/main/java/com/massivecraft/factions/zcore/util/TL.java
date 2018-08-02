@@ -188,6 +188,7 @@ public enum TL {
     COMMAND_CHAT_MODE_TRUCE("&c&l[!] &5Truce &7only chat mode."),
     COMMAND_CHAT_MODE_FACTION("&c&l[!] &aFaction&7 only chat mode."),
     COMMAND_CHAT_MODE_MOD("&c&l[!] &dMod &7only chat mode."),
+    COMMAND_CHAT_MOD_ONLY("&c&l[!] &7Only Mods can talk through this chat mode."),
 
     COMMAND_CHATSPY_ENABLE("&c&l[!] &7You have &cenabled &7chat spying mode."),
     COMMAND_CHATSPY_ENABLELOG(" has ENABLED chat spying mode."),
@@ -329,6 +330,7 @@ public enum TL {
     COMMAND_INVITE_INVITEDYOU("&chas invited you to join "),
     COMMAND_INVITE_INVITED("&c&l[!]&7 &c%1$s&7 invited &c%2$s&7 to your faction."),
     COMMAND_INVITE_ALREADYMEMBER("&c&l[!]&7 &c%1$s&7 is already a member of&c %2$s"),
+    COMMAND_INVITE_ALREADYINVITED("&c&l[!]&7 &c%1$s&7 has already been invited"),
     COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
     COMMAND_INVITE_BANNED("&c&l[!]&7 &7%1$s &cis banned &7from your Faction. &cNot &7sending an invite."),
 
@@ -635,6 +637,7 @@ public enum TL {
     COMMAND_STEALTH_DESCRIPTION("Enable and Disable Stealth Mode"),
     COMMAND_STEALTH_ENABLE(    "&2Stealth &8» &7You will no longer disable nearby players fly."),
     COMMAND_STEALTH_DISABLE("&2Stealth &8» &7You will now disable other nearby players fly."),
+    COMMAND_STEALTH_MUSTBEMEMBER("&2Stealth &8» &4You must be in a faction to use this command"),
 
     COMMAND_STUCK_TIMEFORMAT("m 'minutes', s 'seconds.'"),
     COMMAND_STUCK_CANCELLED("<a>Teleport cancelled because you were damaged"),

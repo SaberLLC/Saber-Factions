@@ -63,7 +63,13 @@ public class FactionsChatListener implements Listener {
                         fplayer.sendMessage("[MCspy]: " + message);
                     }
                 }
+            } else {
+                // Just in case player gets demoted while in faction chat.
+                me.msg(TL.COMMAND_CHAT_MOD_ONLY);
+                event.setCancelled(true);
+                return;
             }
+
 
             Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("Mod Chat: " + message));
 
