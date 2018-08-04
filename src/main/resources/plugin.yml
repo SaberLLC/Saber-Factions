@@ -322,3 +322,5 @@ permissions:
     description: Enter faction stealth mode
   factions.coords:
     description: broadcast your coords to the player
+  factions.chest:
+    description: Open virtual shared faction chest
