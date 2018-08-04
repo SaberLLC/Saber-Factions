@@ -40,22 +40,11 @@ public class CmdSethome extends FCommand {
             return;
         }
 
-        Access access = faction.getAccess(fme, PermissableAction.SETHOME);
-        if (access == Access.DENY) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "sethome");
-            return;
-        }
-
-        // If player does not have allow run extra permission checks
-        if (access != Access.ALLOW) {
-            if (faction == myFaction) {
-                if (!assertMinRole(Role.MODERATOR)) {
-                    return;
-                }
-            } else {
-                if (!Permission.SETHOME_ANY.has(sender, true)) {
-                    return;
-                }
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.SETHOME);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN && !Permission.SETHOME_ANY.has(sender, true)) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "set home");
+                return;
             }
         }
 

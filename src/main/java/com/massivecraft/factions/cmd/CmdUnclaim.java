@@ -36,14 +36,12 @@ public class CmdUnclaim extends FCommand {
         final Faction forFaction = this.argAsFaction(1, myFaction); // Default to own
 
         if (!fme.isAdminBypassing()) {
-            Access access = forFaction.getAccess(fme, PermissableAction.TERRITORY);
-            if (access == Access.DENY) {
-                fme.msg(TL.GENERIC_NOPERMISSION, "change faction territory!");
+            Access access = myFaction.getAccess(fme, PermissableAction.TERRITORY);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage faction territory");
                 return;
             }
         }
-
-
 
         if (radius < 1) {
             msg(TL.COMMAND_CLAIM_INVALIDRADIUS);

@@ -21,20 +21,15 @@ public class CmdStealth extends FCommand {
     }
 
     public void perform() {
-        //Grabs Faction
-        Faction faction = fme.getFaction();
-
-        if (faction != null && !faction.getId().equalsIgnoreCase("0") && !faction.getId().equalsIgnoreCase("none") && !faction.getId().equalsIgnoreCase("safezone") && !faction.getId().equalsIgnoreCase("warzone")) {
-            //Grabs Boolean From FPlayer
+        if (myFaction != null && !myFaction.isWilderness() && !myFaction.isSafeZone() && !myFaction.isWarZone() && myFaction.isNormal()) {
             fme.setStealth(!fme.isStealthEnabled());
-            //Sends Enable/Disable Message
+            // Sends Enable/Disable Message
             fme.msg(fme.isStealthEnabled() ? TL.COMMAND_STEALTH_ENABLE : TL.COMMAND_STEALTH_DISABLE);
-
         } else {
-            //Send "Needed Faction" Message
-            fme.sendMessage(ChatColor.RED + "You must be in a faction to use this command");
+            fme.msg(TL.COMMAND_STEALTH_MUSTBEMEMBER);
         }
     }
+
     @Override
     public TL getUsageTranslation() {
         return TL.COMMAND_STEALTH_DESCRIPTION;

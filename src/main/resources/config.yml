@@ -65,6 +65,7 @@ enable-faction-flight: true
 ffly:
   Particles:
     Enabled: true
+    Enable-While-Vanished: true
   AutoEnable: true #If set to true, fly will automatically enable when walking into your own chunk.
 
 

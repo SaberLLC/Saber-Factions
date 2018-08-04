@@ -30,14 +30,14 @@ public class CmdFWarp extends FCommand {
     @Override
     public void perform() {
         //TODO: check if in combat.
-
-        // Check for access first.
-        Access access = myFaction.getAccess(fme, PermissableAction.WARP);
-
-        if (access == Access.DENY) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "warp");
-            return;
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.WARP);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "use warps");
+                return;
+            }
         }
+
 
         if (args.size() == 0) {
             WarpGUI warpGUI = new WarpGUI(fme);

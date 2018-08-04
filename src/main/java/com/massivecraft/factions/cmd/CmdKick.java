@@ -73,38 +73,29 @@ public class CmdKick extends FCommand {
             return;
         }
 
-        // players with admin-level "disband" permission can bypass these requirements
-        if (!Permission.KICK_ANY.has(sender)) {
-
+        // This permission check has been cleaned to be more understandable and logical
+        // Unless is admin, 
+        // - Check for the kick permission.
+        // - Make sure the player is in the faction.
+        // - Make sure the kicked player has lower rank than the kicker.
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.KICK);
-            if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
                 fme.msg(TL.GENERIC_NOPERMISSION, "kick");
                 return;
             }
-
             if (toKickFaction != myFaction) {
                 msg(TL.COMMAND_KICK_NOTMEMBER, toKick.describeTo(fme, true), myFaction.describeTo(fme));
                 return;
             }
-
-            // Check for Access before we check for Role.
-            if (access != Access.ALLOW && toKick.getRole().value >= fme.getRole().value) {
+            if (toKick.getRole().value >= fme.getRole().value) {
                 msg(TL.COMMAND_KICK_INSUFFICIENTRANK);
                 return;
             }
-
             if (!Conf.canLeaveWithNegativePower && toKick.getPower() < 0) {
                 msg(TL.COMMAND_KICK_NEGATIVEPOWER);
                 return;
             }
-        }
-
-        Access access = myFaction.getAccess(fme, PermissableAction.KICK);
-        // This statement allows us to check if they've specifically denied it, or default to
-        // the old setting of allowing moderators to kick
-        if (access == Access.DENY || (access == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "kick");
-            return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
