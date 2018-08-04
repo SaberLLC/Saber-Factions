@@ -34,10 +34,14 @@ public class CmdTntFill extends FCommand {
 
     @Override
     public void perform() {
-        Access access = fme.getFaction().getAccess(fme, PermissableAction.TNTFILL);
-        if (access.equals(Access.DENY)) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "tntfill");
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.TNTFILL);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "use tnt fill");
+                return;
+            }
         }
+
 
 
         msg(TL.COMMAND_TNTFILL_HEADER);

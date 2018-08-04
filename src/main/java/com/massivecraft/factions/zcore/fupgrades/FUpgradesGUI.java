@@ -37,22 +37,29 @@ public class FUpgradesGUI implements Listener {
             inventory.setItem(dummySlots.get(i), dummyItem);
         }
         ItemStack[] items = buildItems(fme);
-
         List<Integer> cropSlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.Crops.CropItem.slots");
-        for (int i = 0; i <= cropSlots.size() - 1; i++) {
-            inventory.setItem(cropSlots.get(i), items[2]);
-        }
         List<Integer> spawnerSlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.Spawners.SpawnerItem.slots");
-        for (int i = 0; i <= spawnerSlots.size() - 1; i++) {
-            inventory.setItem(spawnerSlots.get(i), items[1]);
-        }
         List<Integer> expSlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.EXP.EXPItem.slots");
-        for (int i = 0; i <= expSlots.size() - 1; i++) {
-            inventory.setItem(expSlots.get(i), items[0]);
-        }
         List<Integer> chestSlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.Chest.ChestItem.slots");
-        for (int i = 0; i <= chestSlots.size() - 1; i++) {
-            inventory.setItem(chestSlots.get(i), items[3]);
+        if (cropSlots != -1) {
+            for (int i = 0; i <= cropSlots.size() - 1; i++) {
+                inventory.setItem(cropSlots.get(i), items[2]);
+            }
+        }
+        if (spawnerSlots != -1) {
+            for (int i = 0; i <= spawnerSlots.size() - 1; i++) {
+                inventory.setItem(spawnerSlots.get(i), items[1]);
+            }
+        }
+        if (expSlots != -1) {
+            for (int i = 0; i <= expSlots.size() - 1; i++) {
+                inventory.setItem(expSlots.get(i), items[0]);
+            }
+        }
+        if (chestSlots != -1) {
+            for (int i = 0; i <= chestSlots.size() - 1; i++) {
+                inventory.setItem(chestSlots.get(i), items[3]);
+            }
         }
         fme.getPlayer().openInventory(inventory);
     }

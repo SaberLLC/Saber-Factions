@@ -39,17 +39,15 @@ public class CmdBan extends FCommand {
             return;
         }
 
-        // Can the player ban for this faction?
-        // Check for ALLOW access as well before we check for role.
-        if (access != Access.ALLOW) {
-            if (!Permission.BAN.has(sender, true) || !assertMinRole(Role.MODERATOR)) {
-                return;
-            }
-        } else {
-            if (!Permission.BAN.has(sender, true)) {
+        // Adds bypass to admins and clean permission check
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.BAN);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "ban");
                 return;
             }
         }
+
 
         // Good on permission checks. Now lets just ban the player.
         FPlayer target = argAsFPlayer(0);
