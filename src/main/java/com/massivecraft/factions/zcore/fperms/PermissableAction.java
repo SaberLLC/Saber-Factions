@@ -103,17 +103,37 @@ public enum PermissableAction {
         if (access == null) {
             access = Access.UNDEFINED;
         }
-        DyeColor dyeColor = null;
-        try {
-            dyeColor = DyeColor.valueOf(section.getString("access." + access.name().toLowerCase()));
-        } catch (Exception exception) {
-        }
 
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
 
-        if (dyeColor != null) {
-            item.setDurability(dyeColor.getWoolData());
+
+        String accessValue = null;
+
+        if (access.equals(Access.ALLOW)) {
+            accessValue = "allow";
+        } else if (access.equals(Access.DENY)) {
+            accessValue = "deny";
+        } else if (access.equals(Access.UNDEFINED)) {
+            accessValue = "undefined";
+        }
+
+
+        // If under the 1.13 version we will use the colorable option.
+        if (!P.p.mc113) {
+            DyeColor dyeColor = null;
+
+            try {
+                dyeColor = DyeColor.valueOf(section.getString("access." + access.name().toLowerCase()));
+            } catch (Exception exception) {
+            }
+
+            if (dyeColor != null) {
+                item.setDurability(dyeColor.getWoolData());
+            }
+        } else {
+            // so this is in 1.13 mode, our config will automatically be updated to a material instead of color because of it being removed in the new api
+            item.setType(Material.valueOf(P.p.getConfig().getString("fperm-gui.action.access." + accessValue)));
         }
 
         for (String loreLine : section.getStringList("placeholder-item.lore")) {
