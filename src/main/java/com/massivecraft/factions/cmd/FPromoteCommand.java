@@ -63,7 +63,7 @@ public class FPromoteCommand extends FCommand {
                 return;
             }
         }
-        
+
         if (promotion == null) {
             fme.msg(TL.COMMAND_PROMOTE_NOTTHATPLAYER);
             return;

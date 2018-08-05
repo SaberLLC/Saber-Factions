@@ -128,8 +128,7 @@ public class CmdUnclaim extends FCommand {
         }
 
 
-
-        if (targetFaction.getAccess(fme,PermissableAction.TERRITORY) == Access.DENY) {
+        if (targetFaction.getAccess(fme, PermissableAction.TERRITORY) == Access.DENY) {
             return false;
         }
 

@@ -43,7 +43,6 @@ public class CmdTntFill extends FCommand {
         }
 
 
-
         msg(TL.COMMAND_TNTFILL_HEADER);
         int radius = argAsInt(0, 16);
         int amount = argAsInt(1, 16);

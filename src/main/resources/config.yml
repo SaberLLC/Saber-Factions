@@ -12,6 +12,8 @@
 # It's suggested that you only turn this on at the direction of a developer.
 debug: false
 
+
+
 # Prevent find factions exploit
 # This will help limit how many times a player can be sent a map of factions.
 # Set this to the cooldown you want, in miliseconds, for a map to be shown to a player.

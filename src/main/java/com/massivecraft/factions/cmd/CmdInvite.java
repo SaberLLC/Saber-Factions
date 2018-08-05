@@ -81,7 +81,7 @@ public class CmdInvite extends FCommand {
 
             message.send(target.getPlayer());
         }
-        
+
         myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), target.describeTo(myFaction));
     }
 

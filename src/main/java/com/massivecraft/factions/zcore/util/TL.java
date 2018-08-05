@@ -505,6 +505,8 @@ public enum TL {
     COMMAND_NOACCESS("&c&l[!]&7 You don't have access to that."),
     COMMAND_PROMOTE_NOTTHATPLAYER("&c&l[!]&7 That player &ccannot&7 be promoted."),
     COMMAND_PROMOTE_NOT_ALLOWED("&c&l[!]&7 You cannot promote to the same rank as yourself!"),
+    COMMAND_PROMOTE_NOTSELF("&c&l[!]&7 You cannot manage your own rank."),
+    COMMAND_PROMOTE_NOT_SAME("&c&l[!]&7 You cannot promote to the same rank as yourself!"),
 
 
     COMMAND_POWER_TOSHOW("to show player power info"),

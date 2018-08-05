@@ -80,7 +80,7 @@ public class FactionsBlockListener implements Listener {
         }
         if (event.getBlock().getType() == Material.LEGACY_MOB_SPAWNER) {
             if (!fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(fme, PermissableAction.SPAWNER);
+                Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
                 if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
                     fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");
                     return;

@@ -33,11 +33,6 @@ public class CmdBan extends FCommand {
 
     @Override
     public void perform() {
-        Access access = myFaction.getAccess(fme, PermissableAction.BAN);
-        if (access == Access.DENY) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "ban");
-            return;
-        }
 
         // Adds bypass to admins and clean permission check
         if (!fme.isAdminBypassing()) {

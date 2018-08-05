@@ -102,7 +102,6 @@ permissions:
       factions.monitorlogins: true
       factions.top: true
       factions.togglealliancechat: true
-      factions.vault: true
       factions.mapheight: true
       factions.ban: true
       factions.fly: true
