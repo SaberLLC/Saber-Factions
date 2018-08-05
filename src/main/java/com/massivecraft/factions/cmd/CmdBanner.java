@@ -32,7 +32,7 @@ public class CmdBanner extends FCommand {
     @Override
     public void perform() {
         if (!P.p.getConfig().getBoolean("fbanners.Enabled")) {
-
+            msg(TL.COMMAND_BANNER_DISABLED);
             return;
         }
         if (!fme.hasMoney(P.p.getConfig().getInt("fbanners.Banner-Cost", 5000))) {
