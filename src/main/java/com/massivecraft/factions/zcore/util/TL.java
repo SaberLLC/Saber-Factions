@@ -327,7 +327,7 @@ public enum TL {
     COMMAND_INVITE_TOINVITE("to invite someone"),
     COMMAND_INVITE_FORINVITE("for inviting someone"),
     COMMAND_INVITE_CLICKTOJOIN("Click to join!"),
-    COMMAND_INVITE_INVITEDYOU("&chas invited you to join "),
+    COMMAND_INVITE_INVITEDYOU(" &chas invited you to join "),
     COMMAND_INVITE_INVITED("&c&l[!]&7 &c%1$s&7 invited &c%2$s&7 to your faction."),
     COMMAND_INVITE_ALREADYMEMBER("&c&l[!]&7 &c%1$s&7 is already a member of&c %2$s"),
     COMMAND_INVITE_ALREADYINVITED("&c&l[!]&7 &c%1$s&7 has already been invited"),
@@ -335,7 +335,7 @@ public enum TL {
     COMMAND_INVITE_BANNED("&c&l[!]&7 &7%1$s &cis banned &7from your Faction. &cNot &7sending an invite."),
 
     COMMAND_JOIN_CANNOTFORCE("&c&l[!]&7 You&c do not&7 have permission to &cmove other players&7 into a faction."),
-    COMMAND_JOIN_SYSTEMFACTION("&c&l[!]&7 Players may nly join &cnormal factions&7. This is a &c&lsystem faction&7."),
+    COMMAND_JOIN_SYSTEMFACTION("&c&l[!]&7 Players may only join &cnormal factions&7. This is a &c&lsystem faction&7."),
     COMMAND_JOIN_ALREADYMEMBER("&c&l[!]&7 &c%1$s %2$s already a member of&c %3$s"),
     COMMAND_JOIN_ATLIMIT(" &c&l[!]&7 The faction &c%1$s &7is at the limit of&c %2$d&7 members, so&c %3$s&7 cannot currently join."),
     COMMAND_JOIN_INOTHERFACTION("&c&l[!]&7 &c%1$s &7must leave&c %2$s &7current faction first."),
