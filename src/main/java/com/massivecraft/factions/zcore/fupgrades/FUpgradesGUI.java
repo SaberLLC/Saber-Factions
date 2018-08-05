@@ -238,6 +238,8 @@ public class FUpgradesGUI implements Listener {
         for (int i = 0; i <= expLore.size() - 1; i++) {
             expLore.set(i, expLore.get(i).replace("{level}", expLevel + ""));
         }
+        Bukkit.broadcastMessage(P.p.getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Type"));
+
         ItemStack expItem = P.p.createItem(expMaterial, expAmt, expData, expName, expLore);
         if (expLevel >= 1) {
             ItemMeta itemMeta = expItem.getItemMeta();

@@ -26,6 +26,7 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -55,6 +56,7 @@ public class P extends MPlugin {
     public CmdAutoHelp cmdAutoHelp;
     public boolean mc17 = false;
     public boolean mc18 = false;
+    public boolean mc113 = false;
     public boolean useNonPacketParticles = false;
     public boolean factionsFlight = false;
     ItemStack item = new ItemStack(Material.CAKE);
@@ -159,7 +161,13 @@ public class P extends MPlugin {
         } else if (version == 8) {
             P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
             mc18 = true;
-        } else if (version > 8) {
+        } else if (version == 13) {
+            P.p.log("Minecraft Version 1.13 found, New Items will be used.");
+            mc113 = true;
+            changeItemIDSInConfig();
+        }
+
+        if (version > 8) {
             useNonPacketParticles = true;
             P.p.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
         }
@@ -215,6 +223,50 @@ public class P extends MPlugin {
         if (mvdw != null && mvdw.isEnabled()) {
             this.mvdwPlaceholderAPIManager = true;
             log(Level.INFO, "Found MVdWPlaceholderAPI. Adding hooks.");
+        }
+    }
+
+
+    public void changeItemIDSInConfig() {
+
+
+        P.p.log("Starting conversion of legacy material in config to 1.13 materials.");
+
+
+        replaceStringInConfig("fperm-gui.relation.materials.recruit", "WOOD_SWORD", "WOODEN_SWORD");
+
+        replaceStringInConfig("fperm-gui.relation.materials.normal", "GOLD_SWORD", "GOLDEN_SWORD");
+
+        replaceStringInConfig("fperm-gui.relation.materials.ally", "GOLD_AXE", "GOLDEN_AXE");
+
+        replaceStringInConfig("fperm-gui.relation.materials.neutral", "WOOD_AXE", "WOODEN_AXE");
+
+        ConfigurationSection actionMaterialsConfigSection = getConfig().getConfigurationSection("fperm-gui.action.materials");
+
+        Set<String> actionMaterialKeys = actionMaterialsConfigSection.getKeys(true);
+
+
+        for (String key : actionMaterialKeys) {
+            replaceStringInConfig("fperm-gui.action.materials." + key, "STAINED_GLASS", "GRAY_STAINED_GLASS");
+        }
+
+        replaceStringInConfig("fperm-gui.dummy-items.0.material", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
+
+        replaceStringInConfig("fwarp-gui.dummy-items.0.material", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
+
+        replaceStringInConfig("fupgrades.MainMenu.DummyItem.Type", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
+
+        replaceStringInConfig("fupgrades.MainMenu.EXP.EXPItem.Type", "EXP_BOTTLE", "EXPERIENCE_BOTTLE");
+
+        replaceStringInConfig("fupgrades.MainMenu.Spawners.SpawnerItem.Type", "MOB_SPAWNER", "SPAWNER");
+
+
+    }
+
+    public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
+        if (getConfig().getString(path).equals(stringToReplace)) {
+            P.p.log("Replacing legacy material '" + stringToReplace + "' with '" + stringToReplace + "' for config node '" + path + "'.");
+            getConfig().set(path, replacementString);
         }
     }
 
