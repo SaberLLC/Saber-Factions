@@ -260,12 +260,18 @@ public class P extends MPlugin {
 
         replaceStringInConfig("fupgrades.MainMenu.Spawners.SpawnerItem.Type", "MOB_SPAWNER", "SPAWNER");
 
+        replaceStringInConfig("fperm-gui.action.access.allow", "LIME", "LIME_STAINED_GLASS");
+
+        replaceStringInConfig("fperm-gui.action.access.deny", "RED", "RED_STAINED_GLASS");
+
+        replaceStringInConfig("fperm-gui.action.access.undefined", "CYAN", "CYAN_STAINED_GLASS");
+
 
     }
 
     public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
         if (getConfig().getString(path).equals(stringToReplace)) {
-            P.p.log("Replacing legacy material '" + stringToReplace + "' with '" + stringToReplace + "' for config node '" + path + "'.");
+            P.p.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
             getConfig().set(path, replacementString);
         }
     }
