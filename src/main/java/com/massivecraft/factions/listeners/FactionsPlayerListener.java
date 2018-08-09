@@ -200,13 +200,15 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand().getType() != null) {
+
+            if (player.getItemInHand().getType().toString().toUpperCase().contains("DOOR")) {
+                return false;
+            }
+
             switch (player.getItemInHand().getType()) {
                 case CHEST:
-                case LEGACY_TRAP_DOOR:
                 case TRAPPED_CHEST:
                 case SIGN:
-                case LEGACY_WOOD_DOOR:
-                case IRON_DOOR:
                     return false;
                 default:
                     break;
@@ -215,43 +217,80 @@ public class FactionsPlayerListener implements Listener {
 
         PermissableAction action = null;
 
-        switch (block.getType()) {
-            case LEVER:
-                action = PermissableAction.LEVER;
-                break;
-            case STONE_BUTTON:
-            case LEGACY_WOOD_BUTTON:
-                action = PermissableAction.BUTTON;
-                break;
-            case DARK_OAK_DOOR:
-            case ACACIA_DOOR:
-            case BIRCH_DOOR:
-            case IRON_DOOR:
-            case JUNGLE_DOOR:
-            case SPRUCE_DOOR:
-            case LEGACY_TRAP_DOOR:
-            case LEGACY_WOOD_DOOR:
-            case LEGACY_WOODEN_DOOR:
-            case LEGACY_FENCE_GATE:
-            case ACACIA_FENCE_GATE:
-            case BIRCH_FENCE_GATE:
-            case DARK_OAK_FENCE_GATE:
-            case JUNGLE_FENCE_GATE:
-            case SPRUCE_FENCE_GATE:
-                action = PermissableAction.DOOR;
-                break;
-            case CHEST:
-            case ENDER_CHEST:
-            case TRAPPED_CHEST:
-                action = PermissableAction.CONTAINER;
-                break;
-            default:
-                // Check for doors that might have diff material name in old version.
-                if (block.getType().name().contains("DOOR")) {
+        if (P.p.mc113) {
+            switch (block.getType()) {
+                case LEVER:
+                    action = PermissableAction.LEVER;
+                    break;
+                case STONE_BUTTON:
+                case LEGACY_WOOD_BUTTON:
+                    action = PermissableAction.BUTTON;
+                    break;
+                case DARK_OAK_DOOR:
+                case ACACIA_DOOR:
+                case BIRCH_DOOR:
+                case IRON_DOOR:
+                case JUNGLE_DOOR:
+                case SPRUCE_DOOR:
+                case LEGACY_TRAP_DOOR:
+                case LEGACY_WOOD_DOOR:
+                case LEGACY_WOODEN_DOOR:
+                case LEGACY_FENCE_GATE:
+                case ACACIA_FENCE_GATE:
+                case BIRCH_FENCE_GATE:
+                case DARK_OAK_FENCE_GATE:
+                case JUNGLE_FENCE_GATE:
+                case SPRUCE_FENCE_GATE:
                     action = PermissableAction.DOOR;
-                }
-                break;
+                    break;
+                case CHEST:
+                case ENDER_CHEST:
+                case TRAPPED_CHEST:
+                    action = PermissableAction.CONTAINER;
+                    break;
+                default:
+                    // Check for doors that might have diff material name in old version.
+                    if (block.getType().name().contains("DOOR")) {
+                        action = PermissableAction.DOOR;
+                    }
+                    break;
+            }
+        } else {
+            if (block.getType().toString().toUpperCase().contains("BUTTON")) {
+                action = PermissableAction.BUTTON;
+            }
+
+            switch (block.getType()) {
+                case LEVER:
+                    action = PermissableAction.LEVER;
+                    break;
+                case DARK_OAK_DOOR:
+                case ACACIA_DOOR:
+                case BIRCH_DOOR:
+                case IRON_DOOR:
+                case JUNGLE_DOOR:
+                case SPRUCE_DOOR:
+                case ACACIA_FENCE_GATE:
+                case BIRCH_FENCE_GATE:
+                case DARK_OAK_FENCE_GATE:
+                case JUNGLE_FENCE_GATE:
+                case SPRUCE_FENCE_GATE:
+                    action = PermissableAction.DOOR;
+                    break;
+                case CHEST:
+                case ENDER_CHEST:
+                case TRAPPED_CHEST:
+                    action = PermissableAction.CONTAINER;
+                    break;
+                default:
+                    // Check for doors that might have diff material name in old version.
+                    if (block.getType().name().contains("DOOR")) {
+                        action = PermissableAction.DOOR;
+                    }
+                    break;
+            }
         }
+
         // We only care about some material types.
         if (otherFaction.hasPlayersOnline()) {
             if (!Conf.territoryProtectedMaterials.contains(material)) {
