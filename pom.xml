@@ -297,7 +297,7 @@
         <dependency>
             <groupId>com.drtshock</groupId>
             <artifactId>PlayerVaultsX</artifactId>
-            <version>4.0.6-SNAPSHOT</version>
+            <version>4.0.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

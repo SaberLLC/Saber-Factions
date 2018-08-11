@@ -52,7 +52,15 @@ public class CmdBanner extends FCommand {
 
 
         } else {
-            warBanner = P.p.createItem(Material.LEGACY_BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+            Material banner;
+            if (!P.p.mc113) {
+                banner = Material.valueOf("BANNER");
+            } else {
+                banner = Material.valueOf("LEGACY_BANNER");
+            }
+
+
+            warBanner = P.p.createItem(banner, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
         }
         fme.msg(TL.COMMAND_BANNER_SUCCESS);
         warBanner.setAmount(1);
