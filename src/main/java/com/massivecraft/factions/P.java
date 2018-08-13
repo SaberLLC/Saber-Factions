@@ -229,7 +229,7 @@ public class P extends MPlugin {
 
     private void setupMultiversionMaterials() {
         if (mc113) {
-            BANNER = Material.valueOf("BANNER");
+            BANNER = Material.valueOf("LEGACY_BANNER");
             CROPS = Material.valueOf("LEGACY_CROPS");
             SUGAR_CANE_BLOCK = Material.valueOf("LEGACY_SUGAR_CANE_BLOCK");
             REDSTONE_LAMP_ON = Material.valueOf("LEGACY_REDSTONE_LAMP_ON");
@@ -244,7 +244,7 @@ public class P extends MPlugin {
             NETHER_FENCE = Material.valueOf("LEGACY_NETHER_FENCE");
             FENCE = Material.valueOf("LEGACY_FENCE");
         } else {
-            BANNER = Material.valueOf("LEGACY_BANNER");
+            BANNER = Material.valueOf("BANNER");
             CROPS = Material.valueOf("CROPS");
             SUGAR_CANE_BLOCK = Material.valueOf("SUGAR_CANE_BLOCK");
             REDSTONE_LAMP_ON = Material.valueOf("REDSTONE_LAMP_ON");
