@@ -228,7 +228,7 @@ public class P extends MPlugin {
     public Material FENCE;
 
     private void setupMultiversionMaterials() {
-        if (!mc113) {
+        if (mc113) {
             BANNER = Material.valueOf("BANNER");
             CROPS = Material.valueOf("LEGACY_CROPS");
             SUGAR_CANE_BLOCK = Material.valueOf("LEGACY_SUGAR_CANE_BLOCK");
