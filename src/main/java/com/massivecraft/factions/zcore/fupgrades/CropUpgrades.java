@@ -61,11 +61,11 @@ public class CropUpgrades implements Listener {
 
 
 
-        if (below.getType() == P.p.SUGARCANEBLOCK) {
+        if (below.getType() == P.p.SUGAR_CANE_BLOCK) {
 
             org.bukkit.block.Block above = e.getBlock().getLocation().add(0, 1, 0).getBlock();
             if (above.getType() == Material.AIR && above.getLocation().add(0, -2, 0).getBlock().getType() != Material.AIR) {
-                above.setType(P.p.SUGARCANEBLOCK);
+                above.setType(P.p.SUGAR_CANE_BLOCK);
             }
 
         }
