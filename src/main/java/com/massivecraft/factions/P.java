@@ -179,6 +179,8 @@ public class P extends MPlugin {
             factionsFlight = true;
         }
 
+        setupMultiversionMaterials();
+
         // Register Event Handlers
         getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
         getServer().getPluginManager().registerEvents(new FactionsChatListener(this), this);
