@@ -69,6 +69,7 @@ public class P extends MPlugin {
 
 
 
+
     public P() {
         p = this;
     }
@@ -205,6 +206,59 @@ public class P extends MPlugin {
         setupPlaceholderAPI();
         postEnable();
         this.loadSuccessful = true;
+    }
+
+
+    //multiversion material fields
+    public Material SUGAR_CANE_BLOCK;
+    public Material BANNER;
+    public Material CROPS;
+    public Material REDSTONE_LAMP_ON;
+    public Material STAINED_GLASS;
+    public Material STATIONARY_WATER;
+    public Material STAINED_CLAY;
+    public Material WOOD_BUTTON;
+    public Material SOIL;
+    public Material MOB_SPANWER;
+    public Material THIN_GLASS;
+    public Material IRON_FENCE;
+    public Material NETHER_FENCE;
+    public Material FENCE;
+
+    private void setupMultiversionMaterials() {
+        if (!mc113) {
+            BANNER = Material.valueOf("BANNER");
+            CROPS = Material.valueOf("LEGACY_CROPS");
+            SUGAR_CANE_BLOCK = Material.valueOf("LEGACY_SUGAR_CANE_BLOCK");
+            REDSTONE_LAMP_ON = Material.valueOf("LEGACY_REDSTONE_LAMP_ON");
+            STAINED_GLASS = Material.valueOf("LEGACY_STAINED_GLASS");
+            STATIONARY_WATER = Material.valueOf("LEGACY_STATIONARY_WATER");
+            STAINED_CLAY = Material.valueOf("LEGACY_STAINED_CLAY");
+            WOOD_BUTTON = Material.valueOf("LEGACY_WOOD_BUTTON");
+            SOIL = Material.valueOf("LEGACY_SOIL");
+            MOB_SPANWER = Material.valueOf("LEGACY_MOB_SPAWNER");
+            THIN_GLASS = Material.valueOf("LEGACY_THIN_GLASS");
+            IRON_FENCE = Material.valueOf("LEGACY_IRON_FENCE");
+            NETHER_FENCE = Material.valueOf("LEGACY_NETHER_FENCE");
+            FENCE = Material.valueOf("LEGACY_FENCE");
+        } else {
+            BANNER = Material.valueOf("LEGACY_BANNER");
+            CROPS = Material.valueOf("CROPS");
+            SUGAR_CANE_BLOCK = Material.valueOf("SUGAR_CANE_BLOCK");
+            REDSTONE_LAMP_ON = Material.valueOf("REDSTONE_LAMP_ON");
+            STAINED_GLASS = Material.valueOf("STAINED_GLASS");
+            STATIONARY_WATER = Material.valueOf("STATIONARY_WATER");
+            STAINED_CLAY = Material.valueOf("STAINED_CLAY");
+            WOOD_BUTTON = Material.valueOf("WOOD_BUTTON");
+            SOIL = Material.valueOf("SOIL");
+            MOB_SPANWER = Material.valueOf("MOB_SPAWNER");
+            THIN_GLASS = Material.valueOf("THIN_GLASS");
+            IRON_FENCE = Material.valueOf("IRON_FENCE");
+            NETHER_FENCE = Material.valueOf("NETHER_FENCE");
+            FENCE = Material.valueOf("FENCE");
+        }
+
+
     }
 
     private void setupPlaceholderAPI() {

@@ -78,7 +78,7 @@ public class FactionsBlockListener implements Listener {
         if (!fme.hasFaction()) {
             return;
         }
-        if (event.getBlock().getType() == Material.LEGACY_MOB_SPAWNER) {
+        if (event.getBlock().getType() == P.p.MOB_SPANWER) {
             if (!fme.isAdminBypassing()) {
                 Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
                 if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {

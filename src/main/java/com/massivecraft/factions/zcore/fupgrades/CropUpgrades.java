@@ -47,13 +47,9 @@ public class CropUpgrades implements Listener {
     private void growCrop(BlockGrowEvent e) {
 
         Material CROPS;
-        if (P.p.mc113) {
-            CROPS = Material.valueOf("LEGACY_CROPS");
-        } else {
-            CROPS = Material.valueOf("CROPS");
-        }
 
-        if (e.getBlock().getType().equals(CROPS)) {
+
+        if (e.getBlock().getType().equals(P.p.CROPS)) {
             e.setCancelled(true);
             Crops c = new Crops(CropState.RIPE);
             org.bukkit.block.BlockState bs = e.getBlock().getState();
@@ -61,19 +57,15 @@ public class CropUpgrades implements Listener {
             bs.update();
         }
         org.bukkit.block.Block below = e.getBlock().getLocation().subtract(0, 1, 0).getBlock();
-        Material SUGARCANEBLOCK;
-        if (P.p.mc113) {
-            SUGARCANEBLOCK = Material.valueOf("LEGACY_SUGAR_CANE_BLOCK");
-        } else {
-            SUGARCANEBLOCK = Material.valueOf("SUGAR_CANE_BLOCK");
-        }
 
 
-        if (below.getType() == SUGARCANEBLOCK) {
+
+
+        if (below.getType() == P.p.SUGARCANEBLOCK) {
 
             org.bukkit.block.Block above = e.getBlock().getLocation().add(0, 1, 0).getBlock();
             if (above.getType() == Material.AIR && above.getLocation().add(0, -2, 0).getBlock().getType() != Material.AIR) {
-                above.setType(SUGARCANEBLOCK);
+                above.setType(P.p.SUGARCANEBLOCK);
             }
 
         }

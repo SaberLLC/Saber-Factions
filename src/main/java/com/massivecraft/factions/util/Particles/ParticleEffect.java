@@ -1,5 +1,6 @@
 package com.massivecraft.factions.util.Particles;
 
+import com.massivecraft.factions.P;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -453,7 +454,7 @@ public enum ParticleEffect {
      */
     private static boolean isWater(Location location) {
         Material material = location.getBlock().getType();
-        return material == Material.WATER || material == Material.LEGACY_STATIONARY_WATER;
+        return material == Material.WATER || material == P.p.STATIONARY_WATER;
     }
 
     /**

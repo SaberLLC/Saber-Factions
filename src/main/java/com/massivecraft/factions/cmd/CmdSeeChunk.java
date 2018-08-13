@@ -131,7 +131,7 @@ public class CmdSeeChunk extends FCommand {
 
 
             } else {
-                Material type = blockY % 5 == 0 ? Material.LEGACY_REDSTONE_LAMP_ON : Material.LEGACY_STAINED_GLASS;
+                Material type = blockY % 5 == 0 ? P.p.REDSTONE_LAMP_ON : P.p.STAINED_GLASS;
                 VisualizeUtil.addLocation(player, loc, type);
             }
         }
