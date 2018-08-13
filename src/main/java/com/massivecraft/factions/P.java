@@ -59,13 +59,15 @@ public class P extends MPlugin {
     public boolean mc113 = false;
     public boolean useNonPacketParticles = false;
     public boolean factionsFlight = false;
-    ItemStack item = new ItemStack(Material.CAKE);
+
     // Persistence related
     private boolean locked = false;
     private Integer AutoLeaveTask = null;
     private boolean hookedPlayervaults;
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
+
+
 
     public P() {
         p = this;
