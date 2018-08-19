@@ -345,53 +345,54 @@ public class Conf {
         territoryEnemyDenyCommands.add("tpa");
 
 
-        //territoryProtectedMaterials.add(Material.LEGACY_WOODEN_DOOR);
-        //territoryProtectedMaterials.add(Material.LEGACY_TRAP_DOOR);
-        //territoryProtectedMaterials.add(Material.LEGACY_FENCE_GATE);
+
+        territoryProtectedMaterials.add(P.p.WOODEN_DOOR);
+        territoryProtectedMaterials.add(P.p.TRAP_DOOR);
+        territoryProtectedMaterials.add(P.p.FENCE_GATE);
         territoryProtectedMaterials.add(Material.DISPENSER);
         territoryProtectedMaterials.add(Material.CHEST);
         territoryProtectedMaterials.add(Material.FURNACE);
-        //territoryProtectedMaterials.add(Material.LEGACY_BURNING_FURNACE);
-        //territoryProtectedMaterials.add(Material.LEGACY_DIODE_BLOCK_OFF);
-        //territoryProtectedMaterials.add(Material.LEGACY_DIODE_BLOCK_ON);
+        territoryProtectedMaterials.add(P.p.BURNING_FURNACE);
+        territoryProtectedMaterials.add(P.p.DIODE_BLOCK_OFF);
+        territoryProtectedMaterials.add(P.p.DIODE_BLOCK_ON);
         territoryProtectedMaterials.add(Material.JUKEBOX);
         territoryProtectedMaterials.add(Material.BREWING_STAND);
-        //territoryProtectedMaterials.add(Material.LEGACY_ENCHANTMENT_TABLE);
+        territoryProtectedMaterials.add(P.p.ENCHANTMENT_TABLE);
         territoryProtectedMaterials.add(Material.CAULDRON);
-        //territoryProtectedMaterials.add(Material.LEGACY_SOIL);
+        territoryProtectedMaterials.add(P.p.ENCHANTMENT_TABLE);
         territoryProtectedMaterials.add(Material.BEACON);
         territoryProtectedMaterials.add(Material.ANVIL);
         territoryProtectedMaterials.add(Material.TRAPPED_CHEST);
         territoryProtectedMaterials.add(Material.DROPPER);
         territoryProtectedMaterials.add(Material.HOPPER);
 
-        //territoryDenyUseageMaterials.add(Material.LEGACY_FIREBALL);
+        territoryDenyUseageMaterials.add(P.p.FIREBALL);
         territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
         territoryDenyUseageMaterials.add(Material.BUCKET);
         territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
 
-        // territoryProtectedMaterialsWhenOffline.add(Material.LEGACY_WOODEN_DOOR);
-        // territoryProtectedMaterialsWhenOffline.add(Material.LEGACY_TRAP_DOOR);
-        //territoryProtectedMaterialsWhenOffline.add(Material.LEGACY_FENCE_GATE);
+        territoryProtectedMaterialsWhenOffline.add(P.p.WOODEN_DOOR);
+        territoryProtectedMaterialsWhenOffline.add(P.p.TRAP_DOOR);
+        territoryProtectedMaterialsWhenOffline.add(P.p.FENCE_GATE);
         territoryProtectedMaterialsWhenOffline.add(Material.DISPENSER);
         territoryProtectedMaterialsWhenOffline.add(Material.CHEST);
         territoryProtectedMaterialsWhenOffline.add(Material.FURNACE);
-        // territoryProtectedMaterialsWhenOffline.add(Material.LEGACY_BURNING_FURNACE);
-        // territoryProtectedMaterialsWhenOffline.add(Material.LEGACY_DIODE_BLOCK_OFF);
-        // territoryProtectedMaterialsWhenOffline.add(Material.LEGACY_DIODE_BLOCK_ON);
+        territoryProtectedMaterialsWhenOffline.add(P.p.BURNING_FURNACE);
+        territoryProtectedMaterialsWhenOffline.add(P.p.DIODE_BLOCK_OFF);
+        territoryProtectedMaterialsWhenOffline.add(P.p.DIODE_BLOCK_OFF);
         territoryProtectedMaterialsWhenOffline.add(Material.JUKEBOX);
         territoryProtectedMaterialsWhenOffline.add(Material.BREWING_STAND);
-        //   territoryProtectedMaterialsWhenOffline.add(Material.LEGACY_ENCHANTMENT_TABLE);
+        territoryProtectedMaterialsWhenOffline.add(P.p.ENCHANTMENT_TABLE);
         territoryProtectedMaterialsWhenOffline.add(Material.CAULDRON);
-        //    territoryProtectedMaterialsWhenOffline.add(Material.LEGACY_SOIL);
+        territoryProtectedMaterialsWhenOffline.add(P.p.SOIL);
         territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
         territoryProtectedMaterialsWhenOffline.add(Material.ANVIL);
         territoryProtectedMaterialsWhenOffline.add(Material.TRAPPED_CHEST);
         territoryProtectedMaterialsWhenOffline.add(Material.DROPPER);
         territoryProtectedMaterialsWhenOffline.add(Material.HOPPER);
 
-        // territoryDenyUseageMaterialsWhenOffline.add(Material.LEGACY_FIREBALL);
+        territoryDenyUseageMaterialsWhenOffline.add(P.p.FIREBALL);
         territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
         territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);

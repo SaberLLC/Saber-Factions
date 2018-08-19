@@ -212,20 +212,12 @@ public class P extends MPlugin {
 
 
     //multiversion material fields
-    public Material SUGAR_CANE_BLOCK;
-    public Material BANNER;
-    public Material CROPS;
-    public Material REDSTONE_LAMP_ON;
-    public Material STAINED_GLASS;
-    public Material STATIONARY_WATER;
-    public Material STAINED_CLAY;
-    public Material WOOD_BUTTON;
-    public Material SOIL;
-    public Material MOB_SPANWER;
-    public Material THIN_GLASS;
-    public Material IRON_FENCE;
-    public Material NETHER_FENCE;
-    public Material FENCE;
+    public Material SUGAR_CANE_BLOCK, BANNER, CROPS, REDSTONE_LAMP_ON,
+            STAINED_GLASS, STATIONARY_WATER, STAINED_CLAY, WOOD_BUTTON,
+            SOIL, MOB_SPANWER, THIN_GLASS, IRON_FENCE, NETHER_FENCE, FENCE,
+            WOODEN_DOOR, TRAP_DOOR, FENCE_GATE, BURNING_FURNACE, DIODE_BLOCK_OFF,
+            DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
+
 
     private void setupMultiversionMaterials() {
         if (mc113) {
@@ -243,6 +235,15 @@ public class P extends MPlugin {
             IRON_FENCE = Material.valueOf("LEGACY_IRON_FENCE");
             NETHER_FENCE = Material.valueOf("LEGACY_NETHER_FENCE");
             FENCE = Material.valueOf("LEGACY_FENCE");
+            WOODEN_DOOR = Material.valueOf("LEGACY_WOODEN_DOOR");
+            TRAP_DOOR = Material.valueOf("LEGACY_TRAP_DOOR");
+            FENCE_GATE = Material.valueOf("LEGACY_FENCE_GATE");
+            BURNING_FURNACE = Material.valueOf("LEGACY_BURNING_FURNACE");
+            DIODE_BLOCK_OFF = Material.valueOf("LEGACY_DIODE_BLOCK_OFF");
+            DIODE_BLOCK_ON = Material.valueOf("LEGACY_DIODE_BLOCK_ON");
+            ENCHANTMENT_TABLE = Material.valueOf("LEGACY_ENCHANTMENT_TABLE");
+            FIREBALL = Material.valueOf("LEGACY_FIREBALL");
+
         } else {
             BANNER = Material.valueOf("BANNER");
             CROPS = Material.valueOf("CROPS");
@@ -258,6 +259,14 @@ public class P extends MPlugin {
             IRON_FENCE = Material.valueOf("IRON_FENCE");
             NETHER_FENCE = Material.valueOf("NETHER_FENCE");
             FENCE = Material.valueOf("FENCE");
+            WOODEN_DOOR = Material.valueOf("WOODEN_DOOR");
+            TRAP_DOOR = Material.valueOf("TRAP_DOOR");
+            FENCE_GATE = Material.valueOf("FENCE_GATE");
+            BURNING_FURNACE = Material.valueOf("BURNING_FURNACE");
+            DIODE_BLOCK_OFF = Material.valueOf("DIODE_BLOCK_OFF");
+            DIODE_BLOCK_ON = Material.valueOf("DIODE_BLOCK_ON");
+            ENCHANTMENT_TABLE = Material.valueOf("ENCHANTMENT_TABLE");
+            FIREBALL = Material.valueOf("FIREBALL");
         }
 
 
