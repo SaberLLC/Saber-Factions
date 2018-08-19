@@ -114,7 +114,7 @@ public class P extends MPlugin {
         }
         this.loadSuccessful = false;
         saveDefaultConfig();
-
+        setupMultiversionMaterials();
         // Load Conf from disk
         Conf.load();
         Essentials.setup();
@@ -179,7 +179,7 @@ public class P extends MPlugin {
             factionsFlight = true;
         }
 
-        setupMultiversionMaterials();
+
 
         // Register Event Handlers
         getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
