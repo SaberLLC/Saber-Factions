@@ -109,12 +109,28 @@ public class P extends MPlugin {
 
     @Override
     public void onEnable() {
+        log("==== Setup ====");
+        int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
+        if (version == 7) {
+            P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+            mc17 = true;
+        } else if (version == 8) {
+            P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+            mc18 = true;
+        } else if (version == 13) {
+            P.p.log("Minecraft Version 1.13 found, New Items will be used.");
+            mc113 = true;
+            changeItemIDSInConfig();
+        }
+        setupMultiversionMaterials();
+        log("==== End Setup ====");
+
         if (!preEnable()) {
             return;
         }
         this.loadSuccessful = false;
         saveDefaultConfig();
-        setupMultiversionMaterials();
+
         // Load Conf from disk
         Conf.load();
         Essentials.setup();
@@ -157,18 +173,7 @@ public class P extends MPlugin {
         MassiveStats massive = new MassiveStats(this);
 
 
-        int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
-        if (version == 7) {
-            P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
-            mc17 = true;
-        } else if (version == 8) {
-            P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
-            mc18 = true;
-        } else if (version == 13) {
-            P.p.log("Minecraft Version 1.13 found, New Items will be used.");
-            mc113 = true;
-            changeItemIDSInConfig();
-        }
+
 
         if (version > 8) {
             useNonPacketParticles = true;
