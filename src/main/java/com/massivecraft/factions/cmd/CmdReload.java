@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Particles.ReflectionUtils;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdReload extends FCommand {
@@ -27,6 +28,12 @@ public class CmdReload extends FCommand {
         Conf.load();
         P.p.reloadConfig();
         P.p.loadLang();
+        int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
+
+
+        if (P.p.getConfig().getBoolean("enable-faction-flight")) {
+            P.p.factionsFlight = true;
+        }
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 
         msg(TL.COMMAND_RELOAD_TIME, timeReload);
