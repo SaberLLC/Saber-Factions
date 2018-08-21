@@ -22,6 +22,7 @@ public class CmdInspect extends FCommand {
 
     @Override
     public void perform() {
+        // Who can inspect?
         if (fme.isInspectMode()) {
             fme.setInspectMode(false);
             msg(TL.COMMAND_INSPECT_DISABLED_MSG);

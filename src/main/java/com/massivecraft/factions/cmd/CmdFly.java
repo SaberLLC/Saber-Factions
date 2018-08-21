@@ -36,6 +36,7 @@ public class CmdFly extends FCommand {
         this.senderMustBeMember = true;
         this.senderMustBeModerator = false;
     }
+    /// I'll optimize this later today or tomorrow
 
     public static void startParticles() {
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {

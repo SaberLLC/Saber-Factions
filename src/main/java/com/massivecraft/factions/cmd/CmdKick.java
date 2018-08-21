@@ -79,8 +79,7 @@ public class CmdKick extends FCommand {
         // - Make sure the player is in the faction.
         // - Make sure the kicked player has lower rank than the kicker.
         if (!fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(fme, PermissableAction.KICK);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+            if (!this.hasAccess(PermissableAction.KICK, false)) {
                 fme.msg(TL.GENERIC_NOPERMISSION, "kick");
                 return;
             }

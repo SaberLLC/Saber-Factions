@@ -34,15 +34,11 @@ public class CmdBan extends FCommand {
     @Override
     public void perform() {
 
-        // Adds bypass to admins and clean permission check
-        if (!fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(fme, PermissableAction.BAN);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
-                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "ban");
-                return;
-            }
+        // Simplified for clarity
+        if (!this.hasAccess(PermissableAction.BAN)) {
+            fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage bans");
+            return;
         }
-
 
         // Good on permission checks. Now lets just ban the player.
         FPlayer target = argAsFPlayer(0);
