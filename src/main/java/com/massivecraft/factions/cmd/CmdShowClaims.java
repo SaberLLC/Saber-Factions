@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdShowClaims extends FCommand {
@@ -25,6 +26,11 @@ public class CmdShowClaims extends FCommand {
 
     @Override
     public void perform() {
+        // #suggestion
+        if (!this.hasAccess(PermissableAction.TERRITORY)) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "manage territory");
+            return;
+        }
         sendMessage(TL.COMMAND_SHOWCLAIMS_HEADER.toString().replace("{faction}", fme.getFaction().describeTo(fme)));
         ListMultimap<String, String> chunkMap = ArrayListMultimap.create();
         String format = TL.COMMAND_SHOWCLAIMS_CHUNKSFORMAT.toString();

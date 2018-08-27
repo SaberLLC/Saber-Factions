@@ -5,6 +5,8 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.MCommand;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -25,6 +27,7 @@ public abstract class FCommand extends MCommand<P> {
     public boolean senderMustBeModerator;
     public boolean senderMustBeAdmin;
     public boolean senderMustBeColeader;
+    protected PermissableAction actionPermission;
 
     public boolean isMoneyCommand;
 
@@ -41,6 +44,47 @@ public abstract class FCommand extends MCommand<P> {
         senderMustBeModerator = false;
         senderMustBeColeader = false;
         senderMustBeAdmin = false;
+    }
+
+    public boolean hasAccess() {
+        if (this.permission == null || this.fme == null) return false;
+        if (!this.fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(this.fme, permission);
+            if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean hasAccess(boolean checkifAdmin) {
+        if (this.permission == null || this.fme == null) return false;
+        if (!this.fme.isAdminBypassing() && checkifAdmin) {
+            Access access = myFaction.getAccess(this.fme, permission);
+            if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean hasAccess(PermissableAction perm) {
+        if (this.permission == null || this.fme == null) return false;
+        if (!this.fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(this.fme, perm);
+            if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean hasAccess(PermissableAction perm, boolean checkifAdmin) {
+        if (this.permission == null || this.fme == null) return false;
+        if (!this.fme.isAdminBypassing() && checkifAdmin) {
+            Access access = myFaction.getAccess(this.fme, perm);
+            if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

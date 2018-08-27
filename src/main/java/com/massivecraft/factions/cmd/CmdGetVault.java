@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,7 +34,10 @@ public class CmdGetVault extends FCommand {
         Location vaultLocation = fme.getFaction().getVault();
         ItemStack vault = P.p.createItem(Material.CHEST, 1, (short) 0, P.p.color(P.p.getConfig().getString("fvault.Item.Name")), P.p.colorList(P.p.getConfig().getStringList("fvault.Item.Lore")));
 
-
+        if (!this.hasAccess(PermissableAction.VAULT)) {
+            fme.msg(TL.GENERIC_NOPERMISSION, "use vault");
+            return;
+        }
         //check if vault is set
         if (vaultLocation != null) {
             fme.msg(TL.COMMAND_GETVAULT_ALREADYSET);
