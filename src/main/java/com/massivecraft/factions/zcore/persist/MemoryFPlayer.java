@@ -1209,7 +1209,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return true;
         } else {
             getPlayer().closeInventory();
-            msg(TL.COMMAND_UPGRADES_NOTENOUGHMONEY);
+            msg(TL.GENERIC_NOTENOUGHMONEY);
             return false;
         }
     }
@@ -1219,7 +1219,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (hasMoney(amt)) {
             Economy econ = P.p.getEcon();
             econ.withdrawPlayer(getPlayer(), amt);
-            sendMessage(TL.COMMAND_UPGRADES_MONEYTAKE.toString().replace("{amount}", amt + ""));
+            sendMessage(TL.GENERIC_MONEYTAKE.toString().replace("{amount}", amt + ""));
         }
     }
 }

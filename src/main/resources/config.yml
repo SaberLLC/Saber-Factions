@@ -74,6 +74,7 @@ ffly:
 
 # This will set the timeout for the stealth in seconds.
 stealth-timeout: 300
+stealth-cost: 500
 
 # If a player leaves fly (out of territory or took damage)
 # how long should they not take fall damage for?

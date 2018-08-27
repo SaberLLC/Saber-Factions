@@ -105,8 +105,8 @@ public enum TL {
      */
 
     COMMAND_UPGRADES_DESCRIPTION("&cOpen the Upgrades Menu"),
-    COMMAND_UPGRADES_MONEYTAKE("&c{amount} has been taken from your account."),
-    COMMAND_UPGRADES_NOTENOUGHMONEY("&cYou dont have enough money!"),
+
+   
 
 
     COMMAND_ADMIN_NOTMEMBER("&c&l[!] &7%1$s &cis not a member in your faction."),
@@ -824,6 +824,8 @@ public enum TL {
     GENERIC_FACTIONTAG_TOOLONG("<i>The faction tag can't be longer than <h>%s<i> chars."),
     GENERIC_FACTIONTAG_ALPHANUMERIC("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed."),
     GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
+    GENERIC_NOTENOUGHMONEY("&cYou dont have enough money!"),
+    GENERIC_MONEYTAKE("&c{amount} has been taken from your account."),
 
 
     WARBANNER_NOFACTION("&cYou need a faction to use a warbanner!"),

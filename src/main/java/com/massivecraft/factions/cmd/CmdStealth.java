@@ -29,6 +29,12 @@ public class CmdStealth extends FCommand {
             if (fme.isStealthEnabled()) {
                 fme.setStealth(false);
             } else {
+                /* The FPlayer#takeMoney method calls the FPlayer#hasMoney method beforehand to check if the amount
+                * can be withdrawn successfully.
+                * The FPlayer#hasMoney method already sends a deny message so there isn't a need to send another.
+                * Basically the takeMoney is an all in one solution for taking money :)
+                */
+                fme.takeMoney(P.p.getConfig().getInt("stealth-cost"));
                 fme.setStealth(true);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
                     @Override
