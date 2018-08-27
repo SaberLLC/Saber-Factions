@@ -1,7 +1,10 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 
 public class CmdStealth extends FCommand {
     public CmdStealth() {
@@ -20,9 +23,26 @@ public class CmdStealth extends FCommand {
 
     public void perform() {
         if (myFaction != null && !myFaction.isWilderness() && !myFaction.isSafeZone() && !myFaction.isWarZone() && myFaction.isNormal()) {
-            fme.setStealth(!fme.isStealthEnabled());
+
+
             // Sends Enable/Disable Message
-            fme.msg(fme.isStealthEnabled() ? TL.COMMAND_STEALTH_ENABLE : TL.COMMAND_STEALTH_DISABLE);
+            if (fme.isStealthEnabled()) {
+                fme.setStealth(false);
+            } else {
+                fme.setStealth(true);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (fme.isStealthEnabled()) {
+                            fme.setStealth(false);
+                            fme.msg(TL.COMMAND_STEALTH_DISABLE);
+                        }
+                    }
+                    // We multiplied by 20 here because the value is in ticks.
+                }, P.p.getConfig().getInt("stealth-timeout") * 20);
+            }
+
+            fme.sendMessage(fme.isStealthEnabled() ? TL.COMMAND_STEALTH_ENABLE.toString().replace("{timeout}", P.p.getConfig().getInt("stealth-timeout") + "") : TL.COMMAND_STEALTH_DISABLE.toString());
         } else {
             fme.msg(TL.COMMAND_STEALTH_MUSTBEMEMBER);
         }
