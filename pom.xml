@@ -298,7 +298,8 @@
             <groupId>com.drtshock</groupId>
             <artifactId>PlayerVaultsX</artifactId>
             <version>4.0.6</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/dependencies/PlayerVaultsX.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
