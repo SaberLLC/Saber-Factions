@@ -28,22 +28,63 @@ import java.util.List;
 
 public interface FPlayer extends EconomyParticipator {
 
+    /**
+     * Used to know if stealth is toggled on or off
+     *
+     * @return if stealth mode is on or not.
+     */
     boolean isStealthEnabled();
 
-    void setStealth(boolean isStealthEnabled);
+    /**
+     * Toggles the stealth of the FPlayer depending on the parameter
+     *
+     * @param stealthToggle
+     */
+    void setStealth(boolean stealthToggle);
 
+    /**
+     * Sets the kills and deaths of a player.
+     */
     void login();
 
+    /**
+     * Caches the kills and deaths of a player.
+     */
     void logout();
 
+    /**
+     * gets the faction of a FPlayer.
+     *
+     * @return Faction of the FPlayer.
+     */
     Faction getFaction();
 
+    /**
+     * Sets the faction of the FPlayer
+     *
+     * @param faction
+     */
     void setFaction(Faction faction);
 
+    /**
+     * Gets the faction ID of the player.
+     *
+     * @return FactionsID string
+     */
     String getFactionId();
 
+    /**
+     * Check if a player has a faction
+     *
+     * @return boolean
+     */
     boolean hasFaction();
 
+    /**
+     * Gets autoleave status
+     *
+     * @return boolean of the autoleave
+     */
     boolean willAutoLeave();
 
     void setAutoLeave(boolean autoLeave);
