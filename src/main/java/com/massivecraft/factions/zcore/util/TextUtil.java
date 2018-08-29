@@ -50,7 +50,9 @@ public class TextUtil {
         char[] chars = first.toCharArray();
 
         for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == '§') {
+            // changed this so javadocs wont throw an error
+            String compareChar = chars[i] + "";
+            if (compareChar.equals("§")) {
                 if (color != null) {
                     if (color.isColor()) {
                         message.then(text).color(color);
