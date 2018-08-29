@@ -1,1 +1,10 @@
 language: java
+deploy:
+  provider: releases
+  user: ProSavage
+  password:
+    secure: l/4sN0iN3JeG5wf/8ijJMmsF3aG4CW8aaIK1+BWBhzJJFLTOfvIejID8Q/AV9rHQlp/QUOYXbCO8+y/VFFJ3pN8FLd1plqawXhGAjIVIBVKfpbdEcIlNHSsrIhUszGo5C+AqhR3YOmRN5C3whJXqRbjSIxlI4wb9Bzg4Rwe1lguhw2/q0b7r/4OQ1klZIeM6oPP/2WWjhIerpeayInLs5zm+oMyj0idrdoZLHK171u+/ou/r7DxkU37sAyC8lWUxntftCzNq4/OxzpL4VsxM6OW69OCY8SOqiUDp+IxXbxWNgHcDi0UsRr/skmb0vI+FFUlaXg6pVQpQYHQLgpiYIr32Z7F3HYeXo9hgid9zRNAVN2nSXBASuaJUsuXFCPa+HASaHi+7Rj6icVyYN6fhf1+kyw11htwmNjlOKUYPpN7/wRdPjFYcqFmcO7X12jyyQfGJf1TxkatH2EcoYO6QYP25lbGyDUluPw9GF37j/cGrYlGIslJXtLU0vwSdg8ytt0xw2llm23CitjfFE8XJ4PkUHTRa/W4ba/NVkhD/SEzS/ZdyQH37v4AVU361yUNxnZ9gCCzxH5Gj6K0sZ+pA0cVHkjvYebN4qBPfo0RAP0MHZLVqFQX4t/7oUP/+V6aaH7w/4j0MNBNhGLl2jFs3o8ZKtUptw3NskgimsYf7ThM=
+  file: target/Factions.jar
+  skip_cleanup: true
+  on:
+    tags: true
