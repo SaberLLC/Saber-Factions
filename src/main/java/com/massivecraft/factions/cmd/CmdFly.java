@@ -214,8 +214,6 @@ public class CmdFly extends FCommand {
                 return;
             }
         }
-
-
         List<Entity> entities = me.getNearbyEntities(16, 256, 16);
         for (int i = 0; i <= entities.size() - 1; i++) {
             if (entities.get(i) instanceof Player) {

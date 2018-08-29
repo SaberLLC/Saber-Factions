@@ -99,27 +99,25 @@ public abstract class MCommand<T extends MPlugin> {
         }
         this.args = args;
         this.commandChain = commandChain;
-
-        // Is there a matching sub command?
-        if (args.size() > 0) {
-            for (MCommand<?> subCommand : this.subCommands) {
-                if (subCommand.aliases.contains(args.get(0).toLowerCase())) {
-                    args.remove(0);
-                    commandChain.add(this);
-                    subCommand.execute(sender, args, commandChain);
-                    return;
+        if (validCall(this.sender, this.args)) {
+            // This is always true but anyway
+            if (!this.isEnabled()) {
+                return;
+            }
+            // Is there a matching sub command?
+            if (args.size() > 0) {
+                for (MCommand<?> subCommand : this.subCommands) {
+                    if (subCommand.aliases.contains(args.get(0).toLowerCase())) {
+                        args.remove(0);
+                        commandChain.add(this);
+                        subCommand.execute(sender, args, commandChain);
+                        return;
+                    }
                 }
             }
-        }
-
-        if (!validCall(this.sender, this.args)) {
+        } else {
             return;
         }
-
-        if (!this.isEnabled()) {
-            return;
-        }
-
         perform();
     }
 
