@@ -1,3 +1,5 @@
+before_deploy:
+  - git tag
 language: java
 deploy:
   provider: releases
