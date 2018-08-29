@@ -1,5 +1,5 @@
 before_deploy:
-  - git tag
+  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 language: java
 deploy:
   provider: releases
