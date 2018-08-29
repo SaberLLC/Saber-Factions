@@ -344,21 +344,10 @@ public class FUpgradesGUI implements Listener {
     }
 
     private boolean hasMoney(FPlayer fme, int amt) {
-        Economy econ = P.p.getEcon();
-        if (econ.getBalance(fme.getPlayer()) >= amt) {
-            return true;
-        } else {
-            fme.getPlayer().closeInventory();
-            fme.msg(TL.COMMAND_UPGRADES_NOTENOUGHMONEY);
-            return false;
-        }
+        return fme.hasMoney(amt);
     }
 
     private void takeMoney(FPlayer fme, int amt) {
-        if (hasMoney(fme, amt)) {
-            Economy econ = P.p.getEcon();
-            econ.withdrawPlayer(fme.getPlayer(), amt);
-            fme.sendMessage(TL.COMMAND_UPGRADES_MONEYTAKE.toString().replace("{amount}", amt + ""));
-        }
+        fme.takeMoney(amt);
     }
 }
