@@ -110,6 +110,14 @@ public class P extends MPlugin {
     @Override
     public void onEnable() {
         log("==== Setup ====");
+
+
+        // Vault dependency check.
+        if (P.p.getServer().getPluginManager().getPlugin("Vault") == null) {
+            P.p.log("Vault is not present, the plugin will not run properly.");
+            P.p.getServer().getPluginManager().disablePlugin(P.p);
+        }
+
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         if (version == 7) {
             P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
