@@ -75,13 +75,15 @@ public class FactionsBlockListener implements Listener {
             return;
         }
         FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
+        Faction faction = Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation()));
         if (!fme.hasFaction()) {
             return;
         }
         if (event.getBlock().getType() == P.p.MOB_SPANWER) {
             if (!fme.isAdminBypassing()) {
                 Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
-                if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                // We don't want other factions to break blocks unless allowed
+                if (access == Access.DENY || (access != Access.ALLOW && fme.getFaction() != faction)) {
                     fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");
                     return;
                 }
@@ -381,7 +383,7 @@ public class FactionsBlockListener implements Listener {
 
         // Check the permission just after making sure the land isn't owned by someone else to avoid bypass.
         Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
-        if (access != Access.ALLOW && me.getRole() != Role.ADMIN) {
+        if (access == Access.DENY || (access != Access.ALLOW && me.getFaction() != otherFaction)) {
             // TODO: Update this once new access values are added other than just allow / deny.
             if (access == Access.DENY) {
                 me.msg(TL.GENERIC_NOPERMISSION, action);

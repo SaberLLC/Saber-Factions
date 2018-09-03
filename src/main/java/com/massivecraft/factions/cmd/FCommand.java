@@ -50,7 +50,7 @@ public abstract class FCommand extends MCommand<P> {
         if (this.actionPermission == null || this.fme == null) return false;
         if (!this.fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(this.fme, this.actionPermission);
-            if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
+            if (access == Access.DENY) {
                 return false;
             }
         }
@@ -60,7 +60,7 @@ public abstract class FCommand extends MCommand<P> {
         if (this.actionPermission == null || this.fme == null) return false;
         if (!this.fme.isAdminBypassing() && checkifAdmin) {
             Access access = myFaction.getAccess(this.fme, this.actionPermission);
-            if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
+            if (access == Access.DENY) {
                 return false;
             }
         }
@@ -70,7 +70,7 @@ public abstract class FCommand extends MCommand<P> {
         if (this.permission == null || this.fme == null) return false;
         if (!this.fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(this.fme, perm);
-            if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
+            if (access == Access.DENY) {
                 return false;
             }
         }
@@ -80,7 +80,7 @@ public abstract class FCommand extends MCommand<P> {
         if (this.permission == null || this.fme == null) return false;
         if (!this.fme.isAdminBypassing() && checkifAdmin) {
             Access access = myFaction.getAccess(this.fme, perm);
-            if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
+            if (access == Access.DENY) {
                 return false;
             }
         }

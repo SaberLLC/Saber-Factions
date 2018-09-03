@@ -311,11 +311,11 @@ public class FactionsPlayerListener implements Listener {
         }
 
         Access access = otherFaction.getAccess(me, action);
-        if (access != Access.ALLOW && me.getRole() != Role.ADMIN) {
+        if (access == Access.DENY || (access != Access.ALLOW && me.getFaction() != otherFaction)) {
             // TODO: Update this once new access values are added other than just allow / deny.
-            if ((myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && myFaction.getOwnerListString(loc).contains(player.getName()))) {
+            if ((myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && myFaction.isPlayerInOwnerList(me, loc))) {
                 return true;
-            } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
+            } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.isPlayerInOwnerList(me, loc)) {
                 me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
                 return false;
             } else if (access == Access.DENY) {
@@ -441,14 +441,14 @@ public class FactionsPlayerListener implements Listener {
                 }
             }
         }
-
+        // We might enable flight on player join just so he doesn't have to /f fly even if the ffly.AutoEnable option is enabled:
+        enableFly(me);
 
         fallMap.put(me.getPlayer(), false);
         Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
             @Override
             public void run() {
                 fallMap.remove(me.getPlayer());
-
             }
         }, 180L);
 
@@ -532,6 +532,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public void enableFly(FPlayer me) {
+        if (!P.p.getConfig().getBoolean("enable-faction-flight")) return;
         if (P.p.getConfig().getBoolean("ffly.AutoEnable")) {
 
             me.setFlying(true);
