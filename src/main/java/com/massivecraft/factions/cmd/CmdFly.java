@@ -132,27 +132,33 @@ public class CmdFly extends FCommand {
         }, 20L, 20L);
     }
 
-    private static boolean checkBypassPerms(FPlayer fplayer, Player player, Faction toFac) {
-        if (player.hasPermission("factions.fly.wilderness") && toFac.isWilderness()) {
-            return true;
+    private static boolean checkBypassPerms(FPlayer fme, Player me, Faction toFac) {
+        if (toFac != fme.getFaction()) {
+            if (!me.hasPermission("factions.fly.wilderness") && toFac.isWilderness() || !me.hasPermission("factions.fly.safezone") && toFac.isSafeZone() || !me.hasPermission("factions.fly.warzone") && toFac.isWarZone()) {
+                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                return false;
+            }
+            Access access = toFac.getAccess(fme, PermissableAction.FLY);
+            if ((!(me.hasPermission("factions.fly.enemy") || access == Access.ALLOW)) && toFac.getRelationTo(fme.getFaction()) == Relation.ENEMY) {
+                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                return false;
+            }
+            if (!(me.hasPermission("factions.fly.ally") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.ALLY) {
+                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                return false;
+            }
+            if (!(me.hasPermission("factions.fly.truce") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.TRUCE) {
+                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                return false;
+            }
+
+            if (!(me.hasPermission("factions.fly.neutral") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.NEUTRAL && !isSystemFaction(toFac)) {
+                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                return false;
+            }
+            return me.hasPermission("factions.fly") && access != Access.DENY;
         }
-        if (player.hasPermission("factions.fly.warzone") && toFac.isWarZone()) {
-            return true;
-        }
-        if (player.hasPermission("factions.fly.safezone") && toFac.isSafeZone()) {
-            return true;
-        }
-        Access access = toFac.getAccess(fplayer, PermissableAction.FLY);
-        if ((player.hasPermission("factions.fly.enemy") || access == Access.ALLOW) && toFac.getRelationTo(fplayer.getFaction()) == Relation.ENEMY) {
-            return true;
-        }
-        if ((player.hasPermission("factions.fly.ally") || access == Access.ALLOW) && toFac.getRelationTo(fplayer.getFaction()) == Relation.ALLY) {
-            return true;
-        }
-        if ((player.hasPermission("factions.fly.truce") || access == Access.ALLOW) && toFac.getRelationTo(fplayer.getFaction()) == Relation.TRUCE) {
-            return true;
-        }
-        return ((player.hasPermission("factions.fly.neutral") || access == Access.ALLOW) && toFac.getRelationTo(fplayer.getFaction()) == Relation.NEUTRAL && !isSystemFaction(toFac));
+        return true;
     }
 
     public static Boolean isSystemFaction(Faction faction) {
@@ -182,38 +188,7 @@ public class CmdFly extends FCommand {
 
         FLocation myfloc = new FLocation(me.getLocation());
         Faction toFac = Board.getInstance().getFactionAt(myfloc);
-        if (Board.getInstance().getFactionAt(myfloc) != fme.getFaction()) {
-            if (!me.hasPermission("factions.fly.wilderness") && toFac.isWilderness()) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(myfloc).getTag(fme));
-                return;
-            }
-            if (!me.hasPermission("factions.fly.safezone") && toFac.isSafeZone()) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(myfloc).getTag(fme));
-                return;
-            }
-            if (!me.hasPermission("factions.fly.warzone") && toFac.isWarZone()) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(myfloc).getTag(fme));
-                return;
-            }
-            Access access = toFac.getAccess(fme, PermissableAction.FLY);
-            if ((!(me.hasPermission("factions.fly.enemy") || access == Access.ALLOW)) && toFac.getRelationTo(fme.getFaction()) == Relation.ENEMY) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(myfloc).getTag(fme));
-                return;
-            }
-            if (!(me.hasPermission("factions.fly.ally") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.ALLY) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(myfloc).getTag(fme));
-                return;
-            }
-            if (!(me.hasPermission("factions.fly.truce") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.TRUCE) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(myfloc).getTag(fme));
-                return;
-            }
-
-            if (!(me.hasPermission("factions.fly.neutral") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.NEUTRAL && !isSystemFaction(toFac)) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(myfloc).getTag(fme));
-                return;
-            }
-        }
+        if (!checkBypassPerms(fme, me, toFac)) return;
         List<Entity> entities = me.getNearbyEntities(16, 256, 16);
         for (int i = 0; i <= entities.size() - 1; i++) {
             if (entities.get(i) instanceof Player) {
