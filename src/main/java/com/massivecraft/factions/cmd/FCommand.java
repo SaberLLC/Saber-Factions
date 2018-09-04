@@ -56,9 +56,9 @@ public abstract class FCommand extends MCommand<P> {
         }
         return true;
     }
-    public boolean hasAccess(boolean checkifAdmin) {
+    public boolean hasAccess(boolean isAdmin) {
         if (this.actionPermission == null || this.fme == null) return false;
-        if (!this.fme.isAdminBypassing() && checkifAdmin) {
+        if (!this.fme.isAdminBypassing() && isAdmin) {
             Access access = myFaction.getAccess(this.fme, this.actionPermission);
             if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
                 return false;
@@ -76,9 +76,9 @@ public abstract class FCommand extends MCommand<P> {
         }
         return true;
     }
-    public boolean hasAccess(PermissableAction perm, boolean checkifAdmin) {
+    public boolean hasAccess(PermissableAction perm, boolean isAdmin) {
         if (this.permission == null || this.fme == null) return false;
-        if (!this.fme.isAdminBypassing() && checkifAdmin) {
+        if (!this.fme.isAdminBypassing() && isAdmin) {
             Access access = myFaction.getAccess(this.fme, perm);
             if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
                 return false;
