@@ -4,7 +4,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
@@ -22,10 +21,6 @@ public class CmdShowInvites extends FCommand {
 
     @Override
     public void perform() {
-        if (!this.hasAccess(PermissableAction.INVITE)) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "manage invites");
-            return;
-        }
         FancyMessage msg = new FancyMessage(TL.COMMAND_SHOWINVITES_PENDING.toString()).color(ChatColor.GOLD);
         for (String id : myFaction.getInvites()) {
             FPlayer fp = FPlayers.getInstance().getById(id);

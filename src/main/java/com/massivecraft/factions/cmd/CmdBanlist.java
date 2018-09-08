@@ -6,7 +6,6 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.ArrayList;
@@ -33,10 +32,6 @@ public class CmdBanlist extends FCommand {
 
     @Override
     public void perform() {
-        if (!this.hasAccess(PermissableAction.BAN)) {
-            fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage bans");
-            return;
-        }
         Faction target = myFaction;
         if (!args.isEmpty()) {
             target = argAsFaction(0);

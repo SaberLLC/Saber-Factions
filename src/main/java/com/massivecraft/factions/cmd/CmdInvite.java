@@ -48,9 +48,12 @@ public class CmdInvite extends FCommand {
             return;
         }
 
-        if (!this.hasAccess(PermissableAction.INVITE)) {
-            fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
-            return;
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
+                return;
+            }
         }
 
         if (myFaction.isInvited(target)) {

@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdDelFWarp extends FCommand {
@@ -23,10 +22,6 @@ public class CmdDelFWarp extends FCommand {
     @Override
     public void perform() {
         String warp = argAsString(0);
-        if (!this.hasAccess(PermissableAction.WARP)){
-            fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage warps");
-            return;
-        }
         if (myFaction.isWarp(warp)) {
             if (!transact(fme)) {
                 return;

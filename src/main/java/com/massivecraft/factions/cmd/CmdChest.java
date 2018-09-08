@@ -32,9 +32,12 @@ public class CmdChest extends FCommand {
             return;
         }
         // This permission check is way too explicit but it's clean
-        if (!this.hasAccess(PermissableAction.CHEST)) {
-            fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "access chest");
-            return;
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.CHEST);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "access chest");
+                return;
+            }
         }
 
         me.openInventory(fme.getFaction().getChest());

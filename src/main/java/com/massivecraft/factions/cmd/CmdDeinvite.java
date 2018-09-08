@@ -34,9 +34,12 @@ public class CmdDeinvite extends FCommand {
     @Override
     public void perform() {
         FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (!this.hasAccess(PermissableAction.INVITE)) {
-            fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
-            return;
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
+            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
+                return;
+            }
         }
         if (you == null) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);

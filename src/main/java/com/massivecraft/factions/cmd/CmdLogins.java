@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLogins extends FCommand {
@@ -19,11 +18,6 @@ public class CmdLogins extends FCommand {
 
     @Override
     public void perform() {
-        /// Perhaps add a PermissableAction later?
-        if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "monitor joins");
-            return;
-        }
         boolean monitor = fme.isMonitoringJoins();
         fme.msg(TL.COMMAND_LOGINS_TOGGLE, String.valueOf(!monitor));
         fme.setMonitorJoins(!monitor);
