@@ -47,9 +47,9 @@ public abstract class FCommand extends MCommand<P> {
     }
 
     public boolean hasAccess() {
-        if (this.actionPermission == null || this.fme == null) return false;
+        if (this.permission == null || this.fme == null) return false;
         if (!this.fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(this.fme, this.actionPermission);
+            Access access = myFaction.getAccess(this.fme, permission);
             if (access != Access.ALLOW && this.fme.getRole() != Role.ADMIN) {
                 return false;
             }
