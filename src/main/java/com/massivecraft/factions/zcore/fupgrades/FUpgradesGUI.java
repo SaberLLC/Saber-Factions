@@ -4,8 +4,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
-import com.massivecraft.factions.zcore.util.TL;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -187,7 +185,7 @@ public class FUpgradesGUI implements Listener {
                     }
                     takeMoney(fme, cost);
                     fme.getFaction().setUpgrades("Chest", 3);
-                    closeChests(fme.getFaction());
+                    updateChests(fme.getFaction());
                     fme.getPlayer().closeInventory();
                 }
                 if (chestLevel == 1) {
@@ -197,7 +195,7 @@ public class FUpgradesGUI implements Listener {
                     }
                     takeMoney(fme, cost);
                     fme.getFaction().setUpgrades("Chest", 2);
-                    closeChests(fme.getFaction());
+                    updateChests(fme.getFaction());
                     fme.getPlayer().closeInventory();
                 }
                 if (chestLevel == 0) {
@@ -207,7 +205,7 @@ public class FUpgradesGUI implements Listener {
                     }
                     takeMoney(fme, cost);
                     fme.getFaction().setUpgrades("Chest", 1);
-                    closeChests(fme.getFaction());
+                    updateChests(fme.getFaction());
                     fme.getPlayer().closeInventory();
                 }
             }
@@ -216,7 +214,7 @@ public class FUpgradesGUI implements Listener {
 
     }
 
-    private void closeChests(Faction faction) {
+    private void updateChests(Faction faction) {
         for (Player player : faction.getOnlinePlayers()) {
             if (player.getInventory().getTitle() == null) {
                 return;
@@ -226,6 +224,19 @@ public class FUpgradesGUI implements Listener {
                 player.closeInventory();
             }
         }
+
+        int level = faction.getUpgrade("Chest");
+        int size = 9;
+        if (level == 1) {
+            size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1") * 9;
+        } else if (level == 2) {
+            size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2") * 9;
+        } else if (level == 3) {
+            size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
+        }
+
+        faction.setChestSize(size);
+
     }
 
     private ItemStack[] buildItems(FPlayer fme) {

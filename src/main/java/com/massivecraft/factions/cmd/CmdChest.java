@@ -27,6 +27,7 @@ public class CmdChest extends FCommand {
     @Override
     public void perform() {
 
+
         if (!P.p.getConfig().getBoolean("fchest.Enabled")) {
             fme.sendMessage("This command is disabled!");
             return;
@@ -40,7 +41,7 @@ public class CmdChest extends FCommand {
             }
         }
 
-        me.openInventory(fme.getFaction().getChest());
+        me.openInventory(fme.getFaction().getChestInventory());
 
 
     }

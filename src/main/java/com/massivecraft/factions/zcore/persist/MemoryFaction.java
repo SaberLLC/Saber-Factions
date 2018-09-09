@@ -62,7 +62,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Role defaultRole;
     protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
-    String chestSerialized = null;
+    Inventory chest;
     Map<String, Object> bannerSerialized;
     private long lastDeath;
 
@@ -340,34 +340,34 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public Inventory getChest() {
-        int level = getUpgrade("Chest");
-        int size = 9;
-        if (level == 1) {
-            size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1") * 9;
-        } else if (level == 2) {
-            size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2") * 9;
-        } else if (level == 3) {
-            size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
-        }
-        Inventory inventory = Bukkit.createInventory(null, size, P.p.color(P.p.getConfig().getString("fchest.Inventory-Title")));
-        if (chestSerialized == null) {
-            return inventory;
+    public Inventory getChestInventory() {
+        if (chest != null) {
+            return chest;
         } else {
-            //long startTime = System.nanoTime();
-            ItemStack[] contents = new ItemStack[0];
+            int level = getUpgrade("Chest");
+            int size = 9;
+            if (level == 1) {
+                size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1") * 9;
+            } else if (level == 2) {
+                size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2") * 9;
+            } else if (level == 3) {
+                size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
+            }
 
-            contents = InventoryUtil.fromBase64(chestSerialized).getContents();
+            chest = Bukkit.createInventory(null, size);
+            return chest;
 
-            inventory.setContents(contents);
-            return inventory;
         }
+
     }
 
     @Override
-    public void setChest(Inventory inventory) {
-        chestSerialized = InventoryUtil.toBase64(inventory);
+    public void setChestSize(int chestSize) {
+        ItemStack[] contents = this.getChestInventory().getContents();
+        chest = Bukkit.createInventory(null, chestSize);
+        chest.setContents(contents);
     }
+
 
     @Override
     public void setBannerPattern(ItemStack banner) {

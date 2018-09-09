@@ -611,27 +611,7 @@ public class FactionsPlayerListener implements Listener {
         return (result.length() == 3 ? result + "0" : result) + "/hrs ago";
     }
 
-    @EventHandler
-    public void onCloseChest(InventoryCloseEvent e) {
-        if (e.getInventory().getTitle() == null) {
-            return;
-        }
 
-        if (e.getInventory().getTitle().equalsIgnoreCase(P.p.color(P.p.getConfig().getString("fchest.Inventory-Title")))) {
-            FPlayers.getInstance().getByPlayer((Player) e.getPlayer()).getFaction().setChest(e.getInventory());
-        }
-    }
-
-    @EventHandler
-    public void onCloseChest(InventoryClickEvent e) {
-        if (e.getInventory().getTitle() == null || e.getClickedInventory() == null) {
-            return;
-        }
-
-        if (e.getInventory().getTitle().equalsIgnoreCase(P.p.color(P.p.getConfig().getString("fchest.Inventory-Title")))) {
-            FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked()).getFaction().setChest(e.getInventory());
-        }
-    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {

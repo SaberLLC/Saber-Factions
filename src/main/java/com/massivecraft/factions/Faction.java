@@ -95,9 +95,9 @@ public interface Faction extends EconomyParticipator {
 
     void setVault(Location vaultLocation);
 
-    Inventory getChest();
+    Inventory getChestInventory();
 
-    void setChest(Inventory inventory);
+    void setChestSize(int chestSize);
 
     void setBannerPattern(ItemStack banner);
 
