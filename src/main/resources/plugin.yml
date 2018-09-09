@@ -1,5 +1,5 @@
 name: Factions
-version: ${project.version}-1.4-RELEASE-CANDIDATE
+version: ${project.version}-1.4-RC-2
 api-version: 1.13
 main: com.massivecraft.factions.P
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, AL56AF50]
