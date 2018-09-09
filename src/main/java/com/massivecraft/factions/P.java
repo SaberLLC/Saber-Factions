@@ -231,7 +231,6 @@ public class P extends MPlugin {
             WOODEN_DOOR, TRAP_DOOR, FENCE_GATE, BURNING_FURNACE, DIODE_BLOCK_OFF,
             DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
 
-
     private void setupMultiversionMaterials() {
         if (mc113) {
             BANNER = Material.valueOf("LEGACY_BANNER");
@@ -281,7 +280,6 @@ public class P extends MPlugin {
             ENCHANTMENT_TABLE = Material.valueOf("ENCHANTMENT_TABLE");
             FIREBALL = Material.valueOf("FIREBALL");
         }
-
 
     }
 
