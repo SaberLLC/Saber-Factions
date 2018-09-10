@@ -38,6 +38,11 @@ public class CmdFly extends FCommand {
     }
 
     public static void startParticles() {
+        // Just a secondary check.
+        if (!P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
+            return;
+        }
+
         id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
             @Override
             public void run() {
