@@ -19,6 +19,8 @@ import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -132,6 +134,39 @@ public class FactionsEntityListener implements Listener {
                     }
                 }
             } else {
+                // Protect armor stands/item frames from being damaged in protected territories
+                if (damagee.getType() == EntityType.ITEM_FRAME || damagee.getType() == EntityType.ARMOR_STAND) {
+                    // Manage projectiles launched by players
+                    if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
+                        damager = (Entity) ((Projectile) damager).getShooter();
+                    }
+
+                    // Run the check for a player
+                    if (damager instanceof Player) {
+                        // Generate the action message.
+                        String entityAction;
+
+                        if (damagee.getType() == EntityType.ITEM_FRAME) {
+                            entityAction = "item frames";
+                        } else {
+                            entityAction = "armor stands";
+                        }
+
+                        if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damagee.getLocation(), "destroy " + entityAction, false)) {
+                            event.setCancelled(true);
+                        }
+                    } else {
+                        // we don't want to let mobs/arrows destroy item frames/armor stands
+                        // so we only have to run the check as if there had been an explosion at the damager location
+                        if (!this.checkExplosionForBlock(damager, damagee.getLocation().getBlock())) {
+                            event.setCancelled(true);
+                        }
+                    }
+
+                    // we don't need to go after
+                    return;
+                }
+
                 //this one should trigger if something other than a player takes damage
                 if (damager instanceof Player) {
                     // now itll only go here if the damage is dealt by a player
@@ -582,6 +617,8 @@ public class FactionsEntityListener implements Listener {
     public void onPaintingPlace(HangingPlaceEvent event) {
         if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "place paintings", false)) {
             event.setCancelled(true);
+            // Fix: update player's inventory to avoid items glitches
+            event.getPlayer().updateInventory();
         }
     }
 
@@ -677,6 +714,37 @@ public class FactionsEntityListener implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    // For disabling interactions with item frames in another faction's territory
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        // only need to check for item frames
+        if (event.getRightClicked().getType() != EntityType.ITEM_FRAME) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        Entity entity = event.getRightClicked();
+
+        if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, entity.getLocation(), "use item frames", false)) {
+            event.setCancelled(true);
+        }
+    }
+
+    // For disabling interactions with armor stands in another faction's territory
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
+        Entity entity = event.getRightClicked();
+
+        // only need to check for armor stand and item frames
+        if (entity.getType() != EntityType.ARMOR_STAND) {
+            return;
+        }
+
+        if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), entity.getLocation(), "use armor stands", false)) {
+            event.setCancelled(true);
         }
     }
 
