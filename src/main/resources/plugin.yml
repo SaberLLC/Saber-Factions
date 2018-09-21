@@ -227,6 +227,8 @@ permissions:
     description: set permanent power for a faction
   factions.stuck:
     description: teleports player outside a faction
+  factions.setpaypal:
+    description: set paypal to faction
   factions.power:
     description: show player power info
   factions.power.any:

@@ -51,6 +51,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient long lastPlayerLoggedOffTime;
     protected double money;
     protected double powerBoost;
+    protected String paypal;
     protected Map<String, Relation> relationWish = new HashMap<>();
     protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
     protected transient Set<FPlayer> fplayers = new HashSet<>();
@@ -163,6 +164,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean isWarpPassword(String warp, String password) {
         return hasWarpPassword(warp) && warpPasswords.get(warp.toLowerCase()).equals(password);
+    }
+    public String getPaypal() {
+        return this.paypal;
+    }
+
+    public void paypalSet(String paypal) {
+        this.paypal = paypal;
     }
 
     public boolean hasWarpPassword(String warp) {

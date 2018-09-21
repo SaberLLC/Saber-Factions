@@ -63,6 +63,8 @@ public class FCmdRoot extends FCommand {
     public CmdSB cmdSB = new CmdSB();
     public CmdShowInvites cmdShowInvites = new CmdShowInvites();
     public CmdAnnounce cmdAnnounce = new CmdAnnounce();
+    public CmdPaypalSet cmdPaypalSet = new CmdPaypalSet();
+    public CmdPaypalSee cmdPaypalSee = new CmdPaypalSee();
     public CmdSeeChunk cmdSeeChunk = new CmdSeeChunk();
     public CmdConvert cmdConvert = new CmdConvert();
     public CmdFWarp cmdFWarp = new CmdFWarp();
@@ -230,6 +232,10 @@ public class FCmdRoot extends FCommand {
         } else {
             P.p.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
             this.addSubCommand(this.cmdTop);
+        }
+        if (P.p.getConfig().getBoolean("fpaypal.Enabled")) {
+            this.addSubCommand(this.cmdPaypalSet);
+            this.addSubCommand(this.cmdPaypalSee);
         }
 
     }
