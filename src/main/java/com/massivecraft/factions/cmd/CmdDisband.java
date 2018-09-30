@@ -64,7 +64,7 @@ public class CmdDisband extends FCommand {
 
         // check for tnt before disbanding.
 
-        if (!disbandMap.containsKey(me.getUniqueId().toString()) && faction.getTnt() > 0) {
+        if (!disbandMap.containsKey(me.getUniqueId().toString()) && faction.getTnt() > 0 && isMyFaction) {
             msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", faction.getTnt() + ""));
             disbandMap.put(me.getUniqueId().toString(), faction.getId());
             Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
