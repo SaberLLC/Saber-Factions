@@ -100,6 +100,9 @@ public class CmdCreate extends FCommand {
         if (Conf.logFactionCreate) {
             P.p.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
         }
+        if (P.p.getConfig().getBoolean("fpaypal.Enabled")) {
+            this.fme.msg(TL.COMMAND_PAYPALSET_CREATED);
+        }
     }
 
     @Override

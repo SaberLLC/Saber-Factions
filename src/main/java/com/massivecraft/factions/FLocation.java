@@ -99,6 +99,10 @@ public class FLocation implements Serializable {
         return regionVal << 5;   // "<< 5" == "* 32"
     }
 
+    public Chunk getChunk(){
+        return Bukkit.getWorld(worldName).getChunkAt(x, z);
+    }
+
     public static HashSet<FLocation> getArea(FLocation from, FLocation to) {
         HashSet<FLocation> ret = new HashSet<>();
 

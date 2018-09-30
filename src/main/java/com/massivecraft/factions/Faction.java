@@ -326,4 +326,8 @@ public interface Faction extends EconomyParticipator {
     void remove();
 
     Set<FLocation> getAllClaims();
+
+    String getPaypal();
+
+    void paypalSet(String paypal);
 }

@@ -64,6 +64,7 @@ public enum Permission {
     SET_PERMANENT("setpermanent"),
     SET_PERMANENTPOWER("setpermanentpower"),
     SHOW_INVITES("showinvites"),
+    PAYPALSET("setpaypal"),
     PERMISSIONS("permissions"),
     POWERBOOST("powerboost"),
     POWER("power"),

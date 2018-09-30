@@ -470,6 +470,14 @@ public enum TL {
     COMMAND_OWNERLIST_OWNERS("&c&l[!]&7 Current owner(s) of this land: %1$s"),
     COMMAND_OWNERLIST_DESCRIPTION("List owner(s) of this claimed land"),
 
+    COMMAND_PAYPALSET_DESCRIPTION("&c&l[!] &7Set the email of your faction to claim rewards."),
+    COMMAND_PAYPALSEE_DESCRIPTION("&c&l[!] &7View a specific factions paypal email with &b/f <seepaypal/getpaypal> <faction>&b."),
+    COMMAND_PAYPALSET_CREATED("&c&l[!] &7Make sure to type &b/f <paypal/setpaypal> <email>&7!"),
+    COMMAND_PAYPALSET_SUCCESSFUL("&c&l[!] &7Successfully set your factions email - &b%1$s&7."),
+    COMMAND_PAYPALSEE_FACTION_PAYPAL("&c&l[!] &b%1$s's &7faction has their paypal set to &b%2$s&7."),
+    COMMAND_PAYPALSEE_FACTION_NOTSET("&c&l[!] &b%1$s's &7paypal has not yet been set!"),
+    COMMAND_PAYPALSEE_FACTION_NOFACTION("&c&l[!] &b%1$s &7does not have a faction!"),
+
     COMMAND_PEACEFUL_DESCRIPTION("&c&l[!]&7Set a faction to peaceful"),
     COMMAND_PEACEFUL_YOURS("&c&l[!]&7%1$s has %2$s your faction"),
     COMMAND_PEACEFUL_OTHER("&c&l[!]&7%s has %s the faction '%s<i>'."),
