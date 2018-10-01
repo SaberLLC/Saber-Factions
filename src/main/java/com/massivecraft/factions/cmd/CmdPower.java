@@ -41,6 +41,7 @@ public class CmdPower extends FCommand {
             return;
         }
 
+
         double powerBoost = target.getPowerBoost();
         String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_POWER_BONUS.toString() : TL.COMMAND_POWER_PENALTY.toString()) + powerBoost + ")";
         msg(TL.COMMAND_POWER_POWER, target.describeTo(fme, true), target.getPowerRounded(), target.getPowerMaxRounded(), boost);

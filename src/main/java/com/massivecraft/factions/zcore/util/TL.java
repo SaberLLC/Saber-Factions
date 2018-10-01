@@ -806,7 +806,7 @@ public enum TL {
     GENERIC_YOU("you"),
     GENERIC_YOURFACTION("your faction"),
     GENERIC_NOPERMISSION("<b>You don't have permission to %1$s."),
-    GENERIC_FPERM_NOPERMISSION("&7Your faction leader does not allow you to %1$s."),
+    GENERIC_FPERM_NOPERMISSION("&7The faction leader does not allow you to &c%1$s."),
     GENERIC_DOTHAT("do that"),  //Ugh nuke this from high orbit
     GENERIC_NOPLAYERMATCH("<b>No player match found for \"<p>%1$s<b>\"."),
     GENERIC_NOPLAYERFOUND("<b>No player \"<p>%1$s<b>\" could not be found."),
