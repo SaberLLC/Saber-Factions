@@ -394,6 +394,7 @@ public class P extends MPlugin {
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
                 .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
+                .registerTypeAdapter(Location.class, new LocationTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
