@@ -178,8 +178,8 @@ public class P extends MPlugin {
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
 
-        //massive stats
-        MassiveStats massive = new MassiveStats(this);
+        // massive stats
+        new MassiveStats(this);
 
 
 
