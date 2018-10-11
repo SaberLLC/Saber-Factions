@@ -259,7 +259,9 @@ public class P extends MPlugin {
             FIREBALL = Material.valueOf("LEGACY_FIREBALL");
 
         } else {
-            BANNER = Material.valueOf("BANNER");
+            if (!mc17) {
+                BANNER = Material.valueOf("BANNER");
+            }
             CROPS = Material.valueOf("CROPS");
             SUGAR_CANE_BLOCK = Material.valueOf("SUGAR_CANE_BLOCK");
             REDSTONE_LAMP_ON = Material.valueOf("REDSTONE_LAMP_ON");
