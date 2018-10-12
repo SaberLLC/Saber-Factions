@@ -401,8 +401,9 @@ public class Conf {
         territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
-
+        if (!P.p.mc17) {
+            territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
+        }
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
         safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
         safeZoneNerfedCreatureTypes.add(EntityType.CREEPER);
