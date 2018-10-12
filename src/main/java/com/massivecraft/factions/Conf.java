@@ -371,7 +371,10 @@ public class Conf {
         territoryDenyUseageMaterials.add(Material.BUCKET);
         territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
-        territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
+        if (!P.p.mc17) {
+            territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
+        }
+
 
         territoryProtectedMaterialsWhenOffline.add(P.p.WOODEN_DOOR);
         territoryProtectedMaterialsWhenOffline.add(P.p.TRAP_DOOR);
