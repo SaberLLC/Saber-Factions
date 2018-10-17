@@ -17,6 +17,7 @@ import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
@@ -305,7 +306,8 @@ public class FactionsPlayerListener implements Listener {
         Access access = otherFaction.getAccess(me, action);
         boolean doTerritoryEnemyProtectedCheck = true;
 
-        if (action.equals(PermissableAction.CONTAINER)) {
+        if (action.equals(PermissableAction.CONTAINER) ||
+            action.equals(PermissableAction.DOOR)) {
             if (access == Access.ALLOW) {
                 doTerritoryEnemyProtectedCheck = false;
             }
