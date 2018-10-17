@@ -301,16 +301,30 @@ public class FactionsPlayerListener implements Listener {
                 return true;
             }
         }
+        // Move up access check to check for exceptions
+        Access access = otherFaction.getAccess(me, action);
+        boolean doTerritoryEnemyProtectedCheck = true;
 
-        // You may use any block unless it is another faction's territory...
-        if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
-            if (!justCheck) {
-                me.msg(TL.PLAYER_USE_TERRITORY, (material == P.p.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+        if (action.equals(PermissableAction.CONTAINER)) {
+            if (access == Access.ALLOW) {
+                doTerritoryEnemyProtectedCheck = false;
             }
-            return false;
         }
 
-        Access access = otherFaction.getAccess(me, action);
+        // Did not nest the boolean so that it stands out when Im looking
+        // through the code later.
+        if (doTerritoryEnemyProtectedCheck) {
+            // You may use any block unless it is another faction's territory...
+            if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
+                if (!justCheck) {
+                    me.msg(TL.PLAYER_USE_TERRITORY, (material == P.p.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+                }
+                return false;
+            }
+        }
+
+
+
         if (access != Access.ALLOW && me.getRole() != Role.ADMIN) {
             // TODO: Update this once new access values are added other than just allow / deny.
             if ((myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && myFaction.getOwnerListString(loc).contains(player.getName()))) {
