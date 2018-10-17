@@ -137,6 +137,10 @@ public abstract class MCommand<T extends MPlugin> {
 
     /**
      * In this method we validate that all prerequisites to perform this command has been met.
+     *
+     * @param sender of the command
+     * @param args of the command
+     * @return true if valid, false if not.
      */
     // TODO: There should be a boolean for silence
     public boolean validCall(CommandSender sender, List<String> args) {
