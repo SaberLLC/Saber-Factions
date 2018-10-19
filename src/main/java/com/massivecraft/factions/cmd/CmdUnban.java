@@ -28,7 +28,7 @@ public class CmdUnban extends FCommand {
     public void perform() {
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.BAN);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN && !Permission.BAN.has(sender, true)) {
+          if (access != Access.ALLOW && fme.getRole() != Role.LEADER && ! Permission.BAN.has(sender, true)) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage bans");
                 return;
             }

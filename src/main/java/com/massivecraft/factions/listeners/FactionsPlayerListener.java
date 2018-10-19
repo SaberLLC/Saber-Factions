@@ -326,7 +326,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
 
-    if (access != Access.ALLOW && me.getRole() != Role.ADMIN) {
+    if (access != Access.ALLOW && me.getRole() != Role.LEADER) {
       // TODO: Update this once new access values are added other than just allow / deny.
       if ((myFaction.getOwnerListString(loc) != null && ! myFaction.getOwnerListString(loc).isEmpty() && myFaction.getOwnerListString(loc).contains(player.getName()))) {
         return true;
@@ -1004,7 +1004,7 @@ public class FactionsPlayerListener implements Listener {
 
     // if player was banned (not just kicked), get rid of their stored info
     if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin.")) {
-      if (badGuy.getRole() == Role.ADMIN) {
+      if (badGuy.getRole() == Role.LEADER) {
         badGuy.getFaction().promoteNewLeader();
       }
 

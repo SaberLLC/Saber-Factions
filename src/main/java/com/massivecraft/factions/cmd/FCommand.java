@@ -105,7 +105,7 @@ public abstract class FCommand extends MCommand<P> {
             return false;
         }
 
-        if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.ADMIN)) {
+        if (this.senderMustBeAdmin && ! fme.getRole().isAtLeast(Role.LEADER)) {
             sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
             return false;
         }
@@ -261,11 +261,11 @@ public abstract class FCommand extends MCommand<P> {
             return false;
         }
 
-        if (i.getRole().value > you.getRole().value || i.getRole().equals(Role.ADMIN)) {
+        if (i.getRole().value > you.getRole().value || i.getRole().equals(Role.LEADER)) {
             return true;
         }
 
-        if (you.getRole().equals(Role.ADMIN)) {
+        if (you.getRole().equals(Role.LEADER)) {
             i.sendMessage(p.txt.parse("<b>Only the faction admin can do that."));
 
         } else if ((you.getRole().equals(Role.COLEADER))) {

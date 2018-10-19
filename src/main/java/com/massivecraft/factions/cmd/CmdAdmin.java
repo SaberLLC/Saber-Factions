@@ -45,7 +45,7 @@ public class CmdAdmin extends FCommand {
             return;
         }
 
-        if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
+      if (fme != null && fme.getRole() != Role.LEADER && ! permAny) {
             msg(TL.COMMAND_ADMIN_NOTADMIN);
             return;
         }
@@ -83,7 +83,7 @@ public class CmdAdmin extends FCommand {
         if (admin != null) {
             admin.setRole(Role.COLEADER);
         }
-        fyou.setRole(Role.ADMIN);
+      fyou.setRole(Role.LEADER);
         msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(fme, true));
 
         // Inform all players

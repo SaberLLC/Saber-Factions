@@ -37,7 +37,7 @@ public class CmdUnclaim extends FCommand {
 
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TERRITORY);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage faction territory");
                 return;
             }

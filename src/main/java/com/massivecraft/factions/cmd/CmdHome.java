@@ -51,7 +51,7 @@ public class CmdHome extends FCommand {
         }
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.HOME);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
                 return;
             }

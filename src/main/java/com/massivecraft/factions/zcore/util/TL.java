@@ -880,7 +880,7 @@ public enum TL {
     /**
      * Roles
      */
-    ROLE_ADMIN("admin"),
+    ROLE_LEADER("admin"),
     ROLE_COLEADER("coleader"),
     ROLE_MODERATOR("moderator"),
     ROLE_NORMAL("normal member"),

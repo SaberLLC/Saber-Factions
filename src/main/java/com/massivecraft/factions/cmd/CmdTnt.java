@@ -38,7 +38,7 @@ public class CmdTnt extends FCommand {
 
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TNTBANK);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "use tnt bank");
                 return;
             }

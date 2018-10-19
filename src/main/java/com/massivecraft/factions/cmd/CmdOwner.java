@@ -45,7 +45,7 @@ public class CmdOwner extends FCommand {
             return;
         }
 
-        if (!hasBypass && !assertMinRole(Conf.ownedAreasModeratorsCanSet ? Role.MODERATOR : Role.ADMIN)) {
+      if (! hasBypass && ! assertMinRole(Conf.ownedAreasModeratorsCanSet ? Role.MODERATOR : Role.LEADER)) {
             return;
         }
 

@@ -39,7 +39,7 @@ public class CmdSetFWarp extends FCommand {
         // the old setting of allowing moderators to set warps.
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.SETWARP);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "set warps");
                 return;
             }

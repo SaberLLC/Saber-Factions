@@ -99,7 +99,7 @@ public class MiscUtil {
             }
 
             switch (player.getRole()) {
-                case ADMIN:
+                case LEADER:
                     admins.add(player);
                     break;
 

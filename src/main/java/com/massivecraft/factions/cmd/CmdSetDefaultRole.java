@@ -30,7 +30,7 @@ public class CmdSetDefaultRole extends FCommand {
             return;
         }
 
-        if (target == Role.ADMIN) {
+      if (target == Role.LEADER) {
             msg(TL.COMMAND_SETDEFAULTROLE_NOTTHATROLE, argAsString(0));
             return;
         }

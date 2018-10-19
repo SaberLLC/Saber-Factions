@@ -55,7 +55,7 @@ public class CmdColeader extends FCommand {
             return;
         }
 
-        if (fme != null && fme.getRole() != Role.ADMIN && !permAny) {
+      if (fme != null && fme.getRole() != Role.LEADER && ! permAny) {
             msg(TL.COMMAND_COLEADER_NOTADMIN);
             return;
         }
@@ -65,7 +65,7 @@ public class CmdColeader extends FCommand {
             return;
         }
 
-        if (you.getRole() == Role.ADMIN) {
+      if (you.getRole() == Role.LEADER) {
             msg(TL.COMMAND_COLEADER_TARGETISADMIN);
             return;
         }

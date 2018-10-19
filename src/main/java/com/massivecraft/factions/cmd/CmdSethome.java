@@ -42,7 +42,7 @@ public class CmdSethome extends FCommand {
 
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.SETHOME);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN && !Permission.SETHOME_ANY.has(sender, true)) {
+          if (access != Access.ALLOW && fme.getRole() != Role.LEADER && ! Permission.SETHOME_ANY.has(sender, true)) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "set home");
                 return;
             }
