@@ -43,11 +43,11 @@ import java.util.*;
 import java.util.logging.Level;
 
 
-public class P extends MPlugin {
+public class SavageFactions extends MPlugin {
 
     // Our single plugin instance.
     // Single 4 life.
-    public static P p;
+    public static SavageFactions plugin;
     public static Permission perms = null;
 
 
@@ -69,10 +69,8 @@ public class P extends MPlugin {
     private boolean mvdwPlaceholderAPIManager = false;
 
 
-
-
-    public P() {
-        p = this;
+    public SavageFactions() {
+        plugin = this;
     }
 
     public boolean getLocked() {
@@ -114,20 +112,20 @@ public class P extends MPlugin {
 
 
         // Vault dependency check.
-        if (P.p.getServer().getPluginManager().getPlugin("Vault") == null) {
-            P.p.log("Vault is not present, the plugin will not run properly.");
-            P.p.getServer().getPluginManager().disablePlugin(P.p);
+        if (SavageFactions.plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
+            SavageFactions.plugin.log("Vault is not present, the plugin will not run properly.");
+            SavageFactions.plugin.getServer().getPluginManager().disablePlugin(SavageFactions.plugin);
         }
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         if (version == 7) {
-            P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+            SavageFactions.plugin.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
             mc17 = true;
         } else if (version == 8) {
-            P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+            SavageFactions.plugin.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
             mc18 = true;
         } else if (version == 13) {
-            P.p.log("Minecraft Version 1.13 found, New Items will be used.");
+            SavageFactions.plugin.log("Minecraft Version 1.13 found, New Items will be used.");
             mc113 = true;
             changeItemIDSInConfig();
         }
@@ -186,10 +184,10 @@ public class P extends MPlugin {
 
         if (version > 8) {
             useNonPacketParticles = true;
-            P.p.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
+            SavageFactions.plugin.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
         }
 
-        if (P.p.getConfig().getBoolean("enable-faction-flight")) {
+        if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight")) {
             factionsFlight = true;
         }
 
@@ -208,7 +206,7 @@ public class P extends MPlugin {
         // since some other plugins execute commands directly through this command interface, provide it
         this.getCommand(this.refCommand).setExecutor(this);
 
-        if (P.p.getDescription().getFullName().contains("BETA")) {
+        if (SavageFactions.plugin.getDescription().getFullName().contains("BETA")) {
             divider();
             System.out.println("You are using a BETA version of the plugin!");
             System.out.println("This comes with risks of small bugs in newer features!");
@@ -312,7 +310,7 @@ public class P extends MPlugin {
     public void changeItemIDSInConfig() {
 
 
-        P.p.log("Starting conversion of legacy material in config to 1.13 materials.");
+        SavageFactions.plugin.log("Starting conversion of legacy material in config to 1.13 materials.");
 
 
         replaceStringInConfig("fperm-gui.relation.materials.recruit", "WOOD_SWORD", "WOODEN_SWORD");
@@ -353,7 +351,7 @@ public class P extends MPlugin {
 
     public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
         if (getConfig().getString(path).equals(stringToReplace)) {
-            P.p.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+            SavageFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
             getConfig().set(path, replacementString);
         }
     }
@@ -453,14 +451,14 @@ public class P extends MPlugin {
     public ItemStack createLazyItem(Material material, int amount, short datavalue, String name, String lore) {
         ItemStack item = new ItemStack(material, amount, datavalue);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(color(P.p.getConfig().getString(name)));
-        meta.setLore(colorList(P.p.getConfig().getStringList(lore)));
+        meta.setDisplayName(color(SavageFactions.plugin.getConfig().getString(name)));
+        meta.setLore(colorList(SavageFactions.plugin.getConfig().getStringList(lore)));
         item.setItemMeta(meta);
         return item;
     }
 
     public Economy getEcon() {
-        RegisteredServiceProvider<Economy> rsp = P.p.getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = SavageFactions.plugin.getServer().getServicesManager().getRegistration(Economy.class);
         Economy econ = rsp.getProvider();
         return econ;
     }
@@ -491,10 +489,10 @@ public class P extends MPlugin {
         as.setVisible(false); //Makes the ArmorStand invisible
         as.setGravity(false); //Make sure it doesn't fall
         as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-        as.setCustomName(P.p.color(text)); //Set this to the text you want
+        as.setCustomName(SavageFactions.plugin.color(text)); //Set this to the text you want
         as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
         final ArmorStand armorStand = as;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, new Runnable() {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() {
                 Bukkit.broadcastMessage("removing stand");

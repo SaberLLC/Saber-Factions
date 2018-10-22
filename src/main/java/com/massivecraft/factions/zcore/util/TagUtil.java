@@ -4,7 +4,7 @@ package com.massivecraft.factions.zcore.util;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.util.MiscUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import mkremins.fanciful.FancyMessage;
@@ -97,11 +97,11 @@ public class TagUtil {
     }
 
     public static String parsePlaceholders(Player player, String line) {
-        if (P.p.isClipPlaceholderAPIHooked() && player.isOnline()) {
+      if (SavageFactions.plugin.isClipPlaceholderAPIHooked() && player.isOnline()) {
             line = PlaceholderAPI.setPlaceholders(player, line);
         }
 
-        if (P.p.isMVdWPlaceholderAPIHooked() && player.isOnline()) {
+      if (SavageFactions.plugin.isMVdWPlaceholderAPIHooked() && player.isOnline()) {
             line = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, line);
         }
 
@@ -133,11 +133,11 @@ public class TagUtil {
      */
     protected static List<FancyMessage> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
         List<FancyMessage> fancyMessages = new ArrayList<>();
-        boolean minimal = P.p.getConfig().getBoolean("minimal-show", false);
+      boolean minimal = SavageFactions.plugin.getConfig().getBoolean("minimal-show", false);
 
         switch (type) {
             case ALLIES_LIST:
-                FancyMessage currentAllies = P.p.txt.parseFancy(prefix);
+              FancyMessage currentAllies = SavageFactions.plugin.txt.parseFancy(prefix);
                 boolean firstAlly = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
@@ -157,7 +157,7 @@ public class TagUtil {
                 fancyMessages.add(currentAllies);
                 return firstAlly && minimal ? null : fancyMessages; // we must return here and not outside the switch
             case ENEMIES_LIST:
-                FancyMessage currentEnemies = P.p.txt.parseFancy(prefix);
+              FancyMessage currentEnemies = SavageFactions.plugin.txt.parseFancy(prefix);
                 boolean firstEnemy = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
@@ -177,7 +177,7 @@ public class TagUtil {
                 fancyMessages.add(currentEnemies);
                 return firstEnemy && minimal ? null : fancyMessages; // we must return here and not outside the switch
             case TRUCES_LIST:
-                FancyMessage currentTruces = P.p.txt.parseFancy(prefix);
+              FancyMessage currentTruces = SavageFactions.plugin.txt.parseFancy(prefix);
                 boolean firstTruce = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
@@ -197,7 +197,7 @@ public class TagUtil {
                 fancyMessages.add(currentTruces);
                 return firstTruce && minimal ? null : fancyMessages; // we must return here and not outside the switch
             case ONLINE_LIST:
-                FancyMessage currentOnline = P.p.txt.parseFancy(prefix);
+              FancyMessage currentOnline = SavageFactions.plugin.txt.parseFancy(prefix);
                 boolean firstOnline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
                     if (fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
@@ -215,7 +215,7 @@ public class TagUtil {
                 fancyMessages.add(currentOnline);
                 return firstOnline && minimal ? null : fancyMessages; // we must return here and not outside the switch
             case OFFLINE_LIST:
-                FancyMessage currentOffline = P.p.txt.parseFancy(prefix);
+              FancyMessage currentOffline = SavageFactions.plugin.txt.parseFancy(prefix);
                 boolean firstOffline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
                     String name = p.getNameAndTitle();
@@ -244,7 +244,7 @@ public class TagUtil {
      */
     private static List<String> tipFaction(Faction faction) {
         List<String> lines = new ArrayList<>();
-        for (String line : P.p.getConfig().getStringList("tooltips.list")) {
+      for (String line : SavageFactions.plugin.getConfig().getStringList("tooltips.list")) {
             lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(faction, line)));
         }
         return lines;
@@ -258,7 +258,7 @@ public class TagUtil {
      */
     private static List<String> tipPlayer(FPlayer fplayer) {
         List<String> lines = new ArrayList<>();
-        for (String line : P.p.getConfig().getStringList("tooltips.show")) {
+      for (String line : SavageFactions.plugin.getConfig().getStringList("tooltips.show")) {
             lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(fplayer, line)));
         }
         return lines;

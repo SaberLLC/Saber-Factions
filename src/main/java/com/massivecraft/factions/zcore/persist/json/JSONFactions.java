@@ -7,7 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.zcore.persist.MemoryFaction;
 import com.massivecraft.factions.zcore.persist.MemoryFactions;
 import com.massivecraft.factions.zcore.util.DiscUtil;
@@ -26,8 +26,8 @@ public class JSONFactions extends MemoryFactions {
     private final File file;
 
     public JSONFactions() {
-        this.file = new File(P.p.getDataFolder(), "factions.json");
-        this.gson = P.p.gson;
+      this.file = new File(SavageFactions.plugin.getDataFolder(), "factions.json");
+      this.gson = SavageFactions.plugin.gson;
         this.nextId = 1;
     }
 
@@ -68,7 +68,7 @@ public class JSONFactions extends MemoryFactions {
         this.factions.putAll(factions);
 
         super.load();
-        P.p.log("Loaded " + factions.size() + " Factions");
+      SavageFactions.plugin.log("Loaded " + factions.size() + " Factions");
     }
 
     private Map<String, JSONFaction> loadCore() {

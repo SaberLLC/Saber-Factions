@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -104,7 +104,7 @@ public class CmdPerm extends FCommand {
         }
 
         fme.msg(TL.COMMAND_PERM_SET, argAsString(1), access.name(), argAsString(0));
-        P.p.log(String.format(TL.COMMAND_PERM_SET.toString(), argAsString(1), access.name(), argAsString(0)) + " for faction " + fme.getTag());
+      SavageFactions.plugin.log(String.format(TL.COMMAND_PERM_SET.toString(), argAsString(1), access.name(), argAsString(0)) + " for faction " + fme.getTag());
     }
 
     private Permissable getPermissable(String name) {

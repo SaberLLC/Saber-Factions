@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -28,19 +28,19 @@ public class CmdRules extends FCommand {
 
     @Override
     public void perform() {
-        if (!P.p.getConfig().getBoolean("frules.Enabled")) {
+      if (! SavageFactions.plugin.getConfig().getBoolean("frules.Enabled")) {
             fme.msg(TL.COMMAND_RULES_DISABLED_MSG);
             return;
         }
         if (this.args.size() == 0) {
             HashMap<Integer, String> rules = fme.getFaction().getRulesMap();
             if (rules.size() == 0) {
-                List<String> ruleList = P.p.getConfig().getStringList("frules.default-rules");
-                fme.sendMessage(P.p.colorList(ruleList));
+              List<String> ruleList = SavageFactions.plugin.getConfig().getStringList("frules.default-rules");
+              fme.sendMessage(SavageFactions.plugin.colorList(ruleList));
 
             } else {
                 for (int i = 0; i <= rules.size() - 1; i++) {
-                    fme.sendMessage(P.p.color(rules.get(i)));
+                  fme.sendMessage(SavageFactions.plugin.color(rules.get(i)));
                 }
             }
 

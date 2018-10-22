@@ -38,13 +38,13 @@ public class FTeamWrapper {
             return;
         }
 
-        if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+      if (! SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             return;
         }
 
 
         if (updating.add(faction)) {
-            Bukkit.getScheduler().runTask(P.p, new Runnable() {
+          Bukkit.getScheduler().runTask(SavageFactions.plugin, new Runnable() {
                 @Override
                 public void run() {
                     updating.remove(faction);
@@ -63,7 +63,7 @@ public class FTeamWrapper {
             return;
         }
 
-        if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+      if (! SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             return;
         }
 
@@ -155,7 +155,7 @@ public class FTeamWrapper {
     }
 
     private void updatePrefixes() {
-        if (P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+      if (SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             for (FScoreboard fboard : teams.keySet()) {
                 updatePrefix(fboard);
             }
@@ -163,12 +163,12 @@ public class FTeamWrapper {
     }
 
     private void updatePrefix(FScoreboard fboard) {
-        if (P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+      if (SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             FPlayer fplayer = fboard.getFPlayer();
             Team team = teams.get(fboard);
 
             String prefix = TL.DEFAULT_PREFIX.toString();
-            if (P.p.PlaceholderApi) {
+        if (SavageFactions.plugin.PlaceholderApi) {
                 prefix = PlaceholderAPI.setPlaceholders(fplayer.getPlayer(), prefix);
                 prefix = PlaceholderAPI.setBracketPlaceholders(fplayer.getPlayer(), prefix);
             }

@@ -40,7 +40,7 @@ public class MPluginSecretPlayerListener implements Listener {
         /* Should be handled by stuff in FactionsChatListener
         Player speaker = event.getPlayer();
         String format = event.getFormat();
-        format = format.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTag(speaker)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(speaker));
+        format = format.replace(Conf.chatTagReplaceString, SavageFactions.plugin.getPlayerFactionTag(speaker)).replace("[FACTION_TITLE]", SavageFactions.plugin.getPlayerTitle(speaker));
         event.setFormat(format);
         */
     }

@@ -22,10 +22,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class FactionsBlockListener implements Listener {
 
-    public P p;
+  public SavageFactions savageFactions;
 
-    public FactionsBlockListener(P p) {
-        this.p = p;
+  public FactionsBlockListener(SavageFactions savageFactions) {
+    this.savageFactions = savageFactions;
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -125,7 +125,7 @@ public class FactionsBlockListener implements Listener {
 
       return false;
     }
-    if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+    if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
       return true;
     }
 
@@ -222,7 +222,7 @@ public class FactionsBlockListener implements Listener {
     @EventHandler
     public void onVaultPlace(BlockPlaceEvent e) {
         if (e.getItemInHand().getType() == Material.CHEST) {
-            ItemStack vault = P.p.createItem(Material.CHEST, 1, (short) 0, P.p.color(P.p.getConfig().getString("fvault.Item.Name")), P.p.colorList(P.p.getConfig().getStringList("fvault.Item.Lore")));
+          ItemStack vault = SavageFactions.plugin.createItem(Material.CHEST, 1, (short) 0, SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fvault.Item.Name")), SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fvault.Item.Lore")));
             if (e.getItemInHand().isSimilar(vault)) {
                 FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
                 if (fme.getFaction().getVault() != null) {
@@ -248,7 +248,7 @@ public class FactionsBlockListener implements Listener {
 
                             Material blockMaterial = blockLoc.getBlock().getType();
 
-                            if (blockMaterial == Material.CHEST || (P.p.getConfig().getBoolean("fvault.No-Hoppers-near-vault") && blockMaterial == Material.HOPPER)) {
+                          if (blockMaterial == Material.CHEST || (SavageFactions.plugin.getConfig().getBoolean("fvault.No-Hoppers-near-vault") && blockMaterial == Material.HOPPER)) {
                                 e.setCancelled(true);
                                 fme.msg(TL.COMMAND_GETVAULT_CHESTNEAR);
                                 return;
@@ -267,7 +267,7 @@ public class FactionsBlockListener implements Listener {
     @EventHandler
     public void onHopperPlace(BlockPlaceEvent e) {
 
-        if (e.getItemInHand().getType() != Material.HOPPER && !P.p.getConfig().getBoolean("fvault.No-Hoppers-near-vault")) {
+      if (e.getItemInHand().getType() != Material.HOPPER && ! SavageFactions.plugin.getConfig().getBoolean("fvault.No-Hoppers-near-vault")) {
             return;
         }
 
@@ -314,7 +314,7 @@ public class FactionsBlockListener implements Listener {
         Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(targetLoc));
 
         // Check if the piston is moving in a faction's territory. This disables pistons entirely in faction territory.
-        if (otherFaction.isNormal() && P.p.getConfig().getBoolean("disable-pistons-in-territory", false)) {
+      if (otherFaction.isNormal() && SavageFactions.plugin.getConfig().getBoolean("disable-pistons-in-territory", false)) {
             event.setCancelled(true);
             return;
         }
@@ -387,7 +387,7 @@ public class FactionsBlockListener implements Listener {
     if (! fme.hasFaction()) {
       return;
         }
-    if (event.getBlock().getType() == P.p.MOB_SPANWER) {
+    if (event.getBlock().getType() == SavageFactions.plugin.MOB_SPANWER) {
       if (! fme.isAdminBypassing()) {
         Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
         if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {

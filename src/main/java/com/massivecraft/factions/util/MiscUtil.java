@@ -2,7 +2,7 @@ package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
@@ -19,7 +19,7 @@ import java.util.logging.Level;
 public class MiscUtil {
 
     /// TODO create tag whitelist!!
-    public static HashSet<String> substanceChars = new HashSet<>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"));
+    public static HashSet<String> substanceChars = new HashSet<>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "SavageFactions", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "plugin", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"));
 
     public static EntityType creatureTypeFromEntity(Entity entity) {
         if (!(entity instanceof Creature)) {
@@ -67,16 +67,16 @@ public class MiscUtil {
         ArrayList<String> errors = new ArrayList<>();
 
         if (getComparisonString(str).length() < Conf.factionTagLengthMin) {
-            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), Conf.factionTagLengthMin));
+            errors.add(SavageFactions.plugin.txt.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), Conf.factionTagLengthMin));
         }
 
         if (str.length() > Conf.factionTagLengthMax) {
-            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), Conf.factionTagLengthMax));
+            errors.add(SavageFactions.plugin.txt.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), Conf.factionTagLengthMax));
         }
 
         for (char c : str.toCharArray()) {
             if (!substanceChars.contains(String.valueOf(c))) {
-                errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
+                errors.add(SavageFactions.plugin.txt.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
             }
         }
 
@@ -95,7 +95,7 @@ public class MiscUtil {
             // Fix for some data being broken when we added the recruit rank.
             if (player.getRole() == null) {
                 player.setRole(Role.NORMAL);
-                P.p.log(Level.WARNING, String.format("Player %s had null role. Setting them to normal. This isn't good D:", player.getName()));
+                SavageFactions.plugin.log(Level.WARNING, String.format("Player %s had null role. Setting them to normal. This isn't good D:", player.getName()));
             }
 
             switch (player.getRole()) {

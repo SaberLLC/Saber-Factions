@@ -23,7 +23,7 @@ public class FactionsJSON {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Logger logger = P.p.getLogger();
+              Logger logger = SavageFactions.plugin.getLogger();
                 logger.info("Beginning Board conversion to JSON");
                 new JSONBoard().convertFrom((MemoryBoard) Board.getInstance());
                 logger.info("Board Converted");
@@ -40,6 +40,6 @@ public class FactionsJSON {
                 }
                 logger.info("Conversion Complete");
             }
-        }.runTaskAsynchronously(P.p);
+        }.runTaskAsynchronously(SavageFactions.plugin);
     }
 }

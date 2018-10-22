@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -12,7 +12,7 @@ public class CmdPowerBoost extends FCommand {
         super();
         this.aliases.add("powerboost");
 
-        this.requiredArgs.add("p|f|player|faction");
+      this.requiredArgs.add("plugin|f|player|faction");
         this.requiredArgs.add("name");
         this.requiredArgs.add("# or reset");
 
@@ -32,7 +32,7 @@ public class CmdPowerBoost extends FCommand {
         boolean doPlayer = true;
         if (type.equals("f") || type.equals("faction")) {
             doPlayer = false;
-        } else if (!type.equals("p") && !type.equals("player")) {
+        } else if (! type.equals("plugin") && ! type.equals("player")) {
             msg(TL.COMMAND_POWERBOOST_HELP_1);
             msg(TL.COMMAND_POWERBOOST_HELP_2);
             return;
@@ -77,7 +77,7 @@ public class CmdPowerBoost extends FCommand {
         int roundedPower = (int) Math.round(targetPower);
         msg(TL.COMMAND_POWERBOOST_BOOST, target, roundedPower);
         if (!senderIsConsole) {
-            P.p.log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), fme.getName(), target, roundedPower);
+          SavageFactions.plugin.log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), fme.getName(), target, roundedPower);
         }
     }
 

@@ -1,9 +1,10 @@
 package com.massivecraft.factions.zcore.util;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import org.bukkit.Bukkit;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -79,7 +80,7 @@ public class DiscUtil {
                 lock.unlock();
             }
         } else {
-            Bukkit.getScheduler().runTaskAsynchronously(P.p, new Runnable() {
+          Bukkit.getScheduler().runTaskAsynchronously(SavageFactions.plugin, new Runnable() {
                 @Override
                 public void run() {
                     lock.lock();
@@ -110,21 +111,11 @@ public class DiscUtil {
     // -------------------------------------------- //
 
     public static byte[] utf8(String string) {
-        try {
-            return string.getBytes(UTF8);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
+      return string.getBytes(StandardCharsets.UTF_8);
     }
 
     public static String utf8(byte[] bytes) {
-        try {
-            return new String(bytes, UTF8);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
+      return new String(bytes, StandardCharsets.UTF_8);
     }
 
 }

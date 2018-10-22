@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Particles.ReflectionUtils;
 import com.massivecraft.factions.zcore.util.TL;
@@ -26,13 +26,13 @@ public class CmdReload extends FCommand {
     public void perform() {
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
-        P.p.reloadConfig();
-        P.p.loadLang();
+      SavageFactions.plugin.reloadConfig();
+      SavageFactions.plugin.loadLang();
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 
 
-        if (P.p.getConfig().getBoolean("enable-faction-flight")) {
-            P.p.factionsFlight = true;
+      if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight")) {
+        SavageFactions.plugin.factionsFlight = true;
         }
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 

@@ -280,7 +280,7 @@ hcf:
 
 # SUPPORTS PLACEHOLDERS
 show:
-  # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
+# First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
   - '&8&m--------------&7 &8<&e{faction}&8> &8&m--------------'
   - '&6 * &eOwner &7{leader}'
   - '&6 * &eDescription &7{description}'
@@ -307,7 +307,7 @@ show-exempt:
 # You can use any variable here, including fancy messages. Color codes and or tags work fine.
 # Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
 map:
-  # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
+# First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
   - '&6* &eFaction &7{faction}'
   - '&6* &eOwner &7{leader}'
   - '&6* &eLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'

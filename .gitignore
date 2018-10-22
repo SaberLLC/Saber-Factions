@@ -13,7 +13,7 @@
 /target
 
 # vim
-.*.sw[a-p]
+.*.sw[a-savageFactions]
 
 # various other potential build files
 /build

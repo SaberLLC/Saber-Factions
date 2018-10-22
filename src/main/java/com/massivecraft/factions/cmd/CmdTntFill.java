@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -46,12 +46,12 @@ public class CmdTntFill extends FCommand {
         msg(TL.COMMAND_TNTFILL_HEADER);
         int radius = argAsInt(0, 16);
         int amount = argAsInt(1, 16);
-        if (radius > P.p.getConfig().getInt("Tntfill.max-radius")) {
-            msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", P.p.getConfig().getInt("Tntfill.max-radius") + ""));
+      if (radius > SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius")) {
+        msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius") + ""));
             return;
         }
-        if (amount > P.p.getConfig().getInt("Tntfill.max-amount")) {
-            msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", P.p.getConfig().getInt("Tntfill.max-amount") + ""));
+      if (amount > SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount")) {
+        msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount") + ""));
             return;
         }
         int testNumber = -1;
@@ -177,7 +177,7 @@ public class CmdTntFill extends FCommand {
             return;
         }
         ItemStack tnt = new ItemStack(Material.TNT, amount);
-        if (fme.getFaction().getTnt() + amount > P.p.getConfig().getInt("ftnt.Bank-Limit")) {
+      if (fme.getFaction().getTnt() + amount > SavageFactions.plugin.getConfig().getInt("ftnt.Bank-Limit")) {
             msg(TL.COMMAND_TNT_EXCEEDLIMIT);
             return;
         }

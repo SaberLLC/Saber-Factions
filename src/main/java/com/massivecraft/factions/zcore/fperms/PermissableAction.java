@@ -1,7 +1,7 @@
 package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -80,11 +80,11 @@ public enum PermissableAction {
 
     // Utility method to build items for F Perm GUI
     public ItemStack buildItem(FPlayer fme, Permissable permissable) {
-        final ConfigurationSection section = P.p.getConfig().getConfigurationSection("fperm-gui.action");
+      final ConfigurationSection section = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.action");
 
         if (section == null) {
-            P.p.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-            P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+          SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+          SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return new ItemStack(Material.AIR);
         }
 
@@ -96,7 +96,7 @@ public enum PermissableAction {
         }
         Material material = Material.matchMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-')));
         if (material == null) {
-            material = P.p.STAINED_CLAY;
+          material = SavageFactions.plugin.STAINED_CLAY;
         }
 
         Access access = fme.getFaction().getAccess(permissable, this);
@@ -120,7 +120,7 @@ public enum PermissableAction {
 
 
         // If under the 1.13 version we will use the colorable option.
-        if (!P.p.mc113) {
+      if (! SavageFactions.plugin.mc113) {
             DyeColor dyeColor = null;
 
             try {
@@ -133,14 +133,14 @@ public enum PermissableAction {
             }
         } else {
             // so this is in 1.13 mode, our config will automatically be updated to a material instead of color because of it being removed in the new api
-            item.setType(Material.valueOf(P.p.getConfig().getString("fperm-gui.action.access." + accessValue)));
+        item.setType(Material.valueOf(SavageFactions.plugin.getConfig().getString("fperm-gui.action.access." + accessValue)));
         }
 
         for (String loreLine : section.getStringList("placeholder-item.lore")) {
             lore.add(replacePlaceholders(loreLine, fme, permissable));
         }
 
-        if (!P.p.mc17) {
+      if (! SavageFactions.plugin.mc17) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         }
 

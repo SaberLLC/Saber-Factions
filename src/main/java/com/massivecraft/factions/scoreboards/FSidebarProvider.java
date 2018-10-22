@@ -2,7 +2,7 @@ package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
 
@@ -36,6 +36,6 @@ public abstract class FSidebarProvider {
             // we assume it's broken up into two lines, so returning our tl will suffice.
             return TL.COMMAND_SHOW_NOHOME.toString();
         }
-        return P.p.txt.parse(line); // finally add color :)
+      return SavageFactions.plugin.txt.parse(line); // finally add color :)
     }
 }

@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
@@ -55,7 +55,7 @@ public class CmdShow extends FCommand {
         }
 
         if (fme != null && !fme.getPlayer().hasPermission("factions.show.bypassexempt")
-                && P.p.getConfig().getStringList("show-exempt").contains(faction.getTag())) {
+                && SavageFactions.plugin.getConfig().getStringList("show-exempt").contains(faction.getTag())) {
             msg(TL.COMMAND_SHOW_EXEMPT);
             return;
         }
@@ -65,7 +65,7 @@ public class CmdShow extends FCommand {
             return;
         }
 
-        List<String> show = P.p.getConfig().getStringList("show");
+      List<String> show = SavageFactions.plugin.getConfig().getStringList("show");
         if (show == null || show.isEmpty()) {
             show = defaults;
         }

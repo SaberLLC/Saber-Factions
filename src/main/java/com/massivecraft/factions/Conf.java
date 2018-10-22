@@ -346,28 +346,27 @@ public class Conf {
         territoryEnemyDenyCommands.add("tpa");
 
 
-
-        territoryProtectedMaterials.add(P.p.WOODEN_DOOR);
-        territoryProtectedMaterials.add(P.p.TRAP_DOOR);
-        territoryProtectedMaterials.add(P.p.FENCE_GATE);
+      territoryProtectedMaterials.add(SavageFactions.plugin.WOODEN_DOOR);
+      territoryProtectedMaterials.add(SavageFactions.plugin.TRAP_DOOR);
+      territoryProtectedMaterials.add(SavageFactions.plugin.FENCE_GATE);
         territoryProtectedMaterials.add(Material.DISPENSER);
         territoryProtectedMaterials.add(Material.CHEST);
         territoryProtectedMaterials.add(Material.FURNACE);
-        territoryProtectedMaterials.add(P.p.BURNING_FURNACE);
-        territoryProtectedMaterials.add(P.p.DIODE_BLOCK_OFF);
-        territoryProtectedMaterials.add(P.p.DIODE_BLOCK_ON);
+      territoryProtectedMaterials.add(SavageFactions.plugin.BURNING_FURNACE);
+      territoryProtectedMaterials.add(SavageFactions.plugin.DIODE_BLOCK_OFF);
+      territoryProtectedMaterials.add(SavageFactions.plugin.DIODE_BLOCK_ON);
         territoryProtectedMaterials.add(Material.JUKEBOX);
         territoryProtectedMaterials.add(Material.BREWING_STAND);
-        territoryProtectedMaterials.add(P.p.ENCHANTMENT_TABLE);
+      territoryProtectedMaterials.add(SavageFactions.plugin.ENCHANTMENT_TABLE);
         territoryProtectedMaterials.add(Material.CAULDRON);
-        territoryProtectedMaterials.add(P.p.ENCHANTMENT_TABLE);
+      territoryProtectedMaterials.add(SavageFactions.plugin.ENCHANTMENT_TABLE);
         territoryProtectedMaterials.add(Material.BEACON);
         territoryProtectedMaterials.add(Material.ANVIL);
         territoryProtectedMaterials.add(Material.TRAPPED_CHEST);
         territoryProtectedMaterials.add(Material.DROPPER);
         territoryProtectedMaterials.add(Material.HOPPER);
 
-        territoryDenyUseageMaterials.add(P.p.FIREBALL);
+      territoryDenyUseageMaterials.add(SavageFactions.plugin.FIREBALL);
         territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
         territoryDenyUseageMaterials.add(Material.BUCKET);
         territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
@@ -378,32 +377,32 @@ public class Conf {
         territoryDenyUseageMaterials.add(MultiversionMaterials.JUNGLE_BUTTON.parseMaterial());
         territoryDenyUseageMaterials.add(MultiversionMaterials.OAK_BUTTON.parseMaterial());
         territoryDenyUseageMaterials.add(MultiversionMaterials.STONE_BUTTON.parseMaterial());
-        if (!P.p.mc17) {
+      if (! SavageFactions.plugin.mc17) {
             territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
         }
 
 
-        territoryProtectedMaterialsWhenOffline.add(P.p.WOODEN_DOOR);
-        territoryProtectedMaterialsWhenOffline.add(P.p.TRAP_DOOR);
-        territoryProtectedMaterialsWhenOffline.add(P.p.FENCE_GATE);
+      territoryProtectedMaterialsWhenOffline.add(SavageFactions.plugin.WOODEN_DOOR);
+      territoryProtectedMaterialsWhenOffline.add(SavageFactions.plugin.TRAP_DOOR);
+      territoryProtectedMaterialsWhenOffline.add(SavageFactions.plugin.FENCE_GATE);
         territoryProtectedMaterialsWhenOffline.add(Material.DISPENSER);
         territoryProtectedMaterialsWhenOffline.add(Material.CHEST);
         territoryProtectedMaterialsWhenOffline.add(Material.FURNACE);
-        territoryProtectedMaterialsWhenOffline.add(P.p.BURNING_FURNACE);
-        territoryProtectedMaterialsWhenOffline.add(P.p.DIODE_BLOCK_OFF);
-        territoryProtectedMaterialsWhenOffline.add(P.p.DIODE_BLOCK_OFF);
+      territoryProtectedMaterialsWhenOffline.add(SavageFactions.plugin.BURNING_FURNACE);
+      territoryProtectedMaterialsWhenOffline.add(SavageFactions.plugin.DIODE_BLOCK_OFF);
+      territoryProtectedMaterialsWhenOffline.add(SavageFactions.plugin.DIODE_BLOCK_OFF);
         territoryProtectedMaterialsWhenOffline.add(Material.JUKEBOX);
         territoryProtectedMaterialsWhenOffline.add(Material.BREWING_STAND);
-        territoryProtectedMaterialsWhenOffline.add(P.p.ENCHANTMENT_TABLE);
+      territoryProtectedMaterialsWhenOffline.add(SavageFactions.plugin.ENCHANTMENT_TABLE);
         territoryProtectedMaterialsWhenOffline.add(Material.CAULDRON);
-        territoryProtectedMaterialsWhenOffline.add(P.p.SOIL);
+      territoryProtectedMaterialsWhenOffline.add(SavageFactions.plugin.SOIL);
         territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
         territoryProtectedMaterialsWhenOffline.add(Material.ANVIL);
         territoryProtectedMaterialsWhenOffline.add(Material.TRAPPED_CHEST);
         territoryProtectedMaterialsWhenOffline.add(Material.DROPPER);
         territoryProtectedMaterialsWhenOffline.add(Material.HOPPER);
 
-        territoryDenyUseageMaterialsWhenOffline.add(P.p.FIREBALL);
+      territoryDenyUseageMaterialsWhenOffline.add(SavageFactions.plugin.FIREBALL);
         territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
         territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
@@ -414,7 +413,7 @@ public class Conf {
         territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.JUNGLE_BUTTON.parseMaterial());
         territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.OAK_BUTTON.parseMaterial());
         territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.STONE_BUTTON.parseMaterial());
-        if (!P.p.mc17) {
+      if (! SavageFactions.plugin.mc17) {
             territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
         }
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
@@ -435,11 +434,11 @@ public class Conf {
     }
 
     public static void load() {
-        P.p.persist.loadOrSaveDefault(i, Conf.class, "conf");
+      SavageFactions.plugin.persist.loadOrSaveDefault(i, Conf.class, "conf");
     }
 
     public static void save() {
-        P.p.persist.save(i);
+      SavageFactions.plugin.persist.save(i);
     }
 
     public enum Backend {

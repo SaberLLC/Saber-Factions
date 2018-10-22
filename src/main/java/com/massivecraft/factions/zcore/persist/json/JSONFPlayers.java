@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayers;
 import com.massivecraft.factions.zcore.util.DiscUtil;
@@ -26,8 +26,8 @@ public class JSONFPlayers extends MemoryFPlayers {
     private File file;
 
     public JSONFPlayers() {
-        file = new File(P.p.getDataFolder(), "players.json");
-        gson = P.p.gson;
+      file = new File(SavageFactions.plugin.getDataFolder(), "players.json");
+      gson = SavageFactions.plugin.gson;
     }
 
     public Gson getGson() {
@@ -75,7 +75,7 @@ public class JSONFPlayers extends MemoryFPlayers {
         }
         this.fPlayers.clear();
         this.fPlayers.putAll(fplayers);
-        P.p.log("Loaded " + fPlayers.size() + " players");
+      SavageFactions.plugin.log("Loaded " + fPlayers.size() + " players");
     }
 
     private Map<String, JSONFPlayer> loadCore() {
@@ -170,11 +170,9 @@ public class JSONFPlayers extends MemoryFPlayers {
     private boolean doesKeyNeedMigration(String key) {
         if (!key.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
             // Not a valid UUID..
-            if (key.matches("[a-zA-Z0-9_]{2,16}")) {
-                // Valid playername, we'll mark this as one for conversion
-                // to UUID
-                return true;
-            }
+          // Valid playername, we'll mark this as one for conversion
+          // to UUID
+          return key.matches("[a-zA-Z0-9_]{2,16}");
         }
         return false;
     }

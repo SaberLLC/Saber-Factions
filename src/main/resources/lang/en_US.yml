@@ -47,7 +47,7 @@ COMMAND:
     DISABLELOG: ' has DISABLED admin bypass mode.'
   CHAT:
     DISABLED: <b>The built in chat chat channels are disabled on this server.
-    INVALIDMODE: <b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'p'
+    INVALIDMODE: <b>Unrecognised chat mode. <i>Please enter either 'a','f' or 'plugin'
     MODE:
       PUBLIC: <i>Public chat mode.
       ALLIANCE: <i>Alliance only chat mode.
@@ -260,10 +260,10 @@ COMMAND:
     SHORT: transfer f -> f
     TRANSFER: '%1$s transferred %2$s from the faction "%3$s" to the faction "%4$s"'
   MONEYTRANSFERFP:
-    SHORT: transfer f -> p
+    SHORT: transfer f -> plugin
     TRANSFER: '%1$s transferred %2$s from the faction "%3$s" to the player "%4$s"'
   MONEYTRANSFERPF:
-    SHORT: transfer p -> f
+    SHORT: transfer plugin -> f
     TRANSFER: '%1$s transferred %2$s from the player "%3$s" to the faction "%4$s"'
   MONEYWITHDRAW:
     SHORT: withdraw money
@@ -300,8 +300,8 @@ COMMAND:
     PENALTY: ' (penalty: '
   POWERBOOST:
     HELP:
-      '1': <b>You must specify "p" or "player" to target a player or "f" or "faction" to target a faction.
-      '2': <b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5
+      '1': <b>You must specify "plugin" or "player" to target a player or "f" or "faction" to target a faction.
+      '2': <b>ex. /f powerboost plugin SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5
     INVALIDNUM: <b>You must specify a valid numeric value for the power bonus/penalty amount.
     PLAYER: Player "%1$s"
     FACTION: Faction "%1$s"
@@ -446,11 +446,11 @@ CLAIM:
 GENERIC:
   NOPERMISSION: <b>You don't have permission to %1$s.
   DOTHAT: do that
-  NOPLAYERMATCH: <b>No player match found for "<p>%1$s<b>".
-  NOPLAYERFOUND: <b>No player "<p>%1$s<b>" could not be found.
+  NOPLAYERMATCH: <b>No player match found for "<plugin>%1$s<b>".
+  NOPLAYERFOUND: <b>No player "<plugin>%1$s<b>" could not be found.
   ARGS:
     TOOFEW: '<b>Too few arguments. <i>Use like this:'
-    TOOMANY: '<b>Strange argument "<p>%1$s<b>". <i>Use the command like this:'
+    TOOMANY: '<b>Strange argument "<plugin>%1$s<b>". <i>Use the command like this:'
   OWNERS: 'Owner(s): %1$s'
   PUBLICLAND: Public faction land.
   FACTIONLESS: factionless

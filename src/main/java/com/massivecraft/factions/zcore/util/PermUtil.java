@@ -30,7 +30,7 @@ public class PermUtil {
      */
     public final void setup() {
         for (Permission permission : p.getDescription().getPermissions()) {
-            //p.log("\""+permission.getName()+"\" = \""+permission.getDescription()+"\"");
+          //plugin.log("\""+permission.getName()+"\" = \""+permission.getDescription()+"\"");
             this.permissionDescriptions.put(permission.getName(), permission.getDescription());
         }
     }

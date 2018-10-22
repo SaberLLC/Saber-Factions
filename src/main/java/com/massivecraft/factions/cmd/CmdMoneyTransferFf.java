@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
@@ -46,7 +46,7 @@ public class CmdMoneyTransferFf extends FCommand {
 
         if (success && Conf.logMoneyTransactions) {
             String name = sender instanceof Player ? fme.getName() : sender.getName();
-            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+          SavageFactions.plugin.log(ChatColor.stripColor(SavageFactions.plugin.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
         }
     }
 

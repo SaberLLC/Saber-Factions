@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.google.gson.*;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 
 import java.lang.reflect.Type;
 import java.util.logging.Level;
@@ -32,7 +32,7 @@ public class MyLocationTypeAdapter implements JsonDeserializer<LazyLocation>, Js
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            P.p.log(Level.WARNING, "Error encountered while deserializing a LazyLocation.");
+          SavageFactions.plugin.log(Level.WARNING, "Error encountered while deserializing a LazyLocation.");
             return null;
         }
     }
@@ -52,7 +52,7 @@ public class MyLocationTypeAdapter implements JsonDeserializer<LazyLocation>, Js
             return obj;
         } catch (Exception ex) {
             ex.printStackTrace();
-            P.p.log(Level.WARNING, "Error encountered while serializing a LazyLocation.");
+          SavageFactions.plugin.log(Level.WARNING, "Error encountered while serializing a LazyLocation.");
             return obj;
         }
     }

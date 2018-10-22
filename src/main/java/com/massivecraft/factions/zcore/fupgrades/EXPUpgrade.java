@@ -24,15 +24,15 @@ public class EXPUpgrade implements Listener {
             int level = faction.getUpgrade("Exp");
             if (level != 0) {
                 if (level == 1) {
-                    double multiplier = P.p.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1");
+                  double multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1");
                     spawnMoreExp(e, multiplier);
                 }
                 if (level == 2) {
-                    double multiplier = P.p.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2");
+                  double multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2");
                     spawnMoreExp(e, multiplier);
                 }
                 if (level == 3) {
-                    double multiplier = P.p.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
+                  double multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
                     spawnMoreExp(e, multiplier);
                 }
             }

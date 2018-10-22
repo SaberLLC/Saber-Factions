@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -122,7 +122,7 @@ public class CmdKick extends FCommand {
             fme.msg(TL.COMMAND_KICK_KICKS, toKick.describeTo(fme), toKickFaction.describeTo(fme));
         }
         if (Conf.logFactionKick) {
-            P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
+          SavageFactions.plugin.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
         }
       if (toKick.getRole() == Role.LEADER) {
             toKickFaction.promoteNewLeader();

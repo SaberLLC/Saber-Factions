@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -26,7 +26,7 @@ public class CmdVersion extends FCommand {
     @Override
     public void perform() {
         msg(TL.COMMAND_VERSION_NAME); // Did this so people can differentiate between SavageFactions and FactionsUUID (( Requested Feature ))
-        msg(TL.COMMAND_VERSION_VERSION, P.p.getDescription().getFullName());
+      msg(TL.COMMAND_VERSION_VERSION, SavageFactions.plugin.getDescription().getFullName());
     }
 
     @Override

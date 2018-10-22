@@ -19,9 +19,9 @@ import java.util.List;
  * Logged in players always have exactly one FPlayer instance. Logged out players may or may not have an FPlayer
  * instance. They will always have one if they are part of a faction. This is because only players with a faction are
  * saved to disk (in order to not waste disk space).
- * <p/>
+ * <plugin/>
  * The FPlayer is linked to a minecraft player using the player name.
- * <p/>
+ * <plugin/>
  * The same instance is always returned for the same player. This means you can use the == operator. No .equals method
  * necessary.
  */

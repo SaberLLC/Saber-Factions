@@ -39,11 +39,11 @@ public class CmdFly extends FCommand {
 
     public static void startParticles() {
         // Just a secondary check.
-        if (!P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
+      if (! SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
             return;
         }
 
-        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
+      id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() {
                 for (String name : flyMap.keySet()) {
@@ -54,7 +54,7 @@ public class CmdFly extends FCommand {
                     if (!player.isFlying()) {
                         continue;
                     }
-                    if (!P.p.mc17) {
+                  if (! SavageFactions.plugin.mc17) {
                         if (player.getGameMode() == GameMode.SPECTATOR) {
                             continue;
                         }
@@ -63,12 +63,12 @@ public class CmdFly extends FCommand {
                     if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
                         // Actually, vanished players (such as admins) should not display particles to prevent others from knowing their vanished assistance for moderation.
                         // But we can keep it as a config.
-                        if (P.p.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
+                      if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
                             return;
                         }
                         continue;
                     }
-                    if (P.p.useNonPacketParticles) {
+                  if (SavageFactions.plugin.useNonPacketParticles) {
                         // 1.9+ based servers will use the built in particleAPI instead of packet based.
                         // any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
                         // So setting the amount to 0 spawns 1 in the precise location
@@ -87,7 +87,7 @@ public class CmdFly extends FCommand {
     }
 
     public static void startFlyCheck() {
-        flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, new Runnable() {
+      flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() throws ConcurrentModificationException { //threw the exception for now, until I recode fly :( Cringe.
                 checkTaskState();
@@ -185,7 +185,7 @@ public class CmdFly extends FCommand {
     @Override
     public void perform() {
         // Disabled by default.
-        if (!P.p.getConfig().getBoolean("enable-faction-flight", false)) {
+      if (! SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
             fme.msg(TL.COMMAND_FLY_DISABLED);
             return;
         }
@@ -228,7 +228,7 @@ public class CmdFly extends FCommand {
                     fme.setFlying(true);
                     flyMap.put(player.getName(), true);
                     if (id == -1) {
-                        if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
+                      if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
                             startParticles();
                         }
                     }

@@ -255,10 +255,10 @@ COMMAND:
     SHORT: transfer f -> f
     TRANSFER: '%s transferred %s from the faction "%s" to the faction "%s"'
   MONEYTRANSFERFP:
-    SHORT: transfer f -> p
+    SHORT: transfer f -> plugin
     TRANSFER: '%s transferred %s from the faction "%s" to the player "%s"'
   MONEYTRANSFERPF:
-    SHORT: transfer p -> f
+    SHORT: transfer plugin -> f
     TRANSFER: '%s transferred %s from the player "%s" to the faction "%s"'
   MONEYWITHDRAW:
     SHORT: withdraw money
@@ -295,8 +295,8 @@ COMMAND:
     PENALTY: ' (penalty: '
   POWERBOOST:
     HELP:
-      '1': <b>You must specify "p" or "player" to target a player or "f" or "faction" to target a faction.
-      '2': <b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5
+      '1': <b>You must specify "plugin" or "player" to target a player or "f" or "faction" to target a faction.
+      '2': <b>ex. /f powerboost plugin SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5
     INVALIDNUM: <b>You must specify a valid numeric value for the power bonus/penalty amount.
     PLAYER: Player "%s"
     FACTION: Faction "%s"

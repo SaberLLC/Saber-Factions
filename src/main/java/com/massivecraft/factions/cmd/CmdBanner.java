@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import net.milkbowl.vault.economy.Economy;
@@ -31,31 +31,30 @@ public class CmdBanner extends FCommand {
 
     @Override
     public void perform() {
-        if (!P.p.getConfig().getBoolean("fbanners.Enabled")) {
+      if (! SavageFactions.plugin.getConfig().getBoolean("fbanners.Enabled")) {
             msg(TL.COMMAND_BANNER_DISABLED);
             return;
         }
-        if (!fme.hasMoney(P.p.getConfig().getInt("fbanners.Banner-Cost", 5000))) {
+      if (! fme.hasMoney(SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Cost", 5000))) {
             msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
             return;
         }
-        takeMoney(fme, P.p.getConfig().getInt("fbanners.Banner-Cost", 5000));
+      takeMoney(fme, SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Cost", 5000));
 
-        //ItemStack warBanner = P.p.createItem(Material.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+      //ItemStack warBanner = SavageFactions.plugin.createItem(Material.BANNER, 1, (short) 1, SavageFactions.plugin.getConfig().getString("fbanners.Item.Name"), SavageFactions.plugin.getConfig().getStringList("fbanners.Item.Lore"));
         //BannerMeta bannerMeta = (BannerMeta) warBanner.getItemMeta();
         ItemStack warBanner = fme.getFaction().getBanner();
         if (warBanner != null) {
             ItemMeta warmeta = warBanner.getItemMeta();
-            warmeta.setDisplayName(P.p.color(P.p.getConfig().getString("fbanners.Item.Name")));
-            warmeta.setLore(P.p.colorList(P.p.getConfig().getStringList("fbanners.Item.Lore")));
+          warmeta.setDisplayName(SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fbanners.Item.Name")));
+          warmeta.setLore(SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fbanners.Item.Lore")));
             warBanner.setItemMeta(warmeta);
 
 
         } else {
 
 
-
-            warBanner = P.p.createItem(P.p.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+          warBanner = SavageFactions.plugin.createItem(SavageFactions.plugin.BANNER, 1, (short) 1, SavageFactions.plugin.getConfig().getString("fbanners.Item.Name"), SavageFactions.plugin.getConfig().getStringList("fbanners.Item.Lore"));
         }
         fme.msg(TL.COMMAND_BANNER_SUCCESS);
         warBanner.setAmount(1);
@@ -64,7 +63,7 @@ public class CmdBanner extends FCommand {
 
 
     public boolean hasMoney(FPlayer fme, int amt) {
-        Economy econ = P.p.getEcon();
+      Economy econ = SavageFactions.plugin.getEcon();
         if (econ.getBalance(fme.getPlayer()) >= amt) {
             return true;
         } else {
@@ -75,7 +74,7 @@ public class CmdBanner extends FCommand {
 
     public void takeMoney(FPlayer fme, int amt) {
         if (hasMoney(fme, amt)) {
-            Economy econ = P.p.getEcon();
+          Economy econ = SavageFactions.plugin.getEcon();
             econ.withdrawPlayer(fme.getPlayer(), amt);
             fme.sendMessage(TL.COMMAND_BANNER_MONEYTAKE.toString().replace("{amount}", amt + ""));
         }
