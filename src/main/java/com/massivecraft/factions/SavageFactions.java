@@ -215,11 +215,8 @@ public class SavageFactions extends MPlugin {
         }
 
 
-
-
-
-        setupPlaceholderAPI();
-        postEnable();
+      this.setupPlaceholderAPI();
+      this.postEnable();
         this.loadSuccessful = true;
     }
 
