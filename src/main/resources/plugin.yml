@@ -325,3 +325,7 @@ permissions:
     description: Open virtual shared faction chest
   factions.claimat:
     description: click to claim permission node for /f map
+  factions.paypal.viewall:
+    description: View other factions' paypal ID
+  factions.paypal:
+    description: Set/view your own faction's paypal.
