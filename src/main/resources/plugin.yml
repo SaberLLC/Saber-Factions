@@ -1,5 +1,5 @@
 name: Factions
-version: ${project.version}-1.4-RC-3
+version: ${project.version}-1.4-RC-4
 api-version: 1.13
 main: com.massivecraft.factions.SavageFactions
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, AL56AF50]
@@ -307,8 +307,6 @@ permissions:
     description: get nearby faction members
   factions.upgrades:
     description: open upgrade menu
-  factions.freecam:
-    description: enable/disable freecam
   factions.getvault:
     description: get faction vault item
   factions.coleader:
@@ -325,3 +323,5 @@ permissions:
     description: broadcast your coords to the player
   factions.chest:
     description: Open virtual shared faction chest
+  factions.claimat:
+    description: click to claim permission node for /f map
