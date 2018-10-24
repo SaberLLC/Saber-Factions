@@ -4,6 +4,7 @@ api-version: 1.13
 main: com.massivecraft.factions.SavageFactions
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, AL56AF50]
 softdepend: [CoreProtect, PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop]
+website: www.prosavage.net
 commands:
   factions:
     description: Reference command for Factions.
