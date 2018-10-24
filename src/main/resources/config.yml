@@ -959,6 +959,9 @@ fbanners:
   - INCREASE_DAMAGE:2
   - SPEED:2
   BannerHolo: '&c{Faction}''s War Banner'
+  Placeable:
+    Warzone: true
+    Enemy: true
 
 #Title when moving between chunks
 Title:

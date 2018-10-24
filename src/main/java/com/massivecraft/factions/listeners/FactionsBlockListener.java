@@ -372,7 +372,8 @@ public class FactionsBlockListener implements Listener {
 
         Location placedLoc = e.getBlockPlaced().getLocation();
         FLocation fplacedLoc = new FLocation(placedLoc);
-        if (Board.getInstance().getFactionAt(fplacedLoc).isWarZone() || fme.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY) {
+        if ((Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && SavageFactions.plugin.getConfig().getBoolean("fbanners.Placeable.Warzone"))
+                || (fme.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY) && SavageFactions.plugin.getConfig().getBoolean("fbanners.Placeable.Enemy")) {
           if (bannerCooldownMap.containsKey(fme.getTag())) {
             fme.msg(TL.WARBANNER_COOLDOWN);
             e.setCancelled(true);
