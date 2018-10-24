@@ -33,7 +33,7 @@ import java.util.List;
 public class FactionsBlockListener implements Listener {
 
   public SavageFactions savageFactions;
-  private static HashMap<String, Location> bannerLocations = new HashMap<>();
+  public static HashMap<String, Location> bannerLocations = new HashMap<>();
   private HashMap<String, Boolean> bannerCooldownMap = new HashMap<>();
 
   public FactionsBlockListener(SavageFactions savageFactions) {
