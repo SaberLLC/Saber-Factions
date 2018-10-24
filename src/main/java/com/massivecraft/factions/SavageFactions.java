@@ -114,7 +114,16 @@ public class SavageFactions extends MPlugin {
         // Vault dependency check.
         if (SavageFactions.plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
             SavageFactions.plugin.log("Vault is not present, the plugin will not run properly.");
-            SavageFactions.plugin.getServer().getPluginManager().disablePlugin(SavageFactions.plugin);
+          this.onDisable();
+          Bukkit.getScheduler().scheduleSyncDelayedTask(this,
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      SavageFactions.plugin.getServer().getPluginManager().disablePlugin(SavageFactions.plugin);
+                    }
+                  }, 20L);
+          return;
+
         }
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
