@@ -107,7 +107,10 @@ public class CmdFly extends FCommand {
                         if (fPlayer == null) {
                             continue;
                         }
-                        if (player.getGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.SPECTATOR) {
+                        if (player.getGameMode() == GameMode.CREATIVE) {
+                            continue;
+                        }
+                        if (! SavageFactions.plugin.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
                             continue;
                         }
                         Faction myFaction = fPlayer.getFaction();
