@@ -54,23 +54,23 @@ public class CmdShow extends FCommand {
             return;
         }
 
-        if (fme != null && !fme.getPlayer().hasPermission("factions.show.bypassexempt")
+        if (fme != null && ! fme.getPlayer().hasPermission("factions.show.bypassexempt")
                 && SavageFactions.plugin.getConfig().getStringList("show-exempt").contains(faction.getTag())) {
             msg(TL.COMMAND_SHOW_EXEMPT);
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostShow, TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
+        if (! payForCommand(Conf.econCostShow, TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
             return;
         }
 
-      List<String> show = SavageFactions.plugin.getConfig().getStringList("show");
+        List<String> show = SavageFactions.plugin.getConfig().getStringList("show");
         if (show == null || show.isEmpty()) {
             show = defaults;
         }
 
-        if (!faction.isNormal()) {
+        if (! faction.isNormal()) {
             String tag = faction.getTag(fme);
             // send header and that's all
             String header = show.get(0);
@@ -99,7 +99,7 @@ public class CmdShow extends FCommand {
                 }
                 continue;
             }
-            if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
+            if (! parsed.contains("{notFrozen}") && ! parsed.contains("{notPermanent}")) {
                 if (parsed.contains("{ig}")) {
                     // replaces all variables with no home TL
                     parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();

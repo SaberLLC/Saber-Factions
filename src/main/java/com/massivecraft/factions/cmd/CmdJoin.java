@@ -35,12 +35,12 @@ public class CmdJoin extends FCommand {
         FPlayer fplayer = this.argAsBestFPlayerMatch(1, fme, false);
         boolean samePlayer = fplayer == fme;
 
-        if (!samePlayer && !Permission.JOIN_OTHERS.has(sender, false)) {
+        if (! samePlayer && ! Permission.JOIN_OTHERS.has(sender, false)) {
             msg(TL.COMMAND_JOIN_CANNOTFORCE);
             return;
         }
 
-        if (!faction.isNormal()) {
+        if (! faction.isNormal()) {
             msg(TL.COMMAND_JOIN_SYSTEMFACTION);
             return;
         }
@@ -62,12 +62,12 @@ public class CmdJoin extends FCommand {
             return;
         }
 
-        if (!Conf.canLeaveWithNegativePower && fplayer.getPower() < 0) {
+        if (! Conf.canLeaveWithNegativePower && fplayer.getPower() < 0) {
             msg(TL.COMMAND_JOIN_NEGATIVEPOWER, fplayer.describeTo(fme, true));
             return;
         }
 
-        if (!(faction.getOpen() || faction.isInvited(fplayer) || fme.isAdminBypassing() || Permission.JOIN_ANY.has(sender, false))) {
+        if (! (faction.getOpen() || faction.isInvited(fplayer) || fme.isAdminBypassing() || Permission.JOIN_ANY.has(sender, false))) {
             msg(TL.COMMAND_JOIN_REQUIRESINVITATION);
             if (samePlayer) {
                 faction.msg(TL.COMMAND_JOIN_ATTEMPTEDJOIN, fplayer.describeTo(faction, true));
@@ -76,12 +76,12 @@ public class CmdJoin extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (samePlayer && !canAffordCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString())) {
+        if (samePlayer && ! canAffordCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString())) {
             return;
         }
 
         // Check for ban
-        if (!fme.isAdminBypassing() && faction.isBanned(fme)) {
+        if (! fme.isAdminBypassing() && faction.isBanned(fme)) {
             fme.msg(TL.COMMAND_JOIN_BANNED, faction.getTag(fme));
             return;
         }
@@ -94,13 +94,13 @@ public class CmdJoin extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (samePlayer && !payForCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString(), TL.COMMAND_JOIN_FORJOIN.toString())) {
+        if (samePlayer && ! payForCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString(), TL.COMMAND_JOIN_FORJOIN.toString())) {
             return;
         }
 
         fme.msg(TL.COMMAND_JOIN_SUCCESS, fplayer.describeTo(fme, true), faction.getTag(fme));
 
-        if (!samePlayer) {
+        if (! samePlayer) {
             fplayer.msg(TL.COMMAND_JOIN_MOVED, fme.describeTo(fplayer, true), faction.getTag(fplayer));
         }
         faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
@@ -112,9 +112,9 @@ public class CmdJoin extends FCommand {
 
         if (Conf.logFactionJoin) {
             if (samePlayer) {
-              SavageFactions.plugin.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
+                SavageFactions.plugin.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
             } else {
-              SavageFactions.plugin.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), fme.getName(), fplayer.getName(), faction.getTag());
+                SavageFactions.plugin.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), fme.getName(), fplayer.getName(), faction.getTag());
             }
         }
     }

@@ -16,7 +16,7 @@ import java.util.TreeMap;
 
 
 public class JSONBoard extends MemoryBoard {
-  private static transient File file = new File(SavageFactions.plugin.getDataFolder(), "board.json");
+    private static transient File file = new File(SavageFactions.plugin.getDataFolder(), "board.json");
 
     // -------------------------------------------- //
     // Persistance
@@ -32,7 +32,7 @@ public class JSONBoard extends MemoryBoard {
             worldName = entry.getKey().getWorldName();
             coords = entry.getKey().getCoordString();
             id = entry.getValue();
-            if (!worldCoordIds.containsKey(worldName)) {
+            if (! worldCoordIds.containsKey(worldName)) {
                 worldCoordIds.put(worldName, new TreeMap<String, String>());
             }
 
@@ -67,14 +67,14 @@ public class JSONBoard extends MemoryBoard {
     }
 
     public void forceSave(boolean sync) {
-      DiscUtil.writeCatch(file, SavageFactions.plugin.gson.toJson(dumpAsSaveFormat()), sync);
+        DiscUtil.writeCatch(file, SavageFactions.plugin.gson.toJson(dumpAsSaveFormat()), sync);
     }
 
     public boolean load() {
-      SavageFactions.plugin.log("Loading board from disk");
+        SavageFactions.plugin.log("Loading board from disk");
 
-        if (!file.exists()) {
-          SavageFactions.plugin.log("No board to load from disk. Creating new file.");
+        if (! file.exists()) {
+            SavageFactions.plugin.log("No board to load from disk. Creating new file.");
             forceSave();
             return true;
         }
@@ -82,12 +82,12 @@ public class JSONBoard extends MemoryBoard {
         try {
             Type type = new TypeToken<Map<String, Map<String, String>>>() {
             }.getType();
-          Map<String, Map<String, String>> worldCoordIds = SavageFactions.plugin.gson.fromJson(DiscUtil.read(file), type);
+            Map<String, Map<String, String>> worldCoordIds = SavageFactions.plugin.gson.fromJson(DiscUtil.read(file), type);
             loadFromSaveFormat(worldCoordIds);
-          SavageFactions.plugin.log("Loaded " + flocationIds.size() + " board locations");
+            SavageFactions.plugin.log("Loaded " + flocationIds.size() + " board locations");
         } catch (Exception e) {
             e.printStackTrace();
-          SavageFactions.plugin.log("Failed to load the board from disk.");
+            SavageFactions.plugin.log("Failed to load the board from disk.");
             return false;
         }
 

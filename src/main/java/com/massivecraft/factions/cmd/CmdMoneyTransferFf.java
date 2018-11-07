@@ -46,7 +46,7 @@ public class CmdMoneyTransferFf extends FCommand {
 
         if (success && Conf.logMoneyTransactions) {
             String name = sender instanceof Player ? fme.getName() : sender.getName();
-          SavageFactions.plugin.log(ChatColor.stripColor(SavageFactions.plugin.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+            SavageFactions.plugin.log(ChatColor.stripColor(SavageFactions.plugin.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
         }
     }
 

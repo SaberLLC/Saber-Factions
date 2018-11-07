@@ -64,7 +64,7 @@ public class Persist {
     }
 
     public <T> T loadOrSaveDefault(T def, Class<T> clazz, File file) {
-        if (!file.exists()) {
+        if (! file.exists()) {
             p.log("Creating default: " + file);
             this.save(def, file);
             return def;
@@ -130,12 +130,12 @@ public class Persist {
 
 
     // LOAD BY TYPE
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public <T> T load(Type typeOfT, String name) {
         return (T) load(typeOfT, getFile(name));
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public <T> T load(Type typeOfT, File file) {
         String content = DiscUtil.readCatch(file);
         if (content == null) {

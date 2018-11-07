@@ -26,9 +26,9 @@ public class CmdUnban extends FCommand {
 
     @Override
     public void perform() {
-        if (!fme.isAdminBypassing()) {
+        if (! fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.BAN);
-          if (access != Access.ALLOW && fme.getRole() != Role.LEADER && ! Permission.BAN.has(sender, true)) {
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER && ! Permission.BAN.has(sender, true)) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage bans");
                 return;
             }
@@ -40,7 +40,7 @@ public class CmdUnban extends FCommand {
             return; // the above method sends a message if fails to find someone.
         }
 
-        if (!myFaction.isBanned(target)) {
+        if (! myFaction.isBanned(target)) {
             fme.msg(TL.COMMAND_UNBAN_NOTBANNED, target.getName());
             return;
         }

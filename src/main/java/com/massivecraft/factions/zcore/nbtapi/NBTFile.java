@@ -23,7 +23,7 @@ public class NBTFile extends NBTCompound {
     }
 
     public void save() throws IOException {
-        if (!file.exists()) {
+        if (! file.exists()) {
             file.getParentFile().mkdirs();
             file.createNewFile();
         }

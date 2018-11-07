@@ -31,7 +31,7 @@ import java.net.URL;
  * @author Sam Jakob Harker, Brianna Hazel O'Keefe
  * @version 3.0
  */
-@SuppressWarnings("all")
+@SuppressWarnings ("all")
 public class MassiveStats implements Listener {
 
     /* START: MASSIVESTATS SETTINGS */
@@ -224,7 +224,7 @@ public class MassiveStats implements Listener {
         }
 
         // and only notify operators - or players with the correct permission.
-        if (!event.getPlayer().isOp() && !event.getPlayer().hasPermission(MassiveStats.MASSIVE_UPDATE_PERMISSION)) {
+        if (! event.getPlayer().isOp() && ! event.getPlayer().hasPermission(MassiveStats.MASSIVE_UPDATE_PERMISSION)) {
             return;
         }
 
@@ -258,7 +258,7 @@ class MassiveStatsUpdateTask extends BukkitRunnable {
     }
 
     @Override
-    @SuppressWarnings("all")
+    @SuppressWarnings ("all")
     public void run() {
         try {
             // Generate the request payload and serialize it as JSON.
@@ -431,7 +431,7 @@ class MassiveStatsDataRequest {
         }
     }
 
-    @SuppressWarnings("all")
+    @SuppressWarnings ("all")
     public String serialize() {
         //return object.toString();
         try {
@@ -446,7 +446,7 @@ class MassiveStatsDataRequest {
 
 }
 
-@SuppressWarnings("unused")
+@SuppressWarnings ("unused")
 final class MassiveStatsDataResponse {
 
     private final boolean isUpToDate;
@@ -456,7 +456,7 @@ final class MassiveStatsDataResponse {
     MassiveStatsDataResponse(boolean isUpToDate, String newVersion, String updateMessage) {
         this.isUpToDate = isUpToDate;
 
-        if (!isUpToDate) {
+        if (! isUpToDate) {
             this.newVersion = newVersion;
             this.updateMessage = updateMessage;
             return;

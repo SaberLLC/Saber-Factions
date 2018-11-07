@@ -35,9 +35,9 @@ public class CmdBan extends FCommand {
     public void perform() {
 
         // Adds bypass to admins and clean permission check
-        if (!fme.isAdminBypassing()) {
+        if (! fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.BAN);
-          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "ban");
                 return;
             }
@@ -80,7 +80,7 @@ public class CmdBan extends FCommand {
 
             if (event.isCancelled()) {
                 // if someone cancels a ban, we'll get people complaining here. So lets log it.
-              SavageFactions.plugin.log(Level.WARNING, "Attempted to ban {0} but someone cancelled the kick event. This isn't good.", target.getName());
+                SavageFactions.plugin.log(Level.WARNING, "Attempted to ban {0} but someone cancelled the kick event. This isn't good.", target.getName());
                 return;
             }
 

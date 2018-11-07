@@ -34,9 +34,9 @@ public class CmdTntFill extends FCommand {
 
     @Override
     public void perform() {
-        if (!fme.isAdminBypassing()) {
+        if (! fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TNTFILL);
-          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "use tnt fill");
                 return;
             }
@@ -46,15 +46,15 @@ public class CmdTntFill extends FCommand {
         msg(TL.COMMAND_TNTFILL_HEADER);
         int radius = argAsInt(0, 16);
         int amount = argAsInt(1, 16);
-      if (radius > SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius")) {
-        msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius") + ""));
+        if (radius > SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius")) {
+            msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius") + ""));
             return;
         }
-      if (amount > SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount")) {
-        msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount") + ""));
+        if (amount > SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount")) {
+            msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount") + ""));
             return;
         }
-        int testNumber = -1;
+        int testNumber = - 1;
         try {
             testNumber = Integer.parseInt(args.get(1));
         } catch (NumberFormatException e) {
@@ -78,8 +78,8 @@ public class CmdTntFill extends FCommand {
                         if (canHold(dispenser, amount)) {
                             int fullStacks = amount / 64;
                             int remainderAmt = amount % 64;
-                            if (!inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
-                                if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
+                            if (! inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
+                                if (! fme.getRole().isAtLeast(Role.MODERATOR)) {
                                     msg(TL.COMMAND_TNTFILL_NOTENOUGH);
                                     sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", amount + "").replace("{dispensers}", counter + ""));
                                     me.updateInventory();
@@ -88,7 +88,7 @@ public class CmdTntFill extends FCommand {
                                     //msg(TL.COMMAND_TNTFILL_MOD.toString().replace("{role}",fme.getRole().nicename));
                                     bankMode = true;
                                     removeFromBank(amount);
-                                    if (!inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
+                                    if (! inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
                                         msg(TL.COMMAND_TNTFILL_NOTENOUGH);
                                         sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", amount + "").replace("{dispensers}", counter + ""));
                                         me.updateInventory();
@@ -124,7 +124,7 @@ public class CmdTntFill extends FCommand {
     }
 
     private void removeFromBank(int amount) {
-        int testNumber = -1;
+        int testNumber = - 1;
         try {
             testNumber = Integer.parseInt(args.get(1));
         } catch (NumberFormatException e) {
@@ -177,7 +177,7 @@ public class CmdTntFill extends FCommand {
             return;
         }
         ItemStack tnt = new ItemStack(Material.TNT, amount);
-      if (fme.getFaction().getTnt() + amount > SavageFactions.plugin.getConfig().getInt("ftnt.Bank-Limit")) {
+        if (fme.getFaction().getTnt() + amount > SavageFactions.plugin.getConfig().getInt("ftnt.Bank-Limit")) {
             msg(TL.COMMAND_TNT_EXCEEDLIMIT);
             return;
         }

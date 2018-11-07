@@ -30,7 +30,7 @@ public class PermUtil {
      */
     public final void setup() {
         for (Permission permission : p.getDescription().getPermissions()) {
-          //plugin.log("\""+permission.getName()+"\" = \""+permission.getDescription()+"\"");
+            //plugin.log("\""+permission.getName()+"\" = \""+permission.getDescription()+"\"");
             this.permissionDescriptions.put(permission.getName(), permission.getDescription());
         }
     }
@@ -51,7 +51,7 @@ public class PermUtil {
             return false;
         }
 
-        if (!(me instanceof Player)) {
+        if (! (me instanceof Player)) {
             return me.hasPermission(perm);
         }
 

@@ -114,7 +114,7 @@ public enum Permission {
     }
 
     public boolean has(CommandSender sender, boolean informSenderIfNot) {
-      return SavageFactions.plugin.perm.has(sender, this.node, informSenderIfNot);
+        return SavageFactions.plugin.perm.has(sender, this.node, informSenderIfNot);
     }
 
     public boolean has(CommandSender sender) {

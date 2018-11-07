@@ -22,7 +22,7 @@ public class FInfoSidebar extends FSidebarProvider {
 
     @Override
     public List<String> getLines(FPlayer fplayer) {
-      List<String> lines = SavageFactions.plugin.getConfig().getStringList("scoreboard.finfo");
+        List<String> lines = SavageFactions.plugin.getConfig().getStringList("scoreboard.finfo");
 
         ListIterator<String> it = lines.listIterator();
         while (it.hasNext()) {

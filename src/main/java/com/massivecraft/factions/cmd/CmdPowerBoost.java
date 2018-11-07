@@ -12,7 +12,7 @@ public class CmdPowerBoost extends FCommand {
         super();
         this.aliases.add("powerboost");
 
-      this.requiredArgs.add("plugin|f|player|faction");
+        this.requiredArgs.add("plugin|f|player|faction");
         this.requiredArgs.add("name");
         this.requiredArgs.add("# or reset");
 
@@ -76,8 +76,8 @@ public class CmdPowerBoost extends FCommand {
 
         int roundedPower = (int) Math.round(targetPower);
         msg(TL.COMMAND_POWERBOOST_BOOST, target, roundedPower);
-        if (!senderIsConsole) {
-          SavageFactions.plugin.log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), fme.getName(), target, roundedPower);
+        if (! senderIsConsole) {
+            SavageFactions.plugin.log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), fme.getName(), target, roundedPower);
         }
     }
 

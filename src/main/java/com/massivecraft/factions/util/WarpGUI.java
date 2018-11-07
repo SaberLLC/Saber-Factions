@@ -34,14 +34,14 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
 
     public WarpGUI(FPlayer fme) {
         this.fme = fme;
-      this.section = SavageFactions.plugin.getConfig().getConfigurationSection("fwarp-gui");
+        this.section = SavageFactions.plugin.getConfig().getConfigurationSection("fwarp-gui");
     }
 
     @Override
     public void build() {
         if (section == null) {
-          SavageFactions.plugin.log(Level.WARNING, "Attempted to build f warp GUI but config section not present.");
-          SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            SavageFactions.plugin.log(Level.WARNING, "Attempted to build f warp GUI but config section not present.");
+            SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return;
         }
 
@@ -49,14 +49,14 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         guiSize = section.getInt("rows", 3);
         if (guiSize > 6) {
             guiSize = 6;
-          SavageFactions.plugin.log(Level.INFO, "Warp GUI size out of bounds, defaulting to 6");
+            SavageFactions.plugin.log(Level.INFO, "Warp GUI size out of bounds, defaulting to 6");
         }
 
         guiSize *= 9;
         String guiName = ChatColor.translateAlternateColorCodes('&', section.getString("name", "FactionPermissions"));
         warpGUI = Bukkit.createInventory(this, guiSize, guiName);
 
-      maxWarps = SavageFactions.plugin.getConfig().getInt("max-warps", 5);
+        maxWarps = SavageFactions.plugin.getConfig().getInt("max-warps", 5);
 
         Set<String> factionWarps = fme.getFaction().getWarps().keySet();
         List<Integer> warpOpenSlots = section.getIntegerList("warp-slots");
@@ -64,7 +64,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         buildDummyItems();
 
         if (maxWarps != warpOpenSlots.size()) {
-          SavageFactions.plugin.log(Level.SEVERE, "Invalid warp slots for GUI, Please use same value as max warps");
+            SavageFactions.plugin.log(Level.SEVERE, "Invalid warp slots for GUI, Please use same value as max warps");
             return;
         }
 
@@ -95,14 +95,14 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
 
             // All clear lets TP them or ask for password
             String warp = warpSlots.get(slot);
-            if (!fme.getFaction().hasWarpPassword(warp)) {
+            if (! fme.getFaction().hasWarpPassword(warp)) {
                 if (transact(fme)) {
                     doWarmup(warp);
                 }
             } else {
                 fme.setEnteringPassword(true, warp);
                 fme.msg(TL.COMMAND_FWARP_PASSWORD_REQUIRED);
-              Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, new Runnable() {
+                Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, new Runnable() {
                     @Override
                     public void run() {
                         if (fme.isEnteringPassword()) {
@@ -110,7 +110,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
                             fme.setEnteringPassword(false, "");
                         }
                     }
-              }, SavageFactions.plugin.getConfig().getInt("fwarp-gui.password-timeout", 5) * 20);
+                }, SavageFactions.plugin.getConfig().getInt("fwarp-gui.password-timeout", 5) * 20);
             }
         }
     }
@@ -129,28 +129,28 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
     }
 
     private boolean transact(FPlayer player) {
-      if (! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing()) {
+        if (! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing()) {
             return true;
         }
 
-      double cost = SavageFactions.plugin.getConfig().getDouble("warp-cost.warp", 5);
+        double cost = SavageFactions.plugin.getConfig().getDouble("warp-cost.warp", 5);
 
-        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
+        if (! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
             return true;
         }
 
         if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
-            return Econ.modifyMoney(fme.getFaction(), -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+            return Econ.modifyMoney(fme.getFaction(), - cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
         } else {
-            return Econ.modifyMoney(fme, -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+            return Econ.modifyMoney(fme, - cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
         }
     }
 
     private ItemStack buildItem(String warp) {
         ConfigurationSection warpItemSection = section.getConfigurationSection("warp-item");
         if (warpItemSection == null) {
-          SavageFactions.plugin.log(Level.WARNING, "Attempted to build f warp GUI but config section not present.");
-          SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            SavageFactions.plugin.log(Level.WARNING, "Attempted to build f warp GUI but config section not present.");
+            SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return new ItemStack(Material.AIR);
         }
 
@@ -183,7 +183,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         string = ChatColor.translateAlternateColorCodes('&', string);
         string = string.replace("{warp}", warp);
         string = string.replace("{warp-protected}", faction.hasWarpPassword(warp) ? "Enabled" : "Disabled");
-      string = string.replace("{warp-cost}", ! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) ? "Disabled" : Integer.toString(SavageFactions.plugin.getConfig().getInt("warp-cost.warp", 5)));
+        string = string.replace("{warp-cost}", ! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) ? "Disabled" : Integer.toString(SavageFactions.plugin.getConfig().getInt("warp-cost.warp", 5)));
         return string;
     }
 
@@ -193,7 +193,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
             try {
                 dummyId = Integer.parseInt(key);
             } catch (NumberFormatException exception) {
-              SavageFactions.plugin.log(Level.WARNING, "Invalid dummy item id: " + key.toUpperCase());
+                SavageFactions.plugin.log(Level.WARNING, "Invalid dummy item id: " + key.toUpperCase());
                 continue;
             }
 
@@ -205,7 +205,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
             List<Integer> dummyIdSlots = section.getIntegerList("dummy-slots." + key);
             for (Integer slot : dummyIdSlots) {
                 if (slot + 1 > guiSize || slot < 0) {
-                  SavageFactions.plugin.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
+                    SavageFactions.plugin.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
                     continue;
                 }
                 dummySlots.add(slot);
@@ -218,14 +218,14 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         final ConfigurationSection dummySection = section.getConfigurationSection("dummy-items." + id);
 
         if (dummySection == null) {
-          SavageFactions.plugin.log(Level.WARNING, "Attempted to build f warp GUI but config section not present.");
-          SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            SavageFactions.plugin.log(Level.WARNING, "Attempted to build f warp GUI but config section not present.");
+            SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return new ItemStack(Material.AIR);
         }
 
         Material material = Material.matchMaterial(dummySection.getString("material", ""));
         if (material == null) {
-          SavageFactions.plugin.log(Level.WARNING, "Invalid material for dummy item: " + id);
+            SavageFactions.plugin.log(Level.WARNING, "Invalid material for dummy item: " + id);
             return null;
         }
 
@@ -243,7 +243,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-      if (! SavageFactions.plugin.mc17) {
+        if (! SavageFactions.plugin.mc17) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         }
 

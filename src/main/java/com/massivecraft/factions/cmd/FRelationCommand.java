@@ -37,7 +37,7 @@ public abstract class FRelationCommand extends FCommand {
             return;
         }
 
-        if (!them.isNormal()) {
+        if (! them.isNormal()) {
             msg(TL.COMMAND_RELATIONS_ALLTHENOPE);
             return;
         }
@@ -64,7 +64,7 @@ public abstract class FRelationCommand extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(targetRelation.getRelationCost(), TL.COMMAND_RELATIONS_TOMARRY, TL.COMMAND_RELATIONS_FORMARRY)) {
+        if (! payForCommand(targetRelation.getRelationCost(), TL.COMMAND_RELATIONS_TOMARRY, TL.COMMAND_RELATIONS_FORMARRY)) {
             return;
         }
 
@@ -88,12 +88,12 @@ public abstract class FRelationCommand extends FCommand {
             myFaction.msg(TL.COMMAND_RELATIONS_PROPOSAL_SENT, currentRelationColor + them.getTag(), "" + targetRelation.getColor() + targetRelation);
         }
 
-        if (!targetRelation.isNeutral() && them.isPeaceful()) {
+        if (! targetRelation.isNeutral() && them.isPeaceful()) {
             them.msg(TL.COMMAND_RELATIONS_PEACEFUL);
             myFaction.msg(TL.COMMAND_RELATIONS_PEACEFULOTHER);
         }
 
-        if (!targetRelation.isNeutral() && myFaction.isPeaceful()) {
+        if (! targetRelation.isNeutral() && myFaction.isPeaceful()) {
             them.msg(TL.COMMAND_RELATIONS_PEACEFULOTHER);
             myFaction.msg(TL.COMMAND_RELATIONS_PEACEFUL);
         }
@@ -103,9 +103,9 @@ public abstract class FRelationCommand extends FCommand {
     }
 
     private boolean hasMaxRelations(Faction them, Relation targetRelation) {
-      int max = SavageFactions.plugin.getConfig().getInt("max-relations." + targetRelation.toString(), - 1);
-      if (SavageFactions.plugin.getConfig().getBoolean("max-relations.enabled", false)) {
-            if (max != -1) {
+        int max = SavageFactions.plugin.getConfig().getInt("max-relations." + targetRelation.toString(), - 1);
+        if (SavageFactions.plugin.getConfig().getBoolean("max-relations.enabled", false)) {
+            if (max != - 1) {
                 if (myFaction.getRelationCount(targetRelation) >= max) {
                     msg(TL.COMMAND_RELATIONS_EXCEEDS_ME, max, targetRelation.getPluralTranslation());
                     return true;

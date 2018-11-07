@@ -80,7 +80,7 @@ public class DiscUtil {
                 lock.unlock();
             }
         } else {
-          Bukkit.getScheduler().runTaskAsynchronously(SavageFactions.plugin, new Runnable() {
+            Bukkit.getScheduler().runTaskAsynchronously(SavageFactions.plugin, new Runnable() {
                 @Override
                 public void run() {
                     lock.lock();
@@ -111,11 +111,11 @@ public class DiscUtil {
     // -------------------------------------------- //
 
     public static byte[] utf8(String string) {
-      return string.getBytes(StandardCharsets.UTF_8);
+        return string.getBytes(StandardCharsets.UTF_8);
     }
 
     public static String utf8(byte[] bytes) {
-      return new String(bytes, StandardCharsets.UTF_8);
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
 }

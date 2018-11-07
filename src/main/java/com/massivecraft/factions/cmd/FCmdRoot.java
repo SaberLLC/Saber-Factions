@@ -124,7 +124,7 @@ public class FCmdRoot extends FCommand {
         this.setHelpShort("The faction base command");
         this.helpLong.add(p.txt.parseTags("<i>This command contains all faction stuff."));
 
-      //this.subCommands.add(plugin.cmdHelp);
+        //this.subCommands.add(plugin.cmdHelp);
 
         this.addSubCommand(this.cmdAdmin);
         this.addSubCommand(this.cmdAutoClaim);
@@ -218,22 +218,22 @@ public class FCmdRoot extends FCommand {
 
 
         if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null) {
-          SavageFactions.plugin.log("Found CoreProtect, enabling Inspect");
+            SavageFactions.plugin.log("Found CoreProtect, enabling Inspect");
             this.addSubCommand(this.cmdInspect);
         } else {
-          SavageFactions.plugin.log("CoreProtect not found, disabling Inspect");
+            SavageFactions.plugin.log("CoreProtect not found, disabling Inspect");
         }
 
-      if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
+        if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
             this.addSubCommand(this.cmdFly);
         }
         if (Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
-          SavageFactions.plugin.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
+            SavageFactions.plugin.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
         } else {
-          SavageFactions.plugin.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
+            SavageFactions.plugin.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
             this.addSubCommand(this.cmdTop);
         }
-      if (SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
             this.addSubCommand(this.cmdPaypalSet);
             this.addSubCommand(this.cmdPaypalSee);
         }

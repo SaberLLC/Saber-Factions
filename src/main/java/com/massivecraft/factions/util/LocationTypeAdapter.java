@@ -13,35 +13,35 @@ public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeseri
     @Override
     public JsonElement serialize(Location location, Type type, JsonSerializationContext jsonSerializationContext) {
         JsonObject object = new JsonObject();
-      try {
-        object.add("x", new JsonPrimitive(location.getX()));
-        object.add("y", new JsonPrimitive(location.getY()));
-        object.add("z", new JsonPrimitive(location.getZ()));
-        object.add("world", new JsonPrimitive(location.getWorld().toString()));
-        return object;
-      } catch (Exception ex) {
-        ex.printStackTrace();
-        SavageFactions.plugin.log(Level.WARNING, "Error encountered while serializing a Location.");
-        return object;
-      }
+        try {
+            object.add("x", new JsonPrimitive(location.getX()));
+            object.add("y", new JsonPrimitive(location.getY()));
+            object.add("z", new JsonPrimitive(location.getZ()));
+            object.add("world", new JsonPrimitive(location.getWorld().toString()));
+            return object;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            SavageFactions.plugin.log(Level.WARNING, "Error encountered while serializing a Location.");
+            return object;
+        }
     }
 
 
     @Override
     public Location deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
         JsonObject object = jsonElement.getAsJsonObject();
-      try {
+        try {
 
-        return new Location(Bukkit.getWorld(object.get("world").getAsString()),
-                object.get("x").getAsDouble(),
-                object.get("y").getAsDouble(),
-                object.get("z").getAsDouble());
-      } catch (Exception ex) {
-        ex.printStackTrace();
-        SavageFactions.plugin.log(Level.WARNING, "Error encountered while" +
-                " deserializing a Location.");
-        return null;
-      }
+            return new Location(Bukkit.getWorld(object.get("world").getAsString()),
+                    object.get("x").getAsDouble(),
+                    object.get("y").getAsDouble(),
+                    object.get("z").getAsDouble());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            SavageFactions.plugin.log(Level.WARNING, "Error encountered while" +
+                    " deserializing a Location.");
+            return null;
+        }
 
 
     }

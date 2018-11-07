@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class CmdAutoHelp extends MCommand<SavageFactions> {
 
     public CmdAutoHelp() {
-      super(SavageFactions.plugin);
+        super(SavageFactions.plugin);
         this.aliases.add("?");
         this.aliases.add("h");
         this.aliases.add("help");

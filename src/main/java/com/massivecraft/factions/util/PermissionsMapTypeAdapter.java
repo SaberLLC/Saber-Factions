@@ -62,7 +62,7 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
             return permissionsMap;
 
         } catch (Exception ex) {
-          SavageFactions.plugin.log(Level.WARNING, "Error encountered while deserializing a PermissionsMap.");
+            SavageFactions.plugin.log(Level.WARNING, "Error encountered while deserializing a PermissionsMap.");
             ex.printStackTrace();
             return null;
         }

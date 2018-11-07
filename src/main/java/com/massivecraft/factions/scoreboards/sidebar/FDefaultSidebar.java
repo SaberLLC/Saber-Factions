@@ -12,7 +12,7 @@ public class FDefaultSidebar extends FSidebarProvider {
 
     @Override
     public String getTitle(FPlayer fplayer) {
-      return replaceTags(fplayer, SavageFactions.plugin.getConfig().getString("scoreboard.default-title", "{name}"));
+        return replaceTags(fplayer, SavageFactions.plugin.getConfig().getString("scoreboard.default-title", "{name}"));
     }
 
     @Override
@@ -26,7 +26,7 @@ public class FDefaultSidebar extends FSidebarProvider {
     }
 
     public List<String> getOutput(FPlayer fplayer, String list) {
-      List<String> lines = SavageFactions.plugin.getConfig().getStringList(list);
+        List<String> lines = SavageFactions.plugin.getConfig().getStringList(list);
 
         if (lines == null || lines.isEmpty()) {
             return new ArrayList<>();

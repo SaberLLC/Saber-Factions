@@ -29,7 +29,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
             return;
         }
 
-        if (!readyToGo) {
+        if (! readyToGo) {
             return;
         }
         // this is set so it only does one iteration at a time, no matter how frequently the timer fires
@@ -49,18 +49,18 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
             FPlayer fplayer = iterator.next();
 
             // Check if they should be exempt from this.
-            if (!fplayer.willAutoLeave()) {
-              SavageFactions.plugin.debug(Level.INFO, fplayer.getName() + " was going to be auto-removed but was set not to.");
+            if (! fplayer.willAutoLeave()) {
+                SavageFactions.plugin.debug(Level.INFO, fplayer.getName() + " was going to be auto-removed but was set not to.");
                 continue;
             }
 
             if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis) {
                 if (Conf.logFactionLeave || Conf.logFactionKick) {
-                  SavageFactions.plugin.log("Player " + fplayer.getName() + " was auto-removed due to inactivity.");
+                    SavageFactions.plugin.log("Player " + fplayer.getName() + " was auto-removed due to inactivity.");
                 }
 
                 // if player is faction admin, sort out the faction since he's going away
-              if (fplayer.getRole() == Role.LEADER) {
+                if (fplayer.getRole() == Role.LEADER) {
                     Faction faction = fplayer.getFaction();
                     if (faction != null) {
                         fplayer.getFaction().promoteNewLeader();

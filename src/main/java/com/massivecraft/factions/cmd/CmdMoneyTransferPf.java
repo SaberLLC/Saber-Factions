@@ -44,7 +44,7 @@ public class CmdMoneyTransferPf extends FCommand {
         boolean success = Econ.transferMoney(fme, from, to, amount);
 
         if (success && Conf.logMoneyTransactions) {
-          SavageFactions.plugin.log(ChatColor.stripColor(SavageFactions.plugin.txt.parse(TL.COMMAND_MONEYTRANSFERPF_TRANSFER.toString(), fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+            SavageFactions.plugin.log(ChatColor.stripColor(SavageFactions.plugin.txt.parse(TL.COMMAND_MONEYTRANSFERPF_TRANSFER.toString(), fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
         }
     }
 

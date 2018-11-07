@@ -18,7 +18,7 @@ public class MPluginSecretPlayerListener implements Listener {
         this.p = p;
     }
 
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (FactionsPlayerListener.preventCommand(event.getMessage(), event.getPlayer())) {
             if (p.logPlayerCommands()) {
@@ -28,7 +28,7 @@ public class MPluginSecretPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (p.handleCommand(event.getPlayer(), event.getMessage(), false, true)) {
             if (p.logPlayerCommands()) {
@@ -45,7 +45,7 @@ public class MPluginSecretPlayerListener implements Listener {
         */
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler (priority = EventPriority.LOWEST)
     public void onPlayerPreLogin(PlayerLoginEvent event) {
         FPlayers.getInstance().getByPlayer(event.getPlayer());
     }

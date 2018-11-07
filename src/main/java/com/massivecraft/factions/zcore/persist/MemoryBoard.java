@@ -26,7 +26,7 @@ public abstract class MemoryBoard extends Board {
     // Get and Set
     //----------------------------------------------//
     public String getIdAt(FLocation flocation) {
-        if (!flocationIds.containsKey(flocation)) {
+        if (! flocationIds.containsKey(flocation)) {
             return "0";
         }
 
@@ -111,18 +111,18 @@ public abstract class MemoryBoard extends Board {
     public boolean isBorderLocation(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
         FLocation a = flocation.getRelative(1, 0);
-        FLocation b = flocation.getRelative(-1, 0);
+        FLocation b = flocation.getRelative(- 1, 0);
         FLocation c = flocation.getRelative(0, 1);
-        FLocation d = flocation.getRelative(0, -1);
+        FLocation d = flocation.getRelative(0, - 1);
         return faction != getFactionAt(a) || faction != getFactionAt(b) || faction != getFactionAt(c) || faction != getFactionAt(d);
     }
 
     // Is this coord connected to any coord claimed by the specified faction?
     public boolean isConnectedLocation(FLocation flocation, Faction faction) {
         FLocation a = flocation.getRelative(1, 0);
-        FLocation b = flocation.getRelative(-1, 0);
+        FLocation b = flocation.getRelative(- 1, 0);
         FLocation c = flocation.getRelative(0, 1);
-        FLocation d = flocation.getRelative(0, -1);
+        FLocation d = flocation.getRelative(0, - 1);
         return faction == getFactionAt(a) || faction == getFactionAt(b) || faction == getFactionAt(c) || faction == getFactionAt(d);
     }
 
@@ -136,8 +136,8 @@ public abstract class MemoryBoard extends Board {
      * @return true if another Faction is within the radius, otherwise false.
      */
     public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {
-        for (int x = -radius; x <= radius; x++) {
-            for (int z = -radius; z <= radius; z++) {
+        for (int x = - radius; x <= radius; x++) {
+            for (int z = - radius; z <= radius; z++) {
                 if (x == 0 && z == 0) {
                     continue;
                 }
@@ -157,8 +157,8 @@ public abstract class MemoryBoard extends Board {
         Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
         while (iter.hasNext()) {
             Entry<FLocation, String> entry = iter.next();
-            if (!Factions.getInstance().isValidFactionId(entry.getValue())) {
-              SavageFactions.plugin.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
+            if (! Factions.getInstance().isValidFactionId(entry.getValue())) {
+                SavageFactions.plugin.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
                 iter.remove();
             }
         }
@@ -200,17 +200,17 @@ public abstract class MemoryBoard extends Board {
         Faction faction = fplayer.getFaction();
         ArrayList<FancyMessage> ret = new ArrayList<>();
         Faction factionLoc = getFactionAt(flocation);
-      ret.add(new FancyMessage(ChatColor.DARK_GRAY + SavageFactions.plugin.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
-      int buffer = SavageFactions.plugin.getConfig().getInt("world-border.buffer", 0);
+        ret.add(new FancyMessage(ChatColor.DARK_GRAY + SavageFactions.plugin.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
+        int buffer = SavageFactions.plugin.getConfig().getInt("world-border.buffer", 0);
 
 
         // Get the compass
-      ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.DARK_GREEN, SavageFactions.plugin.txt.parse("<gray>"));
+        ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.DARK_GREEN, SavageFactions.plugin.txt.parse("<gray>"));
 
         int halfWidth = Conf.mapWidth / 2;
         // Use player's value for height
         int halfHeight = fplayer.getMapHeight() / 2;
-        FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
+        FLocation topLeft = flocation.getRelative(- halfWidth, - halfHeight);
         int width = halfWidth * 2 + 1;
         int height = halfHeight * 2 + 1;
 
@@ -253,7 +253,7 @@ public abstract class MemoryBoard extends Board {
                             (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
                             (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY)) ||
                             (Conf.showTrucesFactionsOnMap && relation.equals(Relation.TRUCE))) {
-                        if (!fList.containsKey(factionHere.getTag())) {
+                        if (! fList.containsKey(factionHere.getTag())) {
                             fList.put(factionHere.getTag(), Conf.mapKeyChrs[Math.min(chrIdx++, Conf.mapKeyChrs.length - 1)]);
                         }
                         char tag = fList.get(factionHere.getTag());
@@ -291,16 +291,16 @@ public abstract class MemoryBoard extends Board {
 
     private List<String> getToolTip(Faction faction, FPlayer to) {
         List<String> ret = new ArrayList<>();
-      List<String> show = SavageFactions.plugin.getConfig().getStringList("map");
+        List<String> show = SavageFactions.plugin.getConfig().getStringList("map");
 
-        if (!faction.isNormal()) {
+        if (! faction.isNormal()) {
             String tag = faction.getTag(to);
             // send header and that's all
             String header = show.get(0);
             if (TagReplacer.HEADER.contains(header)) {
-              ret.add(SavageFactions.plugin.txt.titleize(tag));
+                ret.add(SavageFactions.plugin.txt.titleize(tag));
             } else {
-              ret.add(SavageFactions.plugin.txt.parse(TagReplacer.FACTION.replace(header, tag)));
+                ret.add(SavageFactions.plugin.txt.parse(TagReplacer.FACTION.replace(header, tag)));
             }
             return ret; // we only show header for non-normal factions
         }
@@ -320,13 +320,13 @@ public abstract class MemoryBoard extends Board {
                 List<FancyMessage> fancy = TagUtil.parseFancy(faction, to, parsed);
                 if (fancy != null) {
                     for (FancyMessage msg : fancy) {
-                      ret.add((SavageFactions.plugin.txt.parse(msg.toOldMessageFormat())));
+                        ret.add((SavageFactions.plugin.txt.parse(msg.toOldMessageFormat())));
                     }
                 }
                 continue;
             }
 
-            if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
+            if (! parsed.contains("{notFrozen}") && ! parsed.contains("{notPermanent}")) {
                 if (parsed.contains("{ig}")) {
                     // replaces all variables with no home TL
                     parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
@@ -334,7 +334,7 @@ public abstract class MemoryBoard extends Board {
                 if (parsed.contains("%")) {
                     parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
                 }
-              ret.add(SavageFactions.plugin.txt.parse(parsed));
+                ret.add(SavageFactions.plugin.txt.parse(parsed));
             }
         }
 
@@ -344,7 +344,7 @@ public abstract class MemoryBoard extends Board {
     public abstract void convertFrom(MemoryBoard old);
 
     public class MemoryBoardMap extends HashMap<FLocation, String> {
-        private static final long serialVersionUID = -6689617828610585368L;
+        private static final long serialVersionUID = - 6689617828610585368L;
 
         Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
 

@@ -4,7 +4,7 @@ import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
-public class CmdPaypalSet  extends FCommand{
+public class CmdPaypalSet extends FCommand {
 
     public CmdPaypalSet() {
         this.aliases.add("setpaypal");
@@ -20,7 +20,7 @@ public class CmdPaypalSet  extends FCommand{
     }
 
     public void perform() {
-      if (! SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (! SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
             fme.msg(TL.GENERIC_DISABLED);
         } else {
             String paypal = argAsString(0);

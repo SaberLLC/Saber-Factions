@@ -15,7 +15,7 @@ public class CmdSB extends FCommand {
 
     @Override
     public void perform() {
-        boolean toggleTo = !fme.showScoreboard();
+        boolean toggleTo = ! fme.showScoreboard();
         FScoreboard board = FScoreboard.get(fme);
         if (board == null) {
             me.sendMessage(TL.COMMAND_TOGGLESB_DISABLED.toString());

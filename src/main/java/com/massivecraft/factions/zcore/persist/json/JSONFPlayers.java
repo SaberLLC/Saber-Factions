@@ -26,8 +26,8 @@ public class JSONFPlayers extends MemoryFPlayers {
     private File file;
 
     public JSONFPlayers() {
-      file = new File(SavageFactions.plugin.getDataFolder(), "players.json");
-      gson = SavageFactions.plugin.gson;
+        file = new File(SavageFactions.plugin.getDataFolder(), "players.json");
+        gson = SavageFactions.plugin.gson;
     }
 
     public Gson getGson() {
@@ -75,11 +75,11 @@ public class JSONFPlayers extends MemoryFPlayers {
         }
         this.fPlayers.clear();
         this.fPlayers.putAll(fplayers);
-      SavageFactions.plugin.log("Loaded " + fPlayers.size() + " players");
+        SavageFactions.plugin.log("Loaded " + fPlayers.size() + " players");
     }
 
     private Map<String, JSONFPlayer> loadCore() {
-        if (!this.file.exists()) {
+        if (! this.file.exists()) {
             return new HashMap<>();
         }
 
@@ -96,7 +96,7 @@ public class JSONFPlayers extends MemoryFPlayers {
             String key = entry.getKey();
             entry.getValue().setId(key);
             if (doesKeyNeedMigration(key)) {
-                if (!isKeyInvalid(key)) {
+                if (! isKeyInvalid(key)) {
                     list.add(key);
                 } else {
                     invalidList.add(key);
@@ -126,7 +126,7 @@ public class JSONFPlayers extends MemoryFPlayers {
                 Map<String, UUID> response = fetcher.call();
                 for (String s : list) {
                     // Are we missing any responses?
-                    if (!response.containsKey(s)) {
+                    if (! response.containsKey(s)) {
                         // They don't have a UUID so they should just be removed
                         invalidList.add(s);
                     }
@@ -168,17 +168,17 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     private boolean doesKeyNeedMigration(String key) {
-        if (!key.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
+        if (! key.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
             // Not a valid UUID..
-          // Valid playername, we'll mark this as one for conversion
-          // to UUID
-          return key.matches("[a-zA-Z0-9_]{2,16}");
+            // Valid playername, we'll mark this as one for conversion
+            // to UUID
+            return key.matches("[a-zA-Z0-9_]{2,16}");
         }
         return false;
     }
 
     private boolean isKeyInvalid(String key) {
-        return !key.matches("[a-zA-Z0-9_]{2,16}");
+        return ! key.matches("[a-zA-Z0-9_]{2,16}");
     }
 
     @Override

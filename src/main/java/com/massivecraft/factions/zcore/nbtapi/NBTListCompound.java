@@ -81,7 +81,7 @@ public class NBTListCompound {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public Set<String> getKeys() {
         try {
             return (Set<String>) compound.getClass().getMethod("c").invoke(compound);

@@ -26,13 +26,13 @@ public class CmdReload extends FCommand {
     public void perform() {
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
-      SavageFactions.plugin.reloadConfig();
-      SavageFactions.plugin.loadLang();
+        SavageFactions.plugin.reloadConfig();
+        SavageFactions.plugin.loadLang();
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 
 
-      if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight")) {
-        SavageFactions.plugin.factionsFlight = true;
+        if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight")) {
+            SavageFactions.plugin.factionsFlight = true;
         }
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 

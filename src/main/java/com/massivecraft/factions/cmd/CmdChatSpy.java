@@ -24,14 +24,14 @@ public class CmdChatSpy extends FCommand {
 
     @Override
     public void perform() {
-        fme.setSpyingChat(this.argAsBool(0, !fme.isSpyingChat()));
+        fme.setSpyingChat(this.argAsBool(0, ! fme.isSpyingChat()));
 
         if (fme.isSpyingChat()) {
             fme.msg(TL.COMMAND_CHATSPY_ENABLE);
-          SavageFactions.plugin.log(fme.getName() + TL.COMMAND_CHATSPY_ENABLELOG.toString());
+            SavageFactions.plugin.log(fme.getName() + TL.COMMAND_CHATSPY_ENABLELOG.toString());
         } else {
             fme.msg(TL.COMMAND_CHATSPY_DISABLE);
-          SavageFactions.plugin.log(fme.getName() + TL.COMMAND_CHATSPY_DISABLELOG.toString());
+            SavageFactions.plugin.log(fme.getName() + TL.COMMAND_CHATSPY_DISABLELOG.toString());
         }
     }
 

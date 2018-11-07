@@ -36,6 +36,6 @@ public abstract class FSidebarProvider {
             // we assume it's broken up into two lines, so returning our tl will suffice.
             return TL.COMMAND_SHOW_NOHOME.toString();
         }
-      return SavageFactions.plugin.txt.parse(line); // finally add color :)
+        return SavageFactions.plugin.txt.parse(line); // finally add color :)
     }
 }

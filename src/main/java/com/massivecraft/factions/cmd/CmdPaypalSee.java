@@ -5,7 +5,7 @@ import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
-public class CmdPaypalSee extends FCommand{
+public class CmdPaypalSee extends FCommand {
     public CmdPaypalSee() {
         aliases.add("seepaypal");
         aliases.add("getpaypal");
@@ -20,14 +20,14 @@ public class CmdPaypalSee extends FCommand{
     }
 
     public void perform() {
-      if (! SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (! SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
             fme.msg(TL.GENERIC_DISABLED);
         } else {
             Faction faction = argAsFaction(0);
             String paypal = argAsString(1);
 
             if (faction != null) {
-                if (!faction.isWilderness() && !faction.isSafeZone() && !faction.isWarZone()) {
+                if (! faction.isWilderness() && ! faction.isSafeZone() && ! faction.isWarZone()) {
                     if (faction.getPaypal() != null) {
                         fme.msg(TL.COMMAND_PAYPALSEE_FACTION_PAYPAL.toString(), faction.getTag(), faction.getPaypal());
                     } else {

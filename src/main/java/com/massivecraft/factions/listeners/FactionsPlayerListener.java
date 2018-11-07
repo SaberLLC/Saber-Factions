@@ -766,7 +766,6 @@ public class FactionsPlayerListener implements Listener {
   }
 
 
-
   @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
   public void onPlayerInteract(PlayerInteractEvent event) {
     /// Prevents the use of montster eggs in oned land.

@@ -174,7 +174,7 @@ public class CmdConfig extends FCommand {
                         return;
                     }
 
-                    @SuppressWarnings("unchecked") Set<Material> matSet = (Set<Material>) target.get(null);
+                    @SuppressWarnings ("unchecked") Set<Material> matSet = (Set<Material>) target.get(null);
 
                     // Material already present, so remove it
                     if (matSet.contains(newMat)) {
@@ -192,7 +192,7 @@ public class CmdConfig extends FCommand {
 
                 // Set<String>
                 else if (innerType == String.class) {
-                    @SuppressWarnings("unchecked") Set<String> stringSet = (Set<String>) target.get(null);
+                    @SuppressWarnings ("unchecked") Set<String> stringSet = (Set<String>) target.get(null);
 
                     // String already present, so remove it
                     if (stringSet.contains(value.toString())) {
@@ -228,13 +228,13 @@ public class CmdConfig extends FCommand {
             return;
         }
 
-        if (!success.isEmpty()) {
+        if (! success.isEmpty()) {
             if (sender instanceof Player) {
                 sendMessage(success);
-              SavageFactions.plugin.log(success + TL.COMMAND_CONFIG_LOG.format((Player) sender));
+                SavageFactions.plugin.log(success + TL.COMMAND_CONFIG_LOG.format((Player) sender));
             } else  // using SavageFactions.plugin.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
             {
-              SavageFactions.plugin.log(success);
+                SavageFactions.plugin.log(success);
             }
         }
         // save change to disk

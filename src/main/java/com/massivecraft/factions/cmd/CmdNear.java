@@ -25,12 +25,12 @@ public class CmdNear extends FCommand {
 
     @Override
     public void perform() {
-      if (! SavageFactions.plugin.getConfig().getBoolean("fnear.Enabled")) {
+        if (! SavageFactions.plugin.getConfig().getBoolean("fnear.Enabled")) {
             fme.msg(TL.COMMAND_NEAR_DISABLED_MSG);
             return;
         }
 
-      double range = SavageFactions.plugin.getConfig().getInt("fnear.Radius");
+        double range = SavageFactions.plugin.getConfig().getInt("fnear.Radius");
         String format = TL.COMMAND_NEAR_FORMAT.toString();
         fme.msg(TL.COMMAND_NEAR_USE_MSG);
         for (Entity e : me.getNearbyEntities(range, 255, range)) {

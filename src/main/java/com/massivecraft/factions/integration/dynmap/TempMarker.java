@@ -53,11 +53,11 @@ public class TempMarker {
     // -------------------------------------------- //
 
     public void update(MarkerAPI markerApi, Marker marker) {
-        if (!this.world.equals(marker.getWorld()) || this.x != marker.getX() || this.y != marker.getY() || this.z != marker.getZ()) {
+        if (! this.world.equals(marker.getWorld()) || this.x != marker.getX() || this.y != marker.getY() || this.z != marker.getZ()) {
             marker.setLocation(this.world, this.x, this.y, this.z);
         }
 
-        if (!marker.getLabel().equals(this.label)) {
+        if (! marker.getLabel().equals(this.label)) {
             marker.setLabel(this.label);
         }
 
@@ -66,7 +66,7 @@ public class TempMarker {
             marker.setMarkerIcon(icon);
         }
 
-        if (!marker.getDescription().equals(this.description)) {
+        if (! marker.getDescription().equals(this.description)) {
             marker.setDescription(this.description);
         }
     }

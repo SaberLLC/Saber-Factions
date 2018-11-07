@@ -104,7 +104,7 @@ public class CmdPerm extends FCommand {
         }
 
         fme.msg(TL.COMMAND_PERM_SET, argAsString(1), access.name(), argAsString(0));
-      SavageFactions.plugin.log(String.format(TL.COMMAND_PERM_SET.toString(), argAsString(1), access.name(), argAsString(0)) + " for faction " + fme.getTag());
+        SavageFactions.plugin.log(String.format(TL.COMMAND_PERM_SET.toString(), argAsString(1), access.name(), argAsString(0)) + " for faction " + fme.getTag());
     }
 
     private Permissable getPermissable(String name) {

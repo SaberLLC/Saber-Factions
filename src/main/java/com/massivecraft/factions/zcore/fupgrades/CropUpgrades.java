@@ -19,21 +19,21 @@ public class CropUpgrades implements Listener {
             int level = factionAtLoc.getUpgrade("Crop");
             if (level != 0) {
                 if (level == 1) {
-                  int chance = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-1");
+                    int chance = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-1");
                     int randomNum = ThreadLocalRandom.current().nextInt(1, 100 + 1);
                     if (randomNum <= chance) {
                         growCrop(e);
                     }
                 }
                 if (level == 2) {
-                  int chance = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-2");
+                    int chance = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-2");
                     int randomNum = ThreadLocalRandom.current().nextInt(1, 100 + 1);
                     if (randomNum <= chance) {
                         growCrop(e);
                     }
                 }
                 if (level == 3) {
-                  int chance = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-3");
+                    int chance = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-3");
                     int randomNum = ThreadLocalRandom.current().nextInt(1, 100 + 1);
                     if (randomNum <= chance) {
                         growCrop(e);
@@ -49,7 +49,7 @@ public class CropUpgrades implements Listener {
         Material CROPS;
 
 
-      if (e.getBlock().getType().equals(SavageFactions.plugin.CROPS)) {
+        if (e.getBlock().getType().equals(SavageFactions.plugin.CROPS)) {
             e.setCancelled(true);
             Crops c = new Crops(CropState.RIPE);
             org.bukkit.block.BlockState bs = e.getBlock().getState();
@@ -59,11 +59,11 @@ public class CropUpgrades implements Listener {
         org.bukkit.block.Block below = e.getBlock().getLocation().subtract(0, 1, 0).getBlock();
 
 
-      if (below.getType() == SavageFactions.plugin.SUGAR_CANE_BLOCK) {
+        if (below.getType() == SavageFactions.plugin.SUGAR_CANE_BLOCK) {
 
             org.bukkit.block.Block above = e.getBlock().getLocation().add(0, 1, 0).getBlock();
-            if (above.getType() == Material.AIR && above.getLocation().add(0, -2, 0).getBlock().getType() != Material.AIR) {
-              above.setType(SavageFactions.plugin.SUGAR_CANE_BLOCK);
+            if (above.getType() == Material.AIR && above.getLocation().add(0, - 2, 0).getBlock().getType() != Material.AIR) {
+                above.setType(SavageFactions.plugin.SUGAR_CANE_BLOCK);
             }
 
         }
@@ -72,7 +72,7 @@ public class CropUpgrades implements Listener {
 
             org.bukkit.block.Block above = e.getBlock().getLocation().add(0, 1, 0).getBlock();
 
-            if (above.getType() == Material.AIR && above.getLocation().add(0, -2, 0).getBlock().getType() != Material.AIR) {
+            if (above.getType() == Material.AIR && above.getLocation().add(0, - 2, 0).getBlock().getType() != Material.AIR) {
                 above.setType(Material.CACTUS);
             }
         }

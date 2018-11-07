@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Material;
 
 public class CmdSetBanner extends FCommand {
 
@@ -20,7 +19,7 @@ public class CmdSetBanner extends FCommand {
     }
 
     public void perform() {
-        if (!me.getItemInHand().getType().toString().contains("BANNER")) {
+        if (! me.getItemInHand().getType().toString().contains("BANNER")) {
             fme.msg(TL.COMMAND_SETBANNER_NOTBANNER);
             return;
         }

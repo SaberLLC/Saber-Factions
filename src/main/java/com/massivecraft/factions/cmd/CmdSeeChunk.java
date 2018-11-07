@@ -23,7 +23,7 @@ public class CmdSeeChunk extends FCommand {
     private boolean useParticles;
     private int length;
     private ParticleEffect effect;
-    private int taskID = -1;
+    private int taskID = - 1;
 
 
     //I remade it cause of people getting mad that I had the same seechunk as drtshock
@@ -62,10 +62,10 @@ public class CmdSeeChunk extends FCommand {
     }
 
     private void manageTask() {
-        if (taskID != -1) {
+        if (taskID != - 1) {
             if (seeChunkMap.keySet().size() == 0) {
                 Bukkit.getScheduler().cancelTask(taskID);
-                taskID = -1;
+                taskID = - 1;
             }
         } else {
             startTask();

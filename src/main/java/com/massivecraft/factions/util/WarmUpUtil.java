@@ -21,7 +21,7 @@ public class WarmUpUtil {
                 player.msg(TL.WARMUPS_ALREADY);
             } else {
                 player.msg(translationKey.format(action, delay));
-              int id = SavageFactions.plugin.getServer().getScheduler().runTaskLater(SavageFactions.plugin, new Runnable() {
+                int id = SavageFactions.plugin.getServer().getScheduler().runTaskLater(SavageFactions.plugin, new Runnable() {
                     @Override
                     public void run() {
                         player.stopWarmup();
@@ -36,7 +36,7 @@ public class WarmUpUtil {
     }
 
     public enum Warmup {
-      HOME, WARP, FLIGHT, BANNER, CHECKPOINT
+        HOME, WARP, FLIGHT, BANNER, CHECKPOINT
     }
 
 }

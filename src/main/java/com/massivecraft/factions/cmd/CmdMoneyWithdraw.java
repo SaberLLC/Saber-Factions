@@ -47,7 +47,7 @@ public class CmdMoneyWithdraw extends FCommand {
         boolean success = Econ.transferMoney(fme, faction, fme, amount);
 
         if (success && Conf.logMoneyTransactions) {
-          SavageFactions.plugin.log(ChatColor.stripColor(SavageFactions.plugin.txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+            SavageFactions.plugin.log(ChatColor.stripColor(SavageFactions.plugin.txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
         }
     }
 

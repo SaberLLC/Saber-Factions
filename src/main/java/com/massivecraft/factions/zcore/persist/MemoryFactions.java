@@ -18,33 +18,33 @@ public abstract class MemoryFactions extends Factions {
 
     public void load() {
         // Make sure the default neutral faction exists
-        if (!factions.containsKey("0")) {
+        if (! factions.containsKey("0")) {
             Faction faction = generateFactionObject("0");
             factions.put("0", faction);
             faction.setTag(TL.WILDERNESS.toString());
             faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
         } else {
             Faction faction = factions.get("0");
-            if (!faction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
+            if (! faction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) {
                 faction.setTag(TL.WILDERNESS.toString());
             }
-            if (!faction.getDescription().equalsIgnoreCase(TL.WILDERNESS_DESCRIPTION.toString())) {
+            if (! faction.getDescription().equalsIgnoreCase(TL.WILDERNESS_DESCRIPTION.toString())) {
                 faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
             }
         }
 
         // Make sure the safe zone faction exists
-        if (!factions.containsKey("-1")) {
+        if (! factions.containsKey("-1")) {
             Faction faction = generateFactionObject("-1");
             factions.put("-1", faction);
             faction.setTag(TL.SAFEZONE.toString());
             faction.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
         } else {
             Faction faction = factions.get("-1");
-            if (!faction.getTag().equalsIgnoreCase(TL.SAFEZONE.toString())) {
+            if (! faction.getTag().equalsIgnoreCase(TL.SAFEZONE.toString())) {
                 faction.setTag(TL.SAFEZONE.toString());
             }
-            if (!faction.getDescription().equalsIgnoreCase(TL.SAFEZONE_DESCRIPTION.toString())) {
+            if (! faction.getDescription().equalsIgnoreCase(TL.SAFEZONE_DESCRIPTION.toString())) {
                 faction.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
             }
             // if SafeZone has old pre-1.6.0 name, rename it to remove troublesome " "
@@ -54,17 +54,17 @@ public abstract class MemoryFactions extends Factions {
         }
 
         // Make sure the war zone faction exists
-        if (!factions.containsKey("-2")) {
+        if (! factions.containsKey("-2")) {
             Faction faction = generateFactionObject("-2");
             factions.put("-2", faction);
             faction.setTag(TL.WARZONE.toString());
             faction.setDescription(TL.WARZONE_DESCRIPTION.toString());
         } else {
             Faction faction = factions.get("-2");
-            if (!faction.getTag().equalsIgnoreCase(TL.WARZONE.toString())) {
+            if (! faction.getTag().equalsIgnoreCase(TL.WARZONE.toString())) {
                 faction.setTag(TL.WARZONE.toString());
             }
-            if (!faction.getDescription().equalsIgnoreCase(TL.WARZONE_DESCRIPTION.toString())) {
+            if (! faction.getDescription().equalsIgnoreCase(TL.WARZONE_DESCRIPTION.toString())) {
                 faction.setDescription(TL.WARZONE_DESCRIPTION.toString());
             }
             // if WarZone has old pre-1.6.0 name, rename it to remove troublesome " "
@@ -101,7 +101,7 @@ public abstract class MemoryFactions extends Factions {
             if (candidate.length() < minlength) {
                 continue;
             }
-            if (!candidate.toLowerCase().startsWith(start)) {
+            if (! candidate.toLowerCase().startsWith(start)) {
                 continue;
             }
 

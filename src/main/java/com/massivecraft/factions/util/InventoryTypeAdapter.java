@@ -17,13 +17,11 @@ public class InventoryTypeAdapter implements JsonSerializer<Inventory>, JsonDese
     }
 
 
-
     @Override
     public Inventory deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
         JsonObject object = jsonElement.getAsJsonObject();
         return InventoryUtil.fromBase64(object.get("contents").getAsString());
     }
-
 
 
 }

@@ -35,14 +35,14 @@ public class Worldguard {
 
     public static void init(Plugin plugin) {
         Plugin wgplug = plugin.getServer().getPluginManager().getPlugin("WorldGuard");
-        if (wgplug == null || !(wgplug instanceof WorldGuardPlugin)) {
+        if (wgplug == null || ! (wgplug instanceof WorldGuardPlugin)) {
             enabled = false;
             wg = null;
-          SavageFactions.plugin.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
+            SavageFactions.plugin.log("Could not hook to WorldGuard. WorldGuard checks are disabled.");
         } else {
             wg = (WorldGuardPlugin) wgplug;
             enabled = true;
-          SavageFactions.plugin.log("Successfully hooked to WorldGuard.");
+            SavageFactions.plugin.log("Successfully hooked to WorldGuard.");
         }
     }
 
@@ -55,7 +55,7 @@ public class Worldguard {
     //   True: PVP is allowed
     //   False: PVP is disallowed
     public static boolean isPVP(Player player) {
-        if (!enabled) {
+        if (! enabled) {
             // No WG hooks so we'll always bypass this check.
             return true;
         }
@@ -74,7 +74,7 @@ public class Worldguard {
     //	True: Player can build in the region.
     //	False: Player can not build in the region.
     public static boolean playerCanBuild(Player player, Location loc) {
-        if (!enabled) {
+        if (! enabled) {
             // No WG hooks so we'll always bypass this check.
             return false;
         }
@@ -103,7 +103,7 @@ public class Worldguard {
     }
 
     public static boolean checkForRegionsInChunk(Chunk chunk) {
-        if (!enabled) {
+        if (! enabled) {
             // No WG hooks so we'll always bypass this check.
             return false;
         }
@@ -128,7 +128,7 @@ public class Worldguard {
 
         try {
             overlaps = region.getIntersectingRegions(allregionslist);
-            foundregions = overlaps != null && !overlaps.isEmpty();
+            foundregions = overlaps != null && ! overlaps.isEmpty();
         } catch (Exception e) {
             e.printStackTrace();
         }

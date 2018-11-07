@@ -60,14 +60,18 @@ public class SavageFactions extends MPlugin {
     public boolean mc113 = false;
     public boolean useNonPacketParticles = false;
     public boolean factionsFlight = false;
-
+    //multiversion material fields
+    public Material SUGAR_CANE_BLOCK, BANNER, CROPS, REDSTONE_LAMP_ON,
+            STAINED_GLASS, STATIONARY_WATER, STAINED_CLAY, WOOD_BUTTON,
+            SOIL, MOB_SPANWER, THIN_GLASS, IRON_FENCE, NETHER_FENCE, FENCE,
+            WOODEN_DOOR, TRAP_DOOR, FENCE_GATE, BURNING_FURNACE, DIODE_BLOCK_OFF,
+            DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
     // Persistence related
     private boolean locked = false;
     private Integer AutoLeaveTask = null;
     private boolean hookedPlayervaults;
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
-
 
     public SavageFactions() {
         plugin = this;
@@ -114,15 +118,15 @@ public class SavageFactions extends MPlugin {
         // Vault dependency check.
         if (SavageFactions.plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
             SavageFactions.plugin.log("Vault is not present, the plugin will not run properly.");
-          this.onDisable();
-          Bukkit.getScheduler().scheduleSyncDelayedTask(this,
-                  new Runnable() {
-                    @Override
-                    public void run() {
-                      SavageFactions.plugin.getServer().getPluginManager().disablePlugin(SavageFactions.plugin);
-                    }
-                  }, 20L);
-          return;
+            this.onDisable();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(this,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            SavageFactions.plugin.getServer().getPluginManager().disablePlugin(SavageFactions.plugin);
+                        }
+                    }, 20L);
+            return;
 
         }
 
@@ -141,7 +145,7 @@ public class SavageFactions extends MPlugin {
         setupMultiversionMaterials();
         log("==== End Setup ====");
 
-        if (!preEnable()) {
+        if (! preEnable()) {
             return;
         }
         this.loadSuccessful = false;
@@ -189,8 +193,6 @@ public class SavageFactions extends MPlugin {
         new MassiveStats(this);
 
 
-
-
         if (version > 8) {
             useNonPacketParticles = true;
             SavageFactions.plugin.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
@@ -199,7 +201,6 @@ public class SavageFactions extends MPlugin {
         if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight")) {
             factionsFlight = true;
         }
-
 
 
         // Register Event Handlers
@@ -224,18 +225,10 @@ public class SavageFactions extends MPlugin {
         }
 
 
-      this.setupPlaceholderAPI();
-      this.postEnable();
+        this.setupPlaceholderAPI();
+        this.postEnable();
         this.loadSuccessful = true;
     }
-
-
-    //multiversion material fields
-    public Material SUGAR_CANE_BLOCK, BANNER, CROPS, REDSTONE_LAMP_ON,
-            STAINED_GLASS, STATIONARY_WATER, STAINED_CLAY, WOOD_BUTTON,
-            SOIL, MOB_SPANWER, THIN_GLASS, IRON_FENCE, NETHER_FENCE, FENCE,
-            WOODEN_DOOR, TRAP_DOOR, FENCE_GATE, BURNING_FURNACE, DIODE_BLOCK_OFF,
-            DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
 
     private void setupMultiversionMaterials() {
         if (mc113) {
@@ -263,7 +256,7 @@ public class SavageFactions extends MPlugin {
             FIREBALL = Material.valueOf("LEGACY_FIREBALL");
 
         } else {
-            if (!mc17) {
+            if (! mc17) {
                 BANNER = Material.valueOf("BANNER");
             }
             CROPS = Material.valueOf("CROPS");
@@ -427,7 +420,7 @@ public class SavageFactions extends MPlugin {
 
     public void startAutoLeaveTask(boolean restartIfRunning) {
         if (AutoLeaveTask != null) {
-            if (!restartIfRunning) {
+            if (! restartIfRunning) {
                 return;
             }
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
@@ -547,7 +540,7 @@ public class SavageFactions extends MPlugin {
     // TODO: GET THIS BACK AND WORKING
 
     public boolean isFactionsCommand(String check) {
-        return !(check == null || check.isEmpty()) && this.handleCommand(null, check, true);
+        return ! (check == null || check.isEmpty()) && this.handleCommand(null, check, true);
     }
 
     // Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
@@ -569,7 +562,7 @@ public class SavageFactions extends MPlugin {
         }
 
         // if listener isn't set, or config option is disabled, give back uncolored tag
-        if (listener == null || !Conf.chatTagRelationColored) {
+        if (listener == null || ! Conf.chatTagRelationColored) {
             tag = me.getChatTag().trim();
         } else {
             FPlayer you = FPlayers.getInstance().getByPlayer(listener);
@@ -648,7 +641,7 @@ public class SavageFactions extends MPlugin {
     }
 
     public String getPrimaryGroup(OfflinePlayer player) {
-        return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
+        return perms == null || ! perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
     }
 
     public void debug(Level level, String s) {

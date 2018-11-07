@@ -84,7 +84,7 @@ public abstract class MPlugin extends JavaPlugin {
         // reference command will be used to prevent "unknown command" console messages
         try {
             Map<String, Map<String, Object>> refCmd = this.getDescription().getCommands();
-            if (refCmd != null && !refCmd.isEmpty()) {
+            if (refCmd != null && ! refCmd.isEmpty()) {
                 this.refCommand = (String) (refCmd.keySet().toArray()[0]);
             }
         } catch (ClassCastException ex) {
@@ -114,7 +114,7 @@ public abstract class MPlugin extends JavaPlugin {
         File lang = new File(getDataFolder(), "lang.yml");
         OutputStream out = null;
         InputStream defLangStream = this.getResource("lang.yml");
-        if (!lang.exists()) {
+        if (! lang.exists()) {
             try {
                 getDataFolder().mkdir();
                 lang.createNewFile();
@@ -123,7 +123,7 @@ public abstract class MPlugin extends JavaPlugin {
                     int read;
                     byte[] bytes = new byte[1024];
 
-                    while ((read = defLangStream.read(bytes)) != -1) {
+                    while ((read = defLangStream.read(bytes)) != - 1) {
                         out.write(bytes, 0, read);
                     }
                     YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new BufferedReader(new InputStreamReader(defLangStream)));
@@ -218,7 +218,7 @@ public abstract class MPlugin extends JavaPlugin {
         this.rawTags.put("b", "<rose>"); // bad
         this.rawTags.put("h", "<pink>"); // highligh
         this.rawTags.put("c", "<aqua>"); // command
-      this.rawTags.put("plugin", "<teal>"); // parameter
+        this.rawTags.put("plugin", "<teal>"); // parameter
     }
 
     public void initTXT() {
@@ -242,7 +242,7 @@ public abstract class MPlugin extends JavaPlugin {
     // COMMAND HANDLING
     // -------------------------------------------- //
 
-  // can be overridden by SavageFactions method, to provide option
+    // can be overridden by SavageFactions method, to provide option
     public boolean logPlayerCommands() {
         return true;
     }
@@ -259,7 +259,7 @@ public abstract class MPlugin extends JavaPlugin {
         }
 
         for (final MCommand<?> command : this.getBaseCommands()) {
-            if (noSlash && !command.allowNoSlashAccess) {
+            if (noSlash && ! command.allowNoSlashAccess) {
                 continue;
             }
 

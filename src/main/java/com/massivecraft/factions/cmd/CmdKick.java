@@ -47,7 +47,7 @@ public class CmdKick extends FCommand {
                     String s = player.getName();
                     msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
                 }
-              if (fme.getRole() == Role.LEADER) {
+                if (fme.getRole() == Role.LEADER) {
                     // Only add coleader to this for the leader.
                     for (FPlayer player : myFaction.getFPlayersWhereRole(Role.COLEADER)) {
                         String s = player.getName();
@@ -78,9 +78,9 @@ public class CmdKick extends FCommand {
         // - Check for the kick permission.
         // - Make sure the player is in the faction.
         // - Make sure the kicked player has lower rank than the kicker.
-        if (!fme.isAdminBypassing()) {
+        if (! fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.KICK);
-          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_NOPERMISSION, "kick");
                 return;
             }
@@ -92,14 +92,14 @@ public class CmdKick extends FCommand {
                 msg(TL.COMMAND_KICK_INSUFFICIENTRANK);
                 return;
             }
-            if (!Conf.canLeaveWithNegativePower && toKick.getPower() < 0) {
+            if (! Conf.canLeaveWithNegativePower && toKick.getPower() < 0) {
                 msg(TL.COMMAND_KICK_NEGATIVEPOWER);
                 return;
             }
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (!canAffordCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString())) {
+        if (! canAffordCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString())) {
             return;
         }
 
@@ -111,7 +111,7 @@ public class CmdKick extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (!payForCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString(), TL.COMMAND_KICK_FORKICK.toString())) {
+        if (! payForCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString(), TL.COMMAND_KICK_FORKICK.toString())) {
             return;
         }
 
@@ -122,9 +122,9 @@ public class CmdKick extends FCommand {
             fme.msg(TL.COMMAND_KICK_KICKS, toKick.describeTo(fme), toKickFaction.describeTo(fme));
         }
         if (Conf.logFactionKick) {
-          SavageFactions.plugin.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
+            SavageFactions.plugin.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
         }
-      if (toKick.getRole() == Role.LEADER) {
+        if (toKick.getRole() == Role.LEADER) {
             toKickFaction.promoteNewLeader();
         }
         toKickFaction.deinvite(toKick);

@@ -11,19 +11,19 @@ import java.util.logging.Logger;
 public class FactionsJSON {
 
     public static void convertTo() {
-        if (!(Factions.getInstance() instanceof MemoryFactions)) {
+        if (! (Factions.getInstance() instanceof MemoryFactions)) {
             return;
         }
-        if (!(FPlayers.getInstance() instanceof MemoryFPlayers)) {
+        if (! (FPlayers.getInstance() instanceof MemoryFPlayers)) {
             return;
         }
-        if (!(Board.getInstance() instanceof MemoryBoard)) {
+        if (! (Board.getInstance() instanceof MemoryBoard)) {
             return;
         }
         new BukkitRunnable() {
             @Override
             public void run() {
-              Logger logger = SavageFactions.plugin.getLogger();
+                Logger logger = SavageFactions.plugin.getLogger();
                 logger.info("Beginning Board conversion to JSON");
                 new JSONBoard().convertFrom((MemoryBoard) Board.getInstance());
                 logger.info("Board Converted");

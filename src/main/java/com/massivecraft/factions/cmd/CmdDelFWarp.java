@@ -23,7 +23,7 @@ public class CmdDelFWarp extends FCommand {
     public void perform() {
         String warp = argAsString(0);
         if (myFaction.isWarp(warp)) {
-            if (!transact(fme)) {
+            if (! transact(fme)) {
                 return;
             }
             myFaction.removeWarp(warp);
@@ -34,7 +34,7 @@ public class CmdDelFWarp extends FCommand {
     }
 
     private boolean transact(FPlayer player) {
-      return ! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.delwarp", 5), TL.COMMAND_DELFWARP_TODELETE.toString(), TL.COMMAND_DELFWARP_FORDELETE.toString());
+        return ! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.delwarp", 5), TL.COMMAND_DELFWARP_TODELETE.toString(), TL.COMMAND_DELFWARP_FORDELETE.toString());
     }
 
     @Override

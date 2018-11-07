@@ -49,7 +49,7 @@ public class CmdSafeunclaimall extends FCommand {
         msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
 
         if (Conf.logLandUnclaims) {
-          SavageFactions.plugin.log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(sender.getName()));
+            SavageFactions.plugin.log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(sender.getName()));
         }
     }
 

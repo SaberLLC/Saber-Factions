@@ -16,7 +16,7 @@ public class NBTList {
         listName = name;
         this.type = type;
         this.listObject = list;
-        if (!(type == NBTType.NBTTagString || type == NBTType.NBTTagCompound)) {
+        if (! (type == NBTType.NBTTagString || type == NBTType.NBTTagCompound)) {
             System.err.println("List types != String/Compound are currently not implemented!");
         }
     }
@@ -70,7 +70,7 @@ public class NBTList {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public void addString(String s) {
         if (type != NBTType.NBTTagString) {
             new Throwable("Using String method on a non String list!").printStackTrace();
@@ -85,7 +85,7 @@ public class NBTList {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings ("unchecked")
     public void setString(int i, String s) {
         if (type != NBTType.NBTTagString) {
             new Throwable("Using String method on a non String list!").printStackTrace();
@@ -117,7 +117,7 @@ public class NBTList {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return -1;
+        return - 1;
     }
 
     public NBTType getType() {

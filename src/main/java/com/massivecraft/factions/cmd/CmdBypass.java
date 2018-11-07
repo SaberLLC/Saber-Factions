@@ -25,15 +25,15 @@ public class CmdBypass extends FCommand {
 
     @Override
     public void perform() {
-        fme.setIsAdminBypassing(this.argAsBool(0, !fme.isAdminBypassing()));
+        fme.setIsAdminBypassing(this.argAsBool(0, ! fme.isAdminBypassing()));
 
         // TODO: Move this to a transient field in the model??
         if (fme.isAdminBypassing()) {
             fme.msg(TL.COMMAND_BYPASS_ENABLE.toString());
-          SavageFactions.plugin.log(fme.getName() + TL.COMMAND_BYPASS_ENABLELOG.toString());
+            SavageFactions.plugin.log(fme.getName() + TL.COMMAND_BYPASS_ENABLELOG.toString());
         } else {
             fme.msg(TL.COMMAND_BYPASS_DISABLE.toString());
-          SavageFactions.plugin.log(fme.getName() + TL.COMMAND_BYPASS_DISABLELOG.toString());
+            SavageFactions.plugin.log(fme.getName() + TL.COMMAND_BYPASS_DISABLELOG.toString());
         }
     }
 

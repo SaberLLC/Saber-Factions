@@ -16,7 +16,7 @@ public class TextUtil {
     // -------------------------------------------- //
     // Top-level parsing functions.
     // -------------------------------------------- //
-    private final static int titleizeBalance = -1;
+    private final static int titleizeBalance = - 1;
     public Map<String, String> tags;
 
     // -------------------------------------------- //
@@ -106,7 +106,7 @@ public class TextUtil {
     // -------------------------------------------- //
 
     public static String parseColorAcc(String string) {
-      return string.replace("`e", "").replace("`r", ChatColor.RED.toString()).replace("`R", ChatColor.DARK_RED.toString()).replace("`y", ChatColor.YELLOW.toString()).replace("`Y", ChatColor.GOLD.toString()).replace("`g", ChatColor.GREEN.toString()).replace("`G", ChatColor.DARK_GREEN.toString()).replace("`a", ChatColor.AQUA.toString()).replace("`A", ChatColor.DARK_AQUA.toString()).replace("`b", ChatColor.BLUE.toString()).replace("`B", ChatColor.DARK_BLUE.toString()).replace("`plugin", ChatColor.LIGHT_PURPLE.toString()).replace("`SavageFactions", ChatColor.DARK_PURPLE.toString()).replace("`k", ChatColor.BLACK.toString()).replace("`s", ChatColor.GRAY.toString()).replace("`S", ChatColor.DARK_GRAY.toString()).replace("`w", ChatColor.WHITE.toString());
+        return string.replace("`e", "").replace("`r", ChatColor.RED.toString()).replace("`R", ChatColor.DARK_RED.toString()).replace("`y", ChatColor.YELLOW.toString()).replace("`Y", ChatColor.GOLD.toString()).replace("`g", ChatColor.GREEN.toString()).replace("`G", ChatColor.DARK_GREEN.toString()).replace("`a", ChatColor.AQUA.toString()).replace("`A", ChatColor.DARK_AQUA.toString()).replace("`b", ChatColor.BLUE.toString()).replace("`B", ChatColor.DARK_BLUE.toString()).replace("`plugin", ChatColor.LIGHT_PURPLE.toString()).replace("`SavageFactions", ChatColor.DARK_PURPLE.toString()).replace("`k", ChatColor.BLACK.toString()).replace("`s", ChatColor.GRAY.toString()).replace("`S", ChatColor.DARK_GRAY.toString()).replace("`w", ChatColor.WHITE.toString());
     }
 
     public static String parseColorTags(String string) {
@@ -159,7 +159,7 @@ public class TextUtil {
             if (candidate.length() < minlength) {
                 continue;
             }
-            if (!candidate.toLowerCase().startsWith(start)) {
+            if (! candidate.toLowerCase().startsWith(start)) {
                 continue;
             }
 

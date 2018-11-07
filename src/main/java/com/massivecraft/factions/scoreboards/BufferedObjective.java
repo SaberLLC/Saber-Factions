@@ -62,7 +62,7 @@ public class BufferedObjective {
     }
 
     public void setTitle(String title) {
-        if (this.title == null || !this.title.equals(title)) {
+        if (this.title == null || ! this.title.equals(title)) {
             this.title = title;
             requiresUpdate = true;
         }
@@ -88,7 +88,7 @@ public class BufferedObjective {
         }
         content = ChatColor.translateAlternateColorCodes('&', content);
 
-        if (contents.get(lineNumber) == null || !contents.get(lineNumber).equals(content)) {
+        if (contents.get(lineNumber) == null || ! contents.get(lineNumber).equals(content)) {
             contents.put(lineNumber, content);
             requiresUpdate = true;
         }
@@ -102,7 +102,7 @@ public class BufferedObjective {
     }
 
     public void flip() {
-        if (!requiresUpdate) {
+        if (! requiresUpdate) {
             return;
         }
         requiresUpdate = false;

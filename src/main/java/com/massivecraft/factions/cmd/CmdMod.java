@@ -47,7 +47,7 @@ public class CmdMod extends FCommand {
 
         boolean permAny = Permission.MOD_ANY.has(sender, false);
         Faction targetFaction = you.getFaction();
-        if (targetFaction != myFaction && !permAny) {
+        if (targetFaction != myFaction && ! permAny) {
             msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(fme, true));
             return;
         }
@@ -57,7 +57,7 @@ public class CmdMod extends FCommand {
             return;
         }
 
-        if (you == fme && !permAny) {
+        if (you == fme && ! permAny) {
             msg(TL.COMMAND_MOD_SELF);
             return;
         }

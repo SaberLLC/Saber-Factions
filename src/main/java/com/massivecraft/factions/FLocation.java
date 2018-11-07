@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class FLocation implements Serializable {
-    private static final long serialVersionUID = -8292915234027387983L;
+    private static final long serialVersionUID = - 8292915234027387983L;
     private static final boolean worldBorderSupport;
 
     static {
@@ -64,7 +64,7 @@ public class FLocation implements Serializable {
     //----------------------------------------------//
 
     public static FLocation fromString(String string) {
-        int index = string.indexOf(",", 0);
+        int index = string.indexOf(",");
         int start = 1;
         String worldName = string.substring(start, index);
         start = index + 1;
@@ -99,10 +99,6 @@ public class FLocation implements Serializable {
         return regionVal << 5;   // "<< 5" == "* 32"
     }
 
-    public Chunk getChunk(){
-        return Bukkit.getWorld(worldName).getChunkAt(x, z);
-    }
-
     public static HashSet<FLocation> getArea(FLocation from, FLocation to) {
         HashSet<FLocation> ret = new HashSet<>();
 
@@ -113,6 +109,10 @@ public class FLocation implements Serializable {
         }
 
         return ret;
+    }
+
+    public Chunk getChunk() {
+        return Bukkit.getWorld(worldName).getChunkAt(x, z);
     }
 
     public String getWorldName() {
@@ -191,7 +191,7 @@ public class FLocation implements Serializable {
      * @return whether this location is outside of the border
      */
     public boolean isOutsideWorldBorder(int buffer) {
-        if (!worldBorderSupport) {
+        if (! worldBorderSupport) {
             return false;
         }
 
@@ -247,7 +247,7 @@ public class FLocation implements Serializable {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof FLocation)) {
+        if (! (obj instanceof FLocation)) {
             return false;
         }
 

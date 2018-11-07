@@ -19,15 +19,15 @@ import java.util.logging.Level;
 
 public class FactionsChatListener implements Listener {
 
-  public SavageFactions savageFactions;
+    public SavageFactions savageFactions;
 
-  public FactionsChatListener(SavageFactions savageFactions) {
-    this.savageFactions = savageFactions;
+    public FactionsChatListener(SavageFactions savageFactions) {
+        this.savageFactions = savageFactions;
     }
 
 
     // this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerEarlyChat(AsyncPlayerChatEvent event) {
         Player talkingPlayer = event.getPlayer();
         String msg = event.getMessage();
@@ -100,7 +100,7 @@ public class FactionsChatListener implements Listener {
 
             //Send to all our allies
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                if (myFaction.getRelationTo(fplayer) == Relation.ALLY && !fplayer.isIgnoreAllianceChat()) {
+                if (myFaction.getRelationTo(fplayer) == Relation.ALLY && ! fplayer.isIgnoreAllianceChat()) {
                     fplayer.sendMessage(message);
                 } else if (fplayer.isSpyingChat() && me != fplayer) {
                     fplayer.sendMessage("[ACspy]: " + message);
@@ -134,11 +134,11 @@ public class FactionsChatListener implements Listener {
 
 
     // this is for handling insertion of the player's faction tag, set at highest priority to give other plugins a chance to modify chat first
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         // Are we to insert the Faction tag into the format?
         // If we are not to insert it - we are done.
-        if (!Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin) {
+        if (! Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin) {
             return;
         }
 
@@ -148,7 +148,7 @@ public class FactionsChatListener implements Listener {
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
         int InsertIndex;
 
-        if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
+        if (! Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
             // we're using the "replace" method of inserting the faction tags
             if (eventFormat.contains("[FACTION_TITLE]")) {
                 eventFormat = eventFormat.replace("[FACTION_TITLE]", me.getTitle());
@@ -158,10 +158,10 @@ public class FactionsChatListener implements Listener {
             eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
             Conf.chatTagPadAfter = false;
             Conf.chatTagPadBefore = false;
-        } else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {
+        } else if (! Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {
             // we're using the "insert after string" method
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
-        } else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
+        } else if (! Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
             // we're using the "insert before string" method
             InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
         } else {
@@ -172,8 +172,8 @@ public class FactionsChatListener implements Listener {
             }
         }
 
-        String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
-        String formatEnd = ((Conf.chatTagPadAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
+        String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && ! me.getChatTag().isEmpty()) ? " " : "");
+        String formatEnd = ((Conf.chatTagPadAfter && ! me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
 
         String nonColoredMsgFormat = formatStart + me.getChatTag().trim() + formatEnd;
 
@@ -190,9 +190,9 @@ public class FactionsChatListener implements Listener {
                     listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
                 } catch (UnknownFormatConversionException ex) {
                     Conf.chatTagInsertIndex = 0;
-                  SavageFactions.plugin.log(Level.SEVERE, "Critical error in chat message formatting!");
-                  SavageFactions.plugin.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
-                  SavageFactions.plugin.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
+                    SavageFactions.plugin.log(Level.SEVERE, "Critical error in chat message formatting!");
+                    SavageFactions.plugin.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
+                    SavageFactions.plugin.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
                     return;
                 }
             }

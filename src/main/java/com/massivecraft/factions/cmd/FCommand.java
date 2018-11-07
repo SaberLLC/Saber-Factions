@@ -29,7 +29,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
     public boolean isMoneyCommand;
 
     public FCommand() {
-      super(SavageFactions.plugin);
+        super(SavageFactions.plugin);
 
         // Due to safety reasons it defaults to disable on lock.
         disableOnLock = true;
@@ -62,12 +62,12 @@ public abstract class FCommand extends MCommand<SavageFactions> {
             return false;
         }
 
-        if (this.isMoneyCommand && !Conf.econEnabled) {
+        if (this.isMoneyCommand && ! Conf.econEnabled) {
             msg("<b>Faction economy features are disabled on this server.");
             return false;
         }
 
-        if (this.isMoneyCommand && !Conf.bankEnabled) {
+        if (this.isMoneyCommand && ! Conf.bankEnabled) {
             msg("<b>The faction bank system is disabled on this server.");
             return false;
         }
@@ -78,29 +78,29 @@ public abstract class FCommand extends MCommand<SavageFactions> {
     @Override
     public boolean validSenderType(CommandSender sender, boolean informSenderIfNot) {
         boolean superValid = super.validSenderType(sender, informSenderIfNot);
-        if (!superValid) {
+        if (! superValid) {
             return false;
         }
 
-        if (!(this.senderMustBeMember || this.senderMustBeModerator || this.senderMustBeAdmin || this.senderMustBeColeader)) {
+        if (! (this.senderMustBeMember || this.senderMustBeModerator || this.senderMustBeAdmin || this.senderMustBeColeader)) {
             return true;
         }
 
-        if (!(sender instanceof Player)) {
+        if (! (sender instanceof Player)) {
             return false;
         }
 
-        if (!fme.hasFaction()) {
+        if (! fme.hasFaction()) {
             sender.sendMessage(p.txt.parse("<b>You are not member of any faction."));
             return false;
         }
 
-        if (this.senderMustBeModerator && !fme.getRole().isAtLeast(Role.MODERATOR)) {
+        if (this.senderMustBeModerator && ! fme.getRole().isAtLeast(Role.MODERATOR)) {
             sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
             return false;
         }
 
-        if (this.senderMustBeColeader && !fme.getRole().isAtLeast(Role.COLEADER)) {
+        if (this.senderMustBeColeader && ! fme.getRole().isAtLeast(Role.COLEADER)) {
             sender.sendMessage(p.txt.parse("<b>Only faction coleaders can %s.", this.getHelpShort()));
             return false;
         }
@@ -123,7 +123,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
             return true;
         }
 
-        if (!fme.hasFaction()) {
+        if (! fme.hasFaction()) {
             sendMessage("You are not member of any faction.");
             return false;
         }
@@ -160,7 +160,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
         }
 
         if (msg && ret == null) {
-          this.msg("<b>No player \"<plugin>%s<b>\" could be found.", name);
+            this.msg("<b>No player \"<plugin>%s<b>\" could be found.", name);
         }
 
         return ret;
@@ -233,7 +233,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
         }
 
         if (msg && ret == null) {
-          this.msg("<b>The faction or player \"<plugin>%s<b>\" could not be found.", name);
+            this.msg("<b>The faction or player \"<plugin>%s<b>\" could not be found.", name);
         }
 
         return ret;
@@ -256,7 +256,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
     // -------------------------------------------- //
 
     public boolean canIAdministerYou(FPlayer i, FPlayer you) {
-        if (!i.getFaction().equals(you.getFaction())) {
+        if (! i.getFaction().equals(you.getFaction())) {
             i.sendMessage(p.txt.parse("%s <b>is not in the same faction as you.", you.describeTo(i, true)));
             return false;
         }
@@ -290,14 +290,14 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 
     // if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
     public boolean payForCommand(double cost, String toDoThis, String forDoingThis) {
-        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
+        if (! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
             return true;
         }
 
         if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
-            return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
+            return Econ.modifyMoney(myFaction, - cost, toDoThis, forDoingThis);
         } else {
-            return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
+            return Econ.modifyMoney(fme, - cost, toDoThis, forDoingThis);
         }
     }
 
@@ -307,7 +307,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 
     // like above, but just make sure they can pay; returns true unless person can't afford the cost
     public boolean canAffordCommand(double cost, String toDoThis) {
-        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
+        if (! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
             return true;
         }
 

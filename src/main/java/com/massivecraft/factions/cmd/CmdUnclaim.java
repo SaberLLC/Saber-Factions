@@ -35,9 +35,9 @@ public class CmdUnclaim extends FCommand {
         int radius = this.argAsInt(0, 1); // Default to 1
         final Faction forFaction = this.argAsFaction(1, myFaction); // Default to own
 
-        if (!fme.isAdminBypassing()) {
+        if (! fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TERRITORY);
-          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage faction territory");
                 return;
             }
@@ -53,7 +53,7 @@ public class CmdUnclaim extends FCommand {
             unClaim(new FLocation(me));
         } else {
             // radius claim
-            if (!Permission.CLAIM_RADIUS.has(sender, false)) {
+            if (! Permission.CLAIM_RADIUS.has(sender, false)) {
                 msg(TL.COMMAND_CLAIM_DENIED);
                 return;
             }
@@ -86,7 +86,7 @@ public class CmdUnclaim extends FCommand {
                 msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                  SavageFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+                    SavageFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
                 }
                 return true;
             } else {
@@ -99,7 +99,7 @@ public class CmdUnclaim extends FCommand {
                 msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                  SavageFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+                    SavageFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
                 }
                 return true;
             } else {
@@ -121,7 +121,7 @@ public class CmdUnclaim extends FCommand {
             msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
 
             if (Conf.logLandUnclaims) {
-              SavageFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+                SavageFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
             }
 
             return true;
@@ -133,11 +133,11 @@ public class CmdUnclaim extends FCommand {
         }
 
 
-        if (!assertHasFaction()) {
+        if (! assertHasFaction()) {
             return false;
         }
 
-        if (targetFaction.getAccess(fme, PermissableAction.TERRITORY) != Access.ALLOW && !assertMinRole(Role.MODERATOR)) {
+        if (targetFaction.getAccess(fme, PermissableAction.TERRITORY) != Access.ALLOW && ! assertMinRole(Role.MODERATOR)) {
             return false;
         }
 
@@ -158,11 +158,11 @@ public class CmdUnclaim extends FCommand {
             double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
 
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
-                if (!Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
+                if (! Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
                     return false;
                 }
             } else {
-                if (!Econ.modifyMoney(fme, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
+                if (! Econ.modifyMoney(fme, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
                     return false;
                 }
             }
@@ -172,7 +172,7 @@ public class CmdUnclaim extends FCommand {
         myFaction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, fme.describeTo(myFaction, true));
 
         if (Conf.logLandUnclaims) {
-          SavageFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+            SavageFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
         }
 
         return true;

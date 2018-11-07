@@ -1,9 +1,9 @@
 package com.massivecraft.factions.util;
 
-import java.util.HashMap;
-
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
 
 public enum MultiversionMaterials {
 
@@ -858,27 +858,21 @@ public enum MultiversionMaterials {
     ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_WALL_HEAD("SKULL", 0),
     ;
+    static int newV = - 1;
+    private static HashMap<String, MultiversionMaterials> cachedSearch = new HashMap<>();
     String m;
     int data;
 
-    MultiversionMaterials(String m, int data ){
+    MultiversionMaterials(String m, int data) {
         this.m = m;
         this.data = data;
     }
 
-    public ItemStack parseItem(){
-        Material mat = parseMaterial();
-        if(isNewVersion()){
-            return new ItemStack(mat);
-        }
-        return new ItemStack(mat,1,(byte) data);
-    }
-    static int newV = -1;
-    public static boolean isNewVersion(){
-        if(newV == 0) return false;
-        if(newV == 1) return true;
+    public static boolean isNewVersion() {
+        if (newV == 0) return false;
+        if (newV == 1) return true;
         Material mat = Material.matchMaterial("RED_WOOL");
-        if(mat != null){
+        if (mat != null) {
             newV = 1;
             return true;
         }
@@ -886,43 +880,65 @@ public enum MultiversionMaterials {
         return false;
     }
 
-    private static HashMap<String, MultiversionMaterials> cachedSearch = new HashMap<>();
-    public static MultiversionMaterials requestXMaterial(String name, byte data){
-        if(cachedSearch.containsKey(name.toUpperCase()+","+data)){
-            return cachedSearch.get(name.toUpperCase()+","+data);
+    public static MultiversionMaterials requestXMaterial(String name, byte data) {
+        if (cachedSearch.containsKey(name.toUpperCase() + "," + data)) {
+            return cachedSearch.get(name.toUpperCase() + "," + data);
         }
-        for(MultiversionMaterials mat:MultiversionMaterials.values()){
-            if(name.toUpperCase().equals(mat.m) && ((byte)mat.data) == data){
-                cachedSearch.put(mat.m+","+data,mat);
+        for (MultiversionMaterials mat : MultiversionMaterials.values()) {
+            if (name.toUpperCase().equals(mat.m) && ((byte) mat.data) == data) {
+                cachedSearch.put(mat.m + "," + data, mat);
                 return mat;
             }
         }
         return null;
     }
 
-    public boolean isSameMaterial(ItemStack comp){
-        if(isNewVersion()){
+    public static MultiversionMaterials fromString(String key) {
+        MultiversionMaterials xmat = null;
+        try {
+            xmat = MultiversionMaterials.valueOf(key);
+            return xmat;
+        } catch (IllegalArgumentException e) {
+            String[] split = key.split(":");
+            if (split.length == 1) {
+                xmat = requestXMaterial(key, (byte) 0);
+            } else {
+                xmat = requestXMaterial(split[0], (byte) Integer.parseInt(split[1]));
+            }
+            return xmat;
+        }
+
+    }
+
+    public ItemStack parseItem() {
+        Material mat = parseMaterial();
+        if (isNewVersion()) {
+            return new ItemStack(mat);
+        }
+        return new ItemStack(mat, 1, (byte) data);
+    }
+
+    public boolean isSameMaterial(ItemStack comp) {
+        if (isNewVersion()) {
             return comp.getType() == this.parseMaterial();
         }
-        if(comp.getType() == this.parseMaterial() &&
-                (int) comp.getData().getData() == (int) this.data){
+        if (comp.getType() == this.parseMaterial() &&
+                (int) comp.getData().getData() == this.data) {
             return true;
         }
         MultiversionMaterials xmat = fromMaterial(comp.getType());
-        if(isDamageable(xmat)){
-            if(this.parseMaterial() == comp.getType()){
-                return true;
-            }
+        if (isDamageable(xmat)) {
+            return this.parseMaterial() == comp.getType();
         }
         return false;
     }
 
-    public MultiversionMaterials fromMaterial(Material mat){
-        try{
+    public MultiversionMaterials fromMaterial(Material mat) {
+        try {
             return MultiversionMaterials.valueOf(mat.toString());
-        }catch(IllegalArgumentException e){
-            for(MultiversionMaterials xmat:MultiversionMaterials.values()){
-                if(xmat.m.equals(mat.toString())){
+        } catch (IllegalArgumentException e) {
+            for (MultiversionMaterials xmat : MultiversionMaterials.values()) {
+                if (xmat.m.equals(mat.toString())) {
                     return xmat;
                 }
             }
@@ -930,27 +946,10 @@ public enum MultiversionMaterials {
         return null;
     }
 
-    public static MultiversionMaterials fromString(String key){
-        MultiversionMaterials xmat = null;
-        try{
-            xmat = MultiversionMaterials.valueOf(key);
-            return xmat;
-        }catch(IllegalArgumentException e){
-            String[] split = key.split(":");
-            if(split.length == 1){
-                xmat = requestXMaterial(key,(byte) 0);
-            }else{
-                xmat = requestXMaterial(split[0],(byte) Integer.parseInt(split[1]));
-            }
-            return xmat;
-        }
-
-    }
-
-    public boolean isDamageable(MultiversionMaterials type){
+    public boolean isDamageable(MultiversionMaterials type) {
         String[] split = type.toString().split("_");
         int length = split.length;
-        switch(split[length-1]){
+        switch (split[length - 1]) {
             case "HELMET":
                 return true;
             case "CHESTPLATE":
@@ -984,9 +983,9 @@ public enum MultiversionMaterials {
         }
     }
 
-    public Material parseMaterial(){
+    public Material parseMaterial() {
         Material mat = Material.matchMaterial(this.toString());
-        if(mat != null){
+        if (mat != null) {
             return mat;
         }
         return Material.matchMaterial(m);

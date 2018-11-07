@@ -79,7 +79,7 @@ public class FScoreboard {
     }
 
     public void setSidebarVisibility(boolean visible) {
-        if (!isSupportedByServer()) {
+        if (! isSupportedByServer()) {
             return;
         }
 
@@ -87,7 +87,7 @@ public class FScoreboard {
     }
 
     public void setDefaultSidebar(final FSidebarProvider provider, int updateInterval) {
-        if (!isSupportedByServer()) {
+        if (! isSupportedByServer()) {
             return;
         }
 
@@ -113,7 +113,7 @@ public class FScoreboard {
     }
 
     public void setTemporarySidebar(final FSidebarProvider provider) {
-        if (!isSupportedByServer()) {
+        if (! isSupportedByServer()) {
             return;
         }
 

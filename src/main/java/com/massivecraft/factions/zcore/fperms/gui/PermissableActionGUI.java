@@ -36,20 +36,20 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
     public PermissableActionGUI(FPlayer fme, Permissable permissable) {
         this.fme = fme;
         this.permissable = permissable;
-      this.section = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.action");
+        this.section = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.action");
     }
 
     public void build() {
         if (section == null) {
-          SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-          SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+            SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return;
         }
 
         guiSize = section.getInt("rows", 3);
         if (guiSize > 6) {
             guiSize = 6;
-          SavageFactions.plugin.log(Level.INFO, "Action GUI size out of bounds, defaulting to 6");
+            SavageFactions.plugin.log(Level.INFO, "Action GUI size out of bounds, defaulting to 6");
         }
 
         guiSize *= 9;
@@ -58,12 +58,12 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         boolean disabled = false;
         for (String key : section.getConfigurationSection("slots").getKeys(false)) {
             int slot = section.getInt("slots." + key);
-            if (slot == -1) {
+            if (slot == - 1) {
                 disabled = true;
                 continue;
             }
             if (slot + 1 > guiSize || slot < 0) {
-              SavageFactions.plugin.log(Level.WARNING, "Invalid slot for: " + key.toUpperCase());
+                SavageFactions.plugin.log(Level.WARNING, "Invalid slot for: " + key.toUpperCase());
                 continue;
             }
 
@@ -74,7 +74,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 
             PermissableAction permissableAction = PermissableAction.fromString(key.toUpperCase().replace('-', '_'));
             if (permissableAction == null) {
-              SavageFactions.plugin.log(Level.WARNING, "Invalid permissable action: " + key.toUpperCase());
+                SavageFactions.plugin.log(Level.WARNING, "Invalid permissable action: " + key.toUpperCase());
                 continue;
             }
 
@@ -92,16 +92,16 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
                 if (disabled) {
                     break;
                 }
-                if (!usedDummySlots.isEmpty()) {
+                if (! usedDummySlots.isEmpty()) {
                     int slot = usedDummySlots.get(0);
                     actionSlots.put(slot, action);
                 } else {
                     int slot = actionGUI.firstEmpty();
-                    if (slot != -1) {
+                    if (slot != - 1) {
                         actionSlots.put(slot, action);
                     }
                 }
-              SavageFactions.plugin.log(Level.WARNING, "Missing action: " + action.name());
+                SavageFactions.plugin.log(Level.WARNING, "Missing action: " + action.name());
             }
 
         }
@@ -126,7 +126,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             }
             return;
         }
-        if (!actionSlots.containsKey(slot)) {
+        if (! actionSlots.containsKey(slot)) {
             return;
         }
 
@@ -147,7 +147,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 
         actionGUI.setItem(slot, action.buildItem(fme, permissable));
         fme.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), permissable.name());
-      SavageFactions.plugin.log(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), permissable.name()) + " for faction " + fme.getTag());
+        SavageFactions.plugin.log(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), permissable.name()) + " for faction " + fme.getTag());
     }
 
     private void buildItems() {
@@ -157,7 +157,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             ItemStack item = permissableAction.buildItem(fme, permissable);
 
             if (item == null) {
-              SavageFactions.plugin.log(Level.WARNING, "Invalid item for: " + permissableAction.toString().toUpperCase());
+                SavageFactions.plugin.log(Level.WARNING, "Invalid item for: " + permissableAction.toString().toUpperCase());
                 continue;
             }
 
@@ -173,8 +173,8 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 
     private ItemStack getSpecialItem(SpecialItem specialItem) {
         if (section == null) {
-          SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-          SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+            SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return new ItemStack(Material.AIR);
         }
 
@@ -182,7 +182,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             case RELATION:
                 return permissable.buildItem();
             case BACK:
-              ConfigurationSection backButtonConfig = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.back-item");
+                ConfigurationSection backButtonConfig = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.back-item");
 
                 ItemStack backButton = new ItemStack(Material.matchMaterial(backButtonConfig.getString("material")));
                 ItemMeta backButtonMeta = backButton.getItemMeta();
@@ -194,7 +194,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
                 }
 
                 backButtonMeta.setLore(lore);
-              if (! SavageFactions.plugin.mc17) {
+                if (! SavageFactions.plugin.mc17) {
                     backButtonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
                 }
 
@@ -208,8 +208,8 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 
     private void buildDummyItems() {
         if (section == null) {
-          SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-          SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+            SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return;
         }
 
@@ -218,7 +218,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             try {
                 dummyId = Integer.parseInt(key);
             } catch (NumberFormatException exception) {
-              SavageFactions.plugin.log(Level.WARNING, "Invalid dummy item id: " + key.toUpperCase());
+                SavageFactions.plugin.log(Level.WARNING, "Invalid dummy item id: " + key.toUpperCase());
                 continue;
             }
 
@@ -228,7 +228,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             }
 
             ItemMeta meta = dummyItem.getItemMeta();
-          if (! SavageFactions.plugin.mc17) {
+            if (! SavageFactions.plugin.mc17) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
             }
 
@@ -237,7 +237,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             List<Integer> dummySlots = section.getIntegerList("dummy-items." + key);
             for (Integer slot : dummySlots) {
                 if (slot + 1 > guiSize || slot < 0) {
-                  SavageFactions.plugin.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
+                    SavageFactions.plugin.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
                     continue;
                 }
                 usedDummySlots.add(slot);
@@ -247,17 +247,17 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
     }
 
     private ItemStack buildDummyItem(int id) {
-      final ConfigurationSection dummySection = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.dummy-items." + id);
+        final ConfigurationSection dummySection = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.dummy-items." + id);
 
         if (dummySection == null) {
-          SavageFactions.plugin.log(Level.WARNING, "Attempted to build dummy items for F PERM GUI but config section not present.");
-          SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+            SavageFactions.plugin.log(Level.WARNING, "Attempted to build dummy items for F PERM GUI but config section not present.");
+            SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
             return new ItemStack(Material.AIR);
         }
 
         Material material = Material.matchMaterial(dummySection.getString("material", ""));
         if (material == null) {
-          SavageFactions.plugin.log(Level.WARNING, "Invalid material for dummy item: " + id);
+            SavageFactions.plugin.log(Level.WARNING, "Invalid material for dummy item: " + id);
             return null;
         }
 
@@ -283,7 +283,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         }
 
         itemMeta.setLore(lore);
-      if (! SavageFactions.plugin.mc17) {
+        if (! SavageFactions.plugin.mc17) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         }
 

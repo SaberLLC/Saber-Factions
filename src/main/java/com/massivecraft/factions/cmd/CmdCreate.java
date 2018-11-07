@@ -52,7 +52,7 @@ public class CmdCreate extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (!canAffordCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE.toString())) {
+        if (! canAffordCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE.toString())) {
             return;
         }
 
@@ -64,7 +64,7 @@ public class CmdCreate extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (!payForCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
+        if (! payForCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
             return;
         }
 
@@ -89,7 +89,7 @@ public class CmdCreate extends FCommand {
         // We should consider adding the role just AFTER joining the faction.
         // That way we don't have to mess up deleting more stuff.
         // And prevent the user from being returned to NORMAL after deleting his old faction.
-      fme.setRole(Role.LEADER);
+        fme.setRole(Role.LEADER);
 
         for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
             follower.msg(TL.COMMAND_CREATE_CREATED, fme.describeTo(follower, true), faction.getTag(follower));
@@ -98,9 +98,9 @@ public class CmdCreate extends FCommand {
         msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate());
 
         if (Conf.logFactionCreate) {
-          SavageFactions.plugin.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
+            SavageFactions.plugin.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
         }
-      if (SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
             this.fme.msg(TL.COMMAND_PAYPALSET_CREATED);
         }
     }

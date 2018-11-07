@@ -48,7 +48,7 @@ public class CmdWarunclaimall extends FCommand {
 
 
         if (Conf.logLandUnclaims) {
-          SavageFactions.plugin.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
+            SavageFactions.plugin.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
         }
     }
 

@@ -40,36 +40,36 @@ public class CmdHome extends FCommand {
     @Override
     public void perform() {
         // TODO: Hide this command on help also.
-        if (!Conf.homesEnabled) {
+        if (! Conf.homesEnabled) {
             fme.msg(TL.COMMAND_HOME_DISABLED);
             return;
         }
 
-        if (!Conf.homesTeleportCommandEnabled) {
+        if (! Conf.homesTeleportCommandEnabled) {
             fme.msg(TL.COMMAND_HOME_TELEPORTDISABLED);
             return;
         }
-        if (!fme.isAdminBypassing()) {
+        if (! fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.HOME);
-          if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
                 return;
             }
         }
 
 
-        if (!myFaction.hasHome()) {
+        if (! myFaction.hasHome()) {
             fme.msg(TL.COMMAND_HOME_NOHOME.toString() + (fme.getRole().value < Role.MODERATOR.value ? TL.GENERIC_ASKYOURLEADER.toString() : TL.GENERIC_YOUSHOULD.toString()));
             fme.sendMessage(p.cmdBase.cmdSethome.getUseageTemplate());
             return;
         }
 
-        if (!Conf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory()) {
+        if (! Conf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory()) {
             fme.msg(TL.COMMAND_HOME_INENEMY);
             return;
         }
 
-        if (!Conf.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID()) {
+        if (! Conf.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID()) {
             fme.msg(TL.COMMAND_HOME_WRONGWORLD);
             return;
         }
@@ -79,15 +79,15 @@ public class CmdHome extends FCommand {
 
         // if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
         if (Conf.homesTeleportAllowedEnemyDistance > 0 &&
-                !faction.isSafeZone() &&
-                (!fme.isInOwnTerritory() || (fme.isInOwnTerritory() && !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory))) {
+                ! faction.isSafeZone() &&
+                (! fme.isInOwnTerritory() || (fme.isInOwnTerritory() && ! Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory))) {
             World w = loc.getWorld();
             double x = loc.getX();
             double y = loc.getY();
             double z = loc.getZ();
 
             for (Player p : me.getServer().getOnlinePlayers()) {
-                if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w) {
+                if (p == null || ! p.isOnline() || p.isDead() || p == me || p.getWorld() != w) {
                     continue;
                 }
 
@@ -113,7 +113,7 @@ public class CmdHome extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostHome, TL.COMMAND_HOME_TOTELEPORT.toString(), TL.COMMAND_HOME_FORTELEPORT.toString())) {
+        if (! payForCommand(Conf.econCostHome, TL.COMMAND_HOME_TOTELEPORT.toString(), TL.COMMAND_HOME_FORTELEPORT.toString())) {
             return;
         }
 

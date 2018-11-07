@@ -23,8 +23,8 @@ public class CmdFly extends FCommand {
 
 
     public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<String, Boolean>();
-    public static int id = -1;
-    public static int flyid = -1;
+    public static int id = - 1;
+    public static int flyid = - 1;
 
     public CmdFly() {
         super();
@@ -39,11 +39,11 @@ public class CmdFly extends FCommand {
 
     public static void startParticles() {
         // Just a secondary check.
-      if (! SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
+        if (! SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
             return;
         }
 
-      id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
+        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() {
                 for (String name : flyMap.keySet()) {
@@ -51,10 +51,10 @@ public class CmdFly extends FCommand {
                     if (player == null) {
                         continue;
                     }
-                    if (!player.isFlying()) {
+                    if (! player.isFlying()) {
                         continue;
                     }
-                  if (! SavageFactions.plugin.mc17) {
+                    if (! SavageFactions.plugin.mc17) {
                         if (player.getGameMode() == GameMode.SPECTATOR) {
                             continue;
                         }
@@ -63,31 +63,31 @@ public class CmdFly extends FCommand {
                     if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
                         // Actually, vanished players (such as admins) should not display particles to prevent others from knowing their vanished assistance for moderation.
                         // But we can keep it as a config.
-                      if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
+                        if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
                             return;
                         }
                         continue;
                     }
-                  if (SavageFactions.plugin.useNonPacketParticles) {
+                    if (SavageFactions.plugin.useNonPacketParticles) {
                         // 1.9+ based servers will use the built in particleAPI instead of packet based.
                         // any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
                         // So setting the amount to 0 spawns 1 in the precise location
-                        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, -0.35, 0), 0);
+                        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, - 0.35, 0), 0);
                     } else {
-                        ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, -0.35, 0), 16);
+                        ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, - 0.35, 0), 16);
                     }
 
                 }
                 if (flyMap.keySet().size() == 0) {
                     Bukkit.getScheduler().cancelTask(id);
-                    id = -1;
+                    id = - 1;
                 }
             }
         }, 10L, 3L);
     }
 
     public static void startFlyCheck() {
-      flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
+        flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() throws ConcurrentModificationException { //threw the exception for now, until I recode fly :( Cringe.
                 checkTaskState();
@@ -100,7 +100,7 @@ public class CmdFly extends FCommand {
                         if (player == null) {
                             continue;
                         }
-                        if (!player.isFlying()) {
+                        if (! player.isFlying()) {
                             continue;
                         }
                         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
@@ -125,7 +125,7 @@ public class CmdFly extends FCommand {
                         FLocation myFloc = new FLocation(player.getLocation());
                         Faction toFac = Board.getInstance().getFactionAt(myFloc);
                         if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-                            if (!checkBypassPerms(fPlayer, player, toFac)) {
+                            if (! checkBypassPerms(fPlayer, player, toFac)) {
                                 fPlayer.setFlying(false);
                                 flyMap.remove(name);
                                 continue;
@@ -141,25 +141,25 @@ public class CmdFly extends FCommand {
 
     private static boolean checkBypassPerms(FPlayer fme, Player me, Faction toFac) {
         if (toFac != fme.getFaction()) {
-            if (!me.hasPermission("factions.fly.wilderness") && toFac.isWilderness() || !me.hasPermission("factions.fly.safezone") && toFac.isSafeZone() || !me.hasPermission("factions.fly.warzone") && toFac.isWarZone()) {
+            if (! me.hasPermission("factions.fly.wilderness") && toFac.isWilderness() || ! me.hasPermission("factions.fly.safezone") && toFac.isSafeZone() || ! me.hasPermission("factions.fly.warzone") && toFac.isWarZone()) {
                 fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
             Access access = toFac.getAccess(fme, PermissableAction.FLY);
-            if ((!(me.hasPermission("factions.fly.enemy") || access == Access.ALLOW)) && toFac.getRelationTo(fme.getFaction()) == Relation.ENEMY) {
+            if ((! (me.hasPermission("factions.fly.enemy") || access == Access.ALLOW)) && toFac.getRelationTo(fme.getFaction()) == Relation.ENEMY) {
                 fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
-            if (!(me.hasPermission("factions.fly.ally") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.ALLY) {
+            if (! (me.hasPermission("factions.fly.ally") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.ALLY) {
                 fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
-            if (!(me.hasPermission("factions.fly.truce") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.TRUCE) {
+            if (! (me.hasPermission("factions.fly.truce") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.TRUCE) {
                 fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
 
-            if (!(me.hasPermission("factions.fly.neutral") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.NEUTRAL && !isSystemFaction(toFac)) {
+            if (! (me.hasPermission("factions.fly.neutral") || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.NEUTRAL && ! isSystemFaction(toFac)) {
                 fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
@@ -177,7 +177,7 @@ public class CmdFly extends FCommand {
     public static void checkTaskState() {
         if (flyMap.keySet().size() == 0) {
             Bukkit.getScheduler().cancelTask(flyid);
-            flyid = -1;
+            flyid = - 1;
         }
     }
 
@@ -188,21 +188,21 @@ public class CmdFly extends FCommand {
     @Override
     public void perform() {
         // Disabled by default.
-      if (! SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
+        if (! SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
             fme.msg(TL.COMMAND_FLY_DISABLED);
             return;
         }
 
         FLocation myfloc = new FLocation(me.getLocation());
         Faction toFac = Board.getInstance().getFactionAt(myfloc);
-        if (!checkBypassPerms(fme, me, toFac)) return;
+        if (! checkBypassPerms(fme, me, toFac)) return;
         List<Entity> entities = this.me.getNearbyEntities(16.0D, 256.0D, 16.0D);
 
-        for(int i = 0; i <= entities.size() - 1; ++i) {
+        for (int i = 0; i <= entities.size() - 1; ++ i) {
             if (entities.get(i) instanceof Player) {
-                Player eplayer = (Player)entities.get(i);
+                Player eplayer = (Player) entities.get(i);
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer.getRelationTo(this.fme) == Relation.ENEMY && !efplayer.isStealthEnabled()) {
+                if (efplayer.getRelationTo(this.fme) == Relation.ENEMY && ! efplayer.isStealthEnabled()) {
                     this.fme.msg(TL.COMMAND_FLY_CHECK_ENEMY);
                     return;
                 }
@@ -210,14 +210,14 @@ public class CmdFly extends FCommand {
         }
 
         if (args.size() == 0) {
-            toggleFlight(!fme.isFlying(), me);
+            toggleFlight(! fme.isFlying(), me);
         } else if (args.size() == 1) {
             toggleFlight(argAsBool(0), me);
         }
     }
 
     private void toggleFlight(final boolean toggle, final Player player) {
-        if (!toggle) {
+        if (! toggle) {
             fme.setFlying(false);
             flyMap.remove(player.getName());
             return;
@@ -230,12 +230,12 @@ public class CmdFly extends FCommand {
                 public void run() {
                     fme.setFlying(true);
                     flyMap.put(player.getName(), true);
-                    if (id == -1) {
-                      if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
+                    if (id == - 1) {
+                        if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
                             startParticles();
                         }
                     }
-                    if (flyid == -1) {
+                    if (flyid == - 1) {
                         startFlyCheck();
                     }
                 }

@@ -43,7 +43,7 @@ public class CmdPermanent extends FCommand {
             faction.setPermanent(true);
         }
 
-      SavageFactions.plugin.log((fme == null ? "A server admin" : fme.getName()) + " " + change + " the faction \"" + faction.getTag() + "\".");
+        SavageFactions.plugin.log((fme == null ? "A server admin" : fme.getName()) + " " + change + " the faction \"" + faction.getTag() + "\".");
 
         // Inform all players
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {

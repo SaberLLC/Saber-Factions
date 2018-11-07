@@ -14,15 +14,15 @@ public class SpawnerUpgrades implements Listener {
             int level = factionAtLoc.getUpgrade("Spawner");
             if (level != 0) {
                 if (level == 1) {
-                  int rate = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1");
+                    int rate = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1");
                     lowerSpawnerDelay(e, rate);
                 }
                 if (level == 2) {
-                  int rate = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2");
+                    int rate = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2");
                     lowerSpawnerDelay(e, rate);
                 }
                 if (level == 3) {
-                  int rate = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3");
+                    int rate = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3");
                     lowerSpawnerDelay(e, rate);
                 }
 
