@@ -149,7 +149,9 @@ public class SavageFactions extends MPlugin {
             return;
         }
         this.loadSuccessful = false;
+
         saveDefaultConfig();
+
 
         // Load Conf from disk
         Conf.load();
@@ -168,8 +170,6 @@ public class SavageFactions extends MPlugin {
         }
         Board.getInstance().load();
         Board.getInstance().clean();
-
-        //inspect stuff
 
 
         // Add Base Commands
@@ -306,7 +306,7 @@ public class SavageFactions extends MPlugin {
     }
 
 
-    public void changeItemIDSInConfig() {
+    private void changeItemIDSInConfig() {
 
 
         SavageFactions.plugin.log("Starting conversion of legacy material in config to 1.13 materials.");
