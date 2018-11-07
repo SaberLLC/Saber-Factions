@@ -33,7 +33,7 @@ public class CmdBanlist extends FCommand {
     @Override
     public void perform() {
         Faction target = myFaction;
-        if (! args.isEmpty()) {
+        if (!args.isEmpty()) {
             target = argAsFaction(0);
         }
 

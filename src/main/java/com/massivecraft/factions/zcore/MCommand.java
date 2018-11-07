@@ -113,11 +113,11 @@ public abstract class MCommand<T extends MPlugin> {
             }
         }
 
-        if (! validCall(this.sender, this.args)) {
+        if (!validCall(this.sender, this.args)) {
             return;
         }
 
-        if (! this.isEnabled()) {
+        if (!this.isEnabled()) {
             return;
         }
 
@@ -153,7 +153,7 @@ public abstract class MCommand<T extends MPlugin> {
     }
 
     public boolean validSenderType(CommandSender sender, boolean informSenderIfNot) {
-        if (this.senderMustBePlayer && ! (sender instanceof Player)) {
+        if (this.senderMustBePlayer && !(sender instanceof Player)) {
             if (informSenderIfNot) {
                 msg(TL.GENERIC_PLAYERONLY);
             }

@@ -34,7 +34,7 @@ public class CmdDeinvite extends FCommand {
     @Override
     public void perform() {
         FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (! fme.isAdminBypassing()) {
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
             if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");

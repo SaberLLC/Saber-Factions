@@ -92,7 +92,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
                 if (disabled) {
                     break;
                 }
-                if (! usedDummySlots.isEmpty()) {
+                if (!usedDummySlots.isEmpty()) {
                     int slot = usedDummySlots.get(0);
                     actionSlots.put(slot, action);
                 } else {
@@ -126,7 +126,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             }
             return;
         }
-        if (! actionSlots.containsKey(slot)) {
+        if (!actionSlots.containsKey(slot)) {
             return;
         }
 
@@ -194,7 +194,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
                 }
 
                 backButtonMeta.setLore(lore);
-                if (! SavageFactions.plugin.mc17) {
+                if (!SavageFactions.plugin.mc17) {
                     backButtonMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
                 }
 
@@ -228,7 +228,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
             }
 
             ItemMeta meta = dummyItem.getItemMeta();
-            if (! SavageFactions.plugin.mc17) {
+            if (!SavageFactions.plugin.mc17) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
             }
 
@@ -283,7 +283,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         }
 
         itemMeta.setLore(lore);
-        if (! SavageFactions.plugin.mc17) {
+        if (!SavageFactions.plugin.mc17) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         }
 

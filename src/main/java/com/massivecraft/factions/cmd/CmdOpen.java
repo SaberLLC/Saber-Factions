@@ -28,11 +28,11 @@ public class CmdOpen extends FCommand {
     @Override
     public void perform() {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (! payForCommand(Conf.econCostOpen, TL.COMMAND_OPEN_TOOPEN, TL.COMMAND_OPEN_FOROPEN)) {
+        if (!payForCommand(Conf.econCostOpen, TL.COMMAND_OPEN_TOOPEN, TL.COMMAND_OPEN_FOROPEN)) {
             return;
         }
 
-        myFaction.setOpen(this.argAsBool(0, ! myFaction.getOpen()));
+        myFaction.setOpen(this.argAsBool(0, !myFaction.getOpen()));
 
         String open = myFaction.getOpen() ? TL.COMMAND_OPEN_OPEN.toString() : TL.COMMAND_OPEN_CLOSED.toString();
 

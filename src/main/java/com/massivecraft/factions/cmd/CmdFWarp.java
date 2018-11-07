@@ -31,7 +31,7 @@ public class CmdFWarp extends FCommand {
     @Override
     public void perform() {
         //TODO: check if in combat.
-        if (! fme.isAdminBypassing()) {
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.WARP);
             if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "use warps");
@@ -54,13 +54,13 @@ public class CmdFWarp extends FCommand {
             if (myFaction.isWarp(argAsString(0))) {
 
                 // Check if requires password and if so, check if valid. CASE SENSITIVE
-                if (myFaction.hasWarpPassword(warpName) && ! myFaction.isWarpPassword(warpName, passwordAttempt)) {
+                if (myFaction.hasWarpPassword(warpName) && !myFaction.isWarpPassword(warpName, passwordAttempt)) {
                     fme.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
                     return;
                 }
 
                 // Check transaction AFTER password check.
-                if (! transact(fme)) {
+                if (!transact(fme)) {
                     return;
                 }
                 final FPlayer fPlayer = fme;
@@ -82,7 +82,7 @@ public class CmdFWarp extends FCommand {
     }
 
     private boolean transact(FPlayer player) {
-        return ! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.warp", 5), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+        return !SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.warp", 5), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
     }
 
     @Override

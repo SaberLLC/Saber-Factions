@@ -104,12 +104,12 @@ public class EngineDynmap {
     public void init() {
         Plugin dynmap = Bukkit.getServer().getPluginManager().getPlugin("dynmap");
 
-        if (dynmap == null || ! dynmap.isEnabled()) {
+        if (dynmap == null || !dynmap.isEnabled()) {
             return;
         }
 
         // Should we even use dynmap?
-        if (! Conf.dynmapUse) {
+        if (!Conf.dynmapUse) {
             if (this.markerset != null) {
                 this.markerset.deleteMarkerSet();
                 this.markerset = null;
@@ -126,12 +126,12 @@ public class EngineDynmap {
                 final Map<String, TempAreaMarker> areas = createAreas();
                 final Map<String, Set<String>> playerSets = createPlayersets();
 
-                if (! updateCore()) {
+                if (!updateCore()) {
                     return;
                 }
 
                 // createLayer() is thread safe but it makes use of fields set in updateCore() so we must have it after.
-                if (! updateLayer(createLayer())) {
+                if (!updateLayer(createLayer())) {
                     return;
                 }
 
@@ -171,7 +171,7 @@ public class EngineDynmap {
         ret.label = Conf.dynmapLayerName;
         ret.minimumZoom = Conf.dynmapLayerMinimumZoom;
         ret.priority = Conf.dynmapLayerPriority;
-        ret.hideByDefault = ! Conf.dynmapLayerVisible;
+        ret.hideByDefault = !Conf.dynmapLayerVisible;
         return ret;
     }
 
@@ -323,7 +323,7 @@ public class EngineDynmap {
         Map<String, TempAreaMarker> ret = new HashMap<>();
 
         // If the faction is visible ...
-        if (! isVisible(faction, world)) {
+        if (!isVisible(faction, world)) {
             return ret;
         }
 
@@ -407,10 +407,10 @@ public class EngineDynmap {
             while ((currentX != initialX) || (currentZ != initialZ) || (direction != Direction.ZMINUS)) {
                 switch (direction) {
                     case XPLUS: // Segment in X+ direction
-                        if (! ourChunkFlags.getFlag(currentX + 1, currentZ)) { // Right turn?
+                        if (!ourChunkFlags.getFlag(currentX + 1, currentZ)) { // Right turn?
                             linelist.add(new int[]{currentX + 1, currentZ}); // Finish line
                             direction = Direction.ZPLUS; // Change direction
-                        } else if (! ourChunkFlags.getFlag(currentX + 1, currentZ - 1)) { // Straight?
+                        } else if (!ourChunkFlags.getFlag(currentX + 1, currentZ - 1)) { // Straight?
                             currentX++;
                         } else { // Left turn
                             linelist.add(new int[]{currentX + 1, currentZ}); // Finish line
@@ -420,10 +420,10 @@ public class EngineDynmap {
                         }
                         break;
                     case ZPLUS: // Segment in Z+ direction
-                        if (! ourChunkFlags.getFlag(currentX, currentZ + 1)) { // Right turn?
+                        if (!ourChunkFlags.getFlag(currentX, currentZ + 1)) { // Right turn?
                             linelist.add(new int[]{currentX + 1, currentZ + 1}); // Finish line
                             direction = Direction.XMINUS; // Change direction
-                        } else if (! ourChunkFlags.getFlag(currentX + 1, currentZ + 1)) { // Straight?
+                        } else if (!ourChunkFlags.getFlag(currentX + 1, currentZ + 1)) { // Straight?
                             currentZ++;
                         } else { // Left turn
                             linelist.add(new int[]{currentX + 1, currentZ + 1}); // Finish line
@@ -433,10 +433,10 @@ public class EngineDynmap {
                         }
                         break;
                     case XMINUS: // Segment in X- direction
-                        if (! ourChunkFlags.getFlag(currentX - 1, currentZ)) { // Right turn?
+                        if (!ourChunkFlags.getFlag(currentX - 1, currentZ)) { // Right turn?
                             linelist.add(new int[]{currentX, currentZ + 1}); // Finish line
                             direction = Direction.ZMINUS; // Change direction
-                        } else if (! ourChunkFlags.getFlag(currentX - 1, currentZ + 1)) { // Straight?
+                        } else if (!ourChunkFlags.getFlag(currentX - 1, currentZ + 1)) { // Straight?
                             currentX--;
                         } else { // Left turn
                             linelist.add(new int[]{currentX, currentZ + 1}); // Finish line
@@ -446,10 +446,10 @@ public class EngineDynmap {
                         }
                         break;
                     case ZMINUS: // Segment in Z- direction
-                        if (! ourChunkFlags.getFlag(currentX, currentZ - 1)) { // Right turn?
+                        if (!ourChunkFlags.getFlag(currentX, currentZ - 1)) { // Right turn?
                             linelist.add(new int[]{currentX, currentZ}); // Finish line
                             direction = Direction.XPLUS; // Change direction
-                        } else if (! ourChunkFlags.getFlag(currentX - 1, currentZ - 1)) { // Straight?
+                        } else if (!ourChunkFlags.getFlag(currentX - 1, currentZ - 1)) { // Straight?
                             currentZ--;
                         } else { // Left turn
                             linelist.add(new int[]{currentX, currentZ}); // Finish line
@@ -571,7 +571,7 @@ public class EngineDynmap {
 
     // Thread Safe / Asynchronous: Yes
     public Map<String, Set<String>> createPlayersets() {
-        if (! Conf.dynmapVisibilityByFaction) {
+        if (!Conf.dynmapVisibilityByFaction) {
             return null;
         }
 
@@ -600,7 +600,7 @@ public class EngineDynmap {
 
         // Remove
         for (PlayerSet set : this.markerApi.getPlayerSets()) {
-            if (! set.getSetID().startsWith(FACTIONS_PLAYERSET_)) {
+            if (!set.getSetID().startsWith(FACTIONS_PLAYERSET_)) {
                 continue;
             }
 
@@ -714,11 +714,11 @@ public class EngineDynmap {
         Set<String> visible = Conf.dynmapVisibleFactions;
         Set<String> hidden = Conf.dynmapHiddenFactions;
 
-        if (! visible.isEmpty() && ! visible.contains(factionId) && ! visible.contains(factionName) && ! visible.contains("world:" + world)) {
+        if (!visible.isEmpty() && !visible.contains(factionId) && !visible.contains(factionName) && !visible.contains("world:" + world)) {
             return false;
         }
 
-        return ! hidden.contains(factionId) && ! hidden.contains(factionName) && ! hidden.contains("world:" + world);
+        return !hidden.contains(factionId) && !hidden.contains(factionName) && !hidden.contains("world:" + world);
     }
 
     // Thread Safe / Asynchronous: Yes
@@ -744,7 +744,7 @@ public class EngineDynmap {
         ArrayDeque<int[]> stack = new ArrayDeque<>();
         stack.push(new int[]{x, y});
 
-        while (! stack.isEmpty()) {
+        while (!stack.isEmpty()) {
             int[] nxt = stack.pop();
             x = nxt[0];
             y = nxt[1];

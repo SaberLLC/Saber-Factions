@@ -72,7 +72,7 @@ public class JSONFactions extends MemoryFactions {
     }
 
     private Map<String, JSONFaction> loadCore() {
-        if (! this.file.exists()) {
+        if (!this.file.exists()) {
             return new HashMap<>();
         }
 
@@ -180,7 +180,7 @@ public class JSONFactions extends MemoryFactions {
     private Set<String> whichKeysNeedMigration(Set<String> keys) {
         HashSet<String> list = new HashSet<>();
         for (String value : keys) {
-            if (! value.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
+            if (!value.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
                 // Not a valid UUID..
                 if (value.matches("[a-zA-Z0-9_]{2,16}")) {
                     // Valid playername, we'll mark this as one for conversion
@@ -197,14 +197,14 @@ public class JSONFactions extends MemoryFactions {
     // -------------------------------------------- //
 
     public String getNextId() {
-        while (! isIdFree(this.nextId)) {
+        while (!isIdFree(this.nextId)) {
             this.nextId += 1;
         }
         return Integer.toString(this.nextId);
     }
 
     public boolean isIdFree(String id) {
-        return ! this.factions.containsKey(id);
+        return !this.factions.containsKey(id);
     }
 
     public boolean isIdFree(int id) {

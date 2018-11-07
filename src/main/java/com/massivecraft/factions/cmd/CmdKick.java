@@ -78,7 +78,7 @@ public class CmdKick extends FCommand {
         // - Check for the kick permission.
         // - Make sure the player is in the faction.
         // - Make sure the kicked player has lower rank than the kicker.
-        if (! fme.isAdminBypassing()) {
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.KICK);
             if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_NOPERMISSION, "kick");
@@ -92,14 +92,14 @@ public class CmdKick extends FCommand {
                 msg(TL.COMMAND_KICK_INSUFFICIENTRANK);
                 return;
             }
-            if (! Conf.canLeaveWithNegativePower && toKick.getPower() < 0) {
+            if (!Conf.canLeaveWithNegativePower && toKick.getPower() < 0) {
                 msg(TL.COMMAND_KICK_NEGATIVEPOWER);
                 return;
             }
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (! canAffordCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString())) {
+        if (!canAffordCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString())) {
             return;
         }
 
@@ -111,7 +111,7 @@ public class CmdKick extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (! payForCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString(), TL.COMMAND_KICK_FORKICK.toString())) {
+        if (!payForCommand(Conf.econCostKick, TL.COMMAND_KICK_TOKICK.toString(), TL.COMMAND_KICK_FORKICK.toString())) {
             return;
         }
 

@@ -30,7 +30,7 @@ public class CmdToggleAllianceChat extends FCommand {
 
     @Override
     public void perform() {
-        if (! Conf.factionOnlyChat) {
+        if (!Conf.factionOnlyChat) {
             msg(TL.COMMAND_CHAT_DISABLED.toString());
             return;
         }
@@ -38,6 +38,6 @@ public class CmdToggleAllianceChat extends FCommand {
         boolean ignoring = fme.isIgnoreAllianceChat();
 
         msg(ignoring ? TL.COMMAND_TOGGLEALLIANCECHAT_UNIGNORE : TL.COMMAND_TOGGLEALLIANCECHAT_IGNORE);
-        fme.setIgnoreAllianceChat(! ignoring);
+        fme.setIgnoreAllianceChat(!ignoring);
     }
 }

@@ -30,11 +30,11 @@ public class CmdOwnerList extends FCommand {
     public void perform() {
         boolean hasBypass = fme.isAdminBypassing();
 
-        if (! hasBypass && ! assertHasFaction()) {
+        if (!hasBypass && !assertHasFaction()) {
             return;
         }
 
-        if (! Conf.ownedAreasEnabled) {
+        if (!Conf.ownedAreasEnabled) {
             fme.msg(TL.COMMAND_OWNERLIST_DISABLED);
             return;
         }
@@ -42,13 +42,13 @@ public class CmdOwnerList extends FCommand {
         FLocation flocation = new FLocation(fme);
 
         if (Board.getInstance().getFactionAt(flocation) != myFaction) {
-            if (! hasBypass) {
+            if (!hasBypass) {
                 fme.msg(TL.COMMAND_OWNERLIST_WRONGFACTION);
                 return;
             }
             //TODO: This code won't ever be called.
             myFaction = Board.getInstance().getFactionAt(flocation);
-            if (! myFaction.isNormal()) {
+            if (!myFaction.isNormal()) {
                 fme.msg(TL.COMMAND_OWNERLIST_NOTCLAIMED);
                 return;
             }

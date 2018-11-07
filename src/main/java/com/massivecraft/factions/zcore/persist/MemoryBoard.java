@@ -26,7 +26,7 @@ public abstract class MemoryBoard extends Board {
     // Get and Set
     //----------------------------------------------//
     public String getIdAt(FLocation flocation) {
-        if (! flocationIds.containsKey(flocation)) {
+        if (!flocationIds.containsKey(flocation)) {
             return "0";
         }
 
@@ -157,7 +157,7 @@ public abstract class MemoryBoard extends Board {
         Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
         while (iter.hasNext()) {
             Entry<FLocation, String> entry = iter.next();
-            if (! Factions.getInstance().isValidFactionId(entry.getValue())) {
+            if (!Factions.getInstance().isValidFactionId(entry.getValue())) {
                 SavageFactions.plugin.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
                 iter.remove();
             }
@@ -253,7 +253,7 @@ public abstract class MemoryBoard extends Board {
                             (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
                             (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY)) ||
                             (Conf.showTrucesFactionsOnMap && relation.equals(Relation.TRUCE))) {
-                        if (! fList.containsKey(factionHere.getTag())) {
+                        if (!fList.containsKey(factionHere.getTag())) {
                             fList.put(factionHere.getTag(), Conf.mapKeyChrs[Math.min(chrIdx++, Conf.mapKeyChrs.length - 1)]);
                         }
                         char tag = fList.get(factionHere.getTag());
@@ -293,7 +293,7 @@ public abstract class MemoryBoard extends Board {
         List<String> ret = new ArrayList<>();
         List<String> show = SavageFactions.plugin.getConfig().getStringList("map");
 
-        if (! faction.isNormal()) {
+        if (!faction.isNormal()) {
             String tag = faction.getTag(to);
             // send header and that's all
             String header = show.get(0);
@@ -326,7 +326,7 @@ public abstract class MemoryBoard extends Board {
                 continue;
             }
 
-            if (! parsed.contains("{notFrozen}") && ! parsed.contains("{notPermanent}")) {
+            if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
                 if (parsed.contains("{ig}")) {
                     // replaces all variables with no home TL
                     parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();

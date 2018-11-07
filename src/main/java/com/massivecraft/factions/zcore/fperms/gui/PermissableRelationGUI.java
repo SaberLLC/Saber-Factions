@@ -85,7 +85,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 
     @Override
     public void onClick(int slot, ClickType clickType) {
-        if (! relationSlots.containsKey(slot)) {
+        if (!relationSlots.containsKey(slot)) {
             return;
         }
 
@@ -142,7 +142,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
             }
 
             ItemMeta meta = dummyItem.getItemMeta();
-            if (! SavageFactions.plugin.mc17) {
+            if (!SavageFactions.plugin.mc17) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
             }
 
@@ -196,7 +196,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
         }
         itemMeta.setLore(lore);
 
-        if (! SavageFactions.plugin.mc17) {
+        if (!SavageFactions.plugin.mc17) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         }
 

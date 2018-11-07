@@ -224,7 +224,7 @@ public class MassiveStats implements Listener {
         }
 
         // and only notify operators - or players with the correct permission.
-        if (! event.getPlayer().isOp() && ! event.getPlayer().hasPermission(MassiveStats.MASSIVE_UPDATE_PERMISSION)) {
+        if (!event.getPlayer().isOp() && !event.getPlayer().hasPermission(MassiveStats.MASSIVE_UPDATE_PERMISSION)) {
             return;
         }
 
@@ -456,7 +456,7 @@ final class MassiveStatsDataResponse {
     MassiveStatsDataResponse(boolean isUpToDate, String newVersion, String updateMessage) {
         this.isUpToDate = isUpToDate;
 
-        if (! isUpToDate) {
+        if (!isUpToDate) {
             this.newVersion = newVersion;
             this.updateMessage = updateMessage;
             return;

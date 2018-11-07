@@ -31,21 +31,21 @@ public class CmdOwner extends FCommand {
     public void perform() {
         boolean hasBypass = fme.isAdminBypassing();
 
-        if (! hasBypass && ! assertHasFaction()) {
+        if (!hasBypass && !assertHasFaction()) {
             return;
         }
 
-        if (! Conf.ownedAreasEnabled) {
+        if (!Conf.ownedAreasEnabled) {
             fme.msg(TL.COMMAND_OWNER_DISABLED);
             return;
         }
 
-        if (! hasBypass && Conf.ownedAreasLimitPerFaction > 0 && myFaction.getCountOfClaimsWithOwners() >= Conf.ownedAreasLimitPerFaction) {
+        if (!hasBypass && Conf.ownedAreasLimitPerFaction > 0 && myFaction.getCountOfClaimsWithOwners() >= Conf.ownedAreasLimitPerFaction) {
             fme.msg(TL.COMMAND_OWNER_LIMIT, Conf.ownedAreasLimitPerFaction);
             return;
         }
 
-        if (! hasBypass && ! assertMinRole(Conf.ownedAreasModeratorsCanSet ? Role.MODERATOR : Role.LEADER)) {
+        if (!hasBypass && !assertMinRole(Conf.ownedAreasModeratorsCanSet ? Role.MODERATOR : Role.LEADER)) {
             return;
         }
 
@@ -53,12 +53,12 @@ public class CmdOwner extends FCommand {
 
         Faction factionHere = Board.getInstance().getFactionAt(flocation);
         if (factionHere != myFaction) {
-            if (! factionHere.isNormal()) {
+            if (!factionHere.isNormal()) {
                 fme.msg(TL.COMMAND_OWNER_NOTCLAIMED);
                 return;
             }
 
-            if (! hasBypass) {
+            if (!hasBypass) {
                 fme.msg(TL.COMMAND_OWNER_WRONGFACTION);
                 return;
             }
@@ -91,7 +91,7 @@ public class CmdOwner extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (! payForCommand(Conf.econCostOwner, TL.COMMAND_OWNER_TOSET, TL.COMMAND_OWNER_FORSET)) {
+        if (!payForCommand(Conf.econCostOwner, TL.COMMAND_OWNER_TOSET, TL.COMMAND_OWNER_FORSET)) {
             return;
         }
 

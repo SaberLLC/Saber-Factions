@@ -29,7 +29,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
             return;
         }
 
-        if (! readyToGo) {
+        if (!readyToGo) {
             return;
         }
         // this is set so it only does one iteration at a time, no matter how frequently the timer fires
@@ -49,7 +49,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
             FPlayer fplayer = iterator.next();
 
             // Check if they should be exempt from this.
-            if (! fplayer.willAutoLeave()) {
+            if (!fplayer.willAutoLeave()) {
                 SavageFactions.plugin.debug(Level.INFO, fplayer.getName() + " was going to be auto-removed but was set not to.");
                 continue;
             }

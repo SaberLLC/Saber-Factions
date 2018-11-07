@@ -20,7 +20,7 @@ public class CmdPaypalSet extends FCommand {
     }
 
     public void perform() {
-        if (! SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
             fme.msg(TL.GENERIC_DISABLED);
         } else {
             String paypal = argAsString(0);

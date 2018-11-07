@@ -50,17 +50,17 @@ public class CmdColeader extends FCommand {
         boolean permAny = Permission.COLEADER_ANY.has(sender, false);
         Faction targetFaction = you.getFaction();
 
-        if (targetFaction != myFaction && ! permAny) {
+        if (targetFaction != myFaction && !permAny) {
             msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(fme, true));
             return;
         }
 
-        if (fme != null && fme.getRole() != Role.LEADER && ! permAny) {
+        if (fme != null && fme.getRole() != Role.LEADER && !permAny) {
             msg(TL.COMMAND_COLEADER_NOTADMIN);
             return;
         }
 
-        if (you == fme && ! permAny) {
+        if (you == fme && !permAny) {
             msg(TL.COMMAND_COLEADER_SELF);
             return;
         }

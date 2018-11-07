@@ -32,7 +32,7 @@ public class CmdVault extends FCommand {
     @Override
     public void perform() {
 
-        if (! SavageFactions.plugin.getConfig().getBoolean("fvault.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("fvault.Enabled")) {
             fme.sendMessage("This command is disabled!");
             return;
         }

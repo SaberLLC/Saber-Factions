@@ -31,11 +31,11 @@ public class CmdBanner extends FCommand {
 
     @Override
     public void perform() {
-        if (! SavageFactions.plugin.getConfig().getBoolean("fbanners.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("fbanners.Enabled")) {
             msg(TL.COMMAND_BANNER_DISABLED);
             return;
         }
-        if (! fme.hasMoney(SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Cost", 5000))) {
+        if (!fme.hasMoney(SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Cost", 5000))) {
             msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
             return;
         }

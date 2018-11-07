@@ -135,7 +135,7 @@ public enum Role implements Permissable {
 
         itemMeta.setDisplayName(displayName);
         itemMeta.setLore(lore);
-        if (! SavageFactions.plugin.mc17) {
+        if (!SavageFactions.plugin.mc17) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         }
 

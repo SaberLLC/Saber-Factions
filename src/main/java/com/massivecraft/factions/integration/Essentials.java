@@ -23,7 +23,7 @@ public class Essentials {
 
     // return false if feature is disabled or Essentials isn't available
     public static boolean handleTeleport(Player player, Location loc) {
-        if (! Conf.homesTeleportCommandEssentialsIntegration || essentials == null) {
+        if (!Conf.homesTeleportCommandEssentialsIntegration || essentials == null) {
             return false;
         }
 

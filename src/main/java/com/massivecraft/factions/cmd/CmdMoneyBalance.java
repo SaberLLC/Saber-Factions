@@ -34,7 +34,7 @@ public class CmdMoneyBalance extends FCommand {
         if (faction == null) {
             return;
         }
-        if (faction != myFaction && ! Permission.MONEY_BALANCE_ANY.has(sender, true)) {
+        if (faction != myFaction && !Permission.MONEY_BALANCE_ANY.has(sender, true)) {
             return;
         }
 

@@ -31,12 +31,12 @@ public class CmdTnt extends FCommand {
 
     @Override
     public void perform() {
-        if (! SavageFactions.plugin.getConfig().getBoolean("ftnt.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("ftnt.Enabled")) {
             fme.msg(TL.COMMAND_TNT_DISABLED_MSG);
             return;
         }
 
-        if (! fme.isAdminBypassing()) {
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TNTBANK);
             if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "use tnt bank");
@@ -105,11 +105,11 @@ public class CmdTnt extends FCommand {
                 }
                 int fullStacks = amount / 64;
                 int remainderAmt = amount % 64;
-                if ((remainderAmt == 0 && ! hasAvaliableSlot(me, fullStacks))) {
+                if ((remainderAmt == 0 && !hasAvaliableSlot(me, fullStacks))) {
                     fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE);
                     return;
                 }
-                if (! hasAvaliableSlot(me, fullStacks + 1)) {
+                if (!hasAvaliableSlot(me, fullStacks + 1)) {
                     fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE);
                     return;
                 }

@@ -41,7 +41,7 @@ public class CmdList extends FCommand {
     @Override
     public void perform() {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (! payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) {
+        if (!payForCommand(Conf.econCostList, "to list the factions", "for listing the factions")) {
             return;
         }
 
@@ -51,7 +51,7 @@ public class CmdList extends FCommand {
         factionList.remove(Factions.getInstance().getWarZone());
 
         // remove exempt factions
-        if (! fme.getPlayer().hasPermission("factions.show.bypassexempt")) {
+        if (!fme.getPlayer().hasPermission("factions.show.bypassexempt")) {
             List<String> exemptFactions = SavageFactions.plugin.getConfig().getStringList("show-exempt");
             Iterator<Faction> factionIterator = factionList.iterator();
             while (factionIterator.hasNext()) {

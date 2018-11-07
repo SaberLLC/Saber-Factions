@@ -82,17 +82,17 @@ public class TempAreaMarker {
 
     public void update(AreaMarker marker) {
         // Corner Locations
-        if (! equals(marker, this.x, this.z)) {
+        if (!equals(marker, this.x, this.z)) {
             marker.setCornerLocations(this.x, this.z);
         }
 
         // Label
-        if (! marker.getLabel().equals(this.label)) {
+        if (!marker.getLabel().equals(this.label)) {
             marker.setLabel(this.label);
         }
 
         // Description
-        if (! marker.getDescription().equals(this.description)) {
+        if (!marker.getDescription().equals(this.description)) {
             marker.setDescription(this.description);
         }
 

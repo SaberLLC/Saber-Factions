@@ -51,7 +51,7 @@ public class PermUtil {
             return false;
         }
 
-        if (! (me instanceof Player)) {
+        if (!(me instanceof Player)) {
             return me.hasPermission(perm);
         }
 

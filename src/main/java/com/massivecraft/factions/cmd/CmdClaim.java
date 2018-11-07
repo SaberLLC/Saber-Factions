@@ -37,7 +37,7 @@ public class CmdClaim extends FCommand {
         int radius = this.argAsInt(0, 1); // Default to 1
         final Faction forFaction = this.argAsFaction(1, myFaction); // Default to own
 
-        if (! fme.isAdminBypassing()) {
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TERRITORY);
             if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "change faction territory");
@@ -56,7 +56,7 @@ public class CmdClaim extends FCommand {
             fme.attemptClaim(forFaction, me.getLocation(), true);
         } else {
             // radius claim
-            if (! Permission.CLAIM_RADIUS.has(sender, false)) {
+            if (!Permission.CLAIM_RADIUS.has(sender, false)) {
                 msg(TL.COMMAND_CLAIM_DENIED);
                 return;
             }

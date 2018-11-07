@@ -84,7 +84,7 @@ public abstract class MPlugin extends JavaPlugin {
         // reference command will be used to prevent "unknown command" console messages
         try {
             Map<String, Map<String, Object>> refCmd = this.getDescription().getCommands();
-            if (refCmd != null && ! refCmd.isEmpty()) {
+            if (refCmd != null && !refCmd.isEmpty()) {
                 this.refCommand = (String) (refCmd.keySet().toArray()[0]);
             }
         } catch (ClassCastException ex) {
@@ -114,7 +114,7 @@ public abstract class MPlugin extends JavaPlugin {
         File lang = new File(getDataFolder(), "lang.yml");
         OutputStream out = null;
         InputStream defLangStream = this.getResource("lang.yml");
-        if (! lang.exists()) {
+        if (!lang.exists()) {
             try {
                 getDataFolder().mkdir();
                 lang.createNewFile();
@@ -259,7 +259,7 @@ public abstract class MPlugin extends JavaPlugin {
         }
 
         for (final MCommand<?> command : this.getBaseCommands()) {
-            if (noSlash && ! command.allowNoSlashAccess) {
+            if (noSlash && !command.allowNoSlashAccess) {
                 continue;
             }
 

@@ -21,8 +21,8 @@ public class CmdStealth extends FCommand {
 
     public void perform() {
         Faction faction = fme.getFaction();
-        if (faction != null && ! faction.getId().equalsIgnoreCase("0") && ! faction.getId().equalsIgnoreCase("none") && ! faction.getId().equalsIgnoreCase("safezone") && ! faction.getId().equalsIgnoreCase("warzone")) {
-            fme.setStealth(! fme.isStealthEnabled());
+        if (faction != null && !faction.getId().equalsIgnoreCase("0") && !faction.getId().equalsIgnoreCase("none") && !faction.getId().equalsIgnoreCase("safezone") && !faction.getId().equalsIgnoreCase("warzone")) {
+            fme.setStealth(!fme.isStealthEnabled());
             fme.msg(fme.isStealthEnabled() ? TL.COMMAND_STEALTH_ENABLE : TL.COMMAND_STEALTH_DISABLE);
         } else {
             fme.msg(TL.COMMAND_STEALTH_MUSTBEMEMBER);

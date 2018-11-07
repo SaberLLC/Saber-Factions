@@ -25,7 +25,7 @@ public class CmdTpBanner extends FCommand {
 
     @Override
     public void perform() {
-        if (! SavageFactions.plugin.getConfig().getBoolean("fbanners.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("fbanners.Enabled")) {
             return;
         }
 

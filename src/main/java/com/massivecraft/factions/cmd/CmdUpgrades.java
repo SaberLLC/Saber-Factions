@@ -25,7 +25,7 @@ public class CmdUpgrades extends FCommand {
 
     @Override
     public void perform() {
-        if (! SavageFactions.plugin.getConfig().getBoolean("fupgrades.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("fupgrades.Enabled")) {
             fme.sendMessage("This command is disabled!");
             return;
         }

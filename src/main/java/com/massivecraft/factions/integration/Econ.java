@@ -47,7 +47,7 @@ public class Econ {
 
         SavageFactions.plugin.log("Economy integration through Vault plugin successful.");
 
-        if (! Conf.econEnabled) {
+        if (!Conf.econEnabled) {
             SavageFactions.plugin.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
         }
 
@@ -63,7 +63,7 @@ public class Econ {
     }
 
     public static void modifyUniverseMoney(double delta) {
-        if (! shouldBeUsed()) {
+        if (!shouldBeUsed()) {
             return;
         }
 
@@ -73,7 +73,7 @@ public class Econ {
         if (Conf.econUniverseAccount.length() == 0) {
             return;
         }
-        if (! econ.hasAccount(Conf.econUniverseAccount)) {
+        if (!econ.hasAccount(Conf.econUniverseAccount)) {
             return;
         }
 
@@ -81,7 +81,7 @@ public class Econ {
     }
 
     public static void sendBalanceInfo(FPlayer to, EconomyParticipator about) {
-        if (! shouldBeUsed()) {
+        if (!shouldBeUsed()) {
             SavageFactions.plugin.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
             return;
         }
@@ -124,7 +124,7 @@ public class Econ {
             return true;
         }
 
-        // Otherwise you may not! ;,,;
+        // Otherwise you may not!;,,;
         i.msg("<h>%s<i> lacks permission to control <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));
         return false;
     }
@@ -134,7 +134,7 @@ public class Econ {
     }
 
     public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount, boolean notify) {
-        if (! shouldBeUsed()) {
+        if (!shouldBeUsed()) {
             return false;
         }
 
@@ -148,7 +148,7 @@ public class Econ {
         }
 
         // Check the rights
-        if (! canIControllYou(invoker, from)) {
+        if (!canIControllYou(invoker, from)) {
             return false;
         }
 
@@ -174,7 +174,7 @@ public class Econ {
         }
 
         // Is there enough money for the transaction to happen?
-        if (! econ.has(fromAcc, amount)) {
+        if (!econ.has(fromAcc, amount)) {
             // There was not enough money to pay
             if (invoker != null && notify) {
                 invoker.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s<b>.", from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
@@ -247,7 +247,7 @@ public class Econ {
     }
 
     public static boolean hasAtLeast(EconomyParticipator ep, double delta, String toDoThis) {
-        if (! shouldBeUsed()) {
+        if (!shouldBeUsed()) {
             return true;
         }
 
@@ -270,8 +270,8 @@ public class Econ {
             affordable = true;
         }
 
-        if (! affordable) {
-            if (toDoThis != null && ! toDoThis.isEmpty()) {
+        if (!affordable) {
+            if (toDoThis != null && !toDoThis.isEmpty()) {
                 ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", ep.describeTo(ep, true), moneyString(delta), toDoThis);
             }
             return false;
@@ -280,7 +280,7 @@ public class Econ {
     }
 
     public static boolean modifyMoney(EconomyParticipator ep, double delta, String toDoThis, String forDoingThis) {
-        if (! shouldBeUsed()) {
+        if (!shouldBeUsed()) {
             return false;
         }
 
@@ -309,13 +309,13 @@ public class Econ {
             EconomyResponse er = econ.depositPlayer(acc, delta);
             if (er.transactionSuccess()) {
                 modifyUniverseMoney(- delta);
-                if (forDoingThis != null && ! forDoingThis.isEmpty()) {
+                if (forDoingThis != null && !forDoingThis.isEmpty()) {
                     ep.msg("<h>%s<i> gained <h>%s<i> %s.", You, moneyString(delta), forDoingThis);
                 }
                 return true;
             } else {
                 // transfer to account failed
-                if (forDoingThis != null && ! forDoingThis.isEmpty()) {
+                if (forDoingThis != null && !forDoingThis.isEmpty()) {
                     ep.msg("<h>%s<i> would have gained <h>%s<i> %s, but the deposit failed.", You, moneyString(delta), forDoingThis);
                 }
                 return false;
@@ -327,13 +327,13 @@ public class Econ {
             if (econ.has(acc, - delta) && econ.withdrawPlayer(acc, - delta).transactionSuccess()) {
                 // There is enough money to pay
                 modifyUniverseMoney(- delta);
-                if (forDoingThis != null && ! forDoingThis.isEmpty()) {
+                if (forDoingThis != null && !forDoingThis.isEmpty()) {
                     ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(- delta), forDoingThis);
                 }
                 return true;
             } else {
                 // There was not enough money to pay
-                if (toDoThis != null && ! toDoThis.isEmpty()) {
+                if (toDoThis != null && !toDoThis.isEmpty()) {
                     ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(- delta), toDoThis);
                 }
                 return false;
@@ -347,7 +347,7 @@ public class Econ {
 
     // calculate the cost for claiming land
     public static double calculateClaimCost(int ownedLand, boolean takingFromAnotherFaction) {
-        if (! shouldBeUsed()) {
+        if (!shouldBeUsed()) {
             return 0d;
         }
 

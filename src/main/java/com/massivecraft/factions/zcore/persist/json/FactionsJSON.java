@@ -11,13 +11,13 @@ import java.util.logging.Logger;
 public class FactionsJSON {
 
     public static void convertTo() {
-        if (! (Factions.getInstance() instanceof MemoryFactions)) {
+        if (!(Factions.getInstance() instanceof MemoryFactions)) {
             return;
         }
-        if (! (FPlayers.getInstance() instanceof MemoryFPlayers)) {
+        if (!(FPlayers.getInstance() instanceof MemoryFPlayers)) {
             return;
         }
-        if (! (Board.getInstance() instanceof MemoryBoard)) {
+        if (!(Board.getInstance() instanceof MemoryBoard)) {
             return;
         }
         new BukkitRunnable() {

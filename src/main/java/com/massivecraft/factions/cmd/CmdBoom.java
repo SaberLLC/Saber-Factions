@@ -27,17 +27,17 @@ public class CmdBoom extends FCommand {
 
     @Override
     public void perform() {
-        if (! myFaction.isPeaceful()) {
+        if (!myFaction.isPeaceful()) {
             fme.msg(TL.COMMAND_BOOM_PEACEFULONLY);
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (! payForCommand(Conf.econCostNoBoom, TL.COMMAND_BOOM_TOTOGGLE, TL.COMMAND_BOOM_FORTOGGLE)) {
+        if (!payForCommand(Conf.econCostNoBoom, TL.COMMAND_BOOM_TOTOGGLE, TL.COMMAND_BOOM_FORTOGGLE)) {
             return;
         }
 
-        myFaction.setPeacefulExplosionsEnabled(this.argAsBool(0, ! myFaction.getPeacefulExplosionsEnabled()));
+        myFaction.setPeacefulExplosionsEnabled(this.argAsBool(0, !myFaction.getPeacefulExplosionsEnabled()));
 
         String enabled = myFaction.noExplosionsInTerritory() ? TL.GENERIC_DISABLED.toString() : TL.GENERIC_ENABLED.toString();
 

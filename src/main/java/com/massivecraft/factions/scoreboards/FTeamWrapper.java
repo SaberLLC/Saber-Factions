@@ -30,7 +30,7 @@ public class FTeamWrapper {
     }
 
     public static void applyUpdatesLater(final Faction faction) {
-        if (! FScoreboard.isSupportedByServer()) {
+        if (!FScoreboard.isSupportedByServer()) {
             return;
         }
 
@@ -38,7 +38,7 @@ public class FTeamWrapper {
             return;
         }
 
-        if (! SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             return;
         }
 
@@ -55,7 +55,7 @@ public class FTeamWrapper {
     }
 
     public static void applyUpdates(Faction faction) {
-        if (! FScoreboard.isSupportedByServer()) {
+        if (!FScoreboard.isSupportedByServer()) {
             return;
         }
 
@@ -63,7 +63,7 @@ public class FTeamWrapper {
             return;
         }
 
-        if (! SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             return;
         }
 
@@ -88,14 +88,14 @@ public class FTeamWrapper {
         }
 
         for (OfflinePlayer player : wrapper.getPlayers()) {
-            if (! player.isOnline() || ! factionMembers.contains(FPlayers.getInstance().getByOfflinePlayer(player))) {
+            if (!player.isOnline() || !factionMembers.contains(FPlayers.getInstance().getByOfflinePlayer(player))) {
                 // Player is offline or no longer in faction
                 wrapper.removePlayer(player);
             }
         }
 
         for (FPlayer fmember : factionMembers) {
-            if (! fmember.isOnline()) {
+            if (!fmember.isOnline()) {
                 continue;
             }
 
@@ -107,11 +107,11 @@ public class FTeamWrapper {
     }
 
     public static void updatePrefixes(Faction faction) {
-        if (! FScoreboard.isSupportedByServer()) {
+        if (!FScoreboard.isSupportedByServer()) {
             return;
         }
 
-        if (! wrappers.containsKey(faction)) {
+        if (!wrappers.containsKey(faction)) {
             applyUpdates(faction);
         } else {
             wrappers.get(faction).updatePrefixes();
@@ -119,7 +119,7 @@ public class FTeamWrapper {
     }
 
     protected static void track(FScoreboard fboard) {
-        if (! FScoreboard.isSupportedByServer()) {
+        if (!FScoreboard.isSupportedByServer()) {
             return;
         }
         tracking.add(fboard);
@@ -129,7 +129,7 @@ public class FTeamWrapper {
     }
 
     protected static void untrack(FScoreboard fboard) {
-        if (! FScoreboard.isSupportedByServer()) {
+        if (!FScoreboard.isSupportedByServer()) {
             return;
         }
         tracking.remove(fboard);
@@ -174,7 +174,7 @@ public class FTeamWrapper {
             }
             prefix = prefix.replace("{relationcolor}", faction.getRelationTo(fplayer).getColor().toString());
             prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min("{faction}".length() + 16 - prefix.length(), faction.getTag().length())));
-            if (team.getPrefix() == null || ! team.getPrefix().equals(prefix)) {
+            if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
                 team.setPrefix(prefix);
             }
         }

@@ -28,12 +28,12 @@ public class CmdChest extends FCommand {
     public void perform() {
 
 
-        if (! SavageFactions.plugin.getConfig().getBoolean("fchest.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("fchest.Enabled")) {
             fme.sendMessage("This command is disabled!");
             return;
         }
         // This permission check is way too explicit but it's clean
-        if (! fme.isAdminBypassing()) {
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.CHEST);
             if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "access chest");

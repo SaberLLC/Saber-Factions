@@ -31,7 +31,7 @@ public class CmdDescription extends FCommand {
     @Override
     public void perform() {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (! payForCommand(Conf.econCostDesc, TL.COMMAND_DESCRIPTION_TOCHANGE, TL.COMMAND_DESCRIPTION_FORCHANGE)) {
+        if (!payForCommand(Conf.econCostDesc, TL.COMMAND_DESCRIPTION_TOCHANGE, TL.COMMAND_DESCRIPTION_FORCHANGE)) {
             return;
         }
 
@@ -39,7 +39,7 @@ public class CmdDescription extends FCommand {
         // And replace all the % because it messes with string formatting and this is easy way around that.
         myFaction.setDescription(TextUtil.implode(args, " ").replaceAll("%", "").replaceAll("(&([a-f0-9klmnor]))", "& $2"));
 
-        if (! Conf.broadcastDescriptionChanges) {
+        if (!Conf.broadcastDescriptionChanges) {
             fme.msg(TL.COMMAND_DESCRIPTION_CHANGED, myFaction.describeTo(fme));
             fme.sendMessage(myFaction.getDescription());
             return;

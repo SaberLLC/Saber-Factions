@@ -64,7 +64,7 @@ public class Persist {
     }
 
     public <T> T loadOrSaveDefault(T def, Class<T> clazz, File file) {
-        if (! file.exists()) {
+        if (!file.exists()) {
             p.log("Creating default: " + file);
             this.save(def, file);
             return def;

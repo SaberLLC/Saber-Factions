@@ -95,7 +95,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
 
             // All clear lets TP them or ask for password
             String warp = warpSlots.get(slot);
-            if (! fme.getFaction().hasWarpPassword(warp)) {
+            if (!fme.getFaction().hasWarpPassword(warp)) {
                 if (transact(fme)) {
                     doWarmup(warp);
                 }
@@ -129,13 +129,13 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
     }
 
     private boolean transact(FPlayer player) {
-        if (! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing()) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing()) {
             return true;
         }
 
         double cost = SavageFactions.plugin.getConfig().getDouble("warp-cost.warp", 5);
 
-        if (! Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
+        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
             return true;
         }
 
@@ -183,7 +183,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         string = ChatColor.translateAlternateColorCodes('&', string);
         string = string.replace("{warp}", warp);
         string = string.replace("{warp-protected}", faction.hasWarpPassword(warp) ? "Enabled" : "Disabled");
-        string = string.replace("{warp-cost}", ! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) ? "Disabled" : Integer.toString(SavageFactions.plugin.getConfig().getInt("warp-cost.warp", 5)));
+        string = string.replace("{warp-cost}", !SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) ? "Disabled" : Integer.toString(SavageFactions.plugin.getConfig().getInt("warp-cost.warp", 5)));
         return string;
     }
 
@@ -243,7 +243,7 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
 
         ItemMeta itemMeta = itemStack.getItemMeta();
 
-        if (! SavageFactions.plugin.mc17) {
+        if (!SavageFactions.plugin.mc17) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         }
 

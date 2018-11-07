@@ -228,7 +228,7 @@ public class CmdConfig extends FCommand {
             return;
         }
 
-        if (! success.isEmpty()) {
+        if (!success.isEmpty()) {
             if (sender instanceof Player) {
                 sendMessage(success);
                 SavageFactions.plugin.log(success + TL.COMMAND_CONFIG_LOG.format((Player) sender));

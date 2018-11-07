@@ -18,7 +18,7 @@ public class CmdStuck extends FCommand {
         super();
 
         this.aliases.add("stuck");
-        this.aliases.add("halp!"); // halp! c:
+        this.aliases.add("halp!"); // halp!c:
 
         this.permission = Permission.STUCK.node;
         this.disableOnLock = true;
@@ -44,7 +44,7 @@ public class CmdStuck extends FCommand {
         } else {
 
             // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-            if (! payForCommand(Conf.econCostStuck, TL.COMMAND_STUCK_TOSTUCK.format(fme.getName()), TL.COMMAND_STUCK_FORSTUCK.format(fme.getName()))) {
+            if (!payForCommand(Conf.econCostStuck, TL.COMMAND_STUCK_TOSTUCK.format(fme.getName()), TL.COMMAND_STUCK_FORSTUCK.format(fme.getName()))) {
                 return;
             }
 
@@ -52,7 +52,7 @@ public class CmdStuck extends FCommand {
 
                 @Override
                 public void run() {
-                    if (! SavageFactions.plugin.getStuckMap().containsKey(player.getUniqueId())) {
+                    if (!SavageFactions.plugin.getStuckMap().containsKey(player.getUniqueId())) {
                         return;
                     }
 
@@ -74,7 +74,7 @@ public class CmdStuck extends FCommand {
                             FLocation chunk = currentFLocation();
                             Faction faction = board.getFactionAt(chunk);
                             int buffer = SavageFactions.plugin.getConfig().getInt("world-border.buffer", 0);
-                            if (faction.isWilderness() && ! chunk.isOutsideWorldBorder(buffer)) {
+                            if (faction.isWilderness() && !chunk.isOutsideWorldBorder(buffer)) {
                                 int cx = FLocation.chunkToBlock((int) chunk.getX());
                                 int cz = FLocation.chunkToBlock((int) chunk.getZ());
                                 int y = world.getHighestBlockYAt(cx, cz);
@@ -82,7 +82,7 @@ public class CmdStuck extends FCommand {
                                 msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
                                 SavageFactions.plugin.getTimers().remove(player.getUniqueId());
                                 SavageFactions.plugin.getStuckMap().remove(player.getUniqueId());
-                                if (! Essentials.handleTeleport(player, tp)) {
+                                if (!Essentials.handleTeleport(player, tp)) {
                                     player.teleport(tp);
                                     SavageFactions.plugin.debug("/f stuck used regular teleport, not essentials!");
                                 }

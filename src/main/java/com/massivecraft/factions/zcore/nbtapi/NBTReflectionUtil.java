@@ -28,7 +28,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("org.bukkit.craftbukkit." + version + ".inventory.CraftItemStack");
             return clazz;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -40,7 +40,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("org.bukkit.craftbukkit." + version + ".entity.CraftEntity");
             return clazz;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -52,7 +52,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("net.minecraft.server." + version + ".NBTBase");
             return clazz;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -64,7 +64,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("net.minecraft.server." + version + ".NBTTagString");
             return clazz;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -76,7 +76,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("net.minecraft.server." + version + ".ItemStack");
             return clazz;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -88,7 +88,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
             return clazz;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -100,7 +100,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("net.minecraft.server." + version + ".NBTCompressedStreamTools");
             return clazz;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -112,7 +112,7 @@ public class NBTReflectionUtil {
             Class c = Class.forName("net.minecraft.server." + version + ".MojangsonParser");
             return c;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -124,7 +124,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("net.minecraft.server." + version + ".TileEntity");
             return clazz;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -136,7 +136,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("org.bukkit.craftbukkit." + version + ".CraftWorld");
             return clazz;
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -149,7 +149,7 @@ public class NBTReflectionUtil {
             Class c = Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
             return c.newInstance();
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -162,7 +162,7 @@ public class NBTReflectionUtil {
             Class clazz = Class.forName("net.minecraft.server." + version + ".BlockPosition");
             return clazz.getConstructor(int.class, int.class, int.class).newInstance(x, y, z);
         } catch (Exception ex) {
-            System.out.println("Error in ItemNBTAPI! (Outdated plugin?)");
+            System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
             return null;
         }
@@ -397,7 +397,7 @@ public class NBTReflectionUtil {
         if (nbttag == null) {
             nbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(nbttag, comp);
         Method method;
         try {
@@ -425,7 +425,7 @@ public class NBTReflectionUtil {
             structure.add(comp.getName());
             comp = comp.getParent();
         }
-        while (! structure.isEmpty()) {
+        while (!structure.isEmpty()) {
             nbttag = getSubNBTTagCompound(nbttag, structure.pop());
             if (nbttag == null) {
                 return null;
@@ -439,7 +439,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -460,7 +460,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -477,7 +477,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -494,7 +494,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -515,7 +515,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -532,7 +532,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -553,7 +553,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -571,7 +571,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -592,7 +592,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -609,7 +609,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -630,7 +630,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -647,7 +647,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -668,7 +668,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -685,7 +685,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -706,7 +706,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -723,7 +723,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -744,7 +744,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -761,7 +761,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -782,7 +782,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -799,7 +799,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -816,7 +816,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return 0;
+        if (!valideCompound(comp)) return 0;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -837,7 +837,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -854,7 +854,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -875,7 +875,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) {
+        if (!valideCompound(comp)) {
             new Throwable("InvalideCompound").printStackTrace();
             return;
         }
@@ -895,7 +895,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -908,7 +908,7 @@ public class NBTReflectionUtil {
     }
 
     public static void setObject(NBTCompound comp, String key, Object value) {
-        if (! MinecraftVersion.hasGsonSupport()) return;
+        if (!MinecraftVersion.hasGsonSupport()) return;
         try {
             String json = GsonWrapper.getString(value);
             setString(comp, key, json);
@@ -918,7 +918,7 @@ public class NBTReflectionUtil {
     }
 
     public static <T> T getObject(NBTCompound comp, String key, Class<T> type) {
-        if (! MinecraftVersion.hasGsonSupport()) return null;
+        if (!MinecraftVersion.hasGsonSupport()) return null;
         String json = getString(comp, key);
         if (json == null) {
             return null;
@@ -931,7 +931,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return;
+        if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -948,7 +948,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {
@@ -966,7 +966,7 @@ public class NBTReflectionUtil {
         if (rootnbttag == null) {
             rootnbttag = getNewNBTTag();
         }
-        if (! valideCompound(comp)) return null;
+        if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
         Method method;
         try {

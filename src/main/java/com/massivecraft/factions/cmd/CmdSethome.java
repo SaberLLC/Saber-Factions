@@ -30,7 +30,7 @@ public class CmdSethome extends FCommand {
 
     @Override
     public void perform() {
-        if (! Conf.homesEnabled) {
+        if (!Conf.homesEnabled) {
             fme.msg(TL.COMMAND_SETHOME_DISABLED);
             return;
         }
@@ -40,16 +40,16 @@ public class CmdSethome extends FCommand {
             return;
         }
 
-        if (! fme.isAdminBypassing()) {
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.SETHOME);
-            if (access != Access.ALLOW && fme.getRole() != Role.LEADER && ! Permission.SETHOME_ANY.has(sender, true)) {
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER && !Permission.SETHOME_ANY.has(sender, true)) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "set home");
                 return;
             }
         }
 
         // Can the player set the faction home HERE?
-        if (! Permission.BYPASS.has(me) &&
+        if (!Permission.BYPASS.has(me) &&
                 Conf.homesMustBeInClaimedTerritory &&
                 Board.getInstance().getFactionAt(new FLocation(me)) != faction) {
             fme.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
@@ -57,7 +57,7 @@ public class CmdSethome extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (! payForCommand(Conf.econCostSethome, TL.COMMAND_SETHOME_TOSET, TL.COMMAND_SETHOME_FORSET)) {
+        if (!payForCommand(Conf.econCostSethome, TL.COMMAND_SETHOME_TOSET, TL.COMMAND_SETHOME_FORSET)) {
             return;
         }
 

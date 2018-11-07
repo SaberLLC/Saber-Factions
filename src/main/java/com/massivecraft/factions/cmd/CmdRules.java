@@ -28,7 +28,7 @@ public class CmdRules extends FCommand {
 
     @Override
     public void perform() {
-        if (! SavageFactions.plugin.getConfig().getBoolean("frules.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("frules.Enabled")) {
             fme.msg(TL.COMMAND_RULES_DISABLED_MSG);
             return;
         }

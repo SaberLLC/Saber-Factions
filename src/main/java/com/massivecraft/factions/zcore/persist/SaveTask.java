@@ -16,7 +16,7 @@ public class SaveTask implements Runnable {
     }
 
     public void run() {
-        if (! p.getAutoSave() || running) {
+        if (!p.getAutoSave() || running) {
             return;
         }
         running = true;

@@ -59,11 +59,11 @@ public class FactionsBlockListener implements Listener {
                 return true;
             }
 
-            if (! Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
+            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
                 return true; // This is not faction territory. Use whatever you like here.
             }
 
-            if (! justCheck) {
+            if (!justCheck) {
                 me.msg("<b>You can't " + action + " in the wilderness.");
             }
 
@@ -73,11 +73,11 @@ public class FactionsBlockListener implements Listener {
                 return true;
             }
 
-            if (! Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player)) {
+            if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player)) {
                 return true;
             }
 
-            if (! justCheck) {
+            if (!justCheck) {
                 me.msg("<b>You can't " + action + " in a safe zone.");
             }
 
@@ -87,11 +87,11 @@ public class FactionsBlockListener implements Listener {
                 return true;
             }
 
-            if (! Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player)) {
+            if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player)) {
                 return true;
             }
 
-            if (! justCheck) {
+            if (!justCheck) {
                 me.msg("<b>You can't " + action + " in a war zone.");
             }
 
@@ -104,7 +104,7 @@ public class FactionsBlockListener implements Listener {
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
         boolean online = otherFaction.hasPlayersOnline();
-        boolean pain = ! justCheck && rel.confPainBuild(online);
+        boolean pain = !justCheck && rel.confPainBuild(online);
         boolean deny = rel.confDenyBuild(online);
 
         Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
@@ -115,7 +115,7 @@ public class FactionsBlockListener implements Listener {
         if (pain) {
             player.damage(Conf.actionDeniedPainAmount);
 
-            if (! deny) {
+            if (!deny) {
                 me.msg("<b>It is painful to try to " + action + " in the territory of " + otherFaction.getTag(myFaction));
             }
         }
@@ -123,7 +123,7 @@ public class FactionsBlockListener implements Listener {
 
         // cancel building/destroying in other territory?
         if (deny) {
-            if (! justCheck) {
+            if (!justCheck) {
                 me.msg("<b>You can't " + action + " in the territory of " + otherFaction.getTag(myFaction));
             }
 
@@ -131,15 +131,15 @@ public class FactionsBlockListener implements Listener {
         }
 
         // Also cancel and/or cause pain if player doesn't have ownership rights for this claim
-        if (Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && ! otherFaction.playerHasOwnershipRights(me, loc)) {
-            if (! pain && Conf.ownedAreaPainBuild && ! justCheck) {
+        if (Conf.ownedAreasEnabled && (Conf.ownedAreaDenyBuild || Conf.ownedAreaPainBuild) && !otherFaction.playerHasOwnershipRights(me, loc)) {
+            if (!pain && Conf.ownedAreaPainBuild && !justCheck) {
                 player.damage(Conf.actionDeniedPainAmount);
-                if (! Conf.ownedAreaDenyBuild) {
+                if (!Conf.ownedAreaDenyBuild) {
                     me.msg("<b>It is painful to try to " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
                 }
             }
             if (Conf.ownedAreaDenyBuild) {
-                if (! justCheck) {
+                if (!justCheck) {
                     me.msg("<b>You can't " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
                     return false;
                 }
@@ -153,7 +153,7 @@ public class FactionsBlockListener implements Listener {
             if (access == Access.DENY) {
                 me.msg(TL.GENERIC_NOPERMISSION, action);
                 return false;
-            } else if (myFaction.getOwnerListString(loc) != null && ! myFaction.getOwnerListString(loc).isEmpty() && ! myFaction.getOwnerListString(loc).contains(player.getName())) {
+            } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
                 me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
                 return false;
             }
@@ -163,7 +163,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        if (! event.canBuild()) {
+        if (!event.canBuild()) {
             return;
         }
 
@@ -172,14 +172,14 @@ public class FactionsBlockListener implements Listener {
             return;
         }
 
-        if (! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
-        if (! Conf.handleExploitLiquidFlow) {
+        if (!Conf.handleExploitLiquidFlow) {
             return;
         }
         if (event.getBlock().isLiquid()) {
@@ -203,14 +203,14 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
-        if (event.getInstaBreak() && ! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
+        if (event.getInstaBreak() && !playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-        if (! Conf.pistonProtectionThroughDenyBuild) {
+        if (!Conf.pistonProtectionThroughDenyBuild) {
             return;
         }
 
@@ -220,7 +220,7 @@ public class FactionsBlockListener implements Listener {
         Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
 
         // if potentially pushing into air/water/lava in another territory, we need to check it out
-        if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && ! canPistonMoveBlock(pistonFaction, targetBlock.getLocation())) {
+        if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation())) {
             event.setCancelled(true);
         }
 
@@ -279,7 +279,7 @@ public class FactionsBlockListener implements Listener {
     @EventHandler
     public void onHopperPlace(BlockPlaceEvent e) {
 
-        if (e.getItemInHand().getType() != Material.HOPPER && ! SavageFactions.plugin.getConfig().getBoolean("fvault.No-Hoppers-near-vault")) {
+        if (e.getItemInHand().getType() != Material.HOPPER && !SavageFactions.plugin.getConfig().getBoolean("fvault.No-Hoppers-near-vault")) {
             return;
         }
 
@@ -318,7 +318,7 @@ public class FactionsBlockListener implements Listener {
     @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         // if not a sticky piston, retraction should be fine
-        if (! event.isSticky() || ! Conf.pistonProtectionThroughDenyBuild) {
+        if (!event.isSticky() || !Conf.pistonProtectionThroughDenyBuild) {
             return;
         }
 
@@ -338,7 +338,7 @@ public class FactionsBlockListener implements Listener {
 
         Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
 
-        if (! canPistonMoveBlock(pistonFaction, targetLoc)) {
+        if (!canPistonMoveBlock(pistonFaction, targetLoc)) {
             event.setCancelled(true);
         }
     }
@@ -462,12 +462,12 @@ public class FactionsBlockListener implements Listener {
         // only notify every 10 seconds
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         boolean justCheck = fPlayer.getLastFrostwalkerMessage() + 10000 > System.currentTimeMillis();
-        if (! justCheck) {
+        if (!justCheck) {
             fPlayer.setLastFrostwalkerMessage();
         }
 
         // Check if they have build permissions here. If not, block this from happening.
-        if (! playerCanBuildDestroyBlock(player, location, "frostwalk", justCheck)) {
+        if (!playerCanBuildDestroyBlock(player, location, "frostwalk", justCheck)) {
             event.setCancelled(true);
         }
     }
@@ -481,33 +481,33 @@ public class FactionsBlockListener implements Listener {
         }
 
         if (otherFaction.isWilderness()) {
-            return ! Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName());
+            return !Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName());
 
         } else if (otherFaction.isSafeZone()) {
-            return ! Conf.safeZoneDenyBuild;
+            return !Conf.safeZoneDenyBuild;
 
         } else if (otherFaction.isWarZone()) {
-            return ! Conf.warZoneDenyBuild;
+            return !Conf.warZoneDenyBuild;
 
         }
 
         Relation rel = pistonFaction.getRelationTo(otherFaction);
 
-        return ! rel.confDenyBuild(otherFaction.hasPlayersOnline());
+        return !rel.confDenyBuild(otherFaction.hasPlayersOnline());
     }
 
     @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (! playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
             return;
         }
         FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
-        if (! fme.hasFaction()) {
+        if (!fme.hasFaction()) {
             return;
         }
         if (event.getBlock().getType() == SavageFactions.plugin.MOB_SPANWER) {
-            if (! fme.isAdminBypassing()) {
+            if (!fme.isAdminBypassing()) {
                 Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
                 if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                     fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");

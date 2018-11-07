@@ -34,7 +34,7 @@ public class CmdTntFill extends FCommand {
 
     @Override
     public void perform() {
-        if (! fme.isAdminBypassing()) {
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TNTFILL);
             if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "use tnt fill");
@@ -78,8 +78,8 @@ public class CmdTntFill extends FCommand {
                         if (canHold(dispenser, amount)) {
                             int fullStacks = amount / 64;
                             int remainderAmt = amount % 64;
-                            if (! inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
-                                if (! fme.getRole().isAtLeast(Role.MODERATOR)) {
+                            if (!inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
+                                if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
                                     msg(TL.COMMAND_TNTFILL_NOTENOUGH);
                                     sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", amount + "").replace("{dispensers}", counter + ""));
                                     me.updateInventory();
@@ -88,7 +88,7 @@ public class CmdTntFill extends FCommand {
                                     //msg(TL.COMMAND_TNTFILL_MOD.toString().replace("{role}",fme.getRole().nicename));
                                     bankMode = true;
                                     removeFromBank(amount);
-                                    if (! inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
+                                    if (!inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
                                         msg(TL.COMMAND_TNTFILL_NOTENOUGH);
                                         sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", amount + "").replace("{dispensers}", counter + ""));
                                         me.updateInventory();

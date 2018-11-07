@@ -30,14 +30,14 @@ public class CmdSetFWarp extends FCommand {
 
     @Override
     public void perform() {
-        if (! (fme.getRelationToLocation() == Relation.MEMBER)) {
+        if (!(fme.getRelationToLocation() == Relation.MEMBER)) {
             fme.msg(TL.COMMAND_SETFWARP_NOTCLAIMED);
             return;
         }
 
         // This statement allows us to check if they've specifically denied it, or default to
         // the old setting of allowing moderators to set warps.
-        if (! fme.isAdminBypassing()) {
+        if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.SETWARP);
             if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "set warps");
@@ -52,7 +52,7 @@ public class CmdSetFWarp extends FCommand {
             return;
         }
 
-        if (! transact(fme)) {
+        if (!transact(fme)) {
             return;
         }
 
@@ -68,7 +68,7 @@ public class CmdSetFWarp extends FCommand {
     }
 
     private boolean transact(FPlayer player) {
-        return ! SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.setwarp", 5), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
+        return !SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.setwarp", 5), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
     }
 
     @Override

@@ -40,17 +40,17 @@ public class CmdAdmin extends FCommand {
         boolean permAny = Permission.ADMIN_ANY.has(sender, false);
         Faction targetFaction = fyou.getFaction();
 
-        if (targetFaction != myFaction && ! permAny) {
+        if (targetFaction != myFaction && !permAny) {
             msg(TL.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(fme, true));
             return;
         }
 
-        if (fme != null && fme.getRole() != Role.LEADER && ! permAny) {
+        if (fme != null && fme.getRole() != Role.LEADER && !permAny) {
             msg(TL.COMMAND_ADMIN_NOTADMIN);
             return;
         }
 
-        if (fyou == fme && ! permAny) {
+        if (fyou == fme && !permAny) {
             msg(TL.COMMAND_ADMIN_TARGETSELF);
             return;
         }

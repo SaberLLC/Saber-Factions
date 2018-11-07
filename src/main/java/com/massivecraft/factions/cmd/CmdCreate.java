@@ -52,7 +52,7 @@ public class CmdCreate extends FCommand {
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-        if (! canAffordCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE.toString())) {
+        if (!canAffordCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE.toString())) {
             return;
         }
 
@@ -64,7 +64,7 @@ public class CmdCreate extends FCommand {
         }
 
         // then make 'em pay (if applicable)
-        if (! payForCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
+        if (!payForCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE, TL.COMMAND_CREATE_FORCREATE)) {
             return;
         }
 

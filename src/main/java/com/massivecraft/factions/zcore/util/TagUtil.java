@@ -200,7 +200,7 @@ public class TagUtil {
                 FancyMessage currentOnline = SavageFactions.plugin.txt.parseFancy(prefix);
                 boolean firstOnline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
-                    if (fme.getPlayer() != null && ! fme.getPlayer().canSee(p.getPlayer())) {
+                    if (fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
                         continue; // skip
                     }
                     String name = p.getNameAndTitle();
@@ -220,7 +220,7 @@ public class TagUtil {
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
                     String name = p.getNameAndTitle();
                     // Also make sure to add players that are online BUT can't be seen.
-                    if (! p.isOnline() || (fme.getPlayer() != null && p.isOnline() && ! fme.getPlayer().canSee(p.getPlayer()))) {
+                    if (!p.isOnline() || (fme.getPlayer() != null && p.isOnline() && !fme.getPlayer().canSee(p.getPlayer()))) {
                         currentOffline.then(firstOffline ? name : ", " + name);
                         currentOffline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
                         firstOffline = false;

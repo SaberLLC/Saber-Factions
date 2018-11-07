@@ -159,7 +159,7 @@ public class TextUtil {
             if (candidate.length() < minlength) {
                 continue;
             }
-            if (! candidate.toLowerCase().startsWith(start)) {
+            if (!candidate.toLowerCase().startsWith(start)) {
                 continue;
             }
 

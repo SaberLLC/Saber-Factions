@@ -145,7 +145,7 @@ public class SavageFactions extends MPlugin {
         setupMultiversionMaterials();
         log("==== End Setup ====");
 
-        if (! preEnable()) {
+        if (!preEnable()) {
             return;
         }
         this.loadSuccessful = false;
@@ -256,7 +256,7 @@ public class SavageFactions extends MPlugin {
             FIREBALL = Material.valueOf("LEGACY_FIREBALL");
 
         } else {
-            if (! mc17) {
+            if (!mc17) {
                 BANNER = Material.valueOf("BANNER");
             }
             CROPS = Material.valueOf("CROPS");
@@ -420,7 +420,7 @@ public class SavageFactions extends MPlugin {
 
     public void startAutoLeaveTask(boolean restartIfRunning) {
         if (AutoLeaveTask != null) {
-            if (! restartIfRunning) {
+            if (!restartIfRunning) {
                 return;
             }
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
@@ -540,7 +540,7 @@ public class SavageFactions extends MPlugin {
     // TODO: GET THIS BACK AND WORKING
 
     public boolean isFactionsCommand(String check) {
-        return ! (check == null || check.isEmpty()) && this.handleCommand(null, check, true);
+        return !(check == null || check.isEmpty()) && this.handleCommand(null, check, true);
     }
 
     // Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
@@ -562,7 +562,7 @@ public class SavageFactions extends MPlugin {
         }
 
         // if listener isn't set, or config option is disabled, give back uncolored tag
-        if (listener == null || ! Conf.chatTagRelationColored) {
+        if (listener == null || !Conf.chatTagRelationColored) {
             tag = me.getChatTag().trim();
         } else {
             FPlayer you = FPlayers.getInstance().getByPlayer(listener);
@@ -641,7 +641,7 @@ public class SavageFactions extends MPlugin {
     }
 
     public String getPrimaryGroup(OfflinePlayer player) {
-        return perms == null || ! perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
+        return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
     }
 
     public void debug(Level level, String s) {

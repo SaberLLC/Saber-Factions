@@ -25,7 +25,7 @@ public class CmdNear extends FCommand {
 
     @Override
     public void perform() {
-        if (! SavageFactions.plugin.getConfig().getBoolean("fnear.Enabled")) {
+        if (!SavageFactions.plugin.getConfig().getBoolean("fnear.Enabled")) {
             fme.msg(TL.COMMAND_NEAR_DISABLED_MSG);
             return;
         }

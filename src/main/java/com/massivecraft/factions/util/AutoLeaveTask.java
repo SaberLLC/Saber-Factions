@@ -13,7 +13,7 @@ public class AutoLeaveTask implements Runnable {
     }
 
     public synchronized void run() {
-        if (task != null && ! task.isFinished()) {
+        if (task != null && !task.isFinished()) {
             return;
         }
 

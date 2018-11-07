@@ -120,7 +120,7 @@ public enum PermissableAction {
 
 
         // If under the 1.13 version we will use the colorable option.
-        if (! SavageFactions.plugin.mc113) {
+        if (!SavageFactions.plugin.mc113) {
             DyeColor dyeColor = null;
 
             try {
@@ -140,7 +140,7 @@ public enum PermissableAction {
             lore.add(replacePlaceholders(loreLine, fme, permissable));
         }
 
-        if (! SavageFactions.plugin.mc17) {
+        if (!SavageFactions.plugin.mc17) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
         }
 

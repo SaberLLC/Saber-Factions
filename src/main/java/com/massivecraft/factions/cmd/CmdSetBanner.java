@@ -19,7 +19,7 @@ public class CmdSetBanner extends FCommand {
     }
 
     public void perform() {
-        if (! me.getItemInHand().getType().toString().contains("BANNER")) {
+        if (!me.getItemInHand().getType().toString().contains("BANNER")) {
             fme.msg(TL.COMMAND_SETBANNER_NOTBANNER);
             return;
         }

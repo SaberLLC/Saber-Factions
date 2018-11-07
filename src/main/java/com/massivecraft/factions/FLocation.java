@@ -191,7 +191,7 @@ public class FLocation implements Serializable {
      * @return whether this location is outside of the border
      */
     public boolean isOutsideWorldBorder(int buffer) {
-        if (! worldBorderSupport) {
+        if (!worldBorderSupport) {
             return false;
         }
 
@@ -247,7 +247,7 @@ public class FLocation implements Serializable {
         if (obj == this) {
             return true;
         }
-        if (! (obj instanceof FLocation)) {
+        if (!(obj instanceof FLocation)) {
             return false;
         }
 

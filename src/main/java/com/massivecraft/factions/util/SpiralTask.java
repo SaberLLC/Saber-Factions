@@ -110,7 +110,7 @@ public abstract class SpiralTask implements Runnable {
     }
 
     public final void run() {
-        if (! this.valid() || ! readyToGo) {
+        if (!this.valid() || !readyToGo) {
             return;
         }
 
@@ -118,7 +118,7 @@ public abstract class SpiralTask implements Runnable {
         readyToGo = false;
 
         // make sure we're still inside the specified radius
-        if (! this.insideRadius()) {
+        if (!this.insideRadius()) {
             return;
         }
 
@@ -128,13 +128,13 @@ public abstract class SpiralTask implements Runnable {
         // keep going until the task has been running for 20ms or more, then stop to take a breather
         while (now() < loopStartTime + 20) {
             // run the primary task on the current X/Z coordinates
-            if (! this.work()) {
+            if (!this.work()) {
                 this.finish();
                 return;
             }
 
             // move on to next chunk in spiral
-            if (! this.moveToNext()) {
+            if (!this.moveToNext()) {
                 return;
             }
         }
@@ -145,7 +145,7 @@ public abstract class SpiralTask implements Runnable {
 
     // step through chunks in spiral pattern from center; returns false if we're done, otherwise returns true
     public final boolean moveToNext() {
-        if (! this.valid()) {
+        if (!this.valid()) {
             return false;
         }
 
@@ -154,7 +154,7 @@ public abstract class SpiralTask implements Runnable {
             current++;
 
             // if we're outside the radius, we're done
-            if (! this.insideRadius()) {
+            if (!this.insideRadius()) {
                 return false;
             }
         } else {    // one leg/side of the spiral down...
@@ -179,7 +179,7 @@ public abstract class SpiralTask implements Runnable {
 
     public final boolean insideRadius() {
         boolean inside = current < limit;
-        if (! inside) {
+        if (!inside) {
             this.finish();
         }
         return inside;
@@ -193,7 +193,7 @@ public abstract class SpiralTask implements Runnable {
 
     // we're done, whether finished or cancelled
     public final void stop() {
-        if (! this.valid()) {
+        if (!this.valid()) {
             return;
         }
 

@@ -32,7 +32,7 @@ public class CmdAutoClaim extends FCommand {
             return;
         }
 
-        if (! fme.canClaimForFaction(forFaction)) {
+        if (!fme.canClaimForFaction(forFaction)) {
             if (myFaction == forFaction) {
                 msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.getTranslation());
             } else {

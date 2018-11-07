@@ -377,7 +377,7 @@ public class Conf {
         territoryDenyUseageMaterials.add(MultiversionMaterials.JUNGLE_BUTTON.parseMaterial());
         territoryDenyUseageMaterials.add(MultiversionMaterials.OAK_BUTTON.parseMaterial());
         territoryDenyUseageMaterials.add(MultiversionMaterials.STONE_BUTTON.parseMaterial());
-        if (! SavageFactions.plugin.mc17) {
+        if (!SavageFactions.plugin.mc17) {
             territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
         }
 
@@ -413,7 +413,7 @@ public class Conf {
         territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.JUNGLE_BUTTON.parseMaterial());
         territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.OAK_BUTTON.parseMaterial());
         territoryDenyUseageMaterialsWhenOffline.add(MultiversionMaterials.STONE_BUTTON.parseMaterial());
-        if (! SavageFactions.plugin.mc17) {
+        if (!SavageFactions.plugin.mc17) {
             territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
         }
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);

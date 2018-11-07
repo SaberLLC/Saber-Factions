@@ -32,7 +32,7 @@ public class JSONBoard extends MemoryBoard {
             worldName = entry.getKey().getWorldName();
             coords = entry.getKey().getCoordString();
             id = entry.getValue();
-            if (! worldCoordIds.containsKey(worldName)) {
+            if (!worldCoordIds.containsKey(worldName)) {
                 worldCoordIds.put(worldName, new TreeMap<String, String>());
             }
 
@@ -73,7 +73,7 @@ public class JSONBoard extends MemoryBoard {
     public boolean load() {
         SavageFactions.plugin.log("Loading board from disk");
 
-        if (! file.exists()) {
+        if (!file.exists()) {
             SavageFactions.plugin.log("No board to load from disk. Creating new file.");
             forceSave();
             return true;

@@ -125,7 +125,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void sendUnreadAnnouncements(FPlayer fPlayer) {
-        if (! announcements.containsKey(fPlayer.getId())) {
+        if (!announcements.containsKey(fPlayer.getId())) {
             return;
         }
         fPlayer.msg(TL.FACTIONS_ANNOUNCEMENT_TOP);
@@ -262,7 +262,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             SavageFactions.plugin.log("The faction " + this.getTag() + " (" + this.getId() + ") was disbanded by " + (disbanderIsConsole ? "console command" : fdisbander.getName()) + ".");
         }
 
-        if (Econ.shouldBeUsed() && ! disbanderIsConsole) {
+        if (Econ.shouldBeUsed() && !disbanderIsConsole) {
             //Give all the faction's money to the disbander
             double amount = Econ.getBalance(this.getAccountId());
             Econ.transferMoney(fdisbander, this, fdisbander, amount, false);
@@ -435,11 +435,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean noExplosionsInTerritory() {
-        return this.peaceful && ! peacefulExplosionsEnabled;
+        return this.peaceful && !peacefulExplosionsEnabled;
     }
 
     public boolean isPermanent() {
-        return permanent || ! this.isNormal();
+        return permanent || !this.isNormal();
     }
 
     public void setPermanent(boolean isPermanent) {
@@ -512,7 +512,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void confirmValidHome() {
-        if (! Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
+        if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
             return;
         }
 
@@ -524,7 +524,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         String aid = "faction-" + this.getId();
 
         // We need to override the default money given to players.
-        if (! Econ.hasAccount(aid)) {
+        if (!Econ.hasAccount(aid)) {
             Econ.setBalance(aid, 0);
         }
 
@@ -696,7 +696,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------
 
     public boolean isNormal() {
-        return ! (this.isWilderness() || this.isSafeZone() || this.isWarZone());
+        return !(this.isWilderness() || this.isSafeZone() || this.isWarZone());
     }
 
     public boolean isNone() {
@@ -845,11 +845,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean addFPlayer(FPlayer fplayer) {
-        return ! this.isPlayerFreeType() && fplayers.add(fplayer);
+        return !this.isPlayerFreeType() && fplayers.add(fplayer);
     }
 
     public boolean removeFPlayer(FPlayer fplayer) {
-        return ! this.isPlayerFreeType() && fplayers.remove(fplayer);
+        return !this.isPlayerFreeType() && fplayers.remove(fplayer);
     }
 
     public int getSize() {
@@ -864,7 +864,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
         Set<FPlayer> ret = new HashSet<>();
-        if (! this.isNormal()) {
+        if (!this.isNormal()) {
             return ret;
         }
 
@@ -879,7 +879,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online, FPlayer viewer) {
         Set<FPlayer> ret = new HashSet<>();
-        if (! this.isNormal()) {
+        if (!this.isNormal()) {
             return ret;
         }
 
@@ -895,7 +895,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                     ret.add(viewed);
                     // If we want offline, just add them.
                     // Prob a better way to do this but idk.
-                } else if (! online) {
+                } else if (!online) {
                     ret.add(viewed);
                 }
             }
@@ -905,7 +905,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public FPlayer getFPlayerAdmin() {
-        if (! this.isNormal()) {
+        if (!this.isNormal()) {
             return null;
         }
 
@@ -919,7 +919,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
         ArrayList<FPlayer> ret = new ArrayList<>();
-        if (! this.isNormal()) {
+        if (!this.isNormal()) {
             return ret;
         }
 
@@ -977,7 +977,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // used when current leader is about to be removed from the faction;
     // promotes new leader, or disbands faction if no other members left
     public void promoteNewLeader() {
-        if (! this.isNormal()) {
+        if (!this.isNormal()) {
             return;
         }
         if (this.isPermanent() && Conf.permanentFactionsDisableLeaderPromotion) {
@@ -1096,12 +1096,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean doesLocationHaveOwnersSet(FLocation loc) {
-        if (claimOwnership.isEmpty() || ! claimOwnership.containsKey(loc)) {
+        if (claimOwnership.isEmpty() || !claimOwnership.containsKey(loc)) {
             return false;
         }
 
         Set<String> ownerData = claimOwnership.get(loc);
-        return ownerData != null && ! ownerData.isEmpty();
+        return ownerData != null && !ownerData.isEmpty();
     }
 
     public boolean isPlayerInOwnerList(FPlayer player, FLocation loc) {

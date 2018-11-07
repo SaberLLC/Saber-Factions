@@ -25,7 +25,7 @@ public class CmdBypass extends FCommand {
 
     @Override
     public void perform() {
-        fme.setIsAdminBypassing(this.argAsBool(0, ! fme.isAdminBypassing()));
+        fme.setIsAdminBypassing(this.argAsBool(0, !fme.isAdminBypassing()));
 
         // TODO: Move this to a transient field in the model??
         if (fme.isAdminBypassing()) {
