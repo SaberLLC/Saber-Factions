@@ -43,7 +43,7 @@ public class Conf {
     public static double powerOfflineLossPerDay = 0.0;  // players will lose this much power per day offline
     public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
     public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
-    public static String prefixAdmin = "***";
+    public static String prefixLeader = "***";
     public static String prefixCoLeader = "**";
     public static String prefixMod = "*";
     public static String prefixRecruit = "-";

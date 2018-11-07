@@ -55,6 +55,7 @@ public enum Role implements Permissable {
 
     public static Role fromString(String check) {
         switch (check.toLowerCase()) {
+            case "leader":
             case "admin":
                 return LEADER;
             case "coleader":
@@ -92,7 +93,7 @@ public enum Role implements Permissable {
 
     public String getPrefix() {
         if (this == Role.LEADER) {
-            return Conf.prefixAdmin;
+            return Conf.prefixLeader;
         }
         if (this == Role.COLEADER) {
             return Conf.prefixCoLeader;

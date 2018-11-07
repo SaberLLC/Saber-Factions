@@ -1197,7 +1197,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return Conf.prefixCoLeader;
         }
       if (getRole() == Role.LEADER) {
-            return Conf.prefixAdmin;
+          return Conf.prefixLeader;
         }
         return null;
     }
