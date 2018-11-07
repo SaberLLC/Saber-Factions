@@ -44,7 +44,7 @@ public class CmdChat extends FCommand {
             } else if (modeString.startsWith("m") && !fme.getRole().isAtLeast(Role.MODERATOR)) {
                 msg(TL.COMMAND_CHAT_MOD_ONLY);
                 return;
-            } else if (modeString.startsWith("plugin")) {
+            } else if (modeString.startsWith("p")) {
                 modeTarget = ChatMode.PUBLIC;
             } else if (modeString.startsWith("a")) {
                 modeTarget = ChatMode.ALLIANCE;
