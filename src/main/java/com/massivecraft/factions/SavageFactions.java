@@ -37,6 +37,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
@@ -143,6 +144,7 @@ public class SavageFactions extends MPlugin {
             changeItemIDSInConfig();
         }
         setupMultiversionMaterials();
+      migrateFPlayerLeaders();
         log("==== End Setup ====");
 
         if (!preEnable()) {
@@ -305,6 +307,34 @@ public class SavageFactions extends MPlugin {
         }
     }
 
+  private void migrateFPlayerLeaders() {
+    List<String> lines = new ArrayList<String>();
+    File fplayerFile = new File("plugins\\Factions\\players.json");
+    try {
+      BufferedReader br = new BufferedReader(new FileReader(fplayerFile));
+      System.out.println("Migrating old players.json file.");
+
+      String line;
+      while ((line = br.readLine()) != null) {
+        if (line.contains("\"role\": \"ADMIN\"")) {
+          line = line.replace("\"role\": \"ADMIN\"", "\"role\": " + "\"LEADER\"");
+        }
+        lines.add(line);
+      }
+      br.close();
+      BufferedWriter bw = new BufferedWriter(new FileWriter(fplayerFile));
+      for (String newLine : lines) {
+        bw.write(newLine + "\n");
+      }
+      bw.flush();
+      bw.close();
+    } catch (IOException ex) {
+      System.out.println("File was not found for players.json, assuming"
+              + " there is no need to migrate old players.json file.");
+    }
+
+
+  }
 
     private void changeItemIDSInConfig() {
 
