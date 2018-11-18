@@ -986,6 +986,9 @@ Tntfill:
   max-radius: 32
   max-amount: 64
 
+# Statistics Engine.
+MassiveStats: true
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                Big List of variables                 | #

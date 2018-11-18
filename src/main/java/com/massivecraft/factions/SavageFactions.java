@@ -191,8 +191,11 @@ public class SavageFactions extends MPlugin {
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
 
-        // massive stats
-        new MassiveStats(this);
+        if (getConfig().getBoolean("MassiveStats")) {
+            // massive stats
+            new MassiveStats(this);
+        }
+
 
 
         if (version > 8) {
