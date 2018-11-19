@@ -19,15 +19,13 @@ import java.util.Map.Entry;
 
 /**
  * <b>ParticleEffect Library</b>
- * <plugin>
  * This library was created by @DarkBlade12 and allows you to display all Minecraft particle effects on a Bukkit server
- * <plugin>
+ *  
  * You are welcome to use it, modify it and redistribute it under the following conditions:
  * <ul>
  * <li>Don't claim this class as your own
  * <li>Don't remove this disclaimer
  * </ul>
- * <plugin>
  * Special thanks:
  * <ul>
  * <li>@microgeek (original idea, names and packet parameters)
@@ -36,7 +34,6 @@ import java.util.Map.Entry;
  * <li>@Cybermaxke (particle behavior)
  * <li>@JamieSinn (hosting a jenkins server and documentation for particleeffect)
  * </ul>
- * <plugin>
  * <i>It would be nice if you provide credit to me if you use this class in a published project</i>
  *
  * @author DarkBlade12
@@ -527,6 +524,8 @@ public enum ParticleEffect {
     /**
      * Determine if this particle effect has a specific property
      *
+     *
+     * @param property - property to check.
      * @return Whether it has the property or not
      */
     public boolean hasProperty(ParticleProperty property) {
@@ -905,7 +904,6 @@ public enum ParticleEffect {
 
     /**
      * Represents the property of a particle effect
-     * <plugin>
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -932,7 +930,6 @@ public enum ParticleEffect {
 
     /**
      * Represents the particle data for effects like {@link ParticleEffect#ITEM_CRACK}, {@link ParticleEffect#BLOCK_CRACK} and {@link ParticleEffect#BLOCK_DUST}
-     * <plugin>
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -995,7 +992,6 @@ public enum ParticleEffect {
 
     /**
      * Represents the item data for the {@link ParticleEffect#ITEM_CRACK} effect
-     * <plugin>
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -1016,7 +1012,6 @@ public enum ParticleEffect {
 
     /**
      * Represents the block data for the {@link ParticleEffect#BLOCK_CRACK} and {@link ParticleEffect#BLOCK_DUST} effects
-     * <plugin>
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -1041,7 +1036,6 @@ public enum ParticleEffect {
 
     /**
      * Represents the color for effects like {@link ParticleEffect#SPELL_MOB}, {@link ParticleEffect#SPELL_MOB_AMBIENT}, {@link ParticleEffect#REDSTONE} and {@link ParticleEffect#NOTE}
-     * <plugin>
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -1072,7 +1066,6 @@ public enum ParticleEffect {
 
     /**
      * Represents the color for effects like {@link ParticleEffect#SPELL_MOB}, {@link ParticleEffect#SPELL_MOB_AMBIENT} and {@link ParticleEffect#NOTE}
-     * <plugin>
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -1184,7 +1177,7 @@ public enum ParticleEffect {
 
     /**
      * Represents the color for the {@link ParticleEffect#NOTE} effect
-     * <plugin>
+     *  
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -1243,7 +1236,7 @@ public enum ParticleEffect {
 
     /**
      * Represents a runtime exception that is thrown either if the displayed particle effect requires data and has none or vice-versa or if the data type is incorrect
-     * <plugin>
+     *  
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -1264,7 +1257,7 @@ public enum ParticleEffect {
 
     /**
      * Represents a runtime exception that is thrown either if the displayed particle effect is not colorable or if the particle color type is incorrect
-     * <plugin>
+     *  
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -1285,7 +1278,7 @@ public enum ParticleEffect {
 
     /**
      * Represents a runtime exception that is thrown if the displayed particle effect requires a newer version
-     * <plugin>
+     *  
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -1306,7 +1299,7 @@ public enum ParticleEffect {
 
     /**
      * Represents a particle effect packet with all attributes which is used for sending packets to the players
-     * <plugin>
+     *  
      * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -1392,7 +1385,7 @@ public enum ParticleEffect {
 
         /**
          * Initializes {@link #packetConstructor}, {@link #getHandle}, {@link #playerConnection} and {@link #sendPacket} and sets {@link #initialized} to <code>true</code> if it succeeds
-         * <plugin>
+         *  
          * <b>Note:</b> These fields only have to be initialized once, so it will return if {@link #initialized} is already set to <code>true</code>
          *
          * @throws VersionIncompatibleException if your bukkit version is not supported by this library
@@ -1539,7 +1532,7 @@ public enum ParticleEffect {
 
         /**
          * Represents a runtime exception that is thrown if a bukkit version is not compatible with this library
-         * <plugin>
+         *  
          * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
          *
          * @author DarkBlade12
@@ -1561,7 +1554,7 @@ public enum ParticleEffect {
 
         /**
          * Represents a runtime exception that is thrown if packet instantiation fails
-         * <plugin>
+         *  
          * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
          *
          * @author DarkBlade12
@@ -1583,7 +1576,7 @@ public enum ParticleEffect {
 
         /**
          * Represents a runtime exception that is thrown if packet sending fails
-         * <plugin>
+         *  
          * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
          *
          * @author DarkBlade12

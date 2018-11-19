@@ -55,6 +55,12 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>attach-javadocs</id>
+                        <configuration> <!-- add this to disable checking -->
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
@@ -66,6 +72,12 @@
     </build>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.0.1</version>
+        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
