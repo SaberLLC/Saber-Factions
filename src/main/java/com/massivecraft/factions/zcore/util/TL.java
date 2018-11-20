@@ -643,9 +643,9 @@ public enum TL {
     COMMAND_STATUS_DESCRIPTION("Show the status of a player"),
 
     COMMAND_STEALTH_DESCRIPTION("Enable and Disable Stealth Mode"),
-    COMMAND_STEALTH_ENABLE("&cStealth &7» &7You will no longer disable nearby players in /f fly for {timeout} seconds."),
-    COMMAND_STEALTH_DISABLE("&2Stealth &8» &7You will now disable other nearby players in /f fly."),
-    COMMAND_STEALTH_MUSTBEMEMBER("&2Stealth &8» &4You must be in a faction to use this command"),
+    COMMAND_STEALTH_ENABLE("&cStealth &7» &7You will no longer disable nearby players in /f fly."),
+    COMMAND_STEALTH_DISABLE("&cStealth &8» &7You will now disable other nearby players in /f fly."),
+    COMMAND_STEALTH_MUSTBEMEMBER("&cStealth &8» &4You must be in a faction to use this command"),
 
     COMMAND_STUCK_TIMEFORMAT("m 'minutes', s 'seconds.'"),
     COMMAND_STUCK_CANCELLED("<a>Teleport cancelled because you were damaged"),
