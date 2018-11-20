@@ -11,6 +11,7 @@ public class CmdChest extends FCommand {
 
     public CmdChest() {
         this.aliases.add("chest");
+        this.aliases.add("pv");
 
         //this.requiredArgs.add("");
 
