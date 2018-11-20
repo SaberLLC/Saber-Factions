@@ -24,7 +24,6 @@ public class CmdPaypalSee extends FCommand {
             fme.msg(TL.GENERIC_DISABLED);
         } else {
             Faction faction = argAsFaction(0);
-            String paypal = argAsString(1);
 
             if (faction != null) {
                 if (!faction.isWilderness() && !faction.isSafeZone() && !faction.isWarZone()) {

@@ -76,7 +76,7 @@ public class CmdSeeChunk extends FCommand {
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
             @Override
             public void run() {
-                Iterator itr = seeChunkMap.keySet().iterator();
+                Iterator<String> itr = seeChunkMap.keySet().iterator();
                 while (itr.hasNext()) {
                     Object nameObject = itr.next();
                     String name = nameObject + "";

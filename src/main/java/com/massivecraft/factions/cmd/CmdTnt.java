@@ -46,9 +46,8 @@ public class CmdTnt extends FCommand {
 
         if (args.size() == 2) {
             if (args.get(0).equalsIgnoreCase("add") || args.get(0).equalsIgnoreCase("a")) {
-                int testNumber = - 1;
                 try {
-                    testNumber = Integer.parseInt(args.get(1));
+                    Integer.parseInt(args.get(1));
                 } catch (NumberFormatException e) {
                     fme.msg(TL.COMMAND_TNT_INVALID_NUM);
                     return;
@@ -87,9 +86,8 @@ public class CmdTnt extends FCommand {
 
             }
             if (args.get(0).equalsIgnoreCase("take") || args.get(0).equalsIgnoreCase("t")) {
-                int testNumber = - 1;
                 try {
-                    testNumber = Integer.parseInt(args.get(1));
+                    Integer.parseInt(args.get(1));
                 } catch (NumberFormatException e) {
                     fme.msg(TL.COMMAND_TNT_INVALID_NUM);
                     return;

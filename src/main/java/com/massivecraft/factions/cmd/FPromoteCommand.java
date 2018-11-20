@@ -69,11 +69,6 @@ public class FPromoteCommand extends FCommand {
             return;
         }
 
-        if (promotion == null) {
-            fme.msg(TL.COMMAND_PROMOTE_NOTTHATPLAYER);
-            return;
-        }
-
         // Don't allow people to promote people to their same or higher rnak.
         if (fme.getRole().value <= promotion.value) {
             fme.msg(TL.COMMAND_PROMOTE_NOT_ALLOWED);

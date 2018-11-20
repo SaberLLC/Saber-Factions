@@ -15,7 +15,7 @@ import java.util.List;
 
 public abstract class FCommand extends MCommand<SavageFactions> {
 
-    public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
+    public static final SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
     public boolean disableOnLock;
 

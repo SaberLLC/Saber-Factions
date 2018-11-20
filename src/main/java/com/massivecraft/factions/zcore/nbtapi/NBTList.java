@@ -70,7 +70,6 @@ public class NBTList {
         return null;
     }
 
-    @SuppressWarnings ("unchecked")
     public void addString(String s) {
         if (type != NBTType.NBTTagString) {
             new Throwable("Using String method on a non String list!").printStackTrace();
@@ -85,7 +84,6 @@ public class NBTList {
         }
     }
 
-    @SuppressWarnings ("unchecked")
     public void setString(int i, String s) {
         if (type != NBTType.NBTTagString) {
             new Throwable("Using String method on a non String list!").printStackTrace();

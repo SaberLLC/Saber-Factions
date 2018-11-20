@@ -163,6 +163,7 @@ public class FactionsPlayerListener implements Listener {
     return true;
   }
 
+  @SuppressWarnings("deprecation")
   public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
     if (Conf.playersWhoBypassAllProtection.contains(player.getName())) {
       return true;
@@ -179,7 +180,6 @@ public class FactionsPlayerListener implements Listener {
     Faction otherFaction = Board.getInstance().getFactionAt(loc);
     Faction myFaction = me.getFaction();
     Relation rel = myFaction.getRelationTo(otherFaction);
-
 
     // no door/chest/whatever protection in wilderness, war zones, or safe zones
     if (!otherFaction.isNormal()) {
@@ -915,13 +915,13 @@ public class FactionsPlayerListener implements Listener {
 
     // returns the current attempt count
     public int increment() {
-      long Now = System.currentTimeMillis();
-      if (Now > lastAttempt + 2000) {
+      long now = System.currentTimeMillis();
+      if (now > lastAttempt + 2000) {
         attempts = 1;
       } else {
         attempts++;
       }
-      lastAttempt = Now;
+      lastAttempt = now;
       return attempts;
     }
   }

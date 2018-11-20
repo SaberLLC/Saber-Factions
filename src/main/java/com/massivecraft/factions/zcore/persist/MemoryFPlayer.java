@@ -5,6 +5,7 @@ import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FPlayerStoppedFlying;
 import com.massivecraft.factions.event.LandClaimEvent;
+import com.massivecraft.factions.event.PowerRegenEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -557,8 +558,14 @@ public abstract class MemoryFPlayer implements FPlayer {
             return;  // don't let dead players regain power until they respawn
         }
 
-        int millisPerMinute = 60 * 1000;
-        this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
+        PowerRegenEvent powerRegenEvent = new PowerRegenEvent(getFaction(), this);
+        Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent);
+        
+        if (!powerRegenEvent.isCancelled())
+        {
+	        int millisPerMinute = 60 * 1000;
+	        this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
+        }
     }
 
     public void losePowerFromBeingOffline() {
@@ -1126,7 +1133,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 
         if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure)) {
-
             return false;
         }
 
@@ -1191,21 +1197,16 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     @Override
     public String getRolePrefix() {
-        if (getRole() == Role.RECRUIT) {
-            return Conf.prefixRecruit;
-        }
-        if (getRole() == Role.NORMAL) {
-            return Conf.prefixNormal;
-        }
-        if (getRole() == Role.MODERATOR) {
-            return Conf.prefixMod;
-        }
-        if (getRole() == Role.COLEADER) {
-            return Conf.prefixCoLeader;
-        }
-        if (getRole() == Role.LEADER) {
-            return Conf.prefixLeader;
-        }
+    	
+    	switch (getRole())
+    	{
+    		case RECRUIT:  return Conf.prefixRecruit;
+    		case NORMAL: return Conf.prefixNormal;
+    		case MODERATOR: return Conf.prefixMod;
+    		case COLEADER: return Conf.prefixCoLeader;
+    		case LEADER: return Conf.prefixLeader;
+    	}
+    	
         return null;
     }
 

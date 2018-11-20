@@ -46,7 +46,7 @@ public class CmdList extends FCommand {
         }
 
         ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
-        factionList.remove(Factions.getInstance().getNone());
+        factionList.remove(Factions.getInstance().getWilderness());
         factionList.remove(Factions.getInstance().getSafeZone());
         factionList.remove(Factions.getInstance().getWarZone());
 
@@ -94,7 +94,7 @@ public class CmdList extends FCommand {
 
         ArrayList<String> lines = new ArrayList<>();
 
-        factionList.add(0, Factions.getInstance().getNone());
+        factionList.add(0, Factions.getInstance().getWilderness());
 
         final int pageheight = 9;
         int pagenumber = this.argAsInt(0, 1);

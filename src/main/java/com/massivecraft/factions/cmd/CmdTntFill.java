@@ -54,9 +54,9 @@ public class CmdTntFill extends FCommand {
             msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount") + ""));
             return;
         }
-        int testNumber = - 1;
+        
         try {
-            testNumber = Integer.parseInt(args.get(1));
+            Integer.parseInt(args.get(1));
         } catch (NumberFormatException e) {
             fme.msg(TL.COMMAND_TNT_INVALID_NUM);
             return;
@@ -124,9 +124,8 @@ public class CmdTntFill extends FCommand {
     }
 
     private void removeFromBank(int amount) {
-        int testNumber = - 1;
         try {
-            testNumber = Integer.parseInt(args.get(1));
+            Integer.parseInt(args.get(1));
         } catch (NumberFormatException e) {
             fme.msg(TL.COMMAND_TNT_INVALID_NUM);
             return;

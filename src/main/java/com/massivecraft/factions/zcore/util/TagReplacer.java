@@ -121,7 +121,7 @@ public enum TagReplacer {
             case TOTAL_ONLINE:
                 return String.valueOf(Bukkit.getOnlinePlayers().size());
             case FACTIONLESS:
-                return String.valueOf(Factions.getInstance().getNone().getFPlayersWhereOnline(true).size());
+                return String.valueOf(Factions.getInstance().getWilderness().getFPlayersWhereOnline(true).size());
             case MAX_ALLIES:
                 if (SavageFactions.plugin.getConfig().getBoolean("max-relations.enabled", true)) {
                     return String.valueOf(SavageFactions.plugin.getConfig().getInt("max-relations.ally", 10));
@@ -139,6 +139,7 @@ public enum TagReplacer {
                 return TL.GENERIC_INFINITY.toString();
             case MAX_WARPS:
                 return String.valueOf(SavageFactions.plugin.getConfig().getInt("max-warps", 5));
+            default:
         }
         return null;
     }
@@ -180,6 +181,7 @@ public enum TagReplacer {
                     return String.valueOf(fp.getKills());
                 case PLAYER_DEATHS:
                     return String.valueOf(fp.getDeaths());
+                default:
             }
         }
         switch (this) {
@@ -252,6 +254,7 @@ public enum TagReplacer {
                 return String.valueOf(fac.getDeaths());
             case FACTION_BANCOUNT:
                 return String.valueOf(fac.getBannedPlayers().size());
+            default:
         }
         return null;
     }

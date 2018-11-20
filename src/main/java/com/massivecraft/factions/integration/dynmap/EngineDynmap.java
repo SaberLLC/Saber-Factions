@@ -40,13 +40,12 @@ public class EngineDynmap {
     // INSTANCE & CONSTRUCT
     // -------------------------------------------- //
 
-    private static EngineDynmap i = new EngineDynmap();
+    private static final EngineDynmap i = new EngineDynmap();
     public DynmapAPI dynmapApi;
     public MarkerAPI markerApi;
     public MarkerSet markerset;
 
-    private EngineDynmap() {
-    }
+    private EngineDynmap() {}
 
     public static EngineDynmap getInstance() {
         return i;
@@ -64,10 +63,7 @@ public class EngineDynmap {
     }
 
     public static String getHtmlPlayerName(FPlayer fplayer) {
-        if (fplayer == null) {
-            return "none";
-        }
-        return escapeHtml(fplayer.getName());
+    	return fplayer != null ? escapeHtml(fplayer.getName()):"none";
     }
 
     public static String escapeHtml(String string) {
@@ -75,9 +71,9 @@ public class EngineDynmap {
         for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);
             if (c > 127 || c == '"' || c == '<' || c == '>' || c == '&') {
-                out.append("&#");
-                out.append((int) c);
-                out.append(';');
+                out.append("&#")
+                .append((int) c)
+                .append(';');
             } else {
                 out.append(c);
             }
@@ -87,8 +83,7 @@ public class EngineDynmap {
 
     // Thread Safe / Asynchronous: Yes
     public static void info(String msg) {
-        String message = DYNMAP_INTEGRATION + msg;
-        System.out.println(message);
+        System.out.println(DYNMAP_INTEGRATION + msg);
     }
 
     // -------------------------------------------- //
@@ -97,8 +92,7 @@ public class EngineDynmap {
 
     // Thread Safe / Asynchronous: Yes
     public static void severe(String msg) {
-        String message = DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg;
-        System.out.println(message);
+        System.out.println(DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg);
     }
 
     public void init() {
