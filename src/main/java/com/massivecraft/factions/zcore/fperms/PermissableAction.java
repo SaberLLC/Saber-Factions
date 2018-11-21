@@ -107,17 +107,14 @@ public enum PermissableAction {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
 
-
         String accessValue = null;
 
-        if (access.equals(Access.ALLOW)) {
-            accessValue = "allow";
-        } else if (access.equals(Access.DENY)) {
-            accessValue = "deny";
-        } else if (access.equals(Access.UNDEFINED)) {
-            accessValue = "undefined";
+        switch (access)
+        {
+        	case ALLOW: accessValue = "allow"; break;
+        	case DENY: accessValue = "deny"; break;
+        	case UNDEFINED: accessValue = "undefined"; break;
         }
-
 
         // If under the 1.13 version we will use the colorable option.
         if (!SavageFactions.plugin.mc113) {

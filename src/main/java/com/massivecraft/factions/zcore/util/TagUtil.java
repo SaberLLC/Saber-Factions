@@ -232,6 +232,7 @@ public class TagUtil {
                 }
                 fancyMessages.add(currentOffline);
                 return firstOffline && minimal ? null : fancyMessages; // we must return here and not outside the switch
+            default:
         }
         return null;
     }

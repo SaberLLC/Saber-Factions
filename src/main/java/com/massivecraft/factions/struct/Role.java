@@ -92,23 +92,15 @@ public enum Role implements Permissable {
     }
 
     public String getPrefix() {
-        if (this == Role.LEADER) {
-            return Conf.prefixLeader;
-        }
-        if (this == Role.COLEADER) {
-            return Conf.prefixCoLeader;
-        }
-        if (this == Role.MODERATOR) {
-            return Conf.prefixMod;
-        }
-
-        if (this == Role.NORMAL) {
-            return Conf.prefixNormal;
-        }
-
-        if (this == Role.RECRUIT) {
-            return Conf.prefixRecruit;
-        }
+    	
+    	switch (this)
+    	{
+    		case LEADER: return Conf.prefixLeader;
+    		case COLEADER: return Conf.prefixCoLeader;
+    		case MODERATOR: return Conf.prefixMod;
+    		case NORMAL: return Conf.prefixNormal;
+    		case RECRUIT: return Conf.prefixRecruit;
+    	}
 
         return "";
     }

@@ -446,7 +446,6 @@ class MassiveStatsDataRequest {
 
 }
 
-@SuppressWarnings ("unused")
 final class MassiveStatsDataResponse {
 
     private final boolean isUpToDate;

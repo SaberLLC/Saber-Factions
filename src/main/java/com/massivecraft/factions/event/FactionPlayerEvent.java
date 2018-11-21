@@ -8,7 +8,7 @@ import com.massivecraft.factions.Faction;
  */
 public class FactionPlayerEvent extends FactionEvent {
 
-    private final FPlayer fPlayer;
+    protected final FPlayer fPlayer;
 
     public FactionPlayerEvent(Faction faction, FPlayer fPlayer) {
         super(faction);

@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.fupgrades;
 
 import com.massivecraft.factions.*;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
@@ -10,22 +11,16 @@ public class SpawnerUpgrades implements Listener {
     public void onSpawn(SpawnerSpawnEvent e) {
         FLocation floc = new FLocation(e.getLocation());
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
-        if (factionAtLoc != Factions.getInstance().getWilderness()) {
+        
+        if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade("Spawner");
             if (level != 0) {
-                if (level == 1) {
-                    int rate = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1");
-                    lowerSpawnerDelay(e, rate);
-                }
-                if (level == 2) {
-                    int rate = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2");
-                    lowerSpawnerDelay(e, rate);
-                }
-                if (level == 3) {
-                    int rate = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3");
-                    lowerSpawnerDelay(e, rate);
-                }
-
+            	switch (level)
+            	{
+					case 1: lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1")); break;
+					case 2: lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2")); break;
+					case 3: lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3")); break;
+            	}
             }
         }
     }

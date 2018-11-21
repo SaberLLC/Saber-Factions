@@ -1,13 +1,18 @@
 package com.massivecraft.factions.integration;
 
-import com.earth2me.essentials.IEssentials;
 import com.earth2me.essentials.Teleport;
 import com.earth2me.essentials.Trade;
 import com.massivecraft.factions.Conf;
+
+import net.ess3.api.IEssentials;
+
+import java.math.BigDecimal;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.plugin.Plugin;
 
 public class Essentials {
@@ -28,9 +33,9 @@ public class Essentials {
         }
 
         Teleport teleport = essentials.getUser(player).getTeleport();
-        Trade trade = new Trade(Conf.econCostHome, essentials);
+        Trade trade = new Trade(new BigDecimal(Conf.econCostHome), essentials);
         try {
-            teleport.teleport(loc, trade);
+            teleport.teleport(loc, trade, TeleportCause.PLUGIN);
         } catch (Exception e) {
             player.sendMessage(ChatColor.RED.toString() + e.getMessage());
         }
