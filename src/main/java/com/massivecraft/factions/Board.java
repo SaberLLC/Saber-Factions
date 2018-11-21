@@ -76,7 +76,7 @@ public abstract class Board {
     // Map generation
     //----------------------------------------------//
 
-    /**
+    /*
      * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
      * of decreasing z
      */

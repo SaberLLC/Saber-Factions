@@ -435,7 +435,7 @@ public class FactionsPlayerListener implements Listener {
 
     if (SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", false)) {
       FScoreboard.init(me);
-      FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), SavageFactions.plugin.getConfig().getInt("default-update-interval", 20));
+      FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), SavageFactions.plugin.getConfig().getInt("scoreboard.default-update-interval", 20));
       FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
     }
 

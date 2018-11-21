@@ -11,15 +11,15 @@ import java.util.Map;
 
 /**
  * <b>ReflectionUtils</b>
- * <plugin>
+ *  
  * This class provides useful methods which makes dealing with reflection much easier, especially when working with Bukkit
- * <plugin>
+ *  
  * You are welcome to use it, modify it and redistribute it under the following conditions:
  * <ul>
  * <li>Don't claim this class as your own
  * <li>Don't remove this disclaimer
  * </ul>
- * <plugin>
+ *  
  * <i>It would be nice if you provide credit to me if you use this class in a published project</i>
  *
  * @author DarkBlade12
@@ -346,7 +346,7 @@ public final class ReflectionUtils {
 
     /**
      * Represents an enumeration of dynamic packages of NMS and CraftBukkit
-     * <plugin>
+     *  
      * This class is part of the <b>ReflectionUtils</b> and follows the same usage conditions
      *
      * @author DarkBlade12
@@ -433,7 +433,7 @@ public final class ReflectionUtils {
 
     /**
      * Represents an enumeration of Java data types with corresponding classes
-     * <plugin>
+     *  
      * This class is part of the <b>ReflectionUtils</b> and follows the same usage conditions
      *
      * @author DarkBlade12
