@@ -90,10 +90,10 @@ tooltips:
   # It will not sure up for factionless of course, just actual factions.
   # You can use color codes here.
   list:
-    - "&6&l* &eLeader: &7{leader}"
-    - "&6&l* &eClaims: &7{chunks}"
-    - "&6&l* &ePower: &7{power}/{maxPower}"
-    - "&6&l* &eMembers: &7{online}/{members}"
+  - "&6&l* &eLeader: &7{leader}"
+  - "&6&l* &eClaims: &7{chunks}"
+  - "&6&l* &ePower: &7{power}/{maxPower}"
+  - "&6&l* &eMembers: &7{online}/{members}"
 
   # Show
   # This shows up when someone does /f show.
@@ -102,11 +102,11 @@ tooltips:
   # {balance} will show their balance if you have vault installed.
   # {lastSeen} will show human readable info on when the player was last seen, or online.
   show:
-    - "&6&l* &eUsername: &7{name}"
-    - "&6&l* &eRank: &7{group}"
-    - "&6&l* &eBalance: &7${balance}"
-    - "&6&l* &eLast Seen:&7 {lastSeen}"
-    - "&6&l* &ePower: &7{power}/{maxPower}"
+  - "&6&l* &eUsername: &7{name}"
+  - "&6&l* &eRank: &7{group}"
+  - "&6&l* &eBalance: &7${balance}"
+  - "&6&l* &eLast Seen:&7 {lastSeen}"
+  - "&6&l* &ePower: &7{power}/{maxPower}"
 
 # Configuration section for Scoreboards
 # This will allow you to completely customize how your scoreboards look.
@@ -114,39 +114,39 @@ tooltips:
 # Use &0-9a-f for colors and include messages in "quotes"
 scoreboard:
 
-# send faction change message as well when scoreboard is up?
+  # send faction change message as well when scoreboard is up?
   also-send-chat: true
-# How long do we want scoreboards to stay if set temporarily.
+  # How long do we want scoreboards to stay if set temporarily.
   expiration: 7
 
-# FInfo scoreboard is displayed when a player walks into a new Faction's territory.
-# Scoreboard disappears after <expiration> seconds.
-# Things to be replaced in this:
-# {power} - faction's power. {chunks} - total claimed chunks. {members} - total members.
-# {online} - online members. {leader} - faction's leader. {open} - shows either true or false if open.
-# {raidable} - true if the faction can be claimed over, otherwise false.
-# {warps} - the number of warps that a faction has set.
-# The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
-# Commenting this section out will cause the info to appear in chat as the plugin originally did.
+  # FInfo scoreboard is displayed when a player walks into a new Faction's territory.
+  # Scoreboard disappears after <expiration> seconds.
+  # Things to be replaced in this:
+  # {power} - faction's power. {chunks} - total claimed chunks. {members} - total members.
+  # {online} - online members. {leader} - faction's leader. {open} - shows either true or false if open.
+  # {raidable} - true if the faction can be claimed over, otherwise false.
+  # {warps} - the number of warps that a faction has set.
+  # The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
+  # Commenting this section out will cause the info to appear in chat as the plugin originally did.
   finfo-enabled: false
 
   # SUPPORTS PLACEHOLDERS
   finfo:
-    - "&6Power"
-    - "{power}"
-    - "&3Members"
-    - "{online}/{members}"
-    - "&4Leader"
-    - "{leader}"
-    - "&bTerritory"
-    - "{chunks}"
+  - "&6Power"
+  - "{power}"
+  - "&3Members"
+  - "{online}/{members}"
+  - "&4Leader"
+  - "{leader}"
+  - "&bTerritory"
+  - "{chunks}"
 
-# Default board that will always show up if a player wants it to.
-# This can show any arbitrary text or you can use a lot of variables to replace things.
-# Replace {name} - player's name. {faction} - player's faction title, factionless if none.
-# {totalOnline} - total players on the server. {balance} - player's balance.
-# {maxPower} - player's max power.
-# {powerBoost} - player's powerboost.
+  # Default board that will always show up if a player wants it to.
+  # This can show any arbitrary text or you can use a lot of variables to replace things.
+  # Replace {name} - player's name. {faction} - player's faction title, factionless if none.
+  # {totalOnline} - total players on the server. {balance} - player's balance.
+  # {maxPower} - player's max power.
+  # {powerBoost} - player's powerboost.
 
   default-enabled: false # Default to false to keep original functionality.
   default-title: "&cSavageFactions" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
@@ -156,35 +156,35 @@ scoreboard:
   #   The scoreboard needs to be enabled for this to work.
   default-prefixes: true
 
-# SUPPORTS PLACEHOLDERS
+  # SUPPORTS PLACEHOLDERS
 
   default:
-    - "&7&m--------------------------"
-    - "&4&lFaction Info &8»"
-    - " &8> &cLeader&7: &f{leader}"
-    - " &8> &cMembers&7: &f{online}&7/&f{members}"
-    - " &8> &cPower&7: &f{power}&7/&f{maxPower}"
-    - "&m"
-    - "&4&lFaction Stats &8»"
-    - " &8> &cKills&7: &f{faction-kills}"
-    - " &8> &cDeaths&7: &f{faction-deaths}"
-    - " &8> &cBalance&7: &f{faction-balance}"
-    - ""
-    - " &8> &cYour Balance&7: &f{balance}"
-    - "&7&m---------------------------"
+  - "&7&m--------------------------"
+  - "&4&lFaction Info &8»"
+  - " &8> &cLeader&7: &f{leader}"
+  - " &8> &cMembers&7: &f{online}&7/&f{members}"
+  - " &8> &cPower&7: &f{power}&7/&f{maxPower}"
+  - "&m"
+  - "&4&lFaction Stats &8»"
+  - " &8> &cKills&7: &f{faction-kills}"
+  - " &8> &cDeaths&7: &f{faction-deaths}"
+  - " &8> &cBalance&7: &f{faction-balance}"
+  - ""
+  - " &8> &cYour Balance&7: &f{balance}"
+  - "&7&m---------------------------"
 
   factionless-enabled: true
   factionless:
-    - "&7&m--------------------------"
-    - "&4&lInformation &8»"
-    - " &8> &cPlayer&7: &f{name}"
-    - " &8> &cRank&7: &f{group}"
-    - " &8> &cBalance&7: &f${balance}"
-    - "&m"
-    - "&4&lServer Info &8» "
-    - " &8» &cIFaction: &fN/A"
-    - " &8» &cOnline Players&7: &f{total-online}"
-    - "&7&m---------------------------"
+  - "&7&m--------------------------"
+  - "&4&lInformation &8»"
+  - " &8> &cPlayer&7: &f{name}"
+  - " &8> &cRank&7: &f{group}"
+  - " &8> &cBalance&7: &f${balance}"
+  - "&m"
+  - "&4&lServer Info &8» "
+  - " &8» &cIFaction: &fN/A"
+  - " &8» &cOnline Players&7: &f{total-online}"
+  - "&7&m---------------------------"
 
 
 # Configration section for warmups.
@@ -276,25 +276,25 @@ hcf:
 # SUPPORTS PLACEHOLDERS
 show:
 # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
-  - '&8&m--------------&7 &8<&e{faction}&8> &8&m--------------'
-  - '&6 * &eOwner &7{leader}'
-  - '&6 * &eDescription &7{description}'
-  - '&6 * &eLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'
-  - '&6 * &eFounded &7{create-date}'
-  - '&6 * &eBalance &f{faction-balance}'
-  - '&6 * &eAllies &c{allies-list}'
-  - '&6 * &eEnemies &c{enemies-list}'
-  - '&6 * &eOnline Members &8(&7{online}/{members}&8) &7{online-list}'
-  - '&6 * &eOffline Members &8(&7{offline}/{members}&8) &7{offline-list}'
-  - '&6 * &eBans &7{faction-bancount}'
-  - '&8&m----------------------------------------'
+- '&8&m--------------&7 &8<&e{faction}&8> &8&m--------------'
+- '&6 * &eOwner &7{leader}'
+- '&6 * &eDescription &7{description}'
+- '&6 * &eLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'
+- '&6 * &eFounded &7{create-date}'
+- '&6 * &eBalance &f{faction-balance}'
+- '&6 * &eAllies &c{allies-list}'
+- '&6 * &eEnemies &c{enemies-list}'
+- '&6 * &eOnline Members &8(&7{online}/{members}&8) &7{online-list}'
+- '&6 * &eOffline Members &8(&7{offline}/{members}&8) &7{offline-list}'
+- '&6 * &eBans &7{faction-bancount}'
+- '&8&m----------------------------------------'
 # For a /f show that does not display fancy messages that are essentially empty, use minimal-show
 minimal-show: false
 
 # Factions that should be exempt from /f show, case sensitive, useful for a
 # serverteam faction, since the command shows vanished players otherwise
 show-exempt:
-  - Wilderness
+- Wilderness
 
 
 # THIS IS FOR /f map tool tips.
@@ -303,13 +303,13 @@ show-exempt:
 # Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
 map:
 # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
-  - '&6* &eFaction &7{faction}'
-  - '&6* &eOwner &7{leader}'
-  - '&6* &eLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'
-  - '&6* &eAllies &c{allies-list}'
-  - '&6* &eEnemies &c{enemies-list}'
-  - '&6* &eOnline Members &8(&7{online}/{members}&8) {online-list}'
-  - '&6* &eOffline Members &7{offline-list}'
+- '&6* &eFaction &7{faction}'
+- '&6* &eOwner &7{leader}'
+- '&6* &eLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'
+- '&6* &eAllies &c{allies-list}'
+- '&6* &eEnemies &c{enemies-list}'
+- '&6* &eOnline Members &8(&7{online}/{members}&8) {online-list}'
+- '&6* &eOffline Members &7{offline-list}'
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -339,51 +339,51 @@ help:
 
   # You can change the page name to whatever you like
   # We use '1' to preserve default functionality of /f help 1
-    '1':
-     - '&7&m----------------------------------------------------'
-     - '&6&lFactions Help &8- &f(1/2)               '
-     - '&7&m----------------------------------------------------'
-     - '&e/f create &f<name> &8- &7Create your own faction.'
-     - '&e/f who &f<name> &8- &7Show faction information.'
-     - '&e/f tag &f<name> &8- &7Change your faction name.'
-     - '&e/f join &f<name> &8- &7Join to the faction.'
-     - '&e/f list &8- &7List all factions.'
-     - '&e/f top &8- &7View the richest factions.'
-     - '&e/f map &8- &7Map of the surrounding area, click chunks to claim.'
-     - '&e/f sethome &8- &7Set your faction home.'
-     - '&e/f home &8- &7Set your faction home.'
-     - '&e/f title &f<playername> <title> &8- &7Set a player''s title, color codes supported.'
-     - '&e/f ban &8- &7Ban a member from your faction.'
-     - '&e/f unban &8- &7Unban a member from your faction.'
-     - '&e/f banlist &8- &7List banned players from your faction.'
-     - '&e/f lowpower &8- &7List player with power under max from your faction.'
-     - '&e/f coords &8- &7Broadcast your location to your faction.'
-     - '&e/f showclaims &8- &7List all claims from your faction.'
-     - '&7&m--------------------&r &e/f help 2 &7&m-----------------------'
-    '2':
-     - '&7&m----------------------------------------------------'
-     - '&6&lFactions Help &8- &f(2/2)               '
-     - '&7&m----------------------------------------------------'
-     - '&e/f leave &8- &7Leave your faction.'
-     - '&e/f invite &f<playerName> &8- &7Invite a player to your faction.'
-     - '&e/f deinvite &f<playerName> &8- &7Revoke invitation to player.'
-     - '&e/f claim &8- &7Claim a land for your faction.'
-     - '&e/f unclaim &8- &7Unclaim land from your faction.'
-     - '&e/f kick &f<playerName> &8- &7Kick player from your faction.'
-     - '&e/f mod &f<playerName> &8- &7Set player to mod role in faction.'
-     - '&e/f coleader &f<playerName> &8- &7Set player to coleader role in faction.'
-     - '&e/f leader &f<playerName> &8- &7Set player role to leader in faction.'
-     - '&e/f chat &f<Faction | Ally | Public> &8- &7Switch to Faction/Ally/Public chat.'
-     - '&e/f warp &8- &7Opens the warp menu.'
-     - '&e/f setwarp &8- &7Set a warp.'
-     - '&e/f perms &8- &7Change what players can do in your claims.'
-     - '&e/f upgrades &8- &7Upgrade various perks in your faction.'
-     - '&e/f checkpoint &8- &7Set a faction checkpoint.'
-     - '&e/f tnt add/take &f<amount> &8- &7Faction Based TNT Bank.'
-     - '&e/f tntfill &f<radius> <amount> &8- &7Tnt fill integrated into the tntbank!'
-     - '&e/f chest &8- &7Open a virtual faction chest! '
-     - '&e/f version &8- &7Display current faction version.'
-     - '&7&m--------------------&r &e/f help 3 &7&m-----------------------'
+  '1':
+  - '&7&m----------------------------------------------------'
+  - '&6&lFactions Help &8- &f(1/2)               '
+  - '&7&m----------------------------------------------------'
+  - '&e/f create &f<name> &8- &7Create your own faction.'
+  - '&e/f who &f<name> &8- &7Show faction information.'
+  - '&e/f tag &f<name> &8- &7Change your faction name.'
+  - '&e/f join &f<name> &8- &7Join to the faction.'
+  - '&e/f list &8- &7List all factions.'
+  - '&e/f top &8- &7View the richest factions.'
+  - '&e/f map &8- &7Map of the surrounding area, click chunks to claim.'
+  - '&e/f sethome &8- &7Set your faction home.'
+  - '&e/f home &8- &7Go to your faction home.'
+  - '&e/f title &f<playername> <title> &8- &7Set a player''s title, color codes supported.'
+  - '&e/f ban &8- &7Ban a member from your faction.'
+  - '&e/f unban &8- &7Unban a member from your faction.'
+  - '&e/f banlist &8- &7List banned players from your faction.'
+  - '&e/f lowpower &8- &7List player with power under max from your faction.'
+  - '&e/f coords &8- &7Broadcast your location to your faction.'
+  - '&e/f showclaims &8- &7List all claims from your faction.'
+  - '&7&m--------------------&r &e/f help 2 &7&m-----------------------'
+  '2':
+  - '&7&m----------------------------------------------------'
+  - '&6&lFactions Help &8- &f(2/2)               '
+  - '&7&m----------------------------------------------------'
+  - '&e/f leave &8- &7Leave your faction.'
+  - '&e/f invite &f<playerName> &8- &7Invite a player to your faction.'
+  - '&e/f deinvite &f<playerName> &8- &7Revoke invitation to player.'
+  - '&e/f claim &8- &7Claim a land for your faction.'
+  - '&e/f unclaim &8- &7Unclaim land from your faction.'
+  - '&e/f kick &f<playerName> &8- &7Kick player from your faction.'
+  - '&e/f mod &f<playerName> &8- &7Set player to mod role in faction.'
+  - '&e/f coleader &f<playerName> &8- &7Set player to coleader role in faction.'
+  - '&e/f leader &f<playerName> &8- &7Set player role to leader in faction.'
+  - '&e/f chat &f<Faction | Ally | Public> &8- &7Switch to Faction/Ally/Public chat.'
+  - '&e/f warp &8- &7Opens the warp menu.'
+  - '&e/f setwarp &8- &7Set a warp.'
+  - '&e/f perms &8- &7Change what players can do in your claims.'
+  - '&e/f upgrades &8- &7Upgrade various perks in your faction.'
+  - '&e/f checkpoint &8- &7Set a faction checkpoint.'
+  - '&e/f tnt add/take &f<amount> &8- &7Faction Based TNT Bank.'
+  - '&e/f tntfill &f<radius> <amount> &8- &7Tnt fill integrated into the tntbank!'
+  - '&e/f chest &8- &7Open a virtual faction chest! '
+  - '&e/f version &8- &7Display current faction version.'
+  - '&7&m--------------------&r &e/f help 3 &7&m-----------------------'
 ############################################################
 # +------------------------------------------------------+ #
 # |                  F Permission GUI                    | #
@@ -630,22 +630,22 @@ fperm-gui:
       name: ' '
       lore:
       -
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Warp GUI                    | #
-# +------------------------------------------------------+ #
-############################################################
+        ############################################################
+        # +------------------------------------------------------+ #
+        # |                  Faction Warp GUI                    | #
+        # +------------------------------------------------------+ #
+        ############################################################
 
 fwarp-gui:
   name: "Faction Warps"
   rows: 3
   password-timeout: 5
   warp-slots:
-    - 11
-    - 12
-    - 13
-    - 14
-    - 15
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
   dummy-slots:
     '0':
     - 0
@@ -676,12 +676,12 @@ fwarp-gui:
     # {warp-protected} Warp protection by password, Enabled & Disabled
     # {warp-cost} Warp cost
     lore:
-     - ""
-     - "&6&l * &ePassword: &7{warp-protected}"
-     - "&6&l * &eCost: &7{warp-cost}"
-     - ""
-     - "&c&lNote: &7You need pay to teleport to"
-     - "&7a faction warp. Unless it's &nDisabled&7."
+    - ""
+    - "&6&l * &ePassword: &7{warp-protected}"
+    - "&6&l * &eCost: &7{warp-cost}"
+    - ""
+    - "&c&lNote: &7You need pay to teleport to"
+    - "&7a faction warp. Unless it's &nDisabled&7."
   # Dummy Items
   dummy-items:
     # Dummy Item id, used to set the slots above
@@ -692,11 +692,11 @@ fwarp-gui:
       name: ' '
       lore:
       -
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Rules                       | #
-# +------------------------------------------------------+ #
-############################################################
+        ############################################################
+        # +------------------------------------------------------+ #
+        # |                  Faction Rules                       | #
+        # +------------------------------------------------------+ #
+      ############################################################
 frules:
   Enabled: true
   default-rules:
@@ -873,7 +873,7 @@ fupgrades:
         - 13
     Spawners:
       Spawner-Boost:
-      # This is a Percentage so .10 means 10% lowered spawner delay!
+        # This is a Percentage so .10 means 10% lowered spawner delay!
         level-1: 0.10
         level-2: 0.20
         level-3: 0.30
@@ -905,7 +905,7 @@ fupgrades:
         - 16
     Chest:
       Chest-Size:
-      # This is rows
+        # This is rows
         level-1: 2
         level-2: 3
         level-3: 4
@@ -976,7 +976,7 @@ Title:
     Title: '{Faction}'
     Subtitle: '{Description}'
 
-    
+
 # /f seechunk options
 see-chunk:
   particles: true

@@ -181,7 +181,7 @@ public class FactionsChatListener implements Listener {
         if (Conf.chatTagRelationColored) {
             // Messages are sent to players individually
             // This still leaves a chance for other plugins to pick it up
-            event.getRecipients().clear();
+            event.setCancelled(true);
 
             for (Player listeningPlayer : event.getRecipients()) {
                 FPlayer you = FPlayers.getInstance().getByPlayer(listeningPlayer);

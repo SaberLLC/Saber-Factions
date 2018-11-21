@@ -1,6 +1,5 @@
 package com.massivecraft.factions.listeners;
 
-
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
@@ -163,7 +162,6 @@ public class FactionsPlayerListener implements Listener {
     return true;
   }
 
-  @SuppressWarnings("deprecation")
   public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
     if (Conf.playersWhoBypassAllProtection.contains(player.getName())) {
       return true;
@@ -180,6 +178,7 @@ public class FactionsPlayerListener implements Listener {
     Faction otherFaction = Board.getInstance().getFactionAt(loc);
     Faction myFaction = me.getFaction();
     Relation rel = myFaction.getRelationTo(otherFaction);
+
 
     // no door/chest/whatever protection in wilderness, war zones, or safe zones
     if (!otherFaction.isNormal()) {
@@ -237,6 +236,14 @@ public class FactionsPlayerListener implements Listener {
         case CHEST:
         case ENDER_CHEST:
         case TRAPPED_CHEST:
+        case DISPENSER:
+        case ENCHANTING_TABLE:
+        case DROPPER:
+        case FURNACE:
+        case HOPPER:
+        case ANVIL:
+        case CHIPPED_ANVIL:
+        case DAMAGED_ANVIL:
           action = PermissableAction.CONTAINER;
           break;
         default:
@@ -271,6 +278,14 @@ public class FactionsPlayerListener implements Listener {
         case CHEST:
         case ENDER_CHEST:
         case TRAPPED_CHEST:
+        case DISPENSER:
+        case ENCHANTING_TABLE:
+        case DROPPER:
+        case FURNACE:
+        case HOPPER:
+        case ANVIL:
+        case CHIPPED_ANVIL:
+        case DAMAGED_ANVIL:
           action = PermissableAction.CONTAINER;
           break;
         default:
@@ -915,13 +930,13 @@ public class FactionsPlayerListener implements Listener {
 
     // returns the current attempt count
     public int increment() {
-      long now = System.currentTimeMillis();
-      if (now > lastAttempt + 2000) {
+      long Now = System.currentTimeMillis();
+      if (Now > lastAttempt + 2000) {
         attempts = 1;
       } else {
         attempts++;
       }
-      lastAttempt = now;
+      lastAttempt = Now;
       return attempts;
     }
   }
