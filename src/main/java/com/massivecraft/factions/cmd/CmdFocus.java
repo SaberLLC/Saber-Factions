@@ -41,7 +41,7 @@ public class CmdFocus
             FTeamWrapper.updatePrefixes(target.getFaction());
             return;
         }
-        myFaction.msg(TL.COMMAND_FOCUS_FOCUSSING, target.getName());
+        myFaction.msg(TL.COMMAND_FOCUS_FOCUSING, target.getName());
         myFaction.setFocused(target.getName());
         FTeamWrapper.updatePrefixes(target.getFaction());
     }

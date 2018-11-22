@@ -291,7 +291,7 @@ public enum TL {
     COMMAND_FLY_NO_EPEARL("&c&l[!] &7You &ccannot&7 throw enderpearls while flying!"),
 
     COMMAND_FOCUS_SAMEFACTION("&c[!] You may not focus players in your faction!"),
-    COMMAND_FOCUS_FOCUSSING("&c&l[!] &7Your faction is now focusing &c%s"),
+    COMMAND_FOCUS_FOCUSING("&c&l[!] &7Your faction is now focusing &c%s"),
     COMMAND_FOCUS_NO_LONGER("&c&l[!] &7Your faction is no longer focusing &c%s"),
     COMMAND_FOCUS_DESCRIPTION("Focus a Specific Player"),
 
