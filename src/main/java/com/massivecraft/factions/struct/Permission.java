@@ -29,6 +29,7 @@ public enum Permission {
     DISBAND("disband"),
     DISBAND_ANY("disband.any"),
     FLY("fly"),
+    FOCUS("focus"),
     HELP("help"),
     HOME("home"),
     INVITE("invite"),

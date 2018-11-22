@@ -51,6 +51,10 @@ public interface Faction extends EconomyParticipator {
 
     Set<String> getInvites();
 
+    String getFocused();
+
+   void setFocused(String setFocused);
+
     String getId();
 
     void setId(String id);
@@ -330,4 +334,5 @@ public interface Faction extends EconomyParticipator {
     String getPaypal();
 
     void paypalSet(String paypal);
+
 }

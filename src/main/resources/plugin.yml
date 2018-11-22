@@ -320,6 +320,8 @@ permissions:
     description: kill invisible holograms
   factions.stealth:
     description: Enter faction stealth mode
+  factions.focus:
+    description: Focus a certain player in another faction
   factions.coords:
     description: broadcast your coords to the player
   factions.chest:

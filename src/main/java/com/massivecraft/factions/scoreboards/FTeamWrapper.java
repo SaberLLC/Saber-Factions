@@ -3,7 +3,9 @@ package com.massivecraft.factions.scoreboards;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.zcore.util.TL;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -166,19 +168,30 @@ public class FTeamWrapper {
         if (SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             FPlayer fplayer = fboard.getFPlayer();
             Team team = teams.get(fboard);
+            boolean focused = false;
+            if ((SavageFactions.plugin.getConfig().getBoolean("ffocus.Enabled")) && (fplayer.getFaction() != null) && (fplayer.getFaction().getFocused() != null)) {
+                for (FPlayer fp : this.faction.getFPlayersWhereOnline(true)) {
+                    if (fplayer.getFaction().getFocused().equalsIgnoreCase(fp.getName())) {
+                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', SavageFactions.plugin.getConfig().getString("ffocus.Prefix", "&7»&b")));
+                        focused = true;
+                    }
+                }
+            }
+            if (!focused) {
+                String prefix = TL.DEFAULT_PREFIX.toString();
 
-            String prefix = TL.DEFAULT_PREFIX.toString();
-            if (SavageFactions.plugin.PlaceholderApi) {
                 prefix = PlaceholderAPI.setPlaceholders(fplayer.getPlayer(), prefix);
                 prefix = PlaceholderAPI.setBracketPlaceholders(fplayer.getPlayer(), prefix);
-            }
-            prefix = prefix.replace("{relationcolor}", faction.getRelationTo(fplayer).getColor().toString());
-            prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min("{faction}".length() + 16 - prefix.length(), faction.getTag().length())));
-            if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
-                team.setPrefix(prefix);
+                prefix = prefix.replace("{relationcolor}", this.faction.getRelationTo(fplayer).getColor().toString());
+                prefix = prefix.replace("{faction}",
+                        this.faction.getTag().substring(0, Math.min("{faction}".length() + 16 - prefix.length(), this.faction.getTag().length())));
+                if ((team.getPrefix() == null) || (!team.getPrefix().equals(prefix))) {
+                    team.setPrefix(prefix);
+                }
             }
         }
     }
+
 
     private void addPlayer(OfflinePlayer player) {
         if (members.add(player)) {

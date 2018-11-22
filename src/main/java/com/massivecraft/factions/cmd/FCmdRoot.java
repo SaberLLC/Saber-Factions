@@ -22,6 +22,7 @@ public class FCmdRoot extends FCommand {
     public CmdDeinvite cmdDeinvite = new CmdDeinvite();
     public CmdDescription cmdDescription = new CmdDescription();
     public CmdDisband cmdDisband = new CmdDisband();
+    public CmdFocus cmdFocus = new CmdFocus();
     public CmdHelp cmdHelp = new CmdHelp();
     public CmdHome cmdHome = new CmdHome();
     public CmdInvite cmdInvite = new CmdInvite();
@@ -222,6 +223,9 @@ public class FCmdRoot extends FCommand {
             this.addSubCommand(this.cmdInspect);
         } else {
             SavageFactions.plugin.log("CoreProtect not found, disabling Inspect");
+        }
+        if (SavageFactions.plugin.getConfig().getBoolean("ffocus.Enabled")) {
+            addSubCommand(this.cmdFocus);
         }
 
         if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {

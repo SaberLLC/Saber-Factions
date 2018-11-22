@@ -62,6 +62,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Role defaultRole;
     protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
+    protected String player;
     Inventory chest;
     Map<String, Object> bannerSerialized;
     private long lastDeath;
@@ -193,6 +194,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.maxVaults = value;
     }
 
+    public String getFocused() { return this.player; }
+
+    public void setFocused(String fp) { this.player = fp; }
+
     public Set<String> getInvites() {
         return invites;
     }
@@ -323,6 +328,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public int getTnt() {
         return tnt;
     }
+
 
     public Location getVault() {
         if (vault == null) {
