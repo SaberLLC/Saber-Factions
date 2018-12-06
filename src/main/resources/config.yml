@@ -520,7 +520,6 @@ fperm-gui:
       chest: 42
       spawner: 38
       home: 49
-
       # Material to show, if the material is colorable eg: Wool, Stained Clay it will update with it's access color
     materials:
       build: STAINED_GLASS
