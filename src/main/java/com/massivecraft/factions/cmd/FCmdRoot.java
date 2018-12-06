@@ -231,7 +231,7 @@ public class FCmdRoot extends FCommand {
         if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
             this.addSubCommand(this.cmdFly);
         }
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("FactionsTop")) {
+        if (Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null) {
             SavageFactions.plugin.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
         } else {
             SavageFactions.plugin.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
