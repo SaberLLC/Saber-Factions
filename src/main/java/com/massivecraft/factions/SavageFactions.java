@@ -524,13 +524,11 @@ public class SavageFactions extends MPlugin {
         as.setCustomName(SavageFactions.plugin.color(text)); //Set this to the text you want
         as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
         final ArmorStand armorStand = as;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, new Runnable() {
-            @Override
-            public void run() {
-                Bukkit.broadcastMessage("removing stand");
-                armorStand.remove();
-            }
-        }, timeout * 20);
+       Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> {
+                  armorStand.remove();
+                  getLogger().info("Removing Hologram.");
+               }
+               , timeout * 20);
 
     }
 
