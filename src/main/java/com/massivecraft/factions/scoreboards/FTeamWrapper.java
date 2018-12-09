@@ -3,7 +3,6 @@ package com.massivecraft.factions.scoreboards;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.zcore.util.TL;
 import me.clip.placeholderapi.PlaceholderAPI;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

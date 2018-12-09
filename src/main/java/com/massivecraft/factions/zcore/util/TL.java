@@ -106,7 +106,6 @@ public enum TL {
 
     COMMAND_UPGRADES_DESCRIPTION("&cOpen the Upgrades Menu"),
 
-
     COMMAND_ADMIN_NOTMEMBER("&c&l[!] &7%1$s &cis not a member in your faction."),
     COMMAND_ADMIN_NOTADMIN("&c&l[!] &cYou are not the faction admin."),
     COMMAND_ADMIN_TARGETSELF("'&c&l[!] &cThe target player musn''t be yourself."),
@@ -495,7 +494,7 @@ public enum TL {
     COMMAND_PERM_SET("&c&l[!]&7 Set permission&c %1$s &7to &c%2$s &7for relation&c %3$s"),
     COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
 
-    COMMAND_PERMANENT_DESCRIPTION("Toggles a faction's permanence"), //TODO: Real word?
+    COMMAND_PERMANENT_DESCRIPTION("Toggles a permanent faction option"),
     COMMAND_PERMANENT_GRANT("&c&l[!]&7 added permanent status to"),
     COMMAND_PERMANENT_REVOKE("&c&l[!]&7 removed permanent status from"),
     COMMAND_PERMANENT_YOURS("&c&l[!]&7 &c%1$s&7 has &c%2$s&7 your faction"),
@@ -506,7 +505,7 @@ public enum TL {
     COMMAND_PROMOTE_DEMOTED("demoted"),
     COMMAND_PROMOTE_COLEADER_ADMIN("&c&l[!]&7 &cColeaders cant promote players to Admin!"),
 
-    COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle faction power permanence"), //TODO: This a real word?
+    COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle permanent faction power option"),
     COMMAND_PERMANENTPOWER_GRANT("added permanentpower status to"),
     COMMAND_PERMANENTPOWER_REVOKE("removed permanentpower status from"),
     COMMAND_PERMANENTPOWER_SUCCESS("&c&l[!]&7 You&c %s &7%s."),
@@ -745,7 +744,6 @@ public enum TL {
     COMMAND_WARUNCLAIMALL_SUCCESS("<i>You unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
-
     COMMAND_RULES_DISABLED_MSG("&cThis command is disabled!"),
     COMMAND_RULES_DESCRIPTION("set/remove/add rules!"),
     COMMAND_RULES_ADD_INVALIDARGS("Please include a rule!"),
@@ -755,7 +753,6 @@ public enum TL {
     COMMAND_RULES_REMOVE_SUCCESS("&cRule removed successfully!"),
     COMMAND_RULES_SET_SUCCESS("&cRule set successfully!"),
     COMMAND_RULES_CLEAR_SUCCESS("&cRule cleared successfully!"),
-
 
     /**
      * Leaving - This is accessed through a command, and so it MAY need a COMMAND_* slug :s
@@ -843,6 +840,7 @@ public enum TL {
     WARBANNER_NOFACTION("&cYou need a faction to use a warbanner!"),
     WARBANNER_COOLDOWN("&cThe warbanner is on cooldown for your faction!"),
     WARBANNER_INVALIDLOC("&cYou can only use warbanners in enemy land or the warzone"),
+    
     /**
      * ASCII compass (for chat map)
      */
@@ -1014,7 +1012,7 @@ public enum TL {
 
     @Override
     public String toString() {
-        return this == TITLE ? ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def)) + " " : ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def));
+        return ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def)) + (this == TITLE ? " ":"");
     }
 
     public String format(Object... args) {

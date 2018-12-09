@@ -5,17 +5,14 @@ public class NBTContainer extends NBTCompound {
     private Object nbt;
 
     public NBTContainer() {
-        super(null, null);
-        nbt = NBTReflectionUtil.getNewNBTTag();
+        this(NBTReflectionUtil.getNewNBTTag());
     }
 
     protected NBTContainer(Object nbt) {
-        super(null, null);
         this.nbt = nbt;
     }
 
     public NBTContainer(String nbtString) throws IllegalArgumentException {
-        super(null, null);
         try {
             nbt = NBTReflectionUtil.parseNBT(nbtString);
         } catch (Exception ex) {

@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.BanInfo;
@@ -203,6 +204,8 @@ public interface Faction extends EconomyParticipator {
     void resetPerms();
 
     void disband(Player disbander);
+    
+    void disband(Player disbander, PlayerDisbandReason reason);
 
     // -------------------------------
     // Relation and relation colors
@@ -282,6 +285,8 @@ public interface Faction extends EconomyParticipator {
     // used when current leader is about to be removed from the faction;
     // promotes new leader, or disbands faction if no other members left
     void promoteNewLeader();
+    
+    void promoteNewLeader(boolean autoLeave);
 
     Role getDefaultRole();
 

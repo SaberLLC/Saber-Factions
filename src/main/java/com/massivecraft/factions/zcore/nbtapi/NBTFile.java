@@ -11,7 +11,6 @@ public class NBTFile extends NBTCompound {
     private Object nbt;
 
     public NBTFile(File file) throws IOException {
-        super(null, null);
         this.file = file;
         if (file.exists()) {
             FileInputStream inputsteam = new FileInputStream(file);

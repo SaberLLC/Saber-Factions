@@ -7,7 +7,6 @@ public class NBTEntity extends NBTCompound {
     private final Entity ent;
 
     public NBTEntity(Entity entity) {
-        super(null, null);
         ent = entity;
     }
 

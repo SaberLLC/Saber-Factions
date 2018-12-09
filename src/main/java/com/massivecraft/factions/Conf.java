@@ -345,7 +345,6 @@ public class Conf {
         territoryEnemyDenyCommands.add("tpaccept");
         territoryEnemyDenyCommands.add("tpa");
 
-
         territoryProtectedMaterials.add(SavageFactions.plugin.WOODEN_DOOR);
         territoryProtectedMaterials.add(SavageFactions.plugin.TRAP_DOOR);
         territoryProtectedMaterials.add(SavageFactions.plugin.FENCE_GATE);
@@ -443,7 +442,7 @@ public class Conf {
 
     public enum Backend {
         JSON,
-        //MYSQL,  TODO
+        //MYSQL,  TODO add MySQL storage
         ;
     }
 }

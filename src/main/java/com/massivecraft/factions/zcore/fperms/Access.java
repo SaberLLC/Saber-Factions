@@ -7,8 +7,8 @@ public enum Access {
     DENY("Deny", ChatColor.DARK_RED),
     UNDEFINED("Undefined", ChatColor.GRAY);
 
-    private String name;
-    private ChatColor color;
+    private final String name;
+    private final ChatColor color;
 
     Access(String name, ChatColor color) {
         this.name = name;
@@ -22,12 +22,9 @@ public enum Access {
      * @return
      */
     public static Access fromString(String check) {
-        for (Access access : values()) {
-            if (access.name().equalsIgnoreCase(check)) {
+        for (Access access : values())
+            if (access.name().equalsIgnoreCase(check))
                 return access;
-            }
-        }
-
         return null;
     }
 
@@ -43,5 +40,4 @@ public enum Access {
     public String toString() {
         return name();
     }
-
 }

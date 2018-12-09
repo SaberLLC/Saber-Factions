@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 
 public class SpawnerUpgrades implements Listener {
+	
     @EventHandler
     public void onSpawn(SpawnerSpawnEvent e) {
         FLocation floc = new FLocation(e.getLocation());
@@ -29,6 +30,5 @@ public class SpawnerUpgrades implements Listener {
         int lowerby = (int) Math.round(e.getSpawner().getDelay() * multiplier);
         e.getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
     }
-
 
 }
