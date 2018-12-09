@@ -7,7 +7,6 @@ public class NBTItem extends NBTCompound {
     private ItemStack bukkitItem;
 
     public NBTItem(ItemStack item) {
-        super(null, null);
         bukkitItem = item.clone();
     }
 

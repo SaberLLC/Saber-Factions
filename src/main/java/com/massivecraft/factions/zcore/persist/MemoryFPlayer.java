@@ -4,8 +4,10 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FPlayerStoppedFlying;
+import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.event.LandClaimEvent;
 import com.massivecraft.factions.event.PowerRegenEvent;
+import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -547,6 +549,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         } else if (hasFaction() && getFaction().isPowerFrozen()) {
             return; // Don't let power regen if faction power is frozen.
         }
+        
         long now = System.currentTimeMillis();
         long millisPassed = now - this.lastPowerUpdateTime;
         this.lastPowerUpdateTime = now;
@@ -560,10 +563,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent);
         
         if (!powerRegenEvent.isCancelled())
-        {
-	        int millisPerMinute = 60 * 1000;
-	        this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
-        }
+	        this.alterPower(millisPassed * Conf.powerPerMinute / 60000); // millisPerMinute : 60 * 1000
     }
 
     public void losePowerFromBeingOffline() {
@@ -712,6 +712,9 @@ public abstract class MemoryFPlayer implements FPlayer {
                 fplayer.msg(TL.LEAVE_DISBANDED, myFaction.describeTo(fplayer, true));
             }
 
+            FactionDisbandEvent disbandEvent = new FactionDisbandEvent(null, getId(), PlayerDisbandReason.LEAVE);
+            Bukkit.getPluginManager().callEvent(disbandEvent);
+            
             Factions.getInstance().removeFaction(myFaction.getId());
             if (Conf.logFactionDisband) {
                 SavageFactions.plugin.log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName()));
@@ -1124,16 +1127,12 @@ public abstract class MemoryFPlayer implements FPlayer {
         // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
         // return value is false on failure, true on success
 
-
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
-
         int ownedLand = forFaction.getLandRounded();
-
 
         if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure)) {
             return false;
         }
-
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
         boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone();
@@ -1159,7 +1158,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
-        Bukkit.getServer().getPluginManager().callEvent(claimEvent);
+        Bukkit.getPluginManager().callEvent(claimEvent);
         if (claimEvent.isCancelled()) {
             return false;
         }

@@ -7,7 +7,6 @@ public class NBTTileEntity extends NBTCompound {
     private final BlockState tile;
 
     public NBTTileEntity(BlockState tile) {
-        super(null, null);
         this.tile = tile;
     }
 

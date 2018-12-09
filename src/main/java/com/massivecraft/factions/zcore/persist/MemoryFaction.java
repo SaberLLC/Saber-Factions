@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.persist;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
+import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -236,13 +237,18 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
     }
 
-
+    @Override
     public void disband(Player disbander) {
+    	disband(disbander, PlayerDisbandReason.PLUGIN);
+    }
+
+    @Override
+    public void disband(Player disbander, PlayerDisbandReason reason) {
 
         boolean disbanderIsConsole = disbander == null;
         FPlayer fdisbander = FPlayers.getInstance().getByOfflinePlayer(disbander);
 
-        FactionDisbandEvent disbandEvent = new FactionDisbandEvent(disbander, this.getId());
+        FactionDisbandEvent disbandEvent = new FactionDisbandEvent(disbander, this.getId(), reason);
         Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
         if (disbandEvent.isCancelled()) {
             return;
@@ -982,7 +988,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     // used when current leader is about to be removed from the faction;
     // promotes new leader, or disbands faction if no other members left
+    @Override
     public void promoteNewLeader() {
+    	promoteNewLeader(false);
+    }
+    
+    @Override
+    public void promoteNewLeader(boolean autoLeave) {
         if (!this.isNormal()) {
             return;
         }
@@ -1008,13 +1020,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
             // no members left and faction isn't permanent, so disband it
             if (Conf.logFactionDisband) {
-                SavageFactions.plugin.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left.");
+                SavageFactions.plugin.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left" + (autoLeave ? " and by inactivity":"")+ ".");
             }
 
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
                 fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
             }
 
+            FactionDisbandEvent disbandEvent = new FactionDisbandEvent(null, getId(), autoLeave ? PlayerDisbandReason.INACTIVITY:PlayerDisbandReason.LEAVE);
+            Bukkit.getPluginManager().callEvent(disbandEvent);
+            
             Factions.getInstance().removeFaction(getId());
         } else { // promote new faction admin
             if (oldLeader != null) {

@@ -334,6 +334,6 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public void log(Level level, Object msg) {
-        Bukkit.getLogger().log(level, "[" + this.getDescription().getFullName() + "] " + msg);
+        getLogger().log(level, "[" + this.getDescription().getFullName() + "] " + msg);
     }
 }

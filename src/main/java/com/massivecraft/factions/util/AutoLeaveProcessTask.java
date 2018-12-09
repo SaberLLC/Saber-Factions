@@ -63,7 +63,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
                 if (fplayer.getRole() == Role.LEADER) {
                     Faction faction = fplayer.getFaction();
                     if (faction != null) {
-                        fplayer.getFaction().promoteNewLeader();
+                        fplayer.getFaction().promoteNewLeader(true);
                     }
                 }
 

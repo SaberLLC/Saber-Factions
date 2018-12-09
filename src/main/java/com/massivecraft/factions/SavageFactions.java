@@ -12,6 +12,8 @@ import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.Particles.ReflectionUtils;
+import com.massivecraft.factions.zcore.CommandVisibility;
+import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -30,6 +32,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -42,6 +45,7 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 
 public class SavageFactions extends MPlugin {
@@ -74,6 +78,8 @@ public class SavageFactions extends MPlugin {
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
 
+    private Listener[] eventsListener;
+    
     public SavageFactions() {
         plugin = this;
     }
@@ -117,18 +123,10 @@ public class SavageFactions extends MPlugin {
 
 
         // Vault dependency check.
-        if (SavageFactions.plugin.getServer().getPluginManager().getPlugin("Vault") == null) {
-            SavageFactions.plugin.log("Vault is not present, the plugin will not run properly.");
-            this.onDisable();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(this,
-                    new Runnable() {
-                        @Override
-                        public void run() {
-                            SavageFactions.plugin.getServer().getPluginManager().disablePlugin(SavageFactions.plugin);
-                        }
-                    }, 20L);
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            log("Vault is not present, the plugin will not run properly.");
+            getServer().getPluginManager().disablePlugin(plugin);
             return;
-
         }
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
@@ -144,7 +142,7 @@ public class SavageFactions extends MPlugin {
             changeItemIDSInConfig();
         }
         setupMultiversionMaterials();
-      migrateFPlayerLeaders();
+        migrateFPlayerLeaders();
         log("==== End Setup ====");
 
         if (!preEnable()) {
@@ -154,13 +152,13 @@ public class SavageFactions extends MPlugin {
 
         saveDefaultConfig();
 
-
         // Load Conf from disk
         Conf.load();
         Essentials.setup();
         hookedPlayervaults = setupPlayervaults();
         FPlayers.getInstance().load();
         Factions.getInstance().load();
+        
         for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
             Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
             if (faction == null) {
@@ -170,9 +168,9 @@ public class SavageFactions extends MPlugin {
             }
             faction.addFPlayer(fPlayer);
         }
+        
         Board.getInstance().load();
         Board.getInstance().clean();
-
 
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
@@ -196,39 +194,43 @@ public class SavageFactions extends MPlugin {
             new MassiveStats(this);
         }
 
-
-
         if (version > 8) {
             useNonPacketParticles = true;
-            SavageFactions.plugin.log("Minecraft Version 1.9 or higher found, using non packet based particle API");
+            log("Minecraft Version 1.9 or higher found, using non packet based particle API");
         }
 
-        if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight")) {
+        if (getConfig().getBoolean("enable-faction-flight")) {
             factionsFlight = true;
         }
 
 
         // Register Event Handlers
-        getServer().getPluginManager().registerEvents(new FactionsPlayerListener(this), this);
-        getServer().getPluginManager().registerEvents(new FactionsChatListener(this), this);
-        getServer().getPluginManager().registerEvents(new FactionsEntityListener(this), this);
-        getServer().getPluginManager().registerEvents(new FactionsExploitListener(), this);
-        getServer().getPluginManager().registerEvents(new FactionsBlockListener(this), this);
-        getServer().getPluginManager().registerEvents(new FUpgradesGUI(), this);
-        getServer().getPluginManager().registerEvents(new EXPUpgrade(), this);
-        getServer().getPluginManager().registerEvents(new CropUpgrades(), this);
-        getServer().getPluginManager().registerEvents(new SpawnerUpgrades(), this);
+        eventsListener = new Listener[] {
+    		new FactionsPlayerListener(this),
+    		new FactionsChatListener(this),
+    		new FactionsEntityListener(this),
+    		new FactionsExploitListener(),
+    		new FactionsBlockListener(this),
+    		new FUpgradesGUI(),
+    		new EXPUpgrade(),
+    		new CropUpgrades(),
+    		new SpawnerUpgrades(),
+    	};
+    	
+        for (Listener eventListener: eventsListener)
+        	getServer().getPluginManager().registerEvents(eventListener, this);
+        
         // since some other plugins execute commands directly through this command interface, provide it
-        this.getCommand(this.refCommand).setExecutor(this);
+        getCommand(this.refCommand).setExecutor(this);
+        getCommand(this.refCommand).setTabCompleter(this);
 
-        if (SavageFactions.plugin.getDescription().getFullName().contains("BETA")) {
+        if (getDescription().getFullName().contains("BETA")) {
             divider();
             System.out.println("You are using a BETA version of the plugin!");
             System.out.println("This comes with risks of small bugs in newer features!");
             System.out.println("For support head to: https://github.com/ProSavage/SavageFactions/issues");
             divider();
         }
-
 
         this.setupPlaceholderAPI();
         this.postEnable();
@@ -311,8 +313,9 @@ public class SavageFactions extends MPlugin {
     }
 
   private void migrateFPlayerLeaders() {
-    List<String> lines = new ArrayList<String>();
+    List<String> lines = new ArrayList<>();
     File fplayerFile = new File("plugins\\Factions\\players.json");
+    
     try {
       BufferedReader br = new BufferedReader(new FileReader(fplayerFile));
       System.out.println("Migrating old players.json file.");
@@ -335,26 +338,17 @@ public class SavageFactions extends MPlugin {
       System.out.println("File was not found for players.json, assuming"
               + " there is no need to migrate old players.json file.");
     }
-
-
   }
 
     private void changeItemIDSInConfig() {
-
-
-        SavageFactions.plugin.log("Starting conversion of legacy material in config to 1.13 materials.");
-
+        log("Starting conversion of legacy material in config to 1.13 materials.");
 
         replaceStringInConfig("fperm-gui.relation.materials.recruit", "WOOD_SWORD", "WOODEN_SWORD");
-
         replaceStringInConfig("fperm-gui.relation.materials.normal", "GOLD_SWORD", "GOLDEN_SWORD");
-
         replaceStringInConfig("fperm-gui.relation.materials.ally", "GOLD_AXE", "GOLDEN_AXE");
-
         replaceStringInConfig("fperm-gui.relation.materials.neutral", "WOOD_AXE", "WOODEN_AXE");
 
         ConfigurationSection actionMaterialsConfigSection = getConfig().getConfigurationSection("fperm-gui.action.materials");
-
         Set<String> actionMaterialKeys = actionMaterialsConfigSection.getKeys(true);
 
 
@@ -363,27 +357,20 @@ public class SavageFactions extends MPlugin {
         }
 
         replaceStringInConfig("fperm-gui.dummy-items.0.material", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
-
         replaceStringInConfig("fwarp-gui.dummy-items.0.material", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
 
         replaceStringInConfig("fupgrades.MainMenu.DummyItem.Type", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
-
         replaceStringInConfig("fupgrades.MainMenu.EXP.EXPItem.Type", "EXP_BOTTLE", "EXPERIENCE_BOTTLE");
-
         replaceStringInConfig("fupgrades.MainMenu.Spawners.SpawnerItem.Type", "MOB_SPAWNER", "SPAWNER");
-
+        
         replaceStringInConfig("fperm-gui.action.access.allow", "LIME", "LIME_STAINED_GLASS");
-
         replaceStringInConfig("fperm-gui.action.access.deny", "RED", "RED_STAINED_GLASS");
-
         replaceStringInConfig("fperm-gui.action.access.undefined", "CYAN", "CYAN_STAINED_GLASS");
-
-
     }
 
     public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
         if (getConfig().getString(path).equals(stringToReplace)) {
-            SavageFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+            log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
             getConfig().set(path, replacementString);
         }
     }
@@ -515,6 +502,53 @@ public class SavageFactions extends MPlugin {
         String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
         return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
     }
+    
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args){
+    	List<String> completions = new ArrayList<>();
+    	String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
+    	List<String> argsList = new ArrayList<>(Arrays.asList(args));
+    	argsList.remove(argsList.size() - 1);
+    	String cmdValid = (cmd + " " + TextUtil.implode(argsList, " ")).trim();
+    	MCommand<?> commandEx = cmdBase;
+    	List<MCommand<?>> commandsList = cmdBase.subCommands;
+
+    	for (; !commandsList.isEmpty() && !argsList.isEmpty(); argsList.remove(0))
+    	{
+    		String cmdName = argsList.get(0).toLowerCase();
+    		MCommand<?> commandFounded = commandsList.stream()
+    				.filter(c -> c.aliases.contains(cmdName))
+    				.findFirst().orElse(null);
+        	
+        	if (commandFounded != null)
+        	{
+        		commandEx = commandFounded;
+        		commandsList = commandFounded.subCommands;
+        	}
+        	else break;
+    	}
+    	
+    	if (argsList.isEmpty())
+    	{
+    		for (MCommand<?> subCommand: commandEx.subCommands)
+	    	{
+    			subCommand.setCommandSender(sender);
+	    		if (handleCommand(sender, cmdValid + " " + subCommand.aliases.get(0), true)
+	    				&& subCommand.visibility != CommandVisibility.INVISIBLE
+	    				&& subCommand.validSenderType(sender, false)
+	    				&& subCommand.validSenderPermissions(sender, false))
+	    			completions.addAll(subCommand.aliases);
+	    	}
+    	}
+    	
+    	String lastArg = args[args.length - 1].toLowerCase();
+    	
+    	completions = completions.stream()
+				.filter(m -> m.toLowerCase().startsWith(lastArg))
+				.collect(Collectors.toList());
+    	
+    	return completions;
+    }
 
     public void createTimedHologram(final Location location, String text, Long timeout) {
         ArmorStand as = (ArmorStand) location.add(0.5, 1, 0.5).getWorld().spawnEntity(location, EntityType.ARMOR_STAND); //Spawn the ArmorStand
@@ -524,12 +558,12 @@ public class SavageFactions extends MPlugin {
         as.setCustomName(SavageFactions.plugin.color(text)); //Set this to the text you want
         as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
         final ArmorStand armorStand = as;
-       Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> {
+        
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> {
                   armorStand.remove();
                   getLogger().info("Removing Hologram.");
                }
                , timeout * 20);
-
     }
 
 
