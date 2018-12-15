@@ -8,7 +8,7 @@ Currently the plugin is marketed on [Spigot](www.spigotmc.org) ,  a platform for
 
 The plugin page can be found [here](https://www.spigotmc.org/resources/savagefactions-the-ultimate-factions-plugin-1-7-1-13.52891/), it contains a few gifs which show features of the plugin.
 
-## USERS
+## Users
 The installation guide can be found on the [installation page](https://github.com/ProSavage/SavageFactions/wiki/Installation-Guide) of the [wiki](https://github.com/ProSavage/SavageFactions/wiki)
 
 Dependencies
