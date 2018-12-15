@@ -858,7 +858,8 @@ public enum MultiversionMaterials {
     ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_WALL_HEAD("SKULL", 0),
     ;
-    static int newV = - 1;
+    
+	static int newV = - 1;
     private static HashMap<String, MultiversionMaterials> cachedSearch = new HashMap<>();
     String m;
     int data;
@@ -871,11 +872,13 @@ public enum MultiversionMaterials {
     public static boolean isNewVersion() {
         if (newV == 0) return false;
         if (newV == 1) return true;
+        
         Material mat = Material.matchMaterial("RED_WOOL");
         if (mat != null) {
             newV = 1;
             return true;
         }
+        
         newV = 0;
         return false;
     }
@@ -894,20 +897,13 @@ public enum MultiversionMaterials {
     }
 
     public static MultiversionMaterials fromString(String key) {
-        MultiversionMaterials xmat = null;
         try {
-            xmat = MultiversionMaterials.valueOf(key);
-            return xmat;
+        	return MultiversionMaterials.valueOf(key);
         } catch (IllegalArgumentException e) {
             String[] split = key.split(":");
-            if (split.length == 1) {
-                xmat = requestXMaterial(key, (byte) 0);
-            } else {
-                xmat = requestXMaterial(split[0], (byte) Integer.parseInt(split[1]));
-            }
-            return xmat;
+            
+            return split.length == 1 ? requestXMaterial(key, (byte) 0):requestXMaterial(split[0], (byte) Integer.parseInt(split[1]));
         }
-
     }
 
     public ItemStack parseItem() {
@@ -948,34 +944,21 @@ public enum MultiversionMaterials {
 
     public boolean isDamageable(MultiversionMaterials type) {
         String[] split = type.toString().split("_");
-        int length = split.length;
-        switch (split[length - 1]) {
+        
+        switch (split[split.length - 1]) {
             case "HELMET":
-                return true;
             case "CHESTPLATE":
-                return true;
             case "LEGGINGS":
-                return true;
             case "BOOTS":
-                return true;
             case "SWORD":
-                return true;
             case "AXE":
-                return true;
             case "PICKAXE":
-                return true;
             case "SHOVEL":
-                return true;
             case "HOE":
-                return true;
             case "ELYTRA":
-                return true;
             case "TURTLE_HELMET":
-                return true;
             case "TRIDENT":
-                return true;
             case "HORSE_ARMOR":
-                return true;
             case "SHEARS":
                 return true;
             default:
@@ -985,10 +968,7 @@ public enum MultiversionMaterials {
 
     public Material parseMaterial() {
         Material mat = Material.matchMaterial(this.toString());
-        if (mat != null) {
-            return mat;
-        }
-        return Material.matchMaterial(m);
+        return mat != null ? mat:Material.matchMaterial(m);
     }
 
 }

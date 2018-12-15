@@ -29,6 +29,7 @@ public class FactionEvent extends Event {
         return this.faction;
     }
 
+    @Override
     public HandlerList getHandlers() {
         return handlers;
     }

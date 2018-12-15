@@ -2,13 +2,11 @@ package com.massivecraft.factions.zcore.util;
 
 import com.massivecraft.factions.zcore.MPlugin;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
 
 public class PermUtil {
 
@@ -37,25 +35,15 @@ public class PermUtil {
 
     public String getPermissionDescription(String perm) {
         String desc = permissionDescriptions.get(perm);
-        if (desc == null) {
-            return TL.GENERIC_DOTHAT.toString();
-        }
-        return desc;
+        
+        return desc != null ? desc:TL.GENERIC_DOTHAT.toString();
     }
 
     /**
      * This method tests if me has a certain permission and returns true if me has. Otherwise false
      */
     public boolean has(CommandSender me, String perm) {
-        if (me == null) {
-            return false;
-        }
-
-        if (!(me instanceof Player)) {
-            return me.hasPermission(perm);
-        }
-
-        return me.hasPermission(perm);
+    	return me != null ? me.hasPermission(perm):false;
     }
 
     public boolean has(CommandSender me, String perm, boolean informSenderIfNot) {

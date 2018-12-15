@@ -20,7 +20,7 @@ public class MiscUtil {
 
     /// TODO create tag whitelist!!
     public static HashSet<String> substanceChars =
-            new HashSet<>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"));
+            new HashSet<>(Arrays.asList("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("")));
 
     public static EntityType creatureTypeFromEntity(Entity entity) {
         if (!(entity instanceof Creature)) {
@@ -100,25 +100,11 @@ public class MiscUtil {
             }
 
             switch (player.getRole()) {
-                case LEADER:
-                    admins.add(player);
-                    break;
-
-                case COLEADER:
-                    admins.add(player);
-                    break;
-
-                case MODERATOR:
-                    moderators.add(player);
-                    break;
-
-                case NORMAL:
-                    normal.add(player);
-                    break;
-
-                case RECRUIT:
-                    recruit.add(player);
-                    break;
+                case LEADER: admins.add(player); break;
+                case COLEADER: admins.add(player); break;
+                case MODERATOR: moderators.add(player); break;
+                case NORMAL: normal.add(player); break;
+                case RECRUIT: recruit.add(player); break;
             }
         }
 

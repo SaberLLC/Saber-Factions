@@ -44,14 +44,21 @@ public abstract class FCommand extends MCommand<SavageFactions> {
     }
 
     @Override
-    public void execute(CommandSender sender, List<String> args, List<MCommand<?>> commandChain) {
-        if (sender instanceof Player) {
+    public void setCommandSender(CommandSender sender)
+    {
+    	super.setCommandSender(sender);
+    	if (sender instanceof Player) {
             this.fme = FPlayers.getInstance().getByPlayer((Player) sender);
             this.myFaction = this.fme.getFaction();
         } else {
             this.fme = null;
             this.myFaction = null;
         }
+    }
+    
+    @Override
+    public void execute(CommandSender sender, List<String> args, List<MCommand<?>> commandChain) {
+        setCommandSender(sender);
         super.execute(sender, args, commandChain);
     }
 

@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -43,9 +44,6 @@ public class CmdDisband extends FCommand {
             return;
         }
 
-        boolean isMyFaction = fme != null && faction == myFaction;
-
-
         if (!fme.isAdminBypassing()) {
             Access access = faction.getAccess(fme, PermissableAction.DISBAND);
             if (fme.getRole() != Role.LEADER && access != Access.ALLOW) {
@@ -78,11 +76,9 @@ public class CmdDisband extends FCommand {
         } else {
             //Check if the faction we asked confirmation for is the one being disbanded.
             if (faction.getId().equals(disbandMap.get(me.getUniqueId().toString())) || faction.getTnt() == 0) {
-                faction.disband(me);
+                faction.disband(me, PlayerDisbandReason.COMMAND);
             }
         }
-
-
     }
 
     @Override
