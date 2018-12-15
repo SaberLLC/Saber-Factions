@@ -21,7 +21,7 @@ The Javadocs can be found in the javadocs folder, they are generated at every ma
 They are also hosted on my webserver and can be found [here](http://prosavage.net/factions_javadoc/)
 
 If you would like to fork/contribute to SavageFactions I have made a video on how to compile the plugin correctly.
-The video can be found [here](https://www.youtube.com/watch?v=fnDwjA2gX-E)
+The video can be found [here](https://www.youtube.com/watch?v=fnDwjA2gX-E).
 
 
 If you would like to use the plugin as a dependency in your project, you can use maven.
