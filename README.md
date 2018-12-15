@@ -14,6 +14,8 @@ The installation guide can be found on the [installation page](https://github.co
 Dependencies
  - [Essentials Or EssentialsX](https://ci.ender.zone/job/EssentialsX/)
  - [Vault](https://www.spigotmc.org/resources/vault.34315/)
+Soft Dependencies
+ - [CoreProtect (for /f inspect)](https://www.spigotmc.org/resources/coreprotect.8631/)
 
 ## Developers
 This plugin has an extensive API and viewable Javadocs.
