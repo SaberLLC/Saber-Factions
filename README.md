@@ -1,16 +1,49 @@
-SavageFactions
+# SavageFactions
 
-How To Compile Factions Correctly Linked
-https://www.youtube.com/watch?v=fnDwjA2gX-E&t=32s
+SavageFactions is a fork of the popular Factions plugin FactionsUUID. The Goal of SavageFactions is to make the ultimate comepetitive factions experience.
 
-----------
-1. Download the latest release [on Spigot](https://www.spigotmc.org/resources/savagefactions-factionsuuid-reimagined-1-7-1-12.52891/)<br>
-1. Put Factions.jar in the plugins folder.
+The plugin contains lots of new revolutionary features, which can be looked at in further detail on the wiki.
 
-A default config file will be created on the first run.
+Currently the plugin is marketed on [Spigot](www.spigotmc.org) ,  a platform for Minecraft Servers which has an API that SavageFactions uses to enhance the game.
 
-License
-----------
-This project has a LGPL license just like the Bukkit project.<br>
-This project uses [GSON](http://code.google.com/savageFactions/google-gson/) which has a [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0 ).
+The plugin page can be found [here](https://www.spigotmc.org/resources/savagefactions-the-ultimate-factions-plugin-1-7-1-13.52891/), it contains a few gifs which show features of the plugin.
 
+## USERS
+The installation guide can be found on the [installation page](https://github.com/ProSavage/SavageFactions/wiki/Installation-Guide) of the [wiki](https://github.com/ProSavage/SavageFactions/wiki)
+
+Dependencies
+ - [Essentials Or EssentialsX](https://ci.ender.zone/job/EssentialsX/)
+ - [Vault](https://www.spigotmc.org/resources/vault.34315/)
+
+## Developers
+This plugin has an extensive API and viewable Javadocs.
+The Javadocs can be found in the javadocs folder, they are generated at every major release.
+They are also hosted on my webserver and can be found [here](http://prosavage.net/factions_javadoc/)
+
+If you would like to fork/contribute to SavageFactions I have made a video on how to compile the plugin correctly.
+The video can be found [here](https://www.youtube.com/watch?v=fnDwjA2gX-E)
+
+
+If you would like to use the plugin as a dependency in your project, you can use maven.
+
+   ```xml
+   <repository>  
+	 <id>savagefactions-repo</id>  
+		 <url>https://rawgit.com/ProSavage/SavageFactions/1.6.x</url>  
+	 <releases>  
+		 <enabled>true</enabled>  
+	 </releases>  
+		 <snapshots>  
+			 <enabled>true</enabled>  
+		 </snapshots>  
+</repository>
+
+<dependency>  
+	 <groupId>com.massivecraft</groupId>  
+	 <artifactId>Factions</artifactId>  
+	 <version>LATEST</version>  
+	 <scope>provided</scope>  
+</dependency>
+```
+
+If you would like to learn how to use the API there are lots of examples that can be found in the [wiki](https://github.com/ProSavage/SavageFactions/wiki) on the [API-Usage](https://github.com/ProSavage/SavageFactions/wiki/API-Usage) page.
