@@ -62,6 +62,19 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <finalName>SavageFactions-${project.version}</finalName>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
         </plugins>
     </build>
 
@@ -355,4 +368,11 @@
             <url>https://www.myget.org/F/prosavage/maven/</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>internal</id>
+            <url>file://${project.basedir}/mvn-repo</url>
+        </repository>
+    </distributionManagement>
 </project>
