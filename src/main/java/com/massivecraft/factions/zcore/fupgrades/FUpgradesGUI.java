@@ -72,59 +72,77 @@ public class FUpgradesGUI implements Listener {
             ItemStack spawnerItem = items[1];
             
             if (e.getCurrentItem().equals(cropItem)) {
-            	int cropLevel = fme.getFaction().getUpgrade("Crop");
+               int cropLevel = fme.getFaction().getUpgrade(Upgrade.CROP);
             	
             	switch (cropLevel)
             	{
             		case 3: return;
-            		case 2: upgradeItem(fme, "Crop", 3, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-3")); break;
-            		case 1: upgradeItem(fme, "Crop", 2, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-2")); break;
-            		case 0: upgradeItem(fme, "Crop", 1, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-1")); break;
+                   case 2:
+                      upgradeItem(fme, Upgrade.CROP, 3, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-3"));
+                      break;
+                   case 1:
+                      upgradeItem(fme, Upgrade.CROP, 2, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-2"));
+                      break;
+                   case 0:
+                      upgradeItem(fme, Upgrade.CROP, 1, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-1"));
+                      break;
             	}
             }
             else if (e.getCurrentItem().equals(spawnerItem)) {
-            	int spawnerLevel = fme.getFaction().getUpgrade("Spawner");
+               int spawnerLevel = fme.getFaction().getUpgrade(Upgrade.SPAWNER);
             	
             	switch(spawnerLevel)
             	{
             		case 3: return;
-            		case 2: upgradeItem(fme, "Spawner", 3, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-3")); break;
-            		case 1: upgradeItem(fme, "Spawner", 2, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-2")); break;
-            		case 0: upgradeItem(fme, "Spawner", 1, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-1")); break;
+                   case 2:
+                      upgradeItem(fme, Upgrade.SPAWNER, 3, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-3"));
+                      break;
+                   case 1:
+                      upgradeItem(fme, Upgrade.SPAWNER, 2, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-2"));
+                      break;
+                   case 0:
+                      upgradeItem(fme, Upgrade.SPAWNER, 1, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-1"));
+                      break;
             	}	
             }
             else if (e.getCurrentItem().equals(expItem)) {
-            	int expLevel = fme.getFaction().getUpgrade("Exp");
+               int expLevel = fme.getFaction().getUpgrade(Upgrade.EXP);
             	
             	switch (expLevel)
             	{
             		case 3: return;
-            		case 2: upgradeItem(fme, "Exp", 3, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-3")); break;
-            		case 1: upgradeItem(fme, "Exp", 2, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-2")); break;
-            		case 0: upgradeItem(fme, "Exp", 1, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-1")); break;
+                   case 2:
+                      upgradeItem(fme, Upgrade.EXP, 3, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-3"));
+                      break;
+                   case 1:
+                      upgradeItem(fme, Upgrade.EXP, 2, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-2"));
+                      break;
+                   case 0:
+                      upgradeItem(fme, Upgrade.EXP, 1, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-1"));
+                      break;
             	}
             }
             else if (e.getCurrentItem().equals(chestitem)) {
-            	int chestLevel = fme.getFaction().getUpgrade("Chest");
+               int chestLevel = fme.getFaction().getUpgrade(Upgrade.CHEST);
             	
             	switch (chestLevel)
             	{
             		case 3: return;
             		case 2:
-            		{   
-            			if (upgradeItem(fme, "Chest", 3, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-3")))
+            		{
+                       if (upgradeItem(fme, Upgrade.CHEST, 3, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-3")))
             				updateChests(fme.getFaction());
                         break;
             		}
             		case 1:
             		{
-            			if (upgradeItem(fme, "Chest", 2, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-2")))
+                       if (upgradeItem(fme, Upgrade.CHEST, 2, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-2")))
             				updateChests(fme.getFaction());
                         break;
             		}
             		case 0:
             		{
-            			if (upgradeItem(fme, "Chest", 1, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-1")))
+                       if (upgradeItem(fme, Upgrade.CHEST, 1, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-1")))
             				updateChests(fme.getFaction());
                         break;
             		}
@@ -141,7 +159,7 @@ public class FUpgradesGUI implements Listener {
             	player.closeInventory();
         }
 
-        int level = faction.getUpgrade("Chest");
+       int level = faction.getUpgrade(Upgrade.CHEST);
         int size = 1;
         
         switch (level)
@@ -160,7 +178,7 @@ public class FUpgradesGUI implements Listener {
         short expData = Short.parseShort(SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Damage") + "");
         String expName = SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Name"));
         List<String> expLore = SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fupgrades.MainMenu.EXP.EXPItem.Lore"));
-        int expLevel = fme.getFaction().getUpgrade("Exp");
+       int expLevel = fme.getFaction().getUpgrade(Upgrade.EXP);
         
         for (int i = 0; i <= expLore.size() - 1; i++)
             expLore.set(i, expLore.get(i).replace("{level}", expLevel + ""));
@@ -185,7 +203,7 @@ public class FUpgradesGUI implements Listener {
         List<String> spawnerLore = SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fupgrades.MainMenu.Spawners.SpawnerItem.Lore"));
 
         List<Integer> spawnerSlots = SavageFactions.plugin.getConfig().getIntegerList("fupgrades.MainMenu.Spawners.SpawnerItem.slots");
-        int spawnerLevel = fme.getFaction().getUpgrade("Spawner");
+       int spawnerLevel = fme.getFaction().getUpgrade(Upgrade.SPAWNER);
 
         for (int i = 0; i <= spawnerLore.size() - 1; i++) {
             spawnerLore.set(i, spawnerLore.get(i).replace("{level}", spawnerLevel + ""));
@@ -196,7 +214,7 @@ public class FUpgradesGUI implements Listener {
         short cropData = Short.parseShort(SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.CropItem.Damage") + "");
         String cropName = SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Name"));
         List<String> cropLore = SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fupgrades.MainMenu.Crops.CropItem.Lore"));
-        int cropLevel = fme.getFaction().getUpgrade("Crop");
+       int cropLevel = fme.getFaction().getUpgrade(Upgrade.CROP);
         
         for (int i = 0; i <= cropLore.size() - 1; i++) {
             String line = cropLore.get(i);
@@ -236,7 +254,7 @@ public class FUpgradesGUI implements Listener {
         short chestData = Short.parseShort(SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Damage") + "");
         String chestName = SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Name", "&e&lUpgrade Chest Size"));
         List<String> chestLore = SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fupgrades.MainMenu.Chest.ChestItem.Lore"));
-        int chestlevel = fme.getFaction().getUpgrade("Chest");
+       int chestlevel = fme.getFaction().getUpgrade(Upgrade.CHEST);
         
         for (int i = 0; i <= chestLore.size() - 1; i++) {
             String line = chestLore.get(i);
@@ -268,12 +286,12 @@ public class FUpgradesGUI implements Listener {
     private void takeMoney(FPlayer fme, int amt) {
         fme.takeMoney(amt);
     }
-    
-    private boolean upgradeItem(FPlayer fme, String upgrade, int level, int cost)
+
+   private boolean upgradeItem(FPlayer fme, Upgrade upgrade, int level, int cost)
     {
         if (hasMoney(fme, cost)) {
         	takeMoney(fme, cost);
-            fme.getFaction().setUpgrades(upgrade, level);
+           fme.getFaction().setUpgrade(upgrade, level);
             fme.getPlayer().closeInventory();
             return true;
         }

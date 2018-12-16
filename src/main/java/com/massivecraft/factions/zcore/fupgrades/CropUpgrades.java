@@ -1,6 +1,9 @@
 package com.massivecraft.factions.zcore.fupgrades;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.SavageFactions;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -20,7 +23,7 @@ public class CropUpgrades implements Listener {
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
         
         if (!factionAtLoc.isWilderness()) {
-            int level = factionAtLoc.getUpgrade("Crop");
+           int level = factionAtLoc.getUpgrade(Upgrade.CROP);
             if (level != 0) {
             	int chance = -1;
             	

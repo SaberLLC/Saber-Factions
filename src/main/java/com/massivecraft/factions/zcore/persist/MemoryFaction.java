@@ -18,6 +18,7 @@ import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fupgrades.Upgrade;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -352,9 +353,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         vault = newlocation;
     }
 
-    public int getUpgrade(String key) {
-        if (upgrades.keySet().contains(key)) {
-            return upgrades.get(key);
+    public int getUpgrade(Upgrade upgrade) {
+        if (upgrades.keySet().contains(upgrade.toString())) {
+            return upgrades.get(upgrade.toString());
         }
         return 0;
     }
@@ -364,7 +365,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (chest != null) {
             return chest;
         } else {
-            int level = getUpgrade("Chest");
+            int level = getUpgrade(Upgrade.CHEST);
             int size = 9;
             if (level == 1) {
                 size = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1") * 9;
@@ -402,8 +403,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return ItemStack.deserialize(bannerSerialized);
     }
 
-    public void setUpgrades(String key, int level) {
-        upgrades.put(key, level);
+    public void setUpgrade(Upgrade upgrade, int level) {
+        upgrades.put(upgrade.toString(), level);
     }
 
     public Location getCheckpoint() {

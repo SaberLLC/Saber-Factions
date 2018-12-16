@@ -10,6 +10,7 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fupgrades.Upgrade;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -64,9 +65,9 @@ public interface Faction extends EconomyParticipator {
 
     void deinvite(FPlayer fplayer);
 
-    void setUpgrades(String key, int level);
+   void setUpgrade(Upgrade upgrade, int level);
 
-    int getUpgrade(String key);
+   int getUpgrade(Upgrade upgrade);
 
     boolean isInvited(FPlayer fplayer);
 

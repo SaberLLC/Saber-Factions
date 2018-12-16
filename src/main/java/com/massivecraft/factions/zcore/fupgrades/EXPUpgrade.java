@@ -1,7 +1,9 @@
 package com.massivecraft.factions.zcore.fupgrades;
 
-import com.massivecraft.factions.*;
-
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.SavageFactions;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +23,7 @@ public class EXPUpgrade implements Listener {
         Faction faction = Board.getInstance().getFactionAt(floc);
         
         if (!faction.isWilderness()) {
-            int level = faction.getUpgrade("Exp");
+           int level = faction.getUpgrade(Upgrade.EXP);
             if (level != 0) {
             	
             	double multiplier = -1;
