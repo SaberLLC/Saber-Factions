@@ -370,7 +370,9 @@ public class SavageFactions extends MPlugin {
 
     public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
         if (getConfig().getString(path).equals(stringToReplace)) {
-            log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+           // SavageFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+           // log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+
             getConfig().set(path, replacementString);
         }
     }
