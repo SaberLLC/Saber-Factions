@@ -1,6 +1,6 @@
 # SavageFactions
 
-SavageFactions is a fork of the popular Factions plugin FactionsUUID. The Goal of SavageFactions is to make the ultimate comepetitive factions experience.
+SavageFactions is a fork of the popular Factions plugin FactionsUUID. The Goal of SavageFactions is to make the ultimate competitive factions experience.
 
 The plugin contains lots of new revolutionary features, which can be looked at in further detail on the wiki.
 
