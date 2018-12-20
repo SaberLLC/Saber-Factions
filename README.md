@@ -32,7 +32,7 @@ If you would like to use the plugin as a dependency in your project, you can use
    ```xml
    <repository>  
 	 <id>savagefactions-repo</id>  
-		 <url>https://rawgit.com/ProSavage/SavageFactions/1.6.x</url>  
+		 <url>https://cdn.jsdelivr.net/gh/ProSavage/SavageFactions@1.6.x/</url>  
 	 <releases>  
 		 <enabled>true</enabled>  
 	 </releases>  
