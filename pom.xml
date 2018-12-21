@@ -7,14 +7,16 @@
     <version>1.6.9.5-U0.2.1-RC-1.5-BETA</version>
     <packaging>jar</packaging>
 
-    <name>Factions</name>
+    <name>SavageFactions</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd--HH-mm</maven.build.timestamp.format>
     </properties>
 
     <build>
-        <defaultGoal>clean package install</defaultGoal>
+        <defaultGoal>clean install deploy</defaultGoal>
         <finalName>${project.name}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
@@ -67,7 +69,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <finalName>SavageFactions-${project.version}</finalName>
+                    <finalName>Factions-${maven.build.timestamp}</finalName>
                 </configuration>
             </plugin>
             <plugin>
