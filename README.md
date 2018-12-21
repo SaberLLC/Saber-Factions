@@ -1,6 +1,6 @@
 # SavageFactions
 
-SavageFactions is a fork of the popular Factions plugin FactionsUUID. The Goal of SavageFactions is to make the ultimate comepetitive factions experience.
+SavageFactions is a fork of the popular Factions plugin FactionsUUID. The Goal of SavageFactions is to make the ultimate competitive factions experience.
 
 The plugin contains lots of new revolutionary features, which can be looked at in further detail on the wiki.
 
@@ -32,7 +32,7 @@ If you would like to use the plugin as a dependency in your project, you can use
    ```xml
    <repository>  
 	 <id>savagefactions-repo</id>  
-		 <url>https://rawgit.com/ProSavage/SavageFactions/1.6.x</url>  
+		 <url>https://cdn.jsdelivr.net/gh/ProSavage/SavageFactions@1.6.x/</url>  
 	 <releases>  
 		 <enabled>true</enabled>  
 	 </releases>  
@@ -44,9 +44,11 @@ If you would like to use the plugin as a dependency in your project, you can use
 <dependency>  
 	 <groupId>com.massivecraft</groupId>  
 	 <artifactId>Factions</artifactId>  
-	 <version>LATEST</version>  
+	 <version>{version}</version>  
 	 <scope>provided</scope>  
 </dependency>
 ```
+The {version} has to be replaced with a version you find in the [mvn-repo](https://github.com/ProSavage/SavageFactions/tree/1.6.x/mvn-repo/com/massivecraft/Factions) folder. An example version that can be used is: `1.6.9.5-U0.2.1-RC-1.5-BETA`
+
 
 If you would like to learn how to use the API there are lots of examples that can be found in the [wiki](https://github.com/ProSavage/SavageFactions/wiki) on the [API-Usage](https://github.com/ProSavage/SavageFactions/wiki/API-Usage) page.
