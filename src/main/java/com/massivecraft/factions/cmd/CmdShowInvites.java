@@ -17,6 +17,7 @@ public class CmdShowInvites extends FCommand {
 
         senderMustBePlayer = true;
         senderMustBeMember = true;
+
     }
 
     @Override

@@ -32,7 +32,8 @@ public class CmdFly extends FCommand {
 
         this.optionalArgs.put("on/off", "flip");
 
-        this.permission = Permission.FLY.node;
+
+       this.permission = Permission.FLY.node;
         this.senderMustBeMember = true;
         this.senderMustBeModerator = false;
     }

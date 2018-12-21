@@ -27,6 +27,7 @@ public class CmdSafeunclaimall extends FCommand {
         senderMustBeColeader = false;
         senderMustBeAdmin = false;
 
+
     }
 
     @Override

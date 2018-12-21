@@ -21,6 +21,7 @@ public class CmdTpBanner extends FCommand {
         senderMustBeModerator = false;
         senderMustBeColeader = false;
         senderMustBeAdmin = false;
+
     }
 
     @Override

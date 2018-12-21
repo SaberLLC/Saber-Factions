@@ -24,7 +24,8 @@ public class CmdAdmin extends FCommand {
         this.permission = Permission.ADMIN.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = false;
+
+       senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;

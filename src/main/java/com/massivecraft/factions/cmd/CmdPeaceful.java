@@ -23,6 +23,7 @@ public class CmdPeaceful extends FCommand {
         senderMustBeModerator = false;
         senderMustBeColeader = false;
         senderMustBeAdmin = false;
+
     }
 
     @Override

@@ -25,6 +25,7 @@ public class CmdUnclaimall extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = true;
         senderMustBeAdmin = false;
+
     }
 
     @Override

@@ -22,7 +22,8 @@ public class CmdLock extends FCommand {
         this.permission = Permission.LOCK.node;
         this.disableOnLock = false;
 
-        senderMustBePlayer = false;
+
+       senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

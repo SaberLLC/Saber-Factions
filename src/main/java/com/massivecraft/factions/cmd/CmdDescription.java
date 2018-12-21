@@ -21,7 +21,8 @@ public class CmdDescription extends FCommand {
         this.permission = Permission.DESCRIPTION.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = true;

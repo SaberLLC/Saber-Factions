@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.integration.Econ;
@@ -37,6 +38,7 @@ public abstract class MCommand<T extends MPlugin> {
     public CommandVisibility visibility;
     // Some information on permissions
     public boolean senderMustBePlayer;
+    public boolean senderMustHaveFaction;
     public String permission;
     // Information available on execution of the command
     public CommandSender sender; // Will always be set
@@ -153,14 +155,16 @@ public abstract class MCommand<T extends MPlugin> {
         return true;
     }
 
+
     public boolean validSenderType(CommandSender sender, boolean informSenderIfNot) {
         if (this.senderMustBePlayer && !(sender instanceof Player)) {
             if (informSenderIfNot) {
                 msg(TL.GENERIC_PLAYERONLY);
             }
             return false;
+
         }
-        return true;
+        return !this.senderMustHaveFaction || !FPlayers.getInstance().getByPlayer((Player) sender).hasFaction();
     }
 
     public boolean validSenderPermissions(CommandSender sender, boolean informSenderIfNot) {

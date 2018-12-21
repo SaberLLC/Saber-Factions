@@ -17,6 +17,7 @@ public class CmdStealth extends FCommand {
         this.senderMustBeModerator = false;
         this.senderMustBeColeader = false;
         this.senderMustBeAdmin = false;
+
     }
 
     public void perform() {

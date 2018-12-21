@@ -23,7 +23,8 @@ public class CmdFWarp extends FCommand {
         this.optionalArgs.put("warpname", "warpname");
         this.optionalArgs.put("password", "password");
 
-        this.permission = Permission.WARP.node;
+
+       this.permission = Permission.WARP.node;
         this.senderMustBeMember = true;
         this.senderMustBeModerator = false;
     }

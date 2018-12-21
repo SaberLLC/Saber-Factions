@@ -14,7 +14,8 @@ public class CmdLowPower extends FCommand {
         this.disableOnLock = false;
 
         senderMustBePlayer = true;
-        senderMustBeMember = true;
+
+       senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = true;
         senderMustBeAdmin = false;

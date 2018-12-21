@@ -41,6 +41,7 @@ public class CmdSeeChunk extends FCommand {
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
+
         this.useParticles = p.getConfig().getBoolean("see-chunk.particles", true);
         interval = SavageFactions.plugin.getConfig().getLong("see-chunk.interval", 10L);
         if (effect == null) {

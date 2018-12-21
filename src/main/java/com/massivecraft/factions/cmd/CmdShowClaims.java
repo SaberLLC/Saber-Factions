@@ -21,6 +21,7 @@ public class CmdShowClaims extends FCommand {
         this.senderMustBePlayer = true;
 
 
+
     }
 
     @Override
@@ -34,7 +35,7 @@ public class CmdShowClaims extends FCommand {
         for (String world : chunkMap.keySet()) {
             String message = TL.COMMAND_SHOWCLAIMS_FORMAT.toString().replace("{world}", world);
             sendMessage(message.replace("{chunks}", "")); // made {chunks} blank as I removed the placeholder and people wont update their config :shrug:
-            StringBuilder chunks = new StringBuilder("");
+           StringBuilder chunks = new StringBuilder();
             for (String chunkString : chunkMap.get(world)) {
                 chunks.append(chunkString + ", ");
                 if (chunks.toString().length() >= 2000) {

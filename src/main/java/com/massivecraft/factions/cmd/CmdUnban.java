@@ -21,7 +21,8 @@ public class CmdUnban extends FCommand {
         senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+
+       senderMustBeAdmin = false;
     }
 
     @Override

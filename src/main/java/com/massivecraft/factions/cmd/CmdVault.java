@@ -27,6 +27,7 @@ public class CmdVault extends FCommand {
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
+
     }
 
     @Override

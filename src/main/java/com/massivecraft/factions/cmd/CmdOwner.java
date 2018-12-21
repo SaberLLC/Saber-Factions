@@ -18,7 +18,8 @@ public class CmdOwner extends FCommand {
         this.permission = Permission.OWNER.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

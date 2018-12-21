@@ -15,7 +15,8 @@ public class CmdCoords extends FCommand {
         this.permission = Permission.COORD.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

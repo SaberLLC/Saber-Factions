@@ -23,7 +23,8 @@ public class CmdSetFWarp extends FCommand {
 
         this.senderMustBeMember = true;
         this.senderMustBeModerator = false;
-        this.senderMustBePlayer = true;
+
+       this.senderMustBePlayer = true;
 
         this.permission = Permission.SETWARP.node;
     }

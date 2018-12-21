@@ -30,7 +30,8 @@ public class CmdHome extends FCommand {
         this.permission = Permission.HOME.node;
         this.disableOnLock = false;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

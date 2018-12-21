@@ -17,7 +17,8 @@ public class CmdGetVault extends FCommand {
         this.permission = Permission.GETVAULT.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

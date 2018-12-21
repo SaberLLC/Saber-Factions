@@ -24,6 +24,7 @@ public class CmdRules extends FCommand {
         senderMustBeModerator = false;
         senderMustBeColeader = true;
         senderMustBeAdmin = false;
+
     }
 
     @Override

@@ -29,7 +29,8 @@ public class CmdDisband extends FCommand {
         this.permission = Permission.DISBAND.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = false;
+
+       senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

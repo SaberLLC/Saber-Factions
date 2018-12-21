@@ -27,6 +27,7 @@ public class CmdTnt extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = true;
         senderMustBeAdmin = false;
+
     }
 
     @Override

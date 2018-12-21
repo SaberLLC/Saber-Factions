@@ -12,7 +12,8 @@ public class CmdInspect extends FCommand {
         this.permission = Permission.INSPECT.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

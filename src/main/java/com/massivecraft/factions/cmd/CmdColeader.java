@@ -23,7 +23,8 @@ public class CmdColeader extends FCommand {
         this.permission = Permission.COLEADER.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = false;
+
+       senderMustBePlayer = false;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeAdmin = true;

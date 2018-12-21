@@ -23,7 +23,8 @@ public class CmdInvite extends FCommand {
         this.permission = Permission.INVITE.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

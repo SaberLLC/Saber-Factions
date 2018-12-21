@@ -27,6 +27,7 @@ public class CmdStuck extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
+
     }
 
     @Override

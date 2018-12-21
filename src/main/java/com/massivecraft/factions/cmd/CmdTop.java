@@ -30,9 +30,11 @@ public class CmdTop extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
+
     }
 
-    @Override
+
+   @Override
     public void perform() {
         // Can sort by: money, members, online, allies, enemies, power, land.
         // Get all Factions and remove non player ones.

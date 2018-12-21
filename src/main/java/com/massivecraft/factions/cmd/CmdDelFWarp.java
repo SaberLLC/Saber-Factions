@@ -17,6 +17,7 @@ public class CmdDelFWarp extends FCommand {
         this.senderMustBeModerator = true;
         this.senderMustBePlayer = true;
         this.permission = Permission.SETWARP.node;
+
     }
 
     @Override

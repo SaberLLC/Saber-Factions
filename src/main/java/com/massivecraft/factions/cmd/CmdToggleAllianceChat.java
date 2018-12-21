@@ -21,6 +21,7 @@ public class CmdToggleAllianceChat extends FCommand {
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
+
     }
 
     @Override

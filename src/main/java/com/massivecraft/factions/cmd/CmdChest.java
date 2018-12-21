@@ -19,7 +19,8 @@ public class CmdChest extends FCommand {
         this.permission = Permission.CHEST.node;
         this.disableOnLock = false;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;

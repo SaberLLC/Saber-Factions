@@ -508,10 +508,6 @@ public class SavageFactions extends MPlugin {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
        FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) sender);
-       if (!fPlayer.hasFaction()) {
-          fPlayer.msg("Autocomplete is not available if you do not have a faction.");
-          return new ArrayList<String>();
-       }
     	List<String> completions = new ArrayList<>();
     	String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
     	List<String> argsList = new ArrayList<>(Arrays.asList(args));

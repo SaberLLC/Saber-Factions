@@ -31,7 +31,8 @@ public class CmdList extends FCommand {
         this.permission = Permission.LIST.node;
         this.disableOnLock = false;
 
-        senderMustBePlayer = false;
+
+       senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

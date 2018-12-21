@@ -26,6 +26,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
     public boolean senderMustBeAdmin;
     public boolean senderMustBeColeader;
 
+
     public boolean isMoneyCommand;
 
     public FCommand() {
@@ -98,22 +99,30 @@ public abstract class FCommand extends MCommand<SavageFactions> {
         }
 
         if (!fme.hasFaction()) {
-            sender.sendMessage(p.txt.parse("<b>You are not member of any faction."));
+            if (informSenderIfNot) {
+                sender.sendMessage(p.txt.parse("<b>You are not member of any faction."));
+            }
             return false;
         }
 
         if (this.senderMustBeModerator && !fme.getRole().isAtLeast(Role.MODERATOR)) {
-            sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
+            if (informSenderIfNot) {
+                sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
+            }
             return false;
         }
 
         if (this.senderMustBeColeader && !fme.getRole().isAtLeast(Role.COLEADER)) {
-            sender.sendMessage(p.txt.parse("<b>Only faction coleaders can %s.", this.getHelpShort()));
+            if (informSenderIfNot) {
+                sender.sendMessage(p.txt.parse("<b>Only faction coleaders can %s.", this.getHelpShort()));
+            }
             return false;
         }
 
         if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.LEADER)) {
-            sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
+            if (informSenderIfNot) {
+                sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
+            }
             return false;
         }
 

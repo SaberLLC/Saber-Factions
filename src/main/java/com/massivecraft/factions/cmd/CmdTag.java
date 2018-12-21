@@ -26,6 +26,7 @@ public class CmdTag extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = true;
         senderMustBeAdmin = false;
+
     }
 
     @Override

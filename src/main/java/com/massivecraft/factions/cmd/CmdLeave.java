@@ -15,7 +15,8 @@ public class CmdLeave extends FCommand {
         this.permission = Permission.LEAVE.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

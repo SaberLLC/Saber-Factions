@@ -30,6 +30,7 @@ public class CmdTntFill extends FCommand {
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
+
     }
 
     @Override

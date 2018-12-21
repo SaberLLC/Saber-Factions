@@ -17,6 +17,7 @@ public class CmdPaypalSet extends FCommand {
         this.senderMustBeModerator = false;
         this.senderMustBeColeader = true;
         this.senderMustBeAdmin = false;
+
     }
 
     public void perform() {

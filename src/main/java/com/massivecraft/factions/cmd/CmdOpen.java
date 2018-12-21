@@ -18,7 +18,8 @@ public class CmdOpen extends FCommand {
         this.permission = Permission.OPEN.node;
         this.disableOnLock = false;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = true;

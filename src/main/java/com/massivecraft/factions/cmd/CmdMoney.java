@@ -35,6 +35,7 @@ public class CmdMoney extends FCommand {
         this.addSubCommand(this.cmdMoneyTransferFf);
         this.addSubCommand(this.cmdMoneyTransferFp);
         this.addSubCommand(this.cmdMoneyTransferPf);
+
     }
 
     @Override

@@ -16,6 +16,7 @@ public class CmdSetBanner extends FCommand {
         senderMustBeModerator = false;
         senderMustBeAdmin = true;
 
+
     }
 
     public void perform() {

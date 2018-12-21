@@ -15,6 +15,7 @@ public class CmdFocus
 
        permission = Permission.FOCUS.node;
 
+
        senderMustBePlayer = true;
        senderMustBeMember = false;
        senderMustBeModerator = true;

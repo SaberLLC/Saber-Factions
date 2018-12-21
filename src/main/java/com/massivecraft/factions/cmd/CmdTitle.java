@@ -21,6 +21,7 @@ public class CmdTitle extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = true;
         senderMustBeAdmin = false;
+
     }
 
     @Override

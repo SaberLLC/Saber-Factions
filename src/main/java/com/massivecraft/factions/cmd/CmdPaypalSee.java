@@ -17,6 +17,7 @@ public class CmdPaypalSee extends FCommand {
         senderMustBeModerator = false;
         senderMustBeColeader = false;
         senderMustBeAdmin = false;
+
     }
 
     public void perform() {

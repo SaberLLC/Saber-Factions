@@ -22,7 +22,8 @@ public class CmdBanner extends FCommand {
         this.permission = Permission.BANNER.node;
         this.disableOnLock = false;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = true;

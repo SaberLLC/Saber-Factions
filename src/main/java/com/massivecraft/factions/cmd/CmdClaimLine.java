@@ -25,7 +25,8 @@ public class CmdClaimLine extends FCommand {
         this.permission = Permission.CLAIM_LINE.node;
         this.disableOnLock = true;
 
-        senderMustBePlayer = true;
+
+       senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;
