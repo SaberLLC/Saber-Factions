@@ -84,7 +84,7 @@ public class TagUtil {
      * @param faction for faction (viewers faction)
      * @param fme     for player (viewer)
      * @param line    fancy message prefix
-     * @return
+     * @return list of fancy msgs
      */
     public static List<FancyMessage> parseFancy(Faction faction, FPlayer fme, String line) {
         for (TagReplacer tagReplacer : TagReplacer.getByType(TagType.FANCY)) {

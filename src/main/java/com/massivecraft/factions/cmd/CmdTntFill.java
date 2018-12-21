@@ -47,11 +47,11 @@ public class CmdTntFill extends FCommand {
         int radius = argAsInt(0, 16);
         int amount = argAsInt(1, 16);
         if (radius > SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius")) {
-            msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius") + ""));
+            fme.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius") + ""));
             return;
         }
         if (amount > SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount")) {
-            msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount") + ""));
+            fme.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount") + ""));
             return;
         }
         
@@ -80,7 +80,7 @@ public class CmdTntFill extends FCommand {
                             int remainderAmt = amount % 64;
                             if (!inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
                                 if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
-                                    msg(TL.COMMAND_TNTFILL_NOTENOUGH);
+                                    fme.msg(TL.COMMAND_TNTFILL_NOTENOUGH.toString());
                                     sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", amount + "").replace("{dispensers}", counter + ""));
                                     me.updateInventory();
                                     return;
@@ -89,7 +89,7 @@ public class CmdTntFill extends FCommand {
                                     bankMode = true;
                                     removeFromBank(amount);
                                     if (!inventoryContains(me.getInventory(), new ItemStack(Material.TNT, amount))) {
-                                        msg(TL.COMMAND_TNTFILL_NOTENOUGH);
+                                        fme.msg(TL.COMMAND_TNTFILL_NOTENOUGH.toString());
                                         sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", amount + "").replace("{dispensers}", counter + ""));
                                         me.updateInventory();
                                         return;
@@ -135,17 +135,17 @@ public class CmdTntFill extends FCommand {
             return;
         }
         if (fme.getFaction().getTnt() < amount) {
-            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
+            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH.toString());
             return;
         }
         int fullStacks = amount / 64;
         int remainderAmt = amount % 64;
         if ((remainderAmt == 0 && getEmptySlots(me) <= fullStacks)) {
-            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
+            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH.toString());
             return;
         }
         if (getEmptySlots(me) + 1 <= fullStacks) {
-            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
+            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH.toString());
             return;
         }
         ItemStack tnt64 = new ItemStack(Material.TNT, 64);
@@ -190,7 +190,7 @@ public class CmdTntFill extends FCommand {
             return false;
         }
         if (getEmptySlots(me) + 1 <= fullStacks) {
-            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
+            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH.toString());
             return false;
         }
         return true;

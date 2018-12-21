@@ -52,7 +52,7 @@ public enum PermissableAction {
      * Case insensitive check for action.
      *
      * @param check
-     * @return
+     * @return - action
      */
     public static PermissableAction fromString(String check) {
         for (PermissableAction permissableAction : values()) {
