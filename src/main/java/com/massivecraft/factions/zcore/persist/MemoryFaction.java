@@ -917,6 +917,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return ret;
     }
 
+
     public FPlayer getFPlayerAdmin() {
         if (!this.isNormal()) {
             return null;
@@ -928,6 +929,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             }
         }
         return null;
+    }
+
+    public FPlayer getFPlayerLeader() {
+        return getFPlayerAdmin();
     }
 
     public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {

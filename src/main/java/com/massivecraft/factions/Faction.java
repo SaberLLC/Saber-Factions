@@ -273,7 +273,9 @@ public interface Faction extends EconomyParticipator {
 
     FPlayer getFPlayerAdmin();
 
-    ArrayList<FPlayer> getFPlayersWhereRole(Role role);
+   FPlayer getFPlayerLeader();
+
+   ArrayList<FPlayer> getFPlayersWhereRole(Role role);
 
     ArrayList<Player> getOnlinePlayers();
 
