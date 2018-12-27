@@ -3,12 +3,13 @@
   <groupId>com.massivecraft</groupId>
   <artifactId>Factions</artifactId>
   <versioning>
-      <release>1.6.9.5-U0.2.1-RC-1.5-STABLE</release>
+    <release>1.6.9.5-U0.2.1-RC-1.6-BETA</release>
     <versions>
       <version>1.6.9.5-U0.2.1-RC-1.5-BETA</version>
       <version>1.6.9.5-U0.2.1-RC-1.5-BETA-2</version>
-        <version>1.6.9.5-U0.2.1-RC-1.5-STABLE</version>
+      <version>1.6.9.5-U0.2.1-RC-1.5-STABLE</version>
+      <version>1.6.9.5-U0.2.1-RC-1.6-BETA</version>
     </versions>
-      <lastUpdated>20181222234636</lastUpdated>
+    <lastUpdated>20181227012130</lastUpdated>
   </versioning>
 </metadata>

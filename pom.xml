@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-U0.2.1-RC-1.5-STABLE</version>
+    <version>1.6.9.5-U0.2.1-RC-1.6-BETA</version>
     <packaging>jar</packaging>
 
     <name>SavageFactions</name>
@@ -334,6 +334,19 @@
             <version>2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.SkriptLang</groupId>
+            <artifactId>Skript</artifactId>
+            <version>dev37c</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
     </dependencies>
 
     <repositories>
@@ -368,6 +381,14 @@
         <repository>
             <id>ProSavage</id>
             <url>https://www.myget.org/F/prosavage/maven/</url>
+        </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 

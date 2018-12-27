@@ -1,5 +1,7 @@
 package com.massivecraft.factions;
 
+import ch.njol.skript.Skript;
+import ch.njol.skript.SkriptAddon;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -77,6 +79,8 @@ public class SavageFactions extends MPlugin {
     private boolean hookedPlayervaults;
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
+
+   SkriptAddon skriptAddon;
 
     private Listener[] eventsListener;
     
@@ -203,6 +207,17 @@ public class SavageFactions extends MPlugin {
             factionsFlight = true;
         }
 
+       if (getServer().getPluginManager().getPlugin("Skript") != null) {
+          log("Skript was found! Registering SavageFactions Addon...");
+          skriptAddon = Skript.registerAddon(this);
+          try {
+             skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
+          } catch (IOException ex) {
+             ex.printStackTrace();
+          }
+          log("Skript addon registered!");
+       }
+
 
         // Register Event Handlers
         eventsListener = new Listener[] {
@@ -236,6 +251,10 @@ public class SavageFactions extends MPlugin {
         this.postEnable();
         this.loadSuccessful = true;
     }
+
+   public SkriptAddon getSkriptAddon() {
+      return skriptAddon;
+   }
 
     private void setupMultiversionMaterials() {
         if (mc113) {
