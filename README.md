@@ -30,19 +30,19 @@ The video can be found [here](https://www.youtube.com/watch?v=fnDwjA2gX-E).
 If you would like to use the plugin as a dependency in your project, you can use maven.
 
    ```xml
-   	<repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+<repositories>
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+	</repository>
+</repositories>
 
-	<dependency>
-            <groupId>com.github.ProSavage</groupId>
-            <artifactId>SavageFactions</artifactId>
-            <version>1.6.x-0.1.21-gbdd5473-400</version>
-            <scope>provided</scope>
-        </dependency>
+<dependency>
+	<groupId>com.github.ProSavage</groupId>
+	<artifactId>SavageFactions</artifactId>
+	<version>1.6.x-0.1.21-gbdd5473-400</version>
+	<scope>provided</scope>
+</dependency>
 ```
 The {version} has to be replaced with a version you find in the [mvn-repo](https://github.com/ProSavage/SavageFactions/tree/1.6.x/mvn-repo/com/massivecraft/Factions) folder. An example version that can be used is: `1.6.9.5-U0.2.1-RC-1.5-BETA`
 
