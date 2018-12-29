@@ -168,7 +168,6 @@ public class FUpgradesGUI implements Listener {
         	case 2: size = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2"); break;
         	case 3: size = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3"); break;
         }
-
         faction.setChestSize(size * 9);
     }
 
