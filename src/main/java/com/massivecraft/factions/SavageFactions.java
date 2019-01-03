@@ -57,7 +57,6 @@ public class SavageFactions extends MPlugin {
     public static SavageFactions plugin;
     public static Permission perms = null;
 
-
     public boolean PlaceholderApi;
     // Commands
     public FCmdRoot cmdBase;
@@ -448,7 +447,10 @@ public class SavageFactions extends MPlugin {
     public void onDisable() {
         // only save data if plugin actually completely loaded successfully
         if (this.loadSuccessful) {
-            Conf.save();
+           // Dont save, as this is kind of pointless, as the /f config command manually saves.
+           // So any edits done are saved, this way manual edits to json can go through.
+
+           // Conf.save();
         }
 
         if (AutoLeaveTask != null) {
