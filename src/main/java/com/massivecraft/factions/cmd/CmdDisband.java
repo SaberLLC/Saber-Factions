@@ -30,7 +30,7 @@ public class CmdDisband extends FCommand {
         this.disableOnLock = true;
 
 
-       senderMustBePlayer = false;
+        senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;
@@ -45,6 +45,19 @@ public class CmdDisband extends FCommand {
         if (faction == null) {
             return;
         }
+
+        boolean isMyFaction = fme != null && faction == myFaction;
+
+        if (isMyFaction) {
+            if (!assertMinRole(Role.LEADER)) {
+                return;
+            }
+        } else {
+            if (!Permission.DISBAND_ANY.has(sender, true)) {
+                return;
+            }
+        }
+
 
         if (!fme.isAdminBypassing()) {
             Access access = faction.getAccess(fme, PermissableAction.DISBAND);
