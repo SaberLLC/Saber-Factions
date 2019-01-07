@@ -4,7 +4,7 @@ SavageFactions is a fork of the popular Factions plugin FactionsUUID. The Goal o
 
 The plugin contains lots of new revolutionary features, which can be looked at in further detail on the wiki.
 
-Currently the plugin is marketed on [Spigot](www.spigotmc.org) ,  a platform for Minecraft Servers which has an API that SavageFactions uses to enhance the game.
+Currently the plugin is marketed on [Spigot](https://www.spigotmc.org/forums/) ,  a platform for Minecraft Servers which has an API that SavageFactions uses to enhance the game.
 
 The plugin page can be found [here](https://www.spigotmc.org/resources/savagefactions-the-ultimate-factions-plugin-1-7-1-13.52891/), it contains a few gifs which show features of the plugin.
 
