@@ -358,7 +358,7 @@ public class SavageFactions extends MPlugin {
     }
   }
 
-    private void changeItemIDSInConfig() {
+   public void changeItemIDSInConfig() {
         log("Starting conversion of legacy material in config to 1.13 materials.");
 
         replaceStringInConfig("fperm-gui.relation.materials.recruit", "WOOD_SWORD", "WOODEN_SWORD");
