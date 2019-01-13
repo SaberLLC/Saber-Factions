@@ -105,6 +105,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
             return false;
         }
 
+
         if (this.senderMustBeModerator && !fme.getRole().isAtLeast(Role.MODERATOR)) {
             if (informSenderIfNot) {
                 sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
