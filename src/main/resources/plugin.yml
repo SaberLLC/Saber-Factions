@@ -332,3 +332,5 @@ permissions:
     description: View other factions' paypal ID
   factions.paypal:
     description: Set/view your own faction's paypal.
+  factions.showclaims:
+    description: View all you faction claims.
