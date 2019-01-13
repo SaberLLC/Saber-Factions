@@ -536,6 +536,10 @@ public class SavageFactions extends MPlugin {
     	String cmdValid = (cmd + " " + TextUtil.implode(argsList, " ")).trim();
     	MCommand<?> commandEx = cmdBase;
     	List<MCommand<?>> commandsList = cmdBase.subCommands;
+       if (Board.getInstance().getFactionAt(new FLocation(fPlayer.getPlayer().getLocation())) == Factions.getInstance().getWarZone()) {
+          sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot use autocomplete in warzone."));
+          return new ArrayList<>();
+       }
 
     	for (; !commandsList.isEmpty() && !argsList.isEmpty(); argsList.remove(0))
     	{
