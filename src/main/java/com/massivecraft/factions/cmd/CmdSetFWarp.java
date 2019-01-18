@@ -45,10 +45,15 @@ public class CmdSetFWarp extends FCommand {
                 return;
             }
         }
+        
+        String warp = argAsString(0);
 
+        // Checks if warp with same name already exists and ignores maxWarp check if it does.
+        boolean warpExists = myFaction.isWarp(warp);
 
         int maxWarps = SavageFactions.plugin.getConfig().getInt("max-warps", 5);
-        if (maxWarps <= myFaction.getWarps().size()) {
+        boolean tooManyWarps = maxWarps <= myFaction.getWarps().size();
+        if (tooManyWarps && !warpExists) {
             fme.msg(TL.COMMAND_SETFWARP_LIMIT, maxWarps);
             return;
         }
@@ -57,7 +62,6 @@ public class CmdSetFWarp extends FCommand {
             return;
         }
 
-        String warp = argAsString(0);
         String password = argAsString(1);
 
         LazyLocation loc = new LazyLocation(fme.getPlayer().getLocation());
