@@ -286,6 +286,7 @@ public class FactionsPlayerListener implements Listener {
         case ANVIL:
         case CHIPPED_ANVIL:
         case DAMAGED_ANVIL:
+         case BREWING_STAND:
           action = PermissableAction.CONTAINER;
           break;
         default:
@@ -312,7 +313,7 @@ public class FactionsPlayerListener implements Listener {
     boolean doTerritoryEnemyProtectedCheck = true;
 
 
-    if (action.equals(PermissableAction.CONTAINER) ||
+     if (action != null && action.equals(PermissableAction.CONTAINER) ||
             (action.equals(PermissableAction.DOOR))) {
       if (access == Access.ALLOW) {
         doTerritoryEnemyProtectedCheck = false;
