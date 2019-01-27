@@ -18,7 +18,6 @@ public class CmdUnclaim extends FCommand {
         this.aliases.add("declaim");
 
         this.optionalArgs.put("radius", "1");
-        this.optionalArgs.put("faction", "your");
 
         this.permission = Permission.UNCLAIM.node;
         this.disableOnLock = true;
@@ -27,14 +26,12 @@ public class CmdUnclaim extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
-
     }
 
     @Override
     public void perform() {
         // Read and validate input
         int radius = this.argAsInt(0, 1); // Default to 1
-        final Faction forFaction = this.argAsFaction(1, myFaction); // Default to own
 
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TERRITORY);

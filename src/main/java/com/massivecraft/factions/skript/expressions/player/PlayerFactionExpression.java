@@ -35,6 +35,7 @@ public class PlayerFactionExpression extends SimpleExpression<String> {
       return true;
    }
 
+   @SuppressWarnings("unchecked")
    @Override
    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
       playerExpression = (Expression<Player>) exprs[0];
@@ -88,6 +89,7 @@ public class PlayerFactionExpression extends SimpleExpression<String> {
             }
             fPlayer.setFaction(faction);
             break;
+         default:
       }
 
    }

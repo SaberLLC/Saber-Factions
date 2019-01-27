@@ -9,6 +9,7 @@ import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,6 +22,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -33,73 +35,58 @@ import java.util.List;
 public class FactionsBlockListener implements Listener {
 
     public static HashMap<String, Location> bannerLocations = new HashMap<>();
-    public SavageFactions savageFactions;
     private HashMap<String, Boolean> bannerCooldownMap = new HashMap<>();
-
-    public FactionsBlockListener(SavageFactions savageFactions) {
-        this.savageFactions = savageFactions;
-    }
 
     public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
         String name = player.getName();
-        if (Conf.playersWhoBypassAllProtection.contains(name)) {
+        
+        if (Conf.playersWhoBypassAllProtection.contains(name))
             return true;
-        }
 
         FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
-        if (me.isAdminBypassing()) {
+        if (me.isAdminBypassing())
             return true;
-        }
 
         FLocation loc = new FLocation(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
         if (otherFaction.isWilderness()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
+            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
                 return true;
-            }
 
-            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
+            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()))
                 return true; // This is not faction territory. Use whatever you like here.
-            }
 
-            if (!justCheck) {
+            if (!justCheck)
                 me.msg("<b>You can't " + action + " in the wilderness.");
-            }
 
             return false;
         } else if (otherFaction.isSafeZone()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
+            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
                 return true;
-            }
 
-            if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player)) {
+            if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player))
                 return true;
-            }
 
-            if (!justCheck) {
+            if (!justCheck)
                 me.msg("<b>You can't " + action + " in a safe zone.");
-            }
 
             return false;
         } else if (otherFaction.isWarZone()) {
-            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
+            if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location))
                 return true;
-            }
 
-            if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player)) {
+            if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player))
                 return true;
-            }
 
-            if (!justCheck) {
+            if (!justCheck)
                 me.msg("<b>You can't " + action + " in a war zone.");
-            }
 
             return false;
         }
-        if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+        
+        if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
             return true;
-        }
 
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
@@ -108,9 +95,9 @@ public class FactionsBlockListener implements Listener {
         boolean deny = rel.confDenyBuild(online);
 
         Access access = otherFaction.getAccess(me, PermissableAction.fromString(action));
-        if (access == Access.ALLOW && ((rel == Relation.ALLY) || (rel == Relation.ENEMY) || (rel == Relation.NEUTRAL) || (rel == Relation.TRUCE))) {
+        if (access == Access.ALLOW && ((rel == Relation.ALLY) || (rel == Relation.ENEMY) || (rel == Relation.NEUTRAL) || (rel == Relation.TRUCE)))
             deny = false;
-        }
+
         // hurt the player for building/destroying in other territory?
         if (pain) {
             player.damage(Conf.actionDeniedPainAmount);
@@ -151,10 +138,12 @@ public class FactionsBlockListener implements Listener {
         if (access != Access.ALLOW && me.getRole() != Role.LEADER) {
             // TODO: Update this once new access values are added other than just allow / deny.
             if (access == Access.DENY) {
-                me.msg(TL.GENERIC_NOPERMISSION, action);
+            	if (!justCheck)
+            		me.msg(TL.GENERIC_NOPERMISSION, action);
                 return false;
             } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
-                me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+            	if (!justCheck)
+            		me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
                 return false;
             }
         }
@@ -230,7 +219,7 @@ public class FactionsBlockListener implements Listener {
          * only the final target block as done above
          */
     }
-
+    
     @EventHandler
     public void onVaultPlace(BlockPlaceEvent e) {
         if (e.getItemInHand().getType() == Material.CHEST) {
@@ -381,9 +370,9 @@ public class FactionsBlockListener implements Listener {
                     }
                     for (FPlayer fplayer : fme.getFaction().getFPlayers()) {
                         //  if (fplayer == fme) { continue; }   //Idk if I wanna not send the title to the player
-                        fplayer.getPlayer().sendTitle(SavageFactions.plugin.color(fme.getTag() + " Placed A WarBanner!"), SavageFactions.plugin.color("&7use &c/f tpbanner&7 to tp to the banner!"));
-
+                        fplayer.getPlayer().sendTitle(SavageFactions.plugin.color(fme.getTag() + " Placed A WarBanner!"), SavageFactions.plugin.color("&7use &c/f tpbanner&7 to tp to the banner!"), 10, 70, 20);
                     }
+                    
                     bannerCooldownMap.put(fme.getTag(), true);
                     bannerLocations.put(fme.getTag(), e.getBlockPlaced().getLocation());
                     final int bannerCooldown = SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Place-Cooldown");
@@ -515,5 +504,23 @@ public class FactionsBlockListener implements Listener {
                 }
             }
         }
+    }
+    
+    @EventHandler
+    public void onFarmLandDamage(EntityChangeBlockEvent event)
+    {
+    	if (event.getEntity() instanceof Player)
+    	{
+    		Player player = (Player) event.getEntity();
+    		if (!playerCanBuildDestroyBlock(player, event.getBlock().getLocation(), PermissableAction.DESTROY.name(), true))
+    		{
+    			FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
+    			Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation()));
+    			Faction myFaction = me.getFaction();
+    			
+    			me.msg("<b>You can't jump on farmland in the territory of " + otherFaction.getTag(myFaction));
+    			event.setCancelled(true);
+    		}
+    	}
     }
 }

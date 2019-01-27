@@ -10,10 +10,8 @@ import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 public class CmdSeeChunk extends FCommand {
 
@@ -117,7 +115,6 @@ public class CmdSeeChunk extends FCommand {
     }
 
     private void showPillar(Player player, World world, int blockX, int blockZ) {
-        List<Player> onePlayer = Arrays.asList(player);
         for (int blockY = 0; blockY < player.getLocation().getBlockY() + 30; blockY++) {
             Location loc = new Location(world, blockX, blockY, blockZ).add(0.5, 0, 0.5);
             if (loc.getBlock().getType() != Material.AIR) {

@@ -33,6 +33,7 @@ public class PlayerRoleExpression extends SimpleExpression<String> {
       return true;
    }
 
+   @SuppressWarnings("unchecked")
    @Override
    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
       playerExpression = (Expression<Player>) exprs[0];
@@ -82,6 +83,7 @@ public class PlayerRoleExpression extends SimpleExpression<String> {
          case SET:
             fPlayer.setRole(Role.fromString(((String) delta[0]).toLowerCase()));
             break;
+         default:
       }
 
    }

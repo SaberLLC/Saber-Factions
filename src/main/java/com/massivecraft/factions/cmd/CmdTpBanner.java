@@ -30,7 +30,7 @@ public class CmdTpBanner extends FCommand {
             return;
         }
 
-        final FactionsPlayerListener fpl = new FactionsPlayerListener(SavageFactions.plugin);
+        final FactionsPlayerListener fpl = new FactionsPlayerListener();
 
         if (FactionsBlockListener.bannerLocations.containsKey(fme.getTag())) {
             fme.msg(TL.COMMAND_TPBANNER_SUCCESS);

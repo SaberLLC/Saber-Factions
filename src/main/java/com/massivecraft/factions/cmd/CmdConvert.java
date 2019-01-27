@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Conf.Backend;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.persist.json.FactionsJSON;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.command.ConsoleCommandSender;
@@ -11,6 +12,8 @@ public class CmdConvert extends FCommand {
     public CmdConvert() {
         this.aliases.add("convert");
 
+        this.permission = Permission.CONVERT.node;
+        
         this.requiredArgs.add("[MYSQL|JSON]");
     }
 
