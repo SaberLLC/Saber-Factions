@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
@@ -76,7 +78,6 @@ public class CmdDisband extends FCommand {
             return;
         }
 
-
         // check for tnt before disbanding.
 
         if (!disbandMap.containsKey(me.getUniqueId().toString()) && faction.getTnt() > 0) {
@@ -88,13 +89,24 @@ public class CmdDisband extends FCommand {
                     disbandMap.remove(me.getUniqueId().toString());
                 }
             }, 200L);
-        } else {
-            //Check if the faction we asked confirmation for is the one being disbanded.
-            if (faction.getId().equals(disbandMap.get(me.getUniqueId().toString())) || faction.getTnt() == 0) {
+        } else if (faction.getId().equals(disbandMap.get(me.getUniqueId().toString())) || faction.getTnt() == 0) {
+            if (SavageFactions.plugin.getConfig().getBoolean("faction-disband-broadcast", true)) {
+                for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
+                    String amountString = senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(follower);
+                    if (follower.getFaction() == faction) {
+                        follower.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, amountString);
+                    } else {
+                        follower.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, amountString, faction.getTag(follower));
+                    }
+                }
                 faction.disband(me, PlayerDisbandReason.COMMAND);
+            } else {
+                faction.disband(me, PlayerDisbandReason.COMMAND);
+                me.sendMessage(String.valueOf(TL.COMMAND_DISBAND_PLAYER));
             }
         }
     }
+
 
     @Override
     public TL getUsageTranslation() {

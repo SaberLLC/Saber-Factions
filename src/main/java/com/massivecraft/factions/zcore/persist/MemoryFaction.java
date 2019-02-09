@@ -260,15 +260,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, this, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
         }
 
-        // Inform all players
-        for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-            String who = disbanderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fdisbander.describeTo(fplayer);
-            if (fplayer.getFaction() == this) {
-                fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, who);
-            } else {
-                fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, who, this.getTag(fplayer));
-            }
-        }
         if (Conf.logFactionDisband) {
             //TODO: Format this correctly and translate.
             SavageFactions.plugin.log("The faction " + this.getTag() + " (" + this.getId() + ") was disbanded by " + (disbanderIsConsole ? "console command" : fdisbander.getName()) + ".");

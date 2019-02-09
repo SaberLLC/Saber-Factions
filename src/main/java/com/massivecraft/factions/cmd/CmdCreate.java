@@ -90,11 +90,11 @@ public class CmdCreate extends FCommand {
         // That way we don't have to mess up deleting more stuff.
         // And prevent the user from being returned to NORMAL after deleting his old faction.
         fme.setRole(Role.LEADER);
-
-        for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
-            follower.msg(TL.COMMAND_CREATE_CREATED, fme.describeTo(follower, true), faction.getTag(follower));
+        if (SavageFactions.plugin.getConfig().getBoolean("faction-creation-broadcast", true)) {
+            for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
+                follower.msg(TL.COMMAND_CREATE_CREATED, fme.describeTo(follower, true), faction.getTag(follower));
+            }
         }
-
         msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate());
 
         if (Conf.logFactionCreate) {
