@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import mkremins.fanciful.FancyMessage;
@@ -146,7 +147,7 @@ public class TagUtil {
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isAlly()) {
                         currentAllies.then(firstAlly ? s : ", " + s);
-                        currentAllies.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
+                        currentAllies.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction):Relation.NEUTRAL.getColor());
                         firstAlly = false;
                         if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
                             fancyMessages.add(currentAllies);
@@ -166,7 +167,7 @@ public class TagUtil {
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isEnemy()) {
                         currentEnemies.then(firstEnemy ? s : ", " + s);
-                        currentEnemies.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
+                        currentEnemies.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction):Relation.NEUTRAL.getColor());
                         firstEnemy = false;
                         if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
                             fancyMessages.add(currentEnemies);
@@ -186,7 +187,7 @@ public class TagUtil {
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isTruce()) {
                         currentTruces.then(firstTruce ? s : ", " + s);
-                        currentTruces.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
+                        currentTruces.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction):Relation.NEUTRAL.getColor());
                         firstTruce = false;
                         if (currentTruces.toJSONString().length() > ARBITRARY_LIMIT) {
                             fancyMessages.add(currentTruces);
@@ -200,12 +201,12 @@ public class TagUtil {
                 FancyMessage currentOnline = SavageFactions.plugin.txt.parseFancy(prefix);
                 boolean firstOnline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
-                    if (fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
+                    if (fme != null && fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
                         continue; // skip
                     }
                     String name = p.getNameAndTitle();
                     currentOnline.then(firstOnline ? name : ", " + name);
-                    currentOnline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
+                    currentOnline.tooltip(tipPlayer(p)).color(fme != null ? fme.getColorTo(p):Relation.NEUTRAL.getColor());
                     firstOnline = false;
                     if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
                         fancyMessages.add(currentOnline);
@@ -220,9 +221,9 @@ public class TagUtil {
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
                     String name = p.getNameAndTitle();
                     // Also make sure to add players that are online BUT can't be seen.
-                    if (!p.isOnline() || (fme.getPlayer() != null && p.isOnline() && !fme.getPlayer().canSee(p.getPlayer()))) {
+                    if (!p.isOnline() || (fme != null && fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer()))) {
                         currentOffline.then(firstOffline ? name : ", " + name);
-                        currentOffline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
+                        currentOffline.tooltip(tipPlayer(p)).color(fme != null ? fme.getColorTo(p):Relation.NEUTRAL.getColor());
                         firstOffline = false;
                         if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
                             fancyMessages.add(currentOffline);

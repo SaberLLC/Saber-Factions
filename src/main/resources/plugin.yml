@@ -15,6 +15,7 @@ permissions:
     children:
       factions.kit.mod: true
       factions.config: true
+      factions.convert: true
       factions.lock: true
       factions.reload: true
       factions.save: true
@@ -133,6 +134,8 @@ permissions:
     description: claim land in a large radius
   factions.config:
     description: change a conf.json setting
+  factions.convert:
+    description: change a backend storage
   factions.create:
     description: create a new faction
   factions.deinvite:

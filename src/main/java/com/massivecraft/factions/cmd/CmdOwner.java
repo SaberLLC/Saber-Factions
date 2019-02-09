@@ -19,7 +19,7 @@ public class CmdOwner extends FCommand {
         this.disableOnLock = true;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;
@@ -63,7 +63,6 @@ public class CmdOwner extends FCommand {
                 fme.msg(TL.COMMAND_OWNER_WRONGFACTION);
                 return;
             }
-
         }
 
         FPlayer target = this.argAsBestFPlayerMatch(0, fme);

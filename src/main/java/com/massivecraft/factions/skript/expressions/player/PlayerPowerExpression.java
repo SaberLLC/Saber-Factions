@@ -33,6 +33,7 @@ public class PlayerPowerExpression extends SimpleExpression<Number> {
       return true;
    }
 
+   @SuppressWarnings("unchecked")
    @Override
    public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
       playerExpression = (Expression<Player>) exprs[0];
@@ -84,6 +85,7 @@ public class PlayerPowerExpression extends SimpleExpression<Number> {
          case RESET:
             fPlayer.alterPower(fPlayer.getPowerMax() * -1);
             break;
+         default:
       }
 
 

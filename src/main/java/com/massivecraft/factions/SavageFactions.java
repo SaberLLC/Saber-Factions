@@ -220,11 +220,11 @@ public class SavageFactions extends MPlugin {
 
         // Register Event Handlers
         eventsListener = new Listener[] {
-    		new FactionsPlayerListener(this),
-    		new FactionsChatListener(this),
-    		new FactionsEntityListener(this),
+    		new FactionsPlayerListener(),
+    		new FactionsChatListener(),
+    		new FactionsEntityListener(),
     		new FactionsExploitListener(),
-    		new FactionsBlockListener(this),
+    		new FactionsBlockListener(),
     		new FUpgradesGUI(),
     		new EXPUpgrade(),
     		new CropUpgrades(),
@@ -528,18 +528,19 @@ public class SavageFactions extends MPlugin {
     
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-       FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) sender);
-    	List<String> completions = new ArrayList<>();
-    	String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
-    	List<String> argsList = new ArrayList<>(Arrays.asList(args));
-    	argsList.remove(argsList.size() - 1);
-    	String cmdValid = (cmd + " " + TextUtil.implode(argsList, " ")).trim();
-    	MCommand<?> commandEx = cmdBase;
-    	List<MCommand<?>> commandsList = cmdBase.subCommands;
-       if (Board.getInstance().getFactionAt(new FLocation(fPlayer.getPlayer().getLocation())) == Factions.getInstance().getWarZone()) {
+		FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) sender);
+		List<String> completions = new ArrayList<>();
+		String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
+		List<String> argsList = new ArrayList<>(Arrays.asList(args));
+		argsList.remove(argsList.size() - 1);
+		String cmdValid = (cmd + " " + TextUtil.implode(argsList, " ")).trim();
+		MCommand<?> commandEx = cmdBase;
+		List<MCommand<?>> commandsList = cmdBase.subCommands;
+		
+		if (Board.getInstance().getFactionAt(new FLocation(fPlayer.getPlayer().getLocation())) == Factions.getInstance().getWarZone()) {
           sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot use autocomplete in warzone."));
           return new ArrayList<>();
-       }
+        }
 
     	for (; !commandsList.isEmpty() && !argsList.isEmpty(); argsList.remove(0))
     	{

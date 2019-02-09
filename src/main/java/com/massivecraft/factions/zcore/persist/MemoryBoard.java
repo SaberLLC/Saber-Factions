@@ -289,6 +289,7 @@ public abstract class MemoryBoard extends Board {
         return Arrays.asList(faction.describeTo(to));
     }
 
+    @SuppressWarnings("unused")
     private List<String> getToolTip(Faction faction, FPlayer to) {
         List<String> ret = new ArrayList<>();
         List<String> show = SavageFactions.plugin.getConfig().getStringList("map");

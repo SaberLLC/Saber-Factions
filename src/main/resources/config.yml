@@ -106,7 +106,7 @@ tooltips:
   - "&6&l* &eRank: &7{group}"
   - "&6&l* &eBalance: &7${balance}"
   - "&6&l* &eLast Seen:&7 {lastSeen}"
-  - "&6&l* &ePower: &7{power}/{maxPower}"
+  - "&6&l* &ePower: &7{player-power}/{player-maxpower}"
 
 # Configuration section for Scoreboards
 # This will allow you to completely customize how your scoreboards look.
@@ -1013,6 +1013,8 @@ MassiveStats: true
 #  - {name}      : Players name
 #  - {lastSeen}  : Last time player was seen (if offline), or just 'Online'
 #  - {balance} : Players balance
+#  - {player-power} : Player power
+#  - {player-maxpower} : Player max power
 #  - {player-kills} : # of kills the player has
 #  - {player-deaths}: # of deaths the player has
 # Faction variables. Can be used in tooltips.list, scoreboards, or /f show

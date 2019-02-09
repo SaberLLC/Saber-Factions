@@ -637,22 +637,19 @@ public class EngineDynmap {
 
         // Name
         String name = faction.getTag();
-        name = ChatColor.stripColor(name);
-        name = escapeHtml(name);
+        name = escapeHtml(ChatColor.stripColor(name));
         ret = ret.replace("%name%", name);
 
         // Description
         String description = faction.getDescription();
-        description = ChatColor.stripColor(description);
-        description = escapeHtml(description);
+        description = escapeHtml(ChatColor.stripColor(description));
         ret = ret.replace("%description%", description);
 
         // Money
 
         String money = "unavailable";
-        if (Conf.bankEnabled && Conf.dynmapDescriptionMoney) {
+        if (Conf.bankEnabled && Conf.dynmapDescriptionMoney)
             money = String.format("%.2f", Econ.getBalance(faction.getAccountId()));
-        }
         ret = ret.replace("%money%", money);
 
 
@@ -664,9 +661,9 @@ public class EngineDynmap {
         FPlayer playersLeaderObject = faction.getFPlayerAdmin();
         String playersLeader = getHtmlPlayerName(playersLeaderObject);
 
-        ArrayList<FPlayer> playersAdminsList = faction.getFPlayersWhereRole(Role.LEADER);
-        String playersAdminsCount = String.valueOf(playersAdminsList.size());
-        String playersAdmins = getHtmlPlayerString(playersAdminsList);
+        ArrayList<FPlayer> playersCoAdminsList = faction.getFPlayersWhereRole(Role.COLEADER);
+        String playersCoAdminsCount = String.valueOf(playersCoAdminsList.size());
+        String playersCoAdmins = getHtmlPlayerString(playersCoAdminsList);
 
         ArrayList<FPlayer> playersModeratorsList = faction.getFPlayersWhereRole(Role.MODERATOR);
         String playersModeratorsCount = String.valueOf(playersModeratorsList.size());
@@ -677,12 +674,11 @@ public class EngineDynmap {
         String playersNormalsCount = String.valueOf(playersNormalsList.size());
         String playersNormals = getHtmlPlayerString(playersNormalsList);
 
-
         ret = ret.replace("%players%", players);
         ret = ret.replace("%players.count%", playersCount);
         ret = ret.replace("%players.leader%", playersLeader);
-        ret = ret.replace("%players.admins%", playersAdmins);
-        ret = ret.replace("%players.admins.count%", playersAdminsCount);
+        ret = ret.replace("%players.admins%", playersCoAdmins);
+        ret = ret.replace("%players.admins.count%", playersCoAdminsCount);
         ret = ret.replace("%players.moderators%", playersModerators);
         ret = ret.replace("%players.moderators.count%", playersModeratorsCount);
         ret = ret.replace("%players.normals%", playersNormals);

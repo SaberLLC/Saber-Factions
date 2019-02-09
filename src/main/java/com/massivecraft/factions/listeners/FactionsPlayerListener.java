@@ -47,15 +47,13 @@ public class FactionsPlayerListener implements Listener {
 
   HashMap<Player, Boolean> fallMap = new HashMap<>();
 
-  private SavageFactions savageFactions;
   // Holds the next time a player can have a map shown.
   private HashMap<UUID, Long> showTimes = new HashMap<>();
   // for handling people who repeatedly spam attempts to open a door (or similar) in another faction's territory
   private Map<String, InteractAttemptSpam> interactSpammers = new HashMap<>();
 
-  public FactionsPlayerListener(SavageFactions savageFactions) {
-    this.savageFactions = savageFactions;
-    for (Player player : savageFactions.getServer().getOnlinePlayers()) {
+  public FactionsPlayerListener() {
+    for (Player player : SavageFactions.plugin.getServer().getOnlinePlayers()) {
       initPlayer(player);
     }
   }
@@ -90,7 +88,8 @@ public class FactionsPlayerListener implements Listener {
       }
       return false;
     }
-    if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+    
+    if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded()) {
       return true;
     }
 
@@ -161,16 +160,15 @@ public class FactionsPlayerListener implements Listener {
 
     return true;
   }
+  
   @SuppressWarnings("deprecation")
   public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
-    if (Conf.playersWhoBypassAllProtection.contains(player.getName())) {
+    if (Conf.playersWhoBypassAllProtection.contains(player.getName()))
       return true;
-    }
 
     FPlayer me = FPlayers.getInstance().getByPlayer(player);
-    if (me.isAdminBypassing()) {
+    if (me.isAdminBypassing())
       return true;
-    }
 
     Material material = block.getType();
     // Dupe fix.
@@ -179,30 +177,17 @@ public class FactionsPlayerListener implements Listener {
     Faction myFaction = me.getFaction();
     Relation rel = myFaction.getRelationTo(otherFaction);
 
-
     // no door/chest/whatever protection in wilderness, war zones, or safe zones
-    if (!otherFaction.isNormal()) {
+    if (!otherFaction.isNormal())
       return true;
-    }
 
-    if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+    if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
       return true;
-    }
 
     if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand().getType() != null) {
 
-      if (player.getItemInHand().getType().toString().toUpperCase().contains("DOOR")) {
+      if (player.getItemInHand().getType().toString().toUpperCase().contains("DOOR"))
         return false;
-      }
-
-      switch (player.getItemInHand().getType()) {
-        case CHEST:
-        case TRAPPED_CHEST:
-        case SIGN:
-          return false;
-        default:
-          break;
-      }
     }
 
     PermissableAction action = null;
@@ -212,35 +197,74 @@ public class FactionsPlayerListener implements Listener {
         case LEVER:
           action = PermissableAction.LEVER;
           break;
+        
+        case ACACIA_BUTTON:
+        case BIRCH_BUTTON:
+        case DARK_OAK_BUTTON:
+        case JUNGLE_BUTTON:
+        case OAK_BUTTON:
+        case SPRUCE_BUTTON:
         case STONE_BUTTON:
-        case LEGACY_WOOD_BUTTON:
           action = PermissableAction.BUTTON;
           break;
-        case DARK_OAK_DOOR:
+       
         case ACACIA_DOOR:
         case BIRCH_DOOR:
         case IRON_DOOR:
         case JUNGLE_DOOR:
+        case OAK_DOOR:
         case SPRUCE_DOOR:
-        case LEGACY_TRAP_DOOR:
-        case LEGACY_WOOD_DOOR:
-        case LEGACY_WOODEN_DOOR:
-        case LEGACY_FENCE_GATE:
+        case DARK_OAK_DOOR:
+        
+        case ACACIA_TRAPDOOR:
+        case BIRCH_TRAPDOOR:
+        case DARK_OAK_TRAPDOOR:
+        case IRON_TRAPDOOR:
+        case JUNGLE_TRAPDOOR:
+        case OAK_TRAPDOOR:
+        case SPRUCE_TRAPDOOR:
+        	
         case ACACIA_FENCE_GATE:
         case BIRCH_FENCE_GATE:
         case DARK_OAK_FENCE_GATE:
         case JUNGLE_FENCE_GATE:
+        case OAK_FENCE_GATE:
         case SPRUCE_FENCE_GATE:
           action = PermissableAction.DOOR;
           break;
+        
         case CHEST:
-        case ENDER_CHEST:
         case TRAPPED_CHEST:
+        case CHEST_MINECART:
+        
+        case SHULKER_BOX:
+        case BLACK_SHULKER_BOX:
+        case BLUE_SHULKER_BOX:
+        case BROWN_SHULKER_BOX:
+        case CYAN_SHULKER_BOX:
+        case GRAY_SHULKER_BOX:
+        case GREEN_SHULKER_BOX:
+        case LIGHT_BLUE_SHULKER_BOX:
+        case LIGHT_GRAY_SHULKER_BOX:
+        case LIME_SHULKER_BOX:
+        case MAGENTA_SHULKER_BOX:
+        case ORANGE_SHULKER_BOX:
+        case PINK_SHULKER_BOX:
+        case PURPLE_SHULKER_BOX:
+        case RED_SHULKER_BOX:
+        case WHITE_SHULKER_BOX:
+        case YELLOW_SHULKER_BOX:
+        	
+        case FURNACE:
+        case DROPPER:
         case DISPENSER:
         case ENCHANTING_TABLE:
-        case DROPPER:
-        case FURNACE:
+        case BREWING_STAND:
+        case CAULDRON:
         case HOPPER:
+        case BEACON:
+        case JUKEBOX:
+        
         case ANVIL:
         case CHIPPED_ANVIL:
         case DAMAGED_ANVIL:
@@ -286,35 +310,32 @@ public class FactionsPlayerListener implements Listener {
         case ANVIL:
         case CHIPPED_ANVIL:
         case DAMAGED_ANVIL:
-         case BREWING_STAND:
+        case BREWING_STAND:
           action = PermissableAction.CONTAINER;
           break;
         default:
           // Check for doors that might have diff material name in old version.
-          if (block.getType().name().contains("DOOR")) {
+          if (block.getType().name().contains("DOOR"))
             action = PermissableAction.DOOR;
-          }
           break;
       }
     }
 
     // We only care about some material types.
     if (otherFaction.hasPlayersOnline()) {
-      if (!Conf.territoryProtectedMaterials.contains(material)) {
+      if (!Conf.territoryProtectedMaterials.contains(material))
         return true;
-      }
     } else {
-      if (!Conf.territoryProtectedMaterialsWhenOffline.contains(material)) {
-        return true;
-      }
+      if (!Conf.territoryProtectedMaterialsWhenOffline.contains(material))
+    	  return true;
     }
+    
     // Move up access check to check for exceptions
     Access access = otherFaction.getAccess(me, action);
     boolean doTerritoryEnemyProtectedCheck = true;
 
-
-     if (action != null && action.equals(PermissableAction.CONTAINER) ||
-            (action.equals(PermissableAction.DOOR))) {
+     if (action != null && (action.equals(PermissableAction.CONTAINER) ||
+            action.equals(PermissableAction.DOOR))) {
       if (access == Access.ALLOW) {
         doTerritoryEnemyProtectedCheck = false;
       }
@@ -331,7 +352,6 @@ public class FactionsPlayerListener implements Listener {
         return false;
       }
     }
-
 
     if (access != Access.ALLOW && me.getRole() != Role.LEADER) {
       // TODO: Update this once new access values are added other than just allow / deny.
@@ -542,13 +562,13 @@ public class FactionsPlayerListener implements Listener {
 
   public String parseAllPlaceholders(String string, Faction faction, Player player) {
     string = TagUtil.parsePlaceholders(player, string);
+    
     string = string.replace("{Faction}", faction.getTag())
             .replace("{online}", faction.getOnlinePlayers().size() + "")
             .replace("{offline}", faction.getFPlayers().size() - faction.getOnlinePlayers().size() + "")
             .replace("{chunks}", faction.getAllClaims().size() + "")
             .replace("{power}", faction.getPower() + "")
             .replace("{leader}", faction.getFPlayerAdmin() + "");
-
 
     return string;
   }
@@ -775,12 +795,9 @@ public class FactionsPlayerListener implements Listener {
   @EventHandler
   public void onClose(InventoryCloseEvent e) {
     FPlayer fme = FPlayers.getInstance().getById(e.getPlayer().getUniqueId().toString());
-    if (fme.isInVault()) {
-      fme.setInVault(false);
-    }
-
+    if (fme.isInVault())
+    	fme.setInVault(false);
   }
-
 
   @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
   public void onPlayerInteract(PlayerInteractEvent event) {
@@ -803,16 +820,14 @@ public class FactionsPlayerListener implements Listener {
             }
         }*/
     // only need to check right-clicks and physical as of MC 1.4+; good performance boost
-    if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL) {
+    if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL)
       return;
-    }
 
     Block block = event.getClickedBlock();
     Player player = event.getPlayer();
 
-    if (block == null) {
+    if (block == null)
       return;  // clicked in air, apparently
-    }
 
     if (!canPlayerUseBlock(player, block, false)) {
       event.setCancelled(true);
@@ -823,6 +838,7 @@ public class FactionsPlayerListener implements Listener {
           attempt = new InteractAttemptSpam();
           interactSpammers.put(name, attempt);
         }
+        
         int count = attempt.increment();
         if (count >= 10) {
           FPlayer me = FPlayers.getInstance().getByPlayer(player);
@@ -840,6 +856,26 @@ public class FactionsPlayerListener implements Listener {
     if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
       event.setCancelled(true);
     }
+  }
+  
+  @EventHandler
+  public void onPlayerBoneMeal(PlayerInteractEvent event)
+  {
+	  Block block = event.getClickedBlock();
+	  
+	  if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.GRASS_BLOCK
+			  && event.hasItem() && event.getItem().getType() == Material.BONE_MEAL)
+	  {
+		  if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD.name(), true))
+		  {
+			  FPlayer me = FPlayers.getInstance().getById(event.getPlayer().getUniqueId().toString());
+			  Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
+			  Faction myFaction = me.getFaction();
+			  
+			  me.msg("<b>You can't use bone meal in the territory of " + otherFaction.getTag(myFaction));
+			  event.setCancelled(true);
+		  }
+	  }
   }
 
   @EventHandler (priority = EventPriority.HIGH)
