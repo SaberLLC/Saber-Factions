@@ -13,7 +13,7 @@ public class CmdLogins extends FCommand {
         this.aliases.add("logouts");
         this.senderMustBePlayer = true;
 
-       this.senderMustBeMember = true;
+        this.senderMustBeMember = true;
         this.permission = Permission.MONITOR_LOGINS.node;
     }
 

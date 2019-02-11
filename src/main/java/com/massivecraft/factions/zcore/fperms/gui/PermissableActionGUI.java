@@ -58,7 +58,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
         boolean disabled = false;
         for (String key : section.getConfigurationSection("slots").getKeys(false)) {
             int slot = section.getInt("slots." + key);
-            if (slot == - 1) {
+            if (slot == -1) {
                 disabled = true;
                 continue;
             }
@@ -97,7 +97,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
                     actionSlots.put(slot, action);
                 } else {
                     int slot = actionGUI.firstEmpty();
-                    if (slot != - 1) {
+                    if (slot != -1) {
                         actionSlots.put(slot, action);
                     }
                 }

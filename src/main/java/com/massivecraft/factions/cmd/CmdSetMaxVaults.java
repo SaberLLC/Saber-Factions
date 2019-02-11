@@ -28,7 +28,7 @@ public class CmdSetMaxVaults extends FCommand {
     @Override
     public void perform() {
         Faction targetFaction = argAsFaction(0);
-        int value = argAsInt(1, - 1);
+        int value = argAsInt(1, -1);
         if (value < 0) {
             sender.sendMessage(ChatColor.RED + "Number must be greater than 0.");
             return;

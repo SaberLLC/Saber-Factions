@@ -150,6 +150,8 @@ permissions:
     description: display a help page
   factions.home:
     description: teleport to the faction home
+  factions.homes.bypass:
+    description: bypass all home teleports
   factions.invite:
     description: invite a player to your faction
   factions.join:

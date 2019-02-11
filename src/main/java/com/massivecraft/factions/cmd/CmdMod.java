@@ -25,7 +25,7 @@ public class CmdMod extends FCommand {
         this.disableOnLock = true;
 
 
-       senderMustBePlayer = false;
+        senderMustBePlayer = false;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = true;

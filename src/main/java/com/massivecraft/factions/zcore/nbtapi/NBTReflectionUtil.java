@@ -24,7 +24,7 @@ public class NBTReflectionUtil {
     private static Class<?> getCraftItemStack() {
 
         try {
-        	return Class.forName("org.bukkit.craftbukkit." + version + ".inventory.CraftItemStack");
+            return Class.forName("org.bukkit.craftbukkit." + version + ".inventory.CraftItemStack");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -34,7 +34,7 @@ public class NBTReflectionUtil {
 
     private static Class<?> getCraftEntity() {
         try {
-        	return Class.forName("org.bukkit.craftbukkit." + version + ".entity.CraftEntity");
+            return Class.forName("org.bukkit.craftbukkit." + version + ".entity.CraftEntity");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -44,7 +44,7 @@ public class NBTReflectionUtil {
 
     protected static Class<?> getNBTBase() {
         try {
-        	return Class.forName("net.minecraft.server." + version + ".NBTBase");
+            return Class.forName("net.minecraft.server." + version + ".NBTBase");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -54,7 +54,7 @@ public class NBTReflectionUtil {
 
     protected static Class<?> getNBTTagString() {
         try {
-        	return Class.forName("net.minecraft.server." + version + ".NBTTagString");
+            return Class.forName("net.minecraft.server." + version + ".NBTTagString");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -64,7 +64,7 @@ public class NBTReflectionUtil {
 
     protected static Class<?> getNMSItemStack() {
         try {
-        	return Class.forName("net.minecraft.server." + version + ".ItemStack");
+            return Class.forName("net.minecraft.server." + version + ".ItemStack");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -74,7 +74,7 @@ public class NBTReflectionUtil {
 
     protected static Class<?> getNBTTagCompound() {
         try {
-        	return Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
+            return Class.forName("net.minecraft.server." + version + ".NBTTagCompound");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -84,7 +84,7 @@ public class NBTReflectionUtil {
 
     protected static Class<?> getNBTCompressedStreamTools() {
         try {
-        	return Class.forName("net.minecraft.server." + version + ".NBTCompressedStreamTools");
+            return Class.forName("net.minecraft.server." + version + ".NBTCompressedStreamTools");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -94,7 +94,7 @@ public class NBTReflectionUtil {
 
     protected static Class<?> getMojangsonParser() {
         try {
-        	return Class.forName("net.minecraft.server." + version + ".MojangsonParser");
+            return Class.forName("net.minecraft.server." + version + ".MojangsonParser");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -104,7 +104,7 @@ public class NBTReflectionUtil {
 
     protected static Class<?> getTileEntity() {
         try {
-        	return Class.forName("net.minecraft.server." + version + ".TileEntity");
+            return Class.forName("net.minecraft.server." + version + ".TileEntity");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -114,7 +114,7 @@ public class NBTReflectionUtil {
 
     protected static Class<?> getCraftWorld() {
         try {
-        	return Class.forName("org.bukkit.craftbukkit." + version + ".CraftWorld");
+            return Class.forName("org.bukkit.craftbukkit." + version + ".CraftWorld");
         } catch (Exception ex) {
             System.out.println("Error in ItemNBTAPI!(Outdated plugin?)");
             ex.printStackTrace();
@@ -148,7 +148,7 @@ public class NBTReflectionUtil {
 
     public static Object setNBTTag(Object NBTTag, Object NMSItem) {
         try {
-        	Method method = NMSItem.getClass().getMethod("setTag", NBTTag.getClass());
+            Method method = NMSItem.getClass().getMethod("setTag", NBTTag.getClass());
             method.invoke(NMSItem, NBTTag);
             return NMSItem;
         } catch (Exception ex) {
@@ -159,9 +159,9 @@ public class NBTReflectionUtil {
 
     public static Object getNMSItemStack(ItemStack item) {
         Class<?> clazz = getCraftItemStack();
-        
+
         try {
-        	Method method = clazz.getMethod("asNMSCopy", ItemStack.class);
+            Method method = clazz.getMethod("asNMSCopy", ItemStack.class);
             return method.invoke(clazz, item);
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,9 +171,9 @@ public class NBTReflectionUtil {
 
     public static Object getNMSEntity(Entity entity) {
         Class<?> clazz = getCraftEntity();
-        
+
         try {
-        	Method method = clazz.getMethod("getHandle");
+            Method method = clazz.getMethod("getHandle");
             return method.invoke(getCraftEntity().cast(entity));
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,9 +183,9 @@ public class NBTReflectionUtil {
 
     public static Object parseNBT(String json) {
         Class<?> cis = getMojangsonParser();
-        
+
         try {
-        	Method method = cis.getMethod("parse", String.class);
+            Method method = cis.getMethod("parse", String.class);
             return method.invoke(null, json);
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,9 +195,9 @@ public class NBTReflectionUtil {
 
     public static Object readNBTFile(FileInputStream stream) {
         Class<?> clazz = getNBTCompressedStreamTools();
-        
+
         try {
-        	Method method = clazz.getMethod("a", InputStream.class);
+            Method method = clazz.getMethod("a", InputStream.class);
             return method.invoke(clazz, stream);
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,9 +207,9 @@ public class NBTReflectionUtil {
 
     public static Object saveNBTFile(Object nbt, FileOutputStream stream) {
         Class<?> clazz = getNBTCompressedStreamTools();
-        
+
         try {
-        	Method method = clazz.getMethod("a", getNBTTagCompound(), OutputStream.class);
+            Method method = clazz.getMethod("a", getNBTTagCompound(), OutputStream.class);
             return method.invoke(clazz, nbt, stream);
         } catch (Exception e) {
             e.printStackTrace();
@@ -219,9 +219,9 @@ public class NBTReflectionUtil {
 
     public static ItemStack getBukkitItemStack(Object item) {
         Class<?> clazz = getCraftItemStack();
-        
+
         try {
-        	Method method = clazz.getMethod("asCraftMirror", item.getClass());
+            Method method = clazz.getMethod("asCraftMirror", item.getClass());
             return (ItemStack) method.invoke(clazz, item);
         } catch (Exception e) {
             e.printStackTrace();
@@ -231,10 +231,10 @@ public class NBTReflectionUtil {
 
     public static Object getItemRootNBTTagCompound(Object nmsitem) {
         Class<?> clazz = nmsitem.getClass();
-        
+
         try {
-        	Method method = clazz.getMethod("getTag");
-        	return method.invoke(nmsitem);
+            Method method = clazz.getMethod("getTag");
+            return method.invoke(nmsitem);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -244,7 +244,7 @@ public class NBTReflectionUtil {
     public static Object convertNBTCompoundtoNMSItem(NBTCompound nbtcompound) {
         Class<?> clazz = getNMSItemStack();
         try {
-        	return clazz.getConstructor(getNBTTagCompound()).newInstance(gettoCompount(nbtcompound.getCompound(), nbtcompound));
+            return clazz.getConstructor(getNBTTagCompound()).newInstance(gettoCompount(nbtcompound.getCompound(), nbtcompound));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -253,9 +253,9 @@ public class NBTReflectionUtil {
 
     public static NBTContainer convertNMSItemtoNBTCompound(Object nmsitem) {
         Class<?> clazz = nmsitem.getClass();
-        
+
         try {
-        	Method method = clazz.getMethod("save", getNBTTagCompound());
+            Method method = clazz.getMethod("save", getNBTTagCompound());
             Object answer = method.invoke(nmsitem, getNewNBTTag());
             return new NBTContainer(answer);
         } catch (Exception e) {
@@ -266,12 +266,12 @@ public class NBTReflectionUtil {
 
     public static Object getEntityNBTTagCompound(Object nmsitem) {
         Class<?> c = nmsitem.getClass();
-        
+
         try {
-        	Method method = c.getMethod(MethodNames.getEntityNbtGetterMethodName(), getNBTTagCompound());
+            Method method = c.getMethod(MethodNames.getEntityNbtGetterMethodName(), getNBTTagCompound());
             Object nbt = getNBTTagCompound().newInstance();
             Object answer = method.invoke(nmsitem, nbt);
-            return answer != null ? answer:nbt;
+            return answer != null ? answer : nbt;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -299,8 +299,8 @@ public class NBTReflectionUtil {
             Method method = getTileEntity().getMethod(MethodNames.getTileDataMethodName(), getNBTTagCompound());
             Object tag = getNBTTagCompound().newInstance();
             Object answer = method.invoke(o, tag);
-            
-            return answer != null ? answer:tag;
+
+            return answer != null ? answer : tag;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -322,9 +322,9 @@ public class NBTReflectionUtil {
 
     public static Object getSubNBTTagCompound(Object compound, String name) {
         Class<?> c = compound.getClass();
-        
+
         try {
-        	Method method = c.getMethod("getCompound", String.class);
+            Method method = c.getMethod("getCompound", String.class);
             return method.invoke(compound, name);
         } catch (Exception e) {
             e.printStackTrace();
@@ -343,9 +343,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(nbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("set", String.class, getNBTBase());
+            Method method = workingtag.getClass().getMethod("set", String.class, getNBTBase());
             method.invoke(workingtag, name, getNBTTagCompound().newInstance());
             comp.setCompound(nbttag);
             return;
@@ -385,9 +385,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("a", getNBTTagCompound());
+            Method method = workingtag.getClass().getMethod("a", getNBTTagCompound());
             method.invoke(workingtag, nbtcompound.getCompound());
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -406,9 +406,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setString", String.class, String.class);
+            Method method = workingtag.getClass().getMethod("setString", String.class, String.class);
             method.invoke(workingtag, key, text);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -423,9 +423,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getString", String.class);
+            Method method = workingtag.getClass().getMethod("getString", String.class);
             return (String) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -440,9 +440,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("get", String.class);
+            Method method = workingtag.getClass().getMethod("get", String.class);
             return method.invoke(workingtag, key).toString();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -461,9 +461,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setInt", String.class, int.class);
+            Method method = workingtag.getClass().getMethod("setInt", String.class, int.class);
             method.invoke(workingtag, key, i);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -478,9 +478,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getInt", String.class);
+            Method method = workingtag.getClass().getMethod("getInt", String.class);
             return (Integer) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -499,9 +499,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setByteArray", String.class, byte[].class);
+            Method method = workingtag.getClass().getMethod("setByteArray", String.class, byte[].class);
             method.invoke(workingtag, key, b);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -517,9 +517,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getByteArray", String.class);
+            Method method = workingtag.getClass().getMethod("getByteArray", String.class);
             return (byte[]) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -538,9 +538,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setIntArray", String.class, int[].class);
+            Method method = workingtag.getClass().getMethod("setIntArray", String.class, int[].class);
             method.invoke(workingtag, key, i);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -555,9 +555,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getIntArray", String.class);
+            Method method = workingtag.getClass().getMethod("getIntArray", String.class);
             return (int[]) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -576,9 +576,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setFloat", String.class, float.class);
+            Method method = workingtag.getClass().getMethod("setFloat", String.class, float.class);
             method.invoke(workingtag, key, f);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -593,9 +593,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getFloat", String.class);
+            Method method = workingtag.getClass().getMethod("getFloat", String.class);
             return (Float) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -614,9 +614,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setLong", String.class, long.class);
+            Method method = workingtag.getClass().getMethod("setLong", String.class, long.class);
             method.invoke(workingtag, key, f);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -631,9 +631,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getLong", String.class);
+            Method method = workingtag.getClass().getMethod("getLong", String.class);
             return (Long) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -652,9 +652,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setShort", String.class, short.class);
+            Method method = workingtag.getClass().getMethod("setShort", String.class, short.class);
             method.invoke(workingtag, key, f);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -669,9 +669,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getShort", String.class);
+            Method method = workingtag.getClass().getMethod("getShort", String.class);
             return (Short) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -690,9 +690,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setByte", String.class, byte.class);
+            Method method = workingtag.getClass().getMethod("setByte", String.class, byte.class);
             method.invoke(workingtag, key, f);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -707,9 +707,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getByte", String.class);
+            Method method = workingtag.getClass().getMethod("getByte", String.class);
             return (Byte) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -728,9 +728,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setDouble", String.class, double.class);
+            Method method = workingtag.getClass().getMethod("setDouble", String.class, double.class);
             method.invoke(workingtag, key, d);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -745,9 +745,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getDouble", String.class);
+            Method method = workingtag.getClass().getMethod("getDouble", String.class);
             return (Double) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -762,9 +762,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return 0;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod(MethodNames.getTypeMethodName(), String.class);
+            Method method = workingtag.getClass().getMethod(MethodNames.getTypeMethodName(), String.class);
             return (byte) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -783,9 +783,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("setBoolean", String.class, boolean.class);
+            Method method = workingtag.getClass().getMethod("setBoolean", String.class, boolean.class);
             method.invoke(workingtag, key, d);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -800,9 +800,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getBoolean", String.class);
+            Method method = workingtag.getClass().getMethod("getBoolean", String.class);
             return (Boolean) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -825,7 +825,7 @@ public class NBTReflectionUtil {
         }
         Object workingtag = gettoCompount(rootnbttag, comp);
         try {
-        	Method method = workingtag.getClass().getMethod("set", String.class, getNBTBase());
+            Method method = workingtag.getClass().getMethod("set", String.class, getNBTBase());
             method.invoke(workingtag, key, val);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -840,9 +840,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("getList", String.class, int.class);
+            Method method = workingtag.getClass().getMethod("getList", String.class, int.class);
             return new NBTList(comp, key, type, method.invoke(workingtag, key, type.getId()));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -863,8 +863,8 @@ public class NBTReflectionUtil {
     public static <T> T getObject(NBTCompound comp, String key, Class<T> type) {
         if (!MinecraftVersion.hasGsonSupport()) return null;
         String json = getString(comp, key);
-        
-        return json != null ? GsonWrapper.deserializeJson(json, type):null;
+
+        return json != null ? GsonWrapper.deserializeJson(json, type) : null;
     }
 
     public static void remove(NBTCompound comp, String key) {
@@ -874,9 +874,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("remove", String.class);
+            Method method = workingtag.getClass().getMethod("remove", String.class);
             method.invoke(workingtag, key);
             comp.setCompound(rootnbttag);
         } catch (Exception ex) {
@@ -891,9 +891,9 @@ public class NBTReflectionUtil {
         }
         if (!valideCompound(comp)) return null;
         Object workingtag = gettoCompount(rootnbttag, comp);
-        
+
         try {
-        	Method method = workingtag.getClass().getMethod("hasKey", String.class);
+            Method method = workingtag.getClass().getMethod("hasKey", String.class);
             return (Boolean) method.invoke(workingtag, key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -901,7 +901,7 @@ public class NBTReflectionUtil {
         return null;
     }
 
-    @SuppressWarnings ("unchecked")
+    @SuppressWarnings("unchecked")
     public static Set<String> getKeys(NBTCompound comp) {
         Object rootnbttag = comp.getCompound();
         if (rootnbttag == null) {

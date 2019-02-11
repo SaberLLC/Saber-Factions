@@ -24,7 +24,7 @@ public class CmdMoneyTransferFf extends FCommand {
         this.permission = Permission.MONEY_F2F.node;
 
 
-       senderMustBePlayer = false;
+        senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

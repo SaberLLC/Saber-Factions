@@ -49,7 +49,7 @@ public class CmdShow extends FCommand {
         Faction faction = myFaction;
         if (this.argIsSet(0))
             faction = this.argAsFaction(0);
-        
+
         if (faction == null)
             return;
 
@@ -94,7 +94,7 @@ public class CmdShow extends FCommand {
                 List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
                 if (fancy != null)
                     sendFancyMessage(fancy);
-                
+
                 continue;
             }
             if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {

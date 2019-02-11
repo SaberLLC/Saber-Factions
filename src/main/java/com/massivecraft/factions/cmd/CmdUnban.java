@@ -22,7 +22,7 @@ public class CmdUnban extends FCommand {
         senderMustBeMember = false;
         senderMustBeModerator = false;
 
-       senderMustBeAdmin = false;
+        senderMustBeAdmin = false;
     }
 
     @Override

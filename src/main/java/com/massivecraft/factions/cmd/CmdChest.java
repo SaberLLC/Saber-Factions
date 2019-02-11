@@ -20,7 +20,7 @@ public class CmdChest extends FCommand {
         this.disableOnLock = false;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;

@@ -147,7 +147,7 @@ public class TagUtil {
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isAlly()) {
                         currentAllies.then(firstAlly ? s : ", " + s);
-                        currentAllies.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction):Relation.NEUTRAL.getColor());
+                        currentAllies.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor());
                         firstAlly = false;
                         if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
                             fancyMessages.add(currentAllies);
@@ -167,7 +167,7 @@ public class TagUtil {
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isEnemy()) {
                         currentEnemies.then(firstEnemy ? s : ", " + s);
-                        currentEnemies.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction):Relation.NEUTRAL.getColor());
+                        currentEnemies.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor());
                         firstEnemy = false;
                         if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
                             fancyMessages.add(currentEnemies);
@@ -187,7 +187,7 @@ public class TagUtil {
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isTruce()) {
                         currentTruces.then(firstTruce ? s : ", " + s);
-                        currentTruces.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction):Relation.NEUTRAL.getColor());
+                        currentTruces.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor());
                         firstTruce = false;
                         if (currentTruces.toJSONString().length() > ARBITRARY_LIMIT) {
                             fancyMessages.add(currentTruces);
@@ -206,7 +206,7 @@ public class TagUtil {
                     }
                     String name = p.getNameAndTitle();
                     currentOnline.then(firstOnline ? name : ", " + name);
-                    currentOnline.tooltip(tipPlayer(p)).color(fme != null ? fme.getColorTo(p):Relation.NEUTRAL.getColor());
+                    currentOnline.tooltip(tipPlayer(p)).color(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor());
                     firstOnline = false;
                     if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
                         fancyMessages.add(currentOnline);
@@ -223,7 +223,7 @@ public class TagUtil {
                     // Also make sure to add players that are online BUT can't be seen.
                     if (!p.isOnline() || (fme != null && fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer()))) {
                         currentOffline.then(firstOffline ? name : ", " + name);
-                        currentOffline.tooltip(tipPlayer(p)).color(fme != null ? fme.getColorTo(p):Relation.NEUTRAL.getColor());
+                        currentOffline.tooltip(tipPlayer(p)).color(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor());
                         firstOffline = false;
                         if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
                             fancyMessages.add(currentOffline);

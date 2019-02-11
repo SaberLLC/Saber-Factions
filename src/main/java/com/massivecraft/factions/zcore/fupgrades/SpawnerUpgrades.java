@@ -9,21 +9,26 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 
 public class SpawnerUpgrades implements Listener {
-	
+
     @EventHandler
     public void onSpawn(SpawnerSpawnEvent e) {
         FLocation floc = new FLocation(e.getLocation());
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
-        
+
         if (!factionAtLoc.isWilderness()) {
-           int level = factionAtLoc.getUpgrade(Upgrade.SPAWNER);
+            int level = factionAtLoc.getUpgrade(Upgrade.SPAWNER);
             if (level != 0) {
-            	switch (level)
-            	{
-					case 1: lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1")); break;
-					case 2: lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2")); break;
-					case 3: lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3")); break;
-            	}
+                switch (level) {
+                    case 1:
+                        lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1"));
+                        break;
+                    case 2:
+                        lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2"));
+                        break;
+                    case 3:
+                        lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3"));
+                        break;
+                }
             }
         }
     }

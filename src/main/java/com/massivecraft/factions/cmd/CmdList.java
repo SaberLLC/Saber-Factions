@@ -53,7 +53,7 @@ public class CmdList extends FCommand {
         if (fme != null && fme.getPlayer() != null && !fme.getPlayer().hasPermission("factions.show.bypassexempt")) {
             List<String> exemptFactions = SavageFactions.plugin.getConfig().getStringList("show-exempt");
             Iterator<Faction> factionIterator = factionList.iterator();
-            
+
             while (factionIterator.hasNext()) {
                 Faction next = factionIterator.next();
                 if (exemptFactions.contains(next.getTag()))
@@ -70,7 +70,7 @@ public class CmdList extends FCommand {
                 if (f1Size < f2Size) {
                     return 1;
                 } else if (f1Size > f2Size) {
-                    return - 1;
+                    return -1;
                 }
                 return 0;
             }
@@ -85,7 +85,7 @@ public class CmdList extends FCommand {
                 if (f1Size < f2Size) {
                     return 1;
                 } else if (f1Size > f2Size) {
-                    return - 1;
+                    return -1;
                 }
                 return 0;
             }

@@ -115,7 +115,7 @@ public class NBTList {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return - 1;
+        return -1;
     }
 
     public NBTType getType() {

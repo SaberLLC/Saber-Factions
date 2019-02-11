@@ -141,7 +141,7 @@ public class Econ {
         // The amount must be positive.
         // If the amount is negative we must flip and multiply amount with -1.
         if (amount < 0) {
-            amount *= - 1;
+            amount *= -1;
             EconomyParticipator temp = from;
             from = to;
             to = temp;
@@ -308,7 +308,7 @@ public class Econ {
             // The account might not have enough space
             EconomyResponse er = econ.depositPlayer(acc, delta);
             if (er.transactionSuccess()) {
-                modifyUniverseMoney(- delta);
+                modifyUniverseMoney(-delta);
                 if (forDoingThis != null && !forDoingThis.isEmpty()) {
                     ep.msg("<h>%s<i> gained <h>%s<i> %s.", You, moneyString(delta), forDoingThis);
                 }
@@ -324,17 +324,17 @@ public class Econ {
             // The player should loose money
             // The player might not have enough.
 
-            if (econ.has(acc, - delta) && econ.withdrawPlayer(acc, - delta).transactionSuccess()) {
+            if (econ.has(acc, -delta) && econ.withdrawPlayer(acc, -delta).transactionSuccess()) {
                 // There is enough money to pay
-                modifyUniverseMoney(- delta);
+                modifyUniverseMoney(-delta);
                 if (forDoingThis != null && !forDoingThis.isEmpty()) {
-                    ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(- delta), forDoingThis);
+                    ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(-delta), forDoingThis);
                 }
                 return true;
             } else {
                 // There was not enough money to pay
                 if (toDoThis != null && !toDoThis.isEmpty()) {
-                    ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(- delta), toDoThis);
+                    ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(-delta), toDoThis);
                 }
                 return false;
             }
@@ -410,7 +410,7 @@ public class Econ {
 
     public static boolean modifyBalance(String account, double amount) {
         if (amount < 0) {
-            return econ.withdrawPlayer(account, - amount).transactionSuccess();
+            return econ.withdrawPlayer(account, -amount).transactionSuccess();
         } else {
             return econ.depositPlayer(account, amount).transactionSuccess();
         }

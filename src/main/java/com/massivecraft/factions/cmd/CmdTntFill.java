@@ -55,7 +55,7 @@ public class CmdTntFill extends FCommand {
             fme.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount") + ""));
             return;
         }
-        
+
         try {
             Integer.parseInt(args.get(1));
         } catch (NumberFormatException e) {

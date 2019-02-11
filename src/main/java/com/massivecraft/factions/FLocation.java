@@ -11,7 +11,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class FLocation implements Serializable {
-    private static final long serialVersionUID = - 8292915234027387983L;
+    private static final long serialVersionUID = -8292915234027387983L;
     private static final boolean worldBorderSupport;
 
     static {

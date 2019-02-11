@@ -184,7 +184,7 @@ public enum TagReplacer {
                 default:
             }
         }
-        
+
         switch (this) {
             case DESCRIPTION:
                 return fac.getDescription();

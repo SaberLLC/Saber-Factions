@@ -10,8 +10,8 @@ public class TempAreaMarker {
 
     public String label;
     public String world;
-    public double x[];
-    public double z[];
+    public double[] x;
+    public double[] z;
     public String description;
 
     public int lineColor;
@@ -27,7 +27,7 @@ public class TempAreaMarker {
     // CREATE
     // -------------------------------------------- //
 
-    public static boolean equals(AreaMarker marker, double x[], double z[]) {
+    public static boolean equals(AreaMarker marker, double[] x, double[] z) {
         int length = marker.getCornerCount();
 
         if (x.length != length) {

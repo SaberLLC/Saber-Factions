@@ -11,32 +11,37 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 public class EXPUpgrade implements Listener {
-	
+
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
         Entity killer = e.getEntity().getKiller();
-        
+
         if (killer == null || !(killer instanceof Player))
             return;
-        
+
         FLocation floc = new FLocation(e.getEntity().getLocation());
         Faction faction = Board.getInstance().getFactionAt(floc);
-        
+
         if (!faction.isWilderness()) {
-           int level = faction.getUpgrade(Upgrade.EXP);
+            int level = faction.getUpgrade(Upgrade.EXP);
             if (level != 0) {
-            	
-            	double multiplier = -1;
-            	
-            	switch (level)
-            	{
-            		case 1: multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1"); break;
-            		case 2: multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2"); break;
-            		case 3: multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3"); break;
-            	}
-            	
-            	if (multiplier >= 0)
-            		spawnMoreExp(e, multiplier);
+
+                double multiplier = -1;
+
+                switch (level) {
+                    case 1:
+                        multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1");
+                        break;
+                    case 2:
+                        multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2");
+                        break;
+                    case 3:
+                        multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
+                        break;
+                }
+
+                if (multiplier >= 0)
+                    spawnMoreExp(e, multiplier);
             }
         }
     }

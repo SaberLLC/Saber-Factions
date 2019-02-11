@@ -13,7 +13,7 @@ public class CmdInspect extends FCommand {
         this.disableOnLock = true;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

@@ -1,12 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.UtilFly;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -93,6 +91,7 @@ public class CmdDisband extends FCommand {
             if (SavageFactions.plugin.getConfig().getBoolean("faction-disband-broadcast", true)) {
                 for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
                     String amountString = senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(follower);
+                    UtilFly.checkFly(this.fme, Board.getInstance().getFactionAt(new FLocation(follower)));
                     if (follower.getFaction() == faction) {
                         follower.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, amountString);
                     } else {

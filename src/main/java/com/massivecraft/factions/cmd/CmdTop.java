@@ -34,7 +34,7 @@ public class CmdTop extends FCommand {
     }
 
 
-   @Override
+    @Override
     public void perform() {
         // Can sort by: money, members, online, allies, enemies, power, land.
         // Get all Factions and remove non player ones.
@@ -55,7 +55,7 @@ public class CmdTop extends FCommand {
                     if (f1Size < f2Size) {
                         return 1;
                     } else if (f1Size > f2Size) {
-                        return - 1;
+                        return -1;
                     }
                     return 0;
                 }
@@ -70,7 +70,7 @@ public class CmdTop extends FCommand {
                     if (f1start > f2start) {
                         return 1;
                     } else if (f1start < f2start) {
-                        return - 1;
+                        return -1;
                     }
                     return 0;
                 }
@@ -84,7 +84,7 @@ public class CmdTop extends FCommand {
                     if (f1Size < f2Size) {
                         return 1;
                     } else if (f1Size > f2Size) {
-                        return - 1;
+                        return -1;
                     }
                     return 0;
                 }
@@ -98,7 +98,7 @@ public class CmdTop extends FCommand {
                     if (f1Size < f2Size) {
                         return 1;
                     } else if (f1Size > f2Size) {
-                        return - 1;
+                        return -1;
                     }
                     return 0;
                 }
@@ -112,7 +112,7 @@ public class CmdTop extends FCommand {
                     if (f1Size < f2Size) {
                         return 1;
                     } else if (f1Size > f2Size) {
-                        return - 1;
+                        return -1;
                     }
                     return 0;
                 }
@@ -133,7 +133,7 @@ public class CmdTop extends FCommand {
                     if (f1Size < f2Size) {
                         return 1;
                     } else if (f1Size > f2Size) {
-                        return - 1;
+                        return -1;
                     }
                     return 0;
                 }

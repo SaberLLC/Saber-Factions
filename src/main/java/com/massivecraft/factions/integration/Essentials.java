@@ -3,17 +3,15 @@ package com.massivecraft.factions.integration;
 import com.earth2me.essentials.Teleport;
 import com.earth2me.essentials.Trade;
 import com.massivecraft.factions.Conf;
-
 import net.ess3.api.IEssentials;
-
-import java.math.BigDecimal;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.plugin.Plugin;
+
+import java.math.BigDecimal;
 
 public class Essentials {
 

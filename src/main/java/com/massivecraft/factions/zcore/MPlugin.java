@@ -123,7 +123,7 @@ public abstract class MPlugin extends JavaPlugin {
                     int read;
                     byte[] bytes = new byte[1024];
 
-                    while ((read = defLangStream.read(bytes)) != - 1) {
+                    while ((read = defLangStream.read(bytes)) != -1) {
                         out.write(bytes, 0, read);
                     }
                     YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new BufferedReader(new InputStreamReader(defLangStream)));

@@ -22,34 +22,33 @@ public enum MinecraftVersion {
     }
 
     public static MinecraftVersion getVersion() {
-        if (version == null)
-        {
-	        final String ver = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-	        System.out.println("[NBTAPI] Found Spigot: " + ver + "!Trying to find NMS support");
-	        
-	        try {
-	            version = MinecraftVersion.valueOf(ver.replace("v", "MC"));
-	        } catch (IllegalArgumentException ex) {
-	            version = MinecraftVersion.Unknown;
-	        }
-	        
-	        if (version != Unknown) {
-	            System.out.println("[NBTAPI] NMS support '" + version.name() + "' loaded!");
-	        } else {
-	            System.out.println("[NBTAPI] Wasn't able to find NMS Support!Some functions will not work!");
-	        }
+        if (version == null) {
+            final String ver = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+            System.out.println("[NBTAPI] Found Spigot: " + ver + "!Trying to find NMS support");
+
+            try {
+                version = MinecraftVersion.valueOf(ver.replace("v", "MC"));
+            } catch (IllegalArgumentException ex) {
+                version = MinecraftVersion.Unknown;
+            }
+
+            if (version != Unknown) {
+                System.out.println("[NBTAPI] NMS support '" + version.name() + "' loaded!");
+            } else {
+                System.out.println("[NBTAPI] Wasn't able to find NMS Support!Some functions will not work!");
+            }
         }
         return version;
     }
 
     public static boolean hasGsonSupport() {
         if (hasGsonSupport == null) {
-	        try {
-	            System.out.println("Found Gson: " + Class.forName("com.google.gson.Gson"));
-	            hasGsonSupport = true;
-	        } catch (Exception ex) {
-	            hasGsonSupport = false;
-	        }
+            try {
+                System.out.println("Found Gson: " + Class.forName("com.google.gson.Gson"));
+                hasGsonSupport = true;
+            } catch (Exception ex) {
+                hasGsonSupport = false;
+            }
         }
         return hasGsonSupport;
     }

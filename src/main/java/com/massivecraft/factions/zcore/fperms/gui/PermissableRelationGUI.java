@@ -58,7 +58,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 
         for (String key : section.getConfigurationSection("slots").getKeys(false)) {
             int slot = section.getInt("slots." + key);
-            if (slot == - 1) {
+            if (slot == -1) {
                 continue;
             }
             if (slot + 1 > guiSize && slot > 0) {

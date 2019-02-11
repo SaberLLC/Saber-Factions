@@ -15,7 +15,7 @@ public class CmdLowPower extends FCommand {
 
         senderMustBePlayer = true;
 
-       senderMustBeMember = true;
+        senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = true;
         senderMustBeAdmin = false;

@@ -2,12 +2,12 @@ package com.massivecraft.factions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
+import com.earth2me.essentials.Essentials;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
@@ -56,7 +56,9 @@ public class SavageFactions extends MPlugin {
     // Single 4 life.
     public static SavageFactions plugin;
     public static Permission perms = null;
-
+    // Persistence related
+    public static ArrayList<FPlayer> playersFlying = new ArrayList();
+    public Essentials ess;
     public boolean PlaceholderApi;
     // Commands
     public FCmdRoot cmdBase;
@@ -72,17 +74,14 @@ public class SavageFactions extends MPlugin {
             SOIL, MOB_SPANWER, THIN_GLASS, IRON_FENCE, NETHER_FENCE, FENCE,
             WOODEN_DOOR, TRAP_DOOR, FENCE_GATE, BURNING_FURNACE, DIODE_BLOCK_OFF,
             DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
-    // Persistence related
+    SkriptAddon skriptAddon;
     private boolean locked = false;
     private Integer AutoLeaveTask = null;
     private boolean hookedPlayervaults;
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
-
-   SkriptAddon skriptAddon;
-
     private Listener[] eventsListener;
-    
+
     public SavageFactions() {
         plugin = this;
     }
@@ -157,11 +156,11 @@ public class SavageFactions extends MPlugin {
 
         // Load Conf from disk
         Conf.load();
-        Essentials.setup();
+        com.massivecraft.factions.integration.Essentials.setup();
         hookedPlayervaults = setupPlayervaults();
         FPlayers.getInstance().load();
         Factions.getInstance().load();
-        
+
         for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
             Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
             if (faction == null) {
@@ -171,7 +170,12 @@ public class SavageFactions extends MPlugin {
             }
             faction.addFPlayer(fPlayer);
         }
-        
+        playersFlying.clear();
+        for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
+            playersFlying.add(fPlayer);
+        }
+        UtilFly.run();
+
         Board.getInstance().load();
         Board.getInstance().clean();
 
@@ -206,37 +210,39 @@ public class SavageFactions extends MPlugin {
             factionsFlight = true;
         }
 
-       if (getServer().getPluginManager().getPlugin("Skript") != null) {
-          log("Skript was found! Registering SavageFactions Addon...");
-          skriptAddon = Skript.registerAddon(this);
-          try {
-             skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
-          } catch (IOException ex) {
-             ex.printStackTrace();
-          }
-          log("Skript addon registered!");
-       }
+        if (getServer().getPluginManager().getPlugin("Skript") != null) {
+            log("Skript was found! Registering SavageFactions Addon...");
+            skriptAddon = Skript.registerAddon(this);
+            try {
+                skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            log("Skript addon registered!");
+        }
 
 
         // Register Event Handlers
-        eventsListener = new Listener[] {
-    		new FactionsPlayerListener(),
-    		new FactionsChatListener(),
-    		new FactionsEntityListener(),
-    		new FactionsExploitListener(),
-    		new FactionsBlockListener(),
-    		new FUpgradesGUI(),
-    		new EXPUpgrade(),
-    		new CropUpgrades(),
-    		new SpawnerUpgrades(),
-    	};
-    	
-        for (Listener eventListener: eventsListener)
-        	getServer().getPluginManager().registerEvents(eventListener, this);
-        
+        eventsListener = new Listener[]{
+                new FactionsPlayerListener(),
+                new FactionsChatListener(),
+                new FactionsEntityListener(),
+                new FactionsExploitListener(),
+                new FactionsBlockListener(),
+                new FUpgradesGUI(),
+                new EXPUpgrade(),
+                new CropUpgrades(),
+                new SpawnerUpgrades(),
+        };
+
+        for (Listener eventListener : eventsListener)
+            getServer().getPluginManager().registerEvents(eventListener, this);
+
         // since some other plugins execute commands directly through this command interface, provide it
         getCommand(this.refCommand).setExecutor(this);
         getCommand(this.refCommand).setTabCompleter(this);
+
+        setupEssentials();
 
         if (getDescription().getFullName().contains("BETA")) {
             divider();
@@ -251,9 +257,9 @@ public class SavageFactions extends MPlugin {
         this.loadSuccessful = true;
     }
 
-   public SkriptAddon getSkriptAddon() {
-      return skriptAddon;
-   }
+    public SkriptAddon getSkriptAddon() {
+        return skriptAddon;
+    }
 
     private void setupMultiversionMaterials() {
         if (mc113) {
@@ -330,35 +336,35 @@ public class SavageFactions extends MPlugin {
         }
     }
 
-  private void migrateFPlayerLeaders() {
-    List<String> lines = new ArrayList<>();
-    File fplayerFile = new File("plugins\\Factions\\players.json");
-    
-    try {
-      BufferedReader br = new BufferedReader(new FileReader(fplayerFile));
-      System.out.println("Migrating old players.json file.");
+    private void migrateFPlayerLeaders() {
+        List<String> lines = new ArrayList<>();
+        File fplayerFile = new File("plugins\\Factions\\players.json");
 
-      String line;
-      while ((line = br.readLine()) != null) {
-        if (line.contains("\"role\": \"ADMIN\"")) {
-          line = line.replace("\"role\": \"ADMIN\"", "\"role\": " + "\"LEADER\"");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(fplayerFile));
+            System.out.println("Migrating old players.json file.");
+
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.contains("\"role\": \"ADMIN\"")) {
+                    line = line.replace("\"role\": \"ADMIN\"", "\"role\": " + "\"LEADER\"");
+                }
+                lines.add(line);
+            }
+            br.close();
+            BufferedWriter bw = new BufferedWriter(new FileWriter(fplayerFile));
+            for (String newLine : lines) {
+                bw.write(newLine + "\n");
+            }
+            bw.flush();
+            bw.close();
+        } catch (IOException ex) {
+            System.out.println("File was not found for players.json, assuming"
+                    + " there is no need to migrate old players.json file.");
         }
-        lines.add(line);
-      }
-      br.close();
-      BufferedWriter bw = new BufferedWriter(new FileWriter(fplayerFile));
-      for (String newLine : lines) {
-        bw.write(newLine + "\n");
-      }
-      bw.flush();
-      bw.close();
-    } catch (IOException ex) {
-      System.out.println("File was not found for players.json, assuming"
-              + " there is no need to migrate old players.json file.");
     }
-  }
 
-   public void changeItemIDSInConfig() {
+    public void changeItemIDSInConfig() {
         log("Starting conversion of legacy material in config to 1.13 materials.");
 
         replaceStringInConfig("fperm-gui.relation.materials.recruit", "WOOD_SWORD", "WOODEN_SWORD");
@@ -380,7 +386,7 @@ public class SavageFactions extends MPlugin {
         replaceStringInConfig("fupgrades.MainMenu.DummyItem.Type", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
         replaceStringInConfig("fupgrades.MainMenu.EXP.EXPItem.Type", "EXP_BOTTLE", "EXPERIENCE_BOTTLE");
         replaceStringInConfig("fupgrades.MainMenu.Spawners.SpawnerItem.Type", "MOB_SPAWNER", "SPAWNER");
-        
+
         replaceStringInConfig("fperm-gui.action.access.allow", "LIME", "LIME_STAINED_GLASS");
         replaceStringInConfig("fperm-gui.action.access.deny", "RED", "RED_STAINED_GLASS");
         replaceStringInConfig("fperm-gui.action.access.undefined", "CYAN", "CYAN_STAINED_GLASS");
@@ -388,8 +394,8 @@ public class SavageFactions extends MPlugin {
 
     public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
         if (getConfig().getString(path).equals(stringToReplace)) {
-           // SavageFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
-           // log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+            // SavageFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+            // log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
 
             getConfig().set(path, replacementString);
         }
@@ -447,10 +453,10 @@ public class SavageFactions extends MPlugin {
     public void onDisable() {
         // only save data if plugin actually completely loaded successfully
         if (this.loadSuccessful) {
-           // Dont save, as this is kind of pointless, as the /f config command manually saves.
-           // So any edits done are saved, this way manual edits to json can go through.
+            // Dont save, as this is kind of pointless, as the /f config command manually saves.
+            // So any edits done are saved, this way manual edits to json can go through.
 
-           // Conf.save();
+            // Conf.save();
         }
 
         if (AutoLeaveTask != null) {
@@ -505,6 +511,11 @@ public class SavageFactions extends MPlugin {
         return econ;
     }
 
+    private boolean setupEssentials() {
+        SavageFactions.plugin.ess = (Essentials) this.getServer().getPluginManager().getPlugin("Essentials");
+        return SavageFactions.plugin.ess == null;
+    }
+
     @Override
     public boolean logPlayerCommands() {
         return Conf.logPlayerCommands;
@@ -525,58 +536,53 @@ public class SavageFactions extends MPlugin {
         String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
         return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
     }
-    
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-		FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) sender);
-		List<String> completions = new ArrayList<>();
-		String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
-		List<String> argsList = new ArrayList<>(Arrays.asList(args));
-		argsList.remove(argsList.size() - 1);
-		String cmdValid = (cmd + " " + TextUtil.implode(argsList, " ")).trim();
-		MCommand<?> commandEx = cmdBase;
-		List<MCommand<?>> commandsList = cmdBase.subCommands;
-		
-		if (Board.getInstance().getFactionAt(new FLocation(fPlayer.getPlayer().getLocation())) == Factions.getInstance().getWarZone()) {
-          sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot use autocomplete in warzone."));
-          return new ArrayList<>();
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) sender);
+        List<String> completions = new ArrayList<>();
+        String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
+        List<String> argsList = new ArrayList<>(Arrays.asList(args));
+        argsList.remove(argsList.size() - 1);
+        String cmdValid = (cmd + " " + TextUtil.implode(argsList, " ")).trim();
+        MCommand<?> commandEx = cmdBase;
+        List<MCommand<?>> commandsList = cmdBase.subCommands;
+
+        if (Board.getInstance().getFactionAt(new FLocation(fPlayer.getPlayer().getLocation())) == Factions.getInstance().getWarZone()) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot use autocomplete in warzone."));
+            return new ArrayList<>();
         }
 
-    	for (; !commandsList.isEmpty() && !argsList.isEmpty(); argsList.remove(0))
-    	{
-    		String cmdName = argsList.get(0).toLowerCase();
-    		MCommand<?> commandFounded = commandsList.stream()
-    				.filter(c -> c.aliases.contains(cmdName))
-    				.findFirst().orElse(null);
+        for (; !commandsList.isEmpty() && !argsList.isEmpty(); argsList.remove(0)) {
+            String cmdName = argsList.get(0).toLowerCase();
+            MCommand<?> commandFounded = commandsList.stream()
+                    .filter(c -> c.aliases.contains(cmdName))
+                    .findFirst().orElse(null);
 
-        	if (commandFounded != null)
-        	{
-        		commandEx = commandFounded;
-        		commandsList = commandFounded.subCommands;
-        	}
-        	else break;
-    	}
-    	
-    	if (argsList.isEmpty())
-    	{
-    		for (MCommand<?> subCommand: commandEx.subCommands)
-	    	{
-    			subCommand.setCommandSender(sender);
-	    		if (handleCommand(sender, cmdValid + " " + subCommand.aliases.get(0), true)
-	    				&& subCommand.visibility != CommandVisibility.INVISIBLE
-	    				&& subCommand.validSenderType(sender, false)
-	    				&& subCommand.validSenderPermissions(sender, false))
-	    			completions.addAll(subCommand.aliases);
-	    	}
-    	}
-    	
-    	String lastArg = args[args.length - 1].toLowerCase();
-    	
-    	completions = completions.stream()
-				.filter(m -> m.toLowerCase().startsWith(lastArg))
-				.collect(Collectors.toList());
-    	
-    	return completions;
+            if (commandFounded != null) {
+                commandEx = commandFounded;
+                commandsList = commandFounded.subCommands;
+            } else break;
+        }
+
+        if (argsList.isEmpty()) {
+            for (MCommand<?> subCommand : commandEx.subCommands) {
+                subCommand.setCommandSender(sender);
+                if (handleCommand(sender, cmdValid + " " + subCommand.aliases.get(0), true)
+                        && subCommand.visibility != CommandVisibility.INVISIBLE
+                        && subCommand.validSenderType(sender, false)
+                        && subCommand.validSenderPermissions(sender, false))
+                    completions.addAll(subCommand.aliases);
+            }
+        }
+
+        String lastArg = args[args.length - 1].toLowerCase();
+
+        completions = completions.stream()
+                .filter(m -> m.toLowerCase().startsWith(lastArg))
+                .collect(Collectors.toList());
+
+        return completions;
     }
 
     public void createTimedHologram(final Location location, String text, Long timeout) {
@@ -587,12 +593,12 @@ public class SavageFactions extends MPlugin {
         as.setCustomName(SavageFactions.plugin.color(text)); //Set this to the text you want
         as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
         final ArmorStand armorStand = as;
-        
+
         Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> {
-                  armorStand.remove();
-                  getLogger().info("Removing Hologram.");
-               }
-               , timeout * 20);
+                    armorStand.remove();
+                    getLogger().info("Removing Hologram.");
+                }
+                , timeout * 20);
     }
 
 

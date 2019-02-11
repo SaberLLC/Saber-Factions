@@ -22,7 +22,7 @@ public class CmdDescription extends FCommand {
         this.disableOnLock = true;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = true;

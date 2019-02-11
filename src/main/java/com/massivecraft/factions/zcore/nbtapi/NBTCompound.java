@@ -10,9 +10,9 @@ public class NBTCompound {
     private String compundName;
     private NBTCompound parent;
 
-    protected NBTCompound()
-    {}
-    
+    protected NBTCompound() {
+    }
+
     protected NBTCompound(NBTCompound owner, String name) {
         this.compundName = name;
         this.parent = owner;

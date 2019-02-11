@@ -35,15 +35,15 @@ public class PermUtil {
 
     public String getPermissionDescription(String perm) {
         String desc = permissionDescriptions.get(perm);
-        
-        return desc != null ? desc:TL.GENERIC_DOTHAT.toString();
+
+        return desc != null ? desc : TL.GENERIC_DOTHAT.toString();
     }
 
     /**
      * This method tests if me has a certain permission and returns true if me has. Otherwise false
      */
     public boolean has(CommandSender me, String perm) {
-    	return me != null ? me.hasPermission(perm):false;
+        return me != null && me.hasPermission(perm);
     }
 
     public boolean has(CommandSender me, String perm, boolean informSenderIfNot) {

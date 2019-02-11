@@ -5,11 +5,11 @@ public class MethodNames {
     private final static MinecraftVersion MINECRAFT_VERSION = MinecraftVersion.getVersion();
 
     public static String getTileDataMethodName() {
-    	return MINECRAFT_VERSION == MinecraftVersion.MC1_8_R3 ? "b":"save";
+        return MINECRAFT_VERSION == MinecraftVersion.MC1_8_R3 ? "b" : "save";
     }
 
     public static String getTypeMethodName() {
-    	return MINECRAFT_VERSION == MinecraftVersion.MC1_8_R3 ? "b":"d";
+        return MINECRAFT_VERSION == MinecraftVersion.MC1_8_R3 ? "b" : "d";
     }
 
     public static String getEntityNbtGetterMethodName() {
@@ -21,6 +21,6 @@ public class MethodNames {
     }
 
     public static String getRemoveMethodName() {
-    	return MINECRAFT_VERSION == MinecraftVersion.MC1_8_R3 ? "a":"remove";
+        return MINECRAFT_VERSION == MinecraftVersion.MC1_8_R3 ? "a" : "remove";
     }
 }

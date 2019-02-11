@@ -9,7 +9,6 @@ import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,7 +38,7 @@ public class FactionsBlockListener implements Listener {
 
     public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
         String name = player.getName();
-        
+
         if (Conf.playersWhoBypassAllProtection.contains(name))
             return true;
 
@@ -84,7 +83,7 @@ public class FactionsBlockListener implements Listener {
 
             return false;
         }
-        
+
         if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
             return true;
 
@@ -138,19 +137,19 @@ public class FactionsBlockListener implements Listener {
         if (access != Access.ALLOW && me.getRole() != Role.LEADER) {
             // TODO: Update this once new access values are added other than just allow / deny.
             if (access == Access.DENY) {
-            	if (!justCheck)
-            		me.msg(TL.GENERIC_NOPERMISSION, action);
+                if (!justCheck)
+                    me.msg(TL.GENERIC_NOPERMISSION, action);
                 return false;
             } else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
-            	if (!justCheck)
-            		me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+                if (!justCheck)
+                    me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
                 return false;
             }
         }
         return true;
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (!event.canBuild()) {
             return;
@@ -166,7 +165,7 @@ public class FactionsBlockListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
         if (!Conf.handleExploitLiquidFlow) {
             return;
@@ -190,14 +189,14 @@ public class FactionsBlockListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
         if (event.getInstaBreak() && !playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         if (!Conf.pistonProtectionThroughDenyBuild) {
             return;
@@ -219,7 +218,7 @@ public class FactionsBlockListener implements Listener {
          * only the final target block as done above
          */
     }
-    
+
     @EventHandler
     public void onVaultPlace(BlockPlaceEvent e) {
         if (e.getItemInHand().getType() == Material.CHEST) {
@@ -304,7 +303,7 @@ public class FactionsBlockListener implements Listener {
 
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         // if not a sticky piston, retraction should be fine
         if (!event.isSticky() || !Conf.pistonProtectionThroughDenyBuild) {
@@ -372,7 +371,7 @@ public class FactionsBlockListener implements Listener {
                         //  if (fplayer == fme) { continue; }   //Idk if I wanna not send the title to the player
                         fplayer.getPlayer().sendTitle(SavageFactions.plugin.color(fme.getTag() + " Placed A WarBanner!"), SavageFactions.plugin.color("&7use &c/f tpbanner&7 to tp to the banner!"), 10, 70, 20);
                     }
-                    
+
                     bannerCooldownMap.put(fme.getTag(), true);
                     bannerLocations.put(fme.getTag(), e.getBlockPlaced().getLocation());
                     final int bannerCooldown = SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Place-Cooldown");
@@ -439,7 +438,7 @@ public class FactionsBlockListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onFrostWalker(EntityBlockFormEvent event) {
         if (event.getEntity() == null || event.getEntity().getType() != EntityType.PLAYER || event.getBlock() == null) {
             return;
@@ -485,7 +484,7 @@ public class FactionsBlockListener implements Listener {
         return !rel.confDenyBuild(otherFaction.hasPlayersOnline());
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
@@ -505,22 +504,19 @@ public class FactionsBlockListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler
-    public void onFarmLandDamage(EntityChangeBlockEvent event)
-    {
-    	if (event.getEntity() instanceof Player)
-    	{
-    		Player player = (Player) event.getEntity();
-    		if (!playerCanBuildDestroyBlock(player, event.getBlock().getLocation(), PermissableAction.DESTROY.name(), true))
-    		{
-    			FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
-    			Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation()));
-    			Faction myFaction = me.getFaction();
-    			
-    			me.msg("<b>You can't jump on farmland in the territory of " + otherFaction.getTag(myFaction));
-    			event.setCancelled(true);
-    		}
-    	}
+    public void onFarmLandDamage(EntityChangeBlockEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            if (!playerCanBuildDestroyBlock(player, event.getBlock().getLocation(), PermissableAction.DESTROY.name(), true)) {
+                FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
+                Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation()));
+                Faction myFaction = me.getFaction();
+
+                me.msg("<b>You can't jump on farmland in the territory of " + otherFaction.getTag(myFaction));
+                event.setCancelled(true);
+            }
+        }
     }
 }

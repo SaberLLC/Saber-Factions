@@ -20,7 +20,7 @@ public class CmdMap extends FCommand {
         this.disableOnLock = false;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

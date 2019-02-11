@@ -26,9 +26,9 @@ public class CmdReload extends FCommand {
     public void perform() {
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
-       Conf.save();
-       SavageFactions.plugin.reloadConfig();
-       SavageFactions.plugin.changeItemIDSInConfig();
+        Conf.save();
+        SavageFactions.plugin.reloadConfig();
+        SavageFactions.plugin.changeItemIDSInConfig();
         SavageFactions.plugin.loadLang();
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 

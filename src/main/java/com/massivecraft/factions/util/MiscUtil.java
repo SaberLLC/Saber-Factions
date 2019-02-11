@@ -100,11 +100,21 @@ public class MiscUtil {
             }
 
             switch (player.getRole()) {
-                case LEADER: admins.add(player); break;
-                case COLEADER: admins.add(player); break;
-                case MODERATOR: moderators.add(player); break;
-                case NORMAL: normal.add(player); break;
-                case RECRUIT: recruit.add(player); break;
+                case LEADER:
+                    admins.add(player);
+                    break;
+                case COLEADER:
+                    admins.add(player);
+                    break;
+                case MODERATOR:
+                    moderators.add(player);
+                    break;
+                case NORMAL:
+                    normal.add(player);
+                    break;
+                case RECRUIT:
+                    recruit.add(player);
+                    break;
             }
         }
 

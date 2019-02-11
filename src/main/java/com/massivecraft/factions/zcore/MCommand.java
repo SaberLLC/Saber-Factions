@@ -76,7 +76,7 @@ public abstract class MCommand<T extends MPlugin> {
     }
 
     public String getHelpShort() {
-        return this.helpShort != null ? this.helpShort:getUsageTranslation().toString();
+        return this.helpShort != null ? this.helpShort : getUsageTranslation().toString();
     }
 
     public void setHelpShort(String val) {
@@ -85,9 +85,8 @@ public abstract class MCommand<T extends MPlugin> {
 
     public abstract TL getUsageTranslation();
 
-    public void setCommandSender(CommandSender sender)
-    {
-    	this.sender = sender;
+    public void setCommandSender(CommandSender sender) {
+        this.sender = sender;
         if (sender instanceof Player) {
             this.me = (Player) sender;
             this.senderIsConsole = false;
@@ -96,7 +95,7 @@ public abstract class MCommand<T extends MPlugin> {
             this.senderIsConsole = true;
         }
     }
-    
+
     // The commandChain is a list of the parent command chain used to get to this command.
     public void execute(CommandSender sender, List<String> args, List<MCommand<?>> commandChain) {
         // Set the execution-time specific variables

@@ -39,7 +39,7 @@ public class FPromoteCommand extends FCommand {
         }
 
         Role current = target.getRole();
-        Role promotion = Role.getRelative(current, + relative);
+        Role promotion = Role.getRelative(current, +relative);
 
         // Now it ain't that messy
         if (!fme.isAdminBypassing()) {

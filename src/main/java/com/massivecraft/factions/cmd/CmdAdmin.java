@@ -25,7 +25,7 @@ public class CmdAdmin extends FCommand {
         this.disableOnLock = true;
 
 
-       senderMustBePlayer = false;
+        senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;

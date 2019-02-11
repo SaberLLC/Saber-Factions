@@ -55,7 +55,7 @@ public class Worldguard {
     //   True: PVP is allowed
     //   False: PVP is disallowed
     @SuppressWarnings("deprecation")
-	public static boolean isPVP(Player player) {
+    public static boolean isPVP(Player player) {
         if (!enabled) {
             // No WG hooks so we'll always bypass this check.
             return true;

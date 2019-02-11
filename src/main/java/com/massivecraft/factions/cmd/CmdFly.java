@@ -23,8 +23,8 @@ public class CmdFly extends FCommand {
 
 
     public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<String, Boolean>();
-    public static int id = - 1;
-    public static int flyid = - 1;
+    public static int id = -1;
+    public static int flyid = -1;
 
     public CmdFly() {
         super();
@@ -33,7 +33,7 @@ public class CmdFly extends FCommand {
         this.optionalArgs.put("on/off", "flip");
 
 
-       this.permission = Permission.FLY.node;
+        this.permission = Permission.FLY.node;
         this.senderMustBeMember = true;
         this.senderMustBeModerator = false;
     }
@@ -73,15 +73,15 @@ public class CmdFly extends FCommand {
                         // 1.9+ based servers will use the built in particleAPI instead of packet based.
                         // any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
                         // So setting the amount to 0 spawns 1 in the precise location
-                        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, - 0.35, 0), 0);
+                        player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, -0.35, 0), 0);
                     } else {
-                        ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, - 0.35, 0), 16);
+                        ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, -0.35, 0), 16);
                     }
 
                 }
                 if (flyMap.keySet().size() == 0) {
                     Bukkit.getScheduler().cancelTask(id);
-                    id = - 1;
+                    id = -1;
                 }
             }
         }, 10L, 3L);
@@ -178,7 +178,7 @@ public class CmdFly extends FCommand {
     public static void checkTaskState() {
         if (flyMap.keySet().size() == 0) {
             Bukkit.getScheduler().cancelTask(flyid);
-            flyid = - 1;
+            flyid = -1;
         }
     }
 
@@ -199,7 +199,7 @@ public class CmdFly extends FCommand {
         if (!checkBypassPerms(fme, me, toFac)) return;
         List<Entity> entities = this.me.getNearbyEntities(16.0D, 256.0D, 16.0D);
 
-        for (int i = 0; i <= entities.size() - 1; ++ i) {
+        for (int i = 0; i <= entities.size() - 1; ++i) {
             if (entities.get(i) instanceof Player) {
                 Player eplayer = (Player) entities.get(i);
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
@@ -231,12 +231,12 @@ public class CmdFly extends FCommand {
                 public void run() {
                     fme.setFlying(true);
                     flyMap.put(player.getName(), true);
-                    if (id == - 1) {
+                    if (id == -1) {
                         if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
                             startParticles();
                         }
                     }
-                    if (flyid == - 1) {
+                    if (flyid == -1) {
                         startFlyCheck();
                     }
                 }

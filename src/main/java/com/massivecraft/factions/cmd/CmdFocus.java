@@ -9,18 +9,18 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdFocus
         extends FCommand {
     public CmdFocus() {
-       aliases.add("focus");
+        aliases.add("focus");
 
-       requiredArgs.add("player");
+        requiredArgs.add("player");
 
-       permission = Permission.FOCUS.node;
+        permission = Permission.FOCUS.node;
 
 
-       senderMustBePlayer = true;
-       senderMustBeMember = false;
-       senderMustBeModerator = true;
-       senderMustBeColeader = false;
-       senderMustBeAdmin = false;
+        senderMustBePlayer = true;
+        senderMustBeMember = false;
+        senderMustBeModerator = true;
+        senderMustBeColeader = false;
+        senderMustBeAdmin = false;
     }
 
     public void perform() {

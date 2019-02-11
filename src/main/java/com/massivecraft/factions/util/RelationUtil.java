@@ -57,7 +57,7 @@ public class RelationUtil {
     public static Relation getRelationTo(RelationParticipator me, RelationParticipator that, boolean ignorePeaceful) {
         Faction fthat = getFaction(that);
         Faction fme = getFaction(me);
-        
+
         if (fthat == null || fme == null) {
             return Relation.NEUTRAL; // ERROR
         }
@@ -96,7 +96,7 @@ public class RelationUtil {
 
     public static ChatColor getColorOfThatToMe(RelationParticipator that, RelationParticipator me) {
         Faction thatFaction = getFaction(that);
-        
+
         if (thatFaction != null && thatFaction != getFaction(me)) {
             if (thatFaction.isPeaceful())
                 return Conf.colorPeaceful;

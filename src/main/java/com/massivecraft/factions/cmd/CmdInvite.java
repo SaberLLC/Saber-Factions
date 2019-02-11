@@ -24,7 +24,7 @@ public class CmdInvite extends FCommand {
         this.disableOnLock = true;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

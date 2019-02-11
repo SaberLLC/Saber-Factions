@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 
 public class LazyLocation implements Serializable {
-    private static final long serialVersionUID = - 6049901271320963314L;
+    private static final long serialVersionUID = -6049901271320963314L;
     private transient Location location = null;
     private String worldName;
     private double x;

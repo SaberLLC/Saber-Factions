@@ -25,7 +25,7 @@ public class CmdDeinvite extends FCommand {
         this.disableOnLock = true;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = true;
         senderMustBeColeader = false;

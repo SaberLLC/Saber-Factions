@@ -19,7 +19,7 @@ public class CmdMoneyBalance extends FCommand {
         this.setHelpShort(TL.COMMAND_MONEYBALANCE_SHORT.toString());
 
 
-       senderMustBePlayer = false;
+        senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;

@@ -111,18 +111,18 @@ public abstract class MemoryBoard extends Board {
     public boolean isBorderLocation(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
         FLocation a = flocation.getRelative(1, 0);
-        FLocation b = flocation.getRelative(- 1, 0);
+        FLocation b = flocation.getRelative(-1, 0);
         FLocation c = flocation.getRelative(0, 1);
-        FLocation d = flocation.getRelative(0, - 1);
+        FLocation d = flocation.getRelative(0, -1);
         return faction != getFactionAt(a) || faction != getFactionAt(b) || faction != getFactionAt(c) || faction != getFactionAt(d);
     }
 
     // Is this coord connected to any coord claimed by the specified faction?
     public boolean isConnectedLocation(FLocation flocation, Faction faction) {
         FLocation a = flocation.getRelative(1, 0);
-        FLocation b = flocation.getRelative(- 1, 0);
+        FLocation b = flocation.getRelative(-1, 0);
         FLocation c = flocation.getRelative(0, 1);
-        FLocation d = flocation.getRelative(0, - 1);
+        FLocation d = flocation.getRelative(0, -1);
         return faction == getFactionAt(a) || faction == getFactionAt(b) || faction == getFactionAt(c) || faction == getFactionAt(d);
     }
 
@@ -136,8 +136,8 @@ public abstract class MemoryBoard extends Board {
      * @return true if another Faction is within the radius, otherwise false.
      */
     public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {
-        for (int x = - radius; x <= radius; x++) {
-            for (int z = - radius; z <= radius; z++) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
                 if (x == 0 && z == 0) {
                     continue;
                 }
@@ -210,7 +210,7 @@ public abstract class MemoryBoard extends Board {
         int halfWidth = Conf.mapWidth / 2;
         // Use player's value for height
         int halfHeight = fplayer.getMapHeight() / 2;
-        FLocation topLeft = flocation.getRelative(- halfWidth, - halfHeight);
+        FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
         int width = halfWidth * 2 + 1;
         int height = halfHeight * 2 + 1;
 
@@ -345,7 +345,7 @@ public abstract class MemoryBoard extends Board {
     public abstract void convertFrom(MemoryBoard old);
 
     public class MemoryBoardMap extends HashMap<FLocation, String> {
-        private static final long serialVersionUID = - 6689617828610585368L;
+        private static final long serialVersionUID = -6689617828610585368L;
 
         Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
 

@@ -33,7 +33,7 @@ public class FactionsEntityListener implements Listener {
 
     private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
 
-    @EventHandler (priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDeath(EntityDeathEvent event) {
         Entity entity = event.getEntity();
         if (!(entity instanceof Player)) {
@@ -86,7 +86,7 @@ public class FactionsEntityListener implements Listener {
      * Who can I hurt? I can never hurt members or allies. I can always hurt enemies. I can hurt neutrals as long as
      * they are outside their own territory.
      */
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
@@ -233,7 +233,7 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
         Entity boomer = event.getEntity();
 
@@ -270,12 +270,12 @@ public class FactionsEntityListener implements Listener {
                 // a single surrounding block in all 6 directions is broken if the material is weak enough
                 List<Block> targets = new ArrayList<>();
                 targets.add(center.getRelative(0, 0, 1));
-                targets.add(center.getRelative(0, 0, - 1));
+                targets.add(center.getRelative(0, 0, -1));
                 targets.add(center.getRelative(0, 1, 0));
-                targets.add(center.getRelative(0, - 1, 0));
+                targets.add(center.getRelative(0, -1, 0));
                 targets.add(center.getRelative(1, 0, 0));
-                targets.add(center.getRelative(- 1, 0, 0));
-                
+                targets.add(center.getRelative(-1, 0, 0));
+
                 for (Block target : targets) {
                     @SuppressWarnings("deprecation")
                     int id = target.getType().getId();
@@ -322,7 +322,7 @@ public class FactionsEntityListener implements Listener {
     }
 
     // mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
         EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0d);
         if (!this.canDamagerHurtDamagee(sub, false)) {
@@ -330,7 +330,7 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPotionSplashEvent(PotionSplashEvent event) {
         // see if the potion has a harmful effect
         boolean badjuju = false;
@@ -544,7 +544,7 @@ public class FactionsEntityListener implements Listener {
         return true;
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         if (event.getLocation() == null) {
             return;
@@ -555,7 +555,7 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         // if there is a target
         Entity target = event.getTarget();
@@ -574,7 +574,7 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPaintingBreak(HangingBreakEvent event) {
         if (event.getCause() == RemoveCause.EXPLOSION) {
             Location loc = event.getEntity().getLocation();
@@ -610,7 +610,7 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPaintingPlace(HangingPlaceEvent event) {
         if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "place paintings", false)) {
             event.setCancelled(true);
@@ -619,7 +619,7 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         Entity entity = event.getEntity();
 
@@ -715,7 +715,7 @@ public class FactionsEntityListener implements Listener {
     }
 
     // For disabling interactions with item frames in another faction's territory
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         // only need to check for item frames
         if (event.getRightClicked().getType() != EntityType.ITEM_FRAME) {
@@ -731,7 +731,7 @@ public class FactionsEntityListener implements Listener {
     }
 
     // For disabling interactions with armor stands in another faction's territory
-    @EventHandler (priority = EventPriority.NORMAL, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
         Entity entity = event.getRightClicked();
 

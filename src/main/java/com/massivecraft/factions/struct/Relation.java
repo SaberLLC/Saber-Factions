@@ -95,15 +95,19 @@ public enum Relation implements Permissable {
     }
 
     public ChatColor getColor() {
-    	
-    	switch (this)
-    	{
-    		case MEMBER: return Conf.colorMember;
-    		case ALLY: return Conf.colorAlly;
-    		case NEUTRAL: return Conf.colorNeutral;
-    		case TRUCE: return Conf.colorTruce;
-    		default: return Conf.colorEnemy;
-    	}
+
+        switch (this) {
+            case MEMBER:
+                return Conf.colorMember;
+            case ALLY:
+                return Conf.colorAlly;
+            case NEUTRAL:
+                return Conf.colorNeutral;
+            case TRUCE:
+                return Conf.colorTruce;
+            default:
+                return Conf.colorEnemy;
+        }
     }
 
     // return appropriate Conf setting for DenyBuild based on this relation and their online status

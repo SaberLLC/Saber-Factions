@@ -41,12 +41,10 @@ public class CmdChat extends FCommand {
             modeString = modeString.toLowerCase();
             // Only allow Mods and higher rank to switch to this channel.
             if (modeString.startsWith("m")) {
-            	if (!fme.getRole().isAtLeast(Role.MODERATOR))
-            	{
-            		msg(TL.COMMAND_CHAT_MOD_ONLY);
-                	return;
-            	}
-            	else modeTarget = ChatMode.MOD;
+                if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
+                    msg(TL.COMMAND_CHAT_MOD_ONLY);
+                    return;
+                } else modeTarget = ChatMode.MOD;
             } else if (modeString.startsWith("p")) {
                 modeTarget = ChatMode.PUBLIC;
             } else if (modeString.startsWith("a")) {
@@ -63,13 +61,22 @@ public class CmdChat extends FCommand {
 
         fme.setChatMode(modeTarget);
 
-        switch (fme.getChatMode())
-        {
-        	case MOD: msg(TL.COMMAND_CHAT_MODE_MOD); break;
-        	case PUBLIC: msg(TL.COMMAND_CHAT_MODE_PUBLIC); break;
-        	case ALLIANCE: msg(TL.COMMAND_CHAT_MODE_ALLIANCE); break;
-        	case TRUCE: msg(TL.COMMAND_CHAT_MODE_TRUCE); break;
-        	default: msg(TL.COMMAND_CHAT_MODE_FACTION); break;
+        switch (fme.getChatMode()) {
+            case MOD:
+                msg(TL.COMMAND_CHAT_MODE_MOD);
+                break;
+            case PUBLIC:
+                msg(TL.COMMAND_CHAT_MODE_PUBLIC);
+                break;
+            case ALLIANCE:
+                msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
+                break;
+            case TRUCE:
+                msg(TL.COMMAND_CHAT_MODE_TRUCE);
+                break;
+            default:
+                msg(TL.COMMAND_CHAT_MODE_FACTION);
+                break;
         }
     }
 

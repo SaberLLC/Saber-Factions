@@ -858,8 +858,8 @@ public enum MultiversionMaterials {
     ZOMBIE_VILLAGER_SPAWN_EGG("MONSTER_EGG", 0),
     ZOMBIE_WALL_HEAD("SKULL", 0),
     ;
-    
-	static int newV = - 1;
+
+    static int newV = -1;
     private static HashMap<String, MultiversionMaterials> cachedSearch = new HashMap<>();
     String m;
     int data;
@@ -872,13 +872,13 @@ public enum MultiversionMaterials {
     public static boolean isNewVersion() {
         if (newV == 0) return false;
         if (newV == 1) return true;
-        
+
         Material mat = Material.matchMaterial("RED_WOOL");
         if (mat != null) {
             newV = 1;
             return true;
         }
-        
+
         newV = 0;
         return false;
     }
@@ -898,11 +898,11 @@ public enum MultiversionMaterials {
 
     public static MultiversionMaterials fromString(String key) {
         try {
-        	return MultiversionMaterials.valueOf(key);
+            return MultiversionMaterials.valueOf(key);
         } catch (IllegalArgumentException e) {
             String[] split = key.split(":");
-            
-            return split.length == 1 ? requestXMaterial(key, (byte) 0):requestXMaterial(split[0], (byte) Integer.parseInt(split[1]));
+
+            return split.length == 1 ? requestXMaterial(key, (byte) 0) : requestXMaterial(split[0], (byte) Integer.parseInt(split[1]));
         }
     }
 
@@ -944,7 +944,7 @@ public enum MultiversionMaterials {
 
     public boolean isDamageable(MultiversionMaterials type) {
         String[] split = type.toString().split("_");
-        
+
         switch (split[split.length - 1]) {
             case "HELMET":
             case "CHESTPLATE":
@@ -968,7 +968,7 @@ public enum MultiversionMaterials {
 
     public Material parseMaterial() {
         Material mat = Material.matchMaterial(this.toString());
-        return mat != null ? mat:Material.matchMaterial(m);
+        return mat != null ? mat : Material.matchMaterial(m);
     }
 
 }

@@ -16,7 +16,7 @@ public class TextUtil {
     // -------------------------------------------- //
     // Top-level parsing functions.
     // -------------------------------------------- //
-    private final static int titleizeBalance = - 1;
+    private final static int titleizeBalance = -1;
     public Map<String, String> tags;
 
     // -------------------------------------------- //
@@ -120,9 +120,9 @@ public class TextUtil {
     public static String implode(List<String> list, String glue) {
         StringBuilder ret = new StringBuilder();
         for (int i = 0; i < list.size(); i++)
-        	ret.append(glue).append(list.get(i));
-        
-        return ret.length() > 0 ? ret.toString().substring(glue.length()):"";
+            ret.append(glue).append(list.get(i));
+
+        return ret.length() > 0 ? ret.toString().substring(glue.length()) : "";
     }
 
     // -------------------------------------------- //
@@ -130,7 +130,7 @@ public class TextUtil {
     // -------------------------------------------- //
 
     public static String repeat(String s, int times) {
-    	return times > 0 ? s + repeat(s, times - 1):"";
+        return times > 0 ? s + repeat(s, times - 1) : "";
     }
 
     public static String getMaterialName(Material material) {

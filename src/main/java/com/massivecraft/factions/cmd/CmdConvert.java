@@ -13,7 +13,7 @@ public class CmdConvert extends FCommand {
         this.aliases.add("convert");
 
         this.permission = Permission.CONVERT.node;
-        
+
         this.requiredArgs.add("[MYSQL|JSON]");
     }
 

@@ -24,7 +24,7 @@ public class CmdSetFWarp extends FCommand {
         this.senderMustBeMember = true;
         this.senderMustBeModerator = false;
 
-       this.senderMustBePlayer = true;
+        this.senderMustBePlayer = true;
 
         this.permission = Permission.SETWARP.node;
     }
@@ -45,7 +45,7 @@ public class CmdSetFWarp extends FCommand {
                 return;
             }
         }
-        
+
         String warp = argAsString(0);
 
         // Checks if warp with same name already exists and ignores maxWarp check if it does.

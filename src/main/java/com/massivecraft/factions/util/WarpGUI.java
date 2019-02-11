@@ -140,9 +140,9 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
         }
 
         if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
-            return Econ.modifyMoney(fme.getFaction(), - cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+            return Econ.modifyMoney(fme.getFaction(), -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
         } else {
-            return Econ.modifyMoney(fme, - cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+            return Econ.modifyMoney(fme, -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
         }
     }
 

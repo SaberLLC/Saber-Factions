@@ -23,7 +23,7 @@ public class CmdMoneyWithdraw extends FCommand {
         this.permission = Permission.MONEY_WITHDRAW.node;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

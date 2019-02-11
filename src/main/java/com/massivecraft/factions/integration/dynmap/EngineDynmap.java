@@ -45,7 +45,8 @@ public class EngineDynmap {
     public MarkerAPI markerApi;
     public MarkerSet markerset;
 
-    private EngineDynmap() {}
+    private EngineDynmap() {
+    }
 
     public static EngineDynmap getInstance() {
         return i;
@@ -63,7 +64,7 @@ public class EngineDynmap {
     }
 
     public static String getHtmlPlayerName(FPlayer fplayer) {
-    	return fplayer != null ? escapeHtml(fplayer.getName()):"none";
+        return fplayer != null ? escapeHtml(fplayer.getName()) : "none";
     }
 
     public static String escapeHtml(String string) {
@@ -72,8 +73,8 @@ public class EngineDynmap {
             char c = string.charAt(i);
             if (c > 127 || c == '"' || c == '<' || c == '>' || c == '&') {
                 out.append("&#")
-                .append((int) c)
-                .append(';');
+                        .append((int) c)
+                        .append(';');
             } else {
                 out.append(c);
             }

@@ -20,7 +20,7 @@ public class CmdSetDefaultRole extends FCommand {
         senderMustBeColeader = false;
 
 
-       this.permission = Permission.DEFAULTRANK.node;
+        this.permission = Permission.DEFAULTRANK.node;
     }
 
     @Override

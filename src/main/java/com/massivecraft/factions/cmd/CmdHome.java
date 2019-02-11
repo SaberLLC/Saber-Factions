@@ -31,7 +31,7 @@ public class CmdHome extends FCommand {
         this.disableOnLock = false;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

@@ -16,7 +16,7 @@ public class CmdMapHeight extends FCommand {
         this.permission = Permission.MAPHEIGHT.node;
 
 
-       this.senderMustBePlayer = true;
+        this.senderMustBePlayer = true;
     }
 
     @Override

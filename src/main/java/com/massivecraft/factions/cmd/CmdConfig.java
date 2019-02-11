@@ -174,7 +174,7 @@ public class CmdConfig extends FCommand {
                         return;
                     }
 
-                    @SuppressWarnings ("unchecked") Set<Material> matSet = (Set<Material>) target.get(null);
+                    @SuppressWarnings("unchecked") Set<Material> matSet = (Set<Material>) target.get(null);
 
                     // Material already present, so remove it
                     if (matSet.contains(newMat)) {
@@ -192,7 +192,7 @@ public class CmdConfig extends FCommand {
 
                 // Set<String>
                 else if (innerType == String.class) {
-                    @SuppressWarnings ("unchecked") Set<String> stringSet = (Set<String>) target.get(null);
+                    @SuppressWarnings("unchecked") Set<String> stringSet = (Set<String>) target.get(null);
 
                     // String already present, so remove it
                     if (stringSet.contains(value.toString())) {

@@ -60,7 +60,7 @@ public interface FPlayer extends EconomyParticipator {
     /**
      * Sets the faction of the FPlayer
      *
-     * @param faction  faction to set.
+     * @param faction faction to set.
      */
     void setFaction(Faction faction);
 

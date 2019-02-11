@@ -45,10 +45,9 @@ public abstract class FCommand extends MCommand<SavageFactions> {
     }
 
     @Override
-    public void setCommandSender(CommandSender sender)
-    {
-    	super.setCommandSender(sender);
-    	if (sender instanceof Player) {
+    public void setCommandSender(CommandSender sender) {
+        super.setCommandSender(sender);
+        if (sender instanceof Player) {
             this.fme = FPlayers.getInstance().getByPlayer((Player) sender);
             this.myFaction = this.fme.getFaction();
         } else {
@@ -56,7 +55,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
             this.myFaction = null;
         }
     }
-    
+
     @Override
     public void execute(CommandSender sender, List<String> args, List<MCommand<?>> commandChain) {
         setCommandSender(sender);
@@ -312,9 +311,9 @@ public abstract class FCommand extends MCommand<SavageFactions> {
         }
 
         if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
-            return Econ.modifyMoney(myFaction, - cost, toDoThis, forDoingThis);
+            return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
         } else {
-            return Econ.modifyMoney(fme, - cost, toDoThis, forDoingThis);
+            return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
         }
     }
 

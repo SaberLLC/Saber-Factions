@@ -109,11 +109,16 @@ public enum PermissableAction {
 
         String accessValue = null;
 
-        switch (access)
-        {
-        	case ALLOW: accessValue = "allow"; break;
-        	case DENY: accessValue = "deny"; break;
-        	case UNDEFINED: accessValue = "undefined"; break;
+        switch (access) {
+            case ALLOW:
+                accessValue = "allow";
+                break;
+            case DENY:
+                accessValue = "deny";
+                break;
+            case UNDEFINED:
+                accessValue = "undefined";
+                break;
         }
 
         // If under the 1.13 version we will use the colorable option.

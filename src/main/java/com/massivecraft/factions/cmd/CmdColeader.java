@@ -24,7 +24,7 @@ public class CmdColeader extends FCommand {
         this.disableOnLock = true;
 
 
-       senderMustBePlayer = false;
+        senderMustBePlayer = false;
         senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeAdmin = true;

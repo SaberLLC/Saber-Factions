@@ -19,7 +19,7 @@ public class CmdOpen extends FCommand {
         this.disableOnLock = false;
 
 
-       senderMustBePlayer = true;
+        senderMustBePlayer = true;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = true;

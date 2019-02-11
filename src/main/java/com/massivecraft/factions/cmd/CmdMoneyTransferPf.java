@@ -23,7 +23,7 @@ public class CmdMoneyTransferPf extends FCommand {
         this.permission = Permission.MONEY_P2F.node;
 
 
-       senderMustBePlayer = false;
+        senderMustBePlayer = false;
         senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeColeader = false;

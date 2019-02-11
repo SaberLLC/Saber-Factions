@@ -20,7 +20,7 @@ import java.util.logging.Level;
 public class FactionsChatListener implements Listener {
 
     // this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
-    @EventHandler (priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerEarlyChat(AsyncPlayerChatEvent event) {
         Player talkingPlayer = event.getPlayer();
         String msg = event.getMessage();
@@ -127,7 +127,7 @@ public class FactionsChatListener implements Listener {
 
 
     // this is for handling insertion of the player's faction tag, set at highest priority to give other plugins a chance to modify chat first
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         // Are we to insert the Faction tag into the format?
         // If we are not to insert it - we are done.
