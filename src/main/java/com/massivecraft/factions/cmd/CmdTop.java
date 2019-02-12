@@ -47,18 +47,18 @@ public class CmdTop extends FCommand {
 
         // TODO: Better way to sort?
         if (criteria.equalsIgnoreCase("members")) {
-            Collections.sort(factionList, new Comparator<Faction>() {
-                @Override
-                public int compare(Faction f1, Faction f2) {
-                    int f1Size = f1.getFPlayers().size();
-                    int f2Size = f2.getFPlayers().size();
-                    if (f1Size < f2Size) {
-                        return 1;
-                    } else if (f1Size > f2Size) {
-                        return -1;
-                    }
-                    return 0;
-                }
+           factionList.sort(new Comparator<Faction>() {
+              @Override
+              public int compare(Faction f1, Faction f2) {
+                 int f1Size = f1.getFPlayers().size();
+                 int f2Size = f2.getFPlayers().size();
+                 if (f1Size < f2Size) {
+                    return 1;
+                 } else if (f1Size > f2Size) {
+                    return -1;
+                 }
+                 return 0;
+              }
             });
         } else if (criteria.equalsIgnoreCase("start")) {
             Collections.sort(factionList, new Comparator<Faction>() {
@@ -104,18 +104,18 @@ public class CmdTop extends FCommand {
                 }
             });
         } else if (criteria.equalsIgnoreCase("online")) {
-            Collections.sort(factionList, new Comparator<Faction>() {
-                @Override
-                public int compare(Faction f1, Faction f2) {
-                    int f1Size = f1.getFPlayersWhereOnline(true).size();
-                    int f2Size = f2.getFPlayersWhereOnline(true).size();
-                    if (f1Size < f2Size) {
-                        return 1;
-                    } else if (f1Size > f2Size) {
-                        return -1;
-                    }
-                    return 0;
-                }
+           factionList.sort(new Comparator<Faction>() {
+              @Override
+              public int compare(Faction f1, Faction f2) {
+                 int f1Size = f1.getFPlayersWhereOnline(true).size();
+                 int f2Size = f2.getFPlayersWhereOnline(true).size();
+                 if (f1Size < f2Size) {
+                    return 1;
+                 } else if (f1Size > f2Size) {
+                    return -1;
+                 }
+                 return 0;
+              }
             });
         } else if (criteria.equalsIgnoreCase("money") || criteria.equalsIgnoreCase("balance") || criteria.equalsIgnoreCase("bal")) {
            factionList.sort(new Comparator<Faction>() {
