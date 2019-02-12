@@ -180,8 +180,6 @@ public class CmdTop extends FCommand {
             return String.valueOf(faction.getFPlayers().size());
         } else if (criteria.equalsIgnoreCase("land")) {
             return String.valueOf(faction.getLandRounded());
-        } else if (criteria.equalsIgnoreCase("start")) {
-            return sdf.format(faction.getFoundedDate());
         } else if (criteria.equalsIgnoreCase("power")) {
             return String.valueOf(faction.getPowerRounded());
         } else { // Last one is balance, and it has 3 different things it could be.
