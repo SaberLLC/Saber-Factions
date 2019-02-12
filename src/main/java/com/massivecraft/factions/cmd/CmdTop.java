@@ -118,7 +118,7 @@ public class CmdTop extends FCommand {
                 }
             });
         } else if (criteria.equalsIgnoreCase("money") || criteria.equalsIgnoreCase("balance") || criteria.equalsIgnoreCase("bal")) {
-            Collections.sort(factionList, new Comparator<Faction>() {
+           factionList.sort(new Comparator<Faction>() {
                 @Override
                 public int compare(Faction f1, Faction f2) {
                     double f1Size = Econ.getBalance(f1.getAccountId());
