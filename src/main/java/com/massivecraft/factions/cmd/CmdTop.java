@@ -165,7 +165,7 @@ public class CmdTop extends FCommand {
         } else { // Last one is balance, and it has 3 different things it could be.
             double balance = Econ.getBalance(faction.getAccountId());
             for (FPlayer fp : faction.getFPlayers()) {
-                balance = balance + Econ.getBalance(fp.getAccountId());
+               balance = Math.round(balance + Econ.getBalance(fp.getAccountId()));
             }
             return String.valueOf(balance);
         }
