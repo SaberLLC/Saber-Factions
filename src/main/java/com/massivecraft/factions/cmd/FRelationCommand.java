@@ -110,7 +110,7 @@ public abstract class FRelationCommand extends FCommand {
                     msg(TL.COMMAND_RELATIONS_EXCEEDS_ME, max, targetRelation.getPluralTranslation());
                     return true;
                 }
-                if (them.getRelationCount(targetRelation) > max) {
+                if (them.getRelationCount(targetRelation) >= max) {
                     msg(TL.COMMAND_RELATIONS_EXCEEDS_THEY, max, targetRelation.getPluralTranslation());
                     return true;
                 }
