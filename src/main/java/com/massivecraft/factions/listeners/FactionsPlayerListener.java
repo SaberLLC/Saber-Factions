@@ -14,6 +14,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FactionGUI;
+import com.massivecraft.factions.util.MultiversionMaterials;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -951,7 +952,7 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerBoneMeal(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
 
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == Material.GRASS_BLOCK
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == MultiversionMaterials.GRASS_BLOCK.parseMaterial()
                 && event.hasItem() && event.getItem().getType() == Material.BONE_MEAL) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD.name(), true)) {
                 FPlayer me = FPlayers.getInstance().getById(event.getPlayer().getUniqueId().toString());
