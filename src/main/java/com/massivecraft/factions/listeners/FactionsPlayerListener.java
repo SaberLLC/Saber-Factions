@@ -654,7 +654,13 @@ public class FactionsPlayerListener implements Listener {
     //For Blocking Homes and Blocking Teleportation To Homes
     @EventHandler
     public void onPlayerHomeCheck(PlayerTeleportEvent event) throws Exception {
+        if (event.getPlayer().hasMetadata("NPC")){
+            return;
+        }
         if (event.getPlayer().hasPermission("factions.homes.bypass")) {
+            return;
+        }
+        if (Bukkit.getPluginManager().getPlugin("Essentials") == null) {
             return;
         }
         boolean isHome = false;
@@ -953,7 +959,7 @@ public class FactionsPlayerListener implements Listener {
         Block block = event.getClickedBlock();
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == MultiversionMaterials.GRASS_BLOCK.parseMaterial()
-                && event.hasItem() && event.getItem().getType() == Material.BONE_MEAL) {
+                && event.hasItem() && event.getItem().getType() == MultiversionMaterials.BONE_MEAL.parseMaterial()) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD.name(), true)) {
                 FPlayer me = FPlayers.getInstance().getById(event.getPlayer().getUniqueId().toString());
                 Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
