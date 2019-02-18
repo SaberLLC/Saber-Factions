@@ -654,6 +654,9 @@ public class FactionsPlayerListener implements Listener {
     //For Blocking Homes and Blocking Teleportation To Homes
     @EventHandler
     public void onPlayerHomeCheck(PlayerTeleportEvent event) throws Exception {
+        if (event.getPlayer().hasMetadata("NPC")){
+            return;
+        }
         if (event.getPlayer().hasPermission("factions.homes.bypass")) {
             return;
         }
