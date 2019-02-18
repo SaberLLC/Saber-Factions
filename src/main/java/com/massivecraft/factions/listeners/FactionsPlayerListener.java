@@ -660,6 +660,9 @@ public class FactionsPlayerListener implements Listener {
         if (event.getPlayer().hasPermission("factions.homes.bypass")) {
             return;
         }
+        if (Bukkit.getPluginManager().getPlugin("Essentials") == null) {
+            return;
+        }
         boolean isHome = false;
         for (String str : SavageFactions.plugin.ess.getUser(event.getPlayer()).getHomes()) {
             Location home = SavageFactions.plugin.ess.getUser(event.getPlayer()).getHome(str);
@@ -956,7 +959,7 @@ public class FactionsPlayerListener implements Listener {
         Block block = event.getClickedBlock();
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == MultiversionMaterials.GRASS_BLOCK.parseMaterial()
-                && event.hasItem() && event.getItem().getType() == Material.BONE_MEAL) {
+                && event.hasItem() && event.getItem().getType() == MultiversionMaterials.BONE_MEAL.parseMaterial()) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD.name(), true)) {
                 FPlayer me = FPlayers.getInstance().getById(event.getPlayer().getUniqueId().toString());
                 Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
