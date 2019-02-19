@@ -1018,7 +1018,7 @@ fbanners:
 #Title when moving between chunks
 Title:
   Show-Title: true
-  # You can configure the time in 1.9 or higher! The values are in seconds
+  # You can configure the time in 1.9 or higher! The values are in ticks (20 ticks = 1 second)
   Options:
     FadeInTime: 1
     ShowTime: 10
