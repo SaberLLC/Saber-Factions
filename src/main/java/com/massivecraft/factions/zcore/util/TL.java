@@ -308,6 +308,8 @@ public enum TL {
     COMMAND_FWARP_PASSWORD_REQUIRED("&c&l[!]&c Warp Password:"),
     COMMAND_FWARP_PASSWORD_TIMEOUT("&c&l[!]&7 Warp password &ccanceled"),
 
+    COMMAND_HINT_PERMISSION("&aYou can manage your factions permissions using &7/f perms"),
+
     COMMAND_HOME_DISABLED("&c&l[!]&7 Sorry, Faction homes are &cdisabled on this server."),
     COMMAND_HOME_TELEPORTDISABLED("&c&l[!]&7 Sorry, the ability to &cteleport &7to Faction homes is &cdisabled &7on this server."),
     COMMAND_HOME_NOHOME("&c&l[!]&7 Your faction does &cnot &7have a home. "),

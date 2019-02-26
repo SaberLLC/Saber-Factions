@@ -671,6 +671,33 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
     }
 
+    public void setDefaultPerms() {
+        if (!Conf.useCustomDefaultPermissions) return;
+        Map<PermissableAction, Access> defaultMap = new HashMap<>();
+        for (PermissableAction permissableAction : PermissableAction.values()) {
+            defaultMap.put(permissableAction, Access.UNDEFINED);
+        }
+        // Put the map in there for each relation.
+        for (Relation relation : Relation.values()) {
+            if (relation != Relation.MEMBER) {
+                if (!Conf.defaultFactionPermissions.containsKey(relation.nicename))
+                    permissions.put(relation, new HashMap<>(defaultMap));
+                else
+                    permissions.put(relation, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(relation.nicename)));
+            }
+        }
+
+        // And each role.
+        for (Role role : Role.values()) {
+            if (role != Role.LEADER) {
+                if (!Conf.defaultFactionPermissions.containsKey(role.nicename))
+                    permissions.put(role, new HashMap<>(defaultMap));
+                else
+                    permissions.put(role, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(role.nicename)));
+            }
+        }
+    }
+
     /**
      * Read only map of Permissions.
      *

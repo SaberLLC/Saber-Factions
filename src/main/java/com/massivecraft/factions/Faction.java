@@ -203,6 +203,7 @@ public interface Faction extends EconomyParticipator {
     void setPermission(Permissable permissable, PermissableAction permissableAction, Access access);
 
     void resetPerms();
+    void setDefaultPerms();
 
     void disband(Player disbander);
 

@@ -10,7 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public enum PermissableAction {
@@ -169,6 +171,14 @@ public enum PermissableAction {
         string = string.replace("{action-access-color}", access.getColor().toString());
 
         return string;
+    }
+
+    public static Map<PermissableAction, Access> fromDefaults(DefaultPermissions defaultPermissions) {
+        Map<PermissableAction, Access> defaultMap = new HashMap<>();
+        for (PermissableAction permissableAction : PermissableAction.values()) {
+            defaultMap.put(permissableAction, defaultPermissions.getbyName(permissableAction.name) ? Access.ALLOW : Access.DENY);
+        }
+        return defaultMap;
     }
 
 }

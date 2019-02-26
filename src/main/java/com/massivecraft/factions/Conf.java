@@ -3,6 +3,8 @@ package com.massivecraft.factions;
 import com.google.common.collect.ImmutableMap;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import com.massivecraft.factions.util.MultiversionMaterials;
+import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -330,6 +332,15 @@ public class Conf {
     public static int mapHeight = 17;
     public static int mapWidth = 49;
     public static transient char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
+
+
+    // Default Options
+    public static boolean useCustomDefaultPermissions = false;
+    public static boolean usePermissionHints = false;
+    public static HashMap<String, DefaultPermissions> defaultFactionPermissions;
+    // Custom Ranks
+    //public static boolean enableCustomRanks = false; // We will disable it by default to avoid any migration error
+    //public static int maxCustomRanks = 2; // Setting this to -1 will allow unlimited custom ranks
     // -------------------------------------------- //
     // Persistance
     // -------------------------------------------- //
@@ -430,6 +441,12 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.WITCH);
         safeZoneNerfedCreatureTypes.add(EntityType.WITHER);
         safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIE);
+        // Is this called lazy load?
+        defaultFactionPermissions.put("LEADER", new DefaultPermissions(true));
+        defaultFactionPermissions.put("COLEADER", new DefaultPermissions(true));
+        defaultFactionPermissions.put("MODERATOR", new DefaultPermissions(true));
+        defaultFactionPermissions.put("MEMBER", new DefaultPermissions(false));
+        defaultFactionPermissions.put("RECRUIT", new DefaultPermissions(false));
     }
 
     public static void load() {
