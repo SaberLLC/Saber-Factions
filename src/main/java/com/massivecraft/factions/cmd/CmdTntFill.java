@@ -35,6 +35,10 @@ public class CmdTntFill extends FCommand {
 
     @Override
     public void perform() {
+        if (!SavageFactions.plugin.getConfig().getBoolean("Tntfill.enabled")) {
+            this.fme.msg(TL.GENERIC_DISABLED);
+            return;
+        }
         if (!fme.isAdminBypassing()) {
             Access access = myFaction.getAccess(fme, PermissableAction.TNTFILL);
             if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
