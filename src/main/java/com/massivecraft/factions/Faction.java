@@ -21,327 +21,328 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
-    HashMap<String, List<String>> getAnnouncements();
+	HashMap<String, List<String>> getAnnouncements();
 
-    ConcurrentHashMap<String, LazyLocation> getWarps();
+	ConcurrentHashMap<String, LazyLocation> getWarps();
 
-    LazyLocation getWarp(String name);
+	LazyLocation getWarp(String name);
 
-    void setWarp(String name, LazyLocation loc);
+	void setWarp(String name, LazyLocation loc);
 
-    boolean isWarp(String name);
+	boolean isWarp(String name);
 
-    boolean hasWarpPassword(String warp);
+	boolean hasWarpPassword(String warp);
 
-    boolean isWarpPassword(String warp, String password);
+	boolean isWarpPassword(String warp, String password);
 
-    void setWarpPassword(String warp, String password);
+	void setWarpPassword(String warp, String password);
 
-    boolean removeWarp(String name);
+	boolean removeWarp(String name);
 
-    void clearWarps();
+	void clearWarps();
 
-    int getMaxVaults();
+	int getMaxVaults();
 
-    void setMaxVaults(int value);
+	void setMaxVaults(int value);
 
-    void addAnnouncement(FPlayer fPlayer, String msg);
+	void addAnnouncement(FPlayer fPlayer, String msg);
 
-    void sendUnreadAnnouncements(FPlayer fPlayer);
+	void sendUnreadAnnouncements(FPlayer fPlayer);
 
-    void removeAnnouncements(FPlayer fPlayer);
+	void removeAnnouncements(FPlayer fPlayer);
 
-    Set<String> getInvites();
+	Set<String> getInvites();
 
-    String getFocused();
+	String getFocused();
 
-    void setFocused(String setFocused);
+	void setFocused(String setFocused);
 
-    String getId();
+	String getId();
 
-    void setId(String id);
+	void setId(String id);
 
-    void invite(FPlayer fplayer);
+	void invite(FPlayer fplayer);
 
-    void deinvite(FPlayer fplayer);
+	void deinvite(FPlayer fplayer);
 
-    void setUpgrade(Upgrade upgrade, int level);
+	void setUpgrade(Upgrade upgrade, int level);
 
-    int getUpgrade(Upgrade upgrade);
+	int getUpgrade(Upgrade upgrade);
 
-    boolean isInvited(FPlayer fplayer);
+	boolean isInvited(FPlayer fplayer);
 
-    void ban(FPlayer target, FPlayer banner);
+	void ban(FPlayer target, FPlayer banner);
 
-    void unban(FPlayer player);
+	void unban(FPlayer player);
 
-    boolean isBanned(FPlayer player);
+	boolean isBanned(FPlayer player);
 
-    Set<BanInfo> getBannedPlayers();
+	Set<BanInfo> getBannedPlayers();
 
-    HashMap<Integer, String> getRulesMap();
+	HashMap<Integer, String> getRulesMap();
 
-    void setRule(int index, String rule);
+	void setRule(int index, String rule);
 
-    void addRule(String rule);
+	void addRule(String rule);
 
-    void removeRule(int index);
+	void removeRule(int index);
 
-    void clearRules();
+	void clearRules();
 
-    Location getCheckpoint();
+	Location getCheckpoint();
 
-    void setCheckpoint(Location location);
+	void setCheckpoint(Location location);
 
-    void addTnt(int amt);
+	void addTnt(int amt);
 
-    void takeTnt(int amt);
+	void takeTnt(int amt);
 
-    Location getVault();
+	Location getVault();
 
-    void setVault(Location vaultLocation);
+	void setVault(Location vaultLocation);
 
-    Inventory getChestInventory();
+	Inventory getChestInventory();
 
-    void setChestSize(int chestSize);
+	void setChestSize(int chestSize);
 
-    void setBannerPattern(ItemStack banner);
+	void setBannerPattern(ItemStack banner);
 
-    ItemStack getBanner();
+	ItemStack getBanner();
 
-    int getTnt();
+	int getTnt();
 
-    String getRule(int index);
+	String getRule(int index);
 
-    boolean getOpen();
+	boolean getOpen();
 
-    void setOpen(boolean isOpen);
+	void setOpen(boolean isOpen);
 
-    boolean isPeaceful();
+	boolean isPeaceful();
 
-    void setPeaceful(boolean isPeaceful);
+	void setPeaceful(boolean isPeaceful);
 
-    boolean getPeacefulExplosionsEnabled();
+	boolean getPeacefulExplosionsEnabled();
 
-    void setPeacefulExplosionsEnabled(boolean val);
+	void setPeacefulExplosionsEnabled(boolean val);
 
-    boolean noExplosionsInTerritory();
+	boolean noExplosionsInTerritory();
 
-    boolean isPermanent();
+	boolean isPermanent();
 
-    void setPermanent(boolean isPermanent);
+	void setPermanent(boolean isPermanent);
 
-    String getTag();
+	String getTag();
 
-    void setTag(String str);
+	void setTag(String str);
 
-    String getTag(String prefix);
+	String getTag(String prefix);
 
-    String getTag(Faction otherFaction);
+	String getTag(Faction otherFaction);
 
-    String getTag(FPlayer otherFplayer);
+	String getTag(FPlayer otherFplayer);
 
-    String getComparisonTag();
+	String getComparisonTag();
 
-    String getDescription();
+	String getDescription();
 
-    void setDescription(String value);
+	void setDescription(String value);
 
-    boolean hasHome();
+	boolean hasHome();
 
-    Location getHome();
+	Location getHome();
 
-    void setHome(Location home);
+	void setHome(Location home);
 
-    long getFoundedDate();
+	long getFoundedDate();
 
-    void setFoundedDate(long newDate);
+	void setFoundedDate(long newDate);
 
-    void confirmValidHome();
+	void confirmValidHome();
 
-    String getAccountId();
+	String getAccountId();
 
-    Integer getPermanentPower();
+	Integer getPermanentPower();
 
-    void setPermanentPower(Integer permanentPower);
+	void setPermanentPower(Integer permanentPower);
 
-    boolean hasPermanentPower();
+	boolean hasPermanentPower();
 
-    double getPowerBoost();
+	double getPowerBoost();
 
-    void setPowerBoost(double powerBoost);
+	void setPowerBoost(double powerBoost);
 
-    boolean noPvPInTerritory();
+	boolean noPvPInTerritory();
 
-    boolean noMonstersInTerritory();
+	boolean noMonstersInTerritory();
 
-    boolean isNormal();
+	boolean isNormal();
 
-    @Deprecated
-    boolean isNone();
+	@Deprecated
+	boolean isNone();
 
-    boolean isWilderness();
+	boolean isWilderness();
 
-    boolean isSafeZone();
+	boolean isSafeZone();
 
-    boolean isWarZone();
+	boolean isWarZone();
 
-    boolean isPlayerFreeType();
+	boolean isPlayerFreeType();
 
-    boolean isPowerFrozen();
+	boolean isPowerFrozen();
 
-    void setLastDeath(long time);
+	void setLastDeath(long time);
 
-    int getKills();
+	int getKills();
 
-    int getDeaths();
+	int getDeaths();
 
-    Access getAccess(Permissable permissable, PermissableAction permissableAction);
+	Access getAccess(Permissable permissable, PermissableAction permissableAction);
 
-    Access getAccess(FPlayer player, PermissableAction permissableAction);
+	Access getAccess(FPlayer player, PermissableAction permissableAction);
 
-    void setPermission(Permissable permissable, PermissableAction permissableAction, Access access);
+	void setPermission(Permissable permissable, PermissableAction permissableAction, Access access);
 
-    void resetPerms();
-    void setDefaultPerms();
+	void resetPerms();
 
-    void disband(Player disbander);
+	void setDefaultPerms();
 
-    void disband(Player disbander, PlayerDisbandReason reason);
+	void disband(Player disbander);
 
-    // -------------------------------
-    // Relation and relation colors
-    // -------------------------------
+	void disband(Player disbander, PlayerDisbandReason reason);
 
-    Map<Permissable, Map<PermissableAction, Access>> getPermissions();
+	// -------------------------------
+	// Relation and relation colors
+	// -------------------------------
 
-    @Override
-    String describeTo(RelationParticipator that, boolean ucfirst);
+	Map<Permissable, Map<PermissableAction, Access>> getPermissions();
 
-    @Override
-    String describeTo(RelationParticipator that);
+	@Override
+	String describeTo(RelationParticipator that, boolean ucfirst);
 
-    @Override
-    Relation getRelationTo(RelationParticipator rp);
+	@Override
+	String describeTo(RelationParticipator that);
 
-    @Override
-    Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful);
+	@Override
+	Relation getRelationTo(RelationParticipator rp);
 
-    @Override
-    ChatColor getColorTo(RelationParticipator rp);
+	@Override
+	Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful);
 
-    Relation getRelationWish(Faction otherFaction);
+	@Override
+	ChatColor getColorTo(RelationParticipator rp);
 
-    void setRelationWish(Faction otherFaction, Relation relation);
+	Relation getRelationWish(Faction otherFaction);
 
-    int getRelationCount(Relation relation);
+	void setRelationWish(Faction otherFaction, Relation relation);
 
-    // ----------------------------------------------//
-    // Power
-    // ----------------------------------------------//
-    double getPower();
+	int getRelationCount(Relation relation);
 
-    double getPowerMax();
+	// ----------------------------------------------//
+	// Power
+	// ----------------------------------------------//
+	double getPower();
 
-    int getPowerRounded();
+	double getPowerMax();
 
-    int getPowerMaxRounded();
+	int getPowerRounded();
 
-    int getLandRounded();
+	int getPowerMaxRounded();
 
-    int getLandRoundedInWorld(String worldName);
+	int getLandRounded();
 
-    // -------------------------------
-    // FPlayers
-    // -------------------------------
+	int getLandRoundedInWorld(String worldName);
 
-    boolean hasLandInflation();
+	// -------------------------------
+	// FPlayers
+	// -------------------------------
 
-    // maintain the reference list of FPlayers in this faction
-    void refreshFPlayers();
+	boolean hasLandInflation();
 
-    boolean addFPlayer(FPlayer fplayer);
+	// maintain the reference list of FPlayers in this faction
+	void refreshFPlayers();
 
-    boolean removeFPlayer(FPlayer fplayer);
+	boolean addFPlayer(FPlayer fplayer);
 
-    int getSize();
+	boolean removeFPlayer(FPlayer fplayer);
 
-    Set<FPlayer> getFPlayers();
+	int getSize();
 
-    Set<FPlayer> getFPlayersWhereOnline(boolean online);
+	Set<FPlayer> getFPlayers();
 
-    Set<FPlayer> getFPlayersWhereOnline(boolean online, FPlayer viewer);
+	Set<FPlayer> getFPlayersWhereOnline(boolean online);
 
-    FPlayer getFPlayerAdmin();
+	Set<FPlayer> getFPlayersWhereOnline(boolean online, FPlayer viewer);
 
-    FPlayer getFPlayerLeader();
+	FPlayer getFPlayerAdmin();
 
-    ArrayList<FPlayer> getFPlayersWhereRole(Role role);
+	FPlayer getFPlayerLeader();
 
-    ArrayList<Player> getOnlinePlayers();
+	ArrayList<FPlayer> getFPlayersWhereRole(Role role);
 
-    // slightly faster check than getOnlinePlayers() if you just want to see if
-    // there are any players online
-    boolean hasPlayersOnline();
+	ArrayList<Player> getOnlinePlayers();
 
-    void memberLoggedOff();
+	// slightly faster check than getOnlinePlayers() if you just want to see if
+	// there are any players online
+	boolean hasPlayersOnline();
 
-    // used when current leader is about to be removed from the faction;
-    // promotes new leader, or disbands faction if no other members left
-    void promoteNewLeader();
+	void memberLoggedOff();
 
-    void promoteNewLeader(boolean autoLeave);
+	// used when current leader is about to be removed from the faction;
+	// promotes new leader, or disbands faction if no other members left
+	void promoteNewLeader();
 
-    Role getDefaultRole();
+	void promoteNewLeader(boolean autoLeave);
 
-    void setDefaultRole(Role role);
+	Role getDefaultRole();
 
-    // ----------------------------------------------//
-    // Messages
-    // ----------------------------------------------//
-    void msg(String message, Object... args);
+	void setDefaultRole(Role role);
 
-    void sendMessage(String message);
+	// ----------------------------------------------//
+	// Messages
+	// ----------------------------------------------//
+	void msg(String message, Object... args);
 
-    // ----------------------------------------------//
-    // Ownership of specific claims
-    // ----------------------------------------------//
+	void sendMessage(String message);
 
-    void sendMessage(List<String> messages);
+	// ----------------------------------------------//
+	// Ownership of specific claims
+	// ----------------------------------------------//
 
-    Map<FLocation, Set<String>> getClaimOwnership();
+	void sendMessage(List<String> messages);
 
-    void clearAllClaimOwnership();
+	Map<FLocation, Set<String>> getClaimOwnership();
 
-    void clearClaimOwnership(FLocation loc);
+	void clearAllClaimOwnership();
 
-    void clearClaimOwnership(FPlayer player);
+	void clearClaimOwnership(FLocation loc);
 
-    int getCountOfClaimsWithOwners();
+	void clearClaimOwnership(FPlayer player);
 
-    boolean doesLocationHaveOwnersSet(FLocation loc);
+	int getCountOfClaimsWithOwners();
 
-    boolean isPlayerInOwnerList(FPlayer player, FLocation loc);
+	boolean doesLocationHaveOwnersSet(FLocation loc);
 
-    void setPlayerAsOwner(FPlayer player, FLocation loc);
+	boolean isPlayerInOwnerList(FPlayer player, FLocation loc);
 
-    void removePlayerAsOwner(FPlayer player, FLocation loc);
+	void setPlayerAsOwner(FPlayer player, FLocation loc);
 
-    Set<String> getOwnerList(FLocation loc);
+	void removePlayerAsOwner(FPlayer player, FLocation loc);
 
-    String getOwnerListString(FLocation loc);
+	Set<String> getOwnerList(FLocation loc);
 
-    boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc);
+	String getOwnerListString(FLocation loc);
 
-    // ----------------------------------------------//
-    // Persistance and entity management
-    // ----------------------------------------------//
-    void remove();
+	boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc);
 
-    Set<FLocation> getAllClaims();
+	// ----------------------------------------------//
+	// Persistance and entity management
+	// ----------------------------------------------//
+	void remove();
 
-    String getPaypal();
+	Set<FLocation> getAllClaims();
 
-    void paypalSet(String paypal);
+	String getPaypal();
+
+	void paypalSet(String paypal);
 
 }
