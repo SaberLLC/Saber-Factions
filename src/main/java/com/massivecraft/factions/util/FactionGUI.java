@@ -4,8 +4,8 @@ import org.bukkit.event.inventory.ClickType;
 
 public interface FactionGUI {
 
-    void onClick(int slot, ClickType action);
+	void onClick(int slot, ClickType action);
 
-    void build();
+	void build();
 
 }

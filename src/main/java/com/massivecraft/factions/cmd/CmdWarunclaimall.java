@@ -11,51 +11,51 @@ import org.bukkit.World;
 
 public class CmdWarunclaimall extends FCommand {
 
-    public CmdWarunclaimall() {
-        this.aliases.add("warunclaimall");
-        this.aliases.add("wardeclaimall");
+	public CmdWarunclaimall() {
+		this.aliases.add("warunclaimall");
+		this.aliases.add("wardeclaimall");
 
-        //this.requiredArgs.add("");
-        this.optionalArgs.put("world", "all");
+		//this.requiredArgs.add("");
+		this.optionalArgs.put("world", "all");
 
-        this.permission = Permission.MANAGE_WAR_ZONE.node;
-        this.disableOnLock = true;
+		this.permission = Permission.MANAGE_WAR_ZONE.node;
+		this.disableOnLock = true;
 
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+		senderMustBePlayer = false;
+		senderMustBeMember = false;
+		senderMustBeModerator = false;
+		senderMustBeAdmin = false;
 
-    }
+	}
 
-    @Override
-    public void perform() {
-        String worldName = argAsString(0);
-        World world = null;
+	@Override
+	public void perform() {
+		String worldName = argAsString(0);
+		World world = null;
 
-        if (worldName != null) {
-            world = Bukkit.getWorld(worldName);
-        }
+		if (worldName != null) {
+			world = Bukkit.getWorld(worldName);
+		}
 
-        String id = Factions.getInstance().getWarZone().getId();
+		String id = Factions.getInstance().getWarZone().getId();
 
-        if (world == null) {
-            Board.getInstance().unclaimAll(id);
-        } else {
-            Board.getInstance().unclaimAllInWorld(id, world);
-        }
+		if (world == null) {
+			Board.getInstance().unclaimAll(id);
+		} else {
+			Board.getInstance().unclaimAllInWorld(id, world);
+		}
 
-        fme.msg(TL.COMMAND_WARUNCLAIMALL_SUCCESS);
+		fme.msg(TL.COMMAND_WARUNCLAIMALL_SUCCESS);
 
 
-        if (Conf.logLandUnclaims) {
-            SavageFactions.plugin.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
-        }
-    }
+		if (Conf.logLandUnclaims) {
+			SavageFactions.plugin.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
+		}
+	}
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_WARUNCLAIMALL_DESCRIPTION;
-    }
+	@Override
+	public TL getUsageTranslation() {
+		return TL.COMMAND_WARUNCLAIMALL_DESCRIPTION;
+	}
 
 }

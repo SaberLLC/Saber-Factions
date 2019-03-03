@@ -8,14 +8,14 @@ import com.massivecraft.factions.Faction;
  */
 public class FactionPlayerEvent extends FactionEvent {
 
-    protected final FPlayer fPlayer;
+	protected final FPlayer fPlayer;
 
-    public FactionPlayerEvent(Faction faction, FPlayer fPlayer) {
-        super(faction);
-        this.fPlayer = fPlayer;
-    }
+	public FactionPlayerEvent(Faction faction, FPlayer fPlayer) {
+		super(faction);
+		this.fPlayer = fPlayer;
+	}
 
-    public FPlayer getfPlayer() {
-        return this.fPlayer;
-    }
+	public FPlayer getfPlayer() {
+		return this.fPlayer;
+	}
 }

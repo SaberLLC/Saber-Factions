@@ -12,72 +12,72 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSetFWarp extends FCommand {
 
-    public CmdSetFWarp() {
-        super();
+	public CmdSetFWarp() {
+		super();
 
-        this.aliases.add("setwarp");
-        this.aliases.add("sw");
+		this.aliases.add("setwarp");
+		this.aliases.add("sw");
 
-        this.requiredArgs.add("warp name");
-        this.optionalArgs.put("password", "password");
+		this.requiredArgs.add("warp name");
+		this.optionalArgs.put("password", "password");
 
-        this.senderMustBeMember = true;
-        this.senderMustBeModerator = false;
+		this.senderMustBeMember = true;
+		this.senderMustBeModerator = false;
 
-        this.senderMustBePlayer = true;
+		this.senderMustBePlayer = true;
 
-        this.permission = Permission.SETWARP.node;
-    }
+		this.permission = Permission.SETWARP.node;
+	}
 
-    @Override
-    public void perform() {
-        if (!(fme.getRelationToLocation() == Relation.MEMBER)) {
-            fme.msg(TL.COMMAND_SETFWARP_NOTCLAIMED);
-            return;
-        }
+	@Override
+	public void perform() {
+		if (!(fme.getRelationToLocation() == Relation.MEMBER)) {
+			fme.msg(TL.COMMAND_SETFWARP_NOTCLAIMED);
+			return;
+		}
 
-        // This statement allows us to check if they've specifically denied it, or default to
-        // the old setting of allowing moderators to set warps.
-        if (!fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(fme, PermissableAction.SETWARP);
-            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
-                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "set warps");
-                return;
-            }
-        }
+		// This statement allows us to check if they've specifically denied it, or default to
+		// the old setting of allowing moderators to set warps.
+		if (!fme.isAdminBypassing()) {
+			Access access = myFaction.getAccess(fme, PermissableAction.SETWARP);
+			if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+				fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "set warps");
+				return;
+			}
+		}
 
-        String warp = argAsString(0);
+		String warp = argAsString(0);
 
-        // Checks if warp with same name already exists and ignores maxWarp check if it does.
-        boolean warpExists = myFaction.isWarp(warp);
+		// Checks if warp with same name already exists and ignores maxWarp check if it does.
+		boolean warpExists = myFaction.isWarp(warp);
 
-        int maxWarps = SavageFactions.plugin.getConfig().getInt("max-warps", 5);
-        boolean tooManyWarps = maxWarps <= myFaction.getWarps().size();
-        if (tooManyWarps && !warpExists) {
-            fme.msg(TL.COMMAND_SETFWARP_LIMIT, maxWarps);
-            return;
-        }
+		int maxWarps = SavageFactions.plugin.getConfig().getInt("max-warps", 5);
+		boolean tooManyWarps = maxWarps <= myFaction.getWarps().size();
+		if (tooManyWarps && !warpExists) {
+			fme.msg(TL.COMMAND_SETFWARP_LIMIT, maxWarps);
+			return;
+		}
 
-        if (!transact(fme)) {
-            return;
-        }
+		if (!transact(fme)) {
+			return;
+		}
 
-        String password = argAsString(1);
+		String password = argAsString(1);
 
-        LazyLocation loc = new LazyLocation(fme.getPlayer().getLocation());
-        myFaction.setWarp(warp, loc);
-        if (password != null) {
-            myFaction.setWarpPassword(warp, password);
-        }
-        fme.msg(TL.COMMAND_SETFWARP_SET, warp, password != null ? password : "");
-    }
+		LazyLocation loc = new LazyLocation(fme.getPlayer().getLocation());
+		myFaction.setWarp(warp, loc);
+		if (password != null) {
+			myFaction.setWarpPassword(warp, password);
+		}
+		fme.msg(TL.COMMAND_SETFWARP_SET, warp, password != null ? password : "");
+	}
 
-    private boolean transact(FPlayer player) {
-        return !SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.setwarp", 5), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
-    }
+	private boolean transact(FPlayer player) {
+		return !SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.setwarp", 5), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
+	}
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_SETFWARP_DESCRIPTION;
-    }
+	@Override
+	public TL getUsageTranslation() {
+		return TL.COMMAND_SETFWARP_DESCRIPTION;
+	}
 }
