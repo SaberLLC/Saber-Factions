@@ -55,6 +55,10 @@ public class SavageFactions extends MPlugin {
     // Our single plugin instance.
     // Single 4 life.
     public static SavageFactions plugin;
+	// Made for other plugins to hook into so
+	// they know the plugin has finished enabling...
+	public static boolean startupFinished = false;
+
     public static Permission perms = null;
     // Persistence related
     public static ArrayList<FPlayer> playersFlying = new ArrayList();
@@ -255,6 +259,7 @@ public class SavageFactions extends MPlugin {
         this.setupPlaceholderAPI();
         this.postEnable();
         this.loadSuccessful = true;
+	    SavageFactions.startupFinished = true;
     }
 
     public SkriptAddon getSkriptAddon() {
