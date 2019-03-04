@@ -336,7 +336,7 @@ public class Conf {
 	// Default Options
 	public static boolean useCustomDefaultPermissions = false;
 	public static boolean usePermissionHints = false;
-	public static HashMap<String, DefaultPermissions> defaultFactionPermissions;
+	public static HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
 	// Custom Ranks
 	//public static boolean enableCustomRanks = false; // We will disable it by default to avoid any migration error
 	//public static int maxCustomRanks = 2; // Setting this to -1 will allow unlimited custom ranks
