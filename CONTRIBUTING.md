@@ -12,6 +12,8 @@
 
 * Ensure the PR description clearly describes the problem and solution. Include the relevant issue number if applicable.
 
+* Please use tabs as ident with a size of 3 spaces.
+
 #### **Did you fix whitespace, format code, or make a purely cosmetic patch?**
 
 Please specify what changes you made to the formatting etc., as it allows us to get an idea of how this will change our files overall.

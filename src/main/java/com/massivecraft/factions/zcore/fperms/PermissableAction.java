@@ -10,165 +10,175 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 public enum PermissableAction {
-    BAN("ban"),
-    BUILD("build"),
-    DESTROY("destroy"),
-    FROST_WALK("frostwalk"),
-    PAIN_BUILD("painbuild"),
-    DOOR("door"),
-    BUTTON("button"),
-    LEVER("lever"),
-    CONTAINER("container"),
-    INVITE("invite"),
-    KICK("kick"),
-    ITEM("items"), // generic for most items
-    SETHOME("sethome"),
-    TERRITORY("territory"),
-    ACCESS("access"),
-    HOME("home"),
-    DISBAND("disband"),
-    PROMOTE("promote"),
-    SETWARP("setwarp"),
-    WARP("warp"),
-    FLY("fly"),
-    VAULT("vault"),
-    TNTBANK("tntbank"),
-    TNTFILL("tntfill"),
-    WITHDRAW("withdraw"),
-    CHEST("chest"),
-    SPAWNER("spawner");
+	BAN("ban"),
+	BUILD("build"),
+	DESTROY("destroy"),
+	FROST_WALK("frostwalk"),
+	PAIN_BUILD("painbuild"),
+	DOOR("door"),
+	BUTTON("button"),
+	LEVER("lever"),
+	CONTAINER("container"),
+	INVITE("invite"),
+	KICK("kick"),
+	ITEM("items"), // generic for most items
+	SETHOME("sethome"),
+	TERRITORY("territory"),
+	ACCESS("access"),
+	HOME("home"),
+	DISBAND("disband"),
+	PROMOTE("promote"),
+	SETWARP("setwarp"),
+	WARP("warp"),
+	FLY("fly"),
+	VAULT("vault"),
+	TNTBANK("tntbank"),
+	TNTFILL("tntfill"),
+	WITHDRAW("withdraw"),
+	CHEST("chest"),
+	SPAWNER("spawner");
 
-    private String name;
+	private String name;
 
-    PermissableAction(String name) {
-        this.name = name;
-    }
+	PermissableAction(String name) {
+		this.name = name;
+	}
 
-    /**
-     * Case insensitive check for action.
-     *
-     * @param check
-     * @return - action
-     */
-    public static PermissableAction fromString(String check) {
-        for (PermissableAction permissableAction : values()) {
-            if (permissableAction.name().equalsIgnoreCase(check)) {
-                return permissableAction;
-            }
-        }
+	/**
+	 * Case insensitive check for action.
+	 *
+	 * @param check
+	 * @return - action
+	 */
+	public static PermissableAction fromString(String check) {
+		for (PermissableAction permissableAction : values()) {
+			if (permissableAction.name().equalsIgnoreCase(check)) {
+				return permissableAction;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    /**
-     * Get the friendly name of this action. Used for editing in commands.
-     *
-     * @return friendly name of the action as a String.
-     */
-    public String getName() {
-        return this.name;
-    }
+	public static Map<PermissableAction, Access> fromDefaults(DefaultPermissions defaultPermissions) {
+		Map<PermissableAction, Access> defaultMap = new HashMap<>();
+		for (PermissableAction permissableAction : PermissableAction.values()) {
+			defaultMap.put(permissableAction, defaultPermissions.getbyName(permissableAction.name) ? Access.ALLOW : Access.DENY);
+		}
+		return defaultMap;
+	}
 
-    @Override
-    public String toString() {
-        return name;
-    }
+	/**
+	 * Get the friendly name of this action. Used for editing in commands.
+	 *
+	 * @return friendly name of the action as a String.
+	 */
+	public String getName() {
+		return this.name;
+	}
 
-    // Utility method to build items for F Perm GUI
-    public ItemStack buildItem(FPlayer fme, Permissable permissable) {
-        final ConfigurationSection section = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.action");
+	@Override
+	public String toString() {
+		return name;
+	}
 
-        if (section == null) {
-            SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-            SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
-            return new ItemStack(Material.AIR);
-        }
+	// Utility method to build items for F Perm GUI
+	public ItemStack buildItem(FPlayer fme, Permissable permissable) {
+		final ConfigurationSection section = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.action");
 
-        String displayName = replacePlaceholders(section.getString("placeholder-item.name"), fme, permissable);
-        List<String> lore = new ArrayList<>();
+		if (section == null) {
+			SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+			SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+			return new ItemStack(Material.AIR);
+		}
 
-        if (section.getString("materials." + name().toLowerCase().replace('_', '-')) == null) {
-            return null;
-        }
-        Material material = Material.matchMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-')));
-        if (material == null) {
-            material = SavageFactions.plugin.STAINED_CLAY;
-        }
+		String displayName = replacePlaceholders(section.getString("placeholder-item.name"), fme, permissable);
+		List<String> lore = new ArrayList<>();
 
-        Access access = fme.getFaction().getAccess(permissable, this);
-        if (access == null) {
-            access = Access.UNDEFINED;
-        }
+		if (section.getString("materials." + name().toLowerCase().replace('_', '-')) == null) {
+			return null;
+		}
+		Material material = Material.matchMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-')));
+		if (material == null) {
+			material = SavageFactions.plugin.STAINED_CLAY;
+		}
 
-        ItemStack item = new ItemStack(material);
-        ItemMeta itemMeta = item.getItemMeta();
+		Access access = fme.getFaction().getAccess(permissable, this);
+		if (access == null) {
+			access = Access.UNDEFINED;
+		}
 
-        String accessValue = null;
+		ItemStack item = new ItemStack(material);
+		ItemMeta itemMeta = item.getItemMeta();
 
-        switch (access) {
-            case ALLOW:
-                accessValue = "allow";
-                break;
-            case DENY:
-                accessValue = "deny";
-                break;
-            case UNDEFINED:
-                accessValue = "undefined";
-                break;
-        }
+		String accessValue = null;
 
-        // If under the 1.13 version we will use the colorable option.
-        if (!SavageFactions.plugin.mc113) {
-            DyeColor dyeColor = null;
+		switch (access) {
+			case ALLOW:
+				accessValue = "allow";
+				break;
+			case DENY:
+				accessValue = "deny";
+				break;
+			case UNDEFINED:
+				accessValue = "undefined";
+				break;
+		}
 
-            try {
-                dyeColor = DyeColor.valueOf(section.getString("access." + access.name().toLowerCase()));
-            } catch (Exception exception) {
-            }
+		// If under the 1.13 version we will use the colorable option.
+		if (!SavageFactions.plugin.mc113) {
+			DyeColor dyeColor = null;
 
-            if (dyeColor != null) {
-                item.setDurability(dyeColor.getWoolData());
-            }
-        } else {
-            // so this is in 1.13 mode, our config will automatically be updated to a material instead of color because of it being removed in the new api
-            item.setType(Material.valueOf(SavageFactions.plugin.getConfig().getString("fperm-gui.action.access." + accessValue)));
-        }
+			try {
+				dyeColor = DyeColor.valueOf(section.getString("access." + access.name().toLowerCase()));
+			} catch (Exception exception) {
+			}
 
-        for (String loreLine : section.getStringList("placeholder-item.lore")) {
-            lore.add(replacePlaceholders(loreLine, fme, permissable));
-        }
+			if (dyeColor != null) {
+				item.setDurability(dyeColor.getWoolData());
+			}
+		} else {
+			// so this is in 1.13 mode, our config will automatically be updated to a material instead of color because of it being removed in the new api
+			item.setType(Material.valueOf(SavageFactions.plugin.getConfig().getString("fperm-gui.action.access." + accessValue)));
+		}
 
-        if (!SavageFactions.plugin.mc17) {
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-        }
+		for (String loreLine : section.getStringList("placeholder-item.lore")) {
+			lore.add(replacePlaceholders(loreLine, fme, permissable));
+		}
 
-        itemMeta.setDisplayName(displayName);
-        itemMeta.setLore(lore);
-        item.setItemMeta(itemMeta);
+		if (!SavageFactions.plugin.mc17) {
+			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+		}
 
-        return item;
-    }
+		itemMeta.setDisplayName(displayName);
+		itemMeta.setLore(lore);
+		item.setItemMeta(itemMeta);
 
-    public String replacePlaceholders(String string, FPlayer fme, Permissable permissable) {
-        // Run Permissable placeholders
-        string = permissable.replacePlaceholders(string);
+		return item;
+	}
 
-        String actionName = name.substring(0, 1).toUpperCase() + name.substring(1);
-        string = string.replace("{action}", actionName);
+	public String replacePlaceholders(String string, FPlayer fme, Permissable permissable) {
+		// Run Permissable placeholders
+		string = permissable.replacePlaceholders(string);
 
-        Access access = fme.getFaction().getAccess(permissable, this);
-        if (access == null) {
-            access = Access.UNDEFINED;
-        }
-        String actionAccess = access.getName();
-        string = string.replace("{action-access}", actionAccess);
-        string = string.replace("{action-access-color}", access.getColor().toString());
+		String actionName = name.substring(0, 1).toUpperCase() + name.substring(1);
+		string = string.replace("{action}", actionName);
 
-        return string;
-    }
+		Access access = fme.getFaction().getAccess(permissable, this);
+		if (access == null) {
+			access = Access.UNDEFINED;
+		}
+		String actionAccess = access.getName();
+		string = string.replace("{action-access}", actionAccess);
+		string = string.replace("{action-access-color}", access.getColor().toString());
+
+		return string;
+	}
 
 }

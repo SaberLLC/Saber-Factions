@@ -10,32 +10,32 @@ import java.util.ListIterator;
 
 public class FDefaultSidebar extends FSidebarProvider {
 
-    @Override
-    public String getTitle(FPlayer fplayer) {
-        return replaceTags(fplayer, SavageFactions.plugin.getConfig().getString("scoreboard.default-title", "{name}"));
-    }
+	@Override
+	public String getTitle(FPlayer fplayer) {
+		return replaceTags(fplayer, SavageFactions.plugin.getConfig().getString("scoreboard.default-title", "{name}"));
+	}
 
-    @Override
-    public List<String> getLines(FPlayer fplayer) {
-        if (fplayer.hasFaction()) {
-            return getOutput(fplayer, "scoreboard.default");
-        } else if (SavageFactions.plugin.getConfig().getBoolean("scoreboard.factionless-enabled", false)) {
-            return getOutput(fplayer, "scoreboard.factionless");
-        }
-        return getOutput(fplayer, "scoreboard.default"); // no faction, factionless-board disabled
-    }
+	@Override
+	public List<String> getLines(FPlayer fplayer) {
+		if (fplayer.hasFaction()) {
+			return getOutput(fplayer, "scoreboard.default");
+		} else if (SavageFactions.plugin.getConfig().getBoolean("scoreboard.factionless-enabled", false)) {
+			return getOutput(fplayer, "scoreboard.factionless");
+		}
+		return getOutput(fplayer, "scoreboard.default"); // no faction, factionless-board disabled
+	}
 
-    public List<String> getOutput(FPlayer fplayer, String list) {
-        List<String> lines = SavageFactions.plugin.getConfig().getStringList(list);
+	public List<String> getOutput(FPlayer fplayer, String list) {
+		List<String> lines = SavageFactions.plugin.getConfig().getStringList(list);
 
-        if (lines == null || lines.isEmpty()) {
-            return new ArrayList<>();
-        }
+		if (lines == null || lines.isEmpty()) {
+			return new ArrayList<>();
+		}
 
-        ListIterator<String> it = lines.listIterator();
-        while (it.hasNext()) {
-            it.set(replaceTags(fplayer, it.next()));
-        }
-        return lines;
-    }
+		ListIterator<String> it = lines.listIterator();
+		while (it.hasNext()) {
+			it.set(replaceTags(fplayer, it.next()));
+		}
+		return lines;
+	}
 }
