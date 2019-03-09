@@ -14,7 +14,7 @@ public class UtilFly {
 
 	public static ArrayList<FPlayer> playersFlying = SavageFactions.playersFlying;
 
-	public static void call() {
+	public static void run() {
 		if (!SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight"))
 			return;
 
