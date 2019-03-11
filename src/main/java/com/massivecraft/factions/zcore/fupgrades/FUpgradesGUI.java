@@ -43,16 +43,16 @@ public class FUpgradesGUI implements Listener {
 		List<Integer> chestSlots = SavageFactions.plugin.getConfig().getIntegerList("fupgrades.MainMenu.Chest.ChestItem.slots");
 
 		for (int i = 0; i < cropSlots.size(); i++)
-			inventory.setItem(cropSlots.get(i), items[2]);
+			if (cropSlots.get(i) != -1) inventory.setItem(cropSlots.get(i), items[2]);
 
 		for (int i = 0; i < spawnerSlots.size(); i++)
-			inventory.setItem(spawnerSlots.get(i), items[1]);
+			if (spawnerSlots.get(i) != -1) inventory.setItem(spawnerSlots.get(i), items[1]);
 
 		for (int i = 0; i < expSlots.size(); i++)
-			inventory.setItem(expSlots.get(i), items[0]);
+			if (expSlots.get(i) != -1) inventory.setItem(expSlots.get(i), items[0]);
 
 		for (int i = 0; i < chestSlots.size(); i++)
-			inventory.setItem(chestSlots.get(i), items[3]);
+			if (chestSlots.get(i) != -1) inventory.setItem(chestSlots.get(i), items[3]);
 
 		fme.getPlayer().openInventory(inventory);
 	}
