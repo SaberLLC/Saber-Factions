@@ -143,7 +143,6 @@ public class FactionsPlayerListener implements Listener {
 			if (!justCheck) {
 				me.msg(TL.PLAYER_USE_TERRITORY, TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
 			}
-
 			return false;
 		}
 
@@ -181,7 +180,6 @@ public class FactionsPlayerListener implements Listener {
 		}
 
 		PermissableAction action = null;
-
 		if (SavageFactions.plugin.mc113) {
 			switch (block.getType()) {
 				case LEVER:
@@ -312,12 +310,15 @@ public class FactionsPlayerListener implements Listener {
 		}
 
 		// We only care about some material types.
+		/// Who was the idiot?
 		if (otherFaction.hasPlayersOnline()) {
-			if (!Conf.territoryProtectedMaterials.contains(material))
-				return true;
+			if (Conf.territoryProtectedMaterials.contains(material)) {
+				return false;
+			}
 		} else {
-			if (!Conf.territoryProtectedMaterialsWhenOffline.contains(material))
-				return true;
+			if (Conf.territoryProtectedMaterialsWhenOffline.contains(material)) {
+				return false;
+			}
 		}
 
 		// Move up access check to check for exceptions
@@ -343,7 +344,7 @@ public class FactionsPlayerListener implements Listener {
 			}
 		}
 
-		return CheckPlayerAccess(player, me, loc, myFaction, access, PermissableAction.CONTAINER);
+		return CheckPlayerAccess(player, me, loc, myFaction, access, action);
 	}
 
 
