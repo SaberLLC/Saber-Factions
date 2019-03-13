@@ -18,9 +18,6 @@ public class CmdShowClaims extends FCommand {
 		this.senderMustBePlayer = true;
 		this.senderMustBeMember = true;
 		this.senderMustBeModerator = false;
-		this.senderMustBePlayer = true;
-
-
 	}
 
 	@Override
