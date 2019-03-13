@@ -133,20 +133,7 @@ public class FactionsBlockListener implements Listener {
 		}
 
 		// Check the permission just after making sure the land isn't owned by someone else to avoid bypass.
-
-		if (access != Access.ALLOW && me.getRole() != Role.LEADER) {
-			// TODO: Update this once new access values are added other than just allow / deny.
-			if (access == Access.DENY) {
-				if (!justCheck)
-					me.msg(TL.GENERIC_NOPERMISSION, action);
-				return false;
-			} else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
-				if (!justCheck)
-					me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
-				return false;
-			}
-		}
-		return true;
+		return CheckPlayerAccess(player, me, loc, myFaction, access, PermissableAction.fromString(action));
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -518,5 +505,33 @@ public class FactionsBlockListener implements Listener {
 				event.setCancelled(true);
 			}
 		}
+	}
+
+	/// <summary>
+	///	This checks if the current player can execute an action based on it's factions access and surroundings
+	/// It will grant access in the following priorities:
+	/// - If Faction Land is Owned and the Owner is the current player, or player is faction leader.
+	/// - If Faction Land is not Owned and my access value is not set to DENY
+	/// - If none of the filters above matches, then we consider access is set to ALLOW|UNDEFINED
+	/// This check does not performs any kind of bypass check (i.e.: me.isAdminBypassing())
+	/// </summary>
+	/// <param name="player">The player entity which the check will be made upon</param>
+	/// <param name="me">The Faction player object related to the player</param>
+	/// <param name="loc">The World location where the action is being executed</param>
+	/// <param name="myFaction">The faction of the player being checked</param>
+	/// <param name="access">The current's faction access permission for the action</param>
+	private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action) {
+		if (access == null) access = Access.DENY; // Let's deny by default
+		boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
+		if (landOwned && myFaction.getOwnerListString(loc).contains(player.getName()) || me.getRole() == Role.LEADER) return true;
+		else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
+			me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+			return false;
+		} else if (!landOwned && access == Access.DENY) { // If land is not owned but access is set to DENY anyway
+			me.msg(TL.GENERIC_NOPERMISSION, action);
+			return false;
+		}
+		// We assume faction land is not owned, and the access is not set to DENY, so we allow to execute the action
+		return true;
 	}
 }

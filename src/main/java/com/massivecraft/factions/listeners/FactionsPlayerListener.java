@@ -148,20 +148,7 @@ public class FactionsPlayerListener implements Listener {
 		}
 
 		Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
-		if (access != null && access != Access.UNDEFINED) {
-			// TODO: Update this once new access values are added other than just allow / deny.
-			if ((myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && myFaction.getOwnerListString(loc).contains(player.getName()))) {
-				return true;
-			} else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
-				me.msg("<b>You can't use items in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
-				return false;
-			} else if (access == Access.DENY) {
-				me.msg(TL.GENERIC_NOPERMISSION, PermissableAction.ITEM);
-				return false;
-			}
-		}
-
-		return true;
+		return CheckPlayerAccess(player, me, loc, myFaction, access, PermissableAction.ITEM);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -356,20 +343,9 @@ public class FactionsPlayerListener implements Listener {
 			}
 		}
 
-		if (access != Access.ALLOW && me.getRole() != Role.LEADER) {
-			// TODO: Update this once new access values are added other than just allow / deny.
-			if ((myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && myFaction.getOwnerListString(loc).contains(player.getName()))) {
-				return true;
-			} else if (myFaction.getOwnerListString(loc) != null && !myFaction.getOwnerListString(loc).isEmpty() && !myFaction.getOwnerListString(loc).contains(player.getName())) {
-				me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
-				return false;
-			} else if (access == Access.DENY) {
-				me.msg(TL.GENERIC_NOPERMISSION, action);
-				return false;
-			}
-		}
-		return true;
+		return CheckPlayerAccess(player, me, loc, myFaction, access, PermissableAction.CONTAINER);
 	}
+
 
 	public static boolean preventCommand(String fullCmd, Player player) {
 		if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty() && Conf.permanentFactionMemberDenyCommands.isEmpty() && Conf.warzoneDenyCommands.isEmpty())) {
@@ -1069,5 +1045,34 @@ public class FactionsPlayerListener implements Listener {
 			lastAttempt = now;
 			return attempts;
 		}
+	}
+	/// <summary>
+	///	This checks if the current player can execute an action based on it's factions access and surroundings
+	/// It will grant access in the following priorities:
+	/// - If Faction Land is Owned and the Owner is the current player, or player is faction leader.
+	/// - If Faction Land is not Owned and my access value is not set to DENY
+	/// - If none of the filters above matches, then we consider access is set to ALLOW|UNDEFINED
+	/// This check does not performs any kind of bypass check (i.e.: me.isAdminBypassing())
+	/// </summary>
+	/// <param name="player">The player entity which the check will be made upon</param>
+	/// <param name="me">The Faction player object related to the player</param>
+	/// <param name="loc">The World location where the action is being executed</param>
+	/// <param name="myFaction">The faction of the player being checked</param>
+	/// <param name="access">The current's faction access permission for the action</param>
+	private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action) {
+		if (access != null && access != Access.UNDEFINED) {
+			// TODO: Update this once new access values are added other than just allow / deny.
+			boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
+			if (landOwned && myFaction.getOwnerListString(loc).contains(player.getName()) || me.getRole() == Role.LEADER) return true;
+			else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
+				me.msg("<b>You can't do that in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+				return false;
+			} else if (!landOwned && access != Access.DENY) return true;
+			else {
+				me.msg(TL.GENERIC_NOPERMISSION, action);
+				return false;
+			}
+		}
+		return true;
 	}
 }
