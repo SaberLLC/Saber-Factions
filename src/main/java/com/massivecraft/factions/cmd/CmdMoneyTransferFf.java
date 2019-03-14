@@ -42,7 +42,10 @@ public class CmdMoneyTransferFf extends FCommand {
 		if (to == null) {
 			return;
 		}
-
+		if (Conf.econFactionStartingBalance != 0 && (System.currentTimeMillis() - myFaction.getFoundedDate()) <= (Conf.econDenyWithdrawWhenMinutesAgeLessThan * 6000)) {
+			msg("Your faction is too young to transfer money like this");
+			return;
+		}
 		boolean success = Econ.transferMoney(fme, from, to, amount);
 
 		if (success && Conf.logMoneyTransactions) {

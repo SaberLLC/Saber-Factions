@@ -270,15 +270,20 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 		}
 
 		if (Econ.shouldBeUsed() && !disbanderIsConsole) {
-			//Give all the faction's money to the disbander
-			double amount = Econ.getBalance(this.getAccountId());
-			Econ.transferMoney(fdisbander, this, fdisbander, amount, false);
+			// Should we prevent to withdraw money if the faction was just created
+			if (Conf.econFactionStartingBalance != 0 && (System.currentTimeMillis() - this.foundedDate) <= (Conf.econDenyWithdrawWhenMinutesAgeLessThan * 6000)) {
+				msg("Your faction is too young to withdraw money like this");
+			} else {
+				//Give all the faction's money to the disbander
+				double amount = Econ.getBalance(this.getAccountId());
+				Econ.transferMoney(fdisbander, this, fdisbander, amount, false);
 
-			if (amount > 0.0) {
-				String amountString = Econ.moneyString(amount);
-				msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
-				//TODO: Format this correctly and translate
-				SavageFactions.plugin.log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
+				if (amount > 0.0) {
+					String amountString = Econ.moneyString(amount);
+					msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
+					//TODO: Format this correctly and translate
+					SavageFactions.plugin.log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
+				}
 			}
 		}
 

@@ -241,6 +241,7 @@ public class Conf {
 	public static double econCostPower = 0.0;
 	public static double econCostShow = 0.0;
 	public static double econFactionStartingBalance = 0.0;
+	public static double econDenyWithdrawWhenMinutesAgeLessThan = 2880; // 2 days
 
 
 	// -------------------------------------------- //

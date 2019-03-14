@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.SavageFactions;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -42,6 +43,11 @@ public class CmdMoneyWithdraw extends FCommand {
 		Access access = myFaction.getAccess(fme, PermissableAction.WITHDRAW);
 		if (access == Access.DENY) {
 			fme.msg(TL.GENERIC_NOPERMISSION, "withdraw");
+			return;
+		}
+
+		if (Conf.econFactionStartingBalance != 0 && (System.currentTimeMillis() - myFaction.getFoundedDate()) <= (Conf.econDenyWithdrawWhenMinutesAgeLessThan * 6000)) {
+			msg("Your faction is too young to withdraw money like this");
 			return;
 		}
 
