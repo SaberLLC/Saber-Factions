@@ -160,6 +160,10 @@ public class FactionsPlayerListener implements Listener {
 			return true;
 
 		Material material = block.getType();
+
+		// Check if the material is bypassing protection
+		if (Conf.territoryBypassAllProtection.contains(material)) return true;
+
 		// Dupe fix.
 		FLocation loc = new FLocation(block);
 		Faction otherFaction = Board.getInstance().getFactionAt(loc);
