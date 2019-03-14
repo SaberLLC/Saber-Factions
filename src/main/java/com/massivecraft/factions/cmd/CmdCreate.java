@@ -99,7 +99,7 @@ public class CmdCreate extends FCommand {
 		msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate());
 
 		if (Conf.econEnabled) {
-			Econ.setBalance(faction.getAccountId(), 0);
+			Econ.setBalance(faction.getAccountId(), Conf.econFactionStartingBalance);
 		}
 
 		if (Conf.logFactionCreate) {

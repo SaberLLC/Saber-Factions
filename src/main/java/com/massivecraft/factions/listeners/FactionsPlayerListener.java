@@ -657,7 +657,7 @@ public class FactionsPlayerListener implements Listener {
 		FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
 		User user = SavageFactions.plugin.ess.getUser(event.getPlayer());
 		List<String> homes = user.getHomes();
-		if (fac.isWilderness() || FPlayers.getInstance().getByPlayer(event.getPlayer()).getFactionId().equals(fac.getId())) {
+		if (fac.isWilderness() || fplayer.getFactionId().equals(fac.getId())) {
 			return;
 		}
 		//Warzone and SafeZone Home Initializers

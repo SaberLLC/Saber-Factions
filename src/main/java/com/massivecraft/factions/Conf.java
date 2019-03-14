@@ -240,6 +240,7 @@ public class Conf {
 	public static double econCostMap = 0.0;
 	public static double econCostPower = 0.0;
 	public static double econCostShow = 0.0;
+	public static double econFactionStartingBalance = 0.0;
 
 
 	// -------------------------------------------- //
