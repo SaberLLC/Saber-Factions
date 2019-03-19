@@ -884,14 +884,18 @@ public class FactionsPlayerListener implements Listener {
 		if (block == null) return;  // clicked in air, apparently
 
         SavageFactions.plugin.log("Checking if I can use the block");
-		if (canPlayerUseBlock(player, block, false)) return;
+		if (!canPlayerUseBlock(player, block, false)) {
+			event.setCancelled(true);
+			event.setUseInteractedBlock(Event.Result.DENY);
+			return;
+		}
 
 		SavageFactions.plugin.log("Checking if I can use the item");
-		if (playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) return;
-
-		SavageFactions.plugin.log("Guess we will cancel the event then");
-		event.setCancelled(true);
-		event.setUseInteractedBlock(Event.Result.DENY);
+		if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
+			event.setCancelled(true);
+			event.setUseInteractedBlock(Event.Result.DENY);
+			return;
+		}
 	}
 
 	@EventHandler
