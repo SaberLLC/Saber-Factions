@@ -178,10 +178,9 @@ public class FactionsPlayerListener implements Listener {
 		if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
 			return true;
 
+		if (otherFaction.getId().equals(myFaction.getId()) && me.getRole() == Role.LEADER) return true;
 		PermissableAction action = GetPermissionFromUsableBlock(block);
 		if (action == null) return false;
-
-
 		// We only care about some material types.
 		/// Who was the idiot?
 		if (otherFaction.hasPlayersOnline()) {
@@ -734,34 +733,28 @@ public class FactionsPlayerListener implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR)) return;
-        if (event.getPlayer().getItemInHand() != null) {
-            Material handItem = event.getPlayer().getItemInHand().getType();
-            if (handItem.isEdible()
-                || handItem.equals(Material.POTION)
-                || handItem.equals(Material.LINGERING_POTION)
-                || handItem.equals(Material.SPLASH_POTION)) {
-                return;
-            }
-        }
-
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
-
         // Check if the material is bypassing protection
         if (Conf.territoryBypasssProtectedMaterials.contains(block.getType())) return;
-
 		if (block == null) return;  // clicked in air, apparently
-		SavageFactions.plugin.log("Checking for material permission");
 		if (GetPermissionFromUsableBlock(event.getClickedBlock().getType()) != null) {
-			SavageFactions.plugin.log("Checking for use block permission");
 			if (!canPlayerUseBlock(player, block, false)) {
 				event.setCancelled(true);
 				event.setUseInteractedBlock(Event.Result.DENY);
 				return;
 			}
 		}
+		if (event.getPlayer().getItemInHand() != null) {
+			Material handItem = event.getPlayer().getItemInHand().getType();
+			if (handItem.isEdible()
+					|| handItem.equals(Material.POTION)
+					|| handItem.equals(Material.LINGERING_POTION)
+					|| handItem.equals(Material.SPLASH_POTION)) {
+				return;
+			}
+		}
 		if (event.getMaterial().isSolid()) return;
-		SavageFactions.plugin.log("Checking if you can use that item");
 		if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
 			event.setUseInteractedBlock(Event.Result.DENY);
@@ -995,7 +988,6 @@ public class FactionsPlayerListener implements Listener {
 				case HOPPER:
 				case BEACON:
 				case JUKEBOX:
-
 				case ANVIL:
 				case CHIPPED_ANVIL:
 				case DAMAGED_ANVIL:
@@ -1004,6 +996,7 @@ public class FactionsPlayerListener implements Listener {
 					// Check for doors that might have diff material name in old version.
 					if (material.name().contains("DOOR"))
 						return PermissableAction.DOOR;
+					if (material.name().toUpperCase().contains("BUTTON") || material.name().toUpperCase().contains("PRESSURE")) return PermissableAction.BUTTON;
 					return null;
 			}
 		} else {
@@ -1039,7 +1032,7 @@ public class FactionsPlayerListener implements Listener {
 					// Check for doors that might have diff material name in old version.
 					if (material.name().contains("DOOR"))
 						return PermissableAction.DOOR;
-					if (material.toString().toUpperCase().contains("BUTTON"))
+					if (material.toString().toUpperCase().contains("BUTTON") || material.toString().toUpperCase().contains("PRESSURE"))
 						return PermissableAction.BUTTON;
 					return null;
 			}
