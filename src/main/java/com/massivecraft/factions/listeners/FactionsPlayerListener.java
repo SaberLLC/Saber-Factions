@@ -317,18 +317,16 @@ public class FactionsPlayerListener implements Listener {
 		}
 
 		// Move up access check to check for exceptions
-		Access access = otherFaction.getAccess(me, action);
 		if (!otherFaction.getId().equals(myFaction.getId())) { // If the faction target is not my own
 			if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
 				return true;
 			// Get faction pain build access relation to me
 			boolean pain = !justCheck && otherFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
-			return CheckPlayerAccess(player, me, loc, otherFaction, access, action, pain);
-		} else if (otherFaction.getId().equals(myFaction.getId())) {
-			boolean pain = !justCheck && myFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
-			return CheckPlayerAccess(player, me, loc, myFaction, access, action, pain);
+			return CheckPlayerAccess(player, me, loc, otherFaction, otherFaction.getAccess(me, action), action, pain);
+		} else if (otherFaction.getId().equals(myFaction.getId())) {;
+			return CheckPlayerAccess(player, me, loc, myFaction, myFaction.getAccess(me, action), action, (!justCheck && myFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW));
 		}
-		return CheckPlayerAccess(player, me, loc, myFaction, access, action, Conf.territoryPainBuild);
+		return CheckPlayerAccess(player, me, loc, myFaction, otherFaction.getAccess(me, action), action, Conf.territoryPainBuild);
 	}
 
 
@@ -882,7 +880,6 @@ public class FactionsPlayerListener implements Listener {
 
 		if (playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) return;
 
-		SavageFactions.plugin.log("Something has failed, canceling the event");
 		event.setCancelled(true);
 	}
 
@@ -1020,7 +1017,7 @@ public class FactionsPlayerListener implements Listener {
 		if (access != null && access != Access.UNDEFINED) {
 			// TODO: Update this once new access values are added other than just allow / deny.
 			boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
-			if (landOwned && myFaction.getOwnerListString(loc).contains(player.getName()) || me.getRole() == Role.LEADER) return true;
+			if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId()))) return true;
 			else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
 				me.msg("<b>You can't do that in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
 				if (doPain) {
