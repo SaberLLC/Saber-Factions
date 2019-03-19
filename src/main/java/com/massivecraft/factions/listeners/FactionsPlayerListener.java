@@ -919,6 +919,10 @@ public class FactionsPlayerListener implements Listener {
 		return GetPermissionFromUsableBlock(block.getType());
 	}
 	private static PermissableAction GetPermissionFromUsableBlock(Material material) {
+		// Check for doors that might have diff material name in old version.
+		if (material.name().contains("DOOR"))
+			return PermissableAction.DOOR;
+		if (material.name().toUpperCase().contains("BUTTON") || material.name().toUpperCase().contains("PRESSURE")) return PermissableAction.BUTTON;
 		if (SavageFactions.plugin.mc113) {
 			switch (material) {
 				case LEVER:
@@ -993,10 +997,6 @@ public class FactionsPlayerListener implements Listener {
 				case DAMAGED_ANVIL:
 					return PermissableAction.CONTAINER;
 				default:
-					// Check for doors that might have diff material name in old version.
-					if (material.name().contains("DOOR"))
-						return PermissableAction.DOOR;
-					if (material.name().toUpperCase().contains("BUTTON") || material.name().toUpperCase().contains("PRESSURE")) return PermissableAction.BUTTON;
 					return null;
 			}
 		} else {
@@ -1029,11 +1029,6 @@ public class FactionsPlayerListener implements Listener {
 				case BREWING_STAND:
 					return PermissableAction.CONTAINER;
 				default:
-					// Check for doors that might have diff material name in old version.
-					if (material.name().contains("DOOR"))
-						return PermissableAction.DOOR;
-					if (material.toString().toUpperCase().contains("BUTTON") || material.toString().toUpperCase().contains("PRESSURE"))
-						return PermissableAction.BUTTON;
 					return null;
 			}
 		}
