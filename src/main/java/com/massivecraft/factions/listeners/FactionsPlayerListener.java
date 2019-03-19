@@ -178,132 +178,9 @@ public class FactionsPlayerListener implements Listener {
 		if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
 			return true;
 
-		PermissableAction action = null;
-		if (SavageFactions.plugin.mc113) {
-			switch (block.getType()) {
-				case LEVER:
-					action = PermissableAction.LEVER;
-					break;
+		PermissableAction action = GetPermissionFromUsableBlock(block);
+		if (action == null) return false;
 
-				case ACACIA_BUTTON:
-				case BIRCH_BUTTON:
-				case DARK_OAK_BUTTON:
-				case JUNGLE_BUTTON:
-				case OAK_BUTTON:
-				case SPRUCE_BUTTON:
-				case STONE_BUTTON:
-					action = PermissableAction.BUTTON;
-					break;
-
-				case ACACIA_DOOR:
-				case BIRCH_DOOR:
-				case IRON_DOOR:
-				case JUNGLE_DOOR:
-				case OAK_DOOR:
-				case SPRUCE_DOOR:
-				case DARK_OAK_DOOR:
-
-				case ACACIA_TRAPDOOR:
-				case BIRCH_TRAPDOOR:
-				case DARK_OAK_TRAPDOOR:
-				case IRON_TRAPDOOR:
-				case JUNGLE_TRAPDOOR:
-				case OAK_TRAPDOOR:
-				case SPRUCE_TRAPDOOR:
-
-				case ACACIA_FENCE_GATE:
-				case BIRCH_FENCE_GATE:
-				case DARK_OAK_FENCE_GATE:
-				case JUNGLE_FENCE_GATE:
-				case OAK_FENCE_GATE:
-				case SPRUCE_FENCE_GATE:
-					action = PermissableAction.DOOR;
-					break;
-
-				case CHEST:
-				case TRAPPED_CHEST:
-				case CHEST_MINECART:
-
-				case SHULKER_BOX:
-				case BLACK_SHULKER_BOX:
-				case BLUE_SHULKER_BOX:
-				case BROWN_SHULKER_BOX:
-				case CYAN_SHULKER_BOX:
-				case GRAY_SHULKER_BOX:
-				case GREEN_SHULKER_BOX:
-				case LIGHT_BLUE_SHULKER_BOX:
-				case LIGHT_GRAY_SHULKER_BOX:
-				case LIME_SHULKER_BOX:
-				case MAGENTA_SHULKER_BOX:
-				case ORANGE_SHULKER_BOX:
-				case PINK_SHULKER_BOX:
-				case PURPLE_SHULKER_BOX:
-				case RED_SHULKER_BOX:
-				case WHITE_SHULKER_BOX:
-				case YELLOW_SHULKER_BOX:
-
-				case FURNACE:
-				case DROPPER:
-				case DISPENSER:
-				case ENCHANTING_TABLE:
-				case BREWING_STAND:
-				case CAULDRON:
-				case HOPPER:
-				case BEACON:
-				case JUKEBOX:
-
-				case ANVIL:
-				case CHIPPED_ANVIL:
-				case DAMAGED_ANVIL:
-					action = PermissableAction.CONTAINER;
-					break;
-				default:
-					// Check for doors that might have diff material name in old version.
-					if (block.getType().name().contains("DOOR"))
-						action = PermissableAction.DOOR;
-					break;
-			}
-		} else {
-			switch (block.getType()) {
-				case LEVER:
-					action = PermissableAction.LEVER;
-					break;
-				case DARK_OAK_DOOR:
-				case ACACIA_DOOR:
-				case BIRCH_DOOR:
-				case IRON_DOOR:
-				case JUNGLE_DOOR:
-				case SPRUCE_DOOR:
-				case ACACIA_FENCE_GATE:
-				case BIRCH_FENCE_GATE:
-				case DARK_OAK_FENCE_GATE:
-				case JUNGLE_FENCE_GATE:
-				case SPRUCE_FENCE_GATE:
-					action = PermissableAction.DOOR;
-					break;
-				case CHEST:
-				case ENDER_CHEST:
-				case TRAPPED_CHEST:
-				case DISPENSER:
-				case ENCHANTING_TABLE:
-				case DROPPER:
-				case FURNACE:
-				case HOPPER:
-				case ANVIL:
-				case CHIPPED_ANVIL:
-				case DAMAGED_ANVIL:
-				case BREWING_STAND:
-					action = PermissableAction.CONTAINER;
-					break;
-				default:
-					// Check for doors that might have diff material name in old version.
-					if (block.getType().name().contains("DOOR"))
-						action = PermissableAction.DOOR;
-					if (block.getType().toString().toUpperCase().contains("BUTTON"))
-						action = PermissableAction.BUTTON;
-					break;
-			}
-		}
 
 		// We only care about some material types.
 		/// Who was the idiot?
@@ -875,7 +752,7 @@ public class FactionsPlayerListener implements Listener {
 
 		if (block == null) return;  // clicked in air, apparently
 
-		if (!block.getType().isSolid()) return;
+		if (GetPermissionFromUsableBlock(event.getMaterial()) == null) return;
 		player.sendMessage("Checking if you can use that block");
 		if (!canPlayerUseBlock(player, block, false)) {
 			event.setCancelled(true);
@@ -1039,5 +916,131 @@ public class FactionsPlayerListener implements Listener {
 		}
 		me.msg(TL.GENERIC_NOPERMISSION, action);
 		return false;
+	}
+	/// <summary>
+	/// This will try to resolve a permission action based on the item material, if it's not usable, will return null
+	/// </summary>
+	private static PermissableAction GetPermissionFromUsableBlock(Block block) {
+		return GetPermissionFromUsableBlock(block.getType());
+	}
+	private static PermissableAction GetPermissionFromUsableBlock(Material material) {
+		if (SavageFactions.plugin.mc113) {
+			switch (material) {
+				case LEVER:
+					return PermissableAction.LEVER;
+
+				case ACACIA_BUTTON:
+				case BIRCH_BUTTON:
+				case DARK_OAK_BUTTON:
+				case JUNGLE_BUTTON:
+				case OAK_BUTTON:
+				case SPRUCE_BUTTON:
+				case STONE_BUTTON:
+					return PermissableAction.BUTTON;
+
+				case ACACIA_DOOR:
+				case BIRCH_DOOR:
+				case IRON_DOOR:
+				case JUNGLE_DOOR:
+				case OAK_DOOR:
+				case SPRUCE_DOOR:
+				case DARK_OAK_DOOR:
+
+				case ACACIA_TRAPDOOR:
+				case BIRCH_TRAPDOOR:
+				case DARK_OAK_TRAPDOOR:
+				case IRON_TRAPDOOR:
+				case JUNGLE_TRAPDOOR:
+				case OAK_TRAPDOOR:
+				case SPRUCE_TRAPDOOR:
+
+				case ACACIA_FENCE_GATE:
+				case BIRCH_FENCE_GATE:
+				case DARK_OAK_FENCE_GATE:
+				case JUNGLE_FENCE_GATE:
+				case OAK_FENCE_GATE:
+				case SPRUCE_FENCE_GATE:
+					return PermissableAction.DOOR;
+
+				case CHEST:
+				case TRAPPED_CHEST:
+				case CHEST_MINECART:
+
+				case SHULKER_BOX:
+				case BLACK_SHULKER_BOX:
+				case BLUE_SHULKER_BOX:
+				case BROWN_SHULKER_BOX:
+				case CYAN_SHULKER_BOX:
+				case GRAY_SHULKER_BOX:
+				case GREEN_SHULKER_BOX:
+				case LIGHT_BLUE_SHULKER_BOX:
+				case LIGHT_GRAY_SHULKER_BOX:
+				case LIME_SHULKER_BOX:
+				case MAGENTA_SHULKER_BOX:
+				case ORANGE_SHULKER_BOX:
+				case PINK_SHULKER_BOX:
+				case PURPLE_SHULKER_BOX:
+				case RED_SHULKER_BOX:
+				case WHITE_SHULKER_BOX:
+				case YELLOW_SHULKER_BOX:
+
+				case FURNACE:
+				case DROPPER:
+				case DISPENSER:
+				case ENCHANTING_TABLE:
+				case BREWING_STAND:
+				case CAULDRON:
+				case HOPPER:
+				case BEACON:
+				case JUKEBOX:
+
+				case ANVIL:
+				case CHIPPED_ANVIL:
+				case DAMAGED_ANVIL:
+					return PermissableAction.CONTAINER;
+				default:
+					// Check for doors that might have diff material name in old version.
+					if (material.name().contains("DOOR"))
+						return PermissableAction.DOOR;
+					return null;
+			}
+		} else {
+			switch (material) {
+				case LEVER:
+					return PermissableAction.LEVER;
+				case DARK_OAK_DOOR:
+				case ACACIA_DOOR:
+				case BIRCH_DOOR:
+				case IRON_DOOR:
+				case JUNGLE_DOOR:
+				case SPRUCE_DOOR:
+				case ACACIA_FENCE_GATE:
+				case BIRCH_FENCE_GATE:
+				case DARK_OAK_FENCE_GATE:
+				case JUNGLE_FENCE_GATE:
+				case SPRUCE_FENCE_GATE:
+					return PermissableAction.DOOR;
+				case CHEST:
+				case ENDER_CHEST:
+				case TRAPPED_CHEST:
+				case DISPENSER:
+				case ENCHANTING_TABLE:
+				case DROPPER:
+				case FURNACE:
+				case HOPPER:
+				case ANVIL:
+				case CHIPPED_ANVIL:
+				case DAMAGED_ANVIL:
+				case BREWING_STAND:
+					return PermissableAction.CONTAINER;
+				default:
+					// Check for doors that might have diff material name in old version.
+					if (material.name().contains("DOOR"))
+						return PermissableAction.DOOR;
+					if (material.toString().toUpperCase().contains("BUTTON"))
+						return PermissableAction.BUTTON;
+					return null;
+			}
+		}
 	}
 }
