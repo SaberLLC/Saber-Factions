@@ -95,7 +95,6 @@ public class FactionsBlockListener implements Listener {
 		}
 
 		// Something failed prevent build
-		SavageFactions.plugin.getLogger().info("Unable to determine fallback action for build permissions, defaulting to false");
 		return false;
 	}
 
@@ -499,10 +498,10 @@ public class FactionsBlockListener implements Listener {
 				player.damage(Conf.actionDeniedPainAmount);
 				me.msg("<b>It is painful to try to " + action + " in the territory of " + Board.getInstance().getFactionAt(loc).getTag(myFaction));
 			}
-			me.msg(TL.GENERIC_NOPERMISSION, action);
+			me.msg("You cannot " + action + " in the territory of " + myFaction.getTag(me.getFaction()));
 			return false;
 		} else if (access == Access.ALLOW) return true;
-		me.msg(TL.GENERIC_NOPERMISSION, action);
+		me.msg("You cannot " + action + " in the territory of " + myFaction.getTag(me.getFaction()));
 		return false;
 	}
 

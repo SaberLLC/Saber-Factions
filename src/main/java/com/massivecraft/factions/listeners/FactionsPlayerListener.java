@@ -751,15 +751,15 @@ public class FactionsPlayerListener implements Listener {
         if (Conf.territoryBypasssProtectedMaterials.contains(block.getType())) return;
 
 		if (block == null) return;  // clicked in air, apparently
-
+		SavageFactions.plugin.log("Checking for material permission");
 		if (GetPermissionFromUsableBlock(event.getMaterial()) == null) return;
-		player.sendMessage("Checking if you can use that block");
+		SavageFactions.plugin.log("Checking for use block permission");
 		if (!canPlayerUseBlock(player, block, false)) {
 			event.setCancelled(true);
 			event.setUseInteractedBlock(Event.Result.DENY);
 			return;
 		}
-		player.sendMessage("Checking if you can use that item");
+		SavageFactions.plugin.log("Checking if you can use that item");
 		if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
 			event.setUseInteractedBlock(Event.Result.DENY);
@@ -910,11 +910,11 @@ public class FactionsPlayerListener implements Listener {
 				return false;
 			} else if (!landOwned && access == Access.ALLOW) return true;
 			else {
-				me.msg(TL.GENERIC_NOPERMISSION, action);
+				me.msg("You cannot " + action + " in the territory of " + myFaction.getTag(me.getFaction()));
 				return false;
 			}
 		}
-		me.msg(TL.GENERIC_NOPERMISSION, action);
+		me.msg("You cannot " + action + " in the territory of " + myFaction.getTag(me.getFaction()));
 		return false;
 	}
 	/// <summary>
