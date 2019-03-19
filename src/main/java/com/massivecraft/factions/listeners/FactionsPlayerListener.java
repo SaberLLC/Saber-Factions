@@ -18,7 +18,7 @@ import com.massivecraft.factions.util.MultiversionMaterials;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
+import com.massivecraft.factions.zcore.persist.*;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -872,13 +872,16 @@ public class FactionsPlayerListener implements Listener {
 
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
+		FLocation loc = new FLocation(block.getLocation());
+		Faction faction = MemoryBoard.getInstance().getFactionAt(loc);
+		FPlayer fplayer = MemoryFPlayers.getInstance().getByPlayer(player);
 
         // Check if the material is bypassing protection
         if (Conf.territoryBypasssProtectedMaterials.contains(block.getType())) return;
 
 		if (block == null) return;  // clicked in air, apparently
 
-		if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "build", false)
+		if (!CheckPlayerAccess(player, fplayer, loc, faction, faction.getAccess(fplayer, PermissableAction.BUILD), PermissableAction.BUILD, (faction.getAccess(fplayer, PermissableAction.PAIN_BUILD) == Access.ALLOW))
 			|| !canPlayerUseBlock(player, block, false)
 			|| !playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
