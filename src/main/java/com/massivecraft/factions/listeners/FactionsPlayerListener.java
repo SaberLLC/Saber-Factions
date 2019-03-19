@@ -881,10 +881,8 @@ public class FactionsPlayerListener implements Listener {
 
 		if (block == null) return;  // clicked in air, apparently
 
-		if (!canPlayerUseBlock(player, block, true) && !playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), true) && !FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "BUILD", true)) {
-			event.setCancelled(true);
-			return;
-		}
+		if (!block.getType().isInteractable()) return;
+
 		if (!canPlayerUseBlock(player, block, false)) {
 			event.setCancelled(true);
 			event.setUseInteractedBlock(Event.Result.DENY);
