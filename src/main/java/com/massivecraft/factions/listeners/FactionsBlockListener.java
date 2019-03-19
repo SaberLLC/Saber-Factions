@@ -486,7 +486,7 @@ public class FactionsBlockListener implements Listener {
 	/// <param name="shouldHurt">Determine whether we should hurt the player when access is denied</param>
 	private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action, boolean shouldHurt) {
 		boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
-		if (landOwned && myFaction.getOwnerListString(loc).contains(player.getName()) || me.getRole() == Role.LEADER) return true;
+		if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId()))) return true;
 		else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
 			me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
 			if (shouldHurt) {
@@ -501,9 +501,9 @@ public class FactionsBlockListener implements Listener {
 			}
 			me.msg(TL.GENERIC_NOPERMISSION, action);
 			return false;
-		}
+		} else if (access == Access.ALLOW) return true;
 		// We assume faction land is not owned, and the access is not set to DENY, so we allow to execute the action
-		return true;
+		return false;
 	}
 
 	private static boolean CheckActionState(Faction target, FLocation location, FPlayer me, PermissableAction action, boolean pain) {
