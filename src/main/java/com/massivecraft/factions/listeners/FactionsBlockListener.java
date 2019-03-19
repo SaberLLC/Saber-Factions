@@ -501,9 +501,7 @@ public class FactionsBlockListener implements Listener {
 			}
 			me.msg(TL.GENERIC_NOPERMISSION, action);
 			return false;
-		} else if (access == Access.ALLOW) return true;
-		// We assume faction land is not owned, and the access is not set to DENY, so we allow to execute the action
-		return false;
+		} else return access == Access.ALLOW;
 	}
 
 	private static boolean CheckActionState(Faction target, FLocation location, FPlayer me, PermissableAction action, boolean pain) {
@@ -512,7 +510,7 @@ public class FactionsBlockListener implements Listener {
 			if (pain && Conf.ownedAreaPainBuild) me.msg("<b>It is painful to try to " + action + " in this territory, it is owned by: " + target.getOwnerListString(location));
 			if (Conf.ownedAreaDenyBuild && pain) return false;
 			else if (Conf.ownedAreaDenyBuild) {
-				me.msg("You cannot " + action + " in the territory of" + target.getTag(me.getFaction()));
+				me.msg("You cannot " + action + " in the territory of " + target.getTag(me.getFaction()));
 				return false;
 			}
 		}

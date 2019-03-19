@@ -857,7 +857,8 @@ public class FactionsPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
-        if ((event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) || event.getAction() != Action.PHYSICAL) return;
+        if (event.getAction() != Action.PHYSICAL) return;
+        if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK) || !event.getAction().equals(Action.LEFT_CLICK_AIR)) return;
         if (event.getPlayer().getItemInHand() != null) {
             Material handItem = event.getPlayer().getItemInHand().getType();
             if (handItem.isEdible()
