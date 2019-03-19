@@ -178,6 +178,7 @@ public class FactionsPlayerListener implements Listener {
 				return false;
 		}
 
+		SavageFactions.plugin.log("Trying to match a material with access permission");
 		PermissableAction action = null;
 		if (SavageFactions.plugin.mc113) {
 			switch (block.getType()) {
@@ -304,6 +305,8 @@ public class FactionsPlayerListener implements Listener {
 					break;
 			}
 		}
+
+		SavageFactions.plugin.log("Material matched as " + action);
 		// We only care about some material types.
 		/// Who was the idiot?
 		if (otherFaction.hasPlayersOnline()) {
@@ -323,7 +326,7 @@ public class FactionsPlayerListener implements Listener {
 			// Get faction pain build access relation to me
 			boolean pain = !justCheck && otherFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
 			return CheckPlayerAccess(player, me, loc, otherFaction, otherFaction.getAccess(me, action), action, pain);
-		} else if (otherFaction.getId().equals(myFaction.getId())) {;
+		} else if (otherFaction.getId().equals(myFaction.getId())) {
 			return CheckPlayerAccess(player, me, loc, myFaction, myFaction.getAccess(me, action), action, (!justCheck && myFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW));
 		}
 		return CheckPlayerAccess(player, me, loc, myFaction, otherFaction.getAccess(me, action), action, Conf.territoryPainBuild);
@@ -857,8 +860,11 @@ public class FactionsPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
+        SavageFactions.plugin.log("Checking if the action is physical");
         if (event.getAction() != Action.PHYSICAL) return;
+        SavageFactions.plugin.log("Checking if the action aren't left clicks");
         if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK) || !event.getAction().equals(Action.LEFT_CLICK_AIR)) return;
+        SavageFactions.plugin.log("Attempting to allow food and potis");
         if (event.getPlayer().getItemInHand() != null) {
             Material handItem = event.getPlayer().getItemInHand().getType();
             if (handItem.isEdible()
@@ -872,15 +878,19 @@ public class FactionsPlayerListener implements Listener {
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
 
+		SavageFactions.plugin.log("Checking for material bypass in config");
         // Check if the material is bypassing protection
         if (Conf.territoryBypasssProtectedMaterials.contains(block.getType())) return;
 
 		if (block == null) return;  // clicked in air, apparently
 
+        SavageFactions.plugin.log("Checking if I can use the block");
 		if (canPlayerUseBlock(player, block, false)) return;
 
+		SavageFactions.plugin.log("Checking if I can use the item");
 		if (playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) return;
 
+		SavageFactions.plugin.log("Guess we will cancel the event then");
 		event.setCancelled(true);
 	}
 
@@ -1015,11 +1025,15 @@ public class FactionsPlayerListener implements Listener {
 	/// <param name="access">The current's faction access permission for the action</param>
 	private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action, boolean pain) {
 		boolean doPain = pain && Conf.handleExploitInteractionSpam;
+		SavageFactions.plugin.log("Checking player access, with pain: " + doPain);
 		if (access != null && access != Access.UNDEFINED) {
 			// TODO: Update this once new access values are added other than just allow / deny.
 			boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
+			SavageFactions.plugin.log("Land is owned: " + landOwned);
+			SavageFactions.plugin.log("Trying to check if the user is in the owner list or is leader of the faction");
 			if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId()))) return true;
 			else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
+			    SavageFactions.plugin.log("Land is owned and player is not on the owner list");
 				me.msg("<b>You can't do that in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
 				if (doPain) {
 					player.damage(Conf.actionDeniedPainAmount);
@@ -1031,6 +1045,7 @@ public class FactionsPlayerListener implements Listener {
 				return false;
 			}
 		}
+		SavageFactions.plugin.log("Access is " + access + " denying");
 		return false;
 	}
 }
