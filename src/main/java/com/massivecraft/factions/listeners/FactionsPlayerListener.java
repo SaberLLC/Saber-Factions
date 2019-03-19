@@ -860,8 +860,6 @@ public class FactionsPlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
-        SavageFactions.plugin.log("Checking if the action is physical");
-        if (event.getAction() == Action.PHYSICAL) return;
         SavageFactions.plugin.log("Checking if the action aren't left clicks");
         if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK) || !event.getAction().equals(Action.LEFT_CLICK_AIR)) return;
         SavageFactions.plugin.log("Attempting to allow food and potis");
