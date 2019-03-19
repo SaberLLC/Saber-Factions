@@ -875,7 +875,7 @@ public class FactionsPlayerListener implements Listener {
 
 		if (block == null) return;  // clicked in air, apparently
 
-		if (!block.getType().isInteractable()) return;
+		if (!block.getType().isSolid()) return;
 		player.sendMessage("Checking if you can use that block");
 		if (!canPlayerUseBlock(player, block, false)) {
 			event.setCancelled(true);
