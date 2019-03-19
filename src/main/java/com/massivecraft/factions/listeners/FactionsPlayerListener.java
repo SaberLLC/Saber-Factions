@@ -147,7 +147,7 @@ public class FactionsPlayerListener implements Listener {
 		}
 
 		Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
-		return CheckPlayerAccess(player, me, loc, myFaction, access, PermissableAction.ITEM);
+		return CheckPlayerAccess(player, me, loc, myFaction, access, PermissableAction.ITEM, false);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -161,9 +161,6 @@ public class FactionsPlayerListener implements Listener {
 
 		Material material = block.getType();
 
-		// Check if the material is bypassing protection
-		if (Conf.territoryBypassAllProtection.contains(material)) return true;
-
 		// Dupe fix.
 		FLocation loc = new FLocation(block);
 		Faction otherFaction = Board.getInstance().getFactionAt(loc);
@@ -171,14 +168,12 @@ public class FactionsPlayerListener implements Listener {
 		Relation rel = myFaction.getRelationTo(otherFaction);
 
 		// no door/chest/whatever protection in wilderness, war zones, or safe zones
-		if (!otherFaction.isNormal())
-			return true;
+		if (!otherFaction.isNormal()) return true;
 
 		if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
 			return true;
 
 		if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand().getType() != null) {
-
 			if (player.getItemInHand().getType().toString().toUpperCase().contains("DOOR"))
 				return false;
 		}
@@ -264,16 +259,11 @@ public class FactionsPlayerListener implements Listener {
 					break;
 				default:
 					// Check for doors that might have diff material name in old version.
-					if (block.getType().name().contains("DOOR")) {
+					if (block.getType().name().contains("DOOR"))
 						action = PermissableAction.DOOR;
-					}
 					break;
 			}
 		} else {
-			if (block.getType().toString().toUpperCase().contains("BUTTON")) {
-				action = PermissableAction.BUTTON;
-			}
-
 			switch (block.getType()) {
 				case LEVER:
 					action = PermissableAction.LEVER;
@@ -309,10 +299,11 @@ public class FactionsPlayerListener implements Listener {
 					// Check for doors that might have diff material name in old version.
 					if (block.getType().name().contains("DOOR"))
 						action = PermissableAction.DOOR;
+					if (block.getType().toString().toUpperCase().contains("BUTTON"))
+						action = PermissableAction.BUTTON;
 					break;
 			}
 		}
-
 		// We only care about some material types.
 		/// Who was the idiot?
 		if (otherFaction.hasPlayersOnline()) {
@@ -327,28 +318,17 @@ public class FactionsPlayerListener implements Listener {
 
 		// Move up access check to check for exceptions
 		Access access = otherFaction.getAccess(me, action);
-		boolean doTerritoryEnemyProtectedCheck = true;
-
-		if (action != null && (action.equals(PermissableAction.CONTAINER) ||
-				  action.equals(PermissableAction.DOOR))) {
-			if (access == Access.ALLOW) {
-				doTerritoryEnemyProtectedCheck = false;
-			}
+		if (!otherFaction.getId().equals(myFaction.getId())) { // If the faction target is not my own
+			if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
+				return true;
+			// Get faction pain build access relation to me
+			boolean pain = !justCheck && otherFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
+			return CheckPlayerAccess(player, me, loc, otherFaction, access, action, pain);
+		} else if (otherFaction.getId().equals(myFaction.getId())) {
+			boolean pain = !justCheck && myFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
+			return CheckPlayerAccess(player, me, loc, myFaction, access, action, pain);
 		}
-
-		// Did not nest the boolean so that it stands out when Im looking
-		// through the code later.
-		if (doTerritoryEnemyProtectedCheck) {
-			// You may use any block unless it is another faction's territory...
-			if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
-				if (!justCheck) {
-					me.msg(TL.PLAYER_USE_TERRITORY, (material == SavageFactions.plugin.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
-				}
-				return false;
-			}
-		}
-
-		return CheckPlayerAccess(player, me, loc, myFaction, access, action);
+		return CheckPlayerAccess(player, me, loc, myFaction, access, action, Conf.territoryPainBuild);
 	}
 
 
@@ -878,61 +858,32 @@ public class FactionsPlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		/// Prevents the use of montster eggs in oned land.
-        /*if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (event.hasItem() || event.hasBlock()) {
-                ItemStack itemStack = event.getItem();
-                if (itemStack.getType() == Material.MONSTER_EGG) {
-                    FLocation loc = new FLocation(event.getClickedBlock().getLocation());
-                    Faction faction = Board.getInstance().getFactionAt(loc);
-                    FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-                    if (Conf.ownedAreasEnabled && !faction.playerHasOwnershipRights(me, loc)) {
-                        if (Conf.ownedAreaDenyBuild) {
-                            me.msg("<b>You can't use spawn eggs in this territory, it is owned by: " + faction.getOwnerListString(loc));
-                            event.setCancelled(true);
-                            return;
-                        }
-                    }
-                }
-            }
-        }*/
 		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL)
-			return;
+        if ((event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) || event.getAction() != Action.PHYSICAL) return;
+        if (event.getPlayer().getItemInHand() != null) {
+            Material handItem = event.getPlayer().getItemInHand().getType();
+            if (handItem.isEdible()
+                || handItem.equals(Material.POTION)
+                || handItem.equals(Material.LINGERING_POTION)
+                || handItem.equals(Material.SPLASH_POTION)) {
+                return;
+            }
+        }
 
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
 
-		if (block == null)
-			return;  // clicked in air, apparently
+        // Check if the material is bypassing protection
+        if (Conf.territoryBypasssProtectedMaterials.contains(block.getType())) return;
 
-		if (!canPlayerUseBlock(player, block, false)) {
-			event.setCancelled(true);
-			if (Conf.handleExploitInteractionSpam) {
-				String name = player.getName();
-				InteractAttemptSpam attempt = interactSpammers.get(name);
-				if (attempt == null) {
-					attempt = new InteractAttemptSpam();
-					interactSpammers.put(name, attempt);
-				}
+		if (block == null) return;  // clicked in air, apparently
 
-				int count = attempt.increment();
-				if (count >= 10) {
-					FPlayer me = FPlayers.getInstance().getByPlayer(player);
-					me.msg(TL.PLAYER_OUCH);
-					player.damage(NumberConversions.floor((double) count / 10));
-				}
-			}
-			return;
-		}
+		if (canPlayerUseBlock(player, block, false)) return;
 
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-			return;  // only interested on right-clicks for below
-		}
+		if (playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) return;
 
-		if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
-			event.setCancelled(true);
-		}
+		SavageFactions.plugin.log("Something has failed, canceling the event");
+		event.setCancelled(true);
 	}
 
 	@EventHandler
@@ -1064,20 +1015,24 @@ public class FactionsPlayerListener implements Listener {
 	/// <param name="loc">The World location where the action is being executed</param>
 	/// <param name="myFaction">The faction of the player being checked</param>
 	/// <param name="access">The current's faction access permission for the action</param>
-	private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action) {
+	private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action, boolean pain) {
+		boolean doPain = pain && Conf.handleExploitInteractionSpam;
 		if (access != null && access != Access.UNDEFINED) {
 			// TODO: Update this once new access values are added other than just allow / deny.
 			boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
 			if (landOwned && myFaction.getOwnerListString(loc).contains(player.getName()) || me.getRole() == Role.LEADER) return true;
 			else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
 				me.msg("<b>You can't do that in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+				if (doPain) {
+					player.damage(Conf.actionDeniedPainAmount);
+				}
 				return false;
-			} else if (!landOwned && access != Access.DENY) return true;
+			} else if (!landOwned && access == Access.ALLOW) return true;
 			else {
 				me.msg(TL.GENERIC_NOPERMISSION, action);
 				return false;
 			}
 		}
-		return true;
+		return false;
 	}
 }
