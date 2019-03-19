@@ -881,9 +881,16 @@ public class FactionsPlayerListener implements Listener {
 
 		if (block == null) return;  // clicked in air, apparently
 
-		if (!CheckPlayerAccess(player, fplayer, loc, faction, faction.getAccess(fplayer, PermissableAction.BUILD), PermissableAction.BUILD, (faction.getAccess(fplayer, PermissableAction.PAIN_BUILD) == Access.ALLOW))
-			|| !canPlayerUseBlock(player, block, false)
-			|| !playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
+		if (!canPlayerUseBlock(player, block, true) && !playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), true) && !FactionsBlockListener.playerCanBuildDestroyBlock(player, block.getLocation(), "BUILD", true)) {
+			event.setCancelled(true);
+			return;
+		}
+		if (!canPlayerUseBlock(player, block, false)) {
+			event.setCancelled(true);
+			event.setUseInteractedBlock(Event.Result.DENY);
+			return;
+		}
+		if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
 			event.setUseInteractedBlock(Event.Result.DENY);
 			return;
