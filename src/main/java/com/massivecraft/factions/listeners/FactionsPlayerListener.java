@@ -30,6 +30,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -890,6 +891,7 @@ public class FactionsPlayerListener implements Listener {
 
 		SavageFactions.plugin.log("Guess we will cancel the event then");
 		event.setCancelled(true);
+		event.setUseInteractedBlock(Event.Result.DENY);
 	}
 
 	@EventHandler
