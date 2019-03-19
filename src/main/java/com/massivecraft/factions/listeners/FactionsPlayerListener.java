@@ -752,7 +752,7 @@ public class FactionsPlayerListener implements Listener {
 
 		if (block == null) return;  // clicked in air, apparently
 		SavageFactions.plugin.log("Checking for material permission");
-		if (GetPermissionFromUsableBlock(event.getMaterial()) == null) return;
+		if (GetPermissionFromUsableBlock(event.getClickedBlock().getType()) == null) return;
 		SavageFactions.plugin.log("Checking for use block permission");
 		if (!canPlayerUseBlock(player, block, false)) {
 			event.setCancelled(true);
