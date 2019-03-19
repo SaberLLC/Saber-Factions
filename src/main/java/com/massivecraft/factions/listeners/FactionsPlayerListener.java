@@ -18,7 +18,7 @@ import com.massivecraft.factions.util.MultiversionMaterials;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
+import com.massivecraft.factions.zcore.persist.*;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -30,6 +30,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -147,7 +148,7 @@ public class FactionsPlayerListener implements Listener {
 		}
 
 		Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
-		return CheckPlayerAccess(player, me, loc, myFaction, access, PermissableAction.ITEM);
+		return CheckPlayerAccess(player, me, loc, myFaction, access, PermissableAction.ITEM, false);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -161,9 +162,6 @@ public class FactionsPlayerListener implements Listener {
 
 		Material material = block.getType();
 
-		// Check if the material is bypassing protection
-		if (Conf.territoryBypassAllProtection.contains(material)) return true;
-
 		// Dupe fix.
 		FLocation loc = new FLocation(block);
 		Faction otherFaction = Board.getInstance().getFactionAt(loc);
@@ -171,148 +169,18 @@ public class FactionsPlayerListener implements Listener {
 		Relation rel = myFaction.getRelationTo(otherFaction);
 
 		// no door/chest/whatever protection in wilderness, war zones, or safe zones
-		if (!otherFaction.isNormal())
-			return true;
+		if (otherFaction.isSystemFaction()) return true;
+		if (myFaction.isWilderness()) {
+			me.msg(TL.GENERIC_NOPERMISSION, TL.GENERIC_DOTHAT);
+			return false;
+		}
 
 		if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
 			return true;
 
-		if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand().getType() != null) {
-
-			if (player.getItemInHand().getType().toString().toUpperCase().contains("DOOR"))
-				return false;
-		}
-
-		PermissableAction action = null;
-		if (SavageFactions.plugin.mc113) {
-			switch (block.getType()) {
-				case LEVER:
-					action = PermissableAction.LEVER;
-					break;
-
-				case ACACIA_BUTTON:
-				case BIRCH_BUTTON:
-				case DARK_OAK_BUTTON:
-				case JUNGLE_BUTTON:
-				case OAK_BUTTON:
-				case SPRUCE_BUTTON:
-				case STONE_BUTTON:
-					action = PermissableAction.BUTTON;
-					break;
-
-				case ACACIA_DOOR:
-				case BIRCH_DOOR:
-				case IRON_DOOR:
-				case JUNGLE_DOOR:
-				case OAK_DOOR:
-				case SPRUCE_DOOR:
-				case DARK_OAK_DOOR:
-
-				case ACACIA_TRAPDOOR:
-				case BIRCH_TRAPDOOR:
-				case DARK_OAK_TRAPDOOR:
-				case IRON_TRAPDOOR:
-				case JUNGLE_TRAPDOOR:
-				case OAK_TRAPDOOR:
-				case SPRUCE_TRAPDOOR:
-
-				case ACACIA_FENCE_GATE:
-				case BIRCH_FENCE_GATE:
-				case DARK_OAK_FENCE_GATE:
-				case JUNGLE_FENCE_GATE:
-				case OAK_FENCE_GATE:
-				case SPRUCE_FENCE_GATE:
-					action = PermissableAction.DOOR;
-					break;
-
-				case CHEST:
-				case TRAPPED_CHEST:
-				case CHEST_MINECART:
-
-				case SHULKER_BOX:
-				case BLACK_SHULKER_BOX:
-				case BLUE_SHULKER_BOX:
-				case BROWN_SHULKER_BOX:
-				case CYAN_SHULKER_BOX:
-				case GRAY_SHULKER_BOX:
-				case GREEN_SHULKER_BOX:
-				case LIGHT_BLUE_SHULKER_BOX:
-				case LIGHT_GRAY_SHULKER_BOX:
-				case LIME_SHULKER_BOX:
-				case MAGENTA_SHULKER_BOX:
-				case ORANGE_SHULKER_BOX:
-				case PINK_SHULKER_BOX:
-				case PURPLE_SHULKER_BOX:
-				case RED_SHULKER_BOX:
-				case WHITE_SHULKER_BOX:
-				case YELLOW_SHULKER_BOX:
-
-				case FURNACE:
-				case DROPPER:
-				case DISPENSER:
-				case ENCHANTING_TABLE:
-				case BREWING_STAND:
-				case CAULDRON:
-				case HOPPER:
-				case BEACON:
-				case JUKEBOX:
-
-				case ANVIL:
-				case CHIPPED_ANVIL:
-				case DAMAGED_ANVIL:
-					action = PermissableAction.CONTAINER;
-					break;
-				default:
-					// Check for doors that might have diff material name in old version.
-					if (block.getType().name().contains("DOOR")) {
-						action = PermissableAction.DOOR;
-					}
-					break;
-			}
-		} else {
-			if (block.getType().toString().toUpperCase().contains("BUTTON")) {
-				action = PermissableAction.BUTTON;
-			}
-
-			switch (block.getType()) {
-				case LEVER:
-					action = PermissableAction.LEVER;
-					break;
-				case DARK_OAK_DOOR:
-				case ACACIA_DOOR:
-				case BIRCH_DOOR:
-				case IRON_DOOR:
-				case JUNGLE_DOOR:
-				case SPRUCE_DOOR:
-				case ACACIA_FENCE_GATE:
-				case BIRCH_FENCE_GATE:
-				case DARK_OAK_FENCE_GATE:
-				case JUNGLE_FENCE_GATE:
-				case SPRUCE_FENCE_GATE:
-					action = PermissableAction.DOOR;
-					break;
-				case CHEST:
-				case ENDER_CHEST:
-				case TRAPPED_CHEST:
-				case DISPENSER:
-				case ENCHANTING_TABLE:
-				case DROPPER:
-				case FURNACE:
-				case HOPPER:
-				case ANVIL:
-				case CHIPPED_ANVIL:
-				case DAMAGED_ANVIL:
-				case BREWING_STAND:
-					action = PermissableAction.CONTAINER;
-					break;
-				default:
-					// Check for doors that might have diff material name in old version.
-					if (block.getType().name().contains("DOOR"))
-						action = PermissableAction.DOOR;
-					break;
-			}
-		}
-
+		if (otherFaction.getId().equals(myFaction.getId()) && me.getRole() == Role.LEADER) return true;
+		PermissableAction action = GetPermissionFromUsableBlock(block);
+		if (action == null) return false;
 		// We only care about some material types.
 		/// Who was the idiot?
 		if (otherFaction.hasPlayersOnline()) {
@@ -326,29 +194,14 @@ public class FactionsPlayerListener implements Listener {
 		}
 
 		// Move up access check to check for exceptions
-		Access access = otherFaction.getAccess(me, action);
-		boolean doTerritoryEnemyProtectedCheck = true;
-
-		if (action != null && (action.equals(PermissableAction.CONTAINER) ||
-				  action.equals(PermissableAction.DOOR))) {
-			if (access == Access.ALLOW) {
-				doTerritoryEnemyProtectedCheck = false;
-			}
+		if (!otherFaction.getId().equals(myFaction.getId())) { // If the faction target is not my own
+			// Get faction pain build access relation to me
+			boolean pain = !justCheck && otherFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
+			return CheckPlayerAccess(player, me, loc, otherFaction, otherFaction.getAccess(me, action), action, pain);
+		} else if (otherFaction.getId().equals(myFaction.getId())) {
+			return CheckPlayerAccess(player, me, loc, myFaction, myFaction.getAccess(me, action), action, (!justCheck && myFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW));
 		}
-
-		// Did not nest the boolean so that it stands out when Im looking
-		// through the code later.
-		if (doTerritoryEnemyProtectedCheck) {
-			// You may use any block unless it is another faction's territory...
-			if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
-				if (!justCheck) {
-					me.msg(TL.PLAYER_USE_TERRITORY, (material == SavageFactions.plugin.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
-				}
-				return false;
-			}
-		}
-
-		return CheckPlayerAccess(player, me, loc, myFaction, access, action);
+		return CheckPlayerAccess(player, me, loc, myFaction, otherFaction.getAccess(me, action), action, Conf.territoryPainBuild);
 	}
 
 
@@ -878,60 +731,34 @@ public class FactionsPlayerListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		/// Prevents the use of montster eggs in oned land.
-        /*if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (event.hasItem() || event.hasBlock()) {
-                ItemStack itemStack = event.getItem();
-                if (itemStack.getType() == Material.MONSTER_EGG) {
-                    FLocation loc = new FLocation(event.getClickedBlock().getLocation());
-                    Faction faction = Board.getInstance().getFactionAt(loc);
-                    FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-                    if (Conf.ownedAreasEnabled && !faction.playerHasOwnershipRights(me, loc)) {
-                        if (Conf.ownedAreaDenyBuild) {
-                            me.msg("<b>You can't use spawn eggs in this territory, it is owned by: " + faction.getOwnerListString(loc));
-                            event.setCancelled(true);
-                            return;
-                        }
-                    }
-                }
-            }
-        }*/
 		// only need to check right-clicks and physical as of MC 1.4+; good performance boost
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.PHYSICAL)
-			return;
-
+        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_AIR)) return;
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
-
-		if (block == null)
-			return;  // clicked in air, apparently
-
-		if (!canPlayerUseBlock(player, block, false)) {
-			event.setCancelled(true);
-			if (Conf.handleExploitInteractionSpam) {
-				String name = player.getName();
-				InteractAttemptSpam attempt = interactSpammers.get(name);
-				if (attempt == null) {
-					attempt = new InteractAttemptSpam();
-					interactSpammers.put(name, attempt);
-				}
-
-				int count = attempt.increment();
-				if (count >= 10) {
-					FPlayer me = FPlayers.getInstance().getByPlayer(player);
-					me.msg(TL.PLAYER_OUCH);
-					player.damage(NumberConversions.floor((double) count / 10));
-				}
+        // Check if the material is bypassing protection
+        if (Conf.territoryBypasssProtectedMaterials.contains(block.getType())) return;
+		if (block == null) return;  // clicked in air, apparently
+		if (GetPermissionFromUsableBlock(event.getClickedBlock().getType()) != null) {
+			if (!canPlayerUseBlock(player, block, false)) {
+				event.setCancelled(true);
+				event.setUseInteractedBlock(Event.Result.DENY);
+				return;
 			}
-			return;
 		}
-
-		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-			return;  // only interested on right-clicks for below
+		if (event.getPlayer().getItemInHand() != null) {
+			Material handItem = event.getPlayer().getItemInHand().getType();
+			if (handItem.isEdible()
+					|| handItem.equals(Material.POTION)
+					|| handItem.equals(Material.LINGERING_POTION)
+					|| handItem.equals(Material.SPLASH_POTION)) {
+				return;
+			}
 		}
-
+		if (event.getMaterial().isSolid()) return;
 		if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
+			event.setUseInteractedBlock(Event.Result.DENY);
+			return;
 		}
 	}
 
@@ -1064,20 +891,146 @@ public class FactionsPlayerListener implements Listener {
 	/// <param name="loc">The World location where the action is being executed</param>
 	/// <param name="myFaction">The faction of the player being checked</param>
 	/// <param name="access">The current's faction access permission for the action</param>
-	private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action) {
+	private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action, boolean pain) {
+		boolean doPain = pain && Conf.handleExploitInteractionSpam;
 		if (access != null && access != Access.UNDEFINED) {
 			// TODO: Update this once new access values are added other than just allow / deny.
 			boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
-			if (landOwned && myFaction.getOwnerListString(loc).contains(player.getName()) || me.getRole() == Role.LEADER) return true;
+			if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId()))) return true;
 			else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
 				me.msg("<b>You can't do that in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+				if (doPain) {
+					player.damage(Conf.actionDeniedPainAmount);
+				}
 				return false;
-			} else if (!landOwned && access != Access.DENY) return true;
+			} else if (!landOwned && access == Access.ALLOW) return true;
 			else {
-				me.msg(TL.GENERIC_NOPERMISSION, action);
+				me.msg("You cannot " + action + " in the territory of " + myFaction.getTag(me.getFaction()));
 				return false;
 			}
 		}
-		return true;
+		me.msg("You cannot " + action + " in the territory of " + myFaction.getTag(me.getFaction()));
+		return false;
+	}
+	/// <summary>
+	/// This will try to resolve a permission action based on the item material, if it's not usable, will return null
+	/// </summary>
+	private static PermissableAction GetPermissionFromUsableBlock(Block block) {
+		return GetPermissionFromUsableBlock(block.getType());
+	}
+	private static PermissableAction GetPermissionFromUsableBlock(Material material) {
+		// Check for doors that might have diff material name in old version.
+		if (material.name().contains("DOOR"))
+			return PermissableAction.DOOR;
+		if (material.name().toUpperCase().contains("BUTTON") || material.name().toUpperCase().contains("PRESSURE")) return PermissableAction.BUTTON;
+		if (SavageFactions.plugin.mc113) {
+			switch (material) {
+				case LEVER:
+					return PermissableAction.LEVER;
+
+				case ACACIA_BUTTON:
+				case BIRCH_BUTTON:
+				case DARK_OAK_BUTTON:
+				case JUNGLE_BUTTON:
+				case OAK_BUTTON:
+				case SPRUCE_BUTTON:
+				case STONE_BUTTON:
+					return PermissableAction.BUTTON;
+
+				case ACACIA_DOOR:
+				case BIRCH_DOOR:
+				case IRON_DOOR:
+				case JUNGLE_DOOR:
+				case OAK_DOOR:
+				case SPRUCE_DOOR:
+				case DARK_OAK_DOOR:
+
+				case ACACIA_TRAPDOOR:
+				case BIRCH_TRAPDOOR:
+				case DARK_OAK_TRAPDOOR:
+				case IRON_TRAPDOOR:
+				case JUNGLE_TRAPDOOR:
+				case OAK_TRAPDOOR:
+				case SPRUCE_TRAPDOOR:
+
+				case ACACIA_FENCE_GATE:
+				case BIRCH_FENCE_GATE:
+				case DARK_OAK_FENCE_GATE:
+				case JUNGLE_FENCE_GATE:
+				case OAK_FENCE_GATE:
+				case SPRUCE_FENCE_GATE:
+					return PermissableAction.DOOR;
+
+				case CHEST:
+				case TRAPPED_CHEST:
+				case CHEST_MINECART:
+
+				case SHULKER_BOX:
+				case BLACK_SHULKER_BOX:
+				case BLUE_SHULKER_BOX:
+				case BROWN_SHULKER_BOX:
+				case CYAN_SHULKER_BOX:
+				case GRAY_SHULKER_BOX:
+				case GREEN_SHULKER_BOX:
+				case LIGHT_BLUE_SHULKER_BOX:
+				case LIGHT_GRAY_SHULKER_BOX:
+				case LIME_SHULKER_BOX:
+				case MAGENTA_SHULKER_BOX:
+				case ORANGE_SHULKER_BOX:
+				case PINK_SHULKER_BOX:
+				case PURPLE_SHULKER_BOX:
+				case RED_SHULKER_BOX:
+				case WHITE_SHULKER_BOX:
+				case YELLOW_SHULKER_BOX:
+
+				case FURNACE:
+				case DROPPER:
+				case DISPENSER:
+				case ENCHANTING_TABLE:
+				case BREWING_STAND:
+				case CAULDRON:
+				case HOPPER:
+				case BEACON:
+				case JUKEBOX:
+				case ANVIL:
+				case CHIPPED_ANVIL:
+				case DAMAGED_ANVIL:
+					return PermissableAction.CONTAINER;
+				default:
+					return null;
+			}
+		} else {
+			switch (material) {
+				case LEVER:
+					return PermissableAction.LEVER;
+				case DARK_OAK_DOOR:
+				case ACACIA_DOOR:
+				case BIRCH_DOOR:
+				case IRON_DOOR:
+				case JUNGLE_DOOR:
+				case SPRUCE_DOOR:
+				case ACACIA_FENCE_GATE:
+				case BIRCH_FENCE_GATE:
+				case DARK_OAK_FENCE_GATE:
+				case JUNGLE_FENCE_GATE:
+				case SPRUCE_FENCE_GATE:
+					return PermissableAction.DOOR;
+				case CHEST:
+				case ENDER_CHEST:
+				case TRAPPED_CHEST:
+				case DISPENSER:
+				case ENCHANTING_TABLE:
+				case DROPPER:
+				case FURNACE:
+				case HOPPER:
+				case ANVIL:
+				case CHIPPED_ANVIL:
+				case DAMAGED_ANVIL:
+				case BREWING_STAND:
+					return PermissableAction.CONTAINER;
+				default:
+					return null;
+			}
+		}
 	}
 }
