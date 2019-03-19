@@ -99,7 +99,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 
 		if (!fme.hasFaction()) {
 			if (informSenderIfNot) {
-				sender.sendMessage(p.txt.parse("<b>You are not member of any faction."));
+				sender.sendMessage(p.txt.parse(TL.ACTIONS_NOFACTION.toString()));
 			}
 			return false;
 		}
@@ -107,21 +107,21 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 
 		if (this.senderMustBeModerator && !fme.getRole().isAtLeast(Role.MODERATOR)) {
 			if (informSenderIfNot) {
-				sender.sendMessage(p.txt.parse("<b>Only faction moderators can %s.", this.getHelpShort()));
+				sender.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "moderator").replace("{action}", this.getHelpShort())));
 			}
 			return false;
 		}
 
 		if (this.senderMustBeColeader && !fme.getRole().isAtLeast(Role.COLEADER)) {
 			if (informSenderIfNot) {
-				sender.sendMessage(p.txt.parse("<b>Only faction coleaders can %s.", this.getHelpShort()));
+				sender.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "coleader").replace("{action}", this.getHelpShort())));
 			}
 			return false;
 		}
 
 		if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.LEADER)) {
 			if (informSenderIfNot) {
-				sender.sendMessage(p.txt.parse("<b>Only faction admins can %s.", this.getHelpShort()));
+				sender.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "admin").replace("{action}", this.getHelpShort())));
 			}
 			return false;
 		}
@@ -140,7 +140,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 		}
 
 		if (!fme.hasFaction()) {
-			sendMessage("You are not member of any faction.");
+			msg(TL.ACTIONS_NOFACTION);
 			return false;
 		}
 		return true;
@@ -152,7 +152,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 		}
 
 		if (fme.getRole().value < role.value) {
-			msg("<b>You <h>must be " + role + "<b> to " + this.getHelpShort() + ".");
+			msg(TL.ACTIONS_MUSTBE.toString().replace("{role}", role.nicename).replace("{action}", this.getHelpShort()));
 			return false;
 		}
 		return true;
@@ -282,23 +282,23 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 		}
 
 		if (you.getRole().equals(Role.LEADER)) {
-			i.sendMessage(p.txt.parse("<b>Only the faction admin can do that."));
+			i.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "leader").replace("{action}", "do that")));
 
 		} else if ((you.getRole().equals(Role.COLEADER))) {
 			if (i == you) {
 				return true;
 			} else {
-				i.sendMessage(p.txt.parse("<b>Coleaders can't control each other..."));
+				i.sendMessage(p.txt.parse(TL.ACTIONS_NOSAMEROLE.toString().replace("{role}", i.getRole().nicename)));
 			}
 
 		} else if (i.getRole().equals(Role.MODERATOR)) {
 			if (i == you) {
 				return true; //Moderators can control themselves
 			} else {
-				i.sendMessage(p.txt.parse("<b>Moderators can't control each other..."));
+				i.sendMessage(p.txt.parse(TL.ACTIONS_NOSAMEROLE.toString().replace("{role}", i.getRole().nicename)));
 			}
 		} else {
-			i.sendMessage(p.txt.parse("<b>You must be a faction moderator to do that."));
+			i.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "moderator").replace("{action}", "do that")));
 		}
 
 		return false;

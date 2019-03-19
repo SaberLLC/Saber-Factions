@@ -487,31 +487,31 @@ public class FactionsBlockListener implements Listener {
 		boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
 		if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId()))) return true;
 		else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
-			me.msg("<b>You can't " + action + " in this territory, it is owned by: " + myFaction.getOwnerListString(loc));
+			me.msg(TL.ACTIONS_OWNEDTERRITORYDENY.toString().replace("{owners}", myFaction.getOwnerListString(loc)));
 			if (shouldHurt) {
 				player.damage(Conf.actionDeniedPainAmount);
-				me.msg("<b>It is painful to try to " + action + " in the territory of " + Board.getInstance().getFactionAt(loc).getTag(myFaction));
+				me.msg(TL.ACTIONS_NOPERMISSIONPAIN.toString().replace("{action}", action.toString()).replace("{faction}", Board.getInstance().getFactionAt(loc).getTag(myFaction)));
 			}
 			return false;
 		} else if (!landOwned && access == Access.DENY) { // If land is not owned but access is set to DENY anyway
 			if (shouldHurt) {
 				player.damage(Conf.actionDeniedPainAmount);
-				me.msg("<b>It is painful to try to " + action + " in the territory of " + Board.getInstance().getFactionAt(loc).getTag(myFaction));
+				me.msg(TL.ACTIONS_NOPERMISSIONPAIN.toString().replace("{action}", action.toString()).replace("{faction}", Board.getInstance().getFactionAt(loc).getTag(myFaction)));
 			}
-			me.msg("You cannot " + action + " in the territory of " + myFaction.getTag(me.getFaction()));
+			me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
 			return false;
 		} else if (access == Access.ALLOW) return true;
-		me.msg("You cannot " + action + " in the territory of " + myFaction.getTag(me.getFaction()));
+		me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
 		return false;
 	}
 
 	private static boolean CheckActionState(Faction target, FLocation location, FPlayer me, PermissableAction action, boolean pain) {
 		if (Conf.ownedAreasEnabled && target.doesLocationHaveOwnersSet(location) && !target.playerHasOwnershipRights(me, location)) {
 			// If pain should be applied
-			if (pain && Conf.ownedAreaPainBuild) me.msg("<b>It is painful to try to " + action + " in this territory, it is owned by: " + target.getOwnerListString(location));
+			if (pain && Conf.ownedAreaPainBuild) me.msg(TL.ACTIONS_OWNEDTERRITORYPAINDENY.toString().replace("{action}", action.toString()).replace("{faction}", target.getOwnerListString(location)));
 			if (Conf.ownedAreaDenyBuild && pain) return false;
 			else if (Conf.ownedAreaDenyBuild) {
-				me.msg("You cannot " + action + " in the territory of " + target.getTag(me.getFaction()));
+				me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", target.getTag(me.getFaction())).replace("{action}", action.toString()));
 				return false;
 			}
 		}
