@@ -501,7 +501,9 @@ public class FactionsBlockListener implements Listener {
 			}
 			me.msg(TL.GENERIC_NOPERMISSION, action);
 			return false;
-		} else return access == Access.ALLOW;
+		} else if (access == Access.ALLOW) return true;
+		me.msg(TL.GENERIC_NOPERMISSION, action);
+		return false;
 	}
 
 	private static boolean CheckActionState(Faction target, FLocation location, FPlayer me, PermissableAction action, boolean pain) {

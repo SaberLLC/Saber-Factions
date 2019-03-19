@@ -176,7 +176,7 @@ public interface Faction extends EconomyParticipator {
 	boolean noMonstersInTerritory();
 
 	boolean isNormal();
-
+	boolean isSystemFaction();
 	@Deprecated
 	boolean isNone();
 

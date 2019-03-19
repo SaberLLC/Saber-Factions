@@ -169,15 +169,14 @@ public class FactionsPlayerListener implements Listener {
 		Relation rel = myFaction.getRelationTo(otherFaction);
 
 		// no door/chest/whatever protection in wilderness, war zones, or safe zones
-		if (!otherFaction.isNormal()) return true;
+		if (otherFaction.isSystemFaction()) return true;
+		if (myFaction.isWilderness()) {
+			me.msg(TL.GENERIC_NOPERMISSION, TL.GENERIC_DOTHAT);
+			return false;
+		}
 
 		if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
 			return true;
-
-		if (!rel.isMember() || !otherFaction.playerHasOwnershipRights(me, loc) && player.getItemInHand().getType() != null) {
-			if (player.getItemInHand().getType().toString().toUpperCase().contains("DOOR"))
-				return false;
-		}
 
 		PermissableAction action = null;
 		if (SavageFactions.plugin.mc113) {
@@ -320,8 +319,6 @@ public class FactionsPlayerListener implements Listener {
 
 		// Move up access check to check for exceptions
 		if (!otherFaction.getId().equals(myFaction.getId())) { // If the faction target is not my own
-			if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
-				return true;
 			// Get faction pain build access relation to me
 			boolean pain = !justCheck && otherFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
 			return CheckPlayerAccess(player, me, loc, otherFaction, otherFaction.getAccess(me, action), action, pain);
@@ -872,9 +869,6 @@ public class FactionsPlayerListener implements Listener {
 
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
-		FLocation loc = new FLocation(block.getLocation());
-		Faction faction = MemoryBoard.getInstance().getFactionAt(loc);
-		FPlayer fplayer = MemoryFPlayers.getInstance().getByPlayer(player);
 
         // Check if the material is bypassing protection
         if (Conf.territoryBypasssProtectedMaterials.contains(block.getType())) return;
@@ -882,12 +876,13 @@ public class FactionsPlayerListener implements Listener {
 		if (block == null) return;  // clicked in air, apparently
 
 		if (!block.getType().isInteractable()) return;
-
+		player.sendMessage("Checking if you can use that block");
 		if (!canPlayerUseBlock(player, block, false)) {
 			event.setCancelled(true);
 			event.setUseInteractedBlock(Event.Result.DENY);
 			return;
 		}
+		player.sendMessage("Checking if you can use that item");
 		if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
 			event.setCancelled(true);
 			event.setUseInteractedBlock(Event.Result.DENY);
@@ -1042,6 +1037,7 @@ public class FactionsPlayerListener implements Listener {
 				return false;
 			}
 		}
+		me.msg(TL.GENERIC_NOPERMISSION, action);
 		return false;
 	}
 }
