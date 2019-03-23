@@ -748,9 +748,9 @@ public class FactionsPlayerListener implements Listener {
 		if (event.getPlayer().getItemInHand() != null) {
 			Material handItem = event.getPlayer().getItemInHand().getType();
 			if (handItem.isEdible()
-					|| handItem.equals(Material.POTION)
-					|| handItem.equals(Material.LINGERING_POTION)
-					|| handItem.equals(Material.SPLASH_POTION)) {
+					|| handItem.equals(MultiversionMaterials.POTION.parseMaterial())
+					|| handItem.equals(MultiversionMaterials.LINGERING_POTION.parseMaterial())
+					|| handItem.equals(MultiversionMaterials.SPLASH_POTION.parseMaterial())) {
 				return;
 			}
 		}
