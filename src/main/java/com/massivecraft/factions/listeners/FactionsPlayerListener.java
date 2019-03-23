@@ -500,7 +500,7 @@ public class FactionsPlayerListener implements Listener {
 		boolean isHome = false;
 		for (String str : SavageFactions.plugin.ess.getUser(event.getPlayer()).getHomes()) {
 			Location home = SavageFactions.plugin.ess.getUser(event.getPlayer()).getHome(str);
-			if (home.getBlockX() == event.getTo().getBlockX() && home.getBlockY() == event.getTo().getBlockY() && home.getBlockZ() == event.getTo().getBlockZ()) {
+			if (home.getBlockX() == event.getTo().getBlockX() && home.getBlockZ() == event.getTo().getBlockZ()) {
 				isHome = true;
 			}
 		}
