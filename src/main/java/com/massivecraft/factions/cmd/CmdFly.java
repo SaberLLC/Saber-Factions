@@ -44,10 +44,54 @@ public class CmdFly extends FCommand {
 			return;
 		}
 
-		id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
-			@Override
-			public void run() {
+		id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> {
+			for (String name : flyMap.keySet()) {
+				Player player = Bukkit.getPlayer(name);
+				if (player == null) {
+					continue;
+				}
+				if (!player.isFlying()) {
+					continue;
+				}
+				if (!SavageFactions.plugin.mc17) {
+					if (player.getGameMode() == GameMode.SPECTATOR) {
+						continue;
+					}
+				}
+
+				if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
+					// Actually, vanished players (such as admins) should not display particles to prevent others from knowing their vanished assistance for moderation.
+					// But we can keep it as a config.
+					if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
+						return;
+					}
+					continue;
+				}
+				if (SavageFactions.plugin.useNonPacketParticles) {
+					// 1.9+ based servers will use the built in particleAPI instead of packet based.
+					// any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
+					// So setting the amount to 0 spawns 1 in the precise location
+					player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, -0.35, 0), 0);
+				} else {
+					ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, -0.35, 0), 16);
+				}
+
+			}
+			if (flyMap.keySet().size() == 0) {
+				Bukkit.getScheduler().cancelTask(id);
+				id = -1;
+			}
+		}, 10L, 3L);
+	}
+
+	public static void startFlyCheck() {
+		flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> { //threw the exception for now, until I recode fly :( Cringe.
+			checkTaskState();
+			if (flyMap.keySet().size() != 0) {
 				for (String name : flyMap.keySet()) {
+					if (name == null) {
+						continue;
+					}
 					Player player = Bukkit.getPlayer(name);
 					if (player == null) {
 						continue;
@@ -55,88 +99,38 @@ public class CmdFly extends FCommand {
 					if (!player.isFlying()) {
 						continue;
 					}
-					if (!SavageFactions.plugin.mc17) {
-						if (player.getGameMode() == GameMode.SPECTATOR) {
-							continue;
-						}
-					}
-
-					if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
-						// Actually, vanished players (such as admins) should not display particles to prevent others from knowing their vanished assistance for moderation.
-						// But we can keep it as a config.
-						if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
-							return;
-						}
+					FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+					if (fPlayer == null) {
 						continue;
 					}
-					if (SavageFactions.plugin.useNonPacketParticles) {
-						// 1.9+ based servers will use the built in particleAPI instead of packet based.
-						// any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
-						// So setting the amount to 0 spawns 1 in the precise location
-						player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, -0.35, 0), 0);
-					} else {
-						ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, -0.35, 0), 16);
+					if (player.getGameMode() == GameMode.CREATIVE) {
+						continue;
 					}
-
-				}
-				if (flyMap.keySet().size() == 0) {
-					Bukkit.getScheduler().cancelTask(id);
-					id = -1;
-				}
-			}
-		}, 10L, 3L);
-	}
-
-	public static void startFlyCheck() {
-		flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
-			@Override
-			public void run() throws ConcurrentModificationException { //threw the exception for now, until I recode fly :( Cringe.
-				checkTaskState();
-				if (flyMap.keySet().size() != 0) {
-					for (String name : flyMap.keySet()) {
-						if (name == null) {
-							continue;
-						}
-						Player player = Bukkit.getPlayer(name);
-						if (player == null) {
-							continue;
-						}
-						if (!player.isFlying()) {
-							continue;
-						}
-						FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-						if (fPlayer == null) {
-							continue;
-						}
-						if (player.getGameMode() == GameMode.CREATIVE) {
-							continue;
-						}
-						if (!SavageFactions.plugin.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
-							continue;
-						}
-						Faction myFaction = fPlayer.getFaction();
-						if (myFaction.isWilderness()) {
+					if (!SavageFactions.plugin.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
+						continue;
+					}
+					Faction myFaction = fPlayer.getFaction();
+					if (myFaction.isWilderness()) {
+						fPlayer.setFlying(false);
+						flyMap.remove(name);
+						continue;
+					}
+					if (fPlayer.checkIfNearbyEnemies()) {
+						continue;
+					}
+					FLocation myFloc = new FLocation(player.getLocation());
+					Faction toFac = Board.getInstance().getFactionAt(myFloc);
+					if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
+						if (!checkBypassPerms(fPlayer, player, toFac)) {
 							fPlayer.setFlying(false);
 							flyMap.remove(name);
 							continue;
 						}
-						if (fPlayer.checkIfNearbyEnemies()) {
-							continue;
-						}
-						FLocation myFloc = new FLocation(player.getLocation());
-						Faction toFac = Board.getInstance().getFactionAt(myFloc);
-						if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-							if (!checkBypassPerms(fPlayer, player, toFac)) {
-								fPlayer.setFlying(false);
-								flyMap.remove(name);
-								continue;
-							}
-						}
-
 					}
-				}
 
+				}
 			}
+
 		}, 20L, 20L);
 	}
 
@@ -226,19 +220,16 @@ public class CmdFly extends FCommand {
 
 		if (fme.canFlyAtLocation())
 
-			this.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", new Runnable() {
-				@Override
-				public void run() {
-					fme.setFlying(true);
-					flyMap.put(player.getName(), true);
-					if (id == -1) {
-						if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
-							startParticles();
-						}
+			this.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
+				fme.setFlying(true);
+				flyMap.put(player.getName(), true);
+				if (id == -1) {
+					if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
+						startParticles();
 					}
-					if (flyid == -1) {
-						startFlyCheck();
-					}
+				}
+				if (flyid == -1) {
+					startFlyCheck();
 				}
 			}, this.p.getConfig().getLong("warmups.f-fly", 0));
 	}
