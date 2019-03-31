@@ -256,11 +256,7 @@ public class FactionsEntityListener implements Listener {
 		}
 
 		// Cancel the event if no block will explode
-		if (event.blockList().isEmpty()) {
-			event.setCancelled(true);
-
-			// Or handle the exploit of TNT in water/lava
-		} else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
+		if (!event.blockList().isEmpty() && (boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
 			// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
 			// this change below provides workaround for waterwalling providing perfect protection,
 			// and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
