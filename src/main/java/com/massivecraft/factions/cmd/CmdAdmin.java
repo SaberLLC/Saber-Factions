@@ -34,7 +34,7 @@ public class CmdAdmin extends FCommand {
 	@Override
 	public void perform() {
 		FPlayer fyou = this.argAsBestFPlayerMatch(0);
-		if (fyou == null) {
+		if (fyou == null || fyou.getFaction().isWarZone() || fyou.getFaction().isWilderness() || fyou.getFaction().isSafeZone()) {
 			return;
 		}
 
@@ -74,10 +74,10 @@ public class CmdAdmin extends FCommand {
 
 		// if target player is currently admin, demote and replace him
 		if (fyou == admin) {
-			targetFaction.promoteNewLeader();
-			msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(fme, true));
-			fyou.msg(TL.COMMAND_ADMIN_DEMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fyou, true));
-			return;
+				targetFaction.promoteNewLeader();
+				msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(fme, true));
+				fyou.msg(TL.COMMAND_ADMIN_DEMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fyou, true));
+				return;
 		}
 
 		// promote target player, and demote existing admin if one exists
