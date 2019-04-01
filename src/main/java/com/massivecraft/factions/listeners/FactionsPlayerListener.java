@@ -894,10 +894,6 @@ public class FactionsPlayerListener implements Listener {
 		boolean doPain = pain && Conf.handleExploitInteractionSpam;
 		if (access != null && access != Access.UNDEFINED) {
 			// TODO: Update this once new access values are added other than just allow / deny.
-			boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
-			if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId()))) return true;
-			else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
-				me.msg(TL.ACTIONS_OWNEDTERRITORYDENY.toString().replace("{owners}", myFaction.getOwnerListString(loc)));
            boolean landOwned = (factionToCheck.doesLocationHaveOwnersSet(loc) && !factionToCheck.getOwnerList(loc).isEmpty());
            if ((landOwned && factionToCheck.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(factionToCheck.getId())))
               return true;
@@ -909,11 +905,6 @@ public class FactionsPlayerListener implements Listener {
 				return false;
 			} else if (!landOwned && access == Access.ALLOW) return true;
 			else {
-				me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
-				return false;
-			}
-		}
-		me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
               me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
 				return false;
 			}
