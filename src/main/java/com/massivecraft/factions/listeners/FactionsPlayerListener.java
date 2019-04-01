@@ -87,7 +87,7 @@ public class FactionsPlayerListener implements Listener {
 		// Also cancel if player doesn't have ownership rights for this claim
 		if (Conf.ownedAreasEnabled && myFaction == otherFaction && !myFaction.playerHasOwnershipRights(me, loc)) {
 			if (!justCheck) {
-				me.msg("<b>You can't use that in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
+				me.msg(TL.ACTIONS_OWNEDTERRITORYDENY.toString().replace("{owners}", myFaction.getOwnerListString(loc)));
 			}
 			return false;
 		}
@@ -772,7 +772,7 @@ public class FactionsPlayerListener implements Listener {
 				Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
 				Faction myFaction = me.getFaction();
 
-				me.msg("<b>You can't use bone meal in the territory of " + otherFaction.getTag(myFaction));
+				me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", "use bone meal"));
 				event.setCancelled(true);
 			}
 		}
@@ -894,6 +894,10 @@ public class FactionsPlayerListener implements Listener {
 		boolean doPain = pain && Conf.handleExploitInteractionSpam;
 		if (access != null && access != Access.UNDEFINED) {
 			// TODO: Update this once new access values are added other than just allow / deny.
+			boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
+			if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId()))) return true;
+			else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
+				me.msg(TL.ACTIONS_OWNEDTERRITORYDENY.toString().replace("{owners}", myFaction.getOwnerListString(loc)));
            boolean landOwned = (factionToCheck.doesLocationHaveOwnersSet(loc) && !factionToCheck.getOwnerList(loc).isEmpty());
            if ((landOwned && factionToCheck.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(factionToCheck.getId())))
               return true;
@@ -905,6 +909,11 @@ public class FactionsPlayerListener implements Listener {
 				return false;
 			} else if (!landOwned && access == Access.ALLOW) return true;
 			else {
+				me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
+				return false;
+			}
+		}
+		me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
               me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
 				return false;
 			}
@@ -919,6 +928,9 @@ public class FactionsPlayerListener implements Listener {
 	private static PermissableAction GetPermissionFromUsableBlock(Block block) {
 		return GetPermissionFromUsableBlock(block.getType());
 	}
+	/// <summary>
+	/// This will try to resolve a permission action based on the item material, if it's not usable, will return null
+	/// <summary>
 	private static PermissableAction GetPermissionFromUsableBlock(Material material) {
 		// Check for doors that might have diff material name in old version.
 		if (material.name().contains("DOOR"))
