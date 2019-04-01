@@ -46,7 +46,16 @@ public enum TL {
 	_LOCAL_LANGUAGE("English"),
 	_LOCAL_REGION("US"),
 	_LOCAL_STATE("complete"), //And this is the English version. It's not ever going to be not complete.
-
+	/**
+	 * Actions translations
+	 */
+	ACTIONS_NOPERMISSION("<b>{faction} does not allow you to {action}</b>"),
+	ACTIONS_NOPERMISSIONPAIN("<b>It is painful to try to {action} in the territory of {faction}</b>"),
+	ACTIONS_OWNEDTERRITORYDENY("<b>You cant do that in this territory, it is owned by {owners}</b>"),
+	ACTIONS_OWNEDTERRITORYPAINDENY("<b>It is painful to try to {action} in this territory, it is owned by {owners}"),
+	ACTIONS_MUSTBE("<b>You </b><h>must be {role}</h><b> to {action}.</b>"),
+	ACTIONS_NOSAMEROLE("<b>{role} can't control each other...</b>"),
+	ACTIONS_NOFACTION("You are not member of any faction."),
 	/**
 	 * Command translations
 	 */

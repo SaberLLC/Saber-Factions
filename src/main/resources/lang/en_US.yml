@@ -476,6 +476,14 @@ COMPASS:
     EAST: E
     SOUTH: S
     WEST: W
+ACTIONS:
+  NOPERMISSION: '<b>{faction} does not allow you to {action}</b>'
+  NOPERMISSIONPAINFUL: '<b>It is painful to try to {action} in the territory of {faction}</b>'
+  OWNEDTERRITORYDENY: <b>You cant do that in this territory, it is owned by {owners}</b>
+  OWNEDTERRITORYPAINDENY: <b>It is painful to try to {action} in this territory, it is owned by {owners}</b>
+  MUSTBE: '<b>You </b><h>must be {role}</h><b> to {action}.</b>'
+  NOSAMEROLE: <b>{role} can't control each other...</b>
+  NOFACTION: 'You are not member of any faction.'
 CHAT:
   FACTION: faction chat
   ALLIANCE: alliance chat
