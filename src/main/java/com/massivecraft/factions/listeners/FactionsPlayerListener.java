@@ -18,7 +18,7 @@ import com.massivecraft.factions.util.MultiversionMaterials;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.persist.*;
+import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -499,7 +499,7 @@ public class FactionsPlayerListener implements Listener {
 		boolean isHome = false;
 		for (String str : SavageFactions.plugin.ess.getUser(event.getPlayer()).getHomes()) {
 			Location home = SavageFactions.plugin.ess.getUser(event.getPlayer()).getHome(str);
-			if (home.getBlockX() == event.getTo().getBlockX() && home.getBlockY() == event.getTo().getBlockY() && home.getBlockZ() == event.getTo().getBlockZ()) {
+			if (home.getBlockX() == event.getTo().getBlockX() && home.getBlockZ() == event.getTo().getBlockZ()) {
 				isHome = true;
 			}
 		}
@@ -747,9 +747,9 @@ public class FactionsPlayerListener implements Listener {
 		if (event.getPlayer().getItemInHand() != null) {
 			Material handItem = event.getPlayer().getItemInHand().getType();
 			if (handItem.isEdible()
-					|| handItem.equals(Material.POTION)
-					|| handItem.equals(Material.LINGERING_POTION)
-					|| handItem.equals(Material.SPLASH_POTION)) {
+					|| handItem.equals(MultiversionMaterials.POTION.parseMaterial())
+					|| handItem.equals(MultiversionMaterials.LINGERING_POTION.parseMaterial())
+					|| handItem.equals(MultiversionMaterials.SPLASH_POTION.parseMaterial())) {
 				return;
 			}
 		}
@@ -890,7 +890,7 @@ public class FactionsPlayerListener implements Listener {
 	/// <param name="loc">The World location where the action is being executed</param>
 	/// <param name="myFaction">The faction of the player being checked</param>
 	/// <param name="access">The current's faction access permission for the action</param>
-	private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action, boolean pain) {
+    private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction factionToCheck, Access access, PermissableAction action, boolean pain) {
 		boolean doPain = pain && Conf.handleExploitInteractionSpam;
 		if (access != null && access != Access.UNDEFINED) {
 			// TODO: Update this once new access values are added other than just allow / deny.
@@ -898,6 +898,11 @@ public class FactionsPlayerListener implements Listener {
 			if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId()))) return true;
 			else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
 				me.msg(TL.ACTIONS_OWNEDTERRITORYDENY.toString().replace("{owners}", myFaction.getOwnerListString(loc)));
+           boolean landOwned = (factionToCheck.doesLocationHaveOwnersSet(loc) && !factionToCheck.getOwnerList(loc).isEmpty());
+           if ((landOwned && factionToCheck.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(factionToCheck.getId())))
+              return true;
+           else if (landOwned && !factionToCheck.getOwnerListString(loc).contains(player.getName())) {
+              me.msg("<b>You can't do that in this territory, it is owned by: " + factionToCheck.getOwnerListString(loc));
 				if (doPain) {
 					player.damage(Conf.actionDeniedPainAmount);
 				}
@@ -909,6 +914,12 @@ public class FactionsPlayerListener implements Listener {
 			}
 		}
 		me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
+              me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
+				return false;
+			}
+		}
+       if (me.getRole().equals(Role.LEADER) && me.getFaction().equals(factionToCheck)) return true;
+       me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
 		return false;
 	}
 	/// <summary>

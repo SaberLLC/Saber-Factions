@@ -256,11 +256,7 @@ public class FactionsEntityListener implements Listener {
 		}
 
 		// Cancel the event if no block will explode
-		if (event.blockList().isEmpty()) {
-			event.setCancelled(true);
-
-			// Or handle the exploit of TNT in water/lava
-		} else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
+		if (!event.blockList().isEmpty() && (boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
 			// TNT in water/lava doesn't normally destroy any surrounding blocks, which is usually desired behavior, but...
 			// this change below provides workaround for waterwalling providing perfect protection,
 			// and makes cheap (non-obsidian) TNT cannons require minor maintenance between shots
@@ -280,7 +276,7 @@ public class FactionsEntityListener implements Listener {
 					@SuppressWarnings("deprecation")
 					int id = target.getType().getId();
 					// ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet
-					if (id != 0 && (id < 7 || id > 11) && id != 49 && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
+					if (id != 0 && (id < 7 || id > 11) && id != 90 && id != 116 && id != 119 && id != 120 && id != 130) {
 						target.breakNaturally();
 					}
 				}
