@@ -496,7 +496,7 @@ public class SavageFactions extends MPlugin {
 	}
 
 	public ItemStack createItem(Material material, int amount, short datavalue, String name, List<String> lore) {
-		ItemStack item = new ItemStack(material, amount, datavalue);
+       ItemStack item = new ItemStack(MultiversionMaterials.fromString(material.toString()).parseMaterial(), amount, datavalue);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(color(name));
 		meta.setLore(colorList(lore));
