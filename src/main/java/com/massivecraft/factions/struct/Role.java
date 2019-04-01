@@ -2,6 +2,7 @@ package com.massivecraft.factions.struct;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.util.MultiversionMaterials;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
@@ -117,7 +118,7 @@ public enum Role implements Permissable {
 		String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""));
 		List<String> lore = new ArrayList<>();
 
-		Material material = Material.matchMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase(), "STAINED_CLAY"));
+		Material material = MultiversionMaterials.fromString(RELATION_CONFIG.getString("materials." + name().toLowerCase(), "STAINED_CLAY")).parseMaterial();
 		if (material == null) {
 			return null;
 		}
