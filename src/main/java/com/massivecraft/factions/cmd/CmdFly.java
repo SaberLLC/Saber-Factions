@@ -15,7 +15,6 @@ import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -93,22 +92,13 @@ public class CmdFly extends FCommand {
 						continue;
 					}
 					Player player = Bukkit.getPlayer(name);
-					if (player == null) {
-						continue;
-					}
-					if (!player.isFlying()) {
+                    if (player == null
+                            || !player.isFlying()
+                            || player.getGameMode() == GameMode.CREATIVE
+                            || !SavageFactions.plugin.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
 						continue;
 					}
 					FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-					if (fPlayer == null) {
-						continue;
-					}
-					if (player.getGameMode() == GameMode.CREATIVE) {
-						continue;
-					}
-					if (!SavageFactions.plugin.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
-						continue;
-					}
 					Faction myFaction = fPlayer.getFaction();
 					if (myFaction.isWilderness()) {
 						fPlayer.setFlying(false);
@@ -119,12 +109,10 @@ public class CmdFly extends FCommand {
 						continue;
 					}
 					FLocation myFloc = new FLocation(player.getLocation());
-					Faction toFac = Board.getInstance().getFactionAt(myFloc);
 					if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-						if (!checkBypassPerms(fPlayer, player, toFac)) {
+                        if (!checkBypassPerms(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
 							fPlayer.setFlying(false);
 							flyMap.remove(name);
-							continue;
 						}
 					}
 
