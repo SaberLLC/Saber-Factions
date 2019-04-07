@@ -696,29 +696,6 @@ fwarp-gui:
 
 ############################################################
 # +------------------------------------------------------+ #
-# |             Faction Homes Essentials                 | #
-# +------------------------------------------------------+ #
-############################################################
-# Warzone/SafeZone
-deny-homes-in-system-factions: false
-remove-homes-in-system-factions: false
-
-deny-homes-in-enemy-factions: false
-remove-homes-in-enemy-factions: false
-
-deny-homes-in-neutral-factions: false
-remove-homes-in-neutral-factions: false
-
-deny-homes-in-ally-factions: false
-remove-homes-in-ally-factions: false
-
-deny-homes-in-truce-factions: false
-remove-homes-in-truce-factions: false
-
-
-
-############################################################
-# +------------------------------------------------------+ #
 # |         Faction Creation/Disband Broadcast           | #
 # +------------------------------------------------------+ #
 ############################################################

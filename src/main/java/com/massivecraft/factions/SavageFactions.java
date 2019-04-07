@@ -64,7 +64,7 @@ public class SavageFactions extends MPlugin {
 
 	// Persistence related
 	public static ArrayList<FPlayer> playersFlying = new ArrayList();
-	public Essentials ess;
+
 	public boolean PlaceholderApi;
 	// Commands
 	public FCmdRoot cmdBase;
@@ -247,8 +247,6 @@ public class SavageFactions extends MPlugin {
 		// since some other plugins execute commands directly through this command interface, provide it
 		getCommand(this.refCommand).setExecutor(this);
 		getCommand(this.refCommand).setTabCompleter(this);
-
-		setupEssentials();
 
 		if (getDescription().getFullName().contains("BETA")) {
 			divider();
@@ -519,10 +517,6 @@ public class SavageFactions extends MPlugin {
 		return econ;
 	}
 
-	private boolean setupEssentials() {
-		SavageFactions.plugin.ess = (Essentials) this.getServer().getPluginManager().getPlugin("Essentials");
-		return SavageFactions.plugin.ess == null;
-	}
 
 	@Override
 	public boolean logPlayerCommands() {
