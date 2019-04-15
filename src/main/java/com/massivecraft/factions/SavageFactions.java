@@ -2,7 +2,6 @@ package com.massivecraft.factions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
-import com.earth2me.essentials.Essentials;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -201,11 +200,6 @@ public class SavageFactions extends MPlugin {
 
 		// start up task which runs the autoLeaveAfterDaysOfInactivity routine
 		startAutoLeaveTask(false);
-
-		if (getConfig().getBoolean("MassiveStats")) {
-			// massive stats
-			new MassiveStats(this);
-		}
 
 		if (version > 8) {
 			useNonPacketParticles = true;
