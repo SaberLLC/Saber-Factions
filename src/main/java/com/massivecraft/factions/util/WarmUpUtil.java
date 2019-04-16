@@ -21,12 +21,9 @@ public class WarmUpUtil {
 				player.msg(TL.WARMUPS_ALREADY);
 			} else {
 				player.msg(translationKey.format(action, delay));
-				int id = SavageFactions.plugin.getServer().getScheduler().runTaskLater(SavageFactions.plugin, new Runnable() {
-					@Override
-					public void run() {
-						player.stopWarmup();
-						runnable.run();
-					}
+				int id = SavageFactions.plugin.getServer().getScheduler().runTaskLater(SavageFactions.plugin, () -> {
+					player.stopWarmup();
+					runnable.run();
 				}, delay * 20).getTaskId();
 				player.addWarmup(warmup, id);
 			}

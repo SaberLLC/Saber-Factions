@@ -99,7 +99,7 @@ public class CmdTnt extends FCommand {
 					return;
 				}
 				if (fme.getFaction().getTnt() < amount) {
-					fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH.toString());
+					fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
 					return;
 				}
 				int fullStacks = amount / 64;

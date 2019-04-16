@@ -81,12 +81,7 @@ public class CmdDisband extends FCommand {
 		if (!disbandMap.containsKey(me.getUniqueId().toString()) && faction.getTnt() > 0) {
 			msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", faction.getTnt() + ""));
 			disbandMap.put(me.getUniqueId().toString(), faction.getId());
-			Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, new Runnable() {
-				@Override
-				public void run() {
-					disbandMap.remove(me.getUniqueId().toString());
-				}
-			}, 200L);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> disbandMap.remove(me.getUniqueId().toString()), 200L);
 		} else if (faction.getId().equals(disbandMap.get(me.getUniqueId().toString())) || faction.getTnt() == 0) {
 			if (SavageFactions.plugin.getConfig().getBoolean("faction-disband-broadcast", true)) {
 				for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {

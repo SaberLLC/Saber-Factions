@@ -332,12 +332,7 @@ public class FactionsBlockListener implements Listener {
 					as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
 					final ArmorStand armorStand = as;
 					final String tag = fme.getTag();
-					Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, new Runnable() {
-						@Override
-						public void run() {
-							bannerCooldownMap.remove(tag);
-						}
-					}, Long.parseLong(bannerCooldown + ""));
+					Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> bannerCooldownMap.remove(tag), Long.parseLong(bannerCooldown + ""));
 					final Block banner = e.getBlockPlaced();
 					final Material bannerType = banner.getType();
 					final Faction bannerFaction = fme.getFaction();
@@ -345,39 +340,33 @@ public class FactionsBlockListener implements Listener {
 					//  e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_LIGHTNING_IMPACT,2.0F,0.5F);
 					final int radius = SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Effect-Radius");
 					final List<String> effects = SavageFactions.plugin.getConfig().getStringList("fbanners.Effects");
-					final int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
-						@Override
-						public void run() {
+					final int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> {
 
-							for (Entity e : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(), radius, 255, radius)) {
-								if (e instanceof Player) {
-									Player player = (Player) e;
-									FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-									if (fplayer.getFaction() == bannerFaction) {
-										for (String effect : effects) {
-											String[] components = effect.split(":");
-											player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(components[0]), 100, Integer.parseInt(components[1])));
-										}
-										ParticleEffect.LAVA.display(1, 1, 1, 1, 10, banner.getLocation(), 16);
-										ParticleEffect.FLAME.display(1, 1, 1, 1, 10, banner.getLocation(), 16);
+						for (Entity e1 : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(), radius, 255, radius)) {
+							if (e1 instanceof Player) {
+								Player player = (Player) e1;
+								FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
+								if (fplayer.getFaction() == bannerFaction) {
+									for (String effect : effects) {
+										String[] components = effect.split(":");
+										player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(components[0]), 100, Integer.parseInt(components[1])));
+									}
+									ParticleEffect.LAVA.display(1, 1, 1, 1, 10, banner.getLocation(), 16);
+									ParticleEffect.FLAME.display(1, 1, 1, 1, 10, banner.getLocation(), 16);
 
-										if (banner.getType() != bannerType) {
-											banner.setType(bannerType);
-										}
+									if (banner.getType() != bannerType) {
+										banner.setType(bannerType);
 									}
 								}
 							}
 						}
 					}, 0L, 20L);
-					Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, new Runnable() {
-						@Override
-						public void run() {
-							banner.setType(Material.AIR);
-							as.remove();
-							banner.getWorld().strikeLightningEffect(banner.getLocation());
-							Bukkit.getScheduler().cancelTask(affectorTask);
-							bannerLocations.remove(bannerFaction.getTag());
-						}
+					Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> {
+						banner.setType(Material.AIR);
+						as.remove();
+						banner.getWorld().strikeLightningEffect(banner.getLocation());
+						Bukkit.getScheduler().cancelTask(affectorTask);
+						bannerLocations.remove(bannerFaction.getTag());
 					}, Long.parseLong(bannerTime + ""));
 				} else {
 					fme.msg(TL.WARBANNER_INVALIDLOC);

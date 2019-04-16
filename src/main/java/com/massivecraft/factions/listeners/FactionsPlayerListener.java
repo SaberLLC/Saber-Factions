@@ -296,12 +296,9 @@ public class FactionsPlayerListener implements Listener {
         me.login(); // set kills / deaths
 
         // Check for Faction announcements. Let's delay this so they actually see it.
-        Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, new Runnable() {
-            @Override
-            public void run() {
-                if (me.isOnline()) {
-                    me.getFaction().sendUnreadAnnouncements(me);
-                }
+        Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, () -> {
+            if (me.isOnline()) {
+                me.getFaction().sendUnreadAnnouncements(me);
             }
         }, 33L); // Don't ask me why.
 
@@ -322,13 +319,7 @@ public class FactionsPlayerListener implements Listener {
 
 
         fallMap.put(me.getPlayer(), false);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, new Runnable() {
-            @Override
-            public void run() {
-                fallMap.remove(me.getPlayer());
-
-            }
-        }, 180L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> fallMap.remove(me.getPlayer()), 180L);
 
 
         if (me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {

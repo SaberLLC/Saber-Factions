@@ -30,7 +30,6 @@ public class CmdReload extends FCommand {
 		SavageFactions.plugin.reloadConfig();
 		SavageFactions.plugin.changeItemIDSInConfig();
 		SavageFactions.plugin.loadLang();
-		int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 
 
 		if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight")) {

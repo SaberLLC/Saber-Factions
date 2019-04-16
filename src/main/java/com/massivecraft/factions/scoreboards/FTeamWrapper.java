@@ -45,12 +45,9 @@ public class FTeamWrapper {
 
 
 		if (updating.add(faction)) {
-			Bukkit.getScheduler().runTask(SavageFactions.plugin, new Runnable() {
-				@Override
-				public void run() {
-					updating.remove(faction);
-					applyUpdates(faction);
-				}
+			Bukkit.getScheduler().runTask(SavageFactions.plugin, () -> {
+				updating.remove(faction);
+				applyUpdates(faction);
 			});
 		}
 	}

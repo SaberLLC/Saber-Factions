@@ -30,16 +30,9 @@ public class CmdTpBanner extends FCommand {
 			return;
 		}
 
-		final FactionsPlayerListener fpl = new FactionsPlayerListener();
-
 		if (FactionsBlockListener.bannerLocations.containsKey(fme.getTag())) {
 			fme.msg(TL.COMMAND_TPBANNER_SUCCESS);
-			this.doWarmUp(WarmUpUtil.Warmup.BANNER, TL.WARMUPS_NOTIFY_TELEPORT, "Banner", new Runnable() {
-				@Override
-				public void run() {
-					me.teleport(FactionsBlockListener.bannerLocations.get(fme.getTag()));
-				}
-			}, this.p.getConfig().getLong("warmups.f-banner", 0));
+			this.doWarmUp(WarmUpUtil.Warmup.BANNER, TL.WARMUPS_NOTIFY_TELEPORT, "Banner", () -> me.teleport(FactionsBlockListener.bannerLocations.get(fme.getTag())), this.p.getConfig().getLong("warmups.f-banner", 0));
 		} else {
 			fme.msg(TL.COMMAND_TPBANNER_NOTSET);
 		}

@@ -873,12 +873,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 			// Short task so we're just doing it in method. Not clean but eh.
 			if (cooldown > 0) {
 				setTakeFallDamage(false);
-				Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, new Runnable() {
-					@Override
-					public void run() {
-						setTakeFallDamage(true);
-					}
-				}, 20L * cooldown);
+				Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, () -> setTakeFallDamage(true), 20L * cooldown);
 			}
 		}
 

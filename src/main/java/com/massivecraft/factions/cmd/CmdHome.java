@@ -123,21 +123,18 @@ public class CmdHome extends FCommand {
 			return;
 		}
 
-		this.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", new Runnable() {
-			@Override
-			public void run() {
-				// Create a smoke effect
-				if (Conf.homesTeleportCommandSmokeEffectEnabled) {
-					List<Location> smokeLocations = new ArrayList<>();
-					smokeLocations.add(loc);
-					smokeLocations.add(loc.add(0, 1, 0));
-					smokeLocations.add(CmdHome.this.myFaction.getHome());
-					smokeLocations.add(CmdHome.this.myFaction.getHome().clone().add(0, 1, 0));
-					SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
-				}
-
-				CmdHome.this.me.teleport(CmdHome.this.myFaction.getHome());
+		this.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", () -> {
+			// Create a smoke effect
+			if (Conf.homesTeleportCommandSmokeEffectEnabled) {
+				List<Location> smokeLocations = new ArrayList<>();
+				smokeLocations.add(loc);
+				smokeLocations.add(loc.add(0, 1, 0));
+				smokeLocations.add(CmdHome.this.myFaction.getHome());
+				smokeLocations.add(CmdHome.this.myFaction.getHome().clone().add(0, 1, 0));
+				SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
 			}
+
+			CmdHome.this.me.teleport(CmdHome.this.myFaction.getHome());
 		}, this.p.getConfig().getLong("warmups.f-home", 0));
 	}
 

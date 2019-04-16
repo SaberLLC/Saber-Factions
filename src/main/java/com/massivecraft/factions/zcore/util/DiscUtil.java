@@ -80,17 +80,14 @@ public class DiscUtil {
 				lock.unlock();
 			}
 		} else {
-			Bukkit.getScheduler().runTaskAsynchronously(SavageFactions.plugin, new Runnable() {
-				@Override
-				public void run() {
-					lock.lock();
-					try {
-						write(file, content);
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						lock.unlock();
-					}
+			Bukkit.getScheduler().runTaskAsynchronously(SavageFactions.plugin, () -> {
+				lock.lock();
+				try {
+					write(file, content);
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					lock.unlock();
 				}
 			});
 		}

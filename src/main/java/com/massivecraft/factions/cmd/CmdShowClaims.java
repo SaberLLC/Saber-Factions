@@ -39,7 +39,6 @@ public class CmdShowClaims extends FCommand {
 					chunks.setLength(0);
 				}
 			}
-
 			sendMessage("");
 		}
 

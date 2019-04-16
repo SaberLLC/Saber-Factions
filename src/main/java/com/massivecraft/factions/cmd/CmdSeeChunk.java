@@ -17,9 +17,8 @@ public class CmdSeeChunk extends FCommand {
 
 	//Used a hashmap cuz imma make a particle selection gui later, will store it where the boolean is rn.
 	public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
-	Long interval = 10L;
+	Long interval;
 	private boolean useParticles;
-	private int length;
 	private ParticleEffect effect;
 	private int taskID = -1;
 
@@ -72,18 +71,15 @@ public class CmdSeeChunk extends FCommand {
 	}
 
 	private void startTask() {
-		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, new Runnable() {
-			@Override
-			public void run() {
-				Iterator<String> itr = seeChunkMap.keySet().iterator();
-				while (itr.hasNext()) {
-					Object nameObject = itr.next();
-					String name = nameObject + "";
-					Player player = Bukkit.getPlayer(name);
-					showBorders(player);
-				}
-				manageTask();
+		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> {
+			Iterator<String> itr = seeChunkMap.keySet().iterator();
+			while (itr.hasNext()) {
+				Object nameObject = itr.next();
+				String name = nameObject + "";
+				Player player = Bukkit.getPlayer(name);
+				showBorders(player);
 			}
+			manageTask();
 		}, 0, interval);
 	}
 

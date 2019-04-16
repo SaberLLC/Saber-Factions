@@ -19,7 +19,6 @@ public class CmdAdmin extends FCommand {
 		this.aliases.add("setleader");
 
 		this.requiredArgs.add("player name");
-		//this.optionalArgs.put("", "");
 
 		this.permission = Permission.ADMIN.node;
 		this.disableOnLock = true;

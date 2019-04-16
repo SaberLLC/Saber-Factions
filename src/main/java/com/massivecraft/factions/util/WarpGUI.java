@@ -102,13 +102,10 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
 			} else {
 				fme.setEnteringPassword(true, warp);
 				fme.msg(TL.COMMAND_FWARP_PASSWORD_REQUIRED);
-				Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, new Runnable() {
-					@Override
-					public void run() {
-						if (fme.isEnteringPassword()) {
-							fme.msg(TL.COMMAND_FWARP_PASSWORD_TIMEOUT);
-							fme.setEnteringPassword(false, "");
-						}
+				Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, () -> {
+					if (fme.isEnteringPassword()) {
+						fme.msg(TL.COMMAND_FWARP_PASSWORD_TIMEOUT);
+						fme.setEnteringPassword(false, "");
 					}
 				}, SavageFactions.plugin.getConfig().getInt("fwarp-gui.password-timeout", 5) * 20);
 			}
@@ -116,14 +113,11 @@ public class WarpGUI implements InventoryHolder, FactionGUI {
 	}
 
 	private void doWarmup(final String warp) {
-		WarmUpUtil.process(fme, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, new Runnable() {
-			@Override
-			public void run() {
-				Player player = Bukkit.getPlayer(fme.getPlayer().getUniqueId());
-				if (player != null) {
-					player.teleport(fme.getFaction().getWarp(warp).getLocation());
-					fme.msg(TL.COMMAND_FWARP_WARPED, warp);
-				}
+		WarmUpUtil.process(fme, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, () -> {
+			Player player = Bukkit.getPlayer(fme.getPlayer().getUniqueId());
+			if (player != null) {
+				player.teleport(fme.getFaction().getWarp(warp).getLocation());
+				fme.msg(TL.COMMAND_FWARP_WARPED, warp);
 			}
 		}, SavageFactions.plugin.getConfig().getLong("warmups.f-warp", 0));
 	}
