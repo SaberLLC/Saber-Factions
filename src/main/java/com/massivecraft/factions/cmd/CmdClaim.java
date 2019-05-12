@@ -38,8 +38,8 @@ public class CmdClaim extends FCommand {
         final Faction forFaction = this.argAsFaction(1, myFaction); // Default to own
 
         if (!fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(fme, PermissableAction.CLAIM);
-            if (access != Access.ALLOW && fme.getRole() != Role.ADMIN) {
+            Access access = myFaction.getAccess(fme, PermissableAction.TERRITORY);
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                 fme.msg(TL.GENERIC_NOPERMISSION, "change faction territory");
                 return;
             }
