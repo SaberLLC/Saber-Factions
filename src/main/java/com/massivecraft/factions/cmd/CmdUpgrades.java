@@ -12,7 +12,7 @@ public class CmdUpgrades extends FCommand {
 		this.aliases.add("upgrade");
 
 		//this.requiredArgs.add("");
-		this.optionalArgs.put("mobs/crops/exp", "");
+		this.optionalArgs.put("mobs/crops/exp/power", "");
 
 		this.permission = Permission.UPGRADES.node;
 		this.disableOnLock = true;

@@ -27,6 +27,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -1214,12 +1215,18 @@ public abstract class MemoryFPlayer implements FPlayer {
 		}
 	}
 
+	public String commas(final double amount) {
+		final DecimalFormat formatter = new DecimalFormat("#,###.00");
+		final String number = formatter.format(amount);
+		return number;
+	}
+
 	@Override
 	public void takeMoney(int amt) {
 		if (hasMoney(amt)) {
 			Economy econ = SavageFactions.plugin.getEcon();
 			econ.withdrawPlayer(getPlayer(), amt);
-			sendMessage(TL.GENERIC_MONEYTAKE.toString().replace("{amount}", amt + ""));
+			sendMessage(TL.GENERIC_MONEYTAKE.toString().replace("{amount}", commas(amt)));
 		}
 	}
 }

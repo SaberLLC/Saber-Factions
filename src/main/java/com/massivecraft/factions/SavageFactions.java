@@ -19,10 +19,7 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.fupgrades.CropUpgrades;
-import com.massivecraft.factions.zcore.fupgrades.EXPUpgrade;
-import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
-import com.massivecraft.factions.zcore.fupgrades.SpawnerUpgrades;
+import com.massivecraft.factions.zcore.fupgrades.*;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -232,6 +229,7 @@ public class SavageFactions extends MPlugin {
 				  new FUpgradesGUI(),
 				  new EXPUpgrade(),
 				  new CropUpgrades(),
+				  new RedstoneUpgrade(),
 				  new SpawnerUpgrades(),
 		};
 

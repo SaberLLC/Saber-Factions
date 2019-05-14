@@ -807,7 +807,7 @@ fupgrades:
       Damage: 7
       Lore:
         - ''
-      rows: 3
+      rows: 5
       slots:
         - 0
         - 1
@@ -836,6 +836,24 @@ fupgrades:
         - 24
         - 25
         - 26
+        - 27
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+        - 36
+        - 37
+        - 38
+        - 39
+        - 40
+        - 41
+        - 42
+        - 43
+        - 44
     Crops:
       Crop-Boost:
         level-1: 10
@@ -867,7 +885,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 10
+          - 18
     EXP:
       EXP-Boost:
         level-1: 1.5
@@ -898,7 +916,56 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 13
+          - 20
+    Power:
+      Power-Boost:
+        level-1: 100.0
+        level-2: 200.0
+        level-3: 300.0
+      Cost:
+        level-1: 1000000
+        level-2: 2000000
+        level-3: 3000000
+      PowerItem:
+        Name: '&e&lFaction Power'
+        Type: DIAMOND_SWORD
+        Amount: 1
+        Damage: 0
+        Lore:
+          - '&7&o(Increase the amount of power'
+          - '&7&oyour faction has)'
+          - ''
+          - '&e&lTier'
+          - '&f&l* &7Current Level: &3{level}/3'
+          - ''
+          - '&e&lPerks'
+          - '&f&l* &7Level 1 - &f100 Increased Faction Power'
+          - '&7  - Cost: $1,000,000'
+          - '&f&l* &7Level 2 - &f200 Increased Faction Power'
+          - '&7  - Cost: $2,000,000'
+          - '&f&l* &7Level 3 - &f300 Increased Faction Power'
+          - '&7  - Cost: $3,000,000'
+          - ''
+          - '&e&lClick to &nUnlock'
+        slots:
+          - 4
+    Redstone:
+      Cost: 1000000
+      RedstoneItem:
+        Name: '&e&lUnbreakable  Redstone'
+        Type: REDSTONE
+        Amount: 1
+        Damage: 0
+        Lore:
+          - '&7&o(Prevents water from being'
+          - '&7&oable to break redstone)'
+          - ''
+          - '&f&l* &7Current Level: &3{level}/1'
+          - ''
+          - '&7  - Cost: $1,000,000'
+          - '&e&lClick to &nUnlock'
+        slots:
+          - 26
     Spawners:
       Spawner-Boost:
         # This is a Percentage so .10 means 10% lowered spawner delay!
@@ -930,7 +997,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 16
+          - 24
     Chest:
       Chest-Size:
         # This is rows
@@ -962,7 +1029,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 22
+          - 40
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -1010,6 +1077,18 @@ see-chunk:
   particles: true
   interval: 5
 
+no-water-destroy:
+  Item-List:
+    - 'REDSTONE_COMPARATOR'
+    - 'REDSTONE_COMPARATOR_OFF'
+    - 'REDSTONE_COMPARATOR_ON'
+    - 'REDSTONE_TORCH_OFF'
+    - 'REDSTONE_TORCH_ON'
+    - 'REDSTONE_WIRE'
+    - 'DIODE'
+    - 'DIODE_BLOCK_OFF'
+    - 'DIODE_BLOCK_ON'
+    - 'REDSTONE'
 
 Tntfill:
   enabled: true
