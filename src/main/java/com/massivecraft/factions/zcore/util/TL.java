@@ -317,6 +317,10 @@ public enum TL {
 	COMMAND_FWARP_PASSWORD_REQUIRED("&c&l[!]&c Warp Password:"),
 	COMMAND_FWARP_PASSWORD_TIMEOUT("&c&l[!]&7 Warp password &ccanceled"),
 
+	COMMAND_GRACE_DESCRIPTION("Toggles Grace Period on/off"),
+	COMMAND_GRACE_ENABLED("&cYou cannot place &e%s &cwhile grace period is active!"),
+	COMMAND_GRACE_TOGGLE("&8» &7Grace period is now &c%1$s"),
+
 	COMMAND_HINT_PERMISSION("&aYou can manage your factions permissions using &7/f perms"),
 
 	COMMAND_HOME_DISABLED("&c&l[!]&7 Sorry, Faction homes are &cdisabled on this server."),
@@ -604,6 +608,16 @@ public enum TL {
 
 	COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
 	COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
+
+	COMMAND_SETSTRIKES_FAILURE("&c&l[!]&7 &c{faction} does not exist."),
+	COMMAND_SETSTRIKES_BROADCAST("&c&l[!]&7 &c{faction} has received a strike for {reason}"),
+	COMMAND_SETSTRIKES_SUCCESS("&c&l[!]&7 &c{faction}'s&7 new strikes are &c{strikes}"),
+	COMMAND_SETSTRIKES_DESCRIPTION("Set a faction's points"),
+
+	COMMAND_STRIKE_MESSAGE("&c&l[!] &7{faction} has {strikes} strikes."),
+	COMMAND_STRIKE_NOTFOUND("&c&l[!] &7{faction} does not exist."),
+	COMMAND_STRIKE_NEEDFACTION("&c&l[!] &7&cYou need to join a faction to view your own!"),
+	COMMAND_STRIKE_DESCRIPTION("Give a faction strikes."),
 
 	COMMAND_VAULT_DESCRIPTION("Open your placed faction vault!"),
 	COMMAND_VAULT_INVALID("&c&l[!]&7 Your vault was either&c claimed&7, &cbroken&7, or has&c not been&7 placed yet."),

@@ -23,6 +23,7 @@ public class FCmdRoot extends FCommand {
 	public CmdDescription cmdDescription = new CmdDescription();
 	public CmdDisband cmdDisband = new CmdDisband();
 	public CmdFocus cmdFocus = new CmdFocus();
+	public CmdGrace cmdGrace = new CmdGrace();
 	public CmdHelp cmdHelp = new CmdHelp();
 	public CmdHome cmdHome = new CmdHome();
 	public CmdInvite cmdInvite = new CmdInvite();
@@ -104,6 +105,8 @@ public class FCmdRoot extends FCommand {
 	public CmdTntFill cmdTntFill = new CmdTntFill();
 	public CmdChest cmdChest = new CmdChest();
 	public CmdSetBanner cmdSetBanner = new CmdSetBanner();
+	public CmdStrike cmdStrike = new CmdStrike();
+	public CmdSetStrikes cmdSetStrikes = new CmdSetStrikes();
 
 
 	public FCmdRoot() {
@@ -140,7 +143,8 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdDeinvite);
 		this.addSubCommand(this.cmdDescription);
 		this.addSubCommand(this.cmdDisband);
-
+		this.addSubCommand(this.cmdStrike);
+		this.addSubCommand(this.cmdSetStrikes);
 		this.addSubCommand(this.cmdHelp);
 		this.addSubCommand(this.cmdHome);
 		this.addSubCommand(this.cmdInvite);
@@ -216,6 +220,10 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdTntFill);
 		this.addSubCommand(this.cmdChest);
 		this.addSubCommand(this.cmdSetBanner);
+
+		if (SavageFactions.plugin.getConfig().getBoolean("f-grace.Enabled")) {
+			this.addSubCommand(this.cmdGrace);
+		}
 
 
 		if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null) {

@@ -280,6 +280,7 @@ show:
   - '&6 * &eOwner &7{leader}'
   - '&6 * &eDescription &7{description}'
   - '&6 * &eLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'
+  - '&6 * &eFaction Strikes: &7{strikes}'
   - '&6 * &eFounded &7{create-date}'
   - '&6 * &eBalance &f{faction-balance}'
   - '&6 * &eAllies &c{allies-list}'
@@ -752,6 +753,26 @@ checkpoints:
 fnear:
   Enabled: true
   Radius: 50
+
+############################################################
+# +------------------------------------------------------+ #
+# |               Falling Block Fix                      | #
+# +------------------------------------------------------+ #
+############################################################
+#Enabling this will disallow falling blocks to be in spawn.
+#Meaning people cannot shoot cannons into spawn and stack sand
+#Recommended: true
+Falling-Block-Fix:
+  enabled: true
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Faction GracePeriod                   | #
+# +------------------------------------------------------+ #
+############################################################
+
+f-grace:
+  Enabled: true
 
 ############################################################
 # +------------------------------------------------------+ #

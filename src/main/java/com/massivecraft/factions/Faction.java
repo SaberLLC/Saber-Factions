@@ -73,6 +73,10 @@ public interface Faction extends EconomyParticipator {
 
 	void ban(FPlayer target, FPlayer banner);
 
+	int getStrikes();
+
+	void setStrikes(int strikes);
+
 	void unban(FPlayer player);
 
 	boolean isBanned(FPlayer player);

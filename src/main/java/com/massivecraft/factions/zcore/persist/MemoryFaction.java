@@ -68,6 +68,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 	Inventory chest;
 	Map<String, Object> bannerSerialized;
 	private long lastDeath;
+	private int strikes = 0;
 
 	// -------------------------------------------- //
 	// Construct
@@ -115,6 +116,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 		this.defaultRole = Role.NORMAL;
 
 		resetPerms(); // Reset on new Faction so it has default values.
+	}
+
+	public int getStrikes() {
+		return strikes;
+	}
+
+	public void setStrikes(int strikes) {
+		this.strikes = strikes;
 	}
 
 	public HashMap<String, List<String>> getAnnouncements() {

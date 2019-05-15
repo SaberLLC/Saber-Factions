@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Relation;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.dynmap.snakeyaml.nodes.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,7 @@ public enum TagReplacer {
 	FACTION_KILLS(TagType.FACTION, "{faction-kills}"),
 	FACTION_DEATHS(TagType.FACTION, "{faction-deaths}"),
 	FACTION_BANCOUNT(TagType.FACTION, "{faction-bancount}"),
+	FACTION_STRIKES(TagType.FACTION, "{strikes}"),
 
 	/**
 	 * General variables, require no faction or player
@@ -255,6 +257,9 @@ public enum TagReplacer {
 				return String.valueOf(fac.getDeaths());
 			case FACTION_BANCOUNT:
 				return String.valueOf(fac.getBannedPlayers().size());
+			case FACTION_STRIKES:
+				return String.valueOf(fac.getStrikes());
+
 			default:
 		}
 		return null;
