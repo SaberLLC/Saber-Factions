@@ -42,6 +42,7 @@ import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -58,8 +59,6 @@ public class SavageFactions extends MPlugin {
 	public static boolean startupFinished = false;
 
 
-	// Persistence related
-	public static ArrayList<FPlayer> playersFlying = new ArrayList();
 
 	public boolean PlaceholderApi;
 	// Commands
@@ -68,6 +67,7 @@ public class SavageFactions extends MPlugin {
 	public boolean mc17 = false;
 	public boolean mc18 = false;
 	public boolean mc113 = false;
+	public boolean mc114 = false;
 	public boolean useNonPacketParticles = false;
 	public boolean factionsFlight = false;
 	//multiversion material fields
@@ -134,16 +134,25 @@ public class SavageFactions extends MPlugin {
 		}
 
 		int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
-		if (version == 7) {
-			SavageFactions.plugin.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
-			mc17 = true;
-		} else if (version == 8) {
-			SavageFactions.plugin.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
-			mc18 = true;
-		} else if (version == 13) {
-			SavageFactions.plugin.log("Minecraft Version 1.13 found, New Items will be used.");
-			mc113 = true;
-			changeItemIDSInConfig();
+		switch (version) {
+			case 7:
+				SavageFactions.plugin.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+				mc17 = true;
+				break;
+			case 8:
+				SavageFactions.plugin.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+				mc18 = true;
+				break;
+			case 13:
+				SavageFactions.plugin.log("Minecraft Version 1.13 found, New Items will be used.");
+				mc113 = true;
+				changeItemIDSInConfig();
+				break;
+			case 14:
+				SavageFactions.plugin.log("Minecraft Version 1.14 found.");
+				mc114 = true;
+				changeItemIDSInConfig();
+				break;
 		}
 		setupMultiversionMaterials();
 		migrateFPlayerLeaders();
@@ -171,10 +180,6 @@ public class SavageFactions extends MPlugin {
 				continue;
 			}
 			faction.addFPlayer(fPlayer);
-		}
-		playersFlying.clear();
-		for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
-			playersFlying.add(fPlayer);
 		}
 		UtilFly.run();
 
@@ -336,7 +341,7 @@ public class SavageFactions extends MPlugin {
 
 	private void migrateFPlayerLeaders() {
 		List<String> lines = new ArrayList<>();
-		File fplayerFile = new File("plugins\\Factions\\players.json");
+		File fplayerFile = new File("plugins" + File.pathSeparator + "Factions" + File.pathSeparator + "players.json");
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(fplayerFile));
@@ -740,7 +745,13 @@ public class SavageFactions extends MPlugin {
 	}
 
 	public String getPrimaryGroup(OfflinePlayer player) {
-		return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
+		AtomicReference<String> primaryGroup = new AtomicReference<>();
+
+		if (perms == null || !perms.hasGroupSupport()) return " ";
+		else {
+			Bukkit.getScheduler().runTaskAsynchronously(this, () -> primaryGroup.set(perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player)));
+			return primaryGroup.get();
+		}
 	}
 
 	public void debug(Level level, String s) {

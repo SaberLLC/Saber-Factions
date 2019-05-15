@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.util.MultiversionMaterials;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -106,7 +107,7 @@ public enum PermissableAction {
 		}
 		Material material = Material.matchMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-')));
 		if (material == null) {
-			material = SavageFactions.plugin.STAINED_CLAY;
+			material = MultiversionMaterials.fromString(SavageFactions.plugin.getConfig().getString("fperm-gui.action.materials")).parseMaterial();
 		}
 
 		Access access = fme.getFaction().getAccess(permissable, this);

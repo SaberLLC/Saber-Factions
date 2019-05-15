@@ -523,6 +523,9 @@ fperm-gui:
       home: 49
       # Material to show, if the material is colorable eg: Wool, Stained Clay it will update with it's access color
     materials:
+      # This is important to change, depending on what you use. If you use clay, make it clay, if its glass make it glass.
+      default: STAINED_GLASS
+      # These below are for different actual permissions.
       build: STAINED_GLASS
       destroy: STAINED_GLASS
       frost-walk: STAINED_GLASS

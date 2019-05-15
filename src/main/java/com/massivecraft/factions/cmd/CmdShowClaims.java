@@ -30,15 +30,17 @@ public class CmdShowClaims extends FCommand {
 		}
 		for (String world : chunkMap.keySet()) {
 			String message = TL.COMMAND_SHOWCLAIMS_FORMAT.toString().replace("{world}", world);
-			sendMessage(message.replace("{chunks}", "")); // made {chunks} blank as I removed the placeholder and people wont update their config :shrug:
+			// made {chunks} blank as I removed the placeholder and people wont update their config :shrug:
+			sendMessage(message.replace("{chunks}", ""));
 			StringBuilder chunks = new StringBuilder();
 			for (String chunkString : chunkMap.get(world)) {
-				chunks.append(chunkString + ", ");
+				chunks.append(chunkString).append(", ");
 				if (chunks.toString().length() >= 2000) {
 					sendMessage(chunks.toString());
 					chunks.setLength(0);
 				}
 			}
+			if (chunks.length() != 0) sendMessage(chunks.toString());
 			sendMessage("");
 		}
 
