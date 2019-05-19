@@ -67,6 +67,11 @@ public class CmdKick extends FCommand {
 			return;
 		}
 
+		if(toKick.isAlt()){
+			msg(TL.GENERIC_YOUMAYWANT.toString() + p.cmdBase.cmdAltKick.getUseageTemplate(false));
+			return;
+		}
+
 		Faction toKickFaction = toKick.getFaction();
 
 		if (toKickFaction.isWilderness()) {

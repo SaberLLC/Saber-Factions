@@ -287,6 +287,7 @@ show:
   - '&6 * &eEnemies &c{enemies-list}'
   - '&6 * &eOnline Members &8(&7{online}/{members}&8) &7{online-list}'
   - '&6 * &eOffline Members &8(&7{offline}/{members}&8) &7{offline-list}'
+  - '&6 * &eAlts &8{alts}'
   - '&6 * &eBans &7{faction-bancount}'
   - '&8&m----------------------------------------'
 # For a /f show that does not display fancy messages that are essentially empty, use minimal-show
@@ -520,6 +521,8 @@ fperm-gui:
       tntfill: 41
       chest: 42
       spawner: 38
+      invitealt: 50
+      kickalt: 48
       home: 49
       # Material to show, if the material is colorable eg: Wool, Stained Clay it will update with it's access color
     materials:
@@ -553,6 +556,8 @@ fperm-gui:
       chest: STAINED_GLASS
       spawner: STAINED_GLASS
       home: STAINED_GLASS
+      invitealt: STAINED_GLASS
+      kickalt: STAINED_GLASS
     # Same dummy items format as above
     dummy-items:
       '0':
@@ -713,6 +718,15 @@ faction-disband-broadcast: true
 ############################################################
 See-Invisible-Faction-Members: false
 
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Faction Alt Accounts                  | #
+# +------------------------------------------------------+ #
+############################################################
+f-alts:
+  Enabled: true
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                  Faction Rules                       | #
@@ -773,7 +787,6 @@ Falling-Block-Fix:
 # |                Faction GracePeriod                   | #
 # +------------------------------------------------------+ #
 ############################################################
-
 f-grace:
   Enabled: true
 
@@ -1129,6 +1142,7 @@ Tntfill:
 #  - {enemies-list} : Lists each faction enemy with tooltips
 #  - {online-list}  : Lists all online members with tooltips
 #  - {offline-list} : Lists all offline members with tooltips
+#  - {alts} : List all alts online or offline
 # Player variables. Can be used in tooltips.show, scoreboards, or /f show
 #  - {group}     : Players group
 #  - {name}      : Players name

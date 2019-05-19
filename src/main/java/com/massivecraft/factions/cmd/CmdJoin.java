@@ -76,6 +76,13 @@ public class CmdJoin extends FCommand {
 			return;
 		}
 
+		int altLimit = Conf.factionAltMemberLimit;
+
+		if (altLimit > 0 && faction.getAltPlayers().size() >= altLimit && !faction.altInvited(fme)) {
+			msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(fme), altLimit, fplayer.describeTo(fme, false));
+			return;
+		}
+
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
 		if (samePlayer && !canAffordCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString())) {
 			return;
@@ -107,7 +114,14 @@ public class CmdJoin extends FCommand {
 		faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
 
 		fplayer.resetFactionData();
-		fplayer.setFaction(faction);
+
+		if(faction.altInvited(fplayer)){
+			fplayer.setAlt(true);
+			fplayer.setFaction(faction, true);
+		} else {
+			fplayer.setFaction(faction, false);
+		}
+
 		faction.deinvite(fplayer);
 		fme.setRole(faction.getDefaultRole());
 

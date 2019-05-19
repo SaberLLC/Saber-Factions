@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.ChatColor;
 
 public class FPromoteCommand extends FCommand {
 
@@ -35,6 +36,11 @@ public class FPromoteCommand extends FCommand {
 
 		if (!target.getFaction().equals(myFaction)) {
 			msg(TL.COMMAND_PROMOTE_WRONGFACTION, target.getName());
+			return;
+		}
+
+		if(target.isAlt()){
+			msg(ChatColor.RED + "You can not edit the rank of alt accounts.");
 			return;
 		}
 

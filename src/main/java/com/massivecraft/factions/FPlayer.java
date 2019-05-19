@@ -26,6 +26,11 @@ import java.util.List;
 
 public interface FPlayer extends EconomyParticipator {
 
+
+	public void setAlt(boolean alt);
+
+	public boolean isAlt();
+
 	/**
 	 * Used to know if stealth is toggled on or off
 	 *
@@ -62,7 +67,7 @@ public interface FPlayer extends EconomyParticipator {
 	 *
 	 * @param faction faction to set.
 	 */
-	void setFaction(Faction faction);
+	void setFaction(Faction faction, boolean alt);
 
 	/**
 	 * Gets the faction ID of the player.

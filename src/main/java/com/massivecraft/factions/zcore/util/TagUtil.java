@@ -233,7 +233,32 @@ public class TagUtil {
 				}
 				fancyMessages.add(currentOffline);
 				return firstOffline && minimal ? null : fancyMessages; // we must return here and not outside the switch
+			case ALTS:
+				FancyMessage alts = SavageFactions.plugin.txt.parseFancy(prefix);
+				boolean firstAlt = true;
+				for (FPlayer p : target.getAltPlayers()) {
+					String name = p.getName();
+					ChatColor color;
+
+					if (p.isOnline()) {
+						color = ChatColor.GREEN;
+					} else {
+						color = ChatColor.RED;
+					}
+
+					alts.then(firstAlt ? name : ", " + name);
+					alts.tooltip(tipPlayer(p)).color(color);
+					firstAlt = false;
+					if (alts.toJSONString().length() > ARBITRARY_LIMIT) {
+						fancyMessages.add(alts);
+						currentOffline = new FancyMessage("");
+					}
+
+				}
+				fancyMessages.add(alts);
+				return firstAlt && minimal ? null : fancyMessages;
 			default:
+				break;
 		}
 		return null;
 	}

@@ -21,6 +21,17 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
+
+	boolean altInvited(FPlayer fplayer);
+
+	void altInvite(FPlayer fplayer);
+
+	boolean addAltPlayer(FPlayer fplayer);
+
+	boolean removeAltPlayer(FPlayer fplayer);
+
+	Set<FPlayer> getAltPlayers();
+
 	HashMap<String, List<String>> getAnnouncements();
 
 	ConcurrentHashMap<String, LazyLocation> getWarps();

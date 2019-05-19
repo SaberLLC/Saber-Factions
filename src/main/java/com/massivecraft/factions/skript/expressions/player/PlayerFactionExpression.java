@@ -80,14 +80,14 @@ public class PlayerFactionExpression extends SimpleExpression<String> {
 		switch (mode) {
 			case DELETE:
 			case RESET:
-				fPlayer.setFaction(Factions.getInstance().getWilderness());
+				fPlayer.setFaction(Factions.getInstance().getWilderness(), false);
 				break;
 			case SET:
 				Faction faction = Factions.getInstance().getByTag((String) delta[0]);
 				if (faction == null) {
 					faction = Factions.getInstance().getWilderness();
 				}
-				fPlayer.setFaction(faction);
+				fPlayer.setFaction(faction, false);
 				break;
 			default:
 		}

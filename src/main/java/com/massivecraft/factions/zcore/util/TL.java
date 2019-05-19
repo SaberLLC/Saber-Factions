@@ -146,6 +146,12 @@ public enum TL {
 	COMMAND_AUTOCLAIM_OTHERFACTION("&c&l[!]&7 You &ccan't &7claim land for &c%1$s&7."),
 	COMMAND_AUTOCLAIM_DESCRIPTION("Auto-claim land as you walk around"),
 
+
+	COMMAND_ALTINVITE_DESCRIPTION("Invite Alts to your faction."),
+	COMMAND_ALTKICK_DESCRIPTION("Kick alts from your faction"),
+	COMMAND_ALTKICK_NOTALT("&c&l[!] &7Player is not an alt."),
+	COMMAND_ALTKICK_NOTMEMBER("&c&l[!] &7This player is not a member of your faction."),
+
 	COMMAND_AUTOHELP_HELPFOR("Help for command \""),
 
 	COMMAND_BAN_DESCRIPTION("Ban players from joining your Faction."),
@@ -763,7 +769,7 @@ public enum TL {
 	COMMAND_UNCLAIMALL_DESCRIPTION("Unclaim all of your factions land"),
 	COMMAND_UNCLAIM_CLICKTOUNCLAIM("Click to unclaim &2(%1$d, %2$d)"),
 
-	COMMAND_VERSION_NAME("&c&l[!]&7 &c&k||| &r&4SavageFactions&7 &c&k|||&r &c» &7By ProSavage"),
+	COMMAND_VERSION_NAME("&c&l[!]&7 &c&k||| &r&4SavageFactions+&7 &c&k|||&r &c» &7By Driftay & ProSavage"),
 	COMMAND_VERSION_VERSION("&7Version &c» &7%1$s"),
 	COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
 

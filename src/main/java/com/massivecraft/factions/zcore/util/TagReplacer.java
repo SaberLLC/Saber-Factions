@@ -26,6 +26,7 @@ public enum TagReplacer {
 	ENEMIES_LIST(TagType.FANCY, "{enemies-list}"),
 	TRUCES_LIST(TagType.FANCY, "{truces-list}"),
 	OFFLINE_LIST(TagType.FANCY, "{offline-list}"),
+	ALTS(TagType.FANCY, "{alts}"),
 
 	/**
 	 * Player variables, require a player

@@ -51,6 +51,11 @@ public class CmdColeader extends FCommand {
 		boolean permAny = Permission.COLEADER_ANY.has(sender, false);
 		Faction targetFaction = you.getFaction();
 
+		if(you.isAlt()){
+			msg(ChatColor.RED + "You can not promote alt accounts.");
+			return;
+		}
+
 		if (targetFaction != myFaction && !permAny) {
 			msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(fme, true));
 			return;

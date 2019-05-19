@@ -33,6 +33,7 @@ public class CmdShow extends FCommand {
 		defaults.add("<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list}");
 		defaults.add("<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}");
 		defaults.add("<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}");
+		defaults.add("<a>Alt List: <i>{alts}");
 
 		// this.requiredArgs.add("");
 		this.optionalArgs.put("faction tag", "yours");

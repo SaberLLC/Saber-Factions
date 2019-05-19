@@ -179,7 +179,11 @@ public class SavageFactions extends MPlugin {
 				fPlayer.resetFactionData(false);
 				continue;
 			}
-			faction.addFPlayer(fPlayer);
+			if (fPlayer.isAlt()) {
+				faction.addAltPlayer(fPlayer);
+			} else {
+				faction.addFPlayer(fPlayer);
+			}
 		}
 		UtilFly.run();
 

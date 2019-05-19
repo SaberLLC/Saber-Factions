@@ -8,6 +8,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 public class CmdAdmin extends FCommand {
 
@@ -39,6 +40,11 @@ public class CmdAdmin extends FCommand {
 
 		boolean permAny = Permission.ADMIN_ANY.has(sender, false);
 		Faction targetFaction = fyou.getFaction();
+
+		if(fyou.isAlt()){
+			msg(ChatColor.RED + "You can not promote alt accounts.");
+			return;
+		}
 
 		if (targetFaction != myFaction && !permAny) {
 			msg(TL.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(fme, true));

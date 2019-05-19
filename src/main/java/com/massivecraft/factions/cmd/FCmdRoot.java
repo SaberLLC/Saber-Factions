@@ -107,6 +107,9 @@ public class FCmdRoot extends FCommand {
 	public CmdSetBanner cmdSetBanner = new CmdSetBanner();
 	public CmdStrike cmdStrike = new CmdStrike();
 	public CmdSetStrikes cmdSetStrikes = new CmdSetStrikes();
+	public CmdKickAlt cmdAltKick = new CmdKickAlt();
+	public CmdInviteAlt cmdAltInvite = new CmdInviteAlt();
+
 
 
 	public FCmdRoot() {
@@ -220,6 +223,11 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdTntFill);
 		this.addSubCommand(this.cmdChest);
 		this.addSubCommand(this.cmdSetBanner);
+
+		if(SavageFactions.plugin.getConfig().getBoolean("f-alts.Enabled")){
+			this.addSubCommand(this.cmdAltInvite);
+			this.addSubCommand(this.cmdAltKick);
+		}
 
 		if (SavageFactions.plugin.getConfig().getBoolean("f-grace.Enabled")) {
 			this.addSubCommand(this.cmdGrace);

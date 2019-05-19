@@ -14,4 +14,5 @@ public class JSONFaction extends MemoryFaction {
 	public JSONFaction(String id) {
 		super(id);
 	}
+
 }
