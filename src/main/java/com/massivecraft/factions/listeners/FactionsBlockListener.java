@@ -483,11 +483,11 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+        FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
             return;
         }
-        FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
         if (!fme.hasFaction()) {
             return;
         }

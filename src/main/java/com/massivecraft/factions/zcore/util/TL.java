@@ -63,6 +63,7 @@ public enum TL {
 	/**
 	 * Messsges for /f help
 	 */
+    ALT_PLACE_DENY("&c[!] &7You are a alt you may not place blocks!"),
 	COMMAND_HELP_NEXTCREATE("<i>Learn how to create a faction on the next page."),
 	COMMAND_HELP_INVITATIONS("command.help.invitations", "<i>You might want to close it and use invitations:"),
 	COMMAND_HELP_HOME("<i>And don't forget to set your home:"),

@@ -75,13 +75,22 @@ public class CmdJoin extends FCommand {
 			}
 			return;
 		}
+		int limit = 0;
 
 		int altLimit = Conf.factionAltMemberLimit;
+		limit = Conf.factionMemberLimit;
+
+		if (limit > 0 && faction.getFPlayers().size() >= limit && !faction.altInvited(fme)) {
+			msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(fme), limit, fplayer.describeTo(fme, false));
+			return;
+		}
 
 		if (altLimit > 0 && faction.getAltPlayers().size() >= altLimit && !faction.altInvited(fme)) {
 			msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(fme), altLimit, fplayer.describeTo(fme, false));
 			return;
 		}
+
+
 
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
 		if (samePlayer && !canAffordCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString())) {
