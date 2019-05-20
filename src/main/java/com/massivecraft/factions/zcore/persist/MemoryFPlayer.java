@@ -1070,6 +1070,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 			if (e == null) {
 				continue;
 			}
+
 			if (e instanceof Player) {
 				Player eplayer = (((Player) e).getPlayer());
 				if (eplayer == null) {
