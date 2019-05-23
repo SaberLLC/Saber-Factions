@@ -1144,6 +1144,8 @@ Tntfill:
 #  - {online-list}  : Lists all online members with tooltips
 #  - {offline-list} : Lists all offline members with tooltips
 #  - {alts} : List all alts online or offline
+#  - {truces-list}  : Lists each faction truce with tooltips
+
 # Player variables. Can be used in tooltips.show, scoreboards, or /f show
 #  - {group}     : Players group
 #  - {name}      : Players name
