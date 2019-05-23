@@ -8,15 +8,12 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public class UtilFly {
 
 	public static void run() {
 		if (!SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight"))
 			return;
-
 
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> {
 			for (FPlayer fp : FPlayers.getInstance().getAllFPlayers()) {

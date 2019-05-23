@@ -92,10 +92,10 @@ public class CmdFly extends FCommand {
 						continue;
 					}
 					Player player = Bukkit.getPlayer(name);
-                    if (player == null
-                            || !player.isFlying()
-                            || player.getGameMode() == GameMode.CREATIVE
-                            || !SavageFactions.plugin.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
+					if (player == null
+							|| !player.isFlying()
+							|| player.getGameMode() == GameMode.CREATIVE
+							|| !SavageFactions.plugin.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
 						continue;
 					}
 					FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
@@ -110,7 +110,7 @@ public class CmdFly extends FCommand {
 					}
 					FLocation myFloc = new FLocation(player.getLocation());
 					if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-                        if (!checkBypassPerms(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
+						if (!checkBypassPerms(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
 							fPlayer.setFlying(false);
 							flyMap.remove(name);
 						}
@@ -153,8 +153,8 @@ public class CmdFly extends FCommand {
 
 	public static Boolean isSystemFaction(Faction faction) {
 		return faction.isSafeZone() ||
-				  faction.isWarZone() ||
-				  faction.isWilderness();
+				faction.isWarZone() ||
+				faction.isWilderness();
 	}
 
 	public static void checkTaskState() {
@@ -191,6 +191,7 @@ public class CmdFly extends FCommand {
 				}
 			}
 		}
+
 
 		if (args.size() == 0) {
 			toggleFlight(fme.isFlying(), me);
