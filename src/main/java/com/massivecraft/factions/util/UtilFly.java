@@ -13,19 +13,14 @@ import java.util.Iterator;
 
 public class UtilFly {
 
-
-	public static ArrayList<FPlayer> playersFlying = SavageFactions.playersFlying;
-
 	public static void run() {
 		if (!SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight"))
 			return;
 
-		playersFlying.clear();
 
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> {
-			for (FPlayer fp : playersFlying) {
-				if (fp != null)
-					fp.checkIfNearbyEnemies();
+			for (FPlayer fp : FPlayers.getInstance().getAllFPlayers()) {
+				if (fp.isFlying()) fp.checkIfNearbyEnemies();
 			}
 		}, 0, SavageFactions.plugin.getConfig().getInt("fly-task-interval", 10));
 	}
@@ -38,11 +33,6 @@ public class UtilFly {
 		fp.getPlayer().setFlying(fly);
 		fp.setFlying(fly);
 
-		if (fly) {
-			playersFlying.add(fp);
-		} else {
-			playersFlying.remove(fp);
-		}
 
 		if (!silent) {
 			if (!damage) {
