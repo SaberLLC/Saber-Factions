@@ -29,7 +29,7 @@ public class CmdPaypalSee extends FCommand {
 		}
 			Faction faction = argAsFaction(0);
 
-			if (faction != null)
+			if (faction == null)
 				return;
 
 				if (!faction.isWilderness() && !faction.isSafeZone() && !faction.isWarZone()) {
