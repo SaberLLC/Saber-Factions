@@ -63,7 +63,6 @@ public enum TL {
 	/**
 	 * Messsges for /f help
 	 */
-    ALT_PLACE_DENY("&c[!] &7You are a alt you may not place blocks!"),
 	COMMAND_HELP_NEXTCREATE("<i>Learn how to create a faction on the next page."),
 	COMMAND_HELP_INVITATIONS("command.help.invitations", "<i>You might want to close it and use invitations:"),
 	COMMAND_HELP_HOME("<i>And don't forget to set your home:"),
@@ -133,6 +132,10 @@ public enum TL {
 	COMMAND_AHOME_TARGET("You were sent to your f home."),
 
 	COMMAND_ANNOUNCE_DESCRIPTION("Announce a message to players in faction."),
+
+	COMMAND_ALTS_DESCRIPTION("Faction Alts Commands"),
+
+	COMMAND_ALTS_LIST_DESCRIPTION("List all alts in your faction"),
 
 	COMMAND_FREECAM_ENEMYINRADIUS("Freecam disabled, An enemy is closeby!"),
 	COMMAND_FREECAM_OUTSIDEFLIGHT("Please dont leave the flight radius!"),
@@ -356,6 +359,8 @@ public enum TL {
 	COMMAND_INVITE_CLICKTOJOIN("Click to join!"),
 	COMMAND_INVITE_INVITEDYOU(" &chas invited you to join "),
 	COMMAND_INVITE_INVITED("&c&l[!]&7 &c%1$s&7 invited &c%2$s&7 to your faction."),
+	COMMAND_ALTINVITE_INVITED_ALT("&c&l[!]&7 &c%1$s&7 invited &c%2$s&7 to your faction as an alt."),
+
 	COMMAND_INVITE_ALREADYMEMBER("&c&l[!]&7 &c%1$s&7 is already a member of&c %2$s"),
 	COMMAND_INVITE_ALREADYINVITED("&c&l[!]&7 &c%1$s&7 has already been invited"),
 	COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
@@ -675,6 +680,8 @@ public enum TL {
 	COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
 	COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
 	COMMAND_SHOWINVITES_DESCRIPTION("Show pending faction invites"),
+
+	COMMAND_ALTS_LIST_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
 
 	COMMAND_STATUS_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
 	COMMAND_STATUS_ONLINE("Online"),

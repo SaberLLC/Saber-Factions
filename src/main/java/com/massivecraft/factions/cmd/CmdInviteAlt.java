@@ -15,10 +15,7 @@ public class CmdInviteAlt extends FCommand {
 
     public CmdInviteAlt() {
         super();
-        this.aliases.add("altinvite");
-        this.aliases.add("altinv");
-        this.aliases.add("invalt");
-        this.aliases.add("invitealt");
+        this.aliases.add("invite");
 
         this.requiredArgs.add("player name");
         // this.optionalArgs.put("", "");
@@ -47,7 +44,6 @@ public class CmdInviteAlt extends FCommand {
 
         if (target.getFaction() == myFaction) {
             msg(TL.COMMAND_INVITE_ALREADYMEMBER, target.getName(), myFaction.getTag());
-            msg(TL.GENERIC_YOUMAYWANT.toString() + p.cmdBase.cmdAltKick.getUseageTemplate(false));
             return;
         }
 
@@ -86,7 +82,7 @@ public class CmdInviteAlt extends FCommand {
 
         message.send(target.getPlayer());
 
-        myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), target.describeTo(myFaction));
+        myFaction.msg(TL.COMMAND_ALTINVITE_INVITED_ALT, fme.describeTo(myFaction, true), target.describeTo(myFaction));
     }
 
     @Override

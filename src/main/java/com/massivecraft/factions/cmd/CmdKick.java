@@ -68,7 +68,8 @@ public class CmdKick extends FCommand {
 		}
 
 		if(toKick.isAlt()){
-			msg(TL.GENERIC_YOUMAYWANT.toString() + p.cmdBase.cmdAltKick.getUseageTemplate(false));
+			msg(SavageFactions.plugin.color("&cToo few arguments, &eUse like this:"));
+			msg(SavageFactions.plugin.color("&b/f alts,alt kick &3<player name>"));
 			return;
 		}
 

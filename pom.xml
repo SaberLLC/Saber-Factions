@@ -69,7 +69,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <finalName>SavageFactionsPlus-${maven.build.timestamp}</finalName>
+                    <finalName>SavageFactionsPlus</finalName>
                 </configuration>
             </plugin>
             <plugin>

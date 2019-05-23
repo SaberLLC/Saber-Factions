@@ -155,6 +155,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 				return String.valueOf(faction.getDeaths());
 			case "faction_maxvaults":
 				return String.valueOf(faction.getMaxVaults());
+			case "faction_grace":
+				return String.valueOf(Conf.gracePeriod);
 			case "faction_name_at_location":
 				Faction factionAtLocation = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
 				return factionAtLocation != null ? factionAtLocation.getTag() : Factions.getInstance().getWilderness().getTag();
