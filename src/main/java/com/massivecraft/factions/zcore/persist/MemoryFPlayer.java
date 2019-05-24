@@ -1065,6 +1065,11 @@ public abstract class MemoryFPlayer implements FPlayer {
 	@Override
 	public boolean checkIfNearbyEnemies() {
 		Player me = this.getPlayer();
+
+		if (me == null) {
+			return false;
+		}
+		
 		int radius = Conf.stealthFlyCheckRadius;
 		for (Entity e : me.getNearbyEntities(radius, 255, radius)) {
 			if (e == null) {

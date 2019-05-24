@@ -23,7 +23,7 @@ public class CropUpgrades implements Listener {
 		Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
 
 		if (!factionAtLoc.isWilderness()) {
-			int level = factionAtLoc.getUpgrade(Upgrade.CROP);
+			int level = factionAtLoc.getUpgrade(UpgradeType.CROP);
 			if (level != 0) {
 				int chance = -1;
 

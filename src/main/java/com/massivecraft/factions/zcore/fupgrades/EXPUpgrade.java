@@ -23,7 +23,7 @@ public class EXPUpgrade implements Listener {
 		Faction faction = Board.getInstance().getFactionAt(floc);
 
 		if (!faction.isWilderness()) {
-			int level = faction.getUpgrade(Upgrade.EXP);
+			int level = faction.getUpgrade(UpgradeType.EXP);
 			if (level != 0) {
 
 				double multiplier = -1;

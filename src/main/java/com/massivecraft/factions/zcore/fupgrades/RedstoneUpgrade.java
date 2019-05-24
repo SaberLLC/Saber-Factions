@@ -20,7 +20,7 @@ public class RedstoneUpgrade implements Listener {
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
 
         if (!factionAtLoc.isWilderness()) {
-            int level = factionAtLoc.getUpgrade(Upgrade.REDSTONE);
+            int level = factionAtLoc.getUpgrade(UpgradeType.REDSTONE);
             if (level != 0) {
                 switch (level) {
                     case 1:
