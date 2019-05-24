@@ -24,7 +24,7 @@ public class CmdInviteAlt extends FCommand {
         this.disableOnLock = true;
 
         senderMustBePlayer = true;
-        senderMustBeMember = false;
+        senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeColeader = false;
         senderMustBeAdmin = false;

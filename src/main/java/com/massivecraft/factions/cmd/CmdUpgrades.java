@@ -30,8 +30,7 @@ public class CmdUpgrades extends FCommand {
 			fme.sendMessage("This command is disabled!");
 			return;
 		}
-		FUpgradesGUI fgui = new FUpgradesGUI();
-		fgui.openMainMenu(fme);
+		new FUpgradesGUI().openMainMenu(fme);
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class CmdAlts extends FCommand {
         this.disableOnLock = false;
 
         senderMustBePlayer = true;
-        senderMustBeMember = false;
+        senderMustBeMember = true;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
