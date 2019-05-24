@@ -16,7 +16,7 @@ public class UtilFly {
 			return;
 
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> {
-			for (FPlayer fp : FPlayers.getInstance().getAllFPlayers()) {
+			for (FPlayer fp : FPlayers.getInstance().getOnlinePlayers()) {
 				if (fp.isFlying()) fp.checkIfNearbyEnemies();
 			}
 		}, 0, SavageFactions.plugin.getConfig().getInt("fly-task-interval", 10));
