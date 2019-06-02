@@ -702,52 +702,6 @@ fwarp-gui:
       lore:
         -
 
-
-
-############################################################
-# +------------------------------------------------------+ #
-# |                BankNote/XPBottles                    | #
-# +------------------------------------------------------+ #
-############################################################
-XP-BankNote-Enabled: true
-Banknote:
-  Item:
-    Display:
-      glow: true
-      name: '&aBanknote'
-      lore:
-        - '&eValue: &6{money}'
-        - '&eOwner: &6{player}'
-        - '&fThis is just a peace of paper'
-    ID: PAPER
-    DamageValue: 0
-    Checks-for: 'Value: '
-  Range:
-    MIN: 1000
-    MAX: 9999999999
-XpBottle:
-  Item:
-    Display:
-      glow: true
-      name: '&eXpBottle'
-      lore:
-        - '&eValue: &6{exp} EXP'
-        - '&eOwner: &6{player}'
-        - '&fThis is just a XpBottle'
-    ID: EXP_BOTTLE
-    DamageValue: 0
-    Checks-for: 'Value: '
-  Range:
-    MIN: 100
-    MAX: 2147483647
-Messages:
-  banknote:
-    withdraw: '&bYou have withdrawn &d{money} &bfrom your balance, you now have &d{balance}'
-    deposit: '&bYou have deposited &d{money} &bto your balance, you now have &d{balance}'
-  xpbottle:
-    withdraw: '&bYou have withdrawn &d{exp} &bfrom your experience, you know have &d{exp-balance}'
-    deposit: '&bYou have deposited &d{exp} &bto your experience, you know have &d{exp-balance}'
-
 ############################################################
 # +------------------------------------------------------+ #
 # |         Faction Creation/Disband Broadcast           | #
@@ -815,6 +769,17 @@ checkpoints:
 fnear:
   Enabled: true
   Radius: 50
+
+############################################################
+# +------------------------------------------------------+ #
+# |           Faction Command Cooldowns                  | #
+# +------------------------------------------------------+ #
+############################################################
+fcooldowns:
+  f-open: 5
+  f-disband: 10
+  f-create: 10
+  f-tag: 10
 
 ############################################################
 # +------------------------------------------------------+ #

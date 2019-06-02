@@ -18,6 +18,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 	public static final SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
 	public boolean disableOnLock;
+	public boolean disableOnSpam;
 
 	public FPlayer fme;
 	public Faction myFaction;
@@ -34,6 +35,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 
 		// Due to safety reasons it defaults to disable on lock.
 		disableOnLock = true;
+		disableOnSpam = false;
 
 		// The money commands must be disabled if money should not be used.
 		isMoneyCommand = false;
@@ -66,6 +68,11 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 	public boolean isEnabled() {
 		if (p.getLocked() && this.disableOnLock) {
 			msg("<b>Factions was locked by an admin. Please try again later.");
+			return false;
+		}
+
+		if(p.getSpam() && this.disableOnSpam){
+			msg("<b>Anti-Spam is currently enabled! Please try again later.");
 			return false;
 		}
 

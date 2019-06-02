@@ -16,6 +16,8 @@ public class CmdAltsList extends FCommand{
         this.aliases.add("list");
 
         this.permission = Permission.LIST.node;
+        this.disableOnLock = false;
+        this.disableOnSpam = false;
 
         senderMustBePlayer = true;
         senderMustBeMember = true;

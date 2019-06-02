@@ -19,6 +19,7 @@ public class CmdAnnounce extends FCommand {
 
 		this.permission = Permission.ANNOUNCE.node;
 		this.disableOnLock = false;
+		this.disableOnSpam = false;
 
 		senderMustBePlayer = true;
 		senderMustBeMember = true;

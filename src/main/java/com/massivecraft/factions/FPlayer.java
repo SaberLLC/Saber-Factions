@@ -365,6 +365,12 @@ public interface FPlayer extends EconomyParticipator {
 
 	boolean checkIfNearbyEnemies();
 
+	public int getCooldown(String cmd);
+
+	public void setCooldown(String cmd, long cooldown);
+
+	public boolean isCooldownEnded(String cmd);
+
 
 	// -------------------------------
 	// Warmups

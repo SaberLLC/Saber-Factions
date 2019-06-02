@@ -28,10 +28,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 
 /**
@@ -44,7 +41,7 @@ import java.util.UUID;
  */
 
 public abstract class MemoryFPlayer implements FPlayer {
-
+	protected HashMap<String, Long> commandCooldown = new HashMap<>();
 	public boolean inVault = false;
 	protected String factionId;
 	protected Role role;
@@ -157,6 +154,33 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.kills = getPlayer().getStatistic(Statistic.PLAYER_KILLS);
 		this.deaths = getPlayer().getStatistic(Statistic.DEATHS);
 	}
+
+	public int getCooldown(String cmd) {
+		int seconds = 0;
+		if (this.getPlayer().isOp())
+			return 0;
+		if (commandCooldown.containsKey(cmd))
+			seconds = (int) ((this.commandCooldown.get(cmd) - System.currentTimeMillis()) / 1000);
+		return seconds;
+	}
+
+	public void setCooldown(String cmd, long cooldown) {
+		if (this.getPlayer().isOp())
+			return;
+
+		this.commandCooldown.put(cmd, cooldown);
+	}
+
+	public boolean isCooldownEnded(String cmd) {
+		if (this.getPlayer().isOp())
+			return true;
+		if (!commandCooldown.containsKey(cmd))
+			return true;
+		else if (commandCooldown.containsKey(cmd) && commandCooldown.get(cmd) <= System.currentTimeMillis())
+			return true;
+		return false;
+	}
+
 
 	public Faction getFaction() {
 		if (this.factionId == null) {

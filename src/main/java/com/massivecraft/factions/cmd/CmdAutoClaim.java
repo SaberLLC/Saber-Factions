@@ -16,6 +16,7 @@ public class CmdAutoClaim extends FCommand {
 
 		this.permission = Permission.AUTOCLAIM.node;
 		this.disableOnLock = true;
+		this.disableOnSpam = false;
 
 		senderMustBePlayer = true;
 		senderMustBeMember = false;

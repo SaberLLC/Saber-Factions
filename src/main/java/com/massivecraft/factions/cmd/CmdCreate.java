@@ -24,6 +24,7 @@ public class CmdCreate extends FCommand {
 
 		this.permission = Permission.CREATE.node;
 		this.disableOnLock = true;
+		this.disableOnSpam = true;
 
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
@@ -38,6 +39,11 @@ public class CmdCreate extends FCommand {
 
 		if (fme.hasFaction()) {
 			msg(TL.COMMAND_CREATE_MUSTLEAVE);
+			return;
+		}
+
+		if (!fme.isCooldownEnded("create")) {
+			fme.msg(TL.COMMAND_ONCOOOLDOWN, fme.getCooldown("create"));
 			return;
 		}
 
@@ -108,6 +114,9 @@ public class CmdCreate extends FCommand {
 		if (SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
 			this.fme.msg(TL.COMMAND_PAYPALSET_CREATED);
 		}
+
+		fme.setCooldown("create", System.currentTimeMillis() + (SavageFactions.plugin.getConfig().getInt("fcooldowns.f-create") * 1000));
+
 		if (Conf.useCustomDefaultPermissions) {
 			faction.setDefaultPerms();
 			if (Conf.usePermissionHints)

@@ -21,6 +21,7 @@ public class CmdTag extends FCommand {
 
 		this.permission = Permission.TAG.node;
 		this.disableOnLock = true;
+		this.disableOnSpam = true;
 
 		senderMustBePlayer = true;
 		senderMustBeMember = false;
@@ -32,6 +33,13 @@ public class CmdTag extends FCommand {
 	@Override
 	public void perform() {
 		String tag = this.argAsString(0);
+
+
+		if (!fme.isCooldownEnded("tag")) {
+			fme.msg(TL.COMMAND_ONCOOOLDOWN, fme.getCooldown("tag"));
+			return;
+		}
+
 
 		// TODO does not first test cover selfcase?
 		if (Factions.getInstance().isTagTaken(tag) && !MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag())) {
@@ -78,7 +86,7 @@ public class CmdTag extends FCommand {
 				fplayer.msg(TL.COMMAND_TAG_CHANGED, fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
 			}
 		}
-
+		fme.setCooldown("tag", System.currentTimeMillis() + (SavageFactions.plugin.getConfig().getInt("fcooldowns.f-tag") * 1000));
 		FTeamWrapper.updatePrefixes(myFaction);
 	}
 

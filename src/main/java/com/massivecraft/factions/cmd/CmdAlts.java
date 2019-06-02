@@ -20,6 +20,7 @@ public class CmdAlts extends FCommand {
 
         this.permission = Permission.ALTS.node;
         this.disableOnLock = false;
+        this.disableOnSpam = false;
 
         senderMustBePlayer = true;
         senderMustBeMember = true;

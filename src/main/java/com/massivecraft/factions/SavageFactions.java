@@ -21,8 +21,6 @@ import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.fupgrades.*;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import me.driftay.addons.bankxp.Deposit;
-import me.driftay.addons.bankxp.Withdraw;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
@@ -79,6 +77,7 @@ public class SavageFactions extends MPlugin {
 			  DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
 	SkriptAddon skriptAddon;
 	private boolean locked = false;
+	private boolean spam = false;
 	private Integer AutoLeaveTask = null;
 	private boolean hookedPlayervaults;
 	private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
@@ -96,6 +95,15 @@ public class SavageFactions extends MPlugin {
 
 	public void setLocked(boolean val) {
 		this.locked = val;
+		this.setAutoSave(val);
+	}
+
+	public boolean getSpam() {
+		return this.spam;
+	}
+
+	public void setSpam(boolean val) {
+		this.spam = val;
 		this.setAutoSave(val);
 	}
 
@@ -252,11 +260,6 @@ public class SavageFactions extends MPlugin {
 		getCommand(this.refCommand).setExecutor(this);
 		getCommand(this.refCommand).setTabCompleter(this);
 
-		if(getConfig().getBoolean("XP-BankNote-Enabled")) {
-			getCommand("withdraw").setExecutor(new Withdraw());
-			getCommand("bottle").setExecutor(new Withdraw());
-			getServer().getPluginManager().registerEvents(new Deposit(), this);
-		}
 
 		RegisteredServiceProvider<Economy> rsp = SavageFactions.this.getServer().getServicesManager().getRegistration(Economy.class);
 		SavageFactions.econ = rsp.getProvider();

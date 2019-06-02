@@ -410,6 +410,11 @@ public enum TL {
 	COMMAND_LIST_ONLINEFACTIONLESS("Online factionless: "),
 	COMMAND_LIST_DESCRIPTION("&a&l» &7See a list of the factions"),
 
+
+	COMMAND_SPAM_ENABLED("&c&l[!]&7 Factions Anti-Spam is now&a enabled"),
+	COMMAND_SPAM_DISABLED("&c&l[!]&7 Factions Anti-Spam in now&c disabled"),
+	COMMAND_SPAM_DESCRIPTION("enable antispam system"),
+
 	COMMAND_LOCK_LOCKED("&c&l[!]&7 Factions is now&c locked"),
 	COMMAND_LOCK_UNLOCKED("&c&l[!]&7 Factions in now&a unlocked"),
 	COMMAND_LOCK_DESCRIPTION("Lock all write stuff. Apparently."),
@@ -627,6 +632,7 @@ public enum TL {
 
 	COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
 	COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
+	COMMAND_ONCOOOLDOWN("&c&l[!] &7You cannot use this command for another &b%1$s &7seconds."),
 
 	COMMAND_SETSTRIKES_FAILURE("&c&l[!]&7 &c{faction} does not exist."),
 	COMMAND_SETSTRIKES_BROADCAST("&c&l[!]&7 &c{faction} has received a strike for {reason}"),

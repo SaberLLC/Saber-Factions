@@ -28,7 +28,7 @@ public class CmdDisband extends FCommand {
 
 		this.permission = Permission.DISBAND.node;
 		this.disableOnLock = true;
-
+		this.disableOnSpam = true;
 
 		senderMustBePlayer = false;
 		senderMustBeMember = false;
@@ -43,6 +43,12 @@ public class CmdDisband extends FCommand {
 		// The faction, default to your own.. but null if console sender.
 		Faction faction = this.argAsFaction(0, fme == null ? null : myFaction);
 		if (faction == null) {
+			return;
+		}
+
+
+		if (!fme.isCooldownEnded("disband")) {
+			fme.msg(TL.COMMAND_ONCOOOLDOWN, fme.getCooldown("disband"));
 			return;
 		}
 
@@ -89,6 +95,7 @@ public class CmdDisband extends FCommand {
 					UtilFly.checkFly(this.fme, Board.getInstance().getFactionAt(new FLocation(follower)));
 					if (follower.getFaction() == faction) {
 						follower.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, amountString);
+						fme.setCooldown("disband", System.currentTimeMillis() + (SavageFactions.plugin.getConfig().getInt("fcooldowns.f-disband") * 1000));
 					} else {
 						follower.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, amountString, faction.getTag(follower));
 					}
