@@ -106,7 +106,7 @@ public class FCmdRoot extends FCommand {
 	public CmdChest cmdChest = new CmdChest();
 	public CmdSetBanner cmdSetBanner = new CmdSetBanner();
 	public CmdStrike cmdStrike = new CmdStrike();
-	public CmdSetStrikes cmdSetStrikes = new CmdSetStrikes();
+	public CmdStrikeSet cmdStrikeSet = new CmdStrikeSet();
 	public CmdAlts cmdAlts = new CmdAlts();
 
 
@@ -146,7 +146,6 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdDescription);
 		this.addSubCommand(this.cmdDisband);
 		this.addSubCommand(this.cmdStrike);
-		this.addSubCommand(this.cmdSetStrikes);
 		this.addSubCommand(this.cmdHelp);
 		this.addSubCommand(this.cmdHome);
 		this.addSubCommand(this.cmdInvite);
@@ -222,6 +221,7 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdTntFill);
 		this.addSubCommand(this.cmdChest);
 		this.addSubCommand(this.cmdSetBanner);
+		this.addSubCommand(this.cmdStrikeSet);
 
 
 		if(SavageFactions.plugin.getConfig().getBoolean("f-alts.Enabled")){
@@ -246,7 +246,7 @@ public class FCmdRoot extends FCommand {
 		if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
 			this.addSubCommand(this.cmdFly);
 		}
-		if (Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null) {
+		if (Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null) {
 			SavageFactions.plugin.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
 		} else {
 			SavageFactions.plugin.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");

@@ -1,11 +1,10 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.*;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdStrike extends FCommand {
-
 
     public CmdStrike() {
         super();
@@ -50,3 +49,4 @@ public class CmdStrike extends FCommand {
 
 
 }
+

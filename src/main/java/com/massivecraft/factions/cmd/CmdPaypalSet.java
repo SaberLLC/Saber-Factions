@@ -9,10 +9,12 @@ public class CmdPaypalSet extends FCommand {
 	public CmdPaypalSet() {
 		this.aliases.add("setpaypal");
 		this.requiredArgs.add("email");
+
 		this.permission = Permission.PAYPALSET.node;
+
 		this.disableOnLock = false;
 		this.senderMustBePlayer = true;
-		this.senderMustBeMember = false;
+		this.senderMustBeMember = true;
 		this.senderMustBeModerator = false;
 		this.senderMustBeColeader = false;
 		this.senderMustBeAdmin = true;

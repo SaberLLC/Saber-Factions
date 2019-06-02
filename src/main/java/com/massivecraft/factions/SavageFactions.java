@@ -21,6 +21,8 @@ import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.fupgrades.*;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import me.driftay.addons.bankxp.Deposit;
+import me.driftay.addons.bankxp.Withdraw;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
@@ -82,6 +84,7 @@ public class SavageFactions extends MPlugin {
 	private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
 	private boolean mvdwPlaceholderAPIManager = false;
 	private Listener[] eventsListener;
+	public static Economy econ = null;
 
 	public SavageFactions() {
 		plugin = this;
@@ -239,7 +242,7 @@ public class SavageFactions extends MPlugin {
 				  new EXPUpgrade(),
 				  new CropUpgrades(),
 				  new RedstoneUpgrade(),
-				  new SpawnerUpgrades(),
+				  new SpawnerUpgrades()
 		};
 
 		for (Listener eventListener : eventsListener)
@@ -248,6 +251,15 @@ public class SavageFactions extends MPlugin {
 		// since some other plugins execute commands directly through this command interface, provide it
 		getCommand(this.refCommand).setExecutor(this);
 		getCommand(this.refCommand).setTabCompleter(this);
+
+		if(getConfig().getBoolean("XP-BankNote-Enabled")) {
+			getCommand("withdraw").setExecutor(new Withdraw());
+			getCommand("bottle").setExecutor(new Withdraw());
+			getServer().getPluginManager().registerEvents(new Deposit(), this);
+		}
+
+		RegisteredServiceProvider<Economy> rsp = SavageFactions.this.getServer().getServicesManager().getRegistration(Economy.class);
+		SavageFactions.econ = rsp.getProvider();
 
 		if (getDescription().getFullName().contains("BETA")) {
 			divider();

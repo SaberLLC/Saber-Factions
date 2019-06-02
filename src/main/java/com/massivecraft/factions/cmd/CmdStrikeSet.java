@@ -7,10 +7,10 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
-public class CmdSetStrikes extends FCommand {
+public class CmdStrikeSet extends FCommand {
 
 
-    public CmdSetStrikes() {
+    public CmdStrikeSet() {
         super();
         this.aliases.add("setstrikes");
         this.aliases.add("setstrike");

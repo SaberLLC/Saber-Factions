@@ -134,6 +134,7 @@ public enum TL {
 	COMMAND_ANNOUNCE_DESCRIPTION("Announce a message to players in faction."),
 
 	COMMAND_ALTS_DESCRIPTION("Faction Alts Commands"),
+	COMMAND_STRIKE_DESCRIPTION("Faction Strike Commands"),
 
 	COMMAND_ALTS_LIST_DESCRIPTION("List all alts in your faction"),
 
@@ -365,6 +366,11 @@ public enum TL {
 	COMMAND_INVITE_ALREADYINVITED("&c&l[!]&7 &c%1$s&7 has already been invited"),
 	COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
 	COMMAND_INVITE_BANNED("&c&l[!]&7 &7%1$s &cis banned &7from your Faction. &cNot &7sending an invite."),
+
+	BANKNOTE_WITHDRAW_NOT_ENOUGH("&c&l[!] &7You do not have enough money!"),
+	BANKNOTE_WITHDRAW_NO_ARGS("&c&l[!] &7Try /withdraw <amount>"),
+	XPBOTTLE_NOT_ENOUGH("&c&l[!] &7You do not have enough experience!"),
+	XPBOTTLE_WITHDRAW_NO_ARGS("&c&l[!] &7Try /bottle <amount>"),
 
 	COMMAND_JOIN_CANNOTFORCE("&c&l[!]&7 You&c do not&7 have permission to &cmove other players&7 into a faction."),
 	COMMAND_JOIN_SYSTEMFACTION("&c&l[!]&7 Players may only join &cnormal factions&7. This is a &c&lsystem faction&7."),
@@ -617,6 +623,7 @@ public enum TL {
 	COMMAND_SETHOME_SET("&c&l[!]&c %1$s&7 set the home for your faction. You can now use:"),
 	COMMAND_SETHOME_SETOTHER("&c&l[!]&7 You have set the home for the &c%1$s&7 faction."),
 	COMMAND_SETHOME_DESCRIPTION("Set the faction home"),
+	COMMAND_STRIKE_FACTION("View Factions Strikes"),
 
 	COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
 	COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
@@ -624,12 +631,14 @@ public enum TL {
 	COMMAND_SETSTRIKES_FAILURE("&c&l[!]&7 &c{faction} does not exist."),
 	COMMAND_SETSTRIKES_BROADCAST("&c&l[!]&7 &c{faction} has received a strike for {reason}"),
 	COMMAND_SETSTRIKES_SUCCESS("&c&l[!]&7 &c{faction}'s&7 new strikes are &c{strikes}"),
-	COMMAND_SETSTRIKES_DESCRIPTION("Set a faction's points"),
+	COMMAND_SETSTRIKES_DESCRIPTION("Set a faction's strikes"),
+	COMMAND_STRIKEREMOVE_DESCRIPTION("Remove a faction's strikes"),
 
 	COMMAND_STRIKE_MESSAGE("&c&l[!] &7{faction} has {strikes} strikes."),
 	COMMAND_STRIKE_NOTFOUND("&c&l[!] &7{faction} does not exist."),
 	COMMAND_STRIKE_NEEDFACTION("&c&l[!] &7&cYou need to join a faction to view your own!"),
-	COMMAND_STRIKE_DESCRIPTION("Give a faction strikes."),
+
+	COMMAND_STRIKEGIVE_DESCRIPTION("Give a faction strikes"),
 
 	COMMAND_VAULT_DESCRIPTION("Open your placed faction vault!"),
 	COMMAND_VAULT_INVALID("&c&l[!]&7 Your vault was either&c claimed&7, &cbroken&7, or has&c not been&7 placed yet."),

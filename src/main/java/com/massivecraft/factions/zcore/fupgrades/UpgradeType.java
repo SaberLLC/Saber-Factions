@@ -4,7 +4,6 @@ public enum UpgradeType {
 
 	CHEST("Chest"), SPAWNER("Spawner"), EXP("Exp"), CROP("Crop"), POWER("Power"), REDSTONE("Redstone");
 
-
 	private String id;
 
 	UpgradeType(String id) {

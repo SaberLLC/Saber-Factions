@@ -14,11 +14,11 @@ public class CmdPaypalSee extends FCommand {
 		permission = Permission.ADMIN.node;
 
 		disableOnLock = false;
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
+		senderMustBePlayer = true;
+		senderMustBeMember = true;
 		senderMustBeModerator = false;
 		senderMustBeColeader = false;
-		senderMustBeAdmin = false;
+		senderMustBeAdmin = true;
 
 	}
    	@Override
