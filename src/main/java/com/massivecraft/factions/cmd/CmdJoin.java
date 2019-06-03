@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.fupgrades.UpgradeType;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
@@ -75,15 +76,22 @@ public class CmdJoin extends FCommand {
 			}
 			return;
 		}
+		int level = faction.getUpgrade(UpgradeType.MEMBERS);
+
 		int limit = 0;
 
-		int altLimit = Conf.factionAltMemberLimit;
-		limit = Conf.factionMemberLimit;
+		if (level == 0) {
+			limit = Conf.factionMemberLimit;
+		} else {
+			limit = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Members.Members-Limit.level-" + level);
+		}
 
 		if (limit > 0 && faction.getFPlayers().size() >= limit && !faction.altInvited(fme)) {
 			msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(fme), limit, fplayer.describeTo(fme, false));
 			return;
 		}
+
+		int altLimit = Conf.factionAltMemberLimit;
 
 		if (altLimit > 0 && faction.getAltPlayers().size() >= altLimit && !faction.altInvited(fme)) {
 			msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(fme), altLimit, fplayer.describeTo(fme, false));

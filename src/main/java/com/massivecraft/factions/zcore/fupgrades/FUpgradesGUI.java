@@ -7,6 +7,7 @@ import com.massivecraft.factions.SavageFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -43,6 +44,7 @@ public class FUpgradesGUI implements Listener {
         List<Integer> chestSlots = SavageFactions.plugin.getConfig().getIntegerList("fupgrades.MainMenu.Chest.ChestItem.slots");
         List<Integer> powerSlots = SavageFactions.plugin.getConfig().getIntegerList("fupgrades.MainMenu.Power.PowerItem.slots");
         List<Integer> redSlots = SavageFactions.plugin.getConfig().getIntegerList("fupgrades.MainMenu.Redstone.RedstoneItem.slots");
+        List<Integer> memberSlots = SavageFactions.plugin.getConfig().getIntegerList("fupgrades.MainMenu.Members.MembersItem.slots");
 
         for (int i = 0; i < cropSlots.size(); i++)
             if (cropSlots.get(i) != -1) inventory.setItem(cropSlots.get(i), items[2]);
@@ -62,6 +64,9 @@ public class FUpgradesGUI implements Listener {
         for (int i = 0; i < redSlots.size(); i++)
             if (redSlots.get(i) != -1) inventory.setItem(redSlots.get(i), items[5]);
 
+        for (int i = 0; i < memberSlots.size(); i++)
+            if (memberSlots.get(i) != -1) inventory.setItem(memberSlots.get(i), items[6]);
+
         fme.getPlayer().openInventory(inventory);
     }
 
@@ -80,6 +85,7 @@ public class FUpgradesGUI implements Listener {
             ItemStack spawnerItem = items[1];
             ItemStack powerItem = items[4];
             ItemStack redItem = items[5];
+            ItemStack memberItem = items[6];
 
             if (e.getCurrentItem().equals(cropItem)) {
                 int cropLevel = fme.getFaction().getUpgrade(UpgradeType.CROP);
@@ -175,6 +181,17 @@ public class FUpgradesGUI implements Listener {
                         break;
                     }
                 }
+            } else if(e.getCurrentItem().equals(memberItem)){
+                int memberLevel = fme.getFaction().getUpgrade(UpgradeType.MEMBERS) + 1;
+                if(!SavageFactions.plugin.getConfig().isSet("fupgrades.MainMenu.Members.Cost.level-" + memberLevel)){
+                    return;
+                }
+                int cost = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Members.Cost.level-" + memberLevel);
+                if(hasMoney(fme, cost)){
+                    fme.getFaction().setUpgrade(UpgradeType.MEMBERS, memberLevel);
+                    fme.getPlayer().closeInventory();
+                    takeMoney(fme, cost);
+                }
             }
         }
     }
@@ -252,13 +269,13 @@ public class FUpgradesGUI implements Listener {
         short spawnerData = Short.parseShort(SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.SpawnerItem.Damage") + "");
         String spawnerName = SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Name"));
         List<String> spawnerLore = SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fupgrades.MainMenu.Spawners.SpawnerItem.Lore"));
-
-        List<Integer> spawnerSlots = SavageFactions.plugin.getConfig().getIntegerList("fupgrades.MainMenu.Spawners.SpawnerItem.slots");
         int spawnerLevel = fme.getFaction().getUpgrade(UpgradeType.SPAWNER);
 
         for (int i = 0; i <= spawnerLore.size() - 1; i++) {
             spawnerLore.set(i, spawnerLore.get(i).replace("{level}", spawnerLevel + ""));
         }
+
+
 
         Material cropMaterial = Material.getMaterial(SavageFactions.plugin.getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Type"));
         int cropAmt = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Crops.CropItem.Amount");
@@ -326,6 +343,32 @@ public class FUpgradesGUI implements Listener {
             chestItem.setAmount(chestlevel);
         }
 
+        Material memberMaterial = Material.getMaterial(SavageFactions.plugin.getConfig().getString("fupgrades.MainMenu.Members.MembersItem.Type"));
+        int memberAmt = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Members.MembersItem.Amount");
+        short memberData = Short.parseShort(SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Members.MembersItem.Damage") + "");
+        String memberName = SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fupgrades.MainMenu.Members.MembersItem.Name", "&e&lUpgrade Member Size"));
+        List<String> memberLore = SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fupgrades.MainMenu.Members.MembersItem.Lore"));
+        int memberlevel = fme.getFaction().getUpgrade(UpgradeType.MEMBERS);
+
+        for (int i = 0; i <= memberLore.size() - 1; i++) {
+            String line = memberLore.get(i);
+            line = line.replace("{level}", memberlevel + "");
+            memberLore.set(i, line);
+        }
+
+        ItemStack memberItem = SavageFactions.plugin.createItem(memberMaterial, memberAmt, memberData, memberName, memberLore);
+
+        if (memberlevel >= 1) {
+            ItemMeta itemMeta = memberItem.getItemMeta();
+            if (!SavageFactions.plugin.mc17) {
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+
+            memberItem.setItemMeta(itemMeta);
+            memberItem.setAmount(memberlevel);
+        }
+
         Material powerMaterial = Material.getMaterial(SavageFactions.plugin.getConfig().getString("fupgrades.MainMenu.Power.PowerItem.Type"));
         int powerAmt = SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Power.PowerItem.Amount");
         short powerData = Short.parseShort(SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Power.PowerItem.Damage") + "");
@@ -381,7 +424,7 @@ public class FUpgradesGUI implements Listener {
         }
 
 
-        ItemStack[] items = {expItem, spawnerItem, cropItem, chestItem, powerItem, redItem};
+        ItemStack[] items = {expItem, spawnerItem, cropItem, chestItem, powerItem, redItem, memberItem};
         return items;
     }
 
