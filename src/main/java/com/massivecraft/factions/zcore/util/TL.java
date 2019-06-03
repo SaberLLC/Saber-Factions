@@ -114,6 +114,12 @@ public enum TL {
 	 */
 
 	COMMAND_UPGRADES_DESCRIPTION("&cOpen the Upgrades Menu"),
+	COMMAND_CORNER_CANT_CLAIM("&c&l[!] &cYou may not claim this corner!"),
+	COMMAND_CORNER_CLAIMED("\n&2&l[!] &aYou have claimed the corner successfully, totalling in &b%1$d &achunks!\n"),
+	COMMAND_CORNER_ATTEMPTING_CLAIM("&c&l[!] &7Attempting to claim corner..."),
+	COMMAND_CORNER_NOT_CORNER("&c&l[!] &7You must be in a corner to use this command!"),
+	COMMAND_CORNER_DESCRIPTION("claim a corner at world border"),
+	COMMAND_CORNERLIST_DESCRIPTION("list of all corners"),
 
 	COMMAND_ADMIN_NOTMEMBER("&c&l[!] &7%1$s &cis not a member in your faction."),
 	COMMAND_ADMIN_NOTADMIN("&c&l[!] &cYou are not the faction admin."),

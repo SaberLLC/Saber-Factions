@@ -109,6 +109,7 @@ public class FCmdRoot extends FCommand {
 	public CmdStrikeSet cmdStrikeSet = new CmdStrikeSet();
 	public CmdAlts cmdAlts = new CmdAlts();
 	public CmdSpam cmdSpam = new CmdSpam();
+	public CmdCorner cmdCorner = new CmdCorner();
 
 
 
@@ -224,6 +225,7 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdSetBanner);
 		this.addSubCommand(this.cmdStrikeSet);
 		this.addSubCommand(this.cmdSpam);
+		this.addSubCommand(this.cmdCorner);
 
 
 		if(SavageFactions.plugin.getConfig().getBoolean("f-alts.Enabled")){

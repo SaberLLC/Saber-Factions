@@ -859,6 +859,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 		return attemptClaim(forFaction, new FLocation(location), notifyFailure);
 	}
 
+
 	public boolean shouldBeSaved() {
 		return this.hasFaction() || (this.getPowerRounded() != this.getPowerMaxRounded() && this.getPowerRounded() != (int) Math.round(Conf.powerPlayerStarting));
 	}
@@ -1173,7 +1174,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 	public boolean attemptClaim(Faction forFaction, FLocation flocation, boolean notifyFailure) {
 		// notifyFailure is false if called by auto-claim; no need to notify on every failure for it
 		// return value is false on failure, true on success
-
 		Faction currentFaction = Board.getInstance().getFactionAt(flocation);
 		int ownedLand = forFaction.getLandRounded();
 
@@ -1237,6 +1237,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 		return true;
 	}
+
 
 
 	@Override

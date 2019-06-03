@@ -57,6 +57,7 @@ public class SavageFactions extends MPlugin {
 	// Plugins can check this boolean while hooking in have
 	// a green light to use the api.
 	public static boolean startupFinished = false;
+	private FactionsPlayerListener factionsPlayerListener;
 
 
 	public boolean PlaceholderApi;
@@ -238,10 +239,10 @@ public class SavageFactions extends MPlugin {
 			log("Skript addon registered!");
 		}
 
+		getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
 		// Register Event Handlers
 		eventsListener = new Listener[]{
-				  new FactionsPlayerListener(),
 				  new FactionsChatListener(),
 				  new FactionsEntityListener(),
 				  new FactionsExploitListener(),
@@ -777,6 +778,9 @@ public class SavageFactions extends MPlugin {
 		if (getConfig().getBoolean("debug", false)) {
 			getLogger().log(level, s);
 		}
+	}
+	public FactionsPlayerListener getFactionsPlayerListener() {
+		return this.factionsPlayerListener;
 	}
 
 	public void debug(String s) {

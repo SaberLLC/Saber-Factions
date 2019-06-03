@@ -1,6 +1,5 @@
 package com.massivecraft.factions.listeners;
 
-import com.earth2me.essentials.User;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
@@ -24,10 +23,7 @@ import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -47,7 +43,7 @@ import java.util.logging.Level;
 
 public class FactionsPlayerListener implements Listener {
 
-
+    private Set<FLocation> corners;
     HashMap<Player, Boolean> fallMap = new HashMap<>();
 
     // Holds the next time a player can have a map shown.
@@ -56,8 +52,19 @@ public class FactionsPlayerListener implements Listener {
     private Map<String, InteractAttemptSpam> interactSpammers = new HashMap<>();
 
     public FactionsPlayerListener() {
+        this.corners = new HashSet<>();
         for (Player player : SavageFactions.plugin.getServer().getOnlinePlayers()) {
             initPlayer(player);
+        }
+        for (World world : SavageFactions.plugin.getServer().getWorlds()) {
+            WorldBorder border = world.getWorldBorder();
+            if (border != null) {
+                int cornerCoord = (int) ((border.getSize() - 1.0) / 2.0);
+                this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(cornerCoord)));
+                this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(-cornerCoord)));
+                this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(cornerCoord)));
+                this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(-cornerCoord)));
+            }
         }
     }
 
@@ -776,6 +783,10 @@ public class FactionsPlayerListener implements Listener {
             lastAttempt = now;
             return attempts;
         }
+    }
+
+    public Set<FLocation> getCorners() {
+        return this.corners;
     }
 
     /// <summary>

@@ -78,7 +78,6 @@ public class FLocation implements Serializable {
 	public static int blockToChunk(int blockVal) {    // 1 chunk is 16x16 blocks
 		return blockVal >> 4;   // ">> 4" == "/ 16"
 	}
-
 	public static int blockToRegion(int blockVal) {    // 1 region is 512x512 blocks
 		return blockVal >> 9;   // ">> 9" == "/ 512"
 	}
