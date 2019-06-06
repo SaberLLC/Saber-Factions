@@ -1109,6 +1109,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 				if (efplayer == null) {
 					continue;
 				}
+				if (efplayer.isVanished()) continue;
 				if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled()) {
 					setFlying(false);
 					msg(TL.COMMAND_FLY_ENEMY_NEAR);

@@ -1092,7 +1092,7 @@ fupgrades:
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Increased faction member limit.'
+          - '&7Increase faction member limit.'
           - ''
           - '&e&lTier'
           - '&f&l* &7Current Level: &3{level}/3'
