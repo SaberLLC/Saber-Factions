@@ -2,6 +2,7 @@ package com.massivecraft.factions.integration;
 
 import com.earth2me.essentials.Teleport;
 import com.earth2me.essentials.Trade;
+import com.earth2me.essentials.User;
 import com.massivecraft.factions.Conf;
 import net.ess3.api.IEssentials;
 import org.bukkit.Bukkit;
@@ -41,6 +42,8 @@ public class Essentials {
 	}
 
 	public static boolean isVanished(Player player) {
-		return essentials != null && essentials.getUser(player).isVanished();
+		if (essentials == null) return false;
+		User user = essentials.getUser(player);
+		return user != null && user.isVanished();
 	}
 }

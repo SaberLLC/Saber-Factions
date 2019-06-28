@@ -521,8 +521,6 @@ fperm-gui:
       tntfill: 41
       chest: 42
       spawner: 38
-      invitealt: 50
-      kickalt: 48
       home: 49
       # Material to show, if the material is colorable eg: Wool, Stained Clay it will update with it's access color
     materials:
@@ -556,8 +554,6 @@ fperm-gui:
       chest: STAINED_GLASS
       spawner: STAINED_GLASS
       home: STAINED_GLASS
-      invitealt: STAINED_GLASS
-      kickalt: STAINED_GLASS
     # Same dummy items format as above
     dummy-items:
       '0':
