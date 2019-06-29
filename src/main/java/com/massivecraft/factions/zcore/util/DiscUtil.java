@@ -1,6 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import org.bukkit.Bukkit;
 
 import java.io.*;
@@ -80,7 +80,7 @@ public class DiscUtil {
 				lock.unlock();
 			}
 		} else {
-			Bukkit.getScheduler().runTaskAsynchronously(SavageFactions.plugin, () -> {
+			Bukkit.getScheduler().runTaskAsynchronously(SaberFactions.plugin, () -> {
 				lock.lock();
 				try {
 					write(file, content);

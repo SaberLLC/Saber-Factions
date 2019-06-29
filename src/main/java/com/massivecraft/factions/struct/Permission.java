@@ -1,6 +1,6 @@
 package com.massivecraft.factions.struct;
 
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import org.bukkit.command.CommandSender;
 
 public enum Permission {
@@ -121,7 +121,7 @@ public enum Permission {
 	}
 
 	public boolean has(CommandSender sender, boolean informSenderIfNot) {
-		return SavageFactions.plugin.perm.has(sender, this.node, informSenderIfNot);
+		return SaberFactions.plugin.perm.has(sender, this.node, informSenderIfNot);
 	}
 
 	public boolean has(CommandSender sender) {

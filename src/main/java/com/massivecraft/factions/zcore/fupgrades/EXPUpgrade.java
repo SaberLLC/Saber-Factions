@@ -3,7 +3,7 @@ package com.massivecraft.factions.zcore.fupgrades;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,13 +30,13 @@ public class EXPUpgrade implements Listener {
 
 				switch (level) {
 					case 1:
-						multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1");
+						multiplier = SaberFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1");
 						break;
 					case 2:
-						multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2");
+						multiplier = SaberFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2");
 						break;
 					case 3:
-						multiplier = SavageFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
+						multiplier = SaberFactions.plugin.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
 						break;
 				}
 

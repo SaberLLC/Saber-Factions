@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -45,7 +45,7 @@ public abstract class SpiralTask implements Runnable {
 
 		this.world = Bukkit.getWorld(fLocation.getWorldName());
 		if (this.world == null) {
-			SavageFactions.plugin.log(Level.WARNING, "[SpiralTask] A valid world must be specified!");
+			SaberFactions.plugin.log(Level.WARNING, "[SpiralTask] A valid world must be specified!");
 			this.stop();
 			return;
 		}
@@ -56,7 +56,7 @@ public abstract class SpiralTask implements Runnable {
 		this.readyToGo = true;
 
 		// get this party started
-		this.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, this, 2, 2));
+		this.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(SaberFactions.plugin, this, 2, 2));
 	}
 
 	private static long now() {
@@ -187,7 +187,7 @@ public abstract class SpiralTask implements Runnable {
 
 	// for successful completion
 	public void finish() {
-//		SavageFactions.plugin.log("SpiralTask successfully completed!");
+//		SaberFactions.plugin.log("SpiralTask successfully completed!");
 		this.stop();
 	}
 

@@ -798,7 +798,7 @@ public enum TL {
 	COMMAND_UNCLAIMALL_DESCRIPTION("Unclaim all of your factions land"),
 	COMMAND_UNCLAIM_CLICKTOUNCLAIM("Click to unclaim &2(%1$d, %2$d)"),
 
-	COMMAND_VERSION_NAME("&c&l[!]&7 &c&k||| &r&4SavageFactions+&7 &c&k|||&r &c» &7By Driftay & ProSavage"),
+	COMMAND_VERSION_NAME("&c&l[!]&7 &c&k||| &r&4SaberFactions&7 &c&k|||&r &c» &7By Driftay"),
 	COMMAND_VERSION_VERSION("&7Version &c» &7%1$s"),
 	COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
 

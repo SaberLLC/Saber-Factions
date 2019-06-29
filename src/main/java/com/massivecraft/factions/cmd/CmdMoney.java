@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdMoney extends FCommand {
@@ -41,7 +41,7 @@ public class CmdMoney extends FCommand {
 	@Override
 	public void perform() {
 		this.commandChain.add(this);
-		SavageFactions.plugin.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+		SaberFactions.plugin.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
 	}
 
 	@Override

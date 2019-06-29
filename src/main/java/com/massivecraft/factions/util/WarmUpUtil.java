@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class WarmUpUtil {
@@ -21,7 +21,7 @@ public class WarmUpUtil {
 				player.msg(TL.WARMUPS_ALREADY);
 			} else {
 				player.msg(translationKey.format(action, delay));
-				int id = SavageFactions.plugin.getServer().getScheduler().runTaskLater(SavageFactions.plugin, () -> {
+				int id = SaberFactions.plugin.getServer().getScheduler().runTaskLater(SaberFactions.plugin, () -> {
 					player.stopWarmup();
 					runnable.run();
 				}, delay * 20).getTaskId();

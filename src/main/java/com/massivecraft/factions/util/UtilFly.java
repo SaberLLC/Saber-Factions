@@ -3,7 +3,7 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -12,18 +12,18 @@ import org.bukkit.Bukkit;
 public class UtilFly {
 
 	public static void run() {
-		if (!SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight"))
+		if (!SaberFactions.plugin.getConfig().getBoolean("enable-faction-flight"))
 			return;
 
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> {
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(SaberFactions.plugin, () -> {
 			for (FPlayer fp : FPlayers.getInstance().getOnlinePlayers()) {
 				if (fp.isFlying()) fp.checkIfNearbyEnemies();
 			}
-		}, 0, SavageFactions.plugin.getConfig().getInt("fly-task-interval", 10));
+		}, 0, SaberFactions.plugin.getConfig().getInt("fly-task-interval", 10));
 	}
 
 	public static void setFly(FPlayer fp, boolean fly, boolean silent, boolean damage) {
-		if (!SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight"))
+		if (!SaberFactions.plugin.getConfig().getBoolean("enable-faction-flight"))
 			return;
 
 		fp.getPlayer().setAllowFlight(fly);
@@ -43,7 +43,7 @@ public class UtilFly {
 	}
 
 	public static void checkFly(FPlayer me, Faction factionTo) {
-		if (!SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight"))
+		if (!SaberFactions.plugin.getConfig().getBoolean("enable-faction-flight"))
 			return;
 
 		if (me.isAdminBypassing() && me.isFlying())
@@ -81,13 +81,13 @@ public class UtilFly {
 	public static void setFallDamage(FPlayer fp, boolean fly, boolean damage) {
 		if (!fly) {
 			if (!damage) {
-				fp.sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", SavageFactions.plugin.getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
+				fp.sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", SaberFactions.plugin.getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
 			}
 
-			int cooldown = SavageFactions.plugin.getConfig().getInt("fly-falldamage-cooldown", 3);
+			int cooldown = SaberFactions.plugin.getConfig().getInt("fly-falldamage-cooldown", 3);
 			if (cooldown > 0) {
 				fp.setTakeFallDamage(false);
-				Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, () -> fp.setTakeFallDamage(true), 20L * cooldown);
+				Bukkit.getScheduler().runTaskLater(SaberFactions.plugin, () -> fp.setTakeFallDamage(true), 20L * cooldown);
 			}
 		}
 	}

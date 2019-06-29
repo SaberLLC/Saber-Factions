@@ -171,7 +171,7 @@ public abstract class MPlugin extends JavaPlugin {
 			conf.save(lang);
 		} catch (IOException e) {
 			getLogger().log(Level.WARNING, "Factions: Failed to save lang.yml.");
-			getLogger().log(Level.WARNING, "Factions: Report this stack trace to prosavage.");
+			getLogger().log(Level.WARNING, "Factions: Report this stack trace to Driftay.");
 			e.printStackTrace();
 		}
 	}
@@ -242,7 +242,7 @@ public abstract class MPlugin extends JavaPlugin {
 	// COMMAND HANDLING
 	// -------------------------------------------- //
 
-	// can be overridden by SavageFactions method, to provide option
+	// can be overridden by SaberFactions method, to provide option
 	public boolean logPlayerCommands() {
 		return true;
 	}

@@ -3,7 +3,7 @@ package com.massivecraft.factions.zcore.fupgrades;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
@@ -20,13 +20,13 @@ public class SpawnerUpgrades implements Listener {
 			if (level != 0) {
 				switch (level) {
 					case 1:
-						lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1"));
+						lowerSpawnerDelay(e, SaberFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-1"));
 						break;
 					case 2:
-						lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2"));
+						lowerSpawnerDelay(e, SaberFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-2"));
 						break;
 					case 3:
-						lowerSpawnerDelay(e, SavageFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3"));
+						lowerSpawnerDelay(e, SaberFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Spawners.Spawner-Boost.level-3"));
 						break;
 				}
 			}

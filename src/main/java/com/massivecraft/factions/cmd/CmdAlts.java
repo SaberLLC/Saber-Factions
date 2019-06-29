@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -35,13 +35,13 @@ public class CmdAlts extends FCommand {
 
     @Override
     public void perform() {
-        if (!SavageFactions.plugin.getConfig().getBoolean("f-alts.Enabled", false)) {
+        if (!SaberFactions.plugin.getConfig().getBoolean("f-alts.Enabled", false)) {
             fme.msg(TL.GENERIC_DISABLED);
             return;
         }
 
         this.commandChain.add(this);
-        SavageFactions.plugin.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+        SaberFactions.plugin.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
     }
 
     @Override

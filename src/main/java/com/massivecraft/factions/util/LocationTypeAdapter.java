@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.google.gson.*;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -21,7 +21,7 @@ public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeseri
 			return object;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			SavageFactions.plugin.log(Level.WARNING, "Error encountered while serializing a Location.");
+			SaberFactions.plugin.log(Level.WARNING, "Error encountered while serializing a Location.");
 			return object;
 		}
 	}
@@ -38,7 +38,7 @@ public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeseri
 					  object.get("z").getAsDouble());
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			SavageFactions.plugin.log(Level.WARNING, "Error encountered while" +
+			SaberFactions.plugin.log(Level.WARNING, "Error encountered while" +
 					  " deserializing a Location.");
 			return null;
 		}

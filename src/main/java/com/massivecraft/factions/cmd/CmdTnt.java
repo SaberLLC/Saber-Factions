@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -32,7 +32,7 @@ public class CmdTnt extends FCommand {
 
 	@Override
 	public void perform() {
-		if (!SavageFactions.plugin.getConfig().getBoolean("ftnt.Enabled")) {
+		if (!SaberFactions.plugin.getConfig().getBoolean("ftnt.Enabled")) {
 			fme.msg(TL.COMMAND_TNT_DISABLED_MSG);
 			return;
 		}
@@ -73,7 +73,7 @@ public class CmdTnt extends FCommand {
 					return;
 				}
 				ItemStack tnt = new ItemStack(Material.TNT, amount);
-				if (fme.getFaction().getTnt() + amount > SavageFactions.plugin.getConfig().getInt("ftnt.Bank-Limit")) {
+				if (fme.getFaction().getTnt() + amount > SaberFactions.plugin.getConfig().getInt("ftnt.Bank-Limit")) {
 					msg(TL.COMMAND_TNT_EXCEEDLIMIT);
 					return;
 				}
@@ -82,7 +82,7 @@ public class CmdTnt extends FCommand {
 
 				fme.getFaction().addTnt(amount);
 				fme.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
-				fme.sendMessage(SavageFactions.plugin.color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", fme.getFaction().getTnt() + "")));
+				fme.sendMessage(SaberFactions.plugin.color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", fme.getFaction().getTnt() + "")));
 				return;
 
 			}

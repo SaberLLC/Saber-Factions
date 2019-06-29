@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -35,7 +35,7 @@ public class CmdTntFill extends FCommand {
 
 	@Override
 	public void perform() {
-		if (!SavageFactions.plugin.getConfig().getBoolean("Tntfill.enabled")) {
+		if (!SaberFactions.plugin.getConfig().getBoolean("Tntfill.enabled")) {
 			this.fme.msg(TL.GENERIC_DISABLED);
 			return;
 		}
@@ -51,12 +51,12 @@ public class CmdTntFill extends FCommand {
 		msg(TL.COMMAND_TNTFILL_HEADER);
 		int radius = argAsInt(0, 16);
 		int amount = argAsInt(1, 16);
-		if (radius > SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius")) {
-			fme.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-radius") + ""));
+		if (radius > SaberFactions.plugin.getConfig().getInt("Tntfill.max-radius")) {
+			fme.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", SaberFactions.plugin.getConfig().getInt("Tntfill.max-radius") + ""));
 			return;
 		}
-		if (amount > SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount")) {
-			fme.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", SavageFactions.plugin.getConfig().getInt("Tntfill.max-amount") + ""));
+		if (amount > SaberFactions.plugin.getConfig().getInt("Tntfill.max-amount")) {
+			fme.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", SaberFactions.plugin.getConfig().getInt("Tntfill.max-amount") + ""));
 			return;
 		}
 
@@ -181,7 +181,7 @@ public class CmdTntFill extends FCommand {
 			return;
 		}
 		ItemStack tnt = new ItemStack(Material.TNT, amount);
-		if (fme.getFaction().getTnt() + amount > SavageFactions.plugin.getConfig().getInt("ftnt.Bank-Limit")) {
+		if (fme.getFaction().getTnt() + amount > SaberFactions.plugin.getConfig().getInt("ftnt.Bank-Limit")) {
 			msg(TL.COMMAND_TNT_EXCEEDLIMIT);
 			return;
 		}

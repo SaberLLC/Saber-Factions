@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 
-public abstract class FCommand extends MCommand<SavageFactions> {
+public abstract class FCommand extends MCommand<SaberFactions> {
 
 	public static final SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
@@ -31,7 +31,7 @@ public abstract class FCommand extends MCommand<SavageFactions> {
 	public boolean isMoneyCommand;
 
 	public FCommand() {
-		super(SavageFactions.plugin);
+		super(SaberFactions.plugin);
 
 		// Due to safety reasons it defaults to disable on lock.
 		disableOnLock = true;

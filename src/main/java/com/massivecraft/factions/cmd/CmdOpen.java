@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -52,7 +52,7 @@ public class CmdOpen extends FCommand {
 			}
 			fplayer.msg(TL.COMMAND_OPEN_CHANGED, myFaction.getTag(fplayer.getFaction()), open);
 		}
-		fme.setCooldown("open", System.currentTimeMillis() + (SavageFactions.plugin.getConfig().getInt("fcooldowns.f-open") * 1000));
+		fme.setCooldown("open", System.currentTimeMillis() + (SaberFactions.plugin.getConfig().getInt("fcooldowns.f-open") * 1000));
 	}
 
 	@Override

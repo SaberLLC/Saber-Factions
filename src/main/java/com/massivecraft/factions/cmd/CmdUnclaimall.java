@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
@@ -53,7 +53,7 @@ public class CmdUnclaimall extends FCommand {
 		myFaction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, fme.describeTo(myFaction, true));
 
 		if (Conf.logLandUnclaims) {
-			SavageFactions.plugin.log(TL.COMMAND_UNCLAIMALL_LOG.format(fme.getName(), myFaction.getTag()));
+			SaberFactions.plugin.log(TL.COMMAND_UNCLAIMALL_LOG.format(fme.getName(), myFaction.getTag()));
 		}
 	}
 

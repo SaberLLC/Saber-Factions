@@ -2,7 +2,7 @@ package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -109,7 +109,7 @@ public class FScoreboard {
 					updateObjective();
 				}
 			}
-		}.runTaskTimer(SavageFactions.plugin, updateInterval, updateInterval);
+		}.runTaskTimer(SaberFactions.plugin, updateInterval, updateInterval);
 	}
 
 	public void setTemporarySidebar(final FSidebarProvider provider) {
@@ -132,7 +132,7 @@ public class FScoreboard {
 					updateObjective();
 				}
 			}
-		}.runTaskLater(SavageFactions.plugin, SavageFactions.plugin.getConfig().getInt("scoreboard.expiration", 7) * 20);
+		}.runTaskLater(SaberFactions.plugin, SaberFactions.plugin.getConfig().getInt("scoreboard.expiration", 7) * 20);
 	}
 
 	private void updateObjective() {

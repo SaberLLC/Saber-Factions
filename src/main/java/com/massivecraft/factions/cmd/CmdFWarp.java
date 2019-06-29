@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
@@ -80,7 +80,7 @@ public class CmdFWarp extends FCommand {
 	}
 
 	private boolean transact(FPlayer player) {
-		return !SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.warp", 5), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
+		return !SaberFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SaberFactions.plugin.getConfig().getDouble("warp-cost.warp", 5), TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
 	}
 
 	@Override

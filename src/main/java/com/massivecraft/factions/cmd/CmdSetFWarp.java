@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -51,7 +51,7 @@ public class CmdSetFWarp extends FCommand {
 		// Checks if warp with same name already exists and ignores maxWarp check if it does.
 		boolean warpExists = myFaction.isWarp(warp);
 
-		int maxWarps = SavageFactions.plugin.getConfig().getInt("max-warps", 5);
+		int maxWarps = SaberFactions.plugin.getConfig().getInt("max-warps", 5);
 		boolean tooManyWarps = maxWarps <= myFaction.getWarps().size();
 		if (tooManyWarps && !warpExists) {
 			fme.msg(TL.COMMAND_SETFWARP_LIMIT, maxWarps);
@@ -73,7 +73,7 @@ public class CmdSetFWarp extends FCommand {
 	}
 
 	private boolean transact(FPlayer player) {
-		return !SavageFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SavageFactions.plugin.getConfig().getDouble("warp-cost.setwarp", 5), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
+		return !SaberFactions.plugin.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing() || payForCommand(SaberFactions.plugin.getConfig().getDouble("warp-cost.setwarp", 5), TL.COMMAND_SETFWARP_TOSET.toString(), TL.COMMAND_SETFWARP_FORSET.toString());
 	}
 
 	@Override

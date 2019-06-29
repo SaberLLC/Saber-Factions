@@ -87,15 +87,15 @@ public class CmdDisband extends FCommand {
 		if (!disbandMap.containsKey(me.getUniqueId().toString()) && faction.getTnt() > 0) {
 			msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", faction.getTnt() + ""));
 			disbandMap.put(me.getUniqueId().toString(), faction.getId());
-			Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> disbandMap.remove(me.getUniqueId().toString()), 200L);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(SaberFactions.plugin, () -> disbandMap.remove(me.getUniqueId().toString()), 200L);
 		} else if (faction.getId().equals(disbandMap.get(me.getUniqueId().toString())) || faction.getTnt() == 0) {
-			if (SavageFactions.plugin.getConfig().getBoolean("faction-disband-broadcast", true)) {
+			if (SaberFactions.plugin.getConfig().getBoolean("faction-disband-broadcast", true)) {
 				for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
 					String amountString = senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(follower);
 					UtilFly.checkFly(this.fme, Board.getInstance().getFactionAt(new FLocation(follower)));
 					if (follower.getFaction() == faction) {
 						follower.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, amountString);
-						fme.setCooldown("disband", System.currentTimeMillis() + (SavageFactions.plugin.getConfig().getInt("fcooldowns.f-disband") * 1000));
+						fme.setCooldown("disband", System.currentTimeMillis() + (SaberFactions.plugin.getConfig().getInt("fcooldowns.f-disband") * 1000));
 					} else {
 						follower.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, amountString, faction.getTag(follower));
 					}

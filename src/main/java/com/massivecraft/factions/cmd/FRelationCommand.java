@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.event.FactionRelationWishEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
@@ -103,8 +103,8 @@ public abstract class FRelationCommand extends FCommand {
 	}
 
 	private boolean hasMaxRelations(Faction them, Relation targetRelation) {
-		int max = SavageFactions.plugin.getConfig().getInt("max-relations." + targetRelation.toString(), -1);
-		if (SavageFactions.plugin.getConfig().getBoolean("max-relations.enabled", false)) {
+		int max = SaberFactions.plugin.getConfig().getInt("max-relations." + targetRelation.toString(), -1);
+		if (SaberFactions.plugin.getConfig().getBoolean("max-relations.enabled", false)) {
 			if (max != -1) {
 				if (myFaction.getRelationCount(targetRelation) >= max) {
 					msg(TL.COMMAND_RELATIONS_EXCEEDS_ME, max, targetRelation.getPluralTranslation());

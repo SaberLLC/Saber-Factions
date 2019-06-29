@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
@@ -27,12 +27,12 @@ public class CmdGetVault extends FCommand {
 
 	@Override
 	public void perform() {
-		if (!SavageFactions.plugin.getConfig().getBoolean("fvault.Enabled")) {
+		if (!SaberFactions.plugin.getConfig().getBoolean("fvault.Enabled")) {
 			fme.sendMessage("This command is disabled!");
 			return;
 		}
 		Location vaultLocation = fme.getFaction().getVault();
-		ItemStack vault = SavageFactions.plugin.createItem(Material.CHEST, 1, (short) 0, SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fvault.Item.Name")), SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fvault.Item.Lore")));
+		ItemStack vault = SaberFactions.plugin.createItem(Material.CHEST, 1, (short) 0, SaberFactions.plugin.color(SaberFactions.plugin.getConfig().getString("fvault.Item.Name")), SaberFactions.plugin.colorList(SaberFactions.plugin.getConfig().getStringList("fvault.Item.Lore")));
 
 
 		//check if vault is set
@@ -43,7 +43,7 @@ public class CmdGetVault extends FCommand {
 
 
 		//has enough money?
-		int amount = SavageFactions.plugin.getConfig().getInt("fvault.Price");
+		int amount = SaberFactions.plugin.getConfig().getInt("fvault.Price");
 		if (!fme.hasMoney(amount)) {
 			return;
 		}

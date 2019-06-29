@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayers;
 import com.massivecraft.factions.zcore.util.DiscUtil;
@@ -26,8 +26,8 @@ public class JSONFPlayers extends MemoryFPlayers {
 	private File file;
 
 	public JSONFPlayers() {
-		file = new File(SavageFactions.plugin.getDataFolder(), "players.json");
-		gson = SavageFactions.plugin.gson;
+		file = new File(SaberFactions.plugin.getDataFolder(), "players.json");
+		gson = SaberFactions.plugin.gson;
 	}
 
 	public Gson getGson() {
@@ -75,7 +75,7 @@ public class JSONFPlayers extends MemoryFPlayers {
 		}
 		this.fPlayers.clear();
 		this.fPlayers.putAll(fplayers);
-		SavageFactions.plugin.log("Loaded " + fPlayers.size() + " players");
+		SaberFactions.plugin.log("Loaded " + fPlayers.size() + " players");
 	}
 
 	private Map<String, JSONFPlayer> loadCore() {

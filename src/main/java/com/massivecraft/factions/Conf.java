@@ -2,7 +2,6 @@ package com.massivecraft.factions;
 
 import com.google.common.collect.ImmutableMap;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
-import com.massivecraft.factions.util.MultiversionMaterials;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -372,24 +371,24 @@ public class Conf {
 		// Config is not loading if value is empty ???
 		territoryBypasssProtectedMaterials.add(Material.COOKIE);
 
-		territoryDenyUseageMaterials.add(SavageFactions.plugin.FIREBALL);
+		territoryDenyUseageMaterials.add(SaberFactions.plugin.FIREBALL);
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterials.add(Material.BUCKET);
 		territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
 		territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
-		if (!SavageFactions.plugin.mc17) {
+		if (!SaberFactions.plugin.mc17) {
 			territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
 		}
 
 
 		territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
 
-		territoryDenyUseageMaterialsWhenOffline.add(SavageFactions.plugin.FIREBALL);
+		territoryDenyUseageMaterialsWhenOffline.add(SaberFactions.plugin.FIREBALL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
-		if (!SavageFactions.plugin.mc17) {
+		if (!SaberFactions.plugin.mc17) {
 			territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
 		}
 		safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
@@ -416,11 +415,11 @@ public class Conf {
 	}
 
 	public static void load() {
-		SavageFactions.plugin.persist.loadOrSaveDefault(i, Conf.class, "conf");
+		SaberFactions.plugin.persist.loadOrSaveDefault(i, Conf.class, "conf");
 	}
 
 	public static void save() {
-		SavageFactions.plugin.persist.save(i);
+		SaberFactions.plugin.persist.save(i);
 	}
 
 	public enum Backend {

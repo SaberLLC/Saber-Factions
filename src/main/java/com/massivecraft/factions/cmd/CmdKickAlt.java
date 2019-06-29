@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -32,7 +32,7 @@ public class CmdKickAlt extends FCommand{
 
     @Override
     public void perform() {
-        if (!SavageFactions.plugin.getConfig().getBoolean("f-alts.Enabled", false)) {
+        if (!SaberFactions.plugin.getConfig().getBoolean("f-alts.Enabled", false)) {
             fme.msg(TL.GENERIC_DISABLED);
             return;
         }
@@ -126,7 +126,7 @@ public class CmdKickAlt extends FCommand{
         }
 
         if (Conf.logFactionKick) {
-            SavageFactions.plugin.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: "
+            SaberFactions.plugin.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: "
                     + toKickFaction.getTag());
         }
         // SHOULD NOT BE POSSIBLE BUT KEPT INCASE

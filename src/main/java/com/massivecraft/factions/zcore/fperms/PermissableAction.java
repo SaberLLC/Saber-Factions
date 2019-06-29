@@ -1,7 +1,7 @@
 package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.util.MultiversionMaterials;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -93,11 +93,11 @@ public enum PermissableAction {
 
 	// Utility method to build items for F Perm GUI
 	public ItemStack buildItem(FPlayer fme, Permissable permissable) {
-		final ConfigurationSection section = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.action");
+		final ConfigurationSection section = SaberFactions.plugin.getConfig().getConfigurationSection("fperm-gui.action");
 
 		if (section == null) {
-			SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-			SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+			SaberFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+			SaberFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
 			return new ItemStack(Material.AIR);
 		}
 
@@ -109,7 +109,7 @@ public enum PermissableAction {
 		}
 		Material material = Material.matchMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-')));
 		if (material == null) {
-			material = MultiversionMaterials.fromString(SavageFactions.plugin.getConfig().getString("fperm-gui.action.materials")).parseMaterial();
+			material = MultiversionMaterials.fromString(SaberFactions.plugin.getConfig().getString("fperm-gui.action.materials")).parseMaterial();
 		}
 
 		Access access = fme.getFaction().getAccess(permissable, this);
@@ -135,7 +135,7 @@ public enum PermissableAction {
 		}
 
 		// If under the 1.13 version we will use the colorable option.
-		if (!SavageFactions.plugin.mc113) {
+		if (!SaberFactions.plugin.mc113) {
 			DyeColor dyeColor = null;
 
 			try {
@@ -148,14 +148,14 @@ public enum PermissableAction {
 			}
 		} else {
 			// so this is in 1.13 mode, our config will automatically be updated to a material instead of color because of it being removed in the new api
-			item.setType(Material.valueOf(SavageFactions.plugin.getConfig().getString("fperm-gui.action.access." + accessValue)));
+			item.setType(Material.valueOf(SaberFactions.plugin.getConfig().getString("fperm-gui.action.access." + accessValue)));
 		}
 
 		for (String loreLine : section.getStringList("placeholder-item.lore")) {
 			lore.add(replacePlaceholders(loreLine, fme, permissable));
 		}
 
-		if (!SavageFactions.plugin.mc17) {
+		if (!SaberFactions.plugin.mc17) {
 			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 		}
 

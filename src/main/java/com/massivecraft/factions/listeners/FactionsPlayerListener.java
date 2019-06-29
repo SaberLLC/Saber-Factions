@@ -53,10 +53,10 @@ public class FactionsPlayerListener implements Listener {
 
     public FactionsPlayerListener() {
         this.corners = new HashSet<>();
-        for (Player player : SavageFactions.plugin.getServer().getOnlinePlayers()) {
+        for (Player player : SaberFactions.plugin.getServer().getOnlinePlayers()) {
             initPlayer(player);
         }
-        for (World world : SavageFactions.plugin.getServer().getWorlds()) {
+        for (World world : SaberFactions.plugin.getServer().getWorlds()) {
             WorldBorder border = world.getWorldBorder();
             if (border != null) {
                 int cornerCoord = (int) ((border.getSize() - 1.0) / 2.0);
@@ -99,7 +99,7 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded()) {
+        if (SaberFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded()) {
             return true;
         }
 
@@ -181,7 +181,7 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
+        if (SaberFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
             return true;
 
         if (otherFaction.getId().equals(myFaction.getId()) && me.getRole() == Role.LEADER) return true;
@@ -303,15 +303,15 @@ public class FactionsPlayerListener implements Listener {
         me.login(); // set kills / deaths
 
         // Check for Faction announcements. Let's delay this so they actually see it.
-        Bukkit.getScheduler().runTaskLater(SavageFactions.plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(SaberFactions.plugin, () -> {
             if (me.isOnline()) {
                 me.getFaction().sendUnreadAnnouncements(me);
             }
         }, 33L); // Don't ask me why.
 
-        if (SavageFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", false)) {
+        if (SaberFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", false)) {
             FScoreboard.init(me);
-            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), SavageFactions.plugin.getConfig().getInt("scoreboard.default-update-interval", 20));
+            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), SaberFactions.plugin.getConfig().getInt("scoreboard.default-update-interval", 20));
             FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
         }
 
@@ -326,17 +326,17 @@ public class FactionsPlayerListener implements Listener {
 
 
         fallMap.put(me.getPlayer(), false);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> fallMap.remove(me.getPlayer()), 180L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(SaberFactions.plugin, () -> fallMap.remove(me.getPlayer()), 180L);
 
 
         if (me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {
             me.setSpyingChat(false);
-            SavageFactions.plugin.log(Level.INFO, "Found %s spying chat without permission on login. Disabled their chat spying.", player.getName());
+            SaberFactions.plugin.log(Level.INFO, "Found %s spying chat without permission on login. Disabled their chat spying.", player.getName());
         }
 
         if (me.isAdminBypassing() && !player.hasPermission(Permission.BYPASS.node)) {
             me.setIsAdminBypassing(false);
-            SavageFactions.plugin.log(Level.INFO, "Found %s on admin Bypass without permission on login. Disabled it for them.", player.getName());
+            SaberFactions.plugin.log(Level.INFO, "Found %s on admin Bypass without permission on login. Disabled it for them.", player.getName());
         }
 
 
@@ -370,10 +370,10 @@ public class FactionsPlayerListener implements Listener {
         me.logout(); // cache kills / deaths
 
         // if player is waiting for fstuck teleport but leaves, remove
-        if (SavageFactions.plugin.getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
+        if (SaberFactions.plugin.getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
             FPlayers.getInstance().getByPlayer(me.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
-            SavageFactions.plugin.getStuckMap().remove(me.getPlayer().getUniqueId());
-            SavageFactions.plugin.getTimers().remove(me.getPlayer().getUniqueId());
+            SaberFactions.plugin.getStuckMap().remove(me.getPlayer().getUniqueId());
+            SaberFactions.plugin.getTimers().remove(me.getPlayer().getUniqueId());
         }
 
         Faction myFaction = me.getFaction();
@@ -408,12 +408,12 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public void enableFly(FPlayer me) {
-        if (SavageFactions.plugin.getConfig().getBoolean("ffly.AutoEnable")) {
+        if (SaberFactions.plugin.getConfig().getBoolean("ffly.AutoEnable")) {
 
             me.setFlying(true);
             CmdFly.flyMap.put(me.getName(), true);
             if (CmdFly.id == -1) {
-                if (SavageFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
+                if (SaberFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
                     CmdFly.startParticles();
                 }
             }
@@ -529,19 +529,19 @@ public class FactionsPlayerListener implements Listener {
 
         if (changedFaction) {
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerEnteredFactionEvent(factionTo, factionFrom, me));
-            if (SavageFactions.plugin.getConfig().getBoolean("Title.Show-Title")) {
-                String title = SavageFactions.plugin.getConfig().getString("Title.Format.Title");
+            if (SaberFactions.plugin.getConfig().getBoolean("Title.Show-Title")) {
+                String title = SaberFactions.plugin.getConfig().getString("Title.Format.Title");
                 title = title.replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
                 title = parseAllPlaceholders(title, factionTo, player);
-                String subTitle = SavageFactions.plugin.getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
+                String subTitle = SaberFactions.plugin.getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
                 subTitle = parseAllPlaceholders(subTitle, factionTo, player);
-                if (!SavageFactions.plugin.mc17) {
-                    if (!SavageFactions.plugin.mc18) {
-                        me.getPlayer().sendTitle(SavageFactions.plugin.color(title), SavageFactions.plugin.color(subTitle), SavageFactions.plugin.getConfig().getInt("Title.Options.FadeInTime"),
-                                SavageFactions.plugin.getConfig().getInt("Title.Options.ShowTime"),
-                                SavageFactions.plugin.getConfig().getInt("Title.Options.FadeOutTime"));
+                if (!SaberFactions.plugin.mc17) {
+                    if (!SaberFactions.plugin.mc18) {
+                        me.getPlayer().sendTitle(SaberFactions.plugin.color(title), SaberFactions.plugin.color(subTitle), SaberFactions.plugin.getConfig().getInt("Title.Options.FadeInTime"),
+                                SaberFactions.plugin.getConfig().getInt("Title.Options.ShowTime"),
+                                SaberFactions.plugin.getConfig().getInt("Title.Options.FadeOutTime"));
                     } else {
-                        me.getPlayer().sendTitle(SavageFactions.plugin.color(title), SavageFactions.plugin.color(subTitle));
+                        me.getPlayer().sendTitle(SaberFactions.plugin.color(title), SaberFactions.plugin.color(subTitle));
                     }
 
 
@@ -549,7 +549,7 @@ public class FactionsPlayerListener implements Listener {
 
             }
 
-            if (!SavageFactions.plugin.factionsFlight) {
+            if (!SaberFactions.plugin.factionsFlight) {
                 return;
             }
 
@@ -577,12 +577,12 @@ public class FactionsPlayerListener implements Listener {
 
         if (me.isMapAutoUpdating()) {
             if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
-                if (SavageFactions.plugin.getConfig().getBoolean("findfactionsexploit.log", false)) {
-                    SavageFactions.plugin.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
+                if (SaberFactions.plugin.getConfig().getBoolean("findfactionsexploit.log", false)) {
+                    SaberFactions.plugin.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
                 }
             } else {
                 me.sendFancyMessage(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
-                showTimes.put(player.getUniqueId(), System.currentTimeMillis() + SavageFactions.plugin.getConfig().getLong("findfactionsexploit.cooldown", 2000));
+                showTimes.put(player.getUniqueId(), System.currentTimeMillis() + SaberFactions.plugin.getConfig().getLong("findfactionsexploit.cooldown", 2000));
             }
         } else {
             Faction myFaction = me.getFaction();
@@ -843,7 +843,7 @@ public class FactionsPlayerListener implements Listener {
             return PermissableAction.DOOR;
         if (material.name().toUpperCase().contains("BUTTON") || material.name().toUpperCase().contains("PRESSURE"))
             return PermissableAction.BUTTON;
-        if (SavageFactions.plugin.mc113) {
+        if (SaberFactions.plugin.mc113) {
             switch (material) {
                 case LEVER:
                     return PermissableAction.LEVER;

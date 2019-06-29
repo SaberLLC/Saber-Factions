@@ -1,11 +1,9 @@
-# SavageFactions by ProSavage
-# Report issues: https://github.com/ProSavage/SavageFactions/issues/new
-# Live support: https://discord.gg/W9dv9WP
+# SaberFactions by Driftay
+# Report issues: https://github.com/Driftay/SaberFactions/issues/new
+# Live support: https://discord.gg/22AQtX7
 # Spigot Site: https://www.spigotmc.org/resources/savagefactions-factionsuuid-reimagined-1-7-1-12.52891/
-# Website: https://www.prosavage.net/
-# Jenkins: https://jenkins.prosavage.net/
-
-# Made with love <3
+# Website: https://www.saberllc.net/
+# Jenkins: https://jenkins.saberllc.net/
 
 # Debug
 # Turn this on if you are having issues with something and working on resolving them.
@@ -801,7 +799,7 @@ f-grace:
 # |                  Faction Focus                       | #
 # +------------------------------------------------------+ #
 ############################################################
-#Note This will ONLY work if you have SavageFactions Scoreboard Enabled!
+#Note This will ONLY work if you have SaberFactions Scoreboard Enabled!
 ffocus:
   Enabled: true
   Prefix: '&7»&b'

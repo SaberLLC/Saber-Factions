@@ -86,7 +86,7 @@ public class CmdTag extends FCommand {
 				fplayer.msg(TL.COMMAND_TAG_CHANGED, fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
 			}
 		}
-		fme.setCooldown("tag", System.currentTimeMillis() + (SavageFactions.plugin.getConfig().getInt("fcooldowns.f-tag") * 1000));
+		fme.setCooldown("tag", System.currentTimeMillis() + (SaberFactions.plugin.getConfig().getInt("fcooldowns.f-tag") * 1000));
 		FTeamWrapper.updatePrefixes(myFaction);
 	}
 

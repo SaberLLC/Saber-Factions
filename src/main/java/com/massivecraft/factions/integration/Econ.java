@@ -3,7 +3,7 @@ package com.massivecraft.factions.integration;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -34,24 +34,24 @@ public class Econ {
 		String integrationFail = "Economy integration is " + (Conf.econEnabled ? "enabled, but" : "disabled, and") + " the plugin \"Vault\" ";
 
 		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
-			SavageFactions.plugin.log(integrationFail + "is not installed.");
+			SaberFactions.plugin.log(integrationFail + "is not installed.");
 			return;
 		}
 
 		RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
 		if (rsp == null) {
-			SavageFactions.plugin.log(integrationFail + "is not hooked into an economy plugin.");
+			SaberFactions.plugin.log(integrationFail + "is not hooked into an economy plugin.");
 			return;
 		}
 		econ = rsp.getProvider();
 
-		SavageFactions.plugin.log("Economy integration through Vault plugin successful.");
+		SaberFactions.plugin.log("Economy integration through Vault plugin successful.");
 
 		if (!Conf.econEnabled) {
-			SavageFactions.plugin.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+			SaberFactions.plugin.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
 		}
 
-		SavageFactions.plugin.cmdBase.cmdHelp.updateHelp();
+		SaberFactions.plugin.cmdBase.cmdHelp.updateHelp();
 	}
 
 	public static boolean shouldBeUsed() {
@@ -82,7 +82,7 @@ public class Econ {
 
 	public static void sendBalanceInfo(FPlayer to, EconomyParticipator about) {
 		if (!shouldBeUsed()) {
-			SavageFactions.plugin.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
+			SaberFactions.plugin.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
 		}
 		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));

@@ -3,7 +3,7 @@ package com.massivecraft.factions.zcore.persist.json;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 
@@ -16,7 +16,7 @@ import java.util.TreeMap;
 
 
 public class JSONBoard extends MemoryBoard {
-	private static transient File file = new File(SavageFactions.plugin.getDataFolder(), "board.json");
+	private static transient File file = new File(SaberFactions.plugin.getDataFolder(), "board.json");
 
 	// -------------------------------------------- //
 	// Persistance
@@ -67,14 +67,14 @@ public class JSONBoard extends MemoryBoard {
 	}
 
 	public void forceSave(boolean sync) {
-		DiscUtil.writeCatch(file, SavageFactions.plugin.gson.toJson(dumpAsSaveFormat()), sync);
+		DiscUtil.writeCatch(file, SaberFactions.plugin.gson.toJson(dumpAsSaveFormat()), sync);
 	}
 
 	public boolean load() {
-		SavageFactions.plugin.log("Loading board from disk");
+		SaberFactions.plugin.log("Loading board from disk");
 
 		if (!file.exists()) {
-			SavageFactions.plugin.log("No board to load from disk. Creating new file.");
+			SaberFactions.plugin.log("No board to load from disk. Creating new file.");
 			forceSave();
 			return true;
 		}
@@ -82,12 +82,12 @@ public class JSONBoard extends MemoryBoard {
 		try {
 			Type type = new TypeToken<Map<String, Map<String, String>>>() {
 			}.getType();
-			Map<String, Map<String, String>> worldCoordIds = SavageFactions.plugin.gson.fromJson(DiscUtil.read(file), type);
+			Map<String, Map<String, String>> worldCoordIds = SaberFactions.plugin.gson.fromJson(DiscUtil.read(file), type);
 			loadFromSaveFormat(worldCoordIds);
-			SavageFactions.plugin.log("Loaded " + flocationIds.size() + " board locations");
+			SaberFactions.plugin.log("Loaded " + flocationIds.size() + " board locations");
 		} catch (Exception e) {
 			e.printStackTrace();
-			SavageFactions.plugin.log("Failed to load the board from disk.");
+			SaberFactions.plugin.log("Failed to load the board from disk.");
 			return false;
 		}
 

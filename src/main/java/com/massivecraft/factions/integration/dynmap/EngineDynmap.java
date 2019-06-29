@@ -113,7 +113,7 @@ public class EngineDynmap {
 		}
 
 		// Shedule non thread safe sync at the end!
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> {
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(SaberFactions.plugin, () -> {
 
 			final Map<String, TempMarker> homes = createHomes();
 			final Map<String, TempAreaMarker> areas = createAreas();

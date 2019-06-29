@@ -1,7 +1,7 @@
 package com.massivecraft.factions.zcore.fperms.gui;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FactionGUI;
@@ -35,13 +35,13 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 
 	public PermissableRelationGUI(FPlayer fme) {
 		this.fme = fme;
-		this.section = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.relation");
+		this.section = SaberFactions.plugin.getConfig().getConfigurationSection("fperm-gui.relation");
 	}
 
 	public void build() {
 		if (section == null) {
-			SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-			SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+			SaberFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+			SaberFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
 			return;
 		}
 
@@ -49,7 +49,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 		guiSize = section.getInt("rows", 3);
 		if (guiSize > 5) {
 			guiSize = 5;
-			SavageFactions.plugin.log(Level.INFO, "Relation GUI size out of bounds, defaulting to 5");
+			SaberFactions.plugin.log(Level.INFO, "Relation GUI size out of bounds, defaulting to 5");
 		}
 
 		guiSize *= 9;
@@ -62,12 +62,12 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 				continue;
 			}
 			if (slot + 1 > guiSize && slot > 0) {
-				SavageFactions.plugin.log(Level.WARNING, "Invalid slot of " + key.toUpperCase() + " in relation GUI skipping it");
+				SaberFactions.plugin.log(Level.WARNING, "Invalid slot of " + key.toUpperCase() + " in relation GUI skipping it");
 				continue;
 			}
 
 			if (getPermissable(key) == null) {
-				SavageFactions.plugin.log(Level.WARNING, "Invalid permissable " + key.toUpperCase() + " skipping it");
+				SaberFactions.plugin.log(Level.WARNING, "Invalid permissable " + key.toUpperCase() + " skipping it");
 				continue;
 			}
 
@@ -112,7 +112,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 			ItemStack item = permissable.buildItem();
 
 			if (item == null) {
-				SavageFactions.plugin.log(Level.WARNING, "Invalid material for " + permissable.toString().toUpperCase() + " skipping it");
+				SaberFactions.plugin.log(Level.WARNING, "Invalid material for " + permissable.toString().toUpperCase() + " skipping it");
 				continue;
 			}
 
@@ -122,8 +122,8 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 
 	private void buildDummyItems() {
 		if (section == null) {
-			SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-			SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+			SaberFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+			SaberFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
 			return;
 		}
 
@@ -132,7 +132,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 			try {
 				dummyId = Integer.parseInt(key);
 			} catch (NumberFormatException exception) {
-				SavageFactions.plugin.log(Level.WARNING, "Invalid dummy item id: " + key.toUpperCase());
+				SaberFactions.plugin.log(Level.WARNING, "Invalid dummy item id: " + key.toUpperCase());
 				continue;
 			}
 
@@ -142,7 +142,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 			}
 
 			ItemMeta meta = dummyItem.getItemMeta();
-			if (!SavageFactions.plugin.mc17) {
+			if (!SaberFactions.plugin.mc17) {
 				meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 			}
 
@@ -151,7 +151,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 			List<Integer> dummySlots = section.getIntegerList("dummy-items." + key);
 			for (Integer slot : dummySlots) {
 				if (slot + 1 > guiSize || slot < 0) {
-					SavageFactions.plugin.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
+					SaberFactions.plugin.log(Level.WARNING, "Invalid slot: " + slot + " for dummy item: " + key);
 					continue;
 				}
 				relationGUI.setItem(slot, dummyItem);
@@ -160,17 +160,17 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 	}
 
 	private ItemStack buildDummyItem(int id) {
-		final ConfigurationSection dummySection = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.dummy-items." + id);
+		final ConfigurationSection dummySection = SaberFactions.plugin.getConfig().getConfigurationSection("fperm-gui.dummy-items." + id);
 
 		if (dummySection == null) {
-			SavageFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-			SavageFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+			SaberFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+			SaberFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
 			return new ItemStack(Material.AIR);
 		}
 
 		Material material = Material.matchMaterial(dummySection.getString("material", ""));
 		if (material == null) {
-			SavageFactions.plugin.log(Level.WARNING, "Invalid material for dummy item: " + id);
+			SaberFactions.plugin.log(Level.WARNING, "Invalid material for dummy item: " + id);
 			return null;
 		}
 
@@ -196,7 +196,7 @@ public class PermissableRelationGUI implements InventoryHolder, FactionGUI {
 		}
 		itemMeta.setLore(lore);
 
-		if (!SavageFactions.plugin.mc17) {
+		if (!SaberFactions.plugin.mc17) {
 			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 		}
 

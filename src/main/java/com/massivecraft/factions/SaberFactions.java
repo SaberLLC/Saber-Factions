@@ -47,11 +47,11 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 
-public class SavageFactions extends MPlugin {
+public class SaberFactions extends MPlugin {
 
 	// Our single plugin instance.
 	// Single 4 life.
-	public static SavageFactions plugin;
+	public static SaberFactions plugin;
 	public static Permission perms = null;
 	// This plugin sets the boolean true when fully enabled.
 	// Plugins can check this boolean while hooking in have
@@ -86,7 +86,7 @@ public class SavageFactions extends MPlugin {
 	private Listener[] eventsListener;
 	public static Economy econ = null;
 
-	public SavageFactions() {
+	public SaberFactions() {
 		plugin = this;
 	}
 
@@ -147,20 +147,20 @@ public class SavageFactions extends MPlugin {
 		int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 		switch (version) {
 			case 7:
-				SavageFactions.plugin.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+				SaberFactions.plugin.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
 				mc17 = true;
 				break;
 			case 8:
-				SavageFactions.plugin.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+				SaberFactions.plugin.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
 				mc18 = true;
 				break;
 			case 13:
-				SavageFactions.plugin.log("Minecraft Version 1.13 found, New Items will be used.");
+				SaberFactions.plugin.log("Minecraft Version 1.13 found, New Items will be used.");
 				mc113 = true;
 				changeItemIDSInConfig();
 				break;
 			case 14:
-				SavageFactions.plugin.log("Minecraft Version 1.14 found.");
+				SaberFactions.plugin.log("Minecraft Version 1.14 found.");
 				mc114 = true;
 				changeItemIDSInConfig();
 				break;
@@ -229,7 +229,7 @@ public class SavageFactions extends MPlugin {
 		}
 
 		if (getServer().getPluginManager().getPlugin("Skript") != null) {
-			log("Skript was found! Registering SavageFactions Addon...");
+			log("Skript was found! Registering SaberFactions Addon...");
 			skriptAddon = Skript.registerAddon(this);
 			try {
 				skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
@@ -262,14 +262,14 @@ public class SavageFactions extends MPlugin {
 		getCommand(this.refCommand).setTabCompleter(this);
 
 
-		RegisteredServiceProvider<Economy> rsp = SavageFactions.this.getServer().getServicesManager().getRegistration(Economy.class);
-		SavageFactions.econ = rsp.getProvider();
+		RegisteredServiceProvider<Economy> rsp = SaberFactions.this.getServer().getServicesManager().getRegistration(Economy.class);
+		SaberFactions.econ = rsp.getProvider();
 
 		if (getDescription().getFullName().contains("BETA")) {
 			divider();
 			System.out.println("You are using a BETA version of the plugin!");
 			System.out.println("This comes with risks of small bugs in newer features!");
-			System.out.println("For support head to: https://github.com/ProSavage/SavageFactions/issues");
+			System.out.println("For support head to: https://github.com/ProSavage/SaberFactions/issues");
 			divider();
 		}
 
@@ -277,7 +277,7 @@ public class SavageFactions extends MPlugin {
 		this.postEnable();
 		this.loadSuccessful = true;
 		// Set startup finished to true. to give plugins hooking in a greenlight
-		SavageFactions.startupFinished = true;
+		SaberFactions.startupFinished = true;
 	}
 
 	public SkriptAddon getSkriptAddon() {
@@ -417,7 +417,7 @@ public class SavageFactions extends MPlugin {
 
 	public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
 		if (getConfig().getString(path).equals(stringToReplace)) {
-			// SavageFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
+			// SaberFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
 			// log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
 
 			getConfig().set(path, replacementString);
@@ -522,14 +522,14 @@ public class SavageFactions extends MPlugin {
 	public ItemStack createLazyItem(Material material, int amount, short datavalue, String name, String lore) {
 		ItemStack item = new ItemStack(material, amount, datavalue);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(color(SavageFactions.plugin.getConfig().getString(name)));
-		meta.setLore(colorList(SavageFactions.plugin.getConfig().getStringList(lore)));
+		meta.setDisplayName(color(SaberFactions.plugin.getConfig().getString(name)));
+		meta.setLore(colorList(SaberFactions.plugin.getConfig().getStringList(lore)));
 		item.setItemMeta(meta);
 		return item;
 	}
 
 	public Economy getEcon() {
-		RegisteredServiceProvider<Economy> rsp = SavageFactions.plugin.getServer().getServicesManager().getRegistration(Economy.class);
+		RegisteredServiceProvider<Economy> rsp = SaberFactions.plugin.getServer().getServicesManager().getRegistration(Economy.class);
 		Economy econ = rsp.getProvider();
 		return econ;
 	}
@@ -614,11 +614,11 @@ public class SavageFactions extends MPlugin {
 		as.setVisible(false); //Makes the ArmorStand invisible
 		as.setGravity(false); //Make sure it doesn't fall
 		as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-		as.setCustomName(SavageFactions.plugin.color(text)); //Set this to the text you want
+		as.setCustomName(SaberFactions.plugin.color(text)); //Set this to the text you want
 		as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
 		final ArmorStand armorStand = as;
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(SaberFactions.plugin, () -> {
 					  armorStand.remove();
 					  getLogger().info("Removing Hologram.");
 				  }

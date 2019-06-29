@@ -50,13 +50,13 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
 
 			// Check if they should be exempt from this.
 			if (!fplayer.willAutoLeave()) {
-				SavageFactions.plugin.debug(Level.INFO, fplayer.getName() + " was going to be auto-removed but was set not to.");
+				SaberFactions.plugin.debug(Level.INFO, fplayer.getName() + " was going to be auto-removed but was set not to.");
 				continue;
 			}
 
 			if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis) {
 				if (Conf.logFactionLeave || Conf.logFactionKick) {
-					SavageFactions.plugin.log("Player " + fplayer.getName() + " was auto-removed due to inactivity.");
+					SaberFactions.plugin.log("Player " + fplayer.getName() + " was auto-removed due to inactivity.");
 				}
 
 				// if player is faction admin, sort out the faction since he's going away

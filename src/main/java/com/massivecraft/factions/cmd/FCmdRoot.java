@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
@@ -228,35 +228,35 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdCorner);
 
 
-		if(SavageFactions.plugin.getConfig().getBoolean("f-alts.Enabled")){
+		if(SaberFactions.plugin.getConfig().getBoolean("f-alts.Enabled")){
 			this.addSubCommand(cmdAlts);
 		}
 
-		if (SavageFactions.plugin.getConfig().getBoolean("f-grace.Enabled")) {
+		if (SaberFactions.plugin.getConfig().getBoolean("f-grace.Enabled")) {
 			this.addSubCommand(this.cmdGrace);
 		}
 
 
 		if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null) {
-			SavageFactions.plugin.log("Found CoreProtect, enabling Inspect");
+			SaberFactions.plugin.log("Found CoreProtect, enabling Inspect");
 			this.addSubCommand(this.cmdInspect);
 		} else {
-			SavageFactions.plugin.log("CoreProtect not found, disabling Inspect");
+			SaberFactions.plugin.log("CoreProtect not found, disabling Inspect");
 		}
-		if (SavageFactions.plugin.getConfig().getBoolean("ffocus.Enabled")) {
+		if (SaberFactions.plugin.getConfig().getBoolean("ffocus.Enabled")) {
 			addSubCommand(this.cmdFocus);
 		}
 
-		if (SavageFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
+		if (SaberFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
 			this.addSubCommand(this.cmdFly);
 		}
 		if (Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null) {
-			SavageFactions.plugin.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
+			SaberFactions.plugin.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
 		} else {
-			SavageFactions.plugin.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
+			SaberFactions.plugin.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
 			this.addSubCommand(this.cmdTop);
 		}
-		if (SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+		if (SaberFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
 			this.addSubCommand(this.cmdPaypalSet);
 			this.addSubCommand(this.cmdPaypalSee);
 		}

@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
@@ -51,7 +51,7 @@ public class CmdList extends FCommand {
 
 		// remove exempt factions
 		if (fme != null && fme.getPlayer() != null && !fme.getPlayer().hasPermission("factions.show.bypassexempt")) {
-			List<String> exemptFactions = SavageFactions.plugin.getConfig().getStringList("show-exempt");
+			List<String> exemptFactions = SaberFactions.plugin.getConfig().getStringList("show-exempt");
 
 			factionList.removeIf(next -> exemptFactions.contains(next.getTag()));
 		}

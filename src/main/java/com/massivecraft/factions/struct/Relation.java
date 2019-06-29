@@ -1,7 +1,7 @@
 package com.massivecraft.factions.struct;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.util.MultiversionMaterials;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
@@ -199,7 +199,7 @@ public enum Relation implements Permissable {
 	// Utility method to build items for F Perm GUI
 	@Override
 	public ItemStack buildItem() {
-		final ConfigurationSection RELATION_CONFIG = SavageFactions.plugin.getConfig().getConfigurationSection("fperm-gui.relation");
+		final ConfigurationSection RELATION_CONFIG = SaberFactions.plugin.getConfig().getConfigurationSection("fperm-gui.relation");
 
 		String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""));
 		List<String> lore = new ArrayList<>();

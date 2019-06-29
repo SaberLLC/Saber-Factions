@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -23,7 +23,7 @@ public class CmdPaypalSee extends FCommand {
 	}
    	@Override
 	public void perform() {
-		if (!SavageFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+		if (!SaberFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
 			fme.msg(TL.GENERIC_DISABLED);
 			return;
 		}

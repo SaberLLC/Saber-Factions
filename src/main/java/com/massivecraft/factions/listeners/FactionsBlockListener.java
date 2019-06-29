@@ -86,7 +86,7 @@ public class FactionsBlockListener implements Listener {
 
             return false;
         } else if (!otherFaction.getId().equals(myFaction.getId())) { // If the faction target is not my own
-            if (SavageFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
+            if (SaberFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
                 return true;
             // Get faction pain build access relation to me
             boolean pain = !justCheck && otherFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
@@ -173,7 +173,7 @@ public class FactionsBlockListener implements Listener {
     @EventHandler
     public void onVaultPlace(BlockPlaceEvent e) {
         if (e.getItemInHand().getType() == Material.CHEST) {
-            ItemStack vault = SavageFactions.plugin.createItem(Material.CHEST, 1, (short) 0, SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fvault.Item.Name")), SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fvault.Item.Lore")));
+            ItemStack vault = SaberFactions.plugin.createItem(Material.CHEST, 1, (short) 0, SaberFactions.plugin.color(SaberFactions.plugin.getConfig().getString("fvault.Item.Name")), SaberFactions.plugin.colorList(SaberFactions.plugin.getConfig().getStringList("fvault.Item.Lore")));
             if (e.getItemInHand().isSimilar(vault)) {
                 FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
                 if (fme.getFaction().getVault() != null) {
@@ -199,7 +199,7 @@ public class FactionsBlockListener implements Listener {
 
                             Material blockMaterial = blockLoc.getBlock().getType();
 
-                            if (blockMaterial == Material.CHEST || (SavageFactions.plugin.getConfig().getBoolean("fvault.No-Hoppers-near-vault") && blockMaterial == Material.HOPPER)) {
+                            if (blockMaterial == Material.CHEST || (SaberFactions.plugin.getConfig().getBoolean("fvault.No-Hoppers-near-vault") && blockMaterial == Material.HOPPER)) {
                                 e.setCancelled(true);
                                 fme.msg(TL.COMMAND_GETVAULT_CHESTNEAR);
                                 return;
@@ -218,7 +218,7 @@ public class FactionsBlockListener implements Listener {
     @EventHandler
     public void onHopperPlace(BlockPlaceEvent e) {
 
-        if (e.getItemInHand().getType() != Material.HOPPER && !SavageFactions.plugin.getConfig().getBoolean("fvault.No-Hoppers-near-vault")) {
+        if (e.getItemInHand().getType() != Material.HOPPER && !SaberFactions.plugin.getConfig().getBoolean("fvault.No-Hoppers-near-vault")) {
             return;
         }
 
@@ -265,7 +265,7 @@ public class FactionsBlockListener implements Listener {
         Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(targetLoc));
 
         // Check if the piston is moving in a faction's territory. This disables pistons entirely in faction territory.
-        if (otherFaction.isNormal() && SavageFactions.plugin.getConfig().getBoolean("disable-pistons-in-territory", false)) {
+        if (otherFaction.isNormal() && SaberFactions.plugin.getConfig().getBoolean("disable-pistons-in-territory", false)) {
             event.setCancelled(true);
             return;
         }
@@ -284,21 +284,21 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onBannerPlace(BlockPlaceEvent e) {
-        if (SavageFactions.plugin.mc17) {
+        if (SaberFactions.plugin.mc17) {
             return;
         }
 
-        if (e.getItemInHand().getType() == SavageFactions.plugin.BANNER) {
+        if (e.getItemInHand().getType() == SaberFactions.plugin.BANNER) {
             ItemStack bannerInHand = e.getItemInHand();
             FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
             ItemStack warBanner = fme.getFaction().getBanner();
             if (warBanner != null) {
                 ItemMeta warmeta = warBanner.getItemMeta();
-                warmeta.setDisplayName(SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fbanners.Item.Name")));
-                warmeta.setLore(SavageFactions.plugin.colorList(SavageFactions.plugin.getConfig().getStringList("fbanners.Item.Lore")));
+                warmeta.setDisplayName(SaberFactions.plugin.color(SaberFactions.plugin.getConfig().getString("fbanners.Item.Name")));
+                warmeta.setLore(SaberFactions.plugin.colorList(SaberFactions.plugin.getConfig().getStringList("fbanners.Item.Lore")));
                 warBanner.setItemMeta(warmeta);
             } else {
-                warBanner = SavageFactions.plugin.createItem(SavageFactions.plugin.BANNER, 1, (short) 1, SavageFactions.plugin.getConfig().getString("fbanners.Item.Name"), SavageFactions.plugin.getConfig().getStringList("fbanners.Item.Lore"));
+                warBanner = SaberFactions.plugin.createItem(SaberFactions.plugin.BANNER, 1, (short) 1, SaberFactions.plugin.getConfig().getString("fbanners.Item.Name"), SaberFactions.plugin.getConfig().getStringList("fbanners.Item.Lore"));
             }
             if (warBanner.isSimilar(bannerInHand)) {
 
@@ -307,12 +307,12 @@ public class FactionsBlockListener implements Listener {
                     e.setCancelled(true);
                     return;
                 }
-                int bannerTime = SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Time") * 20;
+                int bannerTime = SaberFactions.plugin.getConfig().getInt("fbanners.Banner-Time") * 20;
 
                 Location placedLoc = e.getBlockPlaced().getLocation();
                 FLocation fplacedLoc = new FLocation(placedLoc);
-                if ((Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && SavageFactions.plugin.getConfig().getBoolean("fbanners.Placeable.Warzone"))
-                        || (fme.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY) && SavageFactions.plugin.getConfig().getBoolean("fbanners.Placeable.Enemy")) {
+                if ((Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && SaberFactions.plugin.getConfig().getBoolean("fbanners.Placeable.Warzone"))
+                        || (fme.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY) && SaberFactions.plugin.getConfig().getBoolean("fbanners.Placeable.Enemy")) {
                     if (bannerCooldownMap.containsKey(fme.getTag())) {
                         fme.msg(TL.WARBANNER_COOLDOWN);
                         e.setCancelled(true);
@@ -320,29 +320,29 @@ public class FactionsBlockListener implements Listener {
                     }
                     for (FPlayer fplayer : fme.getFaction().getFPlayers()) {
                         //  if (fplayer == fme) { continue; }   //Idk if I wanna not send the title to the player
-                        fplayer.getPlayer().sendTitle(SavageFactions.plugin.color(fme.getTag() + " Placed A WarBanner!"), SavageFactions.plugin.color("&7use &c/f tpbanner&7 to tp to the banner!"), 10, 70, 20);
+                        fplayer.getPlayer().sendTitle(SaberFactions.plugin.color(fme.getTag() + " Placed A WarBanner!"), SaberFactions.plugin.color("&7use &c/f tpbanner&7 to tp to the banner!"), 10, 70, 20);
                     }
 
                     bannerCooldownMap.put(fme.getTag(), true);
                     bannerLocations.put(fme.getTag(), e.getBlockPlaced().getLocation());
-                    int bannerCooldown = SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Place-Cooldown");
+                    int bannerCooldown = SaberFactions.plugin.getConfig().getInt("fbanners.Banner-Place-Cooldown");
                     ArmorStand as = (ArmorStand) e.getBlockPlaced().getLocation().add(0.5, 1, 0.5).getWorld().spawnEntity(e.getBlockPlaced().getLocation().add(0.5, 1, 0.5), EntityType.ARMOR_STAND); //Spawn the ArmorStand
                     as.setVisible(false); //Makes the ArmorStand invisible
                     as.setGravity(false); //Make sure it doesn't fall
                     as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-                    as.setCustomName(SavageFactions.plugin.color(SavageFactions.plugin.getConfig().getString("fbanners.BannerHolo").replace("{Faction}", fme.getTag()))); //Set this to the text you want
+                    as.setCustomName(SaberFactions.plugin.color(SaberFactions.plugin.getConfig().getString("fbanners.BannerHolo").replace("{Faction}", fme.getTag()))); //Set this to the text you want
                     as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
                     ArmorStand armorStand = as;
                     String tag = fme.getTag();
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> bannerCooldownMap.remove(tag), Long.parseLong(bannerCooldown + ""));
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(SaberFactions.plugin, () -> bannerCooldownMap.remove(tag), Long.parseLong(bannerCooldown + ""));
                     Block banner = e.getBlockPlaced();
                     Material bannerType = banner.getType();
                     Faction bannerFaction = fme.getFaction();
                     banner.getWorld().strikeLightningEffect(banner.getLocation());
                     //  e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_LIGHTNING_IMPACT,2.0F,0.5F);
-                    int radius = SavageFactions.plugin.getConfig().getInt("fbanners.Banner-Effect-Radius");
-                    List<String> effects = SavageFactions.plugin.getConfig().getStringList("fbanners.Effects");
-                    int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(SavageFactions.plugin, () -> {
+                    int radius = SaberFactions.plugin.getConfig().getInt("fbanners.Banner-Effect-Radius");
+                    List<String> effects = SaberFactions.plugin.getConfig().getStringList("fbanners.Effects");
+                    int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(SaberFactions.plugin, () -> {
 
                         for (Entity e1 : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(), radius, 255, radius)) {
                             if (e1 instanceof Player) {
@@ -363,7 +363,7 @@ public class FactionsBlockListener implements Listener {
                             }
                         }
                     }, 0L, 20L);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(SavageFactions.plugin, () -> {
+                    Bukkit.getScheduler().scheduleSyncDelayedTask(SaberFactions.plugin, () -> {
                         banner.setType(Material.AIR);
                         as.remove();
                         banner.getWorld().strikeLightningEffect(banner.getLocation());
@@ -402,7 +402,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onFallingBlock(EntityChangeBlockEvent event) {
-        if(!SavageFactions.plugin.getConfig().getBoolean("Falling-Block-Fix.Enabled"))
+        if(!SaberFactions.plugin.getConfig().getBoolean("Falling-Block-Fix.Enabled"))
             return;
 
         Faction faction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
@@ -415,7 +415,7 @@ public class FactionsBlockListener implements Listener {
     //Grace
     @EventHandler
     public void onBreak(EntityExplodeEvent e) {
-        if (!SavageFactions.plugin.getConfig().getBoolean("f-grace.Enabled"))
+        if (!SaberFactions.plugin.getConfig().getBoolean("f-grace.Enabled"))
             return;
 
         if (!graceisEnabled()) {
@@ -425,7 +425,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void entityDamage(EntityDamageEvent e) {
-        if (!SavageFactions.plugin.getConfig().getBoolean("f-grace.Enabled"))
+        if (!SaberFactions.plugin.getConfig().getBoolean("f-grace.Enabled"))
             return;
 
         if (!graceisEnabled()) {
@@ -440,7 +440,7 @@ public class FactionsBlockListener implements Listener {
     @EventHandler
     public void onTNTPlace(BlockPlaceEvent e1) {
         FPlayer fp = FPlayers.getInstance().getByPlayer(e1.getPlayer());
-        if (!SavageFactions.plugin.getConfig().getBoolean("f-grace.Enabled"))
+        if (!SaberFactions.plugin.getConfig().getBoolean("f-grace.Enabled"))
             return;
 
         if (!graceisEnabled() && !fp.isAdminBypassing()) {
@@ -491,7 +491,7 @@ public class FactionsBlockListener implements Listener {
         if (!fme.hasFaction()) {
             return;
         }
-        if (event.getBlock().getType() == SavageFactions.plugin.MOB_SPANWER) {
+        if (event.getBlock().getType() == SaberFactions.plugin.MOB_SPANWER) {
             if (!fme.isAdminBypassing()) {
                 Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
                 if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {

@@ -227,9 +227,9 @@ public class FactionsEntityListener implements Listener {
 			return;
 		}
 		UUID uuid = player.getUniqueId();
-		if (SavageFactions.plugin.getStuckMap().containsKey(uuid)) {
+		if (SaberFactions.plugin.getStuckMap().containsKey(uuid)) {
 			FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
-			SavageFactions.plugin.getStuckMap().remove(uuid);
+			SaberFactions.plugin.getStuckMap().remove(uuid);
 		}
 	}
 
@@ -644,7 +644,7 @@ public class FactionsEntityListener implements Listener {
 
 	@EventHandler
 	public void onTravel(PlayerPortalEvent event) {
-		if (!SavageFactions.plugin.getConfig().getBoolean("portals.limit", false)) {
+		if (!SaberFactions.plugin.getConfig().getBoolean("portals.limit", false)) {
 			return; // Don't do anything if they don't want us to.
 		}
 
@@ -663,7 +663,7 @@ public class FactionsEntityListener implements Listener {
 			}
 
 			FPlayer fp = FPlayers.getInstance().getByPlayer(event.getPlayer());
-			String mininumRelation = SavageFactions.plugin.getConfig().getString("portals.minimum-relation", "MEMBER"); // Defaults to Neutral if typed wrong.
+			String mininumRelation = SaberFactions.plugin.getConfig().getString("portals.minimum-relation", "MEMBER"); // Defaults to Neutral if typed wrong.
 			if (!fp.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation))) {
 				event.setCancelled(true);
 			}

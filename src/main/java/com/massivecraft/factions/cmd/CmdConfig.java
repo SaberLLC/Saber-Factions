@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
@@ -231,10 +231,10 @@ public class CmdConfig extends FCommand {
 		if (!success.isEmpty()) {
 			if (sender instanceof Player) {
 				sendMessage(success);
-				SavageFactions.plugin.log(success + TL.COMMAND_CONFIG_LOG.format((Player) sender));
-			} else  // using SavageFactions.plugin.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
+				SaberFactions.plugin.log(success + TL.COMMAND_CONFIG_LOG.format((Player) sender));
+			} else  // using SaberFactions.plugin.log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
 			{
-				SavageFactions.plugin.log(success);
+				SaberFactions.plugin.log(success);
 			}
 		}
 		// save change to disk

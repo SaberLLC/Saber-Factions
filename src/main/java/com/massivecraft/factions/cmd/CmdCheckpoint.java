@@ -26,7 +26,7 @@ public class CmdCheckpoint extends FCommand {
 
 	@Override
 	public void perform() {
-		if (!SavageFactions.plugin.getConfig().getBoolean("checkpoints.Enabled")) {
+		if (!SaberFactions.plugin.getConfig().getBoolean("checkpoints.Enabled")) {
 			fme.msg(TL.COMMAND_CHECKPOINT_DISABLED);
 			return;
 		}

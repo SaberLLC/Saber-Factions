@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.SavageFactions;
+import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -49,7 +49,7 @@ public class CmdWarunclaimall extends FCommand {
 
 
 		if (Conf.logLandUnclaims) {
-			SavageFactions.plugin.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
+			SaberFactions.plugin.log(TL.COMMAND_WARUNCLAIMALL_LOG.format(fme.getName()));
 		}
 	}
 

@@ -180,9 +180,9 @@ public class FactionsChatListener implements Listener {
 					listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
 				} catch (UnknownFormatConversionException ex) {
 					Conf.chatTagInsertIndex = 0;
-					SavageFactions.plugin.log(Level.SEVERE, "Critical error in chat message formatting!");
-					SavageFactions.plugin.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
-					SavageFactions.plugin.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
+					SaberFactions.plugin.log(Level.SEVERE, "Critical error in chat message formatting!");
+					SaberFactions.plugin.log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
+					SaberFactions.plugin.log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
 					return;
 				}
 			}
@@ -202,7 +202,7 @@ public class FactionsChatListener implements Listener {
 				player.teleport(fme.getFaction().getWarp(warp).getLocation());
 				fme.msg(TL.COMMAND_FWARP_WARPED, warp);
 			}
-		}, SavageFactions.plugin.getConfig().getLong("warmups.f-warp", 0));
+		}, SaberFactions.plugin.getConfig().getLong("warmups.f-warp", 0));
 	}
 
 }
