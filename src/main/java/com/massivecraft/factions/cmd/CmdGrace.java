@@ -8,8 +8,10 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdGrace extends FCommand {
 
     public CmdGrace() {
+
         super();
         this.aliases.add("grace");
+        this.aliases.add("gracee");
 
         this.permission = Permission.GRACE.node;
         this.disableOnLock = false;
