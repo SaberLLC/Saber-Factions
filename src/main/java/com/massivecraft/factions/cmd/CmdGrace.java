@@ -11,7 +11,6 @@ public class CmdGrace extends FCommand {
 
         super();
         this.aliases.add("grace");
-        this.aliases.add("gracee");
 
         this.permission = Permission.GRACE.node;
         this.disableOnLock = false;

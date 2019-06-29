@@ -330,8 +330,8 @@
         </dependency>
         <dependency>
             <groupId>net.coreprotect</groupId>
-            <artifactId>CoreProtect</artifactId>
-            <version>2</version>
+            <artifactId>coreprotect</artifactId>
+            <version>2.15.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -350,6 +350,10 @@
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>net.coreprotect</id>
+            <url>http://maven.playpro.com/</url>
+        </repository>
         <repository>
             <id>ess-repo</id>
             <url>http://ci.ender.zone/plugin/repository/everything/</url>

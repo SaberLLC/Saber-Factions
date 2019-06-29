@@ -818,6 +818,10 @@ public enum TL {
 	COMMAND_RULES_SET_SUCCESS("&cRule set successfully!"),
 	COMMAND_RULES_CLEAR_SUCCESS("&cRule cleared successfully!"),
 
+	// F Global \\
+	COMMAND_F_GLOBAL_TOGGLE("&c&l[!] &7You have &b%1$s &7Global Chat"),
+	COMMAND_F_GLOBAL_DESCRIPTION("Toggle global chat and only allow factions based chats"),
+
 	/**
 	 * Leaving - This is accessed through a command, and so it MAY need a COMMAND_* slug :s
 	 */
@@ -899,6 +903,7 @@ public enum TL {
 	GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
 	GENERIC_NOTENOUGHMONEY("&cYou dont have enough money!"),
 	GENERIC_MONEYTAKE("&c{amount} has been taken from your account."),
+	// F Global \\
 
 
 	PLAYER_NOT_FOUND("&c&l[!] &b%1$s &7is either not online or not in your faction!"),

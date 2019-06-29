@@ -111,6 +111,7 @@ public class FCmdRoot extends FCommand {
 	public CmdSpam cmdSpam = new CmdSpam();
 	public CmdCorner cmdCorner = new CmdCorner();
 	public CmdInventorySee cmdInventorySee = new CmdInventorySee();
+	public CmdFGlobal cmdFGlobal = new CmdFGlobal();
 
 
 
@@ -227,6 +228,7 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdStrikeSet);
 		this.addSubCommand(this.cmdSpam);
 		this.addSubCommand(this.cmdCorner);
+		this.addSubCommand(this.cmdFGlobal);
 
 
 		if (SaberFactions.plugin.getConfig().getBoolean("f-inventory-see.Enabled")) {
