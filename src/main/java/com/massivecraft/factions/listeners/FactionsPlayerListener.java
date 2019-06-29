@@ -1,6 +1,7 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.CmdFGlobal;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
@@ -9,6 +10,7 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
+import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -963,6 +965,43 @@ public class FactionsPlayerListener implements Listener {
                     return PermissableAction.CONTAINER;
                 default:
                     return null;
+            }
+        }
+    }
+
+    @EventHandler
+    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent e){
+        Player p = e.getPlayer();
+
+        if (CmdFGlobal.toggled.contains(p.getUniqueId())){
+            //they're muted, check status of Faction Chat
+                if (FPlayers.getInstance().getByPlayer(p).getFaction() == null) {
+                    //they're muted, and not in a faction, cancel and return
+                    e.setCancelled(true);
+                    return;
+                } else {
+                    //are in a faction that's not Wilderness, SafeZone, or Warzone, check their chat status
+                    if (!FPlayers.getInstance().getByPlayer(p).getChatMode().isAtLeast(ChatMode.ALLIANCE)) {
+                        //their Faction Chat Mode is not at-least a Alliance, cancel and return
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+        }
+
+        //we made it this far, since we didn't return yet, we must have sent the chat event through
+        //iterate through all of recipients and check if they're muted, then remove them from the event list
+
+        List<Player> l = new ArrayList<>();
+
+        l.addAll(e.getRecipients());
+
+        for (int i = l.size() - 1; i >= 0; i--){ // going backwards in the list to prevent a ConcurrentModificationException
+            Player recipient = l.get(i);
+            if (recipient != null){
+                if (CmdFGlobal.toggled.contains(recipient.getUniqueId())){
+                    e.getRecipients().remove(recipient);
+                }
             }
         }
     }

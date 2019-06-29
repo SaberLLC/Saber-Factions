@@ -8,6 +8,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdGrace extends FCommand {
 
     public CmdGrace() {
+
         super();
         this.aliases.add("grace");
 
