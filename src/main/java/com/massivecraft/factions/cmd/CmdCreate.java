@@ -117,11 +117,6 @@ public class CmdCreate extends FCommand {
 
 		fme.setCooldown("create", System.currentTimeMillis() + (SaberFactions.plugin.getConfig().getInt("fcooldowns.f-create") * 1000));
 
-		if (Conf.useCustomDefaultPermissions) {
-			faction.setDefaultPerms();
-			if (Conf.usePermissionHints)
-				this.fme.msg(TL.COMMAND_HINT_PERMISSION);
-		}
 	}
 
 	@Override

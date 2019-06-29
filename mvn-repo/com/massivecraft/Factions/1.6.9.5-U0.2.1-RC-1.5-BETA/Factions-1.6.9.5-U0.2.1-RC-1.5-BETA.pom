@@ -365,10 +365,6 @@
             <id>mvdw-software</id>
             <url>http://repo.mvdw-software.be/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>ProSavage</id>
-            <url>https://www.myget.org/F/prosavage/maven/</url>
-        </repository>
     </repositories>
 
     <distributionManagement>

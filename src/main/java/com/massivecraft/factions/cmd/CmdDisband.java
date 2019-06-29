@@ -65,7 +65,7 @@ public class CmdDisband extends FCommand {
 		}
 
 
-		if (!fme.isAdminBypassing()) {
+		if (fme != null && !fme.isAdminBypassing()) {
 			Access access = faction.getAccess(fme, PermissableAction.DISBAND);
 			if (fme.getRole() != Role.LEADER && faction.getFPlayerLeader() != fme && access != Access.ALLOW) {
 				fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "disband " + faction.getTag());
@@ -84,7 +84,7 @@ public class CmdDisband extends FCommand {
 
 		// check for tnt before disbanding.
 
-		if (!disbandMap.containsKey(me.getUniqueId().toString()) && faction.getTnt() > 0) {
+		if ((fme!= null && !disbandMap.containsKey(me.getUniqueId().toString())) && faction.getTnt() > 0) {
 			msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", faction.getTnt() + ""));
 			disbandMap.put(me.getUniqueId().toString(), faction.getId());
 			Bukkit.getScheduler().scheduleSyncDelayedTask(SaberFactions.plugin, () -> disbandMap.remove(me.getUniqueId().toString()), 200L);

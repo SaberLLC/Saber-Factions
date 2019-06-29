@@ -707,7 +707,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 	}
 
 	public void setDefaultPerms() {
-		if (!Conf.useCustomDefaultPermissions) return;
 		Map<PermissableAction, Access> defaultMap = new HashMap<>();
 		for (PermissableAction permissableAction : PermissableAction.values()) {
 			defaultMap.put(permissableAction, Access.UNDEFINED);

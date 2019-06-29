@@ -221,7 +221,7 @@ public class Conf {
 	/// This defines a set of materials which should always be allowed to use, regardless of factions permissions.
 	/// Useful for HCF features.
 	/// </summary>
-	public static Set<Material> territoryBypasssProtectedMaterials = EnumSet.noneOf(Material.class);
+	public static Set<Material> territoryBypassProtectedMaterials = EnumSet.noneOf(Material.class);
 
 	// Economy settings
 	public static boolean econEnabled = false;
@@ -325,6 +325,7 @@ public class Conf {
 	// mainly for other plugins/mods that use a fake player to take actions, which shouldn't be subject to our protections
 	public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<>();
 
+	public static boolean useWorldConfigurationsAsWhitelist = false;
 	public static Set<String> worldsNoClaiming = new LinkedHashSet<>();
 	public static Set<String> worldsNoPowerLoss = new LinkedHashSet<>();
 	public static Set<String> worldsIgnorePvP = new LinkedHashSet<>();
@@ -343,9 +344,7 @@ public class Conf {
 
 
 	// Default Options - Is this even shown on the Conf.json?
-	public static boolean useCustomDefaultPermissions = false;
-	public static boolean usePermissionHints = false;
-	public static HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
+	public static transient HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
 	// Custom Ranks - Oof I forgot I was doing this _SvenjaReissaus_
 	//public static boolean enableCustomRanks = false; // We will disable it by default to avoid any migration error
 	//public static int maxCustomRanks = 2; // Setting this to -1 will allow unlimited custom ranks
@@ -369,7 +368,7 @@ public class Conf {
 		territoryProtectedMaterials.add(Material.BEACON);
 
 		// Config is not loading if value is empty ???
-		territoryBypasssProtectedMaterials.add(Material.COOKIE);
+		territoryBypassProtectedMaterials.add(Material.COOKIE);
 
 		territoryDenyUseageMaterials.add(SaberFactions.plugin.FIREBALL);
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
