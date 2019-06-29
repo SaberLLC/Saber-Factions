@@ -351,6 +351,10 @@
 
     <repositories>
         <repository>
+            <id>net.coreprotect</id>
+            <url>http://maven.playpro.com/</url>
+        </repository>
+        <repository>
             <id>ess-repo</id>
             <url>http://ci.ender.zone/plugin/repository/everything/</url>
         </repository>
