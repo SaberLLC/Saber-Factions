@@ -29,8 +29,6 @@ public enum PermissableAction {
 	INVITE("invite"),
 	KICK("kick"),
 	ITEM("items"), // generic for most items
-	INVITEALT("invitealt"),
-	KICKALT("kickalt"),
 	SETHOME("sethome"),
 	TERRITORY("territory"),
 	ACCESS("access"),
