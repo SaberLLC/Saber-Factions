@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 ProSavage
+ * Copyright (C) 2019 Driftay
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -350,6 +350,8 @@ public enum TL {
 	COMMAND_HOME_FORTELEPORT("for teleporting to your faction home"),
 	COMMAND_HOME_DESCRIPTION("Teleport to the faction home"),
 	COMMAND_HOME_BLOCKED("&c&l[!] You may not teleport to a home that is claimed by &b%1$s"),
+
+	COMMAND_INVENTORYSEE_DESCRIPTION("View a faction members inventory"),
 
 	COMMAND_INSPECT_DISABLED_MSG("&c&l[!]&7 Inspect mode is now &cdisabled."),
 	COMMAND_INSPECT_DISABLED_NOFAC("&c&l[!]&7 Inspect mode is now &cdisabled,&7 because you &cdo not have a faction!"),
@@ -898,6 +900,8 @@ public enum TL {
 	GENERIC_NOTENOUGHMONEY("&cYou dont have enough money!"),
 	GENERIC_MONEYTAKE("&c{amount} has been taken from your account."),
 
+
+	PLAYER_NOT_FOUND("&c&l[!] &b%1$s &7is either not online or not in your faction!"),
 
 	WARBANNER_NOFACTION("&cYou need a faction to use a warbanner!"),
 	WARBANNER_COOLDOWN("&cThe warbanner is on cooldown for your faction!"),

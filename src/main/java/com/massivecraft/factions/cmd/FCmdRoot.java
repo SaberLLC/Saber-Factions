@@ -110,6 +110,7 @@ public class FCmdRoot extends FCommand {
 	public CmdAlts cmdAlts = new CmdAlts();
 	public CmdSpam cmdSpam = new CmdSpam();
 	public CmdCorner cmdCorner = new CmdCorner();
+	public CmdInventorySee cmdInventorySee = new CmdInventorySee();
 
 
 
@@ -227,6 +228,10 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdSpam);
 		this.addSubCommand(this.cmdCorner);
 
+
+		if (SaberFactions.plugin.getConfig().getBoolean("f-inventory-see.Enabled")) {
+			this.addSubCommand(this.cmdInventorySee);
+		}
 
 		if(SaberFactions.plugin.getConfig().getBoolean("f-alts.Enabled")){
 			this.addSubCommand(cmdAlts);

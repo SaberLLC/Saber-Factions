@@ -669,6 +669,17 @@ public class FactionsPlayerListener implements Listener {
     }
 
     @EventHandler
+    public void onInentorySee(InventoryClickEvent e) {
+        if (e.getCurrentItem() == null)
+            return;
+
+        if (!e.getInventory().getName().endsWith("'s Inventory View"))
+            return;
+
+        e.setCancelled(true);
+    }
+
+    @EventHandler
     public void onPlayerBoneMeal(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
 

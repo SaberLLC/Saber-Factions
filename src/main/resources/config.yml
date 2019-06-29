@@ -1,7 +1,7 @@
 # SaberFactions by Driftay
 # Report issues: https://github.com/Driftay/SaberFactions/issues/new
-# Live support: https://discord.gg/22AQtX7
-# Spigot Site: https://www.spigotmc.org/resources/savagefactions-factionsuuid-reimagined-1-7-1-12.52891/
+# Live support: https://discord.gg/TFxWKeX
+# Spigot Site: https://www.spigotmc.org/resources/saberfactions-1-7-1-13-the-complete-factions-solution.68840/
 # Website: https://www.saberllc.net/
 # Jenkins: https://jenkins.saberllc.net/
 
@@ -711,7 +711,13 @@ faction-disband-broadcast: true
 ############################################################
 See-Invisible-Faction-Members: false
 
-
+############################################################
+# +------------------------------------------------------+ #
+# |              Faction Inventory See                   | #
+# +------------------------------------------------------+ #
+############################################################
+f-inventory-see:
+  Enabled: true
 ############################################################
 # +------------------------------------------------------+ #
 # |                Faction Alt Accounts                  | #
