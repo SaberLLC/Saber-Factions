@@ -122,6 +122,16 @@ permissions:
     description: hand over your admin rights
   factions.admin.any:
     description: give or revoke admin status for any player in any faction
+  factions.setstrikes:
+    description: ability to change/modify strike counts
+  factions.spam:
+    description: ability to toggle spam commands on and off
+  factions.grace:
+    description: gives ability to toggle grace period on and off
+  factions.invsee:
+    description: Allows players to use the inventory see command
+  factions.alts:
+    description: Allows players to use the alts command
   factions.announce:
     description: announce things to the peasants
   factions.autoclaim:
