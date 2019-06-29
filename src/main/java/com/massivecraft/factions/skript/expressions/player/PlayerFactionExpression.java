@@ -91,7 +91,5 @@ public class PlayerFactionExpression extends SimpleExpression<String> {
 				break;
 			default:
 		}
-
 	}
-
 }

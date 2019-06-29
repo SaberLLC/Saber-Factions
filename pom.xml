@@ -330,7 +330,7 @@
         </dependency>
         <dependency>
             <groupId>net.coreprotect</groupId>
-            <artifactId>CoreProtect</artifactId>
+            <artifactId>coreprotect</artifactId>
             <version>2</version>
             <scope>provided</scope>
         </dependency>
