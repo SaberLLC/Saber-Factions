@@ -20,6 +20,7 @@ We Plan on Releasing the latest and greatest factions/skyblock/prison plugins mi
 
 ## Support
 Our Discord is Currently In Progress of a Massive Overhaul, but we still encourage our community to join and express any concerns/questions/suggestions they may have!
+https://discord.gg/rdvpruT
 
 Look forward to a bright future and a journey with all of you!
 
