@@ -459,7 +459,7 @@ public class FactionsPlayerListener implements Listener {
                     .replace("{z}", e.getClickedBlock().getZ() + ""));
             String rowFormat = TL.COMMAND_INSPECT_ROW.toString();
             for (int i = 0; i < info.size(); i++) {
-                CoreProtectAPI.ParseResult row = coAPI.parseResult(info.get(0));
+                CoreProtectAPI.ParseResult row = coAPI.parseResult(info.get(i));
                 player.sendMessage(rowFormat
                         .replace("{time}", convertTime(row.getTime()))
                         .replace("{action}", row.getActionString())
