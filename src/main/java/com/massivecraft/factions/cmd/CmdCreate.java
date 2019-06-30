@@ -104,16 +104,19 @@ public class CmdCreate extends FCommand {
 		}
 		msg(TL.COMMAND_CREATE_YOUSHOULD, p.cmdBase.cmdDescription.getUseageTemplate());
 
-		if (Conf.econEnabled) {
+		if (Conf.econEnabled)
 			Econ.setBalance(faction.getAccountId(), Conf.econFactionStartingBalance);
-		}
 
-		if (Conf.logFactionCreate) {
+
+
+		if (Conf.logFactionCreate)
 			SaberFactions.plugin.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
-		}
-		if (SaberFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+
+		if (SaberFactions.plugin.getConfig().getBoolean("fpaypal.Enabled"))
 			this.fme.msg(TL.COMMAND_PAYPALSET_CREATED);
-		}
+
+		if (Conf.useCustomDefaultPermissions) faction.setDefaultPerms();
+
 
 		fme.setCooldown("create", System.currentTimeMillis() + (SaberFactions.plugin.getConfig().getInt("fcooldowns.f-create") * 1000));
 
