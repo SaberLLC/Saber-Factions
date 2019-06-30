@@ -335,6 +335,7 @@ public class Conf {
 	public static String vaultPrefix = "faction-%s";
 	public static int defaultMaxVaults = 0;
 	public static boolean useCustomDefaultPermissions = true;
+	public static boolean usePermissionHints = false;
 
 	public static Backend backEnd = Backend.JSON;
 
