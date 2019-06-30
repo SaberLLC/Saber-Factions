@@ -41,7 +41,7 @@ public class CmdFGlobal extends FCommand {
             toggled.add(p.getUniqueId());
         }
 
-        fme.msg(TL.COMMAND_F_GLOBAL_TOGGLE, toggled.contains(p.getUniqueId()) ? "enabled" : "disabled");
+        fme.msg(TL.COMMAND_F_GLOBAL_TOGGLE, toggled.contains(p.getUniqueId()) ? "disabled" : "enabled");
     }
 
     @Override

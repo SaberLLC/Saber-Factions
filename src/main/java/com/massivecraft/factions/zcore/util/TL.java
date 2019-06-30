@@ -654,6 +654,8 @@ public enum TL {
 
 	COMMAND_STRIKEGIVE_DESCRIPTION("Give a faction strikes"),
 
+	COMMAND_VIEWCHEST_DESCRIPTION("view a factions chest/pv"),
+
 	COMMAND_VAULT_DESCRIPTION("Open your placed faction vault!"),
 	COMMAND_VAULT_INVALID("&c&l[!]&7 Your vault was either&c claimed&7, &cbroken&7, or has&c not been&7 placed yet."),
 	COMMAND_VAULT_OPENING("&c&l[!]&7 Opening faction vault."),

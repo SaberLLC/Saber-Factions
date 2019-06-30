@@ -99,6 +99,7 @@ public enum Permission {
 	SEECHUNK("seechunk"),
 	SETWARP("setwarp"),
 	TOP("top"),
+	VIEWCHEST("viewchest"),
 	VAULT("vault"),
 	GETVAULT("getvault"),
 	SETMAXVAULTS("setmaxvaults"),

@@ -126,6 +126,8 @@ permissions:
     description: ability to change/modify strike counts
   factions.spam:
     description: ability to toggle spam commands on and off
+  factions.viewchest:
+    description: ability to view a factions chest/pv
   factions.grace:
     description: gives ability to toggle grace period on and off
   factions.invsee:
