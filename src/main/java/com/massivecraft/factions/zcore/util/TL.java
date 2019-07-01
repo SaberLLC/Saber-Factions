@@ -542,6 +542,8 @@ public enum TL {
 	COMMAND_PERM_SET("&c&l[!]&7 Set permission&c %1$s &7to &c%2$s &7for relation&c %3$s"),
 	COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
 
+	COMMAND_POINTS_FAILURE(""),
+
 	COMMAND_PERMANENT_DESCRIPTION("Toggles a permanent faction option"),
 	COMMAND_PERMANENT_GRANT("&c&l[!]&7 added permanent status to"),
 	COMMAND_PERMANENT_REVOKE("&c&l[!]&7 removed permanent status from"),

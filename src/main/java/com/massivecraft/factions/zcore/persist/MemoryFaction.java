@@ -71,6 +71,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 	Map<String, Object> bannerSerialized;
 	private long lastDeath;
 	private int strikes = 0;
+	private int points = 0;
 
 	// -------------------------------------------- //
 	// Construct
@@ -119,6 +120,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 		this.defaultRole = Role.NORMAL;
 
 		resetPerms(); // Reset on new Faction so it has default values.
+	}
+
+	public int getPoints() {
+		return points;
+	}
+
+	public void setPoints(int points) {
+		this.points = points;
 	}
 
 	public int getStrikes() {
@@ -715,20 +724,20 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 		// Put the map in there for each relation.
 		for (Relation relation : Relation.values()) {
 			if (relation != Relation.MEMBER) {
-				if (!Conf.defaultFactionPermissions.containsKey(relation.nicename))
+				if (!Conf.defaultFactionPermissions.containsKey(relation.nicename.toUpperCase()))
 					permissions.put(relation, new HashMap<>(defaultMap));
 				else
-					permissions.put(relation, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(relation.nicename)));
+					permissions.put(relation, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(relation.nicename.toUpperCase())));
 			}
 		}
 
 		// And each role.
 		for (Role role : Role.values()) {
 			if (role != Role.LEADER) {
-				if (!Conf.defaultFactionPermissions.containsKey(role.nicename))
+				if (!Conf.defaultFactionPermissions.containsKey(role.nicename.toUpperCase()))
 					permissions.put(role, new HashMap<>(defaultMap));
 				else
-					permissions.put(role, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(role.nicename)));
+					permissions.put(role, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(role.nicename.toUpperCase())));
 			}
 		}
 	}
