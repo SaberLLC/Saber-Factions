@@ -44,7 +44,7 @@ public class CmdPointsSet extends FCommand{
             return;
         }
 
-        faction.setPoints(faction.getPoints() - argAsInt(1));
+        faction.setPoints(argAsInt(1));
         fme.msg(TL.COMMAND_SETPOINTS_SUCCESSFUL, argAsInt(1), faction.getTag(), faction.getPoints());
     }
 

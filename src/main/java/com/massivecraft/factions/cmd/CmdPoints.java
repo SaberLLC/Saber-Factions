@@ -16,8 +16,8 @@ public class CmdPoints extends FCommand {
         this.disableOnLock = false;
         this.disableOnSpam = false;
 
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
+        senderMustBePlayer = false;
+        senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
