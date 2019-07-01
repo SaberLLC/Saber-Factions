@@ -12,7 +12,6 @@ public class CmdPoints extends FCommand {
     public CmdPoints(){
         super();
         this.aliases.add("points");
-        this.aliases.add("point");
 
         this.disableOnLock = false;
         this.disableOnSpam = false;

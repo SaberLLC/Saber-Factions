@@ -158,19 +158,16 @@ public class Conf {
 	public static boolean territoryEnemyPainBuild = false;
 	public static boolean territoryEnemyPainBuildWhenOffline = false;
 	public static boolean territoryEnemyDenyUseage = true;
-	public static boolean territoryEnemyProtectMaterials = true;
 	public static boolean territoryAllyDenyBuild = true;
 	public static boolean territoryAllyDenyBuildWhenOffline = true;
 	public static boolean territoryAllyPainBuild = false;
 	public static boolean territoryAllyPainBuildWhenOffline = false;
 	public static boolean territoryAllyDenyUseage = true;
-	public static boolean territoryAllyProtectMaterials = true;
 	public static boolean territoryTruceDenyBuild = true;
 	public static boolean territoryTruceDenyBuildWhenOffline = true;
 	public static boolean territoryTrucePainBuild = false;
 	public static boolean territoryTrucePainBuildWhenOffline = false;
 	public static boolean territoryTruceDenyUseage = true;
-	public static boolean territoryTruceProtectMaterials = true;
 	public static boolean territoryBlockCreepers = false;
 	public static boolean territoryBlockCreepersWhenOffline = false;
 	public static boolean territoryBlockFireballs = false;
@@ -206,8 +203,6 @@ public class Conf {
 	public static boolean ownedAreaModeratorsBypass = true;
 	public static boolean ownedAreaDenyBuild = true;
 	public static boolean ownedAreaPainBuild = false;
-	public static boolean ownedAreaProtectMaterials = true;
-	public static boolean ownedAreaDenyUseage = true;
 	public static boolean ownedMessageOnBorder = true;
 	public static boolean ownedMessageInsideTerritory = true;
 	public static boolean ownedMessageByChunk = false;
@@ -332,7 +327,6 @@ public class Conf {
 	public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<>();
 
 	// faction-<factionId>
-	public static String vaultPrefix = "faction-%s";
 	public static int defaultMaxVaults = 0;
 	public static boolean useCustomDefaultPermissions = true;
 	public static boolean usePermissionHints = false;
