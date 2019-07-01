@@ -2,6 +2,16 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.cmd.alts.CmdAlts;
+import com.massivecraft.factions.cmd.claim.*;
+import com.massivecraft.factions.cmd.econ.CmdMoney;
+import com.massivecraft.factions.cmd.points.CmdPoints;
+import com.massivecraft.factions.cmd.relational.CmdRelationAlly;
+import com.massivecraft.factions.cmd.relational.CmdRelationEnemy;
+import com.massivecraft.factions.cmd.relational.CmdRelationNeutral;
+import com.massivecraft.factions.cmd.relational.CmdRelationTruce;
+import com.massivecraft.factions.cmd.roles.CmdDemote;
+import com.massivecraft.factions.cmd.roles.CmdPromote;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
