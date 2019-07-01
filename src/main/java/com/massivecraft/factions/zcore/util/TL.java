@@ -543,8 +543,18 @@ public enum TL {
 	COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
 
 	COMMAND_POINTS_FAILURE("&c&l[!] &c{faction} does not exist."),
-	COMMAND_POINTS_SUCCESSFUL("&c&l[!] &7You have given &b%1$s &e%2$s &7points!"),
+	COMMAND_POINTS_SUCCESSFUL("&c&l[!] &7You have taken &e%1$s &7points from &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
+	COMMAND_POINTS_INSUFFICIENT("&c&l[!] &7You may not add/set/remove a negative number of points to a faction!"),
+	COMMAND_POINTS_DESCRIPTION("General Command For Faction Points"),
+
 	COMMAND_ADDPOINTS_DESCRIPTION("Add Points to Faction"),
+
+
+	COMMAND_REMOVEPOINTS_SUCCESSFUL("&c&l[!] &7You have taken &e%1$s &7points from &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
+	COMMAND_REMOVEPOINTS_DESCRIPTION("Remove Points from a Faction"),
+
+	COMMAND_SETPOINTS_SUCCESSFUL("&c&l[!] &7You have set &e%1$s &7points to &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
+	COMMAND_SETPOINTS_DESCRIPTION("Set Points of a Faction"),
 
 	COMMAND_PERMANENT_DESCRIPTION("Toggles a permanent faction option"),
 	COMMAND_PERMANENT_GRANT("&c&l[!]&7 added permanent status to"),

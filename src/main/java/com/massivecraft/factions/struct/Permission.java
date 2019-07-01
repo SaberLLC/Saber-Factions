@@ -101,6 +101,8 @@ public enum Permission {
 	TOP("top"),
 	VIEWCHEST("viewchest"),
 	ADDPOINTS("addpoints"),
+	REMOVEPOINTS("removepoints"),
+	SETPOINTS("setpoints"),
 	VAULT("vault"),
 	GETVAULT("getvault"),
 	SETMAXVAULTS("setmaxvaults"),

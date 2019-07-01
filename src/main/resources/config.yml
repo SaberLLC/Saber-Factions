@@ -275,18 +275,19 @@ hcf:
 show:
   # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
   - '&8&m--------------&7 &8<&e{faction}&8> &8&m--------------'
-  - '&6 * &eOwner &7{leader}'
-  - '&6 * &eDescription &7{description}'
+  - '&6 * &eOwner: &7{leader}'
+  - '&6 * &eDescription: &7{description}'
   - '&6 * &eLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'
   - '&6 * &eFaction Strikes: &7{strikes}'
-  - '&6 * &eFounded &7{create-date}'
-  - '&6 * &eBalance &f{faction-balance}'
-  - '&6 * &eAllies &c{allies-list}'
-  - '&6 * &eEnemies &c{enemies-list}'
-  - '&6 * &eOnline Members &8(&7{online}/{members}&8) &7{online-list}'
-  - '&6 * &eOffline Members &8(&7{offline}/{members}&8) &7{offline-list}'
-  - '&6 * &eAlts &8{alts}'
-  - '&6 * &eBans &7{faction-bancount}'
+  - '&6 * &eFaction Points: &7{faction-points}'
+  - '&6 * &eFounded: &7{create-date}'
+  - '&6 * &eBalance: &f{faction-balance}'
+  - '&6 * &eAllies: &c{allies-list}'
+  - '&6 * &eEnemies: &c{enemies-list}'
+  - '&6 * &eOnline Members: &8(&7{online}/{members}&8) &7{online-list}'
+  - '&6 * &eOffline Members: &8(&7{offline}/{members}&8) &7{offline-list}'
+  - '&6 * &eAlts: &8{alts}'
+  - '&6 * &eBans: &7{faction-bancount}'
   - '&8&m----------------------------------------'
 # For a /f show that does not display fancy messages that are essentially empty, use minimal-show
 minimal-show: false
@@ -802,6 +803,14 @@ f-grace:
 
 ############################################################
 # +------------------------------------------------------+ #
+# |                  Faction Points                      | #
+# +------------------------------------------------------+ #
+############################################################
+f-points:
+  Enabled: true
+
+############################################################
+# +------------------------------------------------------+ #
 # |                  Faction Focus                       | #
 # +------------------------------------------------------+ #
 ############################################################
@@ -1219,6 +1228,7 @@ Tntfill:
 #  - {faction-kills} : # of kills the faction has
 #  - {faction-deaths}: # of deaths the faction has
 #  - {faction-bancount} : # of bans the faction has
+#  - {faction-points} : # of points a faction has
 # Faction Permissions GUI variables. Can only be used in GUI
 # - {relation}            : Shows relation name (Can be used in action and relation)
 # - {relation-color}      : Relation color

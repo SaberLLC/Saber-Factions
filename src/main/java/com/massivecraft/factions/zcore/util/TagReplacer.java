@@ -74,6 +74,7 @@ public enum TagReplacer {
 	FACTION_DEATHS(TagType.FACTION, "{faction-deaths}"),
 	FACTION_BANCOUNT(TagType.FACTION, "{faction-bancount}"),
 	FACTION_STRIKES(TagType.FACTION, "{strikes}"),
+	FACTION_POINTS(TagType.FACTION, "{faction-points}"),
 
 	/**
 	 * General variables, require no faction or player
@@ -259,6 +260,8 @@ public enum TagReplacer {
 				return String.valueOf(fac.getBannedPlayers().size());
 			case FACTION_STRIKES:
 				return String.valueOf(fac.getStrikes());
+			case FACTION_POINTS:
+				return String.valueOf(fac.getPoints());
 
 			default:
 		}

@@ -113,6 +113,7 @@ public class FCmdRoot extends FCommand {
 	public CmdInventorySee cmdInventorySee = new CmdInventorySee();
 	public CmdFGlobal cmdFGlobal = new CmdFGlobal();
 	public CmdViewChest cmdViewChest = new CmdViewChest();
+	public CmdPoints cmdPoints = new CmdPoints();
 
 
 
@@ -235,6 +236,10 @@ public class FCmdRoot extends FCommand {
 
 		if (SaberFactions.plugin.getConfig().getBoolean("f-inventory-see.Enabled")) {
 			this.addSubCommand(this.cmdInventorySee);
+		}
+
+		if(SaberFactions.plugin.getConfig().getBoolean("f-points.Enabled")){
+			this.addSubCommand(cmdPoints);
 		}
 
 		if(SaberFactions.plugin.getConfig().getBoolean("f-alts.Enabled")){
