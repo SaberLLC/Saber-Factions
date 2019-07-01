@@ -1,7 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Permission;
@@ -42,6 +40,7 @@ public class CmdPointsAdd extends FCommand {
 
         assert faction != null;
         faction.setPoints(faction.getPoints() + argAsInt(1));
+        fme.msg(TL.COMMAND_POINTS_SUCCESSFUL, faction, argAsInt(1));
     }
 
 
