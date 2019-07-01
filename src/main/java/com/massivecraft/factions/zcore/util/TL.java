@@ -543,7 +543,7 @@ public enum TL {
 	COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
 
 	COMMAND_POINTS_FAILURE("&c&l[!] &c{faction} does not exist."),
-	COMMAND_POINTS_SUCCESSFUL("&c&l[!] &7You have taken &e%1$s &7points from &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
+	COMMAND_POINTS_SUCCESSFUL("&c&l[!] &7You have added &e%1$s &7points to &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
 	COMMAND_POINTS_INSUFFICIENT("&c&l[!] &7You may not add/set/remove a negative number of points to a faction!"),
 	COMMAND_POINTS_DESCRIPTION("General Command For Faction Points"),
 
