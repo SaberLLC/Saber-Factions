@@ -1,6 +1,7 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.roles;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;

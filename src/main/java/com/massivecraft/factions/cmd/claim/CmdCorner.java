@@ -1,7 +1,8 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.claim;
 
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CornerTask;
 import com.massivecraft.factions.zcore.util.TL;

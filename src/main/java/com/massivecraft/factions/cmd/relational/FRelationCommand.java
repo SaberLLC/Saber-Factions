@@ -1,8 +1,9 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.relational;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.event.FactionRelationWishEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;

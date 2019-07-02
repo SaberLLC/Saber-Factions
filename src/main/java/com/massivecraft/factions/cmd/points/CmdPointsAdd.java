@@ -1,15 +1,16 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.points;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
-public class CmdPointsSet extends FCommand{
+public class CmdPointsAdd extends FCommand {
 
-    public CmdPointsSet() {
+    public CmdPointsAdd() {
         super();
-        this.aliases.add("set");
+        this.aliases.add("add");
 
         this.requiredArgs.add("faction");
         this.requiredArgs.add("# of points");
@@ -18,7 +19,7 @@ public class CmdPointsSet extends FCommand{
         this.errorOnToManyArgs = false;
         //this.optionalArgs
 
-        this.permission = Permission.SETPOINTS.node;
+        this.permission = Permission.ADDPOINTS.node;
 
         this.disableOnLock = true;
 
@@ -38,20 +39,19 @@ public class CmdPointsSet extends FCommand{
             fme.msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", args.get(0)));
             return;
         }
-
-        if(argAsInt(1) < 0){
+        if(argAsInt(1) <= 0){
             fme.msg(TL.COMMAND_POINTS_INSUFFICIENT);
             return;
         }
 
-        faction.setPoints(argAsInt(1));
-        fme.msg(TL.COMMAND_SETPOINTS_SUCCESSFUL, argAsInt(1), faction.getTag(), faction.getPoints());
+        faction.setPoints(faction.getPoints() + argAsInt(1));
+        fme.msg(TL.COMMAND_POINTS_SUCCESSFUL, argAsInt(1), faction.getTag(), faction.getPoints());
     }
 
 
     @Override
     public TL getUsageTranslation() {
-        return TL.COMMAND_SETPOINTS_DESCRIPTION;
+        return TL.COMMAND_ADDPOINTS_DESCRIPTION;
     }
 
 

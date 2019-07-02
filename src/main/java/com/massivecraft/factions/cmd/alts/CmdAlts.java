@@ -1,6 +1,7 @@
-package com.massivecraft.factions.cmd;
+package com.massivecraft.factions.cmd.alts;
 
 import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
