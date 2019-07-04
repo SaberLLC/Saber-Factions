@@ -244,16 +244,9 @@ public class FactionsEntityListener implements Listener {
 		}
 
 		// Loop the blocklist to run checks on each aimed block
-		Iterator<Block> blockList = event.blockList().iterator();
 
-		while (blockList.hasNext()) {
-			Block block = blockList.next();
-
-			if (!this.checkExplosionForBlock(boomer, block)) {
-				// The block don't have to explode
-				blockList.remove();
-			}
-		}
+		// The block don't have to explode
+		event.blockList().removeIf(block -> !this.checkExplosionForBlock(boomer, block));
 
 		// Cancel the event if no block will explode
 		if (!event.blockList().isEmpty() && (boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && Conf.handleExploitTNTWaterlog) {
@@ -302,10 +295,7 @@ public class FactionsEntityListener implements Listener {
 			return false;
 		} else if (
 			// it's a bit crude just using fireball protection for Wither boss too, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
-				  (boomer instanceof Fireball || boomer instanceof WitherSkull || boomer instanceof Wither) && ((faction.isWilderness() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(block.getWorld().getName())) ||
-							 (faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline)) ||
-							 (faction.isWarZone() && Conf.warZoneBlockFireballs) ||
-							 faction.isSafeZone())) {
+				(boomer instanceof Fireball || boomer instanceof Wither) && (faction.isWilderness() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) || faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline) || faction.isWarZone() && Conf.warZoneBlockFireballs || faction.isSafeZone())) {
 			// ghast fireball which needs prevention
 			return false;
 		} else

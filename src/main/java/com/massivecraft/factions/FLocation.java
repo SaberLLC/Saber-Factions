@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class FLocation implements Serializable {
@@ -251,6 +252,6 @@ public class FLocation implements Serializable {
 		}
 
 		FLocation that = (FLocation) obj;
-		return this.x == that.x && this.z == that.z && (this.worldName == null ? that.worldName == null : this.worldName.equals(that.worldName));
+		return this.x == that.x && this.z == that.z && (Objects.equals(this.worldName, that.worldName));
 	}
 }

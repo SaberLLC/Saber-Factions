@@ -22,10 +22,8 @@ public class RedstoneUpgrade implements Listener {
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.REDSTONE);
             if (level != 0) {
-                switch (level) {
-                    case 1:
-                        SaberFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Redstone.Cost");
-                        break;
+                if (level == 1) {
+                    SaberFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Redstone.Cost");
                 }
                 if (unbreakable.contains(block)) {
                     e.setCancelled(true);

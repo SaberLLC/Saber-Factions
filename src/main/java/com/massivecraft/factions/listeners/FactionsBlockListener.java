@@ -496,7 +496,6 @@ public class FactionsBlockListener implements Listener {
                 Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
                 if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                     fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");
-                    return;
                 }
             }
         }

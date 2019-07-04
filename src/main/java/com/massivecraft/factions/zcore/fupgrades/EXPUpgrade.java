@@ -16,7 +16,7 @@ public class EXPUpgrade implements Listener {
 	public void onDeath(EntityDeathEvent e) {
 		Entity killer = e.getEntity().getKiller();
 
-		if (killer == null || !(killer instanceof Player))
+		if (killer == null)
 			return;
 
 		FLocation floc = new FLocation(e.getEntity().getLocation());

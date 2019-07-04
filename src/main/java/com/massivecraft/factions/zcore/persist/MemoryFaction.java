@@ -273,12 +273,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 	}
 
 	public void unban(FPlayer player) {
-		Iterator<BanInfo> iter = bans.iterator();
-		while (iter.hasNext()) {
-			if (iter.next().getBanned().equalsIgnoreCase(player.getId())) {
-				iter.remove();
-			}
-		}
+		bans.removeIf(banInfo -> banInfo.getBanned().equalsIgnoreCase(player.getId()));
 	}
 
 	@Override
@@ -1199,12 +1194,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 				continue;
 			}
 
-			Iterator<String> iter = ownerData.iterator();
-			while (iter.hasNext()) {
-				if (iter.next().equals(player.getId())) {
-					iter.remove();
-				}
-			}
+			ownerData.removeIf(s -> s.equals(player.getId()));
 
 			if (ownerData.isEmpty()) {
 				claimOwnership.remove(entry.getKey());

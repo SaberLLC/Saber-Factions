@@ -69,7 +69,7 @@ public class CmdList extends FCommand {
 		});
 
 		// Then sort by how many members are online now
-		Collections.sort(factionList, (f1, f2) -> {
+		factionList.sort((f1, f2) -> {
 			int f1Size = f1.getFPlayersWhereOnline(true).size();
 			int f2Size = f2.getFPlayersWhereOnline(true).size();
 			if (f1Size < f2Size) {

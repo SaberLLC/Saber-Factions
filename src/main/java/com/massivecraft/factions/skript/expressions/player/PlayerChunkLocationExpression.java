@@ -51,5 +51,4 @@ public class PlayerChunkLocationExpression extends SimpleExpression<String> {
         }
         return null;
     }
-
 }

@@ -992,9 +992,7 @@ public class FactionsPlayerListener implements Listener {
         //we made it this far, since we didn't return yet, we must have sent the chat event through
         //iterate through all of recipients and check if they're muted, then remove them from the event list
 
-        List<Player> l = new ArrayList<>();
-
-        l.addAll(e.getRecipients());
+        List<Player> l = new ArrayList<>(e.getRecipients());
 
         for (int i = l.size() - 1; i >= 0; i--){ // going backwards in the list to prevent a ConcurrentModificationException
             Player recipient = l.get(i);

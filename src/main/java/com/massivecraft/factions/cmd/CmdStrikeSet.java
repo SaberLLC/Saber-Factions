@@ -43,25 +43,28 @@ public class CmdStrikeSet extends FCommand {
         if (faction == null) {
             fme.msg(TL.COMMAND_SETSTRIKES_FAILURE.toString().replace("{faction}", args.get(1)));
         }
-        if (args.get(0).equalsIgnoreCase("set")) {
-            faction.setStrikes(argAsInt(2));
-            success = true;
-        } else if (args.get(0).equalsIgnoreCase("give")) {
-            faction.setStrikes(faction.getStrikes() + argAsInt(2));
-            success = true;
-        } else if (args.get(0).equalsIgnoreCase("take")) {
-            faction.setStrikes(faction.getStrikes() - argAsInt(2));
-            success = true;
-        }
-        if (success) {
-            for (FPlayer fPlayer : FPlayers.getInstance().getOnlinePlayers()) {
-                fPlayer.msg(TL.COMMAND_SETSTRIKES_BROADCAST.toString()
-                        .replace("{faction}", faction.getTag())
-                        .replace("{reason}", getReason()));
+
+        if (faction != null) {
+            if (args.get(0).equalsIgnoreCase("set")) {
+                faction.setStrikes(argAsInt(2));
+                success = true;
+            } else if (args.get(0).equalsIgnoreCase("give")) {
+                faction.setStrikes(faction.getStrikes() + argAsInt(2));
+                success = true;
+            } else if (args.get(0).equalsIgnoreCase("take")) {
+                faction.setStrikes(faction.getStrikes() - argAsInt(2));
+                success = true;
             }
-            fme.msg(TL.COMMAND_SETSTRIKES_SUCCESS.toString()
-                    .replace("{faction}", faction.getTag())
-                    .replace("{strikes}", faction.getStrikes() + ""));
+            if (success) {
+                for (FPlayer fPlayer : FPlayers.getInstance().getOnlinePlayers()) {
+                    fPlayer.msg(TL.COMMAND_SETSTRIKES_BROADCAST.toString()
+                            .replace("{faction}", faction.getTag())
+                            .replace("{reason}", getReason()));
+                }
+                fme.msg(TL.COMMAND_SETSTRIKES_SUCCESS.toString()
+                        .replace("{faction}", faction.getTag())
+                        .replace("{strikes}", faction.getStrikes() + ""));
+            }
         }
     }
 

@@ -21,7 +21,6 @@ public class Conf {
 	public static final transient boolean DYNMAP_STYLE_BOOST = false;
 	public static List<String> baseCommandAliases = new ArrayList<>();
 	public static boolean allowNoSlashCommand = true;
-	public static Set<String> allowedStealthFactions = new LinkedHashSet<>();
 
 	// Colors
 	public static ChatColor colorMember = ChatColor.GREEN;

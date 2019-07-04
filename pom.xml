@@ -83,7 +83,9 @@
                 <executions>
                     <execution>
                         <phase>package</phase>
-                        <goals><goal>proguard</goal></goals>
+                        <goals>
+                            <goal>proguard</goal>
+                        </goals>
                     </execution>
                 </executions>
                 <configuration>
@@ -103,7 +105,7 @@
 
                         <!-- These three are required for the json serializer, breaks if removed, oh and also for the config :) -->
                         <option>-keep class com.massivecraft.factions.Conf { *; }</option>
-                        <option>-keepclassmembers enum * { *; } </option>
+                        <option>-keepclassmembers enum * { *; }</option>
                         <option>-keep class com.massivecraft.factions.zcore.persist.json.** { *; }</option>
 
                         <!-- keep the lib -->

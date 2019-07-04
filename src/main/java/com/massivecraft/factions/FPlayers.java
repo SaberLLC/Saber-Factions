@@ -14,9 +14,8 @@ public abstract class FPlayers {
 	}
 
 	private static FPlayers getFPlayersImpl() {
-		switch (Conf.backEnd) {
-			case JSON:
-				return new JSONFPlayers();
+		if (Conf.backEnd == Conf.Backend.JSON) {
+			return new JSONFPlayers();
 		}
 		return null;
 	}

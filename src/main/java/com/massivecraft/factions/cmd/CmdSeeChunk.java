@@ -72,9 +72,7 @@ public class CmdSeeChunk extends FCommand {
 
 	private void startTask() {
 		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(SaberFactions.plugin, () -> {
-			Iterator<String> itr = seeChunkMap.keySet().iterator();
-			while (itr.hasNext()) {
-				Object nameObject = itr.next();
+			for (Object nameObject : seeChunkMap.keySet()) {
 				String name = nameObject + "";
 				Player player = Bukkit.getPlayer(name);
 				showBorders(player);

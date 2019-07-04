@@ -7,6 +7,7 @@ import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class FSidebarProvider {
 
@@ -24,7 +25,7 @@ public abstract class FSidebarProvider {
 		// Run through Placeholder API first
 		s = TagUtil.parsePlaceholders(fPlayer.getPlayer(), s);
 
-		return qualityAssure(TagUtil.parsePlain(faction, fPlayer, s));
+		return qualityAssure(Objects.requireNonNull(TagUtil.parsePlain(faction, fPlayer, s)));
 	}
 
 	private String qualityAssure(String line) {
