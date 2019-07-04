@@ -103,9 +103,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.autoWarZoneEnabled = false;
 		this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
 		this.powerBoost = 0.0;
+		this.getKills();
+		this.getDeaths();
 		this.showScoreboard = SaberFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", false);
-		this.kills = 0;
-		this.deaths = 0;
 		this.mapHeight = Conf.mapHeight;
 
 		if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.getInstance().isValidFactionId(Conf.newPlayerStartingFactionID)) {
@@ -130,12 +130,14 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.chatMode = other.chatMode;
 		this.spyingChat = other.spyingChat;
 		this.lastStoodAt = other.lastStoodAt;
+		this.getKills();
+		this.getDeaths();
 		this.isAdminBypassing = other.isAdminBypassing;
 		this.showScoreboard = SaberFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", true);
-		this.kills = other.kills;
-		this.deaths = other.deaths;
 		this.mapHeight = Conf.mapHeight;
 	}
+
+
 
 	public boolean isStealthEnabled() {
 		return this.isStealthEnabled;

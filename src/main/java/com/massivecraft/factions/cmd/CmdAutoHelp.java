@@ -28,9 +28,7 @@ public class CmdAutoHelp extends MCommand<SaberFactions> {
 		}
 		MCommand<?> pcmd = this.commandChain.get(this.commandChain.size() - 1);
 
-		ArrayList<String> lines = new ArrayList<>();
-
-		lines.addAll(pcmd.helpLong);
+		ArrayList<String> lines = new ArrayList<>(pcmd.helpLong);
 
 		for (MCommand<?> scmd : pcmd.subCommands) {
 			if (scmd.visibility == CommandVisibility.VISIBLE || (scmd.visibility == CommandVisibility.SECRET && scmd.validSenderPermissions(sender, false))) {

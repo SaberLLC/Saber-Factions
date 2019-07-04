@@ -162,7 +162,8 @@ public enum TL {
 	COMMAND_ALTKICK_DESCRIPTION("Kick alts from your faction"),
 	COMMAND_ALTKICK_NOTALT("&c&l[!] &7Player is not an alt."),
 	COMMAND_ALTKICK_NOTMEMBER("&c&l[!] &7This player is not a member of your faction."),
-
+	
+	COMMAND_ALTS_LIST_NOALTS("&c&l[!] &7You have no alts in your faction!"),
 	COMMAND_AUTOHELP_HELPFOR("Help for command \""),
 
 	COMMAND_BAN_DESCRIPTION("Ban players from joining your Faction."),
@@ -521,6 +522,11 @@ public enum TL {
 	COMMAND_OWNERLIST_OWNERS("&c&l[!]&7 Current owner(s) of this land: %1$s"),
 	COMMAND_OWNERLIST_DESCRIPTION("List owner(s) of this claimed land"),
 
+	PAYPALSEE_PLAYER_PAYPAL("&c&l[!] &7You're factions paypal is: &b%1$s&7."),
+	COMMAND_PAYPAL_NOTSET("&c&l[!] &7Your faction does not have their paypal set!"),
+	COMMAND_PAYPALSET_ADMIN_SUCCESSFUL("&c&l[!] &7You have set &b%1$s's &7paypal to &b%2$s&7."),
+	COMMAND_PAYPALSET_ADMIN_FAILED("&c&l[!] &b%1$s &7is not an email!"),
+	COMMAND_PAYPALSET_NOTEMAIL("&c&l[!] &b%1$s &7is not an email!"),
 	COMMAND_PAYPALSET_DESCRIPTION("&c&l[!] &7Set the email of your faction to claim rewards."),
 	COMMAND_PAYPALSEE_DESCRIPTION("&c&l[!] &7View a specific factions paypal email with &b/f <seepaypal/getpaypal> <faction>&b."),
 	COMMAND_PAYPALSET_CREATED("&c&l[!] &7Make sure to type &b/f <paypal/setpaypal> <email>&7!"),
@@ -661,7 +667,6 @@ public enum TL {
 	COMMAND_SETSTRIKES_SUCCESS("&c&l[!]&7 &c{faction}'s&7 new strikes are &c{strikes}"),
 	COMMAND_SETSTRIKES_DESCRIPTION("Set a faction's strikes"),
 	COMMAND_STRIKEREMOVE_DESCRIPTION("Remove a faction's strikes"),
-
 	COMMAND_STRIKE_MESSAGE("&c&l[!] &7{faction} has {strikes} strikes."),
 	COMMAND_STRIKE_NOTFOUND("&c&l[!] &7{faction} does not exist."),
 	COMMAND_STRIKE_NEEDFACTION("&c&l[!] &7&cYou need to join a faction to view your own!"),

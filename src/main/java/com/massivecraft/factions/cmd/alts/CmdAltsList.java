@@ -32,6 +32,11 @@ public class CmdAltsList extends FCommand {
 
         ArrayList<String> ret = new ArrayList<>();
         for (FPlayer fp : myFaction.getAltPlayers()) {
+            if(myFaction.getAltPlayers().isEmpty()){
+                fme.sendMessage(TL.COMMAND_ALTS_LIST_NOALTS.toString());
+                return;
+            }
+
             String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fp.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
             String last = fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fp.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
             String power = ChatColor.YELLOW + String.valueOf(fp.getPowerRounded()) + " / " + fp.getPowerMaxRounded() + ChatColor.RESET;

@@ -568,7 +568,6 @@ public class SaberFactions extends MPlugin {
 		List<MCommand<?>> commandsList = cmdBase.subCommands;
 
 		if (Board.getInstance().getFactionAt(new FLocation(fPlayer.getPlayer().getLocation())) == Factions.getInstance().getWarZone()) {
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&cYou cannot use autocomplete in warzone."));
 			return new ArrayList<>();
 		}
 
