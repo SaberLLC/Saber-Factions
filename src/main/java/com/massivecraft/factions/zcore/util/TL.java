@@ -162,7 +162,7 @@ public enum TL {
 	COMMAND_ALTKICK_DESCRIPTION("Kick alts from your faction"),
 	COMMAND_ALTKICK_NOTALT("&c&l[!] &7Player is not an alt."),
 	COMMAND_ALTKICK_NOTMEMBER("&c&l[!] &7This player is not a member of your faction."),
-	
+
 	COMMAND_ALTS_LIST_NOALTS("&c&l[!] &7You have no alts in your faction!"),
 	COMMAND_AUTOHELP_HELPFOR("Help for command \""),
 

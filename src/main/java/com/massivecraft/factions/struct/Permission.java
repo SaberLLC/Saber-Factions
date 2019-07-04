@@ -81,7 +81,6 @@ public enum Permission {
 	RELOAD("reload"),
 	SAVE("save"),
 	SPAM("spam"),
-	SATISTICS("statistics"),
 	SETHOME("sethome"),
 	SETHOME_ANY("sethome.any"),
 	SETSTRIKES("setstrikes"),
