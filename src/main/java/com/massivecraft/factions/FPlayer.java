@@ -27,9 +27,11 @@ import java.util.List;
 public interface FPlayer extends EconomyParticipator {
 
 
-	public void setAlt(boolean alt);
 
-	public boolean isAlt();
+
+	void setAlt(boolean alt);
+
+	boolean isAlt();
 
 	/**
 	 * Used to know if stealth is toggled on or off

@@ -2,7 +2,7 @@ name: Factions
 version: ${project.version}
 api-version: 1.13
 main: com.massivecraft.factions.SaberFactions
-authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, SvenjaReißaus, Driftay]
+authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, SvenjaReißaus, FroggyKnight, Driftay]
 softdepend: [Skript, CoreProtect, PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop]
 
 commands:

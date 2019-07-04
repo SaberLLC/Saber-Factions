@@ -77,6 +77,48 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.0.1</version>
             </plugin>
+            <plugin>
+                <groupId>com.github.wvengen</groupId>
+                <artifactId>proguard-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>proguard</goal></goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <options>
+                        <!-- General Settings -->
+                        <option>-dontoptimize</option>
+                        <option>-ignorewarnings</option>
+
+                        <!-- All removes disabled -->
+                        <!--option>-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,LocalVariable*Table,*Annotation*,Synthetic,EnclosingMethod</option-->
+
+                        <!-- Boiled down to required options -->
+                        <option>-keepattributes Signature,*Annotation*</option>
+
+                        <!-- Keep the main class for the Plugin Loader to find -->
+                        <option>-keep public class com.massivecraft.factions.SaberFactions</option>
+
+                        <!-- These three are required for the json serializer, breaks if removed, oh and also for the config :) -->
+                        <option>-keep class com.massivecraft.factions.Conf { *; }</option>
+                        <option>-keepclassmembers enum * { *; } </option>
+                        <option>-keep class com.massivecraft.factions.zcore.persist.json.** { *; }</option>
+
+                        <!-- keep the lib -->
+                        <option>-keep class net.amoebaman.** { *; }</option>
+
+                        <!-- suppress warnings -->
+                        <option>-dontnote org.bukkit.**</option>
+                        <option>-dontnote net.amoebaman.**</option>
+                        <option>-dontnote net.minecraft.server.**</option>
+                    </options>
+                    <libs>
+                        <lib>${java.home}/lib/rt.jar</lib>
+                    </libs>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
