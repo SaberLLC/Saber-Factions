@@ -112,6 +112,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 				return (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
 			case "faction_peaceful":
 				return faction.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
+			case "faction_tntbank_balance":
+				return String.valueOf(faction.getTnt());
 			case "faction_powerboost":
 				double powerBoost = faction.getPowerBoost();
 				return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");

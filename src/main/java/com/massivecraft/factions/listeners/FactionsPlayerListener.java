@@ -410,8 +410,9 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public void enableFly(FPlayer me) {
-        if (SaberFactions.plugin.getConfig().getBoolean("ffly.AutoEnable")) {
+        if(!me.getPlayer().hasPermission("factions.fly")) return;
 
+        if (SaberFactions.plugin.getConfig().getBoolean("ffly.AutoEnable")) {
             me.setFlying(true);
             CmdFly.flyMap.put(me.getName(), true);
             if (CmdFly.id == -1) {
