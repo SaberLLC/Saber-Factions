@@ -107,7 +107,12 @@
                         <option>-keep class com.massivecraft.factions.Conf { *; }</option>
                         <option>-keepclassmembers enum * { *; }</option>
                         <option>-keep class com.massivecraft.factions.zcore.persist.json.** { *; }</option>
-
+                        <option>-keep class com.massivecraft.factions.event.** { *; }</option>
+                        <option>-keep class com.massivecraft.factions.Board { *; }</option>
+                        <option>-keep class com.massivecraft.factions.Faction { *; }</option>
+                        <option>-keep class com.massivecraft.factions.Factions { *; }</option>
+                        <option>-keep class com.massivecraft.factions.FPlayer { *; }</option>
+                        <option>-keep class com.massivecraft.factions.FPlayers { *; }</option>
                         <!-- keep the lib -->
                         <option>-keep class net.amoebaman.** { *; }</option>
 
