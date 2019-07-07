@@ -107,6 +107,7 @@
                         <option>-keep class com.massivecraft.factions.Conf { *; }</option>
                         <option>-keepclassmembers enum * { *; }</option>
                         <option>-keep class com.massivecraft.factions.zcore.persist.json.** { *; }</option>
+                        <option>-keep class com.massivecraft.factions.zcore.MCommand { *; }</option>
                         <option>-keep class com.massivecraft.factions.event.** { *; }</option>
                         <option>-keep class com.massivecraft.factions.iface.** { *; }</option>
                         <option>-keep class com.massivecraft.factions.Board { *; }</option>
@@ -116,7 +117,6 @@
                         <option>-keep class com.massivecraft.factions.FPlayers { *; }</option>
                         <!-- keep the lib -->
                         <option>-keep class net.amoebaman.** { *; }</option>
-
 
                         <option>-dontnote org.bukkit.**</option>
                         <option>-dontnote net.amoebaman.**</option>
@@ -136,8 +136,7 @@
             <artifactId>spigot-api</artifactId>
             <version>1.13-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-            <exclusions>
-                <exclusion>
+            <exclusions>                <exclusion>
                     <artifactId>bungeecord-chat</artifactId>
                     <groupId>net.md-5</groupId>
                 </exclusion>
