@@ -107,6 +107,7 @@
                         <option>-keep class com.massivecraft.factions.Conf { *; }</option>
                         <option>-keepclassmembers enum * { *; }</option>
                         <option>-keep class com.massivecraft.factions.zcore.persist.json.** { *; }</option>
+                        <option>-keep class com.massivecraft.factions.cmd.FCommand { *; }</option>
                         <option>-keep class com.massivecraft.factions.zcore.MCommand { *; }</option>
                         <option>-keep class com.massivecraft.factions.event.** { *; }</option>
                         <option>-keep class com.massivecraft.factions.iface.** { *; }</option>
