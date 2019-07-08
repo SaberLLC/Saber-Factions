@@ -31,7 +31,7 @@ public class CmdPoints extends FCommand {
 
     @Override
     public void perform() {
-        if (!SaberFactions.plugin.getConfig().getBoolean("f-points.Enabled", false)) {
+        if (!SaberFactions.plugin.getConfig().getBoolean("f-points.Enabled", true)) {
             fme.msg(TL.GENERIC_DISABLED);
             return;
         }
