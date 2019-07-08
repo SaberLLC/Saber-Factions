@@ -115,6 +115,8 @@
                         <option>-keep class com.massivecraft.factions.Faction { *; }</option>
                         <option>-keep class com.massivecraft.factions.Factions { *; }</option>
                         <option>-keep class com.massivecraft.factions.FLocation { *; }</option>
+                        <option>-keep class com.massivecraft.factions.struct.Relation { *; }</option>
+                        <option>-keep class com.massivecraft.factions.util.ClipPlaceholderAPIManager { *; }</option>
                         <option>-keep class com.massivecraft.factions.FPlayer { *; }</option>
                         <option>-keep class com.massivecraft.factions.FPlayers { *; }</option>
                         <!-- keep the lib -->
