@@ -24,6 +24,7 @@ public class CmdHome extends FCommand {
 		super();
 		this.aliases.add("home");
 
+		this.optionalArgs.put("faction", "yours");
 		//this.requiredArgs.add("");
 		//this.optionalArgs.put("", "");
 
@@ -32,7 +33,7 @@ public class CmdHome extends FCommand {
 
 
 		senderMustBePlayer = true;
-		senderMustBeMember = true;
+		senderMustBeMember = false;
 		senderMustBeModerator = false;
 		senderMustBeColeader = false;
 		senderMustBeAdmin = false;
@@ -41,6 +42,8 @@ public class CmdHome extends FCommand {
 	@Override
 	public void perform() {
 		// TODO: Hide this command on help also.
+
+
 		if (!Conf.homesEnabled) {
 			fme.msg(TL.COMMAND_HOME_DISABLED);
 			return;
@@ -50,6 +53,33 @@ public class CmdHome extends FCommand {
 			fme.msg(TL.COMMAND_HOME_TELEPORTDISABLED);
 			return;
 		}
+
+		Faction factionArg = myFaction;
+
+		if(argIsSet(0)){
+			factionArg = argAsFaction(0);
+		}
+
+		if(factionArg == null || factionArg.isWilderness())
+			return;
+
+		if(factionArg.hasHome()){
+			if(fme.isAdminBypassing()) {
+				fme.getPlayer().teleport(factionArg.getHome());
+				fme.msg(TL.COMMAND_HOME_TELEPORT_OTHER, factionArg.getTag());
+			} else {
+				fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
+				return;
+			}
+		} else {
+			fme.msg(TL.COMMAND_HOME_OTHER_NOTSET, factionArg.getTag());
+			return;
+		}
+
+
+		if(myFaction.isWilderness())
+			return;
+
 		if (!fme.isAdminBypassing()) {
 			Access access = myFaction.getAccess(fme, PermissableAction.HOME);
 			if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
@@ -64,6 +94,8 @@ public class CmdHome extends FCommand {
 			fme.sendMessage(p.cmdBase.cmdSethome.getUseageTemplate());
 			return;
 		}
+
+
 
 		if (!Conf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory()) {
 			fme.msg(TL.COMMAND_HOME_INENEMY);

@@ -162,8 +162,10 @@ public enum TL {
 	COMMAND_ALTKICK_NOTALT("&c&l[!] &7Player is not an alt."),
 	COMMAND_ALTKICK_NOTMEMBER("&c&l[!] &7This player is not a member of your faction."),
 
-	COMMAND_ALTS_LIST_NOALTS("&c&l[!] &7$1%s does not have any alts in their faction!"),
+	COMMAND_ALTS_LIST_NOALTS("&c&l[!] &7%s does not have any alts in their faction!"),
 	COMMAND_AUTOHELP_HELPFOR("Help for command \""),
+	COMMAND_HOME_OTHER_NOTSET("&c&l[!] &7%s does not have their faction home set!"),
+	COMMAND_HOME_TELEPORT_OTHER("&c&l[!] &7You have teleported to %s's faction home!"),
 
 	COMMAND_BAN_DESCRIPTION("Ban players from joining your Faction."),
 	COMMAND_BAN_TARGET("&c&l[!] &7You were &cbanned &7from &c%1$s"), // banned player perspective
