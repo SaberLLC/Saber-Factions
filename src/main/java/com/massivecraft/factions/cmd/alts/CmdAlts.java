@@ -8,7 +8,6 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdAlts extends FCommand {
 
 
-    public CmdKickAlt cmdKickAlt = new CmdKickAlt();
     public CmdInviteAlt cmdInviteAlt = new CmdInviteAlt();
     public CmdAltsList cmdAltsList = new CmdAltsList();
 
@@ -24,13 +23,12 @@ public class CmdAlts extends FCommand {
         this.disableOnSpam = false;
 
         senderMustBePlayer = true;
-        senderMustBeMember = true;
+        senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
 
         this.addSubCommand(this.cmdInviteAlt);
-        this.addSubCommand(this.cmdKickAlt);
         this.addSubCommand(this.cmdAltsList);
     }
 

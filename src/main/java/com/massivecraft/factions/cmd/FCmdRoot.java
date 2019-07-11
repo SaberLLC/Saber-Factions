@@ -249,11 +249,11 @@ public class FCmdRoot extends FCommand {
 		}
 
 		if(SaberFactions.plugin.getConfig().getBoolean("f-points.Enabled")){
-			this.addSubCommand(cmdPoints);
+			this.addSubCommand(this.cmdPoints);
 		}
 
 		if(SaberFactions.plugin.getConfig().getBoolean("f-alts.Enabled")){
-			this.addSubCommand(cmdAlts);
+			this.addSubCommand(this.cmdAlts);
 		}
 
 		if (SaberFactions.plugin.getConfig().getBoolean("f-grace.Enabled")) {

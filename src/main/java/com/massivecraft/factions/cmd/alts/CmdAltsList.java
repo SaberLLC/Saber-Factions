@@ -1,13 +1,13 @@
 package com.massivecraft.factions.cmd.alts;
 
+import com.google.common.base.Joiner;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import org.apache.commons.lang.time.DurationFormatUtils;
-import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class CmdAltsList extends FCommand {
 
@@ -15,13 +15,16 @@ public class CmdAltsList extends FCommand {
     public CmdAltsList() {
         super();
         this.aliases.add("list");
+        this.aliases.add("l");
+        this.optionalArgs.put("faction", "yours");
+
 
         this.permission = Permission.LIST.node;
         this.disableOnLock = false;
         this.disableOnSpam = false;
 
         senderMustBePlayer = true;
-        senderMustBeMember = true;
+        senderMustBeMember = false;
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
 
@@ -29,21 +32,26 @@ public class CmdAltsList extends FCommand {
 
     @Override
     public void perform() {
-
-        ArrayList<String> ret = new ArrayList<>();
-        for (FPlayer fp : myFaction.getAltPlayers()) {
-            if(myFaction.getAltPlayers().isEmpty()){
-                fme.sendMessage(TL.COMMAND_ALTS_LIST_NOALTS.toString());
-                return;
-            }
-
-            String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fp.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
-            String last = fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fp.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
-            String power = ChatColor.YELLOW + String.valueOf(fp.getPowerRounded()) + " / " + fp.getPowerMaxRounded() + ChatColor.RESET;
-            ret.add(String.format(TL.COMMAND_ALTS_LIST_FORMAT.toString(), ChatColor.GOLD + fp.getName() + ChatColor.RESET, power, last).trim());
+        Faction faction = myFaction;
+        if(argIsSet(0)){
+            faction = argAsFaction(0);
         }
-        fme.sendMessage(ret);
+        if(faction == null)
+            return;
+
+        if(faction != myFaction && !fme.isAdminBypassing()){
+            return;
+        }
+
+        if(faction.getAltPlayers().size() == 0){
+            msg(TL.COMMAND_ALTS_LIST_NOALTS, faction.getTag());
+            return;
+        }
+
+        msg("<a>There are " + faction.getAltPlayers().size() + " alts in " + faction.getTag() + ":");
+        msg("<i>" + Joiner.on(", ").join(faction.getAltPlayers().stream().map(FPlayer::getName).collect(Collectors.toList())));
     }
+
 
     @Override
     public TL getUsageTranslation() {

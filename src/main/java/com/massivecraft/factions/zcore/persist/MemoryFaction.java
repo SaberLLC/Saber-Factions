@@ -225,12 +225,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 		this.player = fp;
 	}
 
-	public Set<String> getInvites() {
-		return invites;
+	public Set<String> getInvites() { return invites; }
+
+	public Set<String> getAltInvites() { return altinvites; }
+
+	public void deinviteAlt(FPlayer fplayer) {
+		altinvites.remove(fplayer.getId());
 	}
 
-	public Set<String> getAltInvites() {
-		return altinvites;
+	public void deinviteAllAlts() {
+		altinvites.clear();
 	}
 
 	public String getId() {

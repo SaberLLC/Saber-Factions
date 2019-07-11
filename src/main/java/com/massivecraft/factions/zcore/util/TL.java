@@ -138,7 +138,6 @@ public enum TL {
 	COMMAND_AHOME_TARGET("You were sent to your f home."),
 
 	COMMAND_ANNOUNCE_DESCRIPTION("Announce a message to players in faction."),
-
 	COMMAND_ALTS_DESCRIPTION("Faction Alts Commands"),
 	COMMAND_STRIKE_DESCRIPTION("Faction Strike Commands"),
 
@@ -163,7 +162,7 @@ public enum TL {
 	COMMAND_ALTKICK_NOTALT("&c&l[!] &7Player is not an alt."),
 	COMMAND_ALTKICK_NOTMEMBER("&c&l[!] &7This player is not a member of your faction."),
 
-	COMMAND_ALTS_LIST_NOALTS("&c&l[!] &7You have no alts in your faction!"),
+	COMMAND_ALTS_LIST_NOALTS("&c&l[!] &7$1%s does not have any alts in their faction!"),
 	COMMAND_AUTOHELP_HELPFOR("Help for command \""),
 
 	COMMAND_BAN_DESCRIPTION("Ban players from joining your Faction."),
@@ -726,6 +725,7 @@ public enum TL {
 	COMMAND_SHOWINVITES_DESCRIPTION("Show pending faction invites"),
 
 	COMMAND_ALTS_LIST_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
+	COMMAND_ALTS_DEINVITE_DESCRIPTION("Base command for revoking alt invitations"),
 
 	COMMAND_STATUS_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
 	COMMAND_STATUS_ONLINE("Online"),

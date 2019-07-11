@@ -35,7 +35,6 @@ public class CmdPoints extends FCommand {
             fme.msg(TL.GENERIC_DISABLED);
             return;
         }
-
         this.commandChain.add(this);
         SaberFactions.plugin.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
     }

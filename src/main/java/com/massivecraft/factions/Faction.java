@@ -24,6 +24,11 @@ public interface Faction extends EconomyParticipator {
 
 	boolean altInvited(FPlayer fplayer);
 
+	void deinviteAlt(FPlayer alt);
+
+	void deinviteAllAlts();
+
+
 	void altInvite(FPlayer fplayer);
 
 	boolean addAltPlayer(FPlayer fplayer);
