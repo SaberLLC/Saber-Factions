@@ -15,8 +15,8 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FactionGUI;
-import com.massivecraft.factions.util.MultiversionMaterials;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
@@ -657,9 +657,9 @@ public class FactionsPlayerListener implements Listener {
         if (event.getPlayer().getItemInHand() != null) {
             Material handItem = event.getPlayer().getItemInHand().getType();
             if (handItem.isEdible()
-                    || handItem.equals(MultiversionMaterials.POTION.parseMaterial())
-                    || handItem.equals(MultiversionMaterials.LINGERING_POTION.parseMaterial())
-                    || handItem.equals(MultiversionMaterials.SPLASH_POTION.parseMaterial())) {
+                    || handItem.equals(XMaterial.POTION.parseMaterial())
+                    || handItem.equals(XMaterial.LINGERING_POTION.parseMaterial())
+                    || handItem.equals(XMaterial.SPLASH_POTION.parseMaterial())) {
                 return;
             }
         }
@@ -686,8 +686,8 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerBoneMeal(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
 
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == MultiversionMaterials.GRASS_BLOCK.parseMaterial()
-                && event.hasItem() && event.getItem().getType() == MultiversionMaterials.BONE_MEAL.parseMaterial()) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == XMaterial.GRASS_BLOCK.parseMaterial()
+                && event.hasItem() && event.getItem().getType() == XMaterial.BONE_MEAL.parseMaterial()) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD.name(), true)) {
                 FPlayer me = FPlayers.getInstance().getById(event.getPlayer().getUniqueId().toString());
                 Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));

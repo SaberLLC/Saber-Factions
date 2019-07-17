@@ -6,6 +6,7 @@ import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -130,7 +131,7 @@ public class CmdSeeChunk extends FCommand {
 
 
 			} else {
-				Material type = blockY % 5 == 0 ? SaberFactions.plugin.REDSTONE_LAMP_ON : SaberFactions.plugin.STAINED_GLASS;
+				Material type = blockY % 5 == 0 ? XMaterial.REDSTONE_LAMP.parseMaterial() : XMaterial.BLACK_STAINED_GLASS.parseMaterial();
 				VisualizeUtil.addLocation(player, loc, type);
 			}
 		}

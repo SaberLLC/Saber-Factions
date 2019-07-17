@@ -27,7 +27,6 @@ public class CmdReload extends FCommand {
 		Conf.load();
 		Conf.save();
 		SaberFactions.plugin.reloadConfig();
-		SaberFactions.plugin.changeItemIDSInConfig();
 		SaberFactions.plugin.loadLang();
 
 

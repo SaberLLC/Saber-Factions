@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import com.google.common.collect.ImmutableMap;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
+import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -365,7 +366,7 @@ public class Conf {
 		// Config is not loading if value is empty ???
 		territoryBypassProtectedMaterials.add(Material.COOKIE);
 
-		territoryDenyUseageMaterials.add(SaberFactions.plugin.FIREBALL);
+		territoryDenyUseageMaterials.add(XMaterial.FIRE_CHARGE.parseMaterial());
 		territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterials.add(Material.BUCKET);
 		territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
@@ -377,7 +378,7 @@ public class Conf {
 
 		territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
 
-		territoryDenyUseageMaterialsWhenOffline.add(SaberFactions.plugin.FIREBALL);
+		territoryDenyUseageMaterialsWhenOffline.add(XMaterial.FIRE_CHARGE.parseMaterial());
 		territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
 		territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);

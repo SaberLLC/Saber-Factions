@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Particles.ParticleEffect;
+import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -288,7 +289,7 @@ public class FactionsBlockListener implements Listener {
             return;
         }
 
-        if (e.getItemInHand().getType() == SaberFactions.plugin.BANNER) {
+        if (e.getItemInHand().getType() == XMaterial.BLACK_BANNER.parseMaterial()) {
             ItemStack bannerInHand = e.getItemInHand();
             FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
             ItemStack warBanner = fme.getFaction().getBanner();
@@ -298,7 +299,7 @@ public class FactionsBlockListener implements Listener {
                 warmeta.setLore(SaberFactions.plugin.colorList(SaberFactions.plugin.getConfig().getStringList("fbanners.Item.Lore")));
                 warBanner.setItemMeta(warmeta);
             } else {
-                warBanner = SaberFactions.plugin.createItem(SaberFactions.plugin.BANNER, 1, (short) 1, SaberFactions.plugin.getConfig().getString("fbanners.Item.Name"), SaberFactions.plugin.getConfig().getStringList("fbanners.Item.Lore"));
+                warBanner = SaberFactions.plugin.createItem(XMaterial.BLACK_BANNER.parseMaterial(), 1, (short) 1, SaberFactions.plugin.getConfig().getString("fbanners.Item.Name"), SaberFactions.plugin.getConfig().getStringList("fbanners.Item.Lore"));
             }
             if (warBanner.isSimilar(bannerInHand)) {
 
@@ -491,7 +492,7 @@ public class FactionsBlockListener implements Listener {
         if (!fme.hasFaction()) {
             return;
         }
-        if (event.getBlock().getType() == SaberFactions.plugin.MOB_SPANWER) {
+        if (event.getBlock().getType() == XMaterial.SPAWNER.parseMaterial()) {
             if (!fme.isAdminBypassing()) {
                 Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
                 if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {

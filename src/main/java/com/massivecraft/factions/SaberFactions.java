@@ -70,12 +70,6 @@ public class SaberFactions extends MPlugin {
 	public boolean mc114 = false;
 	public boolean useNonPacketParticles = false;
 	public boolean factionsFlight = false;
-	//multiversion material fields
-	public Material SUGAR_CANE_BLOCK, BANNER, CROPS, REDSTONE_LAMP_ON,
-			  STAINED_GLASS, STATIONARY_WATER, STAINED_CLAY, WOOD_BUTTON,
-			  SOIL, MOB_SPANWER, THIN_GLASS, IRON_FENCE, NETHER_FENCE, FENCE,
-			  WOODEN_DOOR, TRAP_DOOR, FENCE_GATE, BURNING_FURNACE, DIODE_BLOCK_OFF,
-			  DIODE_BLOCK_ON, ENCHANTMENT_TABLE, FIREBALL;
 	SkriptAddon skriptAddon;
 	private boolean locked = false;
 	private boolean spam = false;
@@ -157,15 +151,12 @@ public class SaberFactions extends MPlugin {
 			case 13:
 				SaberFactions.plugin.log("Minecraft Version 1.13 found, New Items will be used.");
 				mc113 = true;
-				changeItemIDSInConfig();
 				break;
 			case 14:
 				SaberFactions.plugin.log("Minecraft Version 1.14 found.");
 				mc114 = true;
-				changeItemIDSInConfig();
 				break;
 		}
-		setupMultiversionMaterials();
 		migrateFPlayerLeaders();
 		log("==== End Setup ====");
 
@@ -284,59 +275,7 @@ public class SaberFactions extends MPlugin {
 		return skriptAddon;
 	}
 
-	private void setupMultiversionMaterials() {
-		if (mc113) {
-			BANNER = Material.valueOf("LEGACY_BANNER");
-			CROPS = Material.valueOf("LEGACY_CROPS");
-			SUGAR_CANE_BLOCK = Material.valueOf("LEGACY_SUGAR_CANE_BLOCK");
-			REDSTONE_LAMP_ON = Material.valueOf("LEGACY_REDSTONE_LAMP_ON");
-			STAINED_GLASS = Material.valueOf("LEGACY_STAINED_GLASS");
-			STATIONARY_WATER = Material.valueOf("LEGACY_STATIONARY_WATER");
-			STAINED_CLAY = Material.valueOf("LEGACY_STAINED_CLAY");
-			WOOD_BUTTON = Material.valueOf("LEGACY_WOOD_BUTTON");
-			SOIL = Material.valueOf("LEGACY_SOIL");
-			MOB_SPANWER = Material.valueOf("LEGACY_MOB_SPAWNER");
-			THIN_GLASS = Material.valueOf("LEGACY_THIN_GLASS");
-			IRON_FENCE = Material.valueOf("LEGACY_IRON_FENCE");
-			NETHER_FENCE = Material.valueOf("LEGACY_NETHER_FENCE");
-			FENCE = Material.valueOf("LEGACY_FENCE");
-			WOODEN_DOOR = Material.valueOf("LEGACY_WOODEN_DOOR");
-			TRAP_DOOR = Material.valueOf("LEGACY_TRAP_DOOR");
-			FENCE_GATE = Material.valueOf("LEGACY_FENCE_GATE");
-			BURNING_FURNACE = Material.valueOf("LEGACY_BURNING_FURNACE");
-			DIODE_BLOCK_OFF = Material.valueOf("LEGACY_DIODE_BLOCK_OFF");
-			DIODE_BLOCK_ON = Material.valueOf("LEGACY_DIODE_BLOCK_ON");
-			ENCHANTMENT_TABLE = Material.valueOf("LEGACY_ENCHANTMENT_TABLE");
-			FIREBALL = Material.valueOf("LEGACY_FIREBALL");
 
-		} else {
-			if (!mc17) {
-				BANNER = Material.valueOf("BANNER");
-			}
-			CROPS = Material.valueOf("CROPS");
-			SUGAR_CANE_BLOCK = Material.valueOf("SUGAR_CANE_BLOCK");
-			REDSTONE_LAMP_ON = Material.valueOf("REDSTONE_LAMP_ON");
-			STAINED_GLASS = Material.valueOf("STAINED_GLASS");
-			STATIONARY_WATER = Material.valueOf("STATIONARY_WATER");
-			STAINED_CLAY = Material.valueOf("STAINED_CLAY");
-			WOOD_BUTTON = Material.valueOf("WOOD_BUTTON");
-			SOIL = Material.valueOf("SOIL");
-			MOB_SPANWER = Material.valueOf("MOB_SPAWNER");
-			THIN_GLASS = Material.valueOf("THIN_GLASS");
-			IRON_FENCE = Material.valueOf("IRON_FENCE");
-			NETHER_FENCE = Material.valueOf("NETHER_FENCE");
-			FENCE = Material.valueOf("FENCE");
-			WOODEN_DOOR = Material.valueOf("WOODEN_DOOR");
-			TRAP_DOOR = Material.valueOf("TRAP_DOOR");
-			FENCE_GATE = Material.valueOf("FENCE_GATE");
-			BURNING_FURNACE = Material.valueOf("BURNING_FURNACE");
-			DIODE_BLOCK_OFF = Material.valueOf("DIODE_BLOCK_OFF");
-			DIODE_BLOCK_ON = Material.valueOf("DIODE_BLOCK_ON");
-			ENCHANTMENT_TABLE = Material.valueOf("ENCHANTMENT_TABLE");
-			FIREBALL = Material.valueOf("FIREBALL");
-		}
-
-	}
 
 	private void setupPlaceholderAPI() {
 		Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
@@ -387,33 +326,6 @@ public class SaberFactions extends MPlugin {
 		}
 	}
 
-	public void changeItemIDSInConfig() {
-		log("Starting conversion of legacy material in config to 1.13 materials.");
-
-		replaceStringInConfig("fperm-gui.relation.materials.recruit", "WOOD_SWORD", "WOODEN_SWORD");
-		replaceStringInConfig("fperm-gui.relation.materials.normal", "GOLD_SWORD", "GOLDEN_SWORD");
-		replaceStringInConfig("fperm-gui.relation.materials.ally", "GOLD_AXE", "GOLDEN_AXE");
-		replaceStringInConfig("fperm-gui.relation.materials.neutral", "WOOD_AXE", "WOODEN_AXE");
-
-		ConfigurationSection actionMaterialsConfigSection = getConfig().getConfigurationSection("fperm-gui.action.materials");
-		Set<String> actionMaterialKeys = actionMaterialsConfigSection.getKeys(true);
-
-
-		for (String key : actionMaterialKeys) {
-			replaceStringInConfig("fperm-gui.action.materials." + key, "STAINED_GLASS", "GRAY_STAINED_GLASS");
-		}
-
-		replaceStringInConfig("fperm-gui.dummy-items.0.material", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
-		replaceStringInConfig("fwarp-gui.dummy-items.0.material", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
-
-		replaceStringInConfig("fupgrades.MainMenu.DummyItem.Type", "STAINED_GLASS_PANE", "GRAY_STAINED_GLASS_PANE");
-		replaceStringInConfig("fupgrades.MainMenu.EXP.EXPItem.Type", "EXP_BOTTLE", "EXPERIENCE_BOTTLE");
-		replaceStringInConfig("fupgrades.MainMenu.Spawners.SpawnerItem.Type", "MOB_SPAWNER", "SPAWNER");
-
-		replaceStringInConfig("fperm-gui.action.access.allow", "LIME", "LIME_STAINED_GLASS");
-		replaceStringInConfig("fperm-gui.action.access.deny", "RED", "RED_STAINED_GLASS");
-		replaceStringInConfig("fperm-gui.action.access.undefined", "CYAN", "CYAN_STAINED_GLASS");
-	}
 
 	public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
 		if (getConfig().getString(path).equals(stringToReplace)) {
@@ -511,7 +423,7 @@ public class SaberFactions extends MPlugin {
 	}
 
 	public ItemStack createItem(Material material, int amount, short datavalue, String name, List<String> lore) {
-       ItemStack item = new ItemStack(MultiversionMaterials.fromString(material.toString()).parseMaterial(), amount, datavalue);
+		ItemStack item = new ItemStack(XMaterial.matchXMaterial(material.toString()).parseMaterial(), amount, datavalue);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(color(name));
 		meta.setLore(colorList(lore));
@@ -567,7 +479,7 @@ public class SaberFactions extends MPlugin {
 		MCommand<?> commandEx = cmdBase;
 		List<MCommand<?>> commandsList = cmdBase.subCommands;
 
-		if (Board.getInstance().getFactionAt(new FLocation(fPlayer.getPlayer().getLocation())) == Factions.getInstance().getWarZone()) {
+		if (Board.getInstance().getFactionAt(new FLocation(fPlayer.getPlayer().getLocation())).isWarZone()) {
 			return new ArrayList<>();
 		}
 
@@ -595,16 +507,12 @@ public class SaberFactions extends MPlugin {
 		}
 
 		String lastArg = args[args.length - 1].toLowerCase();
-
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+            completions.add(player.getName());
+        }
 		completions = completions.stream()
-				  .filter(m -> m.toLowerCase().startsWith(lastArg))
-				  .collect(Collectors.toList());
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            completions.add(player.getName());
-        }
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            completions.add(player.getName());
-        }
+				.filter(m -> m.toLowerCase().startsWith(lastArg))
+				.collect(Collectors.toList());
         return completions;
 	}
 

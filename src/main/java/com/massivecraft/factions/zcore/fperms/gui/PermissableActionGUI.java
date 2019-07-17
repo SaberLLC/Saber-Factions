@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.fperms.gui;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.util.FactionGUI;
+import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -184,7 +185,7 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 			case BACK:
 				ConfigurationSection backButtonConfig = SaberFactions.plugin.getConfig().getConfigurationSection("fperm-gui.back-item");
 
-				ItemStack backButton = new ItemStack(Material.matchMaterial(backButtonConfig.getString("material")));
+				ItemStack backButton = new ItemStack(XMaterial.matchXMaterial(backButtonConfig.getString("material")).parseItem());
 				ItemMeta backButtonMeta = backButton.getItemMeta();
 
 				backButtonMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', backButtonConfig.getString("name")));
@@ -255,13 +256,13 @@ public class PermissableActionGUI implements InventoryHolder, FactionGUI {
 			return new ItemStack(Material.AIR);
 		}
 
-		Material material = Material.matchMaterial(dummySection.getString("material", ""));
+		Material material = XMaterial.matchXMaterial(dummySection.getString("material", "")).parseMaterial();
 		if (material == null) {
 			SaberFactions.plugin.log(Level.WARNING, "Invalid material for dummy item: " + id);
 			return null;
 		}
 
-		ItemStack itemStack = new ItemStack(material);
+		ItemStack itemStack = XMaterial.matchXMaterial(material).parseItem();
 
 		DyeColor color;
 		try {
