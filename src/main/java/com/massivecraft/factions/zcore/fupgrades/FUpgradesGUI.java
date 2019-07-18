@@ -75,7 +75,7 @@ public class FUpgradesGUI implements Listener {
             return;
 
         FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
-        if (e.getClickedInventory().getTitle().equalsIgnoreCase(SaberFactions.plugin.color(SaberFactions.plugin.getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())))) {
+        if (e.getView().getTitle().equalsIgnoreCase(SaberFactions.plugin.color(SaberFactions.plugin.getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())))) {
             e.setCancelled(true);
             ItemStack[] items = buildItems(fme);
             ItemStack cropItem = items[2];
