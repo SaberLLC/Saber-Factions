@@ -135,7 +135,7 @@ public class DefaultPermissions {
 		else if (name == "sethome") return this.sethome;
 		else if (name == "territory") return this.territory;
 		else if (name == "access") return this.access;
-		else if (name == "home") return this.home;
+		else if (name == "home") return this.disband;
 		else if (name == "disband") return this.disband;
 		else if (name == "promote") return this.promote;
 		else if (name == "setwarp") return this.setwarp;
