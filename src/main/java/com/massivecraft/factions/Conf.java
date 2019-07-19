@@ -405,7 +405,7 @@ public class Conf {
 		defaultFactionPermissions.put("LEADER", new DefaultPermissions(true));
 		defaultFactionPermissions.put("COLEADER", new DefaultPermissions(true));
 		defaultFactionPermissions.put("MODERATOR", new DefaultPermissions(true));
-		defaultFactionPermissions.put("MEMBER", new DefaultPermissions(false));
+		defaultFactionPermissions.put("NORMAL MEMBER", new DefaultPermissions(false));
 		defaultFactionPermissions.put("RECRUIT", new DefaultPermissions(false));
 	}
 

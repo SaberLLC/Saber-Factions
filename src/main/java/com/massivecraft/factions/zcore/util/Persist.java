@@ -100,7 +100,7 @@ public class Persist {
 	}
 
 	public boolean save(Object instance, File file) {
-		return DiscUtil.writeCatch(file, p.gson.toJson(instance), true);
+		return DiscUtil.writeCatch(file, p.gson.toJson(instance), false);
 	}
 
 	// LOAD BY CLASS
