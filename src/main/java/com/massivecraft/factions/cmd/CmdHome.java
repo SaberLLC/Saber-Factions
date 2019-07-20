@@ -65,7 +65,7 @@ public class CmdHome extends FCommand {
 
 		Access access1 = myFaction.getAccess(fme, PermissableAction.HOME);
 		if(factionArg.hasHome()){
-			if(fme.isAdminBypassing() || access1 == Access.ALLOW ) {
+			if(fme.isAdminBypassing() || (myFaction.equals(fme.getFaction()) && fme.getRole().equals(Role.LEADER)) || access1 == Access.ALLOW ) {
 				fme.getPlayer().teleport(factionArg.getHome());
 				fme.msg(TL.COMMAND_HOME_TELEPORT_OTHER, factionArg.getTag());
 			} else {
