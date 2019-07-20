@@ -10,6 +10,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.SmokeUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -54,28 +55,20 @@ public class CmdHome extends FCommand {
 			return;
 		}
 
-		Faction factionArg = myFaction;
+		Faction factionArg;
 
-		if(argIsSet(0)){
-			factionArg = argAsFaction(0);
-		}
+		if (args.isEmpty())
+			factionArg = myFaction;
+		else
+		 	factionArg = argAsFaction(0);
 
-		if(factionArg == null || factionArg.isWilderness())
-			return;
 
-		Access access1 = myFaction.getAccess(fme, PermissableAction.HOME);
-		if(factionArg.hasHome()){
-			if(fme.isAdminBypassing() || (myFaction.equals(fme.getFaction()) && fme.getRole().equals(Role.LEADER)) || access1 == Access.ALLOW ) {
-				fme.getPlayer().teleport(factionArg.getHome());
-				fme.msg(TL.COMMAND_HOME_TELEPORT_OTHER, factionArg.getTag());
-			} else {
-				fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
-				return;
-			}
-		} else {
-			fme.msg(TL.COMMAND_HOME_OTHER_NOTSET, factionArg.getTag());
+		if (factionArg.isSystemFaction()) {
+			fme.msg(TL.GENERIC_NOPERMISSION, "teleport to system faction home");
 			return;
 		}
+
+		myFaction = factionArg;
 
 
 		if(myFaction.isWilderness())
@@ -90,11 +83,13 @@ public class CmdHome extends FCommand {
 		}
 
 
+
 		if (!myFaction.hasHome()) {
 			fme.msg(TL.COMMAND_HOME_NOHOME.toString() + (fme.getRole().value < Role.MODERATOR.value ? TL.GENERIC_ASKYOURLEADER.toString() : TL.GENERIC_YOUSHOULD.toString()));
 			fme.sendMessage(p.cmdBase.cmdSethome.getUseageTemplate());
 			return;
 		}
+
 
 
 
@@ -144,15 +139,20 @@ public class CmdHome extends FCommand {
 			}
 		}
 
+
+
 		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
 		if (!payForCommand(Conf.econCostHome, TL.COMMAND_HOME_TOTELEPORT.toString(), TL.COMMAND_HOME_FORTELEPORT.toString())) {
 			return;
 		}
 
-		// if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
-		if (Essentials.handleTeleport(me, myFaction.getHome())) {
-			return;
-		}
+		// TODO: Need to document this better confusing everyone, removed for now.
+//		// if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
+//		if (Essentials.handleTeleport(me, myFaction.getHome())) {
+//			return;
+//		}
+
+
 
 		this.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", () -> {
 			// Create a smoke effect
