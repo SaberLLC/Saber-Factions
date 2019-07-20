@@ -102,15 +102,13 @@ public enum PermissableAction {
 		String displayName = replacePlaceholders(section.getString("placeholder-item.name"), fme, permissable);
 		List<String> lore = new ArrayList<>();
 
-		if (section.getString("materials." + name().toLowerCase().replace('_', '-')) == null) {
-			return null;
-		}
+		if (section.getString("materials." + name().toLowerCase().replace('_', '-')) == null) return null;
+
 		Material material = XMaterial.matchXMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-'))).parseMaterial();
 
 		Access access = fme.getFaction().getAccess(permissable, this);
-		if (access == null) {
-			access = Access.UNDEFINED;
-		}
+		if (access == null) access = Access.UNDEFINED;
+
 
 		ItemStack item = new ItemStack(material);
 		ItemMeta itemMeta = item.getItemMeta();
@@ -129,29 +127,30 @@ public enum PermissableAction {
 		}
 
 		// If under the 1.13 version we will use the colorable option.
-		if (!SaberFactions.plugin.mc113) {
+		if (!SaberFactions.plugin.mc113 && !SaberFactions.plugin.mc114) { //TODO see if it's working in other version than 1.13 and 1.14
 			DyeColor dyeColor = null;
 
 			try {
 				dyeColor = DyeColor.valueOf(section.getString("access." + access.name().toLowerCase()));
 			} catch (Exception exception) {
 			}
+			accessValue = "deny";
 
 			if (dyeColor != null) {
 				item.setDurability(dyeColor.getWoolData());
 			}
 		} else {
-			// so this is in 1.13 mode, our config will automatically be updated to a material instead of color because of it being removed in the new api
-			item.setType(XMaterial.matchXMaterial(SaberFactions.plugin.getConfig().getString("fperm-gui.action.access.") + accessValue).parseMaterial());
+			Material mat = XMaterial.CYAN_GLAZED_TERRACOTTA.parseMaterial();
+				switch (accessValue) {
+					case "deny": mat = XMaterial.RED_GLAZED_TERRACOTTA.parseMaterial(); break;
+					case "allow": mat = XMaterial.GREEN_GLAZED_TERRACOTTA.parseMaterial(); break;
+					case "undefined": mat = XMaterial.CYAN_GLAZED_TERRACOTTA.parseMaterial(); break;
+			}
+			item.setType(mat);
 		}
 
-		for (String loreLine : section.getStringList("placeholder-item.lore")) {
-			lore.add(replacePlaceholders(loreLine, fme, permissable));
-		}
-
-		if (!SaberFactions.plugin.mc17) {
-			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-		}
+		for (String loreLine : section.getStringList("placeholder-item.lore")) lore.add(replacePlaceholders(loreLine, fme, permissable));
+		if (!SaberFactions.plugin.mc17) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
 		itemMeta.setDisplayName(displayName);
 		itemMeta.setLore(lore);

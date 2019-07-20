@@ -479,10 +479,6 @@ public class SaberFactions extends MPlugin {
 		MCommand<?> commandEx = cmdBase;
 		List<MCommand<?>> commandsList = cmdBase.subCommands;
 
-		if (Board.getInstance().getFactionAt(new FLocation(fPlayer.getPlayer().getLocation())).isWarZone()) {
-			return new ArrayList<>();
-		}
-
 		for (; !commandsList.isEmpty() && !argsList.isEmpty(); argsList.remove(0)) {
 			String cmdName = argsList.get(0).toLowerCase();
 			MCommand<?> commandFounded = commandsList.stream()
