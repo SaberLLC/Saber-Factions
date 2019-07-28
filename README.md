@@ -25,7 +25,7 @@ Some of our features include the following
 <dependency>
 	<groupId>com.github.Driftay</groupId>
 	<artifactId>Saber-Factions</artifactId>
-	<version>Tag</version>
+	<version>1.4.1</version>
 </dependency>
 ```
 ## Moving Forward
