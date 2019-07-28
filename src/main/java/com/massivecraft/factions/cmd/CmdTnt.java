@@ -102,8 +102,8 @@ public class CmdTnt extends FCommand {
 					fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
 					return;
 				}
-				int fullStacks = amount / 64;
-				int remainderAmt = amount % 64;
+				int fullStacks = Math.round(amount / 6);
+				int remainderAmt = amount - (fullStacks * 64);
 				if ((remainderAmt == 0 && !hasAvaliableSlot(me, fullStacks))) {
 					fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE);
 					return;
@@ -112,14 +112,10 @@ public class CmdTnt extends FCommand {
 					fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE);
 					return;
 				}
-				ItemStack tnt64 = new ItemStack(Material.TNT, 64);
-				for (int i = 0; i <= fullStacks - 1; i++) {
-					me.getInventory().addItem(tnt64);
-				}
-				if (remainderAmt != 0) {
-					ItemStack tnt = new ItemStack(Material.TNT, remainderAmt);
-					me.getInventory().addItem(tnt);
-				}
+
+				for (int i = 0; i <= fullStacks - 1; i++) me.getPlayer().getInventory().addItem(new ItemStack(Material.TNT, 64));
+				if (remainderAmt != 0) me.getPlayer().getInventory().addItem(new ItemStack(Material.TNT, remainderAmt));
+
 				fme.getFaction().takeTnt(amount);
 				me.updateInventory();
 				fme.msg(TL.COMMAND_TNT_WIDTHDRAW_SUCCESS);
@@ -132,22 +128,8 @@ public class CmdTnt extends FCommand {
 	}
 
 
-	public boolean inventoryContains(Inventory inventory, ItemStack item) {
-		int count = 0;
-		ItemStack[] items = inventory.getContents();
-		for (int i = 0; i < items.length; i++) {
-			if (items[i] != null && items[i].getType() == item.getType() && items[i].getDurability() == item.getDurability()) {
-				count += items[i].getAmount();
-			}
-			if (count >= item.getAmount()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public boolean hasAvaliableSlot(Player player, int howmany) {
-		Integer check = 0;
+		int check = 0;
 		for (ItemStack item : player.getInventory().getContents()) {
 			if (item == null) {
 				check++;

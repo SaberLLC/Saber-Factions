@@ -8,6 +8,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
+import com.massivecraft.factions.shop.Pair;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -72,6 +73,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     private int strikes = 0;
     private int points = 0;
+    private Map<String, Pair<Integer, Long>> potionEffects;
+    private Map<String, Long> boosters;
 
     // -------------------------------------------- //
     // Construct
@@ -93,7 +96,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
         this.defaultRole = Role.RECRUIT;
-
+        potionEffects = new ConcurrentHashMap<>();
+        boosters = new ConcurrentHashMap<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -114,6 +118,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         relationWish = old.relationWish;
         claimOwnership = old.claimOwnership;
         fplayers = new HashSet<>();
+        potionEffects = new ConcurrentHashMap<>();
+        boosters = new ConcurrentHashMap<>();
         alts = new HashSet<>();
         invites = old.invites;
         announcements = old.announcements;
@@ -426,6 +432,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         ItemStack[] contents = this.getChestInventory().getContents();
         chest = Bukkit.createInventory(null, chestSize, SaberFactions.plugin.color(SaberFactions.plugin.getConfig().getString("fchest.Inventory-Title")));
         chest.setContents(contents);
+    }
+
+    @Override
+    public Map<String, Long> getBoosters() {
+        return this.boosters;
     }
 
 
@@ -965,8 +976,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
         Set<FPlayer> ret = new HashSet<>();
-        if (!this.isNormal()) return ret;
-
 
         for (FPlayer fplayer : fplayers) {
             if (fplayer.isOnline() == online) {
@@ -1240,6 +1249,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<String> getOwnerList(FLocation loc) {
         return claimOwnership.get(loc);
+    }
+
+    @Override
+    public Map<String, Pair<Integer, Long>> getActivePotions() {
+        return this.potionEffects;
+    }
+
+    @Override
+    public Map<String, Pair<Integer, Long>> getPotionEffects() {
+        return this.potionEffects;
     }
 
     public String getOwnerListString(FLocation loc) {

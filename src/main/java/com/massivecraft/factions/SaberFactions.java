@@ -10,6 +10,8 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
+import com.massivecraft.factions.shop.handlers.BoosterHandler;
+import com.massivecraft.factions.shop.handlers.PotionHandler;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.Particles.ReflectionUtils;
@@ -229,6 +231,9 @@ public class SaberFactions extends MPlugin {
 			}
 			log("Skript addon registered!");
 		}
+
+		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new BoosterHandler(), 100L, 100L);
+		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new PotionHandler(this), 100L, 100L);
 
 		getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 

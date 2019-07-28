@@ -166,6 +166,7 @@ public enum TL {
 	COMMAND_AUTOHELP_HELPFOR("Help for command \""),
 	COMMAND_HOME_OTHER_NOTSET("&c&l[!] &7%s does not have their faction home set!"),
 	COMMAND_HOME_TELEPORT_OTHER("&c&l[!] &7You have teleported to %s's faction home!"),
+	COMMAND_SHOP_DESCRIPTION("opens shop gui"),
 
 	COMMAND_BAN_DESCRIPTION("Ban players from joining your Faction."),
 	COMMAND_BAN_TARGET("&c&l[!] &7You were &cbanned &7from &c%1$s"), // banned player perspective
@@ -770,6 +771,20 @@ public enum TL {
 	COMMAND_TOGGLEALLIANCECHAT_UNIGNORE("Alliance chat is no longer ignored"),
 
 	COMMAND_TOGGLESB_DISABLED("You can't toggle scoreboards while they are disabled."),
+
+	SHOP_POTION_TITLE("&c&lPotion Shop"),
+	SHOP_POTION_GUI_ACTIVATED_LORE_LINE("&a&lPotion Type Active"),
+	SHOP_POTION_GUI_ACTIVATED("&d%1$s activated &f%2$s &dfor your faction!"),
+	SHOP_POTION_GUI_INSUFFICIENT_POINTS("&c&l[!] &7Your faction can't afford that, you need &d%1$s &7faction points"),
+	SHOP_POTION_GUI_POTION_TYPE_ALREADY_ACTIVE("&c&l[!] &7This Potion Type is Already Active for Your Faction!"),
+	SHOP_POTION_GUI_MAX_REACHED("&c&l[!] &7You may not have more than %1$s potions at the same time"),
+
+	SHOP_BOOSTER_TITLE("&b&lBooster Shop"),
+	SHOP_GUI_BOOSTER_MAX_REACHED("&c&l[!] &7You may not have more than %1$s boosters at the same time"),
+	SHOP_GUI_BOOSTER_ACTIVE_ALREADY_ACTIVE("&a&lActive"),
+	SHOP_GUI_BOOSTER_CANNOT_AFFORD("&c&l[!] &7Your faction can't afford that, you need &d%1$s faction points"),
+	SHOP_GUI_BOOSTER_ACTIVE_LORE_LINE("&a&lActive"),
+
 
 	COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
 	COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),

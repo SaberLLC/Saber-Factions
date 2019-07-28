@@ -34,9 +34,7 @@ public class CmdViewChest extends FCommand {
         if (faction == null) {
             return;
         }
-
         me.openInventory(faction.getChestInventory());
-
     }
 
     @Override
