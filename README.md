@@ -15,17 +15,18 @@ Some of our features include the following
 
 ## Dependency With Maven
 ```	
-  <repositories>
-		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
-		</repository>
-	</repositories>
-	<dependency>
-	    <groupId>com.github.Driftay</groupId>
-	    <artifactId>Saber-Factions</artifactId>
-	    <version>Tag</version>
-	</dependency>
+ <repositories>
+	<repository>
+	<id>jitpack.io</id>
+	<url>https://jitpack.io</url>
+  	</repository>
+</repositories>
+
+<dependency>
+	<groupId>com.github.Driftay</groupId>
+	<artifactId>Saber-Factions</artifactId>
+	<version>Tag</version>
+</dependency>
 ```
 ## Moving Forward
 
