@@ -13,6 +13,21 @@ Some of our features include the following
 * Factions Corner - In the corner of a world? No Problem /f corner will claim your entire buffer for you!
 * Command Cooldowns - Configurable Command Cooldowns for most "spam" commands. And so Much More to Come!
 
+## Dependency With Maven
+```	
+ <repositories>
+	<repository>
+	<id>jitpack.io</id>
+	<url>https://jitpack.io</url>
+  	</repository>
+</repositories>
+
+<dependency>
+	<groupId>com.github.Driftay</groupId>
+	<artifactId>Saber-Factions</artifactId>
+	<version>1.4.1</version>
+</dependency>
+```
 ## Moving Forward
 
 Moving forward we plan to take all suggestions into consideration, as they come from our community. 
