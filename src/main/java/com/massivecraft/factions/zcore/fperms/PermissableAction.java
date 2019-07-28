@@ -109,7 +109,6 @@ public enum PermissableAction {
 		Access access = fme.getFaction().getAccess(permissable, this);
 		if (access == null) access = Access.UNDEFINED;
 
-
 		ItemStack item = new ItemStack(material);
 		ItemMeta itemMeta = item.getItemMeta();
 
@@ -130,7 +129,6 @@ public enum PermissableAction {
 		// If under the 1.13 version we will use the colorable option.
 		if (!SaberFactions.plugin.mc113 && !SaberFactions.plugin.mc114) {
 			//TODO see if it's working in other version than 1.13 and 1.14
-
 			DyeColor dyeColor = null;
 
 			try {
@@ -144,10 +142,10 @@ public enum PermissableAction {
 			}
 		} else {
 			Material mat = XMaterial.CYAN_GLAZED_TERRACOTTA.parseMaterial();
-				switch (accessValue) {
-					case "deny": mat = XMaterial.RED_GLAZED_TERRACOTTA.parseMaterial(); break;
-					case "allow": mat = XMaterial.GREEN_GLAZED_TERRACOTTA.parseMaterial(); break;
-					case "undefined": mat = XMaterial.CYAN_GLAZED_TERRACOTTA.parseMaterial(); break;
+			switch (accessValue) {
+				case "deny": mat = XMaterial.RED_GLAZED_TERRACOTTA.parseMaterial(); break;
+				case "allow": mat = XMaterial.GREEN_GLAZED_TERRACOTTA.parseMaterial(); break;
+				case "undefined": mat = XMaterial.CYAN_GLAZED_TERRACOTTA.parseMaterial(); break;
 			}
 			item.setType(mat);
 		}

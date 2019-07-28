@@ -63,32 +63,32 @@ public class DefaultPermissions {
 	}
 
 	public DefaultPermissions(boolean canBan,
-	                          boolean canBuild,
-	                          boolean canDestory,
-	                          boolean canFrostwalk,
-	                          boolean canPainbuild,
-	                          boolean canDoor,
-	                          boolean canButton,
-	                          boolean canLever,
-	                          boolean canContainer,
-	                          boolean canInvite,
-	                          boolean canKick,
-	                          boolean canItems,
-	                          boolean canSethome,
-	                          boolean canTerritory,
-	                          boolean canAccess,
-	                          boolean canHome,
-	                          boolean canDisband,
-	                          boolean canPromote,
-	                          boolean canSetwarp,
-	                          boolean canWarp,
-	                          boolean canFly,
-	                          boolean canVault,
-	                          boolean canTntbank,
-	                          boolean canTntfill,
-	                          boolean canWithdraw,
-	                          boolean canChest,
-	                          boolean canSpawners) {
+							  boolean canBuild,
+							  boolean canDestory,
+							  boolean canFrostwalk,
+							  boolean canPainbuild,
+							  boolean canDoor,
+							  boolean canButton,
+							  boolean canLever,
+							  boolean canContainer,
+							  boolean canInvite,
+							  boolean canKick,
+							  boolean canItems,
+							  boolean canSethome,
+							  boolean canTerritory,
+							  boolean canAccess,
+							  boolean canHome,
+							  boolean canDisband,
+							  boolean canPromote,
+							  boolean canSetwarp,
+							  boolean canWarp,
+							  boolean canFly,
+							  boolean canVault,
+							  boolean canTntbank,
+							  boolean canTntfill,
+							  boolean canWithdraw,
+							  boolean canChest,
+							  boolean canSpawners) {
 		this.ban = canBan;
 		this.build = canBuild;
 		this.destroy = canDestory;
@@ -128,6 +128,7 @@ public class DefaultPermissions {
 		else if (name == "door") return this.door;
 		else if (name == "button") return this.button;
 		else if (name == "lever") return this.lever;
+		else if (name == "home") return this.home;
 		else if (name == "container") return this.container;
 		else if (name == "invite") return this.invite;
 		else if (name == "kick") return this.kick;
@@ -135,7 +136,6 @@ public class DefaultPermissions {
 		else if (name == "sethome") return this.sethome;
 		else if (name == "territory") return this.territory;
 		else if (name == "access") return this.access;
-		else if (name == "home") return this.home;
 		else if (name == "disband") return this.disband;
 		else if (name == "promote") return this.promote;
 		else if (name == "setwarp") return this.setwarp;

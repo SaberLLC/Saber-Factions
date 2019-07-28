@@ -5,6 +5,7 @@ import com.massivecraft.factions.SaberFactions;
 import com.massivecraft.factions.cmd.alts.CmdAlts;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
+import com.massivecraft.factions.cmd.logout.CmdLogout;
 import com.massivecraft.factions.cmd.points.CmdPoints;
 import com.massivecraft.factions.cmd.relational.CmdRelationAlly;
 import com.massivecraft.factions.cmd.relational.CmdRelationEnemy;
@@ -124,6 +125,7 @@ public class FCmdRoot extends FCommand {
 	public CmdFGlobal cmdFGlobal = new CmdFGlobal();
 	public CmdViewChest cmdViewChest = new CmdViewChest();
 	public CmdPoints cmdPoints = new CmdPoints();
+	public CmdLogout cmdLogout = new CmdLogout();
 
 
 
@@ -193,6 +195,7 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdStatus);
 		this.addSubCommand(this.cmdStealth);
 		this.addSubCommand(this.cmdStuck);
+		this.addSubCommand(this.cmdLogout);
 		this.addSubCommand(this.cmdTag);
 		this.addSubCommand(this.cmdTitle);
 		this.addSubCommand(this.cmdUnclaim);

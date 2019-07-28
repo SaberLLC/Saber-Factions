@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFGlobal;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
+import com.massivecraft.factions.cmd.logout.LogoutHandler;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
@@ -410,7 +411,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public void enableFly(FPlayer me) {
-        if(!me.getPlayer().hasPermission("factions.fly")) return;
+        if (!me.getPlayer().hasPermission("factions.fly")) return;
 
         if (SaberFactions.plugin.getConfig().getBoolean("ffly.AutoEnable")) {
             me.setFlying(true);
@@ -736,6 +737,39 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onLogoutMove(PlayerMoveEvent e) {
+        LogoutHandler handler = LogoutHandler.getByName(e.getPlayer().getName());
+        if (handler.isLogoutActive(e.getPlayer())) {
+            handler.cancelLogout(e.getPlayer());
+            e.getPlayer().sendMessage(String.valueOf(TL.COMMAND_LOGOUT_MOVED));
+        }
+    }
+
+    @EventHandler
+    public void onDamage(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player) {
+            Player player = (Player) e.getEntity();
+            LogoutHandler handler = LogoutHandler.getByName(player.getName());
+            if (handler.isLogoutActive(player)) {
+                handler.cancelLogout(player);
+                player.sendMessage(String.valueOf(TL.COMMAND_LOGOUT_DAMAGE_TAKEN));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent e) {
+        Player player = e.getPlayer();
+
+        if (player == null) return;
+        LogoutHandler handler = LogoutHandler.getByName(player.getName());
+        if (handler.isLogoutActive(player)) {
+            handler.cancelLogout(player);
+            player.sendMessage(String.valueOf(TL.COMMAND_LOGOUT_TELEPORTED));
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerInteractGUI(InventoryClickEvent event) {
         if (event.getClickedInventory() == null) {
@@ -971,23 +1005,23 @@ public class FactionsPlayerListener implements Listener {
     }
 
     @EventHandler
-    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent e){
+    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
 
-        if (CmdFGlobal.toggled.contains(p.getUniqueId())){
+        if (CmdFGlobal.toggled.contains(p.getUniqueId())) {
             //they're muted, check status of Faction Chat
-                if (FPlayers.getInstance().getByPlayer(p).getFaction() == null) {
-                    //they're muted, and not in a faction, cancel and return
+            if (FPlayers.getInstance().getByPlayer(p).getFaction() == null) {
+                //they're muted, and not in a faction, cancel and return
+                e.setCancelled(true);
+                return;
+            } else {
+                //are in a faction that's not Wilderness, SafeZone, or Warzone, check their chat status
+                if (!FPlayers.getInstance().getByPlayer(p).getChatMode().isAtLeast(ChatMode.ALLIANCE)) {
+                    //their Faction Chat Mode is not at-least a Alliance, cancel and return
                     e.setCancelled(true);
                     return;
-                } else {
-                    //are in a faction that's not Wilderness, SafeZone, or Warzone, check their chat status
-                    if (!FPlayers.getInstance().getByPlayer(p).getChatMode().isAtLeast(ChatMode.ALLIANCE)) {
-                        //their Faction Chat Mode is not at-least a Alliance, cancel and return
-                        e.setCancelled(true);
-                        return;
-                    }
                 }
+            }
         }
 
         //we made it this far, since we didn't return yet, we must have sent the chat event through
@@ -995,10 +1029,10 @@ public class FactionsPlayerListener implements Listener {
 
         List<Player> l = new ArrayList<>(e.getRecipients());
 
-        for (int i = l.size() - 1; i >= 0; i--){ // going backwards in the list to prevent a ConcurrentModificationException
+        for (int i = l.size() - 1; i >= 0; i--) { // going backwards in the list to prevent a ConcurrentModificationException
             Player recipient = l.get(i);
-            if (recipient != null){
-                if (CmdFGlobal.toggled.contains(recipient.getUniqueId())){
+            if (recipient != null) {
+                if (CmdFGlobal.toggled.contains(recipient.getUniqueId())) {
                     e.getRecipients().remove(recipient);
                 }
             }

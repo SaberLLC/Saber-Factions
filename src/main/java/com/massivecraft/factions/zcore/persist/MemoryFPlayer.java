@@ -761,7 +761,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 				fplayer.msg(TL.LEAVE_DISBANDED, myFaction.describeTo(fplayer, true));
 			}
 
-			FactionDisbandEvent disbandEvent = new FactionDisbandEvent(null, getId(), PlayerDisbandReason.LEAVE);
+			FactionDisbandEvent disbandEvent = new FactionDisbandEvent(getPlayer(), myFaction.getId(), PlayerDisbandReason.LEAVE);
 			Bukkit.getPluginManager().callEvent(disbandEvent);
 
 			Factions.getInstance().removeFaction(myFaction.getId());

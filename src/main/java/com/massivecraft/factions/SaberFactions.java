@@ -259,7 +259,7 @@ public class SaberFactions extends MPlugin {
 			divider();
 			System.out.println("You are using a BETA version of the plugin!");
 			System.out.println("This comes with risks of small bugs in newer features!");
-			System.out.println("For support head to: https://github.com/ProSavage/SaberFactions/issues");
+			System.out.println("For support head to: https://github.com/Driftay/Saber-Factions/issues");
 			divider();
 		}
 
@@ -273,8 +273,6 @@ public class SaberFactions extends MPlugin {
 	public SkriptAddon getSkriptAddon() {
 		return skriptAddon;
 	}
-
-
 
 	private void setupPlaceholderAPI() {
 		Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");

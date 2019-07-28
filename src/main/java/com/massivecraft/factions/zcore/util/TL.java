@@ -692,6 +692,14 @@ public enum TL {
 	COMMAND_GETVAULT_NOMONEY("&cYou do not have enough money"),
 	COMMAND_GETVAULT_MONEYTAKE("&c{amount} has been taken from your account"),
 
+	COMMAND_LOGOUT_KICK_MESSAGE("&2You have safely logged out!"),
+	COMMAND_LOGOUT_ACTIVE("&c&l[!] &7You are already logging out!"),
+	COMMAND_LOGOUT_LOGGING("&c&l[!] &7You are logging out. Please wait &b%1$s &7seconds."),
+	COMMAND_LOGOUT_DESCRIPTION("logout safely from the server"),
+	COMMAND_LOGOUT_MOVED("&c&l[!] &7Your logout was cancelled because you moved!"),
+	COMMAND_LOGOUT_DAMAGE_TAKEN("&c&l[!] &7Your logout was cancelled because you were damaged!"),
+	COMMAND_LOGOUT_TELEPORTED("&c&l[!] &7Your logout was cancelled because you teleported!"),
+
 	COMMAND_SHOW_NOFACTION_SELF("You are not in a faction"),
 	COMMAND_SHOW_NOFACTION_OTHER("That's not a faction"),
 	COMMAND_SHOW_TOSHOW("to show faction information"),
@@ -771,19 +779,6 @@ public enum TL {
 	COMMAND_TOGGLEALLIANCECHAT_UNIGNORE("Alliance chat is no longer ignored"),
 
 	COMMAND_TOGGLESB_DISABLED("You can't toggle scoreboards while they are disabled."),
-
-	SHOP_POTION_TITLE("&c&lPotion Shop"),
-	SHOP_POTION_GUI_ACTIVATED_LORE_LINE("&a&lPotion Type Active"),
-	SHOP_POTION_GUI_ACTIVATED("&d%1$s activated &f%2$s &dfor your faction!"),
-	SHOP_POTION_GUI_INSUFFICIENT_POINTS("&c&l[!] &7Your faction can't afford that, you need &d%1$s &7faction points"),
-	SHOP_POTION_GUI_POTION_TYPE_ALREADY_ACTIVE("&c&l[!] &7This Potion Type is Already Active for Your Faction!"),
-	SHOP_POTION_GUI_MAX_REACHED("&c&l[!] &7You may not have more than %1$s potions at the same time"),
-
-	SHOP_BOOSTER_TITLE("&b&lBooster Shop"),
-	SHOP_GUI_BOOSTER_MAX_REACHED("&c&l[!] &7You may not have more than %1$s boosters at the same time"),
-	SHOP_GUI_BOOSTER_ACTIVE_ALREADY_ACTIVE("&a&lActive"),
-	SHOP_GUI_BOOSTER_CANNOT_AFFORD("&c&l[!] &7Your faction can't afford that, you need &d%1$s faction points"),
-	SHOP_GUI_BOOSTER_ACTIVE_LORE_LINE("&a&lActive"),
 
 
 	COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),

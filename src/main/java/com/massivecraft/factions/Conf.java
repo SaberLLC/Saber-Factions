@@ -341,7 +341,11 @@ public class Conf {
 
 	// Default Options - Is this even shown on the Conf.json?
 	public static transient HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
-	// Custom Ranks - Oof I forgot I was doing this _SvenjaReissaus_
+
+	//Cooldown for /f logout in seconds
+    public static long logoutCooldown = 30;
+
+    // Custom Ranks - Oof I forgot I was doing this _SvenjaReissaus_
 	//public static boolean enableCustomRanks = false; // We will disable it by default to avoid any migration error
 	//public static int maxCustomRanks = 2; // Setting this to -1 will allow unlimited custom ranks
 	// -------------------------------------------- //
