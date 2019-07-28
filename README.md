@@ -20,18 +20,13 @@ Some of our features include the following
 		    <id>jitpack.io</id>
 		    <url>https://jitpack.io</url>
 		</repository>
-	</repositories>```
-  
-```
+	</repositories>
 	<dependency>
 	    <groupId>com.github.Driftay</groupId>
 	    <artifactId>Saber-Factions</artifactId>
 	    <version>Tag</version>
 	</dependency>
-  ```
-  
-  
-
+```
 ## Moving Forward
 
 Moving forward we plan to take all suggestions into consideration, as they come from our community. 
