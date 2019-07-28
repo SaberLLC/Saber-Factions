@@ -8,7 +8,6 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
-import com.massivecraft.factions.shop.Pair;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -73,7 +72,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     private int strikes = 0;
     private int points = 0;
-    private Map<String, Pair<Integer, Long>> potionEffects;
     private Map<String, Long> boosters;
 
     // -------------------------------------------- //
@@ -96,7 +94,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
         this.defaultRole = Role.RECRUIT;
-        potionEffects = new ConcurrentHashMap<>();
         boosters = new ConcurrentHashMap<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
@@ -118,7 +115,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         relationWish = old.relationWish;
         claimOwnership = old.claimOwnership;
         fplayers = new HashSet<>();
-        potionEffects = new ConcurrentHashMap<>();
         boosters = new ConcurrentHashMap<>();
         alts = new HashSet<>();
         invites = old.invites;
@@ -1249,16 +1245,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<String> getOwnerList(FLocation loc) {
         return claimOwnership.get(loc);
-    }
-
-    @Override
-    public Map<String, Pair<Integer, Long>> getActivePotions() {
-        return this.potionEffects;
-    }
-
-    @Override
-    public Map<String, Pair<Integer, Long>> getPotionEffects() {
-        return this.potionEffects;
     }
 
     public String getOwnerListString(FLocation loc) {

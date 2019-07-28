@@ -3,7 +3,6 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.shop.Pair;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -30,11 +29,9 @@ public interface Faction extends EconomyParticipator {
 
 	void deinviteAllAlts();
 
-	Map<String, Pair<Integer, Long>> getActivePotions();
 
 	Map<String, Long> getBoosters();
 
-	Map<String, Pair<Integer, Long>> getPotionEffects();
 
 	void altInvite(FPlayer fplayer);
 
