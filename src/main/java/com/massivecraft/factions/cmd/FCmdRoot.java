@@ -126,6 +126,7 @@ public class FCmdRoot extends FCommand {
 	public CmdViewChest cmdViewChest = new CmdViewChest();
 	public CmdPoints cmdPoints = new CmdPoints();
 	public CmdLogout cmdLogout = new CmdLogout();
+	public CmdNotifications cmdNotifications = new CmdNotifications();
 
 
 
@@ -175,6 +176,7 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdMap);
 		this.addSubCommand(this.cmdMod);
 		this.addSubCommand(this.cmdMoney);
+		this.addSubCommand(this.cmdNotifications);
 		this.addSubCommand(this.cmdOpen);
 		this.addSubCommand(this.cmdOwner);
 		this.addSubCommand(this.cmdOwnerList);

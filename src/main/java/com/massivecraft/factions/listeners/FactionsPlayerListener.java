@@ -593,12 +593,12 @@ public class FactionsPlayerListener implements Listener {
             String ownersTo = myFaction.getOwnerListString(to);
             if (changedFaction) {
                 me.sendFactionHereMessage(factionFrom);
-                if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder && myFaction == factionTo && !ownersTo.isEmpty()) {
+                if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder && myFaction == factionTo && !ownersTo.isEmpty() && me.hasNotificationsEnabled()) {
                     me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
                 }
             } else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && myFaction == factionTo && !myFaction.isWilderness()) {
                 String ownersFrom = myFaction.getOwnerListString(from);
-                if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo)) {
+                if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo) && me.hasNotificationsEnabled()) {
                     if (!ownersTo.isEmpty()) {
                         me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
                     } else if (!TL.GENERIC_PUBLICLAND.toString().isEmpty()) {

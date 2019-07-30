@@ -700,6 +700,10 @@ public enum TL {
 	COMMAND_LOGOUT_DAMAGE_TAKEN("&c&l[!] &7Your logout was cancelled because you were damaged!"),
 	COMMAND_LOGOUT_TELEPORTED("&c&l[!] &7Your logout was cancelled because you teleported!"),
 
+	COMMAND_NOTIFICATIONS_TOGGLED_ON("&c&l[!] &7You will now see claimed land notifications!"),
+	COMMAND_NOTIFICATIONS_TOGGLED_OFF("&c&l[!] &7You will no longer see claimed land notifications!"),
+	COMMAND_NOTIFICATIONS_DESCRIPTION("Toggle notifications for land claiming"),
+
 	COMMAND_SHOW_NOFACTION_SELF("You are not in a faction"),
 	COMMAND_SHOW_NOFACTION_OTHER("That's not a faction"),
 	COMMAND_SHOW_TOSHOW("to show faction information"),

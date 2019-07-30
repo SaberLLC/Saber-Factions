@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-U0.2.1-1.4.1-BETA</version>
+    <version>1.6.9.5-U0.2.1-1.4.2-BETA</version>
     <packaging>jar</packaging>
 
     <name>SaberFactions</name>
@@ -86,7 +86,8 @@
             <artifactId>spigot-api</artifactId>
             <version>1.13-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-            <exclusions>                <exclusion>
+            <exclusions>
+                <exclusion>
                     <artifactId>bungeecord-chat</artifactId>
                     <groupId>net.md-5</groupId>
                 </exclusion>

@@ -26,8 +26,9 @@ import java.util.List;
 
 public interface FPlayer extends EconomyParticipator {
 
+	void setNotificationsEnabled(boolean notifications);
 
-
+	boolean hasNotificationsEnabled();
 
 	void setAlt(boolean alt);
 

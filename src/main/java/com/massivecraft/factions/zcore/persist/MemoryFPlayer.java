@@ -75,7 +75,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 	protected transient long lastFrostwalkerMessage;
 	protected transient boolean shouldTakeFallDamage = true;
 	protected boolean isStealthEnabled = false;
-	boolean playerAlerts = false;
+	protected boolean notificationsEnabled = true;
 	boolean inspectMode = false;
 	protected boolean isAlt = false;
 
@@ -99,6 +99,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.lastLoginTime = System.currentTimeMillis();
 		this.mapAutoUpdating = false;
 		this.autoClaimFor = null;
+		this.notificationsEnabled = true;
 		this.autoSafeZoneEnabled = false;
 		this.autoWarZoneEnabled = false;
 		this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
@@ -124,6 +125,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.autoSafeZoneEnabled = other.autoSafeZoneEnabled;
 		this.autoWarZoneEnabled = other.autoWarZoneEnabled;
 		this.loginPvpDisabled = other.loginPvpDisabled;
+		this.notificationsEnabled = true;
 		this.powerBoost = other.powerBoost;
 		this.role = other.role;
 		this.title = other.title;
@@ -133,6 +135,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.getKills();
 		this.getDeaths();
 		this.isAdminBypassing = other.isAdminBypassing;
+		this.notificationsEnabled = other.notificationsEnabled;
 		this.showScoreboard = SaberFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", true);
 		this.mapHeight = Conf.mapHeight;
 	}
@@ -206,6 +209,16 @@ public abstract class MemoryFPlayer implements FPlayer {
 			faction.addFPlayer(this);
 		}
 		this.factionId = faction.getId();
+	}
+
+	@Override
+	public void setNotificationsEnabled(boolean enabled) {
+		this.notificationsEnabled = enabled;
+	}
+
+	@Override
+	public boolean hasNotificationsEnabled() {
+		return this.notificationsEnabled;
 	}
 
 	public String getFactionId() {
