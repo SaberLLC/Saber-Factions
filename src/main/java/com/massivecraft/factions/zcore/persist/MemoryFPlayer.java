@@ -616,7 +616,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 		}
 
 		PowerRegenEvent powerRegenEvent = new PowerRegenEvent(getFaction(), this);
-		Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent);
+		Bukkit.getScheduler().runTask(SaberFactions.plugin, () -> Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent));
 
 		if (!powerRegenEvent.isCancelled())
 			this.alterPower(millisPassed * Conf.powerPerMinute / 60000); // millisPerMinute : 60 * 1000
@@ -1221,7 +1221,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 		}
 
 		LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
-		Bukkit.getPluginManager().callEvent(claimEvent);
+		Bukkit.getScheduler().runTask(SaberFactions.plugin, () -> Bukkit.getPluginManager().callEvent(claimEvent));
 		if (claimEvent.isCancelled()) {
 			return false;
 		}

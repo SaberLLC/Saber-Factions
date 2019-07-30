@@ -244,6 +244,7 @@ public class Conf {
 	public static double econCostShow = 0.0;
 	public static double econFactionStartingBalance = 0.0;
 	public static double econDenyWithdrawWhenMinutesAgeLessThan = 2880; // 2 days
+	public static String dateFormat = "HH:mm dd/MM/yyyy";
 
 
 	// -------------------------------------------- //
@@ -328,6 +329,7 @@ public class Conf {
 
 	// faction-<factionId>
 	public static int defaultMaxVaults = 0;
+	public static boolean disableFlightOnFactionClaimChange = true;
 	public static boolean useCustomDefaultPermissions = true;
 	public static boolean usePermissionHints = false;
 

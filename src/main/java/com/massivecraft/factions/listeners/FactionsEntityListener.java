@@ -574,34 +574,45 @@ public class FactionsEntityListener implements Listener {
 			boolean online = faction.hasPlayersOnline();
 
 			if ((faction.isWilderness() && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()) && (Conf.wildernessBlockCreepers || Conf.wildernessBlockFireballs || Conf.wildernessBlockTNT)) ||
-					  (faction.isNormal() && (online ? (Conf.territoryBlockCreepers || Conf.territoryBlockFireballs || Conf.territoryBlockTNT) : (Conf.territoryBlockCreepersWhenOffline || Conf.territoryBlockFireballsWhenOffline || Conf.territoryBlockTNTWhenOffline))) ||
-					  (faction.isWarZone() && (Conf.warZoneBlockCreepers || Conf.warZoneBlockFireballs || Conf.warZoneBlockTNT)) ||
-					  faction.isSafeZone()) {
+					(faction.isNormal() && (online ? (Conf.territoryBlockCreepers || Conf.territoryBlockFireballs || Conf.territoryBlockTNT) : (Conf.territoryBlockCreepersWhenOffline || Conf.territoryBlockFireballsWhenOffline || Conf.territoryBlockTNTWhenOffline))) ||
+					(faction.isWarZone() && (Conf.warZoneBlockCreepers || Conf.warZoneBlockFireballs || Conf.warZoneBlockTNT)) ||
+					faction.isSafeZone()) {
 				// explosion which needs prevention
 				event.setCancelled(true);
 			}
 		}
+	}
 
-		if (!(event instanceof HangingBreakByEntityEvent)) {
-			return;
-		}
-
-		Entity breaker = ((HangingBreakByEntityEvent) event).getRemover();
-		if (!(breaker instanceof Player)) {
-			return;
-		}
-
-		if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) breaker, event.getEntity().getLocation(), "remove paintings", false)) {
-			event.setCancelled(true);
+	@EventHandler
+	public void onHangerBreak(HangingBreakByEntityEvent e) {
+		if (e.getRemover() == null) return;
+		if (!(e.getRemover() instanceof Player)) return;
+		Player p = (Player) e.getRemover();
+		if (e.getEntity().getType().equals(EntityType.PAINTING)) {
+			if (!FactionsBlockListener.playerCanBuildDestroyBlock(p, e.getEntity().getLocation(), "destroy", false)) {
+				e.setCancelled(true);
+			}
+		} else if (e.getEntity().getType().equals(EntityType.ITEM_FRAME)) {
+			if (!FactionsBlockListener.playerCanBuildDestroyBlock(p, e.getEntity().getLocation(), "destroy", false)) {
+				e.setCancelled(true);
+			}
 		}
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPaintingPlace(HangingPlaceEvent event) {
-		if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "place paintings", false)) {
-			event.setCancelled(true);
-			// Fix: update player's inventory to avoid items glitches
-			event.getPlayer().updateInventory();
+		if (event.getEntity().getType().equals(EntityType.PAINTING)) {
+			if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
+				event.setCancelled(true);
+				// Fix: update player's inventory to avoid items glitches
+				event.getPlayer().updateInventory();
+			}
+		} else if (event.getEntity().getType().equals(EntityType.ITEM_FRAME)) {
+			if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getEntity().getLocation(), "build", false)) {
+				event.setCancelled(true);
+				// Fix: update player's inventory to avoid items glitches
+				event.getPlayer().updateInventory();
+			}
 		}
 	}
 
@@ -704,26 +715,12 @@ public class FactionsEntityListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		// only need to check for item frames
-		if (event.getRightClicked().getType() != EntityType.ITEM_FRAME) {
-			return;
-		}
+		if (event.getRightClicked() == null) return;
+		if (!event.getRightClicked().getType().equals(EntityType.ITEM_FRAME)) return;
 
-		Player player = event.getPlayer();
-		Entity entity = event.getRightClicked();
-
-		if (!FactionsBlockListener.playerCanBuildDestroyBlock(player, entity.getLocation(), "use item frames", false)) {
+		if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getRightClicked().getLocation(), "build", false)) {
 			event.setCancelled(true);
 		}
-	}
-
-	// For disabling interactions with armor stands in another faction's territory
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
-		Entity entity = event.getRightClicked();
-
-		// only need to check for armor stand and item frames
-		if (entity == null || entity.getType() != EntityType.ARMOR_STAND ) return;
-		if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), entity.getLocation(), "use armor stands", false)) event.setCancelled(true);
 	}
 
 	private boolean stopEndermanBlockManipulation(Location loc) {

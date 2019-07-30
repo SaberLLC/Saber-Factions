@@ -2,17 +2,17 @@ package com.massivecraft.factions.zcore.fperms;
 
 import org.bukkit.ChatColor;
 
+import com.massivecraft.factions.SaberFactions;
+
 public enum Access {
-	ALLOW("Allow", ChatColor.GREEN),
-	DENY("Deny", ChatColor.DARK_RED),
-	UNDEFINED("Undefined", ChatColor.GRAY);
+	ALLOW("Allow"),
+	DENY("Deny"),
+	UNDEFINED("Undefined");
 
 	private final String name;
-	private final ChatColor color;
 
-	Access(String name, ChatColor color) {
+	Access(String name) {
 		this.name = name;
-		this.color = color;
 	}
 
 	/**
@@ -29,15 +29,18 @@ public enum Access {
 	}
 
 	public String getName() {
-		return this.name;
-	}
-
-	public ChatColor getColor() {
-		return color;
+		return this.name.toLowerCase();
 	}
 
 	@Override
 	public String toString() {
 		return name();
+	}
+
+	public String getColor() { return SaberFactions.plugin.getConfig().getString("fperm-gui.action.Access-Colors." + this.name); }
+
+	public static Access booleanToAccess(boolean access) {
+		if (access) return Access.ALLOW;
+		else return Access.DENY;
 	}
 }

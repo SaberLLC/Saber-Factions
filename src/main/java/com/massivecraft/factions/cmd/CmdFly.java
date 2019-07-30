@@ -222,6 +222,12 @@ public class CmdFly extends FCommand {
 			}, this.p.getConfig().getLong("warmups.f-fly", 0));
 	}
 
+	public static void disableFlight(final FPlayer fme) {
+		fme.setFlying(false);
+		flyMap.remove(fme.getPlayer().getName());
+	}
+
+
 	@Override
 	public TL getUsageTranslation() {
 		return TL.COMMAND_FLY_DESCRIPTION;

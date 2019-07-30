@@ -11,6 +11,7 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.Placeholder;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.Particles.ReflectionUtils;
 import com.massivecraft.factions.zcore.CommandVisibility;
@@ -295,6 +296,13 @@ public class SaberFactions extends MPlugin {
 		}
 	}
 
+	public List<String> replacePlaceholders(List<String> lore, Placeholder... placeholders) {
+		for (Placeholder placeholder : placeholders) {
+			for (int x = 0; x <= lore.size() - 1; x++) lore.set(x, lore.get(x).replace(placeholder.getTag(), placeholder.getReplace()));
+		}
+		return lore;
+	}
+
 	private void migrateFPlayerLeaders() {
 		List<String> lines = new ArrayList<>();
 		File fplayerFile = new File("plugins" + File.pathSeparator + "Factions" + File.pathSeparator + "players.json");
@@ -320,16 +328,6 @@ public class SaberFactions extends MPlugin {
 		} catch (IOException ex) {
 			System.out.println("File was not found for players.json, assuming"
 					  + " there is no need to migrate old players.json file.");
-		}
-	}
-
-
-	public void replaceStringInConfig(String path, String stringToReplace, String replacementString) {
-		if (getConfig().getString(path).equals(stringToReplace)) {
-			// SaberFactions.plugin.log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
-			// log("Replacing legacy material '" + stringToReplace + "' with '" + replacementString + "' for config node '" + path + "'.");
-
-			getConfig().set(path, replacementString);
 		}
 	}
 

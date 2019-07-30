@@ -547,22 +547,12 @@ public class FactionsPlayerListener implements Listener {
                     } else {
                         me.getPlayer().sendTitle(SaberFactions.plugin.color(title), SaberFactions.plugin.color(subTitle));
                     }
-
-
                 }
-
             }
-
-            if (!SaberFactions.plugin.factionsFlight) {
-                return;
-            }
-
 
             // enable fly :)
-            if (me.hasFaction() && !me.isFlying()) {
-                if (factionTo == me.getFaction()) {
-                    enableFly(me);
-                }
+            if (SaberFactions.plugin.factionsFlight && me.hasFaction() && !me.isFlying()) {
+                if (factionTo == me.getFaction()) enableFly(me);
                 // bypass checks
                 Relation relationTo = factionTo.getRelationTo(me);
                 if ((factionTo.isWilderness() && me.canflyinWilderness()) ||
@@ -574,7 +564,28 @@ public class FactionsPlayerListener implements Listener {
                         (relationTo == Relation.NEUTRAL && me.canflyinNeutral() && !isSystemFaction(factionTo))) {
                     enableFly(me);
                 }
-
+            }
+                if (me.getAutoClaimFor() != null) {
+                    me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
+                    if (Conf.disableFlightOnFactionClaimChange) CmdFly.disableFlight(me);
+                } else if (me.isAutoSafeClaimEnabled()) {
+                    if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
+                        me.setIsAutoSafeClaimEnabled(false);
+                    } else {
+                        if (!Board.getInstance().getFactionAt(to).isSafeZone()) {
+                            Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
+                            me.msg(TL.PLAYER_SAFEAUTO);
+                        }
+                    }
+                } else if (me.isAutoWarClaimEnabled()) {
+                    if (!Permission.MANAGE_WAR_ZONE.has(player)) {
+                        me.setIsAutoWarClaimEnabled(false);
+                    } else {
+                        if (!Board.getInstance().getFactionAt(to).isWarZone()) {
+                            Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
+                            me.msg(TL.PLAYER_WARAUTO);
+                        }
+                    }
             }
         }
 
@@ -604,28 +615,6 @@ public class FactionsPlayerListener implements Listener {
                     } else if (!TL.GENERIC_PUBLICLAND.toString().isEmpty()) {
                         me.sendMessage(TL.GENERIC_PUBLICLAND.toString());
                     }
-                }
-            }
-        }
-
-        if (me.getAutoClaimFor() != null) {
-            me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
-        } else if (me.isAutoSafeClaimEnabled()) {
-            if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
-                me.setIsAutoSafeClaimEnabled(false);
-            } else {
-                if (!Board.getInstance().getFactionAt(to).isSafeZone()) {
-                    Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
-                    me.msg(TL.PLAYER_SAFEAUTO);
-                }
-            }
-        } else if (me.isAutoWarClaimEnabled()) {
-            if (!Permission.MANAGE_WAR_ZONE.has(player)) {
-                me.setIsAutoWarClaimEnabled(false);
-            } else {
-                if (!Board.getInstance().getFactionAt(to).isWarZone()) {
-                    Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
-                    me.msg(TL.PLAYER_WARAUTO);
                 }
             }
         }
