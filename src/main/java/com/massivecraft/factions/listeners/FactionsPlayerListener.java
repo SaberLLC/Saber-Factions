@@ -666,7 +666,7 @@ public class FactionsPlayerListener implements Listener {
         if (e.getCurrentItem() == null)
             return;
 
-        if (!e.getView().getTitle().endsWith("'s Inventory View"))
+        if (!e.getView().getTitle().endsWith("'s Inventory"))
             return;
 
         e.setCancelled(true);
