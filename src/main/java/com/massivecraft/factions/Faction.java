@@ -13,7 +13,6 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.fupgrades.UpgradeType;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -28,10 +27,6 @@ public interface Faction extends EconomyParticipator {
 	void deinviteAlt(FPlayer alt);
 
 	void deinviteAllAlts();
-
-
-	Map<String, Long> getBoosters();
-
 
 	void altInvite(FPlayer fplayer);
 
@@ -108,8 +103,6 @@ public interface Faction extends EconomyParticipator {
 	Set<BanInfo> getBannedPlayers();
 
 	HashMap<Integer, String> getRulesMap();
-
-	void setRule(int index, String rule);
 
 	void addRule(String rule);
 

@@ -342,7 +342,7 @@ public class Conf {
 
 
 	// Default Options - Is this even shown on the Conf.json?
-	public static transient HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
+	public static HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
 
 	//Cooldown for /f logout in seconds
     public static long logoutCooldown = 30;

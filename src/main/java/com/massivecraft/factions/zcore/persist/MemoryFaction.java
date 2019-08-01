@@ -72,7 +72,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     private int strikes = 0;
     private int points = 0;
-    private Map<String, Long> boosters;
+
 
     // -------------------------------------------- //
     // Construct
@@ -94,7 +94,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
         this.defaultRole = Role.RECRUIT;
-        boosters = new ConcurrentHashMap<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -115,7 +114,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         relationWish = old.relationWish;
         claimOwnership = old.claimOwnership;
         fplayers = new HashSet<>();
-        boosters = new ConcurrentHashMap<>();
         alts = new HashSet<>();
         invites = old.invites;
         announcements = old.announcements;
@@ -428,11 +426,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         ItemStack[] contents = this.getChestInventory().getContents();
         chest = Bukkit.createInventory(null, chestSize, SaberFactions.plugin.color(SaberFactions.plugin.getConfig().getString("fchest.Inventory-Title")));
         chest.setContents(contents);
-    }
-
-    @Override
-    public Map<String, Long> getBoosters() {
-        return this.boosters;
     }
 
 
