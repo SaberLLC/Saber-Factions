@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -37,7 +37,7 @@ public class CmdInventorySee extends FCommand {
 
     @Override
     public void perform() {
-        if (SaberFactions.plugin.getConfig().getBoolean("f-inventory-see.Enabled")) {
+        if (P.p.getConfig().getBoolean("f-inventory-see.Enabled")) {
             fme.msg(TL.GENERIC_DISABLED);
         }
 

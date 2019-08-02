@@ -1,7 +1,7 @@
 package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -92,11 +92,11 @@ public enum PermissableAction {
 
 	// Utility method to build items for F Perm GUI
 	public ItemStack buildItem(FPlayer fme, Permissable permissable) {
-		final ConfigurationSection section = SaberFactions.plugin.getConfig().getConfigurationSection("fperm-gui.action");
+		final ConfigurationSection section = P.p.getConfig().getConfigurationSection("fperm-gui.action");
 
 		if (section == null) {
-			SaberFactions.plugin.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-			SaberFactions.plugin.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
+			P.p.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
+			P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
 			return new ItemStack(Material.AIR);
 		}
 
@@ -128,7 +128,7 @@ public enum PermissableAction {
 		}
 
 		// If under the 1.13 version we will use the colorable option.
-		if (!SaberFactions.plugin.mc113 && !SaberFactions.plugin.mc114) {
+		if (!P.p.mc113 && !P.p.mc114) {
 			//TODO see if it's working in other version than 1.13 and 1.14
 			DyeColor dyeColor = null;
 
@@ -152,7 +152,7 @@ public enum PermissableAction {
 		}
 
 		for (String loreLine : section.getStringList("placeholder-item.lore")) lore.add(replacePlaceholders(loreLine, fme, permissable));
-		if (!SaberFactions.plugin.mc17) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
+		if (!P.p.mc17) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
 
 		itemMeta.setDisplayName(displayName);
 		itemMeta.setLore(lore);

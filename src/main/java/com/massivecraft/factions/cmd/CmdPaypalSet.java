@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -27,7 +27,7 @@ public class CmdPaypalSet extends FCommand {
 
     @Override
     public void perform() {
-        if (!SaberFactions.plugin.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (!P.p.getConfig().getBoolean("fpaypal.Enabled")) {
             fme.msg(TL.GENERIC_DISABLED);
             return;
         }
@@ -54,7 +54,7 @@ public class CmdPaypalSet extends FCommand {
                 msg(TL.GENERIC_NOPERMISSION, "set another factions paypal!");
             }
         } else {
-            msg(SaberFactions.plugin.cmdBase.cmdPaypalSet.getUseageTemplate());
+            msg(P.p.cmdBase.cmdPaypalSet.getUseageTemplate());
         }
     }
 

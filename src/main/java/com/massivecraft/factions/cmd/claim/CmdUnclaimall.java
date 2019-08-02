@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
@@ -45,7 +45,7 @@ public class CmdUnclaimall extends FCommand {
 		}
 
 		LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(myFaction, fme);
-		Bukkit.getScheduler().runTask(SaberFactions.plugin, () -> Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent));
+		Bukkit.getScheduler().runTask(P.p, () -> Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent));
 		if (unclaimAllEvent.isCancelled()) {
 			return;
 		}
@@ -54,7 +54,7 @@ public class CmdUnclaimall extends FCommand {
 		myFaction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, fme.describeTo(myFaction, true));
 
 		if (Conf.logLandUnclaims) {
-			SaberFactions.plugin.log(TL.COMMAND_UNCLAIMALL_LOG.format(fme.getName(), myFaction.getTag()));
+			P.p.log(TL.COMMAND_UNCLAIMALL_LOG.format(fme.getName(), myFaction.getTag()));
 		}
 	}
 

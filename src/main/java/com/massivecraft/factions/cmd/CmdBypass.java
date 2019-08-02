@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -30,10 +30,10 @@ public class CmdBypass extends FCommand {
 		// TODO: Move this to a transient field in the model??
 		if (fme.isAdminBypassing()) {
 			fme.msg(TL.COMMAND_BYPASS_ENABLE.toString());
-			SaberFactions.plugin.log(fme.getName() + TL.COMMAND_BYPASS_ENABLELOG.toString());
+			P.p.log(fme.getName() + TL.COMMAND_BYPASS_ENABLELOG.toString());
 		} else {
 			fme.msg(TL.COMMAND_BYPASS_DISABLE.toString());
-			SaberFactions.plugin.log(fme.getName() + TL.COMMAND_BYPASS_DISABLELOG.toString());
+			P.p.log(fme.getName() + TL.COMMAND_BYPASS_DISABLELOG.toString());
 		}
 	}
 

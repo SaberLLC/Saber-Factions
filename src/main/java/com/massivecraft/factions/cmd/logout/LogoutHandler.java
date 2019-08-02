@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.logout;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -35,9 +35,9 @@ public class LogoutHandler {
     public void applyLogoutCooldown(Player player) {
         logoutCooldown.put(player.getUniqueId(), System.currentTimeMillis() + (30 * 1000));
 
-        Bukkit.getScheduler().runTaskLater(SaberFactions.plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(P.p, () -> {
             if(isLogoutActive(player)) {
-                player.setMetadata("Logout", new FixedMetadataValue(SaberFactions.plugin, true));
+                player.setMetadata("Logout", new FixedMetadataValue(P.p, true));
                 player.kickPlayer(String.valueOf(TL.COMMAND_LOGOUT_KICK_MESSAGE));
                 cancelLogout(player);
             }

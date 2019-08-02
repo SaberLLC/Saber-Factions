@@ -3,7 +3,7 @@ package com.massivecraft.factions.integration;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -34,24 +34,24 @@ public class Econ {
 		String integrationFail = "Economy integration is " + (Conf.econEnabled ? "enabled, but" : "disabled, and") + " the plugin \"Vault\" ";
 
 		if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
-			SaberFactions.plugin.log(integrationFail + "is not installed.");
+			P.p.log(integrationFail + "is not installed.");
 			return;
 		}
 
 		RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
 		if (rsp == null) {
-			SaberFactions.plugin.log(integrationFail + "is not hooked into an economy plugin.");
+			P.p.log(integrationFail + "is not hooked into an economy plugin.");
 			return;
 		}
 		econ = rsp.getProvider();
 
-		SaberFactions.plugin.log("Economy integration through Vault plugin successful.");
+		P.p.log("Economy integration through Vault plugin successful.");
 
 		if (!Conf.econEnabled) {
-			SaberFactions.plugin.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+			P.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
 		}
 
-		SaberFactions.plugin.cmdBase.cmdHelp.updateHelp();
+		P.p.cmdBase.cmdHelp.updateHelp();
 	}
 
 	public static boolean shouldBeUsed() {
@@ -82,7 +82,7 @@ public class Econ {
 
 	public static void sendBalanceInfo(FPlayer to, EconomyParticipator about) {
 		if (!shouldBeUsed()) {
-			SaberFactions.plugin.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
+			P.p.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
 			return;
 		}
 		to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));

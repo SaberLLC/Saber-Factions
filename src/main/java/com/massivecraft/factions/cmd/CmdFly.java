@@ -39,11 +39,11 @@ public class CmdFly extends FCommand {
 
 	public static void startParticles() {
 		// Just a secondary check.
-		if (!SaberFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
+		if (!P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
 			return;
 		}
 
-		id = Bukkit.getScheduler().scheduleSyncRepeatingTask(SaberFactions.plugin, () -> {
+		id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
 			for (String name : flyMap.keySet()) {
 				Player player = Bukkit.getPlayer(name);
 				if (player == null) {
@@ -52,7 +52,7 @@ public class CmdFly extends FCommand {
 				if (!player.isFlying()) {
 					continue;
 				}
-				if (!SaberFactions.plugin.mc17) {
+				if (!P.p.mc17) {
 					if (player.getGameMode() == GameMode.SPECTATOR) {
 						continue;
 					}
@@ -61,12 +61,12 @@ public class CmdFly extends FCommand {
 				if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
 					// Actually, vanished players (such as admins) should not display particles to prevent others from knowing their vanished assistance for moderation.
 					// But we can keep it as a config.
-					if (SaberFactions.plugin.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
+					if (P.p.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
 						return;
 					}
 					continue;
 				}
-				if (SaberFactions.plugin.useNonPacketParticles) {
+				if (P.p.useNonPacketParticles) {
 					// 1.9+ based servers will use the built in particleAPI instead of packet based.
 					// any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
 					// So setting the amount to 0 spawns 1 in the precise location
@@ -84,7 +84,7 @@ public class CmdFly extends FCommand {
 	}
 
 	public static void startFlyCheck() {
-		flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(SaberFactions.plugin, () -> { //threw the exception for now, until I recode fly :( Cringe.
+		flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> { //threw the exception for now, until I recode fly :( Cringe.
 			checkTaskState();
 			if (flyMap.keySet().size() != 0) {
 				for (String name : flyMap.keySet()) {
@@ -95,7 +95,7 @@ public class CmdFly extends FCommand {
 					if (player == null
 							|| !player.isFlying()
 							|| player.getGameMode() == GameMode.CREATIVE
-							|| !SaberFactions.plugin.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
+							|| !P.p.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
 						continue;
 					}
 					FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
@@ -171,7 +171,7 @@ public class CmdFly extends FCommand {
 	@Override
 	public void perform() {
 		// Disabled by default.
-		if (!SaberFactions.plugin.getConfig().getBoolean("enable-faction-flight", false)) {
+		if (!P.p.getConfig().getBoolean("enable-faction-flight", false)) {
 			fme.msg(TL.COMMAND_FLY_DISABLED);
 			return;
 		}
@@ -212,7 +212,7 @@ public class CmdFly extends FCommand {
 				fme.setFlying(true);
 				flyMap.put(player.getName(), true);
 				if (id == -1) {
-					if (SaberFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
+					if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
 						startParticles();
 					}
 				}

@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -12,7 +12,6 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class CmdSeeChunk extends FCommand {
 
@@ -41,7 +40,7 @@ public class CmdSeeChunk extends FCommand {
 
 
 		this.useParticles = p.getConfig().getBoolean("see-chunk.particles", true);
-		interval = SaberFactions.plugin.getConfig().getLong("see-chunk.interval", 10L);
+		interval = P.p.getConfig().getLong("see-chunk.interval", 10L);
 		if (effect == null) {
 			effect = ParticleEffect.REDSTONE;
 		}
@@ -72,7 +71,7 @@ public class CmdSeeChunk extends FCommand {
 	}
 
 	private void startTask() {
-		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(SaberFactions.plugin, () -> {
+		taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
 			for (Object nameObject : seeChunkMap.keySet()) {
 				String name = nameObject + "";
 				Player player = Bukkit.getPlayer(name);
@@ -116,10 +115,10 @@ public class CmdSeeChunk extends FCommand {
 				continue;
 			}
 			if (useParticles) {
-				if (SaberFactions.plugin.useNonPacketParticles) {
+				if (P.p.useNonPacketParticles) {
 					// Dust options only exists in the 1.13 API, so we use an
 					// alternative method to achieve this in lower versions.
-					if (SaberFactions.plugin.mc113) {
+					if (P.p.mc113) {
 						player.spawnParticle(Particle.REDSTONE, loc, 0, new Particle.DustOptions(Color.RED, 1));
 					} else {
 						player.getWorld().spawnParticle(Particle.REDSTONE, loc, 0, 255, 0, 0, 1);

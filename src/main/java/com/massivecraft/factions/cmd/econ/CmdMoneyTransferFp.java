@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.econ;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -50,7 +50,7 @@ public class CmdMoneyTransferFp extends FCommand {
 		boolean success = Econ.transferMoney(fme, from, to, amount);
 
 		if (success && Conf.logMoneyTransactions) {
-			SaberFactions.plugin.log(ChatColor.stripColor(SaberFactions.plugin.txt.parse(TL.COMMAND_MONEYTRANSFERFP_TRANSFER.toString(), fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+			P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYTRANSFERFP_TRANSFER.toString(), fme.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
 		}
 	}
 

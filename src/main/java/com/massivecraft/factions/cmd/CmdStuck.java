@@ -35,11 +35,11 @@ public class CmdStuck extends FCommand {
 		final Player player = fme.getPlayer();
 		final Location sentAt = player.getLocation();
 		final FLocation chunk = fme.getLastStoodAt();
-		final long delay = SaberFactions.plugin.getConfig().getLong("hcf.stuck.delay", 30);
-		final int radius = SaberFactions.plugin.getConfig().getInt("hcf.stuck.radius", 10);
+		final long delay = P.p.getConfig().getLong("hcf.stuck.delay", 30);
+		final int radius = P.p.getConfig().getInt("hcf.stuck.radius", 10);
 
-		if (SaberFactions.plugin.getStuckMap().containsKey(player.getUniqueId())) {
-			long wait = SaberFactions.plugin.getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
+		if (P.p.getStuckMap().containsKey(player.getUniqueId())) {
+			long wait = P.p.getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
 			String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
 			msg(TL.COMMAND_STUCK_EXISTS, time);
 		} else {
@@ -49,11 +49,11 @@ public class CmdStuck extends FCommand {
 				return;
 			}
 
-			final int id = Bukkit.getScheduler().runTaskLater(SaberFactions.plugin, new BukkitRunnable() {
+			final int id = Bukkit.getScheduler().runTaskLater(P.p, new BukkitRunnable() {
 
 				@Override
 				public void run() {
-					if (!SaberFactions.plugin.getStuckMap().containsKey(player.getUniqueId())) {
+					if (!P.p.getStuckMap().containsKey(player.getUniqueId())) {
 						return;
 					}
 
@@ -61,8 +61,8 @@ public class CmdStuck extends FCommand {
 					final World world = chunk.getWorld();
 					if (world.getUID() != player.getWorld().getUID() || sentAt.distance(player.getLocation()) > radius) {
 						msg(TL.COMMAND_STUCK_OUTSIDE.format(radius));
-						SaberFactions.plugin.getTimers().remove(player.getUniqueId());
-						SaberFactions.plugin.getStuckMap().remove(player.getUniqueId());
+						P.p.getTimers().remove(player.getUniqueId());
+						P.p.getStuckMap().remove(player.getUniqueId());
 						return;
 					}
 
@@ -74,18 +74,18 @@ public class CmdStuck extends FCommand {
 						public boolean work() {
 							FLocation chunk = currentFLocation();
 							Faction faction = board.getFactionAt(chunk);
-							int buffer = SaberFactions.plugin.getConfig().getInt("world-border.buffer", 0);
+							int buffer = P.p.getConfig().getInt("world-border.buffer", 0);
 							if (faction.isWilderness() && !chunk.isOutsideWorldBorder(buffer)) {
 								int cx = FLocation.chunkToBlock((int) chunk.getX());
 								int cz = FLocation.chunkToBlock((int) chunk.getZ());
 								int y = world.getHighestBlockYAt(cx, cz);
 								Location tp = new Location(world, cx, y, cz);
 								msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
-								SaberFactions.plugin.getTimers().remove(player.getUniqueId());
-								SaberFactions.plugin.getStuckMap().remove(player.getUniqueId());
+								P.p.getTimers().remove(player.getUniqueId());
+								P.p.getStuckMap().remove(player.getUniqueId());
 								if (!Essentials.handleTeleport(player, tp)) {
 									player.teleport(tp);
-									SaberFactions.plugin.debug("/f stuck used regular teleport, not essentials!");
+									P.p.debug("/f stuck used regular teleport, not essentials!");
 								}
 								this.stop();
 								return false;
@@ -96,11 +96,11 @@ public class CmdStuck extends FCommand {
 				}
 			}, delay * 20).getTaskId();
 
-			SaberFactions.plugin.getTimers().put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
-			long wait = SaberFactions.plugin.getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
+			P.p.getTimers().put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
+			long wait = P.p.getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
 			String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
 			msg(TL.COMMAND_STUCK_START, time);
-			SaberFactions.plugin.getStuckMap().put(player.getUniqueId(), id);
+			P.p.getStuckMap().put(player.getUniqueId(), id);
 		}
 	}
 

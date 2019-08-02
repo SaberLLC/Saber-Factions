@@ -47,11 +47,11 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 
-public class SaberFactions extends MPlugin {
+public class P extends MPlugin {
 
 	// Our single plugin instance.
 	// Single 4 life.
-	public static SaberFactions plugin;
+	public static P p;
 	public static Permission perms = null;
 	// This plugin sets the boolean true when fully enabled.
 	// Plugins can check this boolean while hooking in have
@@ -80,8 +80,8 @@ public class SaberFactions extends MPlugin {
 	private Listener[] eventsListener;
 	public static Economy econ = null;
 
-	public SaberFactions() {
-		plugin = this;
+	public P() {
+		p = this;
 	}
 
 	public boolean getLocked() {
@@ -134,26 +134,26 @@ public class SaberFactions extends MPlugin {
 		// Vault dependency check.
 		if (getServer().getPluginManager().getPlugin("Vault") == null) {
 			log("Vault is not present, the plugin will not run properly.");
-			getServer().getPluginManager().disablePlugin(plugin);
+			getServer().getPluginManager().disablePlugin(p);
 			return;
 		}
 
 		int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 		switch (version) {
 			case 7:
-				SaberFactions.plugin.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+				P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
 				mc17 = true;
 				break;
 			case 8:
-				SaberFactions.plugin.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+				P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
 				mc18 = true;
 				break;
 			case 13:
-				SaberFactions.plugin.log("Minecraft Version 1.13 found, New Items will be used.");
+				P.p.log("Minecraft Version 1.13 found, New Items will be used.");
 				mc113 = true;
 				break;
 			case 14:
-				SaberFactions.plugin.log("Minecraft Version 1.14 found.");
+				P.p.log("Minecraft Version 1.14 found.");
 				mc114 = true;
 				break;
 		}
@@ -220,7 +220,7 @@ public class SaberFactions extends MPlugin {
 		}
 
 		if (getServer().getPluginManager().getPlugin("Skript") != null) {
-			log("Skript was found! Registering SaberFactions Addon...");
+			log("Skript was found! Registering P Addon...");
 			skriptAddon = Skript.registerAddon(this);
 			try {
 				skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
@@ -253,8 +253,8 @@ public class SaberFactions extends MPlugin {
 		getCommand(this.refCommand).setTabCompleter(this);
 
 
-		RegisteredServiceProvider<Economy> rsp = SaberFactions.this.getServer().getServicesManager().getRegistration(Economy.class);
-		SaberFactions.econ = rsp.getProvider();
+		RegisteredServiceProvider<Economy> rsp = P.this.getServer().getServicesManager().getRegistration(Economy.class);
+		P.econ = rsp.getProvider();
 
 		if (getDescription().getFullName().contains("BETA")) {
 			divider();
@@ -268,7 +268,7 @@ public class SaberFactions extends MPlugin {
 		this.postEnable();
 		this.loadSuccessful = true;
 		// Set startup finished to true. to give plugins hooking in a greenlight
-		SaberFactions.startupFinished = true;
+		P.startupFinished = true;
 	}
 
 	public SkriptAddon getSkriptAddon() {
@@ -429,14 +429,14 @@ public class SaberFactions extends MPlugin {
 	public ItemStack createLazyItem(Material material, int amount, short datavalue, String name, String lore) {
 		ItemStack item = new ItemStack(material, amount, datavalue);
 		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(color(SaberFactions.plugin.getConfig().getString(name)));
-		meta.setLore(colorList(SaberFactions.plugin.getConfig().getStringList(lore)));
+		meta.setDisplayName(color(P.p.getConfig().getString(name)));
+		meta.setLore(colorList(P.p.getConfig().getStringList(lore)));
 		item.setItemMeta(meta);
 		return item;
 	}
 
 	public Economy getEcon() {
-		RegisteredServiceProvider<Economy> rsp = SaberFactions.plugin.getServer().getServicesManager().getRegistration(Economy.class);
+		RegisteredServiceProvider<Economy> rsp = P.p.getServer().getServicesManager().getRegistration(Economy.class);
 		Economy econ = rsp.getProvider();
 		return econ;
 	}
@@ -512,11 +512,11 @@ public class SaberFactions extends MPlugin {
 		as.setVisible(false); //Makes the ArmorStand invisible
 		as.setGravity(false); //Make sure it doesn't fall
 		as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-		as.setCustomName(SaberFactions.plugin.color(text)); //Set this to the text you want
+		as.setCustomName(P.p.color(text)); //Set this to the text you want
 		as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
 		final ArmorStand armorStand = as;
 
-		Bukkit.getScheduler().scheduleSyncDelayedTask(SaberFactions.plugin, () -> {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, () -> {
 					  armorStand.remove();
 					  getLogger().info("Removing Hologram.");
 				  }

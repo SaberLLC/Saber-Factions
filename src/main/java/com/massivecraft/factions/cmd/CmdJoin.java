@@ -83,7 +83,7 @@ public class CmdJoin extends FCommand {
 		if (level == 0) {
 			limit = Conf.factionMemberLimit;
 		} else {
-			limit = SaberFactions.plugin.getConfig().getInt("fupgrades.MainMenu.Members.Members-Limit.level-" + level);
+			limit = P.p.getConfig().getInt("fupgrades.MainMenu.Members.Members-Limit.level-" + level);
 		}
 
 		if (limit > 0 && faction.getFPlayers().size() >= limit && !faction.altInvited(fme)) {
@@ -145,9 +145,9 @@ public class CmdJoin extends FCommand {
 
 		if (Conf.logFactionJoin) {
 			if (samePlayer) {
-				SaberFactions.plugin.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
+				P.p.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
 			} else {
-				SaberFactions.plugin.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), fme.getName(), fplayer.getName(), faction.getTag());
+				P.p.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), fme.getName(), fplayer.getName(), faction.getTag());
 			}
 		}
 	}

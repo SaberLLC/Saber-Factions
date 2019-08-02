@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -68,8 +68,8 @@ public class CmdKick extends FCommand {
 		}
 
 		if(toKick.isAlt()){
-			msg(SaberFactions.plugin.color("&cToo few arguments, &eUse like this:"));
-			msg(SaberFactions.plugin.color("&b/f alts,alt kick &3<player name>"));
+			msg(P.p.color("&cToo few arguments, &eUse like this:"));
+			msg(P.p.color("&b/f alts,alt kick &3<player name>"));
 			return;
 		}
 
@@ -129,7 +129,7 @@ public class CmdKick extends FCommand {
 			fme.msg(TL.COMMAND_KICK_KICKS, toKick.describeTo(fme), toKickFaction.describeTo(fme));
 		}
 		if (Conf.logFactionKick) {
-			SaberFactions.plugin.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
+			P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
 		}
 		if (toKick.getRole() == Role.LEADER) {
 			toKickFaction.promoteNewLeader();

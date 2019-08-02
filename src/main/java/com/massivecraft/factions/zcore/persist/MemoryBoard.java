@@ -6,7 +6,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
-import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
@@ -153,7 +152,7 @@ public abstract class MemoryBoard extends Board {
 		while (iter.hasNext()) {
 			Entry<FLocation, String> entry = iter.next();
 			if (!Factions.getInstance().isValidFactionId(entry.getValue())) {
-				SaberFactions.plugin.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
+				P.p.log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
 				iter.remove();
 			}
 		}
@@ -195,12 +194,12 @@ public abstract class MemoryBoard extends Board {
 		Faction faction = fplayer.getFaction();
 		ArrayList<FancyMessage> ret = new ArrayList<>();
 		Faction factionLoc = getFactionAt(flocation);
-		ret.add(new FancyMessage(ChatColor.DARK_GRAY + SaberFactions.plugin.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
-		int buffer = SaberFactions.plugin.getConfig().getInt("world-border.buffer", 0);
+		ret.add(new FancyMessage(ChatColor.DARK_GRAY + P.p.txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
+		int buffer = P.p.getConfig().getInt("world-border.buffer", 0);
 
 
 		// Get the compass
-		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.DARK_GREEN, SaberFactions.plugin.txt.parse("<gray>"));
+		ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.DARK_GREEN, P.p.txt.parse("<gray>"));
 
 		int halfWidth = Conf.mapWidth / 2;
 		// Use player's value for height
@@ -287,16 +286,16 @@ public abstract class MemoryBoard extends Board {
 	@SuppressWarnings("unused")
 	private List<String> getToolTip(Faction faction, FPlayer to) {
 		List<String> ret = new ArrayList<>();
-		List<String> show = SaberFactions.plugin.getConfig().getStringList("map");
+		List<String> show = P.p.getConfig().getStringList("map");
 
 		if (!faction.isNormal()) {
 			String tag = faction.getTag(to);
 			// send header and that's all
 			String header = show.get(0);
 			if (TagReplacer.HEADER.contains(header)) {
-				ret.add(SaberFactions.plugin.txt.titleize(tag));
+				ret.add(P.p.txt.titleize(tag));
 			} else {
-				ret.add(SaberFactions.plugin.txt.parse(TagReplacer.FACTION.replace(header, tag)));
+				ret.add(P.p.txt.parse(TagReplacer.FACTION.replace(header, tag)));
 			}
 			return ret; // we only show header for non-normal factions
 		}
@@ -316,7 +315,7 @@ public abstract class MemoryBoard extends Board {
 				List<FancyMessage> fancy = TagUtil.parseFancy(faction, to, parsed);
 				if (fancy != null) {
 					for (FancyMessage msg : fancy) {
-						ret.add((SaberFactions.plugin.txt.parse(msg.toOldMessageFormat())));
+						ret.add((P.p.txt.parse(msg.toOldMessageFormat())));
 					}
 				}
 				continue;
@@ -330,7 +329,7 @@ public abstract class MemoryBoard extends Board {
 				if (parsed.contains("%")) {
 					parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
 				}
-				ret.add(SaberFactions.plugin.txt.parse(parsed));
+				ret.add(P.p.txt.parse(parsed));
 			}
 		}
 

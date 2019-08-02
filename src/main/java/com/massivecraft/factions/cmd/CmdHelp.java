@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -40,7 +40,7 @@ public class CmdHelp extends FCommand {
 
 	@Override
 	public void perform() {
-		if (SaberFactions.plugin.getConfig().getBoolean("use-old-help", true)) {
+		if (P.p.getConfig().getBoolean("use-old-help", true)) {
 			if (helpPages == null) {
 				updateHelp();
 			}
@@ -57,9 +57,9 @@ public class CmdHelp extends FCommand {
 			sendMessage(helpPages.get(page));
 			return;
 		}
-		ConfigurationSection help = SaberFactions.plugin.getConfig().getConfigurationSection("help");
+		ConfigurationSection help = P.p.getConfig().getConfigurationSection("help");
 		if (help == null) {
-			help = SaberFactions.plugin.getConfig().createSection("help"); // create new help section
+			help = P.p.getConfig().createSection("help"); // create new help section
 			List<String> error = new ArrayList<>();
 			error.add("&cUpdate help messages in config.yml!");
 			error.add("&cSet use-old-help for legacy help messages");
@@ -72,7 +72,7 @@ public class CmdHelp extends FCommand {
 			return;
 		}
 		for (String helpLine : page) {
-			sendMessage(SaberFactions.plugin.txt.parse(helpLine));
+			sendMessage(P.p.txt.parse(helpLine));
 		}
 	}
 
@@ -189,7 +189,7 @@ public class CmdHelp extends FCommand {
 		pageLines.add(p.cmdBase.cmdSafeunclaimall.getUseageTemplate(true));
 		pageLines.add(p.cmdBase.cmdWarunclaimall.getUseageTemplate(true));
 		//TODO:TL
-		pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + SaberFactions.plugin.txt.parse("<i>") + " works on safe/war zones as well."));
+		pageLines.add(p.txt.parse("<i>Note: " + p.cmdBase.cmdUnclaim.getUseageTemplate(false) + P.p.txt.parse("<i>") + " works on safe/war zones as well."));
 		pageLines.add(p.cmdBase.cmdPeaceful.getUseageTemplate(true));
 		helpPages.add(pageLines);
 

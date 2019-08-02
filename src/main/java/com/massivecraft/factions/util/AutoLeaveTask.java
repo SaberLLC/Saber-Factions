@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 
 public class AutoLeaveTask implements Runnable {
 
@@ -18,11 +18,11 @@ public class AutoLeaveTask implements Runnable {
 		}
 
 		task = new AutoLeaveProcessTask();
-		task.runTaskTimer(SaberFactions.plugin, 1, 1);
+		task.runTaskTimer(P.p, 1, 1);
 
 		// maybe setting has been changed? if so, restart this task at new rate
 		if (this.rate != Conf.autoLeaveRoutineRunsEveryXMinutes) {
-			SaberFactions.plugin.startAutoLeaveTask(true);
+			P.p.startAutoLeaveTask(true);
 		}
 	}
 }

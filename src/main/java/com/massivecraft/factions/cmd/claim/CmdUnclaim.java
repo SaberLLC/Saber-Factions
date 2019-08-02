@@ -85,7 +85,7 @@ public class CmdUnclaim extends FCommand {
 				msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
 
 				if (Conf.logLandUnclaims) {
-					SaberFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+					P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
 				}
 				return true;
 			} else {
@@ -98,7 +98,7 @@ public class CmdUnclaim extends FCommand {
 				msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
 
 				if (Conf.logLandUnclaims) {
-					SaberFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+					P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
 				}
 				return true;
 			} else {
@@ -109,7 +109,7 @@ public class CmdUnclaim extends FCommand {
 
 		if (fme.isAdminBypassing()) {
 			LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, fme);
-			Bukkit.getScheduler().runTask(SaberFactions.plugin, () -> Bukkit.getServer().getPluginManager().callEvent(unclaimEvent));
+			Bukkit.getScheduler().runTask(P.p, () -> Bukkit.getServer().getPluginManager().callEvent(unclaimEvent));
 			if (unclaimEvent.isCancelled()) {
 				return false;
 			}
@@ -120,7 +120,7 @@ public class CmdUnclaim extends FCommand {
 			msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
 
 			if (Conf.logLandUnclaims) {
-				SaberFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+				P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
 			}
 
 			return true;
@@ -171,7 +171,7 @@ public class CmdUnclaim extends FCommand {
 		myFaction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, fme.describeTo(myFaction, true));
 
 		if (Conf.logLandUnclaims) {
-			SaberFactions.plugin.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+			P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
 		}
 
 		return true;

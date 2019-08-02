@@ -97,7 +97,7 @@ public class CmdCreate extends FCommand {
 		// That way we don't have to mess up deleting more stuff.
 		// And prevent the user from being returned to NORMAL after deleting his old faction.
 		fme.setRole(Role.LEADER);
-		if (SaberFactions.plugin.getConfig().getBoolean("faction-creation-broadcast", true)) {
+		if (P.p.getConfig().getBoolean("faction-creation-broadcast", true)) {
 			for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
 				follower.msg(TL.COMMAND_CREATE_CREATED, fme.describeTo(follower, true), faction.getTag(follower));
 			}
@@ -110,16 +110,16 @@ public class CmdCreate extends FCommand {
 
 
 		if (Conf.logFactionCreate)
-			SaberFactions.plugin.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
+			P.p.log(fme.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
 
-		if (SaberFactions.plugin.getConfig().getBoolean("fpaypal.Enabled"))
+		if (P.p.getConfig().getBoolean("fpaypal.Enabled"))
 			this.fme.msg(TL.COMMAND_PAYPALSET_CREATED);
 
 		if (Conf.useCustomDefaultPermissions) faction.setDefaultPerms();
 		if (Conf.usePermissionHints) fme.msg(TL.COMMAND_HINT_PERMISSION);
 
 
-		fme.setCooldown("create", System.currentTimeMillis() + (SaberFactions.plugin.getConfig().getInt("fcooldowns.f-create") * 1000));
+		fme.setCooldown("create", System.currentTimeMillis() + (P.p.getConfig().getInt("fcooldowns.f-create") * 1000));
 
 	}
 

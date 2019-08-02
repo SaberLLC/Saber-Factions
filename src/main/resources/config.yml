@@ -814,7 +814,7 @@ f-points:
 # |                  Faction Focus                       | #
 # +------------------------------------------------------+ #
 ############################################################
-#Note This will ONLY work if you have SaberFactions Scoreboard Enabled!
+#Note This will ONLY work if you have the Scoreboard Enabled!
 ffocus:
   Enabled: true
   Prefix: '&7»&b'

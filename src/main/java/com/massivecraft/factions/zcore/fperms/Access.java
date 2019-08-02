@@ -1,8 +1,6 @@
 package com.massivecraft.factions.zcore.fperms;
 
-import org.bukkit.ChatColor;
-
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 
 public enum Access {
 	ALLOW("Allow"),
@@ -37,7 +35,7 @@ public enum Access {
 		return name();
 	}
 
-	public String getColor() { return SaberFactions.plugin.getConfig().getString("fperm-gui.action.Access-Colors." + this.name); }
+	public String getColor() { return P.p.getConfig().getString("fperm-gui.action.Access-Colors." + this.name); }
 
 	public static Access booleanToAccess(boolean access) {
 		if (access) return Access.ALLOW;

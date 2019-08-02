@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -33,7 +33,7 @@ public class CmdVault extends FCommand {
 	@Override
 	public void perform() {
 
-		if (!SaberFactions.plugin.getConfig().getBoolean("fvault.Enabled")) {
+		if (!P.p.getConfig().getBoolean("fvault.Enabled")) {
 			fme.sendMessage("This command is disabled!");
 			return;
 		}

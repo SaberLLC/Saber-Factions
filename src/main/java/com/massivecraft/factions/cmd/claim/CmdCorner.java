@@ -27,7 +27,7 @@ public class CmdCorner extends FCommand {
     @Override
     public void perform() {
         FLocation to = new FLocation(me.getLocation());
-        if (SaberFactions.plugin.getFactionsPlayerListener().getCorners().contains(to)) {
+        if (P.p.getFactionsPlayerListener().getCorners().contains(to)) {
             Faction cornerAt = Board.getInstance().getFactionAt(to);
             if (cornerAt != null && cornerAt.isNormal() && !cornerAt.equals(fme.getFaction())) {
                 msg(TL.COMMAND_CORNER_CANT_CLAIM);
@@ -49,7 +49,7 @@ public class CmdCorner extends FCommand {
                 if (surrounding.isEmpty()) {
                     msg(TL.COMMAND_CORNER_CANT_CLAIM);
                 } else {
-                    new CornerTask(fme, surrounding).runTaskTimer(SaberFactions.plugin, 1L, 1L);
+                    new CornerTask(fme, surrounding).runTaskTimer(P.p, 1L, 1L);
                 }
             }
         } else {

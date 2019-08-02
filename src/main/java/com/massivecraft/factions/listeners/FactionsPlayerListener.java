@@ -56,10 +56,10 @@ public class FactionsPlayerListener implements Listener {
 
     public FactionsPlayerListener() {
         this.corners = new HashSet<>();
-        for (Player player : SaberFactions.plugin.getServer().getOnlinePlayers()) {
+        for (Player player : P.p.getServer().getOnlinePlayers()) {
             initPlayer(player);
         }
-        for (World world : SaberFactions.plugin.getServer().getWorlds()) {
+        for (World world : P.p.getServer().getWorlds()) {
             WorldBorder border = world.getWorldBorder();
             if (border != null) {
                 int cornerCoord = (int) ((border.getSize() - 1.0) / 2.0);
@@ -102,7 +102,7 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        if (SaberFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded()) {
+        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded()) {
             return true;
         }
 
@@ -184,7 +184,7 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        if (SaberFactions.plugin.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
+        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
             return true;
 
         if (otherFaction.getId().equals(myFaction.getId()) && me.getRole() == Role.LEADER) return true;
@@ -306,15 +306,15 @@ public class FactionsPlayerListener implements Listener {
         me.login(); // set kills / deaths
 
         // Check for Faction announcements. Let's delay this so they actually see it.
-        Bukkit.getScheduler().runTaskLater(SaberFactions.plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(P.p, () -> {
             if (me.isOnline()) {
                 me.getFaction().sendUnreadAnnouncements(me);
             }
         }, 33L); // Don't ask me why.
 
-        if (SaberFactions.plugin.getConfig().getBoolean("scoreboard.default-enabled", false)) {
+        if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false)) {
             FScoreboard.init(me);
-            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), SaberFactions.plugin.getConfig().getInt("scoreboard.default-update-interval", 20));
+            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), P.p.getConfig().getInt("scoreboard.default-update-interval", 20));
             FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
         }
 
@@ -329,17 +329,17 @@ public class FactionsPlayerListener implements Listener {
 
 
         fallMap.put(me.getPlayer(), false);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(SaberFactions.plugin, () -> fallMap.remove(me.getPlayer()), 180L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, () -> fallMap.remove(me.getPlayer()), 180L);
 
 
         if (me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {
             me.setSpyingChat(false);
-            SaberFactions.plugin.log(Level.INFO, "Found %s spying chat without permission on login. Disabled their chat spying.", player.getName());
+            P.p.log(Level.INFO, "Found %s spying chat without permission on login. Disabled their chat spying.", player.getName());
         }
 
         if (me.isAdminBypassing() && !player.hasPermission(Permission.BYPASS.node)) {
             me.setIsAdminBypassing(false);
-            SaberFactions.plugin.log(Level.INFO, "Found %s on admin Bypass without permission on login. Disabled it for them.", player.getName());
+            P.p.log(Level.INFO, "Found %s on admin Bypass without permission on login. Disabled it for them.", player.getName());
         }
 
 
@@ -373,10 +373,10 @@ public class FactionsPlayerListener implements Listener {
         me.logout(); // cache kills / deaths
 
         // if player is waiting for fstuck teleport but leaves, remove
-        if (SaberFactions.plugin.getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
+        if (P.p.getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
             FPlayers.getInstance().getByPlayer(me.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
-            SaberFactions.plugin.getStuckMap().remove(me.getPlayer().getUniqueId());
-            SaberFactions.plugin.getTimers().remove(me.getPlayer().getUniqueId());
+            P.p.getStuckMap().remove(me.getPlayer().getUniqueId());
+            P.p.getTimers().remove(me.getPlayer().getUniqueId());
         }
 
         Faction myFaction = me.getFaction();
@@ -413,11 +413,11 @@ public class FactionsPlayerListener implements Listener {
     public void enableFly(FPlayer me) {
         if (!me.getPlayer().hasPermission("factions.fly")) return;
 
-        if (SaberFactions.plugin.getConfig().getBoolean("ffly.AutoEnable")) {
+        if (P.p.getConfig().getBoolean("ffly.AutoEnable")) {
             me.setFlying(true);
             CmdFly.flyMap.put(me.getName(), true);
             if (CmdFly.id == -1) {
-                if (SaberFactions.plugin.getConfig().getBoolean("ffly.Particles.Enabled")) {
+                if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
                     CmdFly.startParticles();
                 }
             }
@@ -533,25 +533,25 @@ public class FactionsPlayerListener implements Listener {
 
         if (changedFaction) {
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerEnteredFactionEvent(factionTo, factionFrom, me));
-            if (SaberFactions.plugin.getConfig().getBoolean("Title.Show-Title")) {
-                String title = SaberFactions.plugin.getConfig().getString("Title.Format.Title");
+            if (P.p.getConfig().getBoolean("Title.Show-Title")) {
+                String title = P.p.getConfig().getString("Title.Format.Title");
                 title = title.replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
                 title = parseAllPlaceholders(title, factionTo, player);
-                String subTitle = SaberFactions.plugin.getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
+                String subTitle = P.p.getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
                 subTitle = parseAllPlaceholders(subTitle, factionTo, player);
-                if (!SaberFactions.plugin.mc17) {
-                    if (!SaberFactions.plugin.mc18) {
-                        me.getPlayer().sendTitle(SaberFactions.plugin.color(title), SaberFactions.plugin.color(subTitle), SaberFactions.plugin.getConfig().getInt("Title.Options.FadeInTime"),
-                                SaberFactions.plugin.getConfig().getInt("Title.Options.ShowTime"),
-                                SaberFactions.plugin.getConfig().getInt("Title.Options.FadeOutTime"));
+                if (!P.p.mc17) {
+                    if (!P.p.mc18) {
+                        me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle), P.p.getConfig().getInt("Title.Options.FadeInTime"),
+                                P.p.getConfig().getInt("Title.Options.ShowTime"),
+                                P.p.getConfig().getInt("Title.Options.FadeOutTime"));
                     } else {
-                        me.getPlayer().sendTitle(SaberFactions.plugin.color(title), SaberFactions.plugin.color(subTitle));
+                        me.getPlayer().sendTitle(P.p.color(title), P.p.color(subTitle));
                     }
                 }
             }
 
             // enable fly :)
-            if (SaberFactions.plugin.factionsFlight && me.hasFaction() && !me.isFlying()) {
+            if (P.p.factionsFlight && me.hasFaction() && !me.isFlying()) {
                 if (factionTo == me.getFaction()) enableFly(me);
                 // bypass checks
                 Relation relationTo = factionTo.getRelationTo(me);
@@ -592,12 +592,12 @@ public class FactionsPlayerListener implements Listener {
 
         if (me.isMapAutoUpdating()) {
             if (showTimes.containsKey(player.getUniqueId()) && (showTimes.get(player.getUniqueId()) > System.currentTimeMillis())) {
-                if (SaberFactions.plugin.getConfig().getBoolean("findfactionsexploit.log", false)) {
-                    SaberFactions.plugin.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
+                if (P.p.getConfig().getBoolean("findfactionsexploit.log", false)) {
+                    P.p.log(Level.WARNING, "%s tried to show a faction map too soon and triggered exploit blocker.", player.getName());
                 }
             } else {
                 me.sendFancyMessage(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
-                showTimes.put(player.getUniqueId(), System.currentTimeMillis() + SaberFactions.plugin.getConfig().getLong("findfactionsexploit.cooldown", 2000));
+                showTimes.put(player.getUniqueId(), System.currentTimeMillis() + P.p.getConfig().getLong("findfactionsexploit.cooldown", 2000));
             }
         } else {
             Faction myFaction = me.getFaction();
@@ -880,7 +880,7 @@ public class FactionsPlayerListener implements Listener {
             return PermissableAction.DOOR;
         if (material.name().toUpperCase().contains("BUTTON") || material.name().toUpperCase().contains("PRESSURE"))
             return PermissableAction.BUTTON;
-        if (SaberFactions.plugin.mc113) {
+        if (P.p.mc113) {
             switch (material) {
                 case LEVER:
                     return PermissableAction.LEVER;

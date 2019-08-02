@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -24,7 +24,7 @@ public class CmdFocus
 	}
 
 	public void perform() {
-		if (!SaberFactions.plugin.getConfig().getBoolean("ffocus.Enabled")) {
+		if (!P.p.getConfig().getBoolean("ffocus.Enabled")) {
 			fme.msg(TL.GENERIC_DISABLED);
 			return;
 		}

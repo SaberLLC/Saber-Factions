@@ -2,7 +2,7 @@ package com.massivecraft.factions.scoreboards.sidebar;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.SaberFactions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.scoreboards.FSidebarProvider;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class FInfoSidebar extends FSidebarProvider {
 
 	@Override
 	public List<String> getLines(FPlayer fplayer) {
-		List<String> lines = SaberFactions.plugin.getConfig().getStringList("scoreboard.finfo");
+		List<String> lines = P.p.getConfig().getStringList("scoreboard.finfo");
 
 		ListIterator<String> it = lines.listIterator();
 		while (it.hasNext()) {
