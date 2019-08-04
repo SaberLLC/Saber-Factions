@@ -673,6 +673,9 @@ public enum TL {
 	COMMAND_STRIKE_NOTFOUND("&c&l[!] &7{faction} does not exist."),
 	COMMAND_STRIKE_NEEDFACTION("&c&l[!] &7&cYou need to join a faction to view your own!"),
 
+	SHOP_NOT_ENOUGH_POINTS("&c&l[!] &7Your faction does not have enough points to purchase this!"),
+	SHOP_BOUGHT_BROADCAST_FACTION("\n&c&l[!] &e&lFactionShop » &b{player} &7bought &b{item}&7!\n"),
+
 	COMMAND_STRIKEGIVE_DESCRIPTION("Give a faction strikes"),
 
 	COMMAND_VIEWCHEST_DESCRIPTION("view a factions chest/pv"),

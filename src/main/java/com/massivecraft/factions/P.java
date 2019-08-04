@@ -10,6 +10,8 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
+import com.massivecraft.factions.shop.ShopClickPersistence;
+import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Placeholder;
 import com.massivecraft.factions.util.*;
@@ -230,6 +232,8 @@ public class P extends MPlugin {
 			log("Skript addon registered!");
 		}
 
+		ShopConfig.setup();
+
 		getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
 		// Register Event Handlers
@@ -242,6 +246,7 @@ public class P extends MPlugin {
 				  new EXPUpgrade(),
 				  new CropUpgrades(),
 				  new RedstoneUpgrade(),
+				  new ShopClickPersistence(),
 				  new SpawnerUpgrades()
 		};
 
