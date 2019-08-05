@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
+import com.massivecraft.factions.zcore.fperms.Permissable;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -330,8 +332,6 @@ public class Conf {
 	// faction-<factionId>
 	public static int defaultMaxVaults = 0;
 	public static boolean disableFlightOnFactionClaimChange = true;
-	public static boolean useCustomDefaultPermissions = true;
-	public static boolean usePermissionHints = false;
 
 	public static Backend backEnd = Backend.JSON;
 
@@ -341,9 +341,6 @@ public class Conf {
 	public static transient char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
 
 
-	// Default Options - Is this even shown on the Conf.json?
-	public static HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
-
 	//Cooldown for /f logout in seconds
     public static long logoutCooldown = 30;
 
@@ -352,10 +349,21 @@ public class Conf {
 	//public static int maxCustomRanks = 2; // Setting this to -1 will allow unlimited custom ranks
 	// -------------------------------------------- //
 	// Persistance
-	// -------------------------------------------- //
+	// ----------------------------------------- //
+
+
+	// Default Faction Permission Settings.
+	public static boolean useLockedPermissions = false;
+	public static boolean useCustomDefaultPermissions = true;
+	public static boolean usePermissionHints = false;
+	public static HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
+	public static HashSet<PermissableAction> lockedPermissions = new HashSet<>();
 
 	private static transient Conf i = new Conf();
 
+	static {
+		lockedPermissions.add(PermissableAction.CHEST);
+	}
 	static {
 		baseCommandAliases.add("f");
 

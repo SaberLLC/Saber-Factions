@@ -4,8 +4,8 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.FactionWarpsFrame;
 import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.util.WarpGUI;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -42,10 +42,7 @@ public class CmdFWarp extends FCommand {
 
 
 		if (args.size() == 0) {
-			WarpGUI warpGUI = new WarpGUI(fme);
-			warpGUI.build();
-
-			me.openInventory(warpGUI.getInventory());
+			new FactionWarpsFrame(fme.getFaction()).buildGUI(fme);
 		} else if (args.size() > 2) {
 			fme.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
 		} else {
@@ -61,9 +58,7 @@ public class CmdFWarp extends FCommand {
 				}
 
 				// Check transaction AFTER password check.
-				if (!transact(fme)) {
-					return;
-				}
+				if (!transact(fme)) return;
 				final FPlayer fPlayer = fme;
 				final UUID uuid = fme.getPlayer().getUniqueId();
 				this.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, () -> {
@@ -73,9 +68,7 @@ public class CmdFWarp extends FCommand {
 						fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
 					}
 				}, this.p.getConfig().getLong("warmups.f-warp", 0));
-			} else {
-				fme.msg(TL.COMMAND_FWARP_INVALID_WARP, warpName);
-			}
+			} else { fme.msg(TL.COMMAND_FWARP_INVALID_WARP, warpName); }
 		}
 	}
 

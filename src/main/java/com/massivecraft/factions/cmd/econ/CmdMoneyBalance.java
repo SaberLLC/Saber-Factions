@@ -15,6 +15,7 @@ public class CmdMoneyBalance extends FCommand {
 
 		//this.requiredArgs.add("");
 		this.optionalArgs.put("faction", "yours");
+		this.isMoneyCommand = true;
 
 		this.permission = Permission.MONEY_BALANCE.node;
 		this.setHelpShort(TL.COMMAND_MONEYBALANCE_SHORT.toString());

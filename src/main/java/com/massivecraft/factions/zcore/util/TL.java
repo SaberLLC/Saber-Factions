@@ -549,6 +549,7 @@ public enum TL {
 	COMMAND_PERM_INVALID_ACTION("&c&l[!]&7 Invalid action defined. Try something like &c'build'"),
 	COMMAND_PERM_SET("&c&l[!]&7 Set permission&c %1$s &7to &c%2$s &7for relation&c %3$s"),
 	COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
+	COMMAND_PERM_LOCKED("&cThis permission has been locked by the server"),
 
 	COMMAND_POINTS_FAILURE("&c&l[!] &c{faction} does not exist."),
 	COMMAND_POINTS_SUCCESSFUL("&c&l[!] &7You have added &e%1$s &7points to &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),

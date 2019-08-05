@@ -22,6 +22,7 @@ public class CmdMoneyTransferPf extends FCommand {
 		//this.optionalArgs.put("", "");
 
 		this.permission = Permission.MONEY_P2F.node;
+		this.isMoneyCommand = true;
 
 
 		senderMustBePlayer = false;

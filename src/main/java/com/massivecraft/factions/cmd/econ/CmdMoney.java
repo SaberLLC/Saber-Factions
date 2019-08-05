@@ -16,6 +16,7 @@ public class CmdMoney extends FCommand {
 	public CmdMoney() {
 		super();
 		this.aliases.add("money");
+		this.aliases.add("bank");
 
 		//this.requiredArgs.add("");
 		//this.optionalArgs.put("","")

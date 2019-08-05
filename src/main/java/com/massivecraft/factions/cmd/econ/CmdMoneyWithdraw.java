@@ -22,6 +22,7 @@ public class CmdMoneyWithdraw extends FCommand {
 		this.optionalArgs.put("faction", "yours");
 
 		this.permission = Permission.MONEY_WITHDRAW.node;
+		this.isMoneyCommand = true;
 
 
 		senderMustBePlayer = true;

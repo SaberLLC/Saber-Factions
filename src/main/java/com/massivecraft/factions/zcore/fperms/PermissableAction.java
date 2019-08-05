@@ -2,19 +2,15 @@ package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.util.Placeholder;
 import com.massivecraft.factions.util.XMaterial;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
 public enum PermissableAction {
 	BAN("ban"),
@@ -67,6 +63,8 @@ public enum PermissableAction {
 		return null;
 	}
 
+	public int getSlot() { return P.p.getConfig().getInt("fperm-gui.action.slots." + this.name.toLowerCase()); }
+
 	public static Map<PermissableAction, Access> fromDefaults(DefaultPermissions defaultPermissions) {
 		Map<PermissableAction, Access> defaultMap = new HashMap<>();
 		for (PermissableAction permissableAction : PermissableAction.values()) {
@@ -89,93 +87,28 @@ public enum PermissableAction {
 		return name;
 	}
 
-	// Utility method to build items for F Perm GUI
-	public ItemStack buildItem(FPlayer fme, Permissable permissable) {
-		final ConfigurationSection section = P.p.getConfig().getConfigurationSection("fperm-gui.action");
+	public ItemStack buildAsset(FPlayer fme, Permissable perm) {
+		ConfigurationSection section = P.p.getConfig().getConfigurationSection("fperm-gui.action");
+		ItemStack item = XMaterial.matchXMaterial(section.getString("Materials." + this.name)).parseItem();
+		ItemMeta meta = item.getItemMeta();
 
-		if (section == null) {
-			P.p.log(Level.WARNING, "Attempted to build f perm GUI but config section not present.");
-			P.p.log(Level.WARNING, "Copy your config, allow the section to generate, then copy it back to your old config.");
-			return new ItemStack(Material.AIR);
-		}
+		meta.setDisplayName(P.p.color(section.getString("placeholder-item.name").replace("{action}", this.name)));
+		List<String> lore = section.getStringList("placeholder-item.lore");
 
-		String displayName = replacePlaceholders(section.getString("placeholder-item.name"), fme, permissable);
-		List<String> lore = new ArrayList<>();
+		lore = P.p.replacePlaceholders(lore,
+				new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
+				new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
 
-		if (section.getString("materials." + name().toLowerCase().replace('_', '-')) == null) return null;
-
-		Material material = XMaterial.matchXMaterial(section.getString("materials." + name().toLowerCase().replace('_', '-'))).parseMaterial();
-
-		Access access = fme.getFaction().getAccess(permissable, this);
-		if (access == null) access = Access.UNDEFINED;
-
-		ItemStack item = new ItemStack(material);
-		ItemMeta itemMeta = item.getItemMeta();
-
-		String accessValue = null;
-
-		switch (access) {
-			case ALLOW:
-				accessValue = "allow";
-				break;
-			case DENY:
-				accessValue = "deny";
-				break;
-			case UNDEFINED:
-				accessValue = "undefined";
-				break;
-		}
-
-		// If under the 1.13 version we will use the colorable option.
-		if (!P.p.mc113 && !P.p.mc114) {
-			//TODO see if it's working in other version than 1.13 and 1.14
-			DyeColor dyeColor = null;
-
-			try {
-				dyeColor = DyeColor.valueOf(section.getString("access." + access.name().toLowerCase()));
-			} catch (Exception exception) {
-			}
-			accessValue = "deny";
-
-			if (dyeColor != null) {
-				item.setDurability(dyeColor.getWoolData());
-			}
-		} else {
-			Material mat = XMaterial.CYAN_GLAZED_TERRACOTTA.parseMaterial();
-			switch (accessValue) {
-				case "deny": mat = XMaterial.RED_GLAZED_TERRACOTTA.parseMaterial(); break;
-				case "allow": mat = XMaterial.GREEN_GLAZED_TERRACOTTA.parseMaterial(); break;
-				case "undefined": mat = XMaterial.CYAN_GLAZED_TERRACOTTA.parseMaterial(); break;
-			}
-			item.setType(mat);
-		}
-
-		for (String loreLine : section.getStringList("placeholder-item.lore")) lore.add(replacePlaceholders(loreLine, fme, permissable));
-		if (!P.p.mc17) itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
-
-		itemMeta.setDisplayName(displayName);
-		itemMeta.setLore(lore);
-		item.setItemMeta(itemMeta);
-
+		meta.setLore(P.p.colorList(lore));
+		item.setItemMeta(meta);
 		return item;
 	}
 
-	public String replacePlaceholders(String string, FPlayer fme, Permissable permissable) {
-		// Run Permissable placeholders
-		string = permissable.replacePlaceholders(string);
-
-		String actionName = name.substring(0, 1).toUpperCase() + name.substring(1);
-		string = string.replace("{action}", actionName);
-
-		Access access = fme.getFaction().getAccess(permissable, this);
-		if (access == null) {
-			access = Access.UNDEFINED;
+	public static PermissableAction fromSlot(int slot) {
+		for (PermissableAction action : PermissableAction.values()) {
+			if  (action.getSlot() == slot) return action;
 		}
-		String actionAccess = access.getName();
-		string = string.replace("{action-access}", actionAccess);
-		string = string.replace("{action-access-color}", access.getColor().toString());
-
-		return string;
+		return null;
 	}
 
 }

@@ -13,7 +13,7 @@ import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.shop.ShopClickPersistence;
 import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.ChatMode;
-import com.massivecraft.factions.struct.Placeholder;
+import com.massivecraft.factions.util.Placeholder;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.Particles.ReflectionUtils;
 import com.massivecraft.factions.zcore.CommandVisibility;
@@ -68,6 +68,7 @@ public class P extends MPlugin {
 	public CmdAutoHelp cmdAutoHelp;
 	public boolean mc17 = false;
 	public boolean mc18 = false;
+	public boolean mc112 = false;
 	public boolean mc113 = false;
 	public boolean mc114 = false;
 	public boolean useNonPacketParticles = false;
@@ -149,6 +150,9 @@ public class P extends MPlugin {
 			case 8:
 				P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
 				mc18 = true;
+				break;
+			case 12:
+				mc112 = true;
 				break;
 			case 13:
 				P.p.log("Minecraft Version 1.13 found, New Items will be used.");
@@ -279,6 +283,8 @@ public class P extends MPlugin {
 	public SkriptAddon getSkriptAddon() {
 		return skriptAddon;
 	}
+
+
 
 	private void setupPlaceholderAPI() {
 		Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");

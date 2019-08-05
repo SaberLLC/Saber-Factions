@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -113,8 +114,8 @@ public class CmdTnt extends FCommand {
 					return;
 				}
 
-				for (int i = 0; i <= fullStacks - 1; i++) me.getPlayer().getInventory().addItem(new ItemStack(Material.TNT, 64));
-				if (remainderAmt != 0) me.getPlayer().getInventory().addItem(new ItemStack(Material.TNT, remainderAmt));
+				for (int i = 0; i <= fullStacks - 1; i++) me.getPlayer().getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), 64));
+				if (remainderAmt != 0) me.getPlayer().getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), remainderAmt));
 
 				fme.getFaction().takeTnt(amount);
 				me.updateInventory();

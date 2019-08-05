@@ -20,6 +20,8 @@ public class CmdMoneyDeposit extends FCommand {
 		this.requiredArgs.add("amount");
 		this.optionalArgs.put("faction", "yours");
 
+		this.isMoneyCommand = true;
+
 		this.permission = Permission.MONEY_DEPOSIT.node;
 
 

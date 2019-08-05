@@ -221,7 +221,7 @@ public interface Faction extends EconomyParticipator {
 
 	Access getAccess(FPlayer player, PermissableAction permissableAction);
 
-	void setPermission(Permissable permissable, PermissableAction permissableAction, Access access);
+	boolean setPermission(Permissable permissable, PermissableAction permissableAction, Access access);
 
 	void resetPerms();
 
