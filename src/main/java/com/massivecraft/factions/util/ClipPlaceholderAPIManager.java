@@ -38,6 +38,10 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 		return P.p.getDescription().getVersion();
 	}
 
+	@Override
+	public boolean persist() {
+		return true;
+	}
 
 	// Relational placeholders
 	@Override
@@ -95,9 +99,11 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 				return String.valueOf(fPlayer.getRolePrefix());
 			case "player_role":
 				return fPlayer.hasFaction() ? fPlayer.getRole().getPrefix() : "";
+			case "player_role_name":
+				return fPlayer.hasFaction() ? fPlayer.getRole().getTranslation().toString() : TL.PLACEHOLDER_ROLE_NAME.toString();
 			// Then Faction stuff
 			case "faction_name":
-				return fPlayer.hasFaction() ? faction.getTag() : "";
+				return fPlayer.hasFaction() ? faction.getTag() : TL.NOFACTION_PREFIX.toString();
 			case "faction_power":
 				return String.valueOf(faction.getPowerRounded());
 			case "faction_powermax":
@@ -116,7 +122,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
 				return String.valueOf(faction.getTnt());
 			case "faction_powerboost":
 				double powerBoost = faction.getPowerBoost();
-				return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
+				return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString()) + powerBoost + ")";
 			case "faction_leader":
 				FPlayer fAdmin = faction.getFPlayerAdmin();
 				return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());

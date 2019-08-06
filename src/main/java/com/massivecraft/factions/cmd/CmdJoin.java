@@ -141,8 +141,7 @@ public class CmdJoin extends FCommand {
 		}
 
 		faction.deinvite(fplayer);
-		fme.setRole(faction.getDefaultRole());
-
+		fplayer.setRole(faction.getDefaultRole());
 		if (Conf.logFactionJoin) {
 			if (samePlayer) {
 				P.p.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());

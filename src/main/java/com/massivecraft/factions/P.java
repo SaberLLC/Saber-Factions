@@ -194,7 +194,9 @@ public class P extends MPlugin {
 			}
 		}
 
-		UtilFly.run();
+		if (getConfig().getBoolean("enable-faction-flight", true)) {
+			UtilFly.run();
+		}
 
 		Board.getInstance().load();
 		Board.getInstance().clean();

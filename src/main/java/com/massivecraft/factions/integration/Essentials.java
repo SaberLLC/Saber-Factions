@@ -4,6 +4,7 @@ import com.earth2me.essentials.Teleport;
 import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.User;
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.iface.EconomyParticipator;
 import net.ess3.api.IEssentials;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,6 +24,13 @@ public class Essentials {
 		if (ess != null) {
 			essentials = (IEssentials) ess;
 		}
+	}
+
+	public static boolean isOverBalCap(EconomyParticipator participator, double amount) {
+		if (essentials == null) {
+			return false;
+		}
+		return amount > essentials.getSettings().getMaxMoney().doubleValue();
 	}
 
 	// return false if feature is disabled or Essentials isn't available

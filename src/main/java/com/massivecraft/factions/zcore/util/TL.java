@@ -948,6 +948,8 @@ public enum TL {
 
 
 	PLAYER_NOT_FOUND("&c&l[!] &b%1$s &7is either not online or not in your faction!"),
+	PLACEHOLDER_ROLE_NAME("None"),
+
 
 	WARBANNER_NOFACTION("&cYou need a faction to use a warbanner!"),
 	WARBANNER_COOLDOWN("&cThe warbanner is on cooldown for your faction!"),
@@ -976,6 +978,8 @@ public enum TL {
 
 	ECON_OFF("no %s"), // no balance, no value, no refund, etc
 	ECON_FORMAT("###,###.###"),
+	ECON_DISABLED("Factions econ is disabled."),
+	ECON_OVER_BAL_CAP("&4The amount &e%s &4is over Essentials' balance cap."),
 
 	/**
 	 * Relations

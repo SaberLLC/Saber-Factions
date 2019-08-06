@@ -5,6 +5,7 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.command.CommandSender;
 
 public class CmdMoneyBalance extends FCommand {
 
@@ -42,7 +43,9 @@ public class CmdMoneyBalance extends FCommand {
 		}
 
 		if (fme != null) {
-			Econ.sendBalanceInfo(fme, faction);
+			Econ.sendBalanceInfo((CommandSender) fme, faction);
+		} else {
+			Econ.sendBalanceInfo(sender, faction);
 		}
 	}
 

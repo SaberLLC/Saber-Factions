@@ -34,6 +34,7 @@ public class CmdTitle extends FCommand {
 
 		args.remove(0);
 		String title = TextUtil.implode(args, " ");
+		title = title.replaceAll(",", "");
 
 		if (!canIAdministerYou(fme, you)) {
 			return;
