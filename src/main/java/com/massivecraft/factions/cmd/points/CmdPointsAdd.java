@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd.points;
 
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.cmd.FCommand;
@@ -12,7 +14,7 @@ public class CmdPointsAdd extends FCommand {
         super();
         this.aliases.add("add");
 
-        this.requiredArgs.add("faction");
+        this.requiredArgs.add("faction/player");
         this.requiredArgs.add("# of points");
 
 
@@ -35,7 +37,12 @@ public class CmdPointsAdd extends FCommand {
     public void perform() {
         Faction faction = Factions.getInstance().getByTag(args.get(0));
 
-        if (faction == null) {
+        FPlayer fPlayer = this.argAsFPlayer(0);
+        if (fPlayer != null) {
+            faction = fPlayer.getFaction();
+        }
+
+        if (faction == null || faction.isWilderness()) {
             fme.msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", args.get(0)));
             return;
         }
