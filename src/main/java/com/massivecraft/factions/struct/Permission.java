@@ -119,7 +119,7 @@ public enum Permission {
 	COORD("coords"),
 	SHOWCLAIMS("showclaims"),
 	WARP("warp"),
-	CHEST("Chest");
+	CHEST("chest");
 
 	public final String node;
 
