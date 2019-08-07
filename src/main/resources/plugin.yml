@@ -128,6 +128,8 @@ permissions:
     description: gives ability to toggle grace period on and off
   factions.invsee:
     description: Allows players to use the inventory see command
+  factions.missions:
+    description: Allows players to use missions command
   factions.alts:
     description: Allows players to use the alts command
   factions.announce:

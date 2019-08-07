@@ -13,6 +13,7 @@ import com.massivecraft.factions.cmd.relational.CmdRelationNeutral;
 import com.massivecraft.factions.cmd.relational.CmdRelationTruce;
 import com.massivecraft.factions.cmd.roles.CmdDemote;
 import com.massivecraft.factions.cmd.roles.CmdPromote;
+import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.shop.CmdShop;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -129,6 +130,7 @@ public class FCmdRoot extends FCommand {
 	public CmdLogout cmdLogout = new CmdLogout();
 	public CmdNotifications cmdNotifications = new CmdNotifications();
 	public CmdShop cmdShop = new CmdShop();
+	public CmdMissions cmdMissions = new CmdMissions();
 
 
 
@@ -249,6 +251,10 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdCorner);
 		this.addSubCommand(this.cmdFGlobal);
 		this.addSubCommand(this.cmdViewChest);
+
+		if(P.p.getConfig().getBoolean("Missions-Enabled")){
+			this.addSubCommand(this.cmdMissions);
+		}
 
 		if(P.p.getConfig().getBoolean("F-Shop.Enabled")){
 			this.addSubCommand(this.cmdShop);

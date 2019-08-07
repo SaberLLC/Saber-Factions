@@ -3,6 +3,7 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -23,6 +24,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public interface Faction extends EconomyParticipator {
 
 	boolean altInvited(FPlayer fplayer);
+
+	Map<String, Mission> getMissions();
 
 	void deinviteAlt(FPlayer alt);
 

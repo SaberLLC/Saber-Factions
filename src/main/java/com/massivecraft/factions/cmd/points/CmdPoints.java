@@ -32,7 +32,7 @@ public class CmdPoints extends FCommand {
     @Override
     public void perform() {
         if (!P.p.getConfig().getBoolean("f-points.Enabled", true)) {
-            fme.msg(TL.GENERIC_DISABLED);
+            msg(TL.GENERIC_DISABLED);
             return;
         }
         this.commandChain.add(this);

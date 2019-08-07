@@ -944,6 +944,13 @@ public enum TL {
 	GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
 	GENERIC_NOTENOUGHMONEY("&cYou dont have enough money!"),
 	GENERIC_MONEYTAKE("&c{amount} has been taken from your account."),
+
+
+	MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),
+	MISSION_MISSION_ACTIVE("&c&l[!] &7This mission is currently active!"),
+	MISSION_MISSION_MAX_ALLOWED("&c&l[!] &7You may not have more then &b%1$s &7missions active at once."),
+	MISSION_MISSION_FINISHED("&c&l[!] &7Your faction has successfully completed %1$s mission!"),
+	COMMAND_MISSION_DESCRIPTION("Opens missions gui"),
 	// F Global \\
 
 

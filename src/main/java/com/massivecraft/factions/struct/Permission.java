@@ -53,6 +53,7 @@ public enum Permission {
 	COLEADER("coleader"),
 	MOD_ANY("mod.any"),
 	COLEADER_ANY("coleader.any"),
+	MISSIONS("missions"),
 	MODIFY_POWER("modifypower"),
 	MONEY_BALANCE("money.balance"),
 	MONEY_BALANCE_ANY("money.balance.any"),

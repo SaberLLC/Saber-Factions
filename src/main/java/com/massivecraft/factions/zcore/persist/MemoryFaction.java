@@ -7,6 +7,7 @@ import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
@@ -72,6 +73,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     private int strikes = 0;
     private int points = 0;
+    private Map<String, Mission> missions = new ConcurrentHashMap<>();
 
 
     // -------------------------------------------- //
@@ -91,6 +93,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.permanent = false;
         this.money = 0.0;
         this.powerBoost = 0.0;
+        this.missions = new ConcurrentHashMap<>();
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
         this.defaultRole = Role.RECRUIT;
@@ -111,6 +114,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         lastPlayerLoggedOffTime = old.lastPlayerLoggedOffTime;
         money = old.money;
         powerBoost = old.powerBoost;
+        missions = new ConcurrentHashMap<>();
         relationWish = old.relationWish;
         claimOwnership = old.claimOwnership;
         fplayers = new HashSet<>();
@@ -1157,6 +1161,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Map<FLocation, Set<String>> getClaimOwnership() {
         return claimOwnership;
+    }
+
+
+    @Override
+    public Map<String, Mission> getMissions() {
+        return this.missions;
     }
 
     public void clearAllClaimOwnership() {
