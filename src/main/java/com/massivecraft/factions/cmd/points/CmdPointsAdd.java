@@ -37,9 +37,11 @@ public class CmdPointsAdd extends FCommand {
     public void perform() {
         Faction faction = Factions.getInstance().getByTag(args.get(0));
 
-        FPlayer fPlayer = this.argAsFPlayer(0);
-        if (fPlayer != null) {
-            faction = fPlayer.getFaction();
+        if (faction == null) {
+            FPlayer fPlayer = this.argAsFPlayer(0);
+            if (fPlayer != null) {
+                faction = fPlayer.getFaction();
+            }
         }
 
         if (faction == null || faction.isWilderness()) {
