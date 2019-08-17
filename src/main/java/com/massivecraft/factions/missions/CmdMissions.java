@@ -9,6 +9,8 @@ public class CmdMissions extends FCommand {
     public CmdMissions() {
         this.aliases.add("missions");
         this.aliases.add("mission");
+        this.aliases.add("objectives");
+        this.aliases.add("objective");
 
         this.permission = Permission.MISSIONS.node;
 

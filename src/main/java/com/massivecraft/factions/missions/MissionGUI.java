@@ -6,7 +6,6 @@ import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.ClickType;

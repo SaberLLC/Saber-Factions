@@ -13,6 +13,8 @@ import com.massivecraft.factions.cmd.relational.CmdRelationNeutral;
 import com.massivecraft.factions.cmd.relational.CmdRelationTruce;
 import com.massivecraft.factions.cmd.roles.CmdDemote;
 import com.massivecraft.factions.cmd.roles.CmdPromote;
+import com.massivecraft.factions.cmd.tnt.CmdTnt;
+import com.massivecraft.factions.cmd.tnt.CmdTntFill;
 import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.shop.CmdShop;
 import com.massivecraft.factions.zcore.util.TL;
@@ -131,8 +133,6 @@ public class FCmdRoot extends FCommand {
 	public CmdNotifications cmdNotifications = new CmdNotifications();
 	public CmdShop cmdShop = new CmdShop();
 	public CmdMissions cmdMissions = new CmdMissions();
-
-
 
 	public FCmdRoot() {
 		super();

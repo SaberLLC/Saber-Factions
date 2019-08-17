@@ -17,7 +17,7 @@ public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeseri
 			object.add("x", new JsonPrimitive(location.getX()));
 			object.add("y", new JsonPrimitive(location.getY()));
 			object.add("z", new JsonPrimitive(location.getZ()));
-			object.add("world", new JsonPrimitive(location.getWorld().toString()));
+			object.add("world", new JsonPrimitive(location.getWorld().getName()));
 			return object;
 		} catch (Exception ex) {
 			ex.printStackTrace();

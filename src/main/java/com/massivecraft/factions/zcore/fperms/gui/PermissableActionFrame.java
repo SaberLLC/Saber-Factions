@@ -42,7 +42,7 @@ public class PermissableActionFrame {
                 e.setCancelled(true);
                 if (PermissableAction.fromSlot(e.getSlot()) == action) {
                     Access access;
-                    boolean success = false;
+                    boolean success;
                     switch (e.getClick()) {
                         case LEFT:
                             access = Access.ALLOW;

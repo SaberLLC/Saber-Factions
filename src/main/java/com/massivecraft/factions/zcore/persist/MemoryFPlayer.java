@@ -125,7 +125,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 		this.autoSafeZoneEnabled = other.autoSafeZoneEnabled;
 		this.autoWarZoneEnabled = other.autoWarZoneEnabled;
 		this.loginPvpDisabled = other.loginPvpDisabled;
-		this.notificationsEnabled = true;
 		this.powerBoost = other.powerBoost;
 		this.role = other.role;
 		this.title = other.title;
@@ -181,9 +180,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 			return true;
 		if (!commandCooldown.containsKey(cmd))
 			return true;
-		else if (commandCooldown.containsKey(cmd) && commandCooldown.get(cmd) <= System.currentTimeMillis())
-			return true;
-		return false;
+		else return commandCooldown.containsKey(cmd) && commandCooldown.get(cmd) <= System.currentTimeMillis();
 	}
 
 

@@ -103,6 +103,14 @@ public class CmdHome extends FCommand {
 			return;
 		}
 
+		if (!fme.isAdminBypassing()) {
+			Access access = fme.getFaction().getAccess(fme, PermissableAction.HOME);
+			if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+				fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
+				return;
+			}
+		}
+
 		Faction faction = Board.getInstance().getFactionAt(new FLocation(me.getLocation()));
 		final Location loc = me.getLocation().clone();
 

@@ -302,7 +302,6 @@ public class FactionsBlockListener implements Listener {
                 warBanner = P.p.createItem(XMaterial.BLACK_BANNER.parseMaterial(), 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
             }
             if (warBanner.isSimilar(bannerInHand)) {
-
                 if (fme.getFaction().isWilderness()) {
                     fme.msg(TL.WARBANNER_NOFACTION);
                     e.setCancelled(true);
@@ -344,7 +343,6 @@ public class FactionsBlockListener implements Listener {
                     int radius = P.p.getConfig().getInt("fbanners.Banner-Effect-Radius");
                     List<String> effects = P.p.getConfig().getStringList("fbanners.Effects");
                     int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
-
                         for (Entity e1 : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(), radius, 255, radius)) {
                             if (e1 instanceof Player) {
                                 Player player = (Player) e1;
@@ -430,7 +428,7 @@ public class FactionsBlockListener implements Listener {
             return;
 
         if (!graceisEnabled()) {
-            if (e.getEntity() instanceof com.sk89q.worldedit.entity.Player) {
+            if (e.getEntity() instanceof Player) {
                 if (e.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                     e.setCancelled(true);
                 }
@@ -462,20 +460,17 @@ public class FactionsBlockListener implements Listener {
 
         Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(target));
 
-        if (pistonFaction == otherFaction) {
+        if (pistonFaction == otherFaction)
             return true;
-        }
 
-        if (otherFaction.isWilderness()) {
+        if (otherFaction.isWilderness())
             return !Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName());
 
-        } else if (otherFaction.isSafeZone()) {
+         else if (otherFaction.isSafeZone())
             return !Conf.safeZoneDenyBuild;
 
-        } else if (otherFaction.isWarZone()) {
+         else if (otherFaction.isWarZone())
             return !Conf.warZoneDenyBuild;
-
-        }
 
         Relation rel = pistonFaction.getRelationTo(otherFaction);
 
@@ -485,13 +480,13 @@ public class FactionsBlockListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
-        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)){
             event.setCancelled(true);
             return;
         }
-        if (!fme.hasFaction()) {
+        if (!fme.hasFaction())
             return;
-        }
+
         if (event.getBlock().getType() == XMaterial.SPAWNER.parseMaterial()) {
             if (!fme.isAdminBypassing()) {
                 Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
