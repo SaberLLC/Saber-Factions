@@ -913,6 +913,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 	public void setFFlying(boolean fly, boolean damage) {
 		Player player = getPlayer();
+		if(player == null) return;
 		if (player != null) {
 			player.setAllowFlight(fly);
 			player.setFlying(fly);
