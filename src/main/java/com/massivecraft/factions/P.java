@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.cmd.chest.ChestLogsHandler;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
@@ -255,6 +256,7 @@ public class P extends MPlugin {
 				  new RedstoneUpgrade(),
 				  new ShopClickPersistence(),
 				  new MissionHandler(this),
+				  new ChestLogsHandler(),
 				  new SpawnerUpgrades()
 		};
 
