@@ -657,7 +657,6 @@ public class FactionsPlayerListener implements Listener {
         if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
-            return;
         }
     }
 

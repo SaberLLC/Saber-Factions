@@ -21,10 +21,9 @@ import java.util.List;
 public class PermissableActionFrame {
 
     private Gui gui;
-    private ConfigurationSection section;
 
     public PermissableActionFrame(Faction f) {
-        section = P.p.getConfig().getConfigurationSection("fperm-gui.action");
+        ConfigurationSection section = P.p.getConfig().getConfigurationSection("fperm-gui.action");
         gui = new Gui(P.p,
                 section.getInt("rows", 3),
                 P.p.color(P.p.getConfig().getString("fperm-gui.action.name").replace("{faction}", f.getTag())));
@@ -100,6 +99,4 @@ public class PermissableActionFrame {
         item.setItemMeta(meta);
         return item;
     }
-
-
 }

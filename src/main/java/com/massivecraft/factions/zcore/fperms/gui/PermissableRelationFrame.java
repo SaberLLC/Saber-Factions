@@ -20,10 +20,9 @@ import java.util.List;
 public class PermissableRelationFrame {
 
     private Gui gui;
-    private ConfigurationSection section;
 
     public PermissableRelationFrame(Faction f) {
-        section = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
+        ConfigurationSection section = P.p.getConfig().getConfigurationSection("fperm-gui.relation");
         gui = new Gui(P.p,
                 section.getInt("rows", 3),
                 P.p.color(P.p.getConfig().getString("fperm-gui.relation.name").replace("{faction}", f.getTag())));

@@ -45,26 +45,19 @@ public class FUpgradesGUI implements Listener {
         List<Integer> redSlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.Redstone.RedstoneItem.slots");
         List<Integer> memberSlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.Members.MembersItem.slots");
 
-        for (int i = 0; i < cropSlots.size(); i++)
-            if (cropSlots.get(i) != -1) inventory.setItem(cropSlots.get(i), items[2]);
+        for (Integer cropSlot : cropSlots) if (cropSlot != -1) inventory.setItem(cropSlot, items[2]);
 
-        for (int i = 0; i < spawnerSlots.size(); i++)
-            if (spawnerSlots.get(i) != -1) inventory.setItem(spawnerSlots.get(i), items[1]);
+        for (Integer spawnerSlot : spawnerSlots) if (spawnerSlot != -1) inventory.setItem(spawnerSlot, items[1]);
 
-        for (int i = 0; i < expSlots.size(); i++)
-            if (expSlots.get(i) != -1) inventory.setItem(expSlots.get(i), items[0]);
+        for (Integer expSlot : expSlots) if (expSlot != -1) inventory.setItem(expSlot, items[0]);
 
-        for (int i = 0; i < chestSlots.size(); i++)
-            if (chestSlots.get(i) != -1) inventory.setItem(chestSlots.get(i), items[3]);
+        for (Integer chestSlot : chestSlots) if (chestSlot != -1) inventory.setItem(chestSlot, items[3]);
 
-        for (int i = 0; i < powerSlots.size(); i++)
-            if (powerSlots.get(i) != -1) inventory.setItem(powerSlots.get(i), items[4]);
+        for (Integer powerSlot : powerSlots) if (powerSlot != -1) inventory.setItem(powerSlot, items[4]);
 
-        for (int i = 0; i < redSlots.size(); i++)
-            if (redSlots.get(i) != -1) inventory.setItem(redSlots.get(i), items[5]);
+        for (Integer redSlot : redSlots) if (redSlot != -1) inventory.setItem(redSlot, items[5]);
 
-        for (int i = 0; i < memberSlots.size(); i++)
-            if (memberSlots.get(i) != -1) inventory.setItem(memberSlots.get(i), items[6]);
+        for (Integer memberSlot : memberSlots) if (memberSlot != -1) inventory.setItem(memberSlot, items[6]);
 
         fme.getPlayer().openInventory(inventory);
     }
@@ -422,9 +415,7 @@ public class FUpgradesGUI implements Listener {
             redItem.setAmount(redLevel);
         }
 
-
-        ItemStack[] items = {expItem, spawnerItem, cropItem, chestItem, powerItem, redItem, memberItem};
-        return items;
+        return new ItemStack[]{expItem, spawnerItem, cropItem, chestItem, powerItem, redItem, memberItem};
     }
 
     private boolean hasMoney(FPlayer fme, int amt) {

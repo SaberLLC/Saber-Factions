@@ -19,8 +19,7 @@ import java.util.List;
 public class ShopClickPersistence implements Listener {
 
     public void runCommands(List<String> list, Player p) {
-        for (int a = 0; a < list.size(); a++) {
-            String cmd = list.get(a);
+        for (String cmd : list) {
             cmd = cmd.replace("%player%", p.getName());
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
         }

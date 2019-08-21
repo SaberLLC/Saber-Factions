@@ -127,7 +127,7 @@ public abstract class MCommand<T extends MPlugin> {
 	}
 
 	public void execute(CommandSender sender, List<String> args) {
-		execute(sender, args, new ArrayList<MCommand<?>>());
+		execute(sender, args, new ArrayList<>());
 	}
 
 	// This is where the command action is performed.

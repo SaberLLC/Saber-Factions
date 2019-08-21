@@ -267,16 +267,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean altInvited(FPlayer fplayer) {
-        if (this.altinvites.contains(fplayer.getId()))
-            return true;
-        return false;
+        return this.altinvites.contains(fplayer.getId());
     }
 
     public boolean isInvited(FPlayer fplayer) {
-        if (this.invites.contains(fplayer.getId()) || this.altinvites.contains(fplayer.getId())) {
-            return true;
-        }
-        return false;
+        return this.invites.contains(fplayer.getId()) || this.altinvites.contains(fplayer.getId());
     }
 
     public void ban(FPlayer target, FPlayer banner) {

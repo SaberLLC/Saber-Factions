@@ -914,10 +914,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 	public void setFFlying(boolean fly, boolean damage) {
 		Player player = getPlayer();
 		if(player == null) return;
-		if (player != null) {
-			player.setAllowFlight(fly);
-			player.setFlying(fly);
-		}
+
+		player.setAllowFlight(fly);
+		player.setFlying(fly);
 
 		if (!damage) {
 			msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
@@ -1288,8 +1287,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 	public String commas(final double amount) {
 		final DecimalFormat formatter = new DecimalFormat("#,###.00");
-		final String number = formatter.format(amount);
-		return number;
+		return formatter.format(amount);
 	}
 
 	@Override

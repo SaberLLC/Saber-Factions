@@ -332,7 +332,6 @@ public class FactionsBlockListener implements Listener {
                     as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
                     as.setCustomName(P.p.color(P.p.getConfig().getString("fbanners.BannerHolo").replace("{Faction}", fme.getTag()))); //Set this to the text you want
                     as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
-                    ArmorStand armorStand = as;
                     String tag = fme.getTag();
                     Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, () -> bannerCooldownMap.remove(tag), Long.parseLong(bannerCooldown + ""));
                     Block banner = e.getBlockPlaced();
@@ -512,20 +511,6 @@ public class FactionsBlockListener implements Listener {
         }
     }
 
-    /// <summary>
-    ///	This checks if the current player can execute an action based on it's factions access and surroundings
-    /// It will grant access in the following priorities:
-    /// - If Faction Land is Owned and the Owner is the current player, or player is faction leader.
-    /// - If Faction Land is not Owned and my access value is not set to DENY
-    /// - If none of the filters above matches, then we consider access is set to ALLOW|UNDEFINED
-    /// This check does not performs any kind of bypass check (i.e.: me.isAdminBypassing())
-    /// </summary>
-    /// <param name="player">The player entity which the check will be made upon</param>
-    /// <param name="me">The Faction player object related to the player</param>
-    /// <param name="loc">The World location where the action is being executed</param>
-    /// <param name="myFaction">The faction of the player being checked</param>
-    /// <param name="access">The current's faction access permission for the action</param>
-    /// <param name="shouldHurt">Determine whether we should hurt the player when access is denied</param>
     private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action, boolean shouldHurt) {
         boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
         if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId())))
