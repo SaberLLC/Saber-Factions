@@ -85,6 +85,7 @@ public class P extends MPlugin {
 	private Listener[] eventsListener;
 	public static Economy econ = null;
 
+
 	public P() {
 		p = this;
 	}

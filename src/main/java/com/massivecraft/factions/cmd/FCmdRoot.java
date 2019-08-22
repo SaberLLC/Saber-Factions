@@ -4,9 +4,9 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.alts.CmdAlts;
 import com.massivecraft.factions.cmd.chest.CmdChest;
-import com.massivecraft.factions.cmd.chest.CmdChestLogs;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
+import com.massivecraft.factions.cmd.grace.CmdGrace;
 import com.massivecraft.factions.cmd.logout.CmdLogout;
 import com.massivecraft.factions.cmd.points.CmdPoints;
 import com.massivecraft.factions.cmd.relational.CmdRelationAlly;
@@ -135,7 +135,7 @@ public class FCmdRoot extends FCommand {
 	public CmdNotifications cmdNotifications = new CmdNotifications();
 	public CmdShop cmdShop = new CmdShop();
 	public CmdMissions cmdMissions = new CmdMissions();
-	public CmdChestLogs cmdChestLogs = new CmdChestLogs();
+
 
 	public FCmdRoot() {
 		super();
@@ -248,7 +248,6 @@ public class FCmdRoot extends FCommand {
 		this.addSubCommand(this.cmdLowPower);
 		this.addSubCommand(this.cmdTntFill);
 		this.addSubCommand(this.cmdChest);
-		this.addSubCommand(this.cmdChestLogs);
 		this.addSubCommand(this.cmdSetBanner);
 		this.addSubCommand(this.cmdStrikeSet);
 		this.addSubCommand(this.cmdSpam);

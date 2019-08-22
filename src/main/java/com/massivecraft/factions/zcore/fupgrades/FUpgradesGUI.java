@@ -21,7 +21,7 @@ import java.util.List;
 
 public class FUpgradesGUI implements Listener {
     public void openMainMenu(FPlayer fme) {
-        Inventory inventory = Bukkit.createInventory(null, 45, P.p.color(P.p.getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())));
+        Inventory inventory = Bukkit.createInventory(null, P.p.getConfig().getInt("fupgrades.MainMenu.DummyItem.rows") * 9, P.p.color(P.p.getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())));
         List<Integer> dummySlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.DummyItem.slots");
         Material dummyMaterial = Material.getMaterial(P.p.getConfig().getString("fupgrades.MainMenu.DummyItem.Type"));
         int dummyAmount = P.p.getConfig().getInt("fupgrades.MainMenu.DummyItem.Amount");
