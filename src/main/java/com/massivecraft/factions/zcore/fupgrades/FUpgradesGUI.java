@@ -173,13 +173,13 @@ public class FUpgradesGUI implements Listener {
                         break;
                     }
                 }
-            } else if(e.getCurrentItem().equals(memberItem)){
+            } else if (e.getCurrentItem().equals(memberItem)) {
                 int memberLevel = fme.getFaction().getUpgrade(UpgradeType.MEMBERS) + 1;
-                if(!P.p.getConfig().isSet("fupgrades.MainMenu.Members.Cost.level-" + memberLevel)){
+                if (!P.p.getConfig().isSet("fupgrades.MainMenu.Members.Cost.level-" + memberLevel)) {
                     return;
                 }
                 int cost = P.p.getConfig().getInt("fupgrades.MainMenu.Members.Cost.level-" + memberLevel);
-                if(hasMoney(fme, cost)){
+                if (hasMoney(fme, cost)) {
                     fme.getFaction().setUpgrade(UpgradeType.MEMBERS, memberLevel);
                     fme.getPlayer().closeInventory();
                     takeMoney(fme, cost);
@@ -266,7 +266,6 @@ public class FUpgradesGUI implements Listener {
         for (int i = 0; i <= spawnerLore.size() - 1; i++) {
             spawnerLore.set(i, spawnerLore.get(i).replace("{level}", spawnerLevel + ""));
         }
-
 
 
         Material cropMaterial = Material.getMaterial(P.p.getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Type"));

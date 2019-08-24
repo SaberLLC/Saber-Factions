@@ -4,10 +4,10 @@ import org.bukkit.inventory.ItemStack;
 
 public interface Permissable {
 
-	ItemStack buildItem();
+    ItemStack buildItem();
 
-	String replacePlaceholders(String string);
+    String replacePlaceholders(String string);
 
-	String name();
+    String name();
 
 }

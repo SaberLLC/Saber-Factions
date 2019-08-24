@@ -7,14 +7,13 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import com.massivecraft.factions.*;
-import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
 public class PlayerChunkLocationExpression extends SimpleExpression<String> {
 
-    static{
-        Skript.registerExpression(PlayerChunkLocationExpression.class, String.class, ExpressionType.SIMPLE,"[the] faction chunk at %player%", "[the] %player%['s] chunk");
+    static {
+        Skript.registerExpression(PlayerChunkLocationExpression.class, String.class, ExpressionType.SIMPLE, "[the] faction chunk at %player%", "[the] %player%['s] chunk");
     }
 
     Expression<Player> playerExpression;

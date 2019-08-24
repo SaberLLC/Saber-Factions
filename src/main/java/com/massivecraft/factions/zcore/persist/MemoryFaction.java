@@ -1276,7 +1276,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {
         // in own faction, with sufficient role or permission to bypass
         // ownership?
-        if (fplayer.getFaction() == this && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.LEADER) || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer()))) return true;
+        if (fplayer.getFaction() == this && (fplayer.getRole().isAtLeast(Conf.ownedAreaModeratorsBypass ? Role.MODERATOR : Role.LEADER) || Permission.OWNERSHIP_BYPASS.has(fplayer.getPlayer())))
+            return true;
 
         // make sure claimOwnership is initialized
         if (claimOwnership.isEmpty()) return true;
@@ -1309,5 +1310,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
     }
 
-    public Set<FLocation> getAllClaims() { return Board.getInstance().getAllClaims(this); }
+    public Set<FLocation> getAllClaims() {
+        return Board.getInstance().getAllClaims(this);
+    }
 }
