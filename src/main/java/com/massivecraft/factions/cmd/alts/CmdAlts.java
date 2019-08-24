@@ -12,7 +12,7 @@ public class CmdAlts extends FCommand {
     public CmdAltsList cmdAltsList = new CmdAltsList();
 
 
-    public CmdAlts(){
+    public CmdAlts() {
         super();
 
         this.aliases.add("alts");

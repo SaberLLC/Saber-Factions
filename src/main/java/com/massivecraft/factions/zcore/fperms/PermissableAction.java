@@ -39,6 +39,7 @@ public enum PermissableAction {
 	TNTFILL("tntfill"),
 	WITHDRAW("withdraw"),
 	CHEST("chest"),
+	CHECK("check"),
 	SPAWNER("spawner");
 
 	private String name;

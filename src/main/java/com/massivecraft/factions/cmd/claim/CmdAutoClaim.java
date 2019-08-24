@@ -8,51 +8,51 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdAutoClaim extends FCommand {
 
-	public CmdAutoClaim() {
-		super();
-		this.aliases.add("autoclaim");
+    public CmdAutoClaim() {
+        super();
+        this.aliases.add("autoclaim");
 
-		//this.requiredArgs.add("");
-		this.optionalArgs.put("faction", "your");
+        //this.requiredArgs.add("");
+        this.optionalArgs.put("faction", "your");
 
-		this.permission = Permission.AUTOCLAIM.node;
-		this.disableOnLock = true;
-		this.disableOnSpam = false;
+        this.permission = Permission.AUTOCLAIM.node;
+        this.disableOnLock = true;
+        this.disableOnSpam = false;
 
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
-	}
+        senderMustBePlayer = true;
+        senderMustBeMember = false;
+        senderMustBeModerator = false;
+        senderMustBeAdmin = false;
+    }
 
-	@Override
-	public void perform() {
-		Faction forFaction = this.argAsFaction(0, myFaction);
-		if (forFaction == null || forFaction == fme.getAutoClaimFor()) {
-			fme.setAutoClaimFor(null);
-			msg(TL.COMMAND_AUTOCLAIM_DISABLED);
-			return;
-		}
+    @Override
+    public void perform() {
+        Faction forFaction = this.argAsFaction(0, myFaction);
+        if (forFaction == null || forFaction == fme.getAutoClaimFor()) {
+            fme.setAutoClaimFor(null);
+            msg(TL.COMMAND_AUTOCLAIM_DISABLED);
+            return;
+        }
 
-		if (!fme.canClaimForFaction(forFaction)) {
-			if (myFaction == forFaction) {
-				msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.getTranslation());
-			} else {
-				msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(fme));
-			}
+        if (!fme.canClaimForFaction(forFaction)) {
+            if (myFaction == forFaction) {
+                msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.getTranslation());
+            } else {
+                msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(fme));
+            }
 
-			return;
-		}
+            return;
+        }
 
-		fme.setAutoClaimFor(forFaction);
+        fme.setAutoClaimFor(forFaction);
 
-		msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(fme));
-		fme.attemptClaim(forFaction, me.getLocation(), true);
-	}
+        msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(fme));
+        fme.attemptClaim(forFaction, me.getLocation(), true);
+    }
 
-	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_AUTOCLAIM_DESCRIPTION;
-	}
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_AUTOCLAIM_DESCRIPTION;
+    }
 
 }

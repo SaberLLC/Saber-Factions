@@ -67,6 +67,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Role defaultRole;
     protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
+    protected long checkNotifier = 0;
     protected String player;
     Inventory chest;
     Map<String, Object> bannerSerialized;
@@ -97,6 +98,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
         this.defaultRole = Role.RECRUIT;
+        this.checkNotifier = 0;
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -122,6 +124,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         invites = old.invites;
         announcements = old.announcements;
         this.defaultRole = Role.NORMAL;
+        this.checkNotifier = 0;
 
         resetPerms(); // Reset on new Faction so it has default values.
     }
@@ -340,6 +343,21 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
 
         return false;
+    }
+
+    @Override
+    public long getCheckNotifier() {
+        return this.checkNotifier;
+    }
+
+    @Override
+    public void setCheckNotifier(final long minutes) {
+        this.checkNotifier = minutes;
+    }
+
+    @Override
+    public void sendCheckNotify() {
+        this.sendMessage(TL.CHECK_NOTIFY_MESSAGE.toString());
     }
 
     public Set<BanInfo> getBannedPlayers() {

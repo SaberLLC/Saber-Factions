@@ -12,87 +12,87 @@ import java.util.ArrayList;
 
 public class CmdTag extends FCommand {
 
-	public CmdTag() {
-		this.aliases.add("tag");
-		this.aliases.add("rename");
+    public CmdTag() {
+        this.aliases.add("tag");
+        this.aliases.add("rename");
 
-		this.requiredArgs.add("faction tag");
-		//this.optionalArgs.put("", "");
+        this.requiredArgs.add("faction tag");
+        //this.optionalArgs.put("", "");
 
-		this.permission = Permission.TAG.node;
-		this.disableOnLock = true;
-		this.disableOnSpam = true;
+        this.permission = Permission.TAG.node;
+        this.disableOnLock = true;
+        this.disableOnSpam = true;
 
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeModerator = true;
-		senderMustBeAdmin = false;
+        senderMustBePlayer = true;
+        senderMustBeMember = false;
+        senderMustBeModerator = true;
+        senderMustBeAdmin = false;
 
-	}
+    }
 
-	@Override
-	public void perform() {
-		String tag = this.argAsString(0);
-
-
-		if (!fme.isCooldownEnded("tag")) {
-			fme.msg(TL.COMMAND_ONCOOOLDOWN, fme.getCooldown("tag"));
-			return;
-		}
+    @Override
+    public void perform() {
+        String tag = this.argAsString(0);
 
 
-		// TODO does not first test cover selfcase?
-		if (Factions.getInstance().isTagTaken(tag) && !MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag())) {
-			msg(TL.COMMAND_TAG_TAKEN);
-			return;
-		}
+        if (!fme.isCooldownEnded("tag")) {
+            fme.msg(TL.COMMAND_ONCOOOLDOWN, fme.getCooldown("tag"));
+            return;
+        }
 
-		ArrayList<String> errors = MiscUtil.validateTag(tag);
-		if (errors.size() > 0) {
-			sendMessage(errors);
-			return;
-		}
 
-		// if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
-		if (!canAffordCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE.toString())) {
-			return;
-		}
+        // TODO does not first test cover selfcase?
+        if (Factions.getInstance().isTagTaken(tag) && !MiscUtil.getComparisonString(tag).equals(myFaction.getComparisonTag())) {
+            msg(TL.COMMAND_TAG_TAKEN);
+            return;
+        }
 
-		// trigger the faction rename event (cancellable)
-		FactionRenameEvent renameEvent = new FactionRenameEvent(fme, tag);
-		Bukkit.getServer().getPluginManager().callEvent(renameEvent);
-		if (renameEvent.isCancelled()) {
-			return;
-		}
+        ArrayList<String> errors = MiscUtil.validateTag(tag);
+        if (errors.size() > 0) {
+            sendMessage(errors);
+            return;
+        }
 
-		// then make 'em pay (if applicable)
-		if (!payForCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
-			return;
-		}
+        // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
+        if (!canAffordCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE.toString())) {
+            return;
+        }
 
-		String oldtag = myFaction.getTag();
-		myFaction.setTag(tag);
+        // trigger the faction rename event (cancellable)
+        FactionRenameEvent renameEvent = new FactionRenameEvent(fme, tag);
+        Bukkit.getServer().getPluginManager().callEvent(renameEvent);
+        if (renameEvent.isCancelled()) {
+            return;
+        }
 
-		// Inform
-		for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-			if (fplayer.getFactionId().equals(myFaction.getId())) {
-				fplayer.msg(TL.COMMAND_TAG_FACTION, fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
-				continue;
-			}
+        // then make 'em pay (if applicable)
+        if (!payForCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
+            return;
+        }
 
-			// Broadcast the tag change (if applicable)
-			if (Conf.broadcastTagChanges) {
-				Faction faction = fplayer.getFaction();
-				fplayer.msg(TL.COMMAND_TAG_CHANGED, fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
-			}
-		}
-		fme.setCooldown("tag", System.currentTimeMillis() + (P.p.getConfig().getInt("fcooldowns.f-tag") * 1000));
-		FTeamWrapper.updatePrefixes(myFaction);
-	}
+        String oldtag = myFaction.getTag();
+        myFaction.setTag(tag);
 
-	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_TAG_DESCRIPTION;
-	}
+        // Inform
+        for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+            if (fplayer.getFactionId().equals(myFaction.getId())) {
+                fplayer.msg(TL.COMMAND_TAG_FACTION, fme.describeTo(myFaction, true), myFaction.getTag(myFaction));
+                continue;
+            }
+
+            // Broadcast the tag change (if applicable)
+            if (Conf.broadcastTagChanges) {
+                Faction faction = fplayer.getFaction();
+                fplayer.msg(TL.COMMAND_TAG_CHANGED, fme.getColorTo(faction) + oldtag, myFaction.getTag(faction));
+            }
+        }
+        fme.setCooldown("tag", System.currentTimeMillis() + (P.p.getConfig().getInt("fcooldowns.f-tag") * 1000));
+        FTeamWrapper.updatePrefixes(myFaction);
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_TAG_DESCRIPTION;
+    }
 
 }

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd.points;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.cmd.FCommand;
@@ -48,14 +47,14 @@ public class CmdPointsAdd extends FCommand {
             msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", args.get(0)));
             return;
         }
-        if(argAsInt(1) <= 0){
+        if (argAsInt(1) <= 0) {
             msg(TL.COMMAND_POINTS_INSUFFICIENT);
             return;
         }
 
         faction.setPoints(faction.getPoints() + argAsInt(1));
 
-            msg(TL.COMMAND_POINTS_SUCCESSFUL, argAsInt(1), faction.getTag(), faction.getPoints());
+        msg(TL.COMMAND_POINTS_SUCCESSFUL, argAsInt(1), faction.getTag(), faction.getPoints());
     }
 
 

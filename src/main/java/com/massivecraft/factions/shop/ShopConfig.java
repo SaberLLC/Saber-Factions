@@ -13,9 +13,11 @@ public class ShopConfig {
 
     public static File shop = new File("plugins/Factions/shop.yml");
     public static FileConfiguration s = YamlConfiguration.loadConfiguration(shop);
+
     public static FileConfiguration getShop() {
         return s;
     }
+
     public static void loadShop() {
         s = YamlConfiguration.loadConfiguration(shop);
     }

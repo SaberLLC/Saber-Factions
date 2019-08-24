@@ -26,368 +26,368 @@ import java.util.List;
 
 public interface FPlayer extends EconomyParticipator {
 
-	void setNotificationsEnabled(boolean notifications);
+    void setNotificationsEnabled(boolean notifications);
 
-	boolean hasNotificationsEnabled();
+    boolean hasNotificationsEnabled();
 
-	void setAlt(boolean alt);
+    boolean isAlt();
 
-	boolean isAlt();
+    void setAlt(boolean alt);
 
-	/**
-	 * Used to know if stealth is toggled on or off
-	 *
-	 * @return if stealth mode is on or not.
-	 */
-	boolean isStealthEnabled();
+    /**
+     * Used to know if stealth is toggled on or off
+     *
+     * @return if stealth mode is on or not.
+     */
+    boolean isStealthEnabled();
 
-	/**
-	 * Toggles the stealth of the FPlayer depending on the parameter
-	 *
-	 * @param stealthToggle - toggles stealth
-	 */
-	void setStealth(boolean stealthToggle);
+    /**
+     * Toggles the stealth of the FPlayer depending on the parameter
+     *
+     * @param stealthToggle - toggles stealth
+     */
+    void setStealth(boolean stealthToggle);
 
-	/**
-	 * Sets the kills and deaths of a player.
-	 */
-	void login();
+    /**
+     * Sets the kills and deaths of a player.
+     */
+    void login();
 
-	/**
-	 * Caches the kills and deaths of a player.
-	 */
-	void logout();
+    /**
+     * Caches the kills and deaths of a player.
+     */
+    void logout();
 
-	/**
-	 * gets the faction of a FPlayer.
-	 *
-	 * @return Faction of the FPlayer.
-	 */
-	Faction getFaction();
+    /**
+     * gets the faction of a FPlayer.
+     *
+     * @return Faction of the FPlayer.
+     */
+    Faction getFaction();
 
-	/**
-	 * Sets the faction of the FPlayer
-	 *
-	 * @param faction faction to set.
-	 */
-	void setFaction(Faction faction, boolean alt);
+    /**
+     * Sets the faction of the FPlayer
+     *
+     * @param faction faction to set.
+     */
+    void setFaction(Faction faction, boolean alt);
 
-	/**
-	 * Gets the faction ID of the player.
-	 *
-	 * @return FactionsID string
-	 */
-	String getFactionId();
+    /**
+     * Gets the faction ID of the player.
+     *
+     * @return FactionsID string
+     */
+    String getFactionId();
 
-	/**
-	 * Check if a player has a faction
-	 *
-	 * @return boolean
-	 */
-	boolean hasFaction();
+    /**
+     * Check if a player has a faction
+     *
+     * @return boolean
+     */
+    boolean hasFaction();
 
-	/**
-	 * Gets autoleave status
-	 *
-	 * @return boolean of the autoleave
-	 */
-	boolean willAutoLeave();
+    /**
+     * Gets autoleave status
+     *
+     * @return boolean of the autoleave
+     */
+    boolean willAutoLeave();
 
-	void setAutoLeave(boolean autoLeave);
+    void setAutoLeave(boolean autoLeave);
 
-	long getLastFrostwalkerMessage();
+    long getLastFrostwalkerMessage();
 
-	void setLastFrostwalkerMessage();
+    void setLastFrostwalkerMessage();
 
-	void setMonitorJoins(boolean monitor);
+    void setMonitorJoins(boolean monitor);
 
-	boolean isMonitoringJoins();
+    boolean isMonitoringJoins();
 
-	Role getRole();
+    Role getRole();
 
-	void setRole(Role role);
+    void setRole(Role role);
 
-	boolean shouldTakeFallDamage();
+    boolean shouldTakeFallDamage();
 
-	void setTakeFallDamage(boolean fallDamage);
+    void setTakeFallDamage(boolean fallDamage);
 
-	double getPowerBoost();
+    double getPowerBoost();
 
-	void setPowerBoost(double powerBoost);
+    void setPowerBoost(double powerBoost);
 
-	Faction getAutoClaimFor();
+    Faction getAutoClaimFor();
 
-	void setAutoClaimFor(Faction faction);
+    void setAutoClaimFor(Faction faction);
 
-	boolean isAutoSafeClaimEnabled();
+    boolean isAutoSafeClaimEnabled();
 
-	void setIsAutoSafeClaimEnabled(boolean enabled);
+    void setIsAutoSafeClaimEnabled(boolean enabled);
 
-	boolean isAutoWarClaimEnabled();
+    boolean isAutoWarClaimEnabled();
 
-	void setIsAutoWarClaimEnabled(boolean enabled);
+    void setIsAutoWarClaimEnabled(boolean enabled);
 
-	boolean isAdminBypassing();
+    boolean isAdminBypassing();
 
-	boolean isVanished();
+    boolean isVanished();
 
-	void setIsAdminBypassing(boolean val);
+    void setIsAdminBypassing(boolean val);
 
-	ChatMode getChatMode();
+    ChatMode getChatMode();
 
-	void setChatMode(ChatMode chatMode);
+    void setChatMode(ChatMode chatMode);
 
-	boolean isIgnoreAllianceChat();
+    boolean isIgnoreAllianceChat();
 
-	void setIgnoreAllianceChat(boolean ignore);
+    void setIgnoreAllianceChat(boolean ignore);
 
-	boolean isSpyingChat();
+    boolean isSpyingChat();
 
-	void setSpyingChat(boolean chatSpying);
+    void setSpyingChat(boolean chatSpying);
 
-	boolean showScoreboard();
+    boolean showScoreboard();
 
-	void setShowScoreboard(boolean show);
+    void setShowScoreboard(boolean show);
 
-	// FIELD: account
-	String getAccountId();
+    // FIELD: account
+    String getAccountId();
 
-	void resetFactionData(boolean doSpoutUpdate);
+    void resetFactionData(boolean doSpoutUpdate);
 
-	void resetFactionData();
+    void resetFactionData();
 
-	long getLastLoginTime();
+    long getLastLoginTime();
 
-	void setLastLoginTime(long lastLoginTime);
+    void setLastLoginTime(long lastLoginTime);
 
-	boolean isMapAutoUpdating();
+    boolean isMapAutoUpdating();
 
-	void setMapAutoUpdating(boolean mapAutoUpdating);
+    void setMapAutoUpdating(boolean mapAutoUpdating);
 
-	boolean hasLoginPvpDisabled();
+    boolean hasLoginPvpDisabled();
 
-	FLocation getLastStoodAt();
+    FLocation getLastStoodAt();
 
-	void setLastStoodAt(FLocation flocation);
+    void setLastStoodAt(FLocation flocation);
 
-	String getTitle();
+    String getTitle();
 
-	void setTitle(CommandSender sender, String title);
+    void setTitle(CommandSender sender, String title);
 
-	String getName();
+    String getName();
 
-	String getTag();
+    String getTag();
 
-	// Base concatenations:
+    // Base concatenations:
 
-	String getNameAndSomething(String something);
+    String getNameAndSomething(String something);
 
-	String getNameAndTitle();
+    String getNameAndTitle();
 
-	String getNameAndTag();
+    String getNameAndTag();
 
-	// Colored concatenations:
-	// These are used in information messages
+    // Colored concatenations:
+    // These are used in information messages
 
-	String getNameAndTitle(Faction faction);
+    String getNameAndTitle(Faction faction);
 
-	String getNameAndTitle(FPlayer fplayer);
+    String getNameAndTitle(FPlayer fplayer);
 
-	// Chat Tag:
-	// These are injected into the format of global chat messages.
+    // Chat Tag:
+    // These are injected into the format of global chat messages.
 
-	String getChatTag();
+    String getChatTag();
 
-	// Colored Chat Tag
-	String getChatTag(Faction faction);
+    // Colored Chat Tag
+    String getChatTag(Faction faction);
 
-	String getChatTag(FPlayer fplayer);
+    String getChatTag(FPlayer fplayer);
 
-	int getKills();
+    int getKills();
 
-	int getDeaths();
+    int getDeaths();
 
-	void takeMoney(int amt);
+    void takeMoney(int amt);
 
-	boolean hasMoney(int amt);
+    boolean hasMoney(int amt);
 
-	//inspect Stuff
+    //inspect Stuff
 
-	boolean isInspectMode();
+    boolean isInspectMode();
 
-	void setInspectMode(boolean status);
+    void setInspectMode(boolean status);
 
 
-	// Fly Checks
+    // Fly Checks
 
-	Boolean canflyinWilderness();
+    Boolean canflyinWilderness();
 
-	Boolean canflyinWarzone();
+    Boolean canflyinWarzone();
 
-	Boolean canflyinSafezone();
+    Boolean canflyinSafezone();
 
-	Boolean canflyinEnemy();
+    Boolean canflyinEnemy();
 
-	Boolean canflyinAlly();
+    Boolean canflyinAlly();
 
-	Boolean canflyinTruce();
+    Boolean canflyinTruce();
 
-	Boolean canflyinNeutral();
+    Boolean canflyinNeutral();
 
-	// -------------------------------
-	// Relation and relation colors
-	// -------------------------------
+    // -------------------------------
+    // Relation and relation colors
+    // -------------------------------
 
-	@Override
-	String describeTo(RelationParticipator that, boolean ucfirst);
+    @Override
+    String describeTo(RelationParticipator that, boolean ucfirst);
 
-	@Override
-	String describeTo(RelationParticipator that);
+    @Override
+    String describeTo(RelationParticipator that);
 
-	@Override
-	Relation getRelationTo(RelationParticipator rp);
+    @Override
+    Relation getRelationTo(RelationParticipator rp);
 
-	@Override
-	Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful);
+    @Override
+    Relation getRelationTo(RelationParticipator rp, boolean ignorePeaceful);
 
-	Relation getRelationToLocation();
+    Relation getRelationToLocation();
 
-	@Override
-	ChatColor getColorTo(RelationParticipator rp);
+    @Override
+    ChatColor getColorTo(RelationParticipator rp);
 
 
-	String getRolePrefix();
+    String getRolePrefix();
 
-	//----------------------------------------------//
-	// Health
-	//----------------------------------------------//
-	void heal(int amnt);
+    //----------------------------------------------//
+    // Health
+    //----------------------------------------------//
+    void heal(int amnt);
 
 
-	//----------------------------------------------//
-	// Power
-	//----------------------------------------------//
-	double getPower();
+    //----------------------------------------------//
+    // Power
+    //----------------------------------------------//
+    double getPower();
 
-	void alterPower(double delta);
+    void alterPower(double delta);
 
-	double getPowerMax();
+    double getPowerMax();
 
-	double getPowerMin();
+    double getPowerMin();
 
-	int getPowerRounded();
+    int getPowerRounded();
 
-	int getPowerMaxRounded();
+    int getPowerMaxRounded();
 
-	int getPowerMinRounded();
+    int getPowerMinRounded();
 
-	void updatePower();
+    void updatePower();
 
-	void losePowerFromBeingOffline();
+    void losePowerFromBeingOffline();
 
-	void onDeath();
+    void onDeath();
 
-	//----------------------------------------------//
-	// Territory
-	//----------------------------------------------//
-	boolean isInOwnTerritory();
+    //----------------------------------------------//
+    // Territory
+    //----------------------------------------------//
+    boolean isInOwnTerritory();
 
-	boolean isInOthersTerritory();
+    boolean isInOthersTerritory();
 
-	boolean isInAllyTerritory();
+    boolean isInAllyTerritory();
 
-	boolean isInNeutralTerritory();
+    boolean isInNeutralTerritory();
 
-	boolean isInEnemyTerritory();
+    boolean isInEnemyTerritory();
 
-	void sendFactionHereMessage(Faction from);
+    void sendFactionHereMessage(Faction from);
 
-	// -------------------------------
-	// Actions
-	// -------------------------------
+    // -------------------------------
+    // Actions
+    // -------------------------------
 
-	void leave(boolean makePay);
+    void leave(boolean makePay);
 
-	boolean canClaimForFaction(Faction forFaction);
+    boolean canClaimForFaction(Faction forFaction);
 
-	boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure);
+    boolean canClaimForFactionAtLocation(Faction forFaction, Location location, boolean notifyFailure);
 
-	boolean canClaimForFactionAtLocation(Faction forFaction, FLocation location, boolean notifyFailure);
+    boolean canClaimForFactionAtLocation(Faction forFaction, FLocation location, boolean notifyFailure);
 
-	boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure);
+    boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure);
 
-	boolean attemptClaim(Faction forFaction, FLocation location, boolean notifyFailure);
+    boolean attemptClaim(Faction forFaction, FLocation location, boolean notifyFailure);
 
-	boolean isInVault();
+    boolean isInVault();
 
-	void setInVault(boolean status);
+    void setInVault(boolean status);
 
-	void msg(String str, Object... args);
+    void msg(String str, Object... args);
 
-	String getId();
+    String getId();
 
-	void setId(String id);
+    void setId(String id);
 
-	Player getPlayer();
+    Player getPlayer();
 
-	boolean isOnline();
+    boolean isOnline();
 
-	void sendMessage(String message);
+    void sendMessage(String message);
 
-	void sendMessage(List<String> messages);
+    void sendMessage(List<String> messages);
 
-	void sendFancyMessage(FancyMessage message);
+    void sendFancyMessage(FancyMessage message);
 
-	void sendFancyMessage(List<FancyMessage> message);
+    void sendFancyMessage(List<FancyMessage> message);
 
-	int getMapHeight();
+    int getMapHeight();
 
-	void setMapHeight(int height);
+    void setMapHeight(int height);
 
-	boolean isOnlineAndVisibleTo(Player me);
+    boolean isOnlineAndVisibleTo(Player me);
 
-	void remove();
+    void remove();
 
-	boolean isOffline();
+    boolean isOffline();
 
-	boolean isFlying();
+    boolean isFlying();
 
-	void setFlying(boolean fly);
+    void setFlying(boolean fly);
 
-	void setFFlying(boolean fly, boolean damage);
+    void setFFlying(boolean fly, boolean damage);
 
-	boolean canFlyAtLocation();
+    boolean canFlyAtLocation();
 
-	boolean canFlyAtLocation(FLocation location);
+    boolean canFlyAtLocation(FLocation location);
 
-	boolean isEnteringPassword();
+    boolean isEnteringPassword();
 
-	void setEnteringPassword(boolean toggle, String warp);
+    void setEnteringPassword(boolean toggle, String warp);
 
-	String getEnteringWarp();
+    String getEnteringWarp();
 
-	boolean checkIfNearbyEnemies();
+    boolean checkIfNearbyEnemies();
 
-	int getCooldown(String cmd);
+    int getCooldown(String cmd);
 
-	void setCooldown(String cmd, long cooldown);
+    void setCooldown(String cmd, long cooldown);
 
-	boolean isCooldownEnded(String cmd);
+    boolean isCooldownEnded(String cmd);
 
 
-	// -------------------------------
-	// Warmups
-	// -------------------------------
+    // -------------------------------
+    // Warmups
+    // -------------------------------
 
-	boolean isWarmingUp();
+    boolean isWarmingUp();
 
-	WarmUpUtil.Warmup getWarmupType();
+    WarmUpUtil.Warmup getWarmupType();
 
-	void addWarmup(WarmUpUtil.Warmup warmup, int taskId);
+    void addWarmup(WarmUpUtil.Warmup warmup, int taskId);
 
-	void stopWarmup();
+    void stopWarmup();
 
-	void clearWarmup();
+    void clearWarmup();
 
 
 }

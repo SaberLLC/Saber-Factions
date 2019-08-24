@@ -33,10 +33,7 @@ public class CmdGrace extends FCommand {
         boolean gracePeriod = Conf.gracePeriod;
 
         if (args.size() == 0) {
-            if (gracePeriod)
-                Conf.gracePeriod = false;
-            else
-                Conf.gracePeriod = true;
+            Conf.gracePeriod = !gracePeriod;
         }
         fme.msg(TL.COMMAND_GRACE_TOGGLE, gracePeriod ? "enabled" : "disabled");
     }

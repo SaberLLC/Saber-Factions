@@ -22,30 +22,28 @@ public class LogoutHandler {
         factionDatas.put(name, this);
     }
 
+    public static LogoutHandler getByName(String name) {
+        LogoutHandler logoutHandler = factionDatas.get(name);
+        return logoutHandler == null ? new LogoutHandler(name) : factionDatas.get(name);
+    }
+
     public boolean isLogoutActive(Player player) {
         return logoutCooldown.containsKey(player.getUniqueId()) && System.currentTimeMillis() < logoutCooldown.get(player.getUniqueId());
     }
 
     public void cancelLogout(Player player) {
-        if(logoutCooldown.containsKey(player.getUniqueId())) {
-            logoutCooldown.remove(player.getUniqueId());
-        }
+        logoutCooldown.remove(player.getUniqueId());
     }
 
     public void applyLogoutCooldown(Player player) {
         logoutCooldown.put(player.getUniqueId(), System.currentTimeMillis() + (30 * 1000));
 
         Bukkit.getScheduler().runTaskLater(P.p, () -> {
-            if(isLogoutActive(player)) {
+            if (isLogoutActive(player)) {
                 player.setMetadata("Logout", new FixedMetadataValue(P.p, true));
                 player.kickPlayer(String.valueOf(TL.COMMAND_LOGOUT_KICK_MESSAGE));
                 cancelLogout(player);
             }
         }, Conf.logoutCooldown * 20L);
-    }
-
-    public static LogoutHandler getByName(String name) {
-        LogoutHandler logoutHandler = factionDatas.get(name);
-        return logoutHandler == null ? new LogoutHandler(name) : factionDatas.get(name);
     }
 }

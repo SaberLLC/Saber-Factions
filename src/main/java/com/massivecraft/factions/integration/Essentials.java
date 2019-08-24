@@ -17,42 +17,42 @@ import java.math.BigDecimal;
 
 public class Essentials {
 
-	private static IEssentials essentials;
+    private static IEssentials essentials;
 
-	public static IEssentials setup() {
-		Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
-		if (ess != null) {
-			return Essentials.essentials = (IEssentials)ess;
-		}
-		return null;
-	}
+    public static IEssentials setup() {
+        Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
+        if (ess != null) {
+            return Essentials.essentials = (IEssentials) ess;
+        }
+        return null;
+    }
 
-	public static boolean isOverBalCap(EconomyParticipator participator, double amount) {
-		if (essentials == null) {
-			return false;
-		}
-		return amount > essentials.getSettings().getMaxMoney().doubleValue();
-	}
+    public static boolean isOverBalCap(EconomyParticipator participator, double amount) {
+        if (essentials == null) {
+            return false;
+        }
+        return amount > essentials.getSettings().getMaxMoney().doubleValue();
+    }
 
-	// return false if feature is disabled or Essentials isn't available
-	public static boolean handleTeleport(Player player, Location loc) {
-		if (!Conf.homesTeleportCommandEssentialsIntegration || essentials == null) {
-			return false;
-		}
+    // return false if feature is disabled or Essentials isn't available
+    public static boolean handleTeleport(Player player, Location loc) {
+        if (!Conf.homesTeleportCommandEssentialsIntegration || essentials == null) {
+            return false;
+        }
 
-		Teleport teleport = essentials.getUser(player).getTeleport();
-		Trade trade = new Trade(new BigDecimal(Conf.econCostHome), essentials);
-		try {
-			teleport.teleport(loc, trade, TeleportCause.PLUGIN);
-		} catch (Exception e) {
-			player.sendMessage(ChatColor.RED.toString() + e.getMessage());
-		}
-		return true;
-	}
+        Teleport teleport = essentials.getUser(player).getTeleport();
+        Trade trade = new Trade(new BigDecimal(Conf.econCostHome), essentials);
+        try {
+            teleport.teleport(loc, trade, TeleportCause.PLUGIN);
+        } catch (Exception e) {
+            player.sendMessage(ChatColor.RED.toString() + e.getMessage());
+        }
+        return true;
+    }
 
-	public static boolean isVanished(Player player) {
-		if (essentials == null) return false;
-		User user = essentials.getUser(player);
-		return user != null && user.isVanished();
-	}
+    public static boolean isVanished(Player player) {
+        if (essentials == null) return false;
+        User user = essentials.getUser(player);
+        return user != null && user.isVanished();
+    }
 }

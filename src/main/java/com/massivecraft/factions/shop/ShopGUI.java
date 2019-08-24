@@ -6,7 +6,6 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
@@ -42,7 +41,7 @@ public class ShopGUI {
             String s = shopitems + "";
             int slot = ShopConfig.getShop().getInt("items." + s + ".slot");
             ItemStack material = XMaterial.matchXMaterial(ShopConfig.getShop().getString("items." + s + ".block")).parseItem();
-           // int size = ShopConfig.getShop().getInt("items." + s + ".size");
+            // int size = ShopConfig.getShop().getInt("items." + s + ".size");
             int cost = ShopConfig.getShop().getInt("items." + s + ".cost");
             String name = ShopConfig.getShop().getString("items." + s + ".name") + " &f(" + cost + " Points)";
             List<String> lore = ShopConfig.getShop().getStringList("items." + s + ".lore");

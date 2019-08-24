@@ -9,6 +9,8 @@ import java.util.UUID;
 
 public class CmdFGlobal extends FCommand {
 
+    public static List<UUID> toggled = new ArrayList<>();
+
     public CmdFGlobal() {
 
         super();
@@ -26,18 +28,16 @@ public class CmdFGlobal extends FCommand {
         senderMustBeAdmin = false;
     }
 
-    public static List<UUID> toggled = new ArrayList<>();
-
     @Override
     public void perform() {
 
-        Player p = (Player)sender;
+        Player p = (Player) sender;
 
         // /f global
 
-        if (toggled.contains(p.getUniqueId())){
+        if (toggled.contains(p.getUniqueId())) {
             toggled.remove(p.getUniqueId());
-        }else{
+        } else {
             toggled.add(p.getUniqueId());
         }
 

@@ -10,44 +10,44 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdChest extends FCommand {
 
-	public CmdChest() {
-		this.aliases.add("chest");
-		this.aliases.add("pv");
+    public CmdChest() {
+        this.aliases.add("chest");
+        this.aliases.add("pv");
 
-		//this.requiredArgs.add("");
-
-
-		this.permission = Permission.CHEST.node;
-		this.disableOnLock = false;
+        //this.requiredArgs.add("");
 
 
-		senderMustBePlayer = true;
-		senderMustBeMember = true;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
-	}
-
-	@Override
-	public void perform() {
+        this.permission = Permission.CHEST.node;
+        this.disableOnLock = false;
 
 
-		if (!P.p.getConfig().getBoolean("fchest.Enabled")) {
-			fme.sendMessage("This command is disabled!");
-			return;
-		}
-		// This permission check is way too explicit but it's clean
-		if (!fme.isAdminBypassing()) {
-			Access access = myFaction.getAccess(fme, PermissableAction.CHEST);
-			if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
-				fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "access chest");
-				return;
-			}
-		}
-		me.openInventory(fme.getFaction().getChestInventory());
-	}
+        senderMustBePlayer = true;
+        senderMustBeMember = true;
+        senderMustBeModerator = false;
+        senderMustBeAdmin = false;
+    }
 
-	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_VAULT_DESCRIPTION;
-	}
+    @Override
+    public void perform() {
+
+
+        if (!P.p.getConfig().getBoolean("fchest.Enabled")) {
+            fme.sendMessage("This command is disabled!");
+            return;
+        }
+        // This permission check is way too explicit but it's clean
+        if (!fme.isAdminBypassing()) {
+            Access access = myFaction.getAccess(fme, PermissableAction.CHEST);
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "access chest");
+                return;
+            }
+        }
+        me.openInventory(fme.getFaction().getChestInventory());
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_VAULT_DESCRIPTION;
+    }
 }

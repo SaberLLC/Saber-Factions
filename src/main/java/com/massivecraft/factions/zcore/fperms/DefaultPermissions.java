@@ -1,5 +1,8 @@
 package com.massivecraft.factions.zcore.fperms;
 
+import com.massivecraft.factions.util.XMaterial;
+import javafx.scene.paint.Material;
+
 public class DefaultPermissions {
 	public boolean ban;
 	public boolean build;
@@ -27,6 +30,7 @@ public class DefaultPermissions {
 	public boolean tntfill;
 	public boolean withdraw;
 	public boolean chest;
+	public boolean check;
 	public boolean spawner;
 
 	public DefaultPermissions() {
@@ -59,6 +63,7 @@ public class DefaultPermissions {
 		this.tntfill = def;
 		this.withdraw = def;
 		this.chest = def;
+		this.check = def;
 		this.spawner = def;
 	}
 
@@ -88,6 +93,7 @@ public class DefaultPermissions {
 							  boolean canTntfill,
 							  boolean canWithdraw,
 							  boolean canChest,
+							  boolean canCheck,
 							  boolean canSpawners) {
 		this.ban = canBan;
 		this.build = canBuild;
@@ -115,6 +121,7 @@ public class DefaultPermissions {
 		this.tntfill = canTntfill;
 		this.withdraw = canWithdraw;
 		this.chest = canChest;
+		this.check = canCheck;
 		this.spawner = canSpawners;
 	}
 
@@ -146,6 +153,7 @@ public class DefaultPermissions {
 		else if (name == "tntfill") return this.tntfill;
 		else if (name == "withdraw") return this.withdraw;
 		else if (name == "chest") return this.chest;
+		else if(name == "check") return this.check;
 		else if (name == "spawner") return this.spawner;
 		else return false;
 	}

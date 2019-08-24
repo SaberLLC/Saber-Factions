@@ -7,7 +7,7 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLogout extends FCommand {
 
-    public CmdLogout(){
+    public CmdLogout() {
         super();
         this.aliases.add("logout");
 
@@ -25,7 +25,7 @@ public class CmdLogout extends FCommand {
     public void perform() {
         LogoutHandler handler = LogoutHandler.getByName(fme.getPlayer().getName());
 
-        if(handler.isLogoutActive(fme.getPlayer())){
+        if (handler.isLogoutActive(fme.getPlayer())) {
             fme.msg(TL.COMMAND_LOGOUT_ACTIVE);
             return;
         }
@@ -35,5 +35,7 @@ public class CmdLogout extends FCommand {
     }
 
     @Override
-    public TL getUsageTranslation() { return TL.COMMAND_LOGOUT_DESCRIPTION; }
+    public TL getUsageTranslation() {
+        return TL.COMMAND_LOGOUT_DESCRIPTION;
+    }
 }

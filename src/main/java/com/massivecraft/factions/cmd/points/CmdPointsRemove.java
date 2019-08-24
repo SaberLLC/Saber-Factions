@@ -47,7 +47,7 @@ public class CmdPointsRemove extends FCommand {
             return;
         }
 
-        if(argAsInt(1) <= 0){
+        if (argAsInt(1) <= 0) {
             msg(TL.COMMAND_POINTS_INSUFFICIENT);
             return;
         }

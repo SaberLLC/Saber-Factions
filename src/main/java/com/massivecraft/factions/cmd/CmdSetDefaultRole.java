@@ -6,43 +6,43 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSetDefaultRole extends FCommand {
 
-	public CmdSetDefaultRole() {
-		super();
+    public CmdSetDefaultRole() {
+        super();
 
-		this.aliases.add("defaultrole");
-		this.aliases.add("defaultrank");
-		this.aliases.add("default");
-		this.aliases.add("def");
-		this.requiredArgs.add("role");
+        this.aliases.add("defaultrole");
+        this.aliases.add("defaultrank");
+        this.aliases.add("default");
+        this.aliases.add("def");
+        this.requiredArgs.add("role");
 
-		this.senderMustBeAdmin = true;
-		this.senderMustBePlayer = true;
-		senderMustBeColeader = false;
-
-
-		this.permission = Permission.DEFAULTRANK.node;
-	}
-
-	@Override
-	public void perform() {
-		Role target = Role.fromString(argAsString(0).toUpperCase());
-		if (target == null) {
-			msg(TL.COMMAND_SETDEFAULTROLE_INVALIDROLE, argAsString(0));
-			return;
-		}
-
-		if (target == Role.LEADER) {
-			msg(TL.COMMAND_SETDEFAULTROLE_NOTTHATROLE, argAsString(0));
-			return;
-		}
+        this.senderMustBeAdmin = true;
+        this.senderMustBePlayer = true;
+        senderMustBeColeader = false;
 
 
-		myFaction.setDefaultRole(target);
-		msg(TL.COMMAND_SETDEFAULTROLE_SUCCESS, target.nicename);
-	}
+        this.permission = Permission.DEFAULTRANK.node;
+    }
 
-	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_SETDEFAULTROLE_DESCRIPTION;
-	}
+    @Override
+    public void perform() {
+        Role target = Role.fromString(argAsString(0).toUpperCase());
+        if (target == null) {
+            msg(TL.COMMAND_SETDEFAULTROLE_INVALIDROLE, argAsString(0));
+            return;
+        }
+
+        if (target == Role.LEADER) {
+            msg(TL.COMMAND_SETDEFAULTROLE_NOTTHATROLE, argAsString(0));
+            return;
+        }
+
+
+        myFaction.setDefaultRole(target);
+        msg(TL.COMMAND_SETDEFAULTROLE_SUCCESS, target.nicename);
+    }
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_SETDEFAULTROLE_DESCRIPTION;
+    }
 }

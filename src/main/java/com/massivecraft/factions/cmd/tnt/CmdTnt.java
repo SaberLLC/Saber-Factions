@@ -116,8 +116,10 @@ public class CmdTnt extends FCommand {
                     return;
                 }
 
-                for (int i = 0; i <= fullStacks - 1; i++) me.getPlayer().getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), 64));
-                if (remainderAmt != 0) me.getPlayer().getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), remainderAmt));
+                for (int i = 0; i <= fullStacks - 1; i++)
+                    me.getPlayer().getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), 64));
+                if (remainderAmt != 0)
+                    me.getPlayer().getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), remainderAmt));
 
                 fme.getFaction().takeTnt(amount);
                 me.updateInventory();

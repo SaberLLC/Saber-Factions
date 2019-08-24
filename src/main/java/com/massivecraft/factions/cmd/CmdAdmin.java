@@ -12,95 +12,95 @@ import org.bukkit.ChatColor;
 
 public class CmdAdmin extends FCommand {
 
-	public CmdAdmin() {
-		super();
-		this.aliases.add("admin");
-		this.aliases.add("setadmin");
-		this.aliases.add("leader");
-		this.aliases.add("setleader");
+    public CmdAdmin() {
+        super();
+        this.aliases.add("admin");
+        this.aliases.add("setadmin");
+        this.aliases.add("leader");
+        this.aliases.add("setleader");
 
-		this.requiredArgs.add("player name");
+        this.requiredArgs.add("player name");
 
-		this.permission = Permission.ADMIN.node;
-		this.disableOnLock = true;
-		this.disableOnSpam = true;
+        this.permission = Permission.ADMIN.node;
+        this.disableOnLock = true;
+        this.disableOnSpam = true;
 
 
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeAdmin = false;
-	}
+        senderMustBePlayer = false;
+        senderMustBeMember = false;
+        senderMustBeModerator = false;
+        senderMustBeAdmin = false;
+    }
 
-	@Override
-	public void perform() {
-		FPlayer fyou = this.argAsBestFPlayerMatch(0);
-		if (fyou == null || fyou.getFaction().isWarZone() || fyou.getFaction().isWilderness() || fyou.getFaction().isSafeZone()) {
-			return;
-		}
+    @Override
+    public void perform() {
+        FPlayer fyou = this.argAsBestFPlayerMatch(0);
+        if (fyou == null || fyou.getFaction().isWarZone() || fyou.getFaction().isWilderness() || fyou.getFaction().isSafeZone()) {
+            return;
+        }
 
-		boolean permAny = Permission.ADMIN_ANY.has(sender, false);
-		Faction targetFaction = fyou.getFaction();
+        boolean permAny = Permission.ADMIN_ANY.has(sender, false);
+        Faction targetFaction = fyou.getFaction();
 
-		if(fyou.isAlt()){
-			msg(ChatColor.RED + "You can not promote alt accounts.");
-			return;
-		}
+        if (fyou.isAlt()) {
+            msg(ChatColor.RED + "You can not promote alt accounts.");
+            return;
+        }
 
-		if (targetFaction != myFaction && !permAny) {
-			msg(TL.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(fme, true));
-			return;
-		}
+        if (targetFaction != myFaction && !permAny) {
+            msg(TL.COMMAND_ADMIN_NOTMEMBER, fyou.describeTo(fme, true));
+            return;
+        }
 
-		if (fme != null && fme.getRole() != Role.LEADER && !permAny) {
-			msg(TL.COMMAND_ADMIN_NOTADMIN);
-			return;
-		}
+        if (fme != null && fme.getRole() != Role.LEADER && !permAny) {
+            msg(TL.COMMAND_ADMIN_NOTADMIN);
+            return;
+        }
 
-		if (fyou == fme && !permAny) {
-			msg(TL.COMMAND_ADMIN_TARGETSELF);
-			return;
-		}
+        if (fyou == fme && !permAny) {
+            msg(TL.COMMAND_ADMIN_TARGETSELF);
+            return;
+        }
 
-		// only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
-		if (fyou.getFaction() != targetFaction) {
-			FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(me), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
-			Bukkit.getServer().getPluginManager().callEvent(event);
-			if (event.isCancelled()) {
-				return;
-			}
-		}
+        // only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
+        if (fyou.getFaction() != targetFaction) {
+            FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(me), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
+            Bukkit.getServer().getPluginManager().callEvent(event);
+            if (event.isCancelled()) {
+                return;
+            }
+        }
 
-		FPlayer admin = targetFaction.getFPlayerAdmin();
+        FPlayer admin = targetFaction.getFPlayerAdmin();
 
-		if (fyou == admin && fyou.getFaction().getSize() == 1) {
-			msg(TL.COMMAND_ADMIN_NOMEMBERS);
-			return;
-		}
+        if (fyou == admin && fyou.getFaction().getSize() == 1) {
+            msg(TL.COMMAND_ADMIN_NOMEMBERS);
+            return;
+        }
 
-		// if target player is currently admin, demote and replace him
-		if (fyou == admin) {
-				targetFaction.promoteNewLeader();
-				msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(fme, true));
-				fyou.msg(TL.COMMAND_ADMIN_DEMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fyou, true));
-				return;
-		}
+        // if target player is currently admin, demote and replace him
+        if (fyou == admin) {
+            targetFaction.promoteNewLeader();
+            msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(fme, true));
+            fyou.msg(TL.COMMAND_ADMIN_DEMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fyou, true));
+            return;
+        }
 
-		// promote target player, and demote existing admin if one exists
-		if (admin != null) {
-			admin.setRole(Role.COLEADER);
-		}
-		fyou.setRole(Role.LEADER);
-		msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(fme, true));
+        // promote target player, and demote existing admin if one exists
+        if (admin != null) {
+            admin.setRole(Role.COLEADER);
+        }
+        fyou.setRole(Role.LEADER);
+        msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(fme, true));
 
-		// Inform all players
-		for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-			fplayer.msg(TL.COMMAND_ADMIN_PROMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
-		}
-	}
+        // Inform all players
+        for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+            fplayer.msg(TL.COMMAND_ADMIN_PROMOTED, senderIsConsole ? TL.GENERIC_SERVERADMIN.toString() : fme.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
+        }
+    }
 
-	public TL getUsageTranslation() {
-		return TL.COMMAND_ADMIN_DESCRIPTION;
-	}
+    public TL getUsageTranslation() {
+        return TL.COMMAND_ADMIN_DESCRIPTION;
+    }
 
 }

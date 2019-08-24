@@ -33,7 +33,7 @@ public class CmdInviteAlt extends FCommand {
 
     @Override
     public void perform() {
-        if(!P.p.getConfig().getBoolean("f-alts.Enabled", false)){
+        if (!P.p.getConfig().getBoolean("f-alts.Enabled", false)) {
             fme.msg(TL.GENERIC_DISABLED);
             return;
         }

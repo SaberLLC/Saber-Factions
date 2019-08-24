@@ -20,7 +20,7 @@ public class MissionHandler implements Listener {
 
     private P plugin;
 
-    public MissionHandler(P plugin){
+    public MissionHandler(P plugin) {
         this.plugin = plugin;
     }
 

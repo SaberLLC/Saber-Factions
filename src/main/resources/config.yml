@@ -472,6 +472,7 @@ fperm-gui:
       tntbank: BEACON
       tntfill: TNT
       chest: ENDER_CHEST
+      check: WATCH
       spawner: MOB_SPAWNER
       home: ENDER_EYE
     slots:
@@ -505,8 +506,9 @@ fperm-gui:
       tntbank: 39
       tntfill: 41
       chest: 42
+      check: 50
       spawner: 38
-      home: 49
+      home: 48
     # {action} Action name eg: Setwarp, Kick
     # {action-access} Access name eg: Allow, Deny
     # {action-access-color} Access color eg: Allow;GREEN

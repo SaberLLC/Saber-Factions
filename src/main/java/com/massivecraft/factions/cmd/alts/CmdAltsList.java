@@ -33,17 +33,17 @@ public class CmdAltsList extends FCommand {
     @Override
     public void perform() {
         Faction faction = myFaction;
-        if(argIsSet(0)){
+        if (argIsSet(0)) {
             faction = argAsFaction(0);
         }
-        if(faction == null)
+        if (faction == null)
             return;
 
-        if(faction != myFaction && !fme.isAdminBypassing()){
+        if (faction != myFaction && !fme.isAdminBypassing()) {
             return;
         }
 
-        if(faction.getAltPlayers().size() == 0){
+        if (faction.getAltPlayers().size() == 0) {
             msg(TL.COMMAND_ALTS_LIST_NOALTS, faction.getTag());
             return;
         }

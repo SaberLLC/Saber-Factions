@@ -12,55 +12,55 @@ import org.bukkit.Bukkit;
 
 public class CmdUnclaimall extends FCommand {
 
-	public CmdUnclaimall() {
-		this.aliases.add("unclaimall");
-		this.aliases.add("declaimall");
+    public CmdUnclaimall() {
+        this.aliases.add("unclaimall");
+        this.aliases.add("declaimall");
 
-		//this.requiredArgs.add("");
-		//this.optionalArgs.put("", "");
+        //this.requiredArgs.add("");
+        //this.optionalArgs.put("", "");
 
-		this.permission = Permission.UNCLAIM_ALL.node;
-		this.disableOnLock = true;
+        this.permission = Permission.UNCLAIM_ALL.node;
+        this.disableOnLock = true;
 
-		senderMustBePlayer = true;
-		senderMustBeMember = false;
-		senderMustBeModerator = true;
-		senderMustBeAdmin = false;
+        senderMustBePlayer = true;
+        senderMustBeMember = false;
+        senderMustBeModerator = true;
+        senderMustBeAdmin = false;
 
-	}
+    }
 
-	@Override
-	public void perform() {
-		if (Econ.shouldBeUsed()) {
-			double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
-			if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
-				if (!Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
-					return;
-				}
-			} else {
-				if (!Econ.modifyMoney(fme, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
-					return;
-				}
-			}
-		}
+    @Override
+    public void perform() {
+        if (Econ.shouldBeUsed()) {
+            double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
+            if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
+                if (!Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
+                    return;
+                }
+            } else {
+                if (!Econ.modifyMoney(fme, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
+                    return;
+                }
+            }
+        }
 
-		LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(myFaction, fme);
-		Bukkit.getScheduler().runTask(P.p, () -> Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent));
-		if (unclaimAllEvent.isCancelled()) {
-			return;
-		}
+        LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(myFaction, fme);
+        Bukkit.getScheduler().runTask(P.p, () -> Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent));
+        if (unclaimAllEvent.isCancelled()) {
+            return;
+        }
 
-		Board.getInstance().unclaimAll(myFaction.getId());
-		myFaction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, fme.describeTo(myFaction, true));
+        Board.getInstance().unclaimAll(myFaction.getId());
+        myFaction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, fme.describeTo(myFaction, true));
 
-		if (Conf.logLandUnclaims) {
-			P.p.log(TL.COMMAND_UNCLAIMALL_LOG.format(fme.getName(), myFaction.getTag()));
-		}
-	}
+        if (Conf.logLandUnclaims) {
+            P.p.log(TL.COMMAND_UNCLAIMALL_LOG.format(fme.getName(), myFaction.getTag()));
+        }
+    }
 
-	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_UNCLAIMALL_DESCRIPTION;
-	}
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_UNCLAIMALL_DESCRIPTION;
+    }
 
 }

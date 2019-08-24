@@ -12,30 +12,30 @@ import org.bukkit.event.player.PlayerLoginEvent;
 
 public class MPluginSecretPlayerListener implements Listener {
 
-	private MPlugin p;
+    private MPlugin p;
 
-	public MPluginSecretPlayerListener(MPlugin p) {
-		this.p = p;
-	}
+    public MPluginSecretPlayerListener(MPlugin p) {
+        this.p = p;
+    }
 
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-		if (FactionsPlayerListener.preventCommand(event.getMessage(), event.getPlayer())) {
-			if (p.logPlayerCommands()) {
-				Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
-			}
-			event.setCancelled(true);
-		}
-	}
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        if (FactionsPlayerListener.preventCommand(event.getMessage(), event.getPlayer())) {
+            if (p.logPlayerCommands()) {
+                Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
+            }
+            event.setCancelled(true);
+        }
+    }
 
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-	public void onPlayerChat(AsyncPlayerChatEvent event) {
-		if (p.handleCommand(event.getPlayer(), event.getMessage(), false, true)) {
-			if (p.logPlayerCommands()) {
-				Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
-			}
-			event.setCancelled(true);
-		}
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        if (p.handleCommand(event.getPlayer(), event.getMessage(), false, true)) {
+            if (p.logPlayerCommands()) {
+                Bukkit.getLogger().info("[PLAYER_COMMAND] " + event.getPlayer().getName() + ": " + event.getMessage());
+            }
+            event.setCancelled(true);
+        }
 
         /* Should be handled by stuff in FactionsChatListener
         Player speaker = event.getPlayer();
@@ -43,10 +43,10 @@ public class MPluginSecretPlayerListener implements Listener {
         format = format.replace(Conf.chatTagReplaceString, P.p.getPlayerFactionTag(speaker)).replace("[FACTION_TITLE]", P.p.getPlayerTitle(speaker));
         event.setFormat(format);
         */
-	}
+    }
 
-	@EventHandler(priority = EventPriority.LOWEST)
-	public void onPlayerPreLogin(PlayerLoginEvent event) {
-		FPlayers.getInstance().getByPlayer(event.getPlayer());
-	}
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerPreLogin(PlayerLoginEvent event) {
+        FPlayers.getInstance().getByPlayer(event.getPlayer());
+    }
 }

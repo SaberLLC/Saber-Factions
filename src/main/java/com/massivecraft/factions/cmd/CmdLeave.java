@@ -5,32 +5,32 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLeave extends FCommand {
 
-	public CmdLeave() {
-		super();
-		this.aliases.add("leave");
+    public CmdLeave() {
+        super();
+        this.aliases.add("leave");
 
-		//this.requiredArgs.add("");
-		//this.optionalArgs.put("", "");
+        //this.requiredArgs.add("");
+        //this.optionalArgs.put("", "");
 
-		this.permission = Permission.LEAVE.node;
-		this.disableOnLock = true;
+        this.permission = Permission.LEAVE.node;
+        this.disableOnLock = true;
 
 
-		senderMustBePlayer = true;
-		senderMustBeMember = true;
-		senderMustBeModerator = false;
-		senderMustBeColeader = false;
-		senderMustBeAdmin = false;
-	}
+        senderMustBePlayer = true;
+        senderMustBeMember = true;
+        senderMustBeModerator = false;
+        senderMustBeColeader = false;
+        senderMustBeAdmin = false;
+    }
 
-	@Override
-	public void perform() {
-		fme.leave(true);
-	}
+    @Override
+    public void perform() {
+        fme.leave(true);
+    }
 
-	@Override
-	public TL getUsageTranslation() {
-		return TL.LEAVE_DESCRIPTION;
-	}
+    @Override
+    public TL getUsageTranslation() {
+        return TL.LEAVE_DESCRIPTION;
+    }
 
 }

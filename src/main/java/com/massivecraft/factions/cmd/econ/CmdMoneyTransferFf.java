@@ -13,52 +13,52 @@ import org.bukkit.entity.Player;
 
 public class CmdMoneyTransferFf extends FCommand {
 
-	public CmdMoneyTransferFf() {
-		this.aliases.add("ff");
+    public CmdMoneyTransferFf() {
+        this.aliases.add("ff");
 
-		this.requiredArgs.add("amount");
-		this.requiredArgs.add("faction");
-		this.requiredArgs.add("faction");
+        this.requiredArgs.add("amount");
+        this.requiredArgs.add("faction");
+        this.requiredArgs.add("faction");
 
-		//this.optionalArgs.put("", "");
+        //this.optionalArgs.put("", "");
 
-		this.permission = Permission.MONEY_F2F.node;
+        this.permission = Permission.MONEY_F2F.node;
 
-		this.isMoneyCommand = true;
+        this.isMoneyCommand = true;
 
 
-		senderMustBePlayer = false;
-		senderMustBeMember = false;
-		senderMustBeModerator = false;
-		senderMustBeColeader = false;
-		senderMustBeAdmin = false;
-	}
+        senderMustBePlayer = false;
+        senderMustBeMember = false;
+        senderMustBeModerator = false;
+        senderMustBeColeader = false;
+        senderMustBeAdmin = false;
+    }
 
-	@Override
-	public void perform() {
-		double amount = this.argAsDouble(0, 0d);
-		EconomyParticipator from = this.argAsFaction(1);
-		if (from == null) {
-			return;
-		}
-		EconomyParticipator to = this.argAsFaction(2);
-		if (to == null) {
-			return;
-		}
-		if (Conf.econFactionStartingBalance != 0 && (System.currentTimeMillis() - myFaction.getFoundedDate()) <= (Conf.econDenyWithdrawWhenMinutesAgeLessThan * 6000)) {
-			msg("Your faction is too young to transfer money like this");
-			return;
-		}
-		boolean success = Econ.transferMoney(fme, from, to, amount);
+    @Override
+    public void perform() {
+        double amount = this.argAsDouble(0, 0d);
+        EconomyParticipator from = this.argAsFaction(1);
+        if (from == null) {
+            return;
+        }
+        EconomyParticipator to = this.argAsFaction(2);
+        if (to == null) {
+            return;
+        }
+        if (Conf.econFactionStartingBalance != 0 && (System.currentTimeMillis() - myFaction.getFoundedDate()) <= (Conf.econDenyWithdrawWhenMinutesAgeLessThan * 6000)) {
+            msg("Your faction is too young to transfer money like this");
+            return;
+        }
+        boolean success = Econ.transferMoney(fme, from, to, amount);
 
-		if (success && Conf.logMoneyTransactions) {
-			String name = sender instanceof Player ? fme.getName() : sender.getName();
-			P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
-		}
-	}
+        if (success && Conf.logMoneyTransactions) {
+            String name = sender instanceof Player ? fme.getName() : sender.getName();
+            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+        }
+    }
 
-	@Override
-	public TL getUsageTranslation() {
-		return TL.COMMAND_MONEYTRANSFERFF_DESCRIPTION;
-	}
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MONEYTRANSFERFF_DESCRIPTION;
+    }
 }

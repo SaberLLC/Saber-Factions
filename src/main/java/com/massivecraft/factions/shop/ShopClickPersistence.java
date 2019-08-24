@@ -18,13 +18,6 @@ import java.util.List;
 
 public class ShopClickPersistence implements Listener {
 
-    public void runCommands(List<String> list, Player p) {
-        for (String cmd : list) {
-            cmd = cmd.replace("%player%", p.getName());
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
-        }
-    }
-
     public static String color(String line) {
         line = ChatColor.translateAlternateColorCodes('&', line);
         return line;
@@ -37,6 +30,13 @@ public class ShopClickPersistence implements Listener {
         return lore;
     }
 
+    public void runCommands(List<String> list, Player p) {
+        for (String cmd : list) {
+            cmd = cmd.replace("%player%", p.getName());
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+        }
+    }
+
     @EventHandler
     public void click(InventoryClickEvent e) {
         Inventory i = e.getClickedInventory();
@@ -46,7 +46,7 @@ public class ShopClickPersistence implements Listener {
 
         if (e.getView().getTitle().equalsIgnoreCase(color(config.getString("F-Shop.GUI.Name")))) {
             ItemStack item = e.getCurrentItem();
-            if(item == null) return;
+            if (item == null) return;
             String name = color(item.getItemMeta().getDisplayName());
             e.setCancelled(true);
             int t = e.getSlot();

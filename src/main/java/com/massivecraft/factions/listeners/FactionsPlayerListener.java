@@ -46,9 +46,8 @@ import java.util.logging.Level;
 
 public class FactionsPlayerListener implements Listener {
 
-    private Set<FLocation> corners;
     HashMap<Player, Boolean> fallMap = new HashMap<>();
-
+    private Set<FLocation> corners;
     // Holds the next time a player can have a map shown.
     private HashMap<UUID, Long> showTimes = new HashMap<>();
     // for handling people who repeatedly spam attempts to open a door (or similar) in another faction's territory
@@ -287,6 +286,173 @@ public class FactionsPlayerListener implements Listener {
         return false;
     }
 
+    /// <summary>
+    ///	This checks if the current player can execute an action based on it's factions access and surroundings
+    /// It will grant access in the following priorities:
+    /// - If Faction Land is Owned and the Owner is the current player, or player is faction leader.
+    /// - If Faction Land is not Owned and my access value is not set to DENY
+    /// - If none of the filters above matches, then we consider access is set to ALLOW|UNDEFINED
+    /// This check does not performs any kind of bypass check (i.e.: me.isAdminBypassing())
+    /// </summary>
+    /// <param name="player">The player entity which the check will be made upon</param>
+    /// <param name="me">The Faction player object related to the player</param>
+    /// <param name="loc">The World location where the action is being executed</param>
+    /// <param name="myFaction">The faction of the player being checked</param>
+    /// <param name="access">The current's faction access permission for the action</param>
+    private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction factionToCheck, Access access, PermissableAction action, boolean pain) {
+        boolean doPain = pain && Conf.handleExploitInteractionSpam;
+        if (access != null && access != Access.UNDEFINED) {
+            // TODO: Update this once new access values are added other than just allow / deny.
+            boolean landOwned = (factionToCheck.doesLocationHaveOwnersSet(loc) && !factionToCheck.getOwnerList(loc).isEmpty());
+            if ((landOwned && factionToCheck.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(factionToCheck.getId())))
+                return true;
+            else if (landOwned && !factionToCheck.getOwnerListString(loc).contains(player.getName())) {
+                me.msg("<b>You can't do that in this territory, it is owned by: " + factionToCheck.getOwnerListString(loc));
+                if (doPain) {
+                    player.damage(Conf.actionDeniedPainAmount);
+                }
+                return false;
+            } else if (!landOwned && access == Access.ALLOW) return true;
+            else {
+                me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
+                return false;
+            }
+        }
+        // Approves any permission check if the player in question is a leader AND owns the faction.
+        if (me.getRole().equals(Role.LEADER) && me.getFaction().equals(factionToCheck)) return true;
+        me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
+        return false;
+    }
+
+    /// <summary>
+    /// This will try to resolve a permission action based on the item material, if it's not usable, will return null
+    /// </summary>
+    private static PermissableAction GetPermissionFromUsableBlock(Block block) {
+        return GetPermissionFromUsableBlock(block.getType());
+    }
+
+    /// <summary>
+    /// This will try to resolve a permission action based on the item material, if it's not usable, will return null
+    /// <summary>
+    private static PermissableAction GetPermissionFromUsableBlock(Material material) {
+        // Check for doors that might have diff material name in old version.
+        if (material.name().contains("DOOR") || material.name().contains("FENCE_GATE"))
+            return PermissableAction.DOOR;
+        if (material.name().toUpperCase().contains("BUTTON") || material.name().toUpperCase().contains("PRESSURE"))
+            return PermissableAction.BUTTON;
+        if (P.p.mc113) {
+            switch (material) {
+                case LEVER:
+                    return PermissableAction.LEVER;
+
+                case ACACIA_BUTTON:
+                case BIRCH_BUTTON:
+                case DARK_OAK_BUTTON:
+                case JUNGLE_BUTTON:
+                case OAK_BUTTON:
+                case SPRUCE_BUTTON:
+                case STONE_BUTTON:
+                    return PermissableAction.BUTTON;
+
+                case ACACIA_DOOR:
+                case BIRCH_DOOR:
+                case IRON_DOOR:
+                case JUNGLE_DOOR:
+                case OAK_DOOR:
+                case SPRUCE_DOOR:
+                case DARK_OAK_DOOR:
+
+                case ACACIA_TRAPDOOR:
+                case BIRCH_TRAPDOOR:
+                case DARK_OAK_TRAPDOOR:
+                case IRON_TRAPDOOR:
+                case JUNGLE_TRAPDOOR:
+                case OAK_TRAPDOOR:
+                case SPRUCE_TRAPDOOR:
+
+                case ACACIA_FENCE_GATE:
+                case BIRCH_FENCE_GATE:
+                case DARK_OAK_FENCE_GATE:
+                case JUNGLE_FENCE_GATE:
+                case OAK_FENCE_GATE:
+                case SPRUCE_FENCE_GATE:
+                    return PermissableAction.DOOR;
+
+                case CHEST:
+                case TRAPPED_CHEST:
+                case CHEST_MINECART:
+
+                case SHULKER_BOX:
+                case BLACK_SHULKER_BOX:
+                case BLUE_SHULKER_BOX:
+                case BROWN_SHULKER_BOX:
+                case CYAN_SHULKER_BOX:
+                case GRAY_SHULKER_BOX:
+                case GREEN_SHULKER_BOX:
+                case LIGHT_BLUE_SHULKER_BOX:
+                case LIGHT_GRAY_SHULKER_BOX:
+                case LIME_SHULKER_BOX:
+                case MAGENTA_SHULKER_BOX:
+                case ORANGE_SHULKER_BOX:
+                case PINK_SHULKER_BOX:
+                case PURPLE_SHULKER_BOX:
+                case RED_SHULKER_BOX:
+                case WHITE_SHULKER_BOX:
+                case YELLOW_SHULKER_BOX:
+
+                case FURNACE:
+                case DROPPER:
+                case DISPENSER:
+                case ENCHANTING_TABLE:
+                case BREWING_STAND:
+                case CAULDRON:
+                case HOPPER:
+                case BEACON:
+                case JUKEBOX:
+                case ANVIL:
+                case CHIPPED_ANVIL:
+                case DAMAGED_ANVIL:
+                    return PermissableAction.CONTAINER;
+                default:
+                    return null;
+            }
+        } else {
+            switch (material) {
+                case LEVER:
+                    return PermissableAction.LEVER;
+                case DARK_OAK_DOOR:
+                case ACACIA_DOOR:
+                case BIRCH_DOOR:
+                case IRON_DOOR:
+                case JUNGLE_DOOR:
+                case SPRUCE_DOOR:
+
+                case ACACIA_FENCE_GATE:
+                case BIRCH_FENCE_GATE:
+                case DARK_OAK_FENCE_GATE:
+                case OAK_FENCE_GATE:
+                case JUNGLE_FENCE_GATE:
+                case SPRUCE_FENCE_GATE:
+                    return PermissableAction.DOOR;
+                case CHEST:
+                case ENDER_CHEST:
+                case TRAPPED_CHEST:
+                case DISPENSER:
+                case ENCHANTING_TABLE:
+                case DROPPER:
+                case FURNACE:
+                case HOPPER:
+                case ANVIL:
+                case CHIPPED_ANVIL:
+                case DAMAGED_ANVIL:
+                case BREWING_STAND:
+                    return PermissableAction.CONTAINER;
+                default:
+                    return null;
+            }
+        }
+    }
+
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
         initPlayer(event.getPlayer());
@@ -486,12 +652,10 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
-
     private String convertTime(int time) {
         String result = String.valueOf(Math.round((System.currentTimeMillis() / 1000L - time) / 36.0D) / 100.0D);
         return (result.length() == 3 ? result + "0" : result) + "/hrs ago";
     }
-
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
@@ -565,27 +729,27 @@ public class FactionsPlayerListener implements Listener {
                     enableFly(me);
                 }
             }
-                if (me.getAutoClaimFor() != null) {
-                    me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
-                    if (Conf.disableFlightOnFactionClaimChange) CmdFly.disableFlight(me);
-                } else if (me.isAutoSafeClaimEnabled()) {
-                    if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
-                        me.setIsAutoSafeClaimEnabled(false);
-                    } else {
-                        if (!Board.getInstance().getFactionAt(to).isSafeZone()) {
-                            Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
-                            me.msg(TL.PLAYER_SAFEAUTO);
-                        }
+            if (me.getAutoClaimFor() != null) {
+                me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
+                if (Conf.disableFlightOnFactionClaimChange) CmdFly.disableFlight(me);
+            } else if (me.isAutoSafeClaimEnabled()) {
+                if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
+                    me.setIsAutoSafeClaimEnabled(false);
+                } else {
+                    if (!Board.getInstance().getFactionAt(to).isSafeZone()) {
+                        Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
+                        me.msg(TL.PLAYER_SAFEAUTO);
                     }
-                } else if (me.isAutoWarClaimEnabled()) {
-                    if (!Permission.MANAGE_WAR_ZONE.has(player)) {
-                        me.setIsAutoWarClaimEnabled(false);
-                    } else {
-                        if (!Board.getInstance().getFactionAt(to).isWarZone()) {
-                            Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
-                            me.msg(TL.PLAYER_WARAUTO);
-                        }
+                }
+            } else if (me.isAutoWarClaimEnabled()) {
+                if (!Permission.MANAGE_WAR_ZONE.has(player)) {
+                    me.setIsAutoWarClaimEnabled(false);
+                } else {
+                    if (!Board.getInstance().getFactionAt(to).isWarZone()) {
+                        Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
+                        me.msg(TL.PLAYER_WARAUTO);
                     }
+                }
             }
         }
 
@@ -804,192 +968,8 @@ public class FactionsPlayerListener implements Listener {
         FTeamWrapper.applyUpdatesLater(event.getFaction());
     }
 
-    private static class InteractAttemptSpam {
-        private int attempts = 0;
-        private long lastAttempt = System.currentTimeMillis();
-
-        // returns the current attempt count
-        public int increment() {
-            long now = System.currentTimeMillis();
-            if (now > lastAttempt + 2000) {
-                attempts = 1;
-            } else {
-                attempts++;
-            }
-            lastAttempt = now;
-            return attempts;
-        }
-    }
-
     public Set<FLocation> getCorners() {
         return this.corners;
-    }
-
-    /// <summary>
-    ///	This checks if the current player can execute an action based on it's factions access and surroundings
-    /// It will grant access in the following priorities:
-    /// - If Faction Land is Owned and the Owner is the current player, or player is faction leader.
-    /// - If Faction Land is not Owned and my access value is not set to DENY
-    /// - If none of the filters above matches, then we consider access is set to ALLOW|UNDEFINED
-    /// This check does not performs any kind of bypass check (i.e.: me.isAdminBypassing())
-    /// </summary>
-    /// <param name="player">The player entity which the check will be made upon</param>
-    /// <param name="me">The Faction player object related to the player</param>
-    /// <param name="loc">The World location where the action is being executed</param>
-    /// <param name="myFaction">The faction of the player being checked</param>
-    /// <param name="access">The current's faction access permission for the action</param>
-    private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction factionToCheck, Access access, PermissableAction action, boolean pain) {
-        boolean doPain = pain && Conf.handleExploitInteractionSpam;
-        if (access != null && access != Access.UNDEFINED) {
-            // TODO: Update this once new access values are added other than just allow / deny.
-            boolean landOwned = (factionToCheck.doesLocationHaveOwnersSet(loc) && !factionToCheck.getOwnerList(loc).isEmpty());
-            if ((landOwned && factionToCheck.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(factionToCheck.getId())))
-                return true;
-            else if (landOwned && !factionToCheck.getOwnerListString(loc).contains(player.getName())) {
-                me.msg("<b>You can't do that in this territory, it is owned by: " + factionToCheck.getOwnerListString(loc));
-                if (doPain) {
-                    player.damage(Conf.actionDeniedPainAmount);
-                }
-                return false;
-            } else if (!landOwned && access == Access.ALLOW) return true;
-            else {
-                me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
-                return false;
-            }
-        }
-        // Approves any permission check if the player in question is a leader AND owns the faction.
-        if (me.getRole().equals(Role.LEADER) && me.getFaction().equals(factionToCheck)) return true;
-        me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
-        return false;
-    }
-
-    /// <summary>
-    /// This will try to resolve a permission action based on the item material, if it's not usable, will return null
-    /// </summary>
-    private static PermissableAction GetPermissionFromUsableBlock(Block block) {
-        return GetPermissionFromUsableBlock(block.getType());
-    }
-
-    /// <summary>
-    /// This will try to resolve a permission action based on the item material, if it's not usable, will return null
-    /// <summary>
-    private static PermissableAction GetPermissionFromUsableBlock(Material material) {
-        // Check for doors that might have diff material name in old version.
-        if (material.name().contains("DOOR") || material.name().contains("FENCE_GATE"))
-            return PermissableAction.DOOR;
-        if (material.name().toUpperCase().contains("BUTTON") || material.name().toUpperCase().contains("PRESSURE"))
-            return PermissableAction.BUTTON;
-        if (P.p.mc113) {
-            switch (material) {
-                case LEVER:
-                    return PermissableAction.LEVER;
-
-                case ACACIA_BUTTON:
-                case BIRCH_BUTTON:
-                case DARK_OAK_BUTTON:
-                case JUNGLE_BUTTON:
-                case OAK_BUTTON:
-                case SPRUCE_BUTTON:
-                case STONE_BUTTON:
-                    return PermissableAction.BUTTON;
-
-                case ACACIA_DOOR:
-                case BIRCH_DOOR:
-                case IRON_DOOR:
-                case JUNGLE_DOOR:
-                case OAK_DOOR:
-                case SPRUCE_DOOR:
-                case DARK_OAK_DOOR:
-
-                case ACACIA_TRAPDOOR:
-                case BIRCH_TRAPDOOR:
-                case DARK_OAK_TRAPDOOR:
-                case IRON_TRAPDOOR:
-                case JUNGLE_TRAPDOOR:
-                case OAK_TRAPDOOR:
-                case SPRUCE_TRAPDOOR:
-
-                case ACACIA_FENCE_GATE:
-                case BIRCH_FENCE_GATE:
-                case DARK_OAK_FENCE_GATE:
-                case JUNGLE_FENCE_GATE:
-                case OAK_FENCE_GATE:
-                case SPRUCE_FENCE_GATE:
-                    return PermissableAction.DOOR;
-
-                case CHEST:
-                case TRAPPED_CHEST:
-                case CHEST_MINECART:
-
-                case SHULKER_BOX:
-                case BLACK_SHULKER_BOX:
-                case BLUE_SHULKER_BOX:
-                case BROWN_SHULKER_BOX:
-                case CYAN_SHULKER_BOX:
-                case GRAY_SHULKER_BOX:
-                case GREEN_SHULKER_BOX:
-                case LIGHT_BLUE_SHULKER_BOX:
-                case LIGHT_GRAY_SHULKER_BOX:
-                case LIME_SHULKER_BOX:
-                case MAGENTA_SHULKER_BOX:
-                case ORANGE_SHULKER_BOX:
-                case PINK_SHULKER_BOX:
-                case PURPLE_SHULKER_BOX:
-                case RED_SHULKER_BOX:
-                case WHITE_SHULKER_BOX:
-                case YELLOW_SHULKER_BOX:
-
-                case FURNACE:
-                case DROPPER:
-                case DISPENSER:
-                case ENCHANTING_TABLE:
-                case BREWING_STAND:
-                case CAULDRON:
-                case HOPPER:
-                case BEACON:
-                case JUKEBOX:
-                case ANVIL:
-                case CHIPPED_ANVIL:
-                case DAMAGED_ANVIL:
-                    return PermissableAction.CONTAINER;
-                default:
-                    return null;
-            }
-        } else {
-            switch (material) {
-                case LEVER:
-                    return PermissableAction.LEVER;
-                case DARK_OAK_DOOR:
-                case ACACIA_DOOR:
-                case BIRCH_DOOR:
-                case IRON_DOOR:
-                case JUNGLE_DOOR:
-                case SPRUCE_DOOR:
-
-                case ACACIA_FENCE_GATE:
-                case BIRCH_FENCE_GATE:
-                case DARK_OAK_FENCE_GATE:
-                case OAK_FENCE_GATE:
-                case JUNGLE_FENCE_GATE:
-                case SPRUCE_FENCE_GATE:
-                    return PermissableAction.DOOR;
-                case CHEST:
-                case ENDER_CHEST:
-                case TRAPPED_CHEST:
-                case DISPENSER:
-                case ENCHANTING_TABLE:
-                case DROPPER:
-                case FURNACE:
-                case HOPPER:
-                case ANVIL:
-                case CHIPPED_ANVIL:
-                case DAMAGED_ANVIL:
-                case BREWING_STAND:
-                    return PermissableAction.CONTAINER;
-                default:
-                    return null;
-            }
-        }
     }
 
     @EventHandler
@@ -1024,6 +1004,23 @@ public class FactionsPlayerListener implements Listener {
                     e.getRecipients().remove(recipient);
                 }
             }
+        }
+    }
+
+    private static class InteractAttemptSpam {
+        private int attempts = 0;
+        private long lastAttempt = System.currentTimeMillis();
+
+        // returns the current attempt count
+        public int increment() {
+            long now = System.currentTimeMillis();
+            if (now > lastAttempt + 2000) {
+                attempts = 1;
+            } else {
+                attempts++;
+            }
+            lastAttempt = now;
+            return attempts;
         }
     }
 }

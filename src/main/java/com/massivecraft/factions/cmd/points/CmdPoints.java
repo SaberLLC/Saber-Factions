@@ -10,7 +10,7 @@ public class CmdPoints extends FCommand {
     public CmdPointsSet cmdPointsSet = new CmdPointsSet();
     public CmdPointsAdd cmdPointsAdd = new CmdPointsAdd();
 
-    public CmdPoints(){
+    public CmdPoints() {
         super();
         this.aliases.add("points");
 

@@ -94,7 +94,7 @@ public class ChestLogsHandler implements Listener {
                 if (e.getClickedInventory() != null) {
                     if (e.getClickedInventory().equals(topInventory)) {
                         ItemStack current = e.getCurrentItem();
-                        if(current == null) return;
+                        if (current == null) return;
                         ItemStack cursor = e.getCursor();
                         if (e.getClick().isShiftClick()) return;
                         if (cursor != null) {
