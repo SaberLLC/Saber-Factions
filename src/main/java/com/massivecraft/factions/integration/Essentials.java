@@ -19,11 +19,12 @@ public class Essentials {
 
 	private static IEssentials essentials;
 
-	public static void setup() {
+	public static IEssentials setup() {
 		Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
 		if (ess != null) {
-			essentials = (IEssentials) ess;
+			return Essentials.essentials = (IEssentials)ess;
 		}
+		return null;
 	}
 
 	public static boolean isOverBalCap(EconomyParticipator participator, double amount) {
