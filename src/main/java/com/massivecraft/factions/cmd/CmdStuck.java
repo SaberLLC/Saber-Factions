@@ -70,9 +70,14 @@ public class CmdStuck extends FCommand {
                     // spiral task to find nearest wilderness chunk
                     new SpiralTask(new FLocation(me), radius * 2) {
 
+                        final int buffer = P.p.getConfig().getInt("world-border.buffer", 0);
+
                         @Override
                         public boolean work() {
                             FLocation chunk = currentFLocation();
+                            if (chunk.isOutsideWorldBorder(buffer)) {
+                                return true;
+                            }
                             Faction faction = board.getFactionAt(chunk);
                             int buffer = P.p.getConfig().getInt("world-border.buffer", 0);
                             if (faction.isWilderness() && !chunk.isOutsideWorldBorder(buffer)) {

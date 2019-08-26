@@ -202,7 +202,8 @@ public class FLocation implements Serializable {
         int lim = FLocation.chunkToRegion((int) border.getSize()) - buffer;
         int diffX = chunk.getX() - x;
         int diffZ = chunk.getZ() - z;
-        return diffX > lim || diffZ > lim || -diffX > lim - 1 || -diffZ > lim - 1;
+
+        return (diffX > lim || diffZ > lim) || (-diffX >= lim || -diffZ >= lim);
     }
 
     //----------------------------------------------//
