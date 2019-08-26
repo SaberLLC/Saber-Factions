@@ -69,11 +69,11 @@ public class CmdStrikeSet extends FCommand {
     }
 
     private String getReason() {
-        String reason = "";
+        StringBuilder reason = new StringBuilder();
         for (int i = 3; i < args.size(); i++) {
-            reason += args.get(i) + " ";
+            reason.append(args.get(i)).append(" ");
         }
-        return reason;
+        return reason.toString();
     }
 
 

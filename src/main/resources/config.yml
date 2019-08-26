@@ -514,18 +514,18 @@ fperm-gui:
     # {action-access-color} Access color eg: Allow;GREEN
     placeholder-item:
       name: '&e&l(!) &ePermission: &6&n{action}'
-      lore:
+      Lore:
         - ''
         - '&6&l * &eStatus: &8[{action-access-color}{action-access}&8]'
         - ''
         - '&7Left click to &a&nAllow&7.'
         - '&7Right click to &c&nDeny&7.'
-        - '&7Middle click to &7&nUndefine&7.'
+        - '&7Middle click to &7&nUndefined&7.'
   # Back item will be take you to the previous GUI
   back-item:
     Type: ARROW
     Name: '&c&l<- Back'
-    lore:
+    Lore:
       - '&7Click to return to previous menu.'
   # Dummy Items
   dummy-item:
