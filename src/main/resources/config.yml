@@ -514,7 +514,7 @@ fperm-gui:
     # {action-access-color} Access color eg: Allow;GREEN
     placeholder-item:
       name: '&e&l(!) &ePermission: &6&n{action}'
-      Lore:
+      lore:
         - ''
         - '&6&l * &eStatus: &8[{action-access-color}{action-access}&8]'
         - ''
