@@ -17,7 +17,8 @@ public class UtilFly {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
             for (FPlayer fp : FPlayers.getInstance().getOnlinePlayers()) {
-                if (fp.isFlying()) fp.checkIfNearbyEnemies();
+                if (fp.isFlying())
+                    fp.checkIfNearbyEnemies();
             }
         }, 0, P.p.getConfig().getInt("fly-task-interval", 10));
     }
@@ -46,12 +47,12 @@ public class UtilFly {
         if (!P.p.getConfig().getBoolean("enable-faction-flight"))
             return;
 
-        if (me.isAdminBypassing() && me.isFlying())
+        if (me.isAdminBypassing() && me.isFlying() && me.getPlayer().hasPermission("factions.fly.enemy-bypass"))
             return;
 
         if (!me.isFlying()) {
-            if (me.isAdminBypassing()) {
-                UtilFly.setFly(me, true, false, false);
+            if (me.isAdminBypassing() || me.getPlayer().hasPermission("factions.fly.enemy-bypass")) {
+                UtilFly.setFly(me, true, true, false);
                 return;
             }
 
