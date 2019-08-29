@@ -137,17 +137,17 @@ public class CmdTntFill extends FCommand {
             return;
         }
         if (fme.getFaction().getTnt() < amount) {
-            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH.toString());
+            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
             return;
         }
         int fullStacks = amount / 64;
         int remainderAmt = amount % 64;
         if ((remainderAmt == 0 && getEmptySlots(me) <= fullStacks)) {
-            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH.toString());
+            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
             return;
         }
         if (getEmptySlots(me) + 1 <= fullStacks) {
-            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH.toString());
+            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
             return;
         }
         ItemStack tnt64 = new ItemStack(Material.TNT, 64);
@@ -192,7 +192,7 @@ public class CmdTntFill extends FCommand {
             return false;
         }
         if (getEmptySlots(me) + 1 <= fullStacks) {
-            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH.toString());
+            fme.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH);
             return false;
         }
         return true;
