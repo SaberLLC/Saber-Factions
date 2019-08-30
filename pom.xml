@@ -324,8 +324,9 @@
         <dependency>
             <groupId>be.maximvdw</groupId>
             <artifactId>MVdWPlaceholderAPI</artifactId>
-            <version>2.2.3-SNAPSHOT</version>
-            <scope>provided</scope>
+            <version>3.0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/dependencies/MVdWPlaceholderAPI.jar</systemPath>
             <exclusions>
                 <exclusion>
                     <groupId>org.spigotmc</groupId>
