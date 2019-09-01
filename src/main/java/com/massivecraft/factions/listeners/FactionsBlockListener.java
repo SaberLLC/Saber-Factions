@@ -303,7 +303,11 @@ public class FactionsBlockListener implements Listener {
             return;
         }
 
-        Location targetLoc = event.getRetractLocation();
+        if (event.getBlocks().isEmpty()) {
+            return;
+        }
+        
+        Location targetLoc = event.getBlocks().get(0).getLocation();
         Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(targetLoc));
 
         // Check if the piston is moving in a faction's territory. This disables pistons entirely in faction territory.
