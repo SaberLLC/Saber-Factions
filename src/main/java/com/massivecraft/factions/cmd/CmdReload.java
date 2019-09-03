@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -28,6 +29,7 @@ public class CmdReload extends FCommand {
         Conf.save();
         P.p.reloadConfig();
         P.p.loadLang();
+        ShopConfig.loadShop();
 
 
         if (P.p.getConfig().getBoolean("enable-faction-flight")) {

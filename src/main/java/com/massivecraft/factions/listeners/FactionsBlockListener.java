@@ -306,7 +306,6 @@ public class FactionsBlockListener implements Listener {
         if (event.getBlocks().isEmpty()) {
             return;
         }
-        
         Location targetLoc = event.getBlocks().get(0).getLocation();
         Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(targetLoc));
 
