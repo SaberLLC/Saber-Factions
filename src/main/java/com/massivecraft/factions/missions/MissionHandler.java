@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 
@@ -22,6 +23,26 @@ public class MissionHandler implements Listener {
 
     public MissionHandler(P plugin) {
         this.plugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityBreed(EntityBreedEvent event) {
+        if (event.getEntity() == null) {
+            return;
+        }
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(event.getEntity().getKiller());
+        if (fPlayer == null) {
+            return;
+        }
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("breed")).collect(Collectors.toList());
+        for (Mission mission2 : missions) {
+            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType"))) {
+                continue;
+            }
+            mission2.incrementProgress();
+            checkIfDone(fPlayer, mission2, section);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
