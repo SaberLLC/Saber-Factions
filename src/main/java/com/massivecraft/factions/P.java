@@ -2,14 +2,12 @@ package com.massivecraft.factions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
-import com.earth2me.essentials.IEssentials;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.chest.ChestLogsHandler;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
@@ -266,12 +264,6 @@ public class P extends MPlugin {
 
         for (Listener eventListener : eventsListener)
             getServer().getPluginManager().registerEvents(eventListener, this);
-
-        IEssentials ess = Essentials.setup();
-
-        if (ess != null && Conf.removeHomesOnLeave) {
-            getServer().getPluginManager().registerEvents(new EssentialsHomeHandler(ess), this);
-        }
 
         // since some other plugins execute commands directly through this command interface, provide it
         getCommand(this.refCommand).setExecutor(this);
