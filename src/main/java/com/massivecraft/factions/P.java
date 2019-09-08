@@ -6,6 +6,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.cmd.check.CheckTask;
+import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.ChestLogsHandler;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
@@ -193,10 +195,6 @@ public class P extends MPlugin {
                 faction.addFPlayer(fPlayer);
             }
         }
-        if (Conf.useCheckSystem) {
-            new CheckWallTask().runTaskTimerAsynchronously(this, 0L, 1200L);
-            this.log(Level.INFO, "Enabling Check Wall Timers!");
-        }
 
         if (getConfig().getBoolean("enable-faction-flight", true)) {
             UtilFly.run();
@@ -241,7 +239,16 @@ public class P extends MPlugin {
             }
             log("Skript addon registered!");
         }
-
+        if(Conf.useCheckSystem) {
+            int minute = 1200;
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 3), 0L, (long) (minute * 3));
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 5), 0L, (long) (minute * 5));
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 10), 0L, (long) (minute * 10));
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 15), 0L, (long) (minute * 15));
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 30), 0L, (long) (minute * 30));
+            this.getServer().getScheduler().runTaskTimer(this, CheckTask::cleanupTask, 0L, 1200L);
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new WeeWooTask(this), 600L, 600L);
+        }
         ShopConfig.setup();
 
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);

@@ -67,7 +67,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Role defaultRole;
     protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
-    protected long checkNotifier = 0;
     protected String player;
     Inventory chest;
     Map<String, Object> bannerSerialized;
@@ -75,6 +74,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private int strikes = 0;
     private int points = 0;
     private Map<String, Mission> missions = new ConcurrentHashMap<>();
+    private int wallCheckMinutes;
+    private int bufferCheckMinutes;
+    private Map<Long, String> checks;
+    private Map<UUID, Integer> playerWallCheckCount;
+    private Map<UUID, Integer> playerBufferCheckCount;
+    private boolean weeWoo;
 
 
     // -------------------------------------------- //
@@ -98,7 +103,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
         this.defaultRole = Role.RECRUIT;
-        this.checkNotifier = 0;
+        this.wallCheckMinutes = 0;
+        this.bufferCheckMinutes = 0;
+        this.weeWoo = false;
+        this.checks = new ConcurrentHashMap<>();
+        this.playerWallCheckCount = new ConcurrentHashMap<>();
+        this.playerBufferCheckCount = new ConcurrentHashMap<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -124,7 +134,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         invites = old.invites;
         announcements = old.announcements;
         this.defaultRole = Role.NORMAL;
-        this.checkNotifier = 0;
+        this.wallCheckMinutes = 0;
+        this.bufferCheckMinutes = 0;
+        this.weeWoo = false;
+        this.checks = new ConcurrentHashMap<>();
+        this.playerWallCheckCount = new ConcurrentHashMap<>();
+        this.playerBufferCheckCount = new ConcurrentHashMap<>();
 
         resetPerms(); // Reset on new Faction so it has default values.
     }
@@ -345,20 +360,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return false;
     }
 
-    @Override
-    public long getCheckNotifier() {
-        return this.checkNotifier;
-    }
-
-    @Override
-    public void setCheckNotifier(final long minutes) {
-        this.checkNotifier = minutes;
-    }
-
-    @Override
-    public void sendCheckNotify() {
-        this.sendMessage(TL.CHECK_NOTIFY_MESSAGE.toString());
-    }
 
     public Set<BanInfo> getBannedPlayers() {
         return this.bans;
@@ -461,6 +462,42 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setUpgrade(UpgradeType upgrade, int level) {
         upgrades.put(upgrade.toString(), level);
+    }
+
+    public int getWallCheckMinutes() {
+        return this.wallCheckMinutes;
+    }
+
+    public void setWallCheckMinutes(final int wallCheckMinutes) {
+        this.wallCheckMinutes = wallCheckMinutes;
+    }
+
+    public int getBufferCheckMinutes() {
+        return this.bufferCheckMinutes;
+    }
+
+    public void setBufferCheckMinutes(final int bufferCheckMinutes) {
+        this.bufferCheckMinutes = bufferCheckMinutes;
+    }
+
+    public Map<Long, String> getChecks() {
+        return this.checks;
+    }
+
+    public Map<UUID, Integer> getPlayerBufferCheckCount() {
+        return this.playerBufferCheckCount;
+    }
+
+    public Map<UUID, Integer> getPlayerWallCheckCount() {
+        return this.playerWallCheckCount;
+    }
+
+    public boolean isWeeWoo() {
+        return this.weeWoo;
+    }
+
+    public void setWeeWoo(final boolean weeWoo) {
+        this.weeWoo = weeWoo;
     }
 
     public Location getCheckpoint() {

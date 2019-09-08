@@ -1,0 +1,110 @@
+package com.massivecraft.factions.cmd.check;
+
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
+import com.massivecraft.factions.util.FactionGUI;
+import com.massivecraft.factions.util.XMaterial;
+import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.ChatColor;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Collections;
+
+public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
+    private P plugin;
+    private FPlayer fPlayer;
+    private Inventory inventory;
+
+    public CheckSettingsFrame(P plugin, FPlayer fPlayer) {
+        this.plugin = plugin;
+        this.fPlayer = fPlayer;
+        this.inventory = plugin.getServer().createInventory(this, plugin.getConfig().getInt("f-check.gui-rows") * 9, TL.CHECK_SETTINGS_GUI_TITLE.toString());
+    }
+
+    public void onClick(int slot, ClickType action) {
+        Faction faction = this.fPlayer.getFaction();
+        if (slot == P.p.getConfig().getInt("f-check.wall-check.slot")) {
+            faction.setWallCheckMinutes(getNext(faction.getWallCheckMinutes()));
+        } else {
+            if (slot == P.p.getConfig().getInt("f-check.history.slot")) {
+                CheckHistoryFrame checkHistoryFrame = new CheckHistoryFrame(plugin, fPlayer.getFaction());
+                checkHistoryFrame.build();
+                fPlayer.getPlayer().openInventory(checkHistoryFrame.getInventory());
+                return;
+            }
+            if (slot == P.p.getConfig().getInt("f-check.buffer-check.slot")) {
+                faction.setBufferCheckMinutes(getNext(faction.getBufferCheckMinutes()));
+            }
+        }
+        build();
+        fPlayer.getPlayer().openInventory(inventory);
+    }
+
+    public void build() {
+        Faction faction = fPlayer.getFaction();
+        ItemStack wallsStack = XMaterial.matchXMaterial(P.p.getConfig().getString("f-check.wall-check.Type")).parseItem();
+        ItemMeta wallsMeta = wallsStack.getItemMeta();
+        wallsMeta.setDisplayName(TL.CHECK_WALL_CHECK_GUI_ICON.toString());
+        wallsMeta.setLore(Collections.singletonList(TL.CHECK_CHECK_LORE_LINE.format(getFormatted(faction.getWallCheckMinutes()))));
+        wallsStack.setItemMeta(wallsMeta);
+        inventory.setItem(P.p.getConfig().getInt("f-check.wall-check.slot"), wallsStack);
+        ItemStack bufferStack = XMaterial.matchXMaterial(P.p.getConfig().getString("f-check.buffer-check.Type")).parseItem();
+        ItemMeta bufferMeta = bufferStack.getItemMeta();
+        bufferMeta.setDisplayName(TL.CHECK_BUFFER_CHECK_GUI_ICON.toString());
+        bufferMeta.setLore(Collections.singletonList(TL.CHECK_CHECK_LORE_LINE.format(getFormatted(faction.getBufferCheckMinutes()))));
+        bufferStack.setItemMeta(bufferMeta);
+        inventory.setItem(P.p.getConfig().getInt("f-check.buffer-check.slot"), bufferStack);
+        ItemStack historyStack = XMaterial.matchXMaterial(P.p.getConfig().getString("f-check.history.Type")).parseItem();
+        ItemMeta historyMeta = historyStack.getItemMeta();
+        historyMeta.setDisplayName(TL.CHECK_HISTORY_GUI_ICON.toString());
+        historyStack.setItemMeta(historyMeta);
+        inventory.setItem(P.p.getConfig().getInt("f-check.history.slot"), historyStack);
+    }
+
+    public Inventory getInventory() {
+        return this.inventory;
+    }
+
+    private int getNext(int current) {
+        switch (current) {
+            case 0: {
+                return 3;
+            }
+            case 3: {
+                return 5;
+            }
+            case 5: {
+                return 10;
+            }
+            case 10: {
+                return 15;
+            }
+            case 15: {
+                return 30;
+            }
+            case 30: {
+                return 0;
+            }
+            default: {
+                return 0;
+            }
+        }
+    }
+
+    private String getFormatted(int minutes) {
+        if (minutes == 0) {
+            return "Offline";
+        }
+        return minutes + " Minutes";
+    }
+
+    public String color(String message){
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
+}
+

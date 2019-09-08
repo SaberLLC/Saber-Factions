@@ -3,6 +3,8 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.cmd.alts.CmdAlts;
+import com.massivecraft.factions.cmd.check.CmdCheck;
+import com.massivecraft.factions.cmd.check.CmdWeeWoo;
 import com.massivecraft.factions.cmd.chest.CmdChest;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
@@ -136,6 +138,7 @@ public class FCmdRoot extends FCommand {
     public CmdShop cmdShop = new CmdShop();
     public CmdMissions cmdMissions = new CmdMissions();
     public CmdCheck cmdCheck = new CmdCheck();
+    public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
 
 
     public FCmdRoot() {
@@ -258,6 +261,7 @@ public class FCmdRoot extends FCommand {
 
         if (Conf.useCheckSystem) {
             this.addSubCommand(this.cmdCheck);
+            this.addSubCommand(this.cmdWeeWoo);
         }
 
         if (P.p.getConfig().getBoolean("Missions-Enabled")) {

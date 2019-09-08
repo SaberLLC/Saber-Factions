@@ -23,11 +23,25 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
 
-    long getCheckNotifier();
 
-    void setCheckNotifier(long minutes);
 
-    void sendCheckNotify();
+    int getWallCheckMinutes();
+
+    void setWallCheckMinutes(int minutes);
+
+    int getBufferCheckMinutes();
+
+    void setBufferCheckMinutes(int minutes);
+
+    Map<Long, String> getChecks();
+
+    Map<UUID, Integer> getPlayerBufferCheckCount();
+
+    Map<UUID, Integer> getPlayerWallCheckCount();
+
+    boolean isWeeWoo();
+
+    void setWeeWoo(boolean weeWoo);
 
     boolean altInvited(FPlayer fplayer);
 
