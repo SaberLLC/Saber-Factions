@@ -31,7 +31,9 @@ public class CheckTask implements Runnable {
             }
             List<Long> remove = new ArrayList<>();
             int i = 0;
+            if (faction.getChecks() == null) return;
             for (Long key : Lists.reverse(new ArrayList<>(faction.getChecks().keySet()))) {
+                if (key == null) return;
                 if (i >= 54) {
                     remove.add(key);
                 }
