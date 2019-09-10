@@ -101,6 +101,8 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
+        if(me.getFaction() == otherFaction) return true;
+
         if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded()) {
             return true;
         }
@@ -156,7 +158,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
-        return CheckPlayerAccess(player, me, loc, myFaction, access, PermissableAction.ITEM, false);
+        return CheckPlayerAccess(player, me, loc, otherFaction, access, PermissableAction.ITEM, false);
     }
 
     @SuppressWarnings("deprecation")
@@ -304,23 +306,26 @@ public class FactionsPlayerListener implements Listener {
         if (access != null && access != Access.UNDEFINED) {
             // TODO: Update this once new access values are added other than just allow / deny.
             boolean landOwned = (factionToCheck.doesLocationHaveOwnersSet(loc) && !factionToCheck.getOwnerList(loc).isEmpty());
-            if ((landOwned && factionToCheck.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(factionToCheck.getId())))
+            if ((landOwned && factionToCheck.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(factionToCheck.getId()))) {
                 return true;
-            else if (landOwned && !factionToCheck.getOwnerListString(loc).contains(player.getName())) {
+            } else if (landOwned && !factionToCheck.getOwnerListString(loc).contains(player.getName())) {
                 me.msg("<b>You can't do that in this territory, it is owned by: " + factionToCheck.getOwnerListString(loc));
                 if (doPain) {
                     player.damage(Conf.actionDeniedPainAmount);
                 }
                 return false;
-            } else if (!landOwned && access == Access.ALLOW) return true;
-            else {
+            } else if (!landOwned && access == Access.ALLOW) {
+                return true;
+            } else {
                 me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
                 return false;
             }
         }
         // Approves any permission check if the player in question is a leader AND owns the faction.
         if (me.getRole().equals(Role.LEADER) && me.getFaction().equals(factionToCheck)) return true;
-        me.msg("You cannot " + action + " in the territory of " + factionToCheck.getTag(me.getFaction()));
+        if (factionToCheck != null) {
+            me.msg(TL.PLAYER_USE_TERRITORY, action, factionToCheck.getTag(me.getFaction()));
+        }
         return false;
     }
 
@@ -800,7 +805,7 @@ public class FactionsPlayerListener implements Listener {
         Player player = event.getPlayer();
         // Check if the material is bypassing protection
         if (block == null) return;  // clicked in air, apparently
-        if (Conf.territoryBypassProtectedMaterials.contains(block.getType())) return;
+        if (Conf.territoryBypassProtectedMaterials.contains(event.getItem().getType())) return;
         if (GetPermissionFromUsableBlock(event.getClickedBlock().getType()) != null) {
             if (!canPlayerUseBlock(player, block, false)) {
                 event.setCancelled(true);
@@ -817,8 +822,8 @@ public class FactionsPlayerListener implements Listener {
                 return;
             }
         }
-        if (event.getMaterial().isSolid()) return;
-        if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
+        if (event.getItem() == null) return;
+        if (!playerCanUseItemHere(player, block.getLocation(), event.getItem().getType(), false)) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
         }
