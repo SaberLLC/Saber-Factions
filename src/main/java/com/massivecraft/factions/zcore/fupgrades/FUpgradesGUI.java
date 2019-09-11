@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -22,18 +23,14 @@ import java.util.List;
 public class FUpgradesGUI implements Listener {
     public void openMainMenu(FPlayer fme) {
         Inventory inventory = Bukkit.createInventory(null, P.p.getConfig().getInt("fupgrades.MainMenu.DummyItem.rows") * 9, P.p.color(P.p.getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())));
-        List<Integer> dummySlots = P.p.getConfig().getIntegerList("fupgrades.MainMenu.DummyItem.slots");
-        Material dummyMaterial = Material.getMaterial(P.p.getConfig().getString("fupgrades.MainMenu.DummyItem.Type"));
-        int dummyAmount = P.p.getConfig().getInt("fupgrades.MainMenu.DummyItem.Amount");
-        short dummyData = Short.parseShort(P.p.getConfig().getInt("fupgrades.MainMenu.DummyItem.Damage") + "");
-        ItemStack dummyItem = P.p.createItem(dummyMaterial,
-                dummyAmount,
-                dummyData,
-                P.p.color(P.p.getConfig().getString("fupgrades.MainMenu.DummyItem.Name")),
-                P.p.colorList(P.p.getConfig().getStringList("fupgrades.MainMenu.DummyItem.Lore")));
+        ItemStack dummyItem = XMaterial.matchXMaterial(P.p.getConfig().getString("fupgrades.MainMenu.DummyItem.Type")).parseItem();
+        ItemMeta meta = dummyItem.getItemMeta();
+        meta.setLore(P.p.colorList(P.p.getConfig().getStringList("fupgrades.MainMenu.DummyItem.Lore")));
+        meta.setDisplayName(P.p.color(P.p.getConfig().getString("fupgrades.MainMenu.DummyItem.Name")));
+        dummyItem.setItemMeta(meta);
 
-        for (int i = 0; i <= dummySlots.size() - 1; i++) {
-            inventory.setItem(dummySlots.get(i), dummyItem);
+        for (int fill = 0; fill < P.p.getConfig().getInt("fupgrades.MainMenu.DummyItem.rows") * 9; ++fill) {
+            inventory.setItem(fill, dummyItem);
         }
 
         ItemStack[] items = buildItems(fme);

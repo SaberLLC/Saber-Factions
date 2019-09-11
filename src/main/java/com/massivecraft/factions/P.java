@@ -463,8 +463,7 @@ public class P extends MPlugin {
 
     public Economy getEcon() {
         RegisteredServiceProvider<Economy> rsp = P.p.getServer().getServicesManager().getRegistration(Economy.class);
-        Economy econ = rsp.getProvider();
-        return econ;
+        return rsp.getProvider();
     }
 
 
