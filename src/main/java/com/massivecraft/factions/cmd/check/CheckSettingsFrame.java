@@ -103,7 +103,7 @@ public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
         return minutes + " Minutes";
     }
 
-    public String color(String message){
+    public String color(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 }

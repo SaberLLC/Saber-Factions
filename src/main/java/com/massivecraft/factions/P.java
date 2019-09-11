@@ -239,7 +239,7 @@ public class P extends MPlugin {
             }
             log("Skript addon registered!");
         }
-        if(Conf.useCheckSystem) {
+        if (Conf.useCheckSystem) {
             int minute = 1200;
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 3), 0L, (long) (minute * 3));
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 5), 0L, (long) (minute * 5));

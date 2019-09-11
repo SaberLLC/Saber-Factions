@@ -24,7 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public interface Faction extends EconomyParticipator {
 
 
-
     int getWallCheckMinutes();
 
     void setWallCheckMinutes(int minutes);

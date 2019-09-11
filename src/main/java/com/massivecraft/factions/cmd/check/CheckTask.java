@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CheckTask implements Runnable {
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Conf.dateFormat);
     private static List<String> wallChecks = new CopyOnWriteArrayList<>();
     private static List<String> bufferChecks = new CopyOnWriteArrayList<>();
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Conf.dateFormat);
     private P plugin;
     private int minute;
 
@@ -41,6 +41,14 @@ public class CheckTask implements Runnable {
             }
             remove.forEach(r -> faction.getChecks().remove(r));
         }
+    }
+
+    public static boolean wallCheck(String factionId) {
+        return CheckTask.wallChecks.remove(factionId);
+    }
+
+    public static boolean bufferCheck(String factionId) {
+        return CheckTask.bufferChecks.remove(factionId);
     }
 
     @Override
@@ -84,14 +92,6 @@ public class CheckTask implements Runnable {
             }
             faction.msg(TL.CHECK_BUFFERS_CHECK);
         }
-    }
-
-    public static boolean wallCheck(String factionId) {
-        return CheckTask.wallChecks.remove(factionId);
-    }
-
-    public static boolean bufferCheck(String factionId) {
-        return CheckTask.bufferChecks.remove(factionId);
     }
 
 }

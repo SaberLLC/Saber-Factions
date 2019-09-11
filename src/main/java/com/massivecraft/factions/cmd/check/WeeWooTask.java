@@ -20,6 +20,6 @@ public class WeeWooTask implements Runnable {
                 continue;
             }
             faction.msg(TL.WEE_WOO_MESSAGE);
-            }
         }
     }
+}

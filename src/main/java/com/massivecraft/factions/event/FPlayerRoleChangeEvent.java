@@ -7,12 +7,13 @@ import org.bukkit.event.Cancellable;
 
 /**
  * Represents {@link Role} change of a factions player
+ *
  * @see FPlayer#getRole()
  */
 public class FPlayerRoleChangeEvent extends FactionPlayerEvent implements Cancellable {
 
-    private boolean cancelled;
     private final Role from;
+    private boolean cancelled;
     private Role to;
 
     public FPlayerRoleChangeEvent(Faction faction, FPlayer fPlayer, Role from, Role to) {
