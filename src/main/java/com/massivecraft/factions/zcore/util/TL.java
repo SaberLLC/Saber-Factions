@@ -889,6 +889,11 @@ public enum TL {
     COMMAND_RULES_SET_SUCCESS("&cRule set successfully!"),
     COMMAND_RULES_CLEAR_SUCCESS("&cRule cleared successfully!"),
 
+    COMMAND_CONVERTCONFIG_DESCRIPTION("Convert your SavageFactions config to SaberFactions"),
+    COMMAND_CONVERTCONFIG_SUCCESS("&cConfiguration successfully converted"),
+    COMMAND_CONVERTCONFIG_FAIL("&cConfiguration conversion failed!"),
+    COMMAND_CONVERTCONFIG_FAILCONFIGMISSING("&cPlease ensure you have placed SavageFactions files in a folder called SavageFactions"),
+
     // F Global \\
     COMMAND_F_GLOBAL_TOGGLE("&c&l[!] &7You have &b%1$s &7Global Chat"),
     COMMAND_F_GLOBAL_DESCRIPTION("Toggle global chat and only allow factions based chats"),
