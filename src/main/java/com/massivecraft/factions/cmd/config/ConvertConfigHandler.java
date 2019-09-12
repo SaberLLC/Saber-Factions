@@ -83,7 +83,11 @@ public class ConvertConfigHandler {
                 setConfigSec("fnear");
                 setConfigSec("ffocus");
                 setConfigSec("fvualt");
-                sb.set("fupgrades.MainMenu.DummyItem.slots", sv.getStringList("fupgrades.MainMenu.DummyItem.slots"));
+                setString("fupgrades.MainMenu.Title");
+                setString("fupgrades.MainMenu.DummyItem.Name");
+                setString("fupgrades.MainMenu.DummyItem.Type");
+                List<String> l = sv.getStringList("fupgrades.MainMenu.DummyItem.Lore");
+                sb.set("fupgrades.MainMenu.DummyItem.Lore", l);
                 setConfigSec("fupgrades.MainMenu.Crops.Crop-Boost");
                 setConfigSec("fupgrades.MainMenu.Crops.Cost");
                 sb.set("fupgrades.MainMenu.Crops.CropItem", sv.getConfigurationSection("fupgrades.MainMenu.Crops.DisplayItem"));
@@ -118,7 +122,6 @@ public class ConvertConfigHandler {
                 sb.set("fupgrades.MainMenu.Members.MembersItem.Slot", null);
                 sb.set("fupgrades.MainMenu.Members.Members-Limit", sv.getConfigurationSection("fupgrades.MainMenu.Members.Members-Boost"));
                 setConfigSec("fbanners");
-                setConfigSec("Title");
                 setConfigSec("see-chunk");
                 setConfigSec("Tntfill");
                 try {
