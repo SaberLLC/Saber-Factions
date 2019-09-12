@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.config;
 
 import com.massivecraft.factions.P;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
