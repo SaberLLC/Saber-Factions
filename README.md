@@ -1,3 +1,4 @@
+## Warning! This fork is only for pre development of Driftay's SaberFactions. 
 # SaberFactions
 
 SaberFactions is a fork of both FactionsUUID and SavageFactions. Creators of those plugins include DtrShock and ProSavage. Credits to them.
