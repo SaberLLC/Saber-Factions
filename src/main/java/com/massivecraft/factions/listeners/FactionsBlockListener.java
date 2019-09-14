@@ -332,19 +332,17 @@ public class FactionsBlockListener implements Listener {
         if (P.p.mc17) {
             return;
         }
-
-        if (e.getItemInHand().getType() == XMaterial.BLACK_BANNER.parseMaterial()) {
+        if (e.getItemInHand().getType().name().contains("BANNER")) {
             ItemStack bannerInHand = e.getItemInHand();
             FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
             ItemStack warBanner = fme.getFaction().getBanner();
-            if (warBanner != null) {
-                ItemMeta warmeta = warBanner.getItemMeta();
-                warmeta.setDisplayName(P.p.color(P.p.getConfig().getString("fbanners.Item.Name")));
-                warmeta.setLore(P.p.colorList(P.p.getConfig().getStringList("fbanners.Item.Lore")));
-                warBanner.setItemMeta(warmeta);
-            } else {
-                warBanner = P.p.createItem(XMaterial.BLACK_BANNER.parseMaterial(), 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+            if (warBanner == null) {
+                return;
             }
+            ItemMeta warmeta = warBanner.getItemMeta();
+            warmeta.setDisplayName(P.p.color(P.p.getConfig().getString("fbanners.Item.Name")));
+            warmeta.setLore(P.p.colorList(P.p.getConfig().getStringList("fbanners.Item.Lore")));
+            warBanner.setItemMeta(warmeta);
             if (warBanner.isSimilar(bannerInHand)) {
                 if (fme.getFaction().isWilderness()) {
                     fme.msg(TL.WARBANNER_NOFACTION);
@@ -352,56 +350,56 @@ public class FactionsBlockListener implements Listener {
                     return;
                 }
                 int bannerTime = P.p.getConfig().getInt("fbanners.Banner-Time") * 20;
-
                 Location placedLoc = e.getBlockPlaced().getLocation();
                 FLocation fplacedLoc = new FLocation(placedLoc);
-                if ((Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && P.p.getConfig().getBoolean("fbanners.Placeable.Warzone"))
-                        || (fme.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY) && P.p.getConfig().getBoolean("fbanners.Placeable.Enemy")) {
+                if ((Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && P.p.getConfig().getBoolean("fbanners.Placeable.Warzone")) || (fme.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY && P.p.getConfig().getBoolean("fbanners.Placeable.Enemy"))) {
                     if (bannerCooldownMap.containsKey(fme.getTag())) {
                         fme.msg(TL.WARBANNER_COOLDOWN);
                         e.setCancelled(true);
                         return;
                     }
                     for (FPlayer fplayer : fme.getFaction().getFPlayers()) {
-                        //  if (fplayer == fme) { continue; }   //Idk if I wanna not send the title to the player
-                        fplayer.getPlayer().sendTitle(P.p.color(fme.getTag() + " Placed A WarBanner!"), P.p.color("&7use &c/f tpbanner&7 to tp to the banner!"), 10, 70, 20);
+                        if (XMaterial.isVersionOrHigher(XMaterial.MinecraftVersion.VERSION_1_9)) {
+                            fplayer.getPlayer().sendTitle(P.p.color(fme.getTag() + " Placed A WarBanner!"), P.p.color("&7use &c/f tpbanner&7 to tp to the banner!"), 10, 70, 20);
+                        } else {
+                            fplayer.getPlayer().sendTitle(P.p.color(fme.getTag() + " Placed A WarBanner!"), P.p.color("&7use &c/f tpbanner&7 to tp to the banner!"));
+                        }
                     }
-
                     bannerCooldownMap.put(fme.getTag(), true);
-                    bannerLocations.put(fme.getTag(), e.getBlockPlaced().getLocation());
+                    FactionsBlockListener.bannerLocations.put(fme.getTag(), e.getBlockPlaced().getLocation());
                     int bannerCooldown = P.p.getConfig().getInt("fbanners.Banner-Place-Cooldown");
-                    ArmorStand as = (ArmorStand) e.getBlockPlaced().getLocation().add(0.5, 1, 0.5).getWorld().spawnEntity(e.getBlockPlaced().getLocation().add(0.5, 1, 0.5), EntityType.ARMOR_STAND); //Spawn the ArmorStand
-                    as.setVisible(false); //Makes the ArmorStand invisible
-                    as.setGravity(false); //Make sure it doesn't fall
-                    as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-                    as.setCustomName(P.p.color(P.p.getConfig().getString("fbanners.BannerHolo").replace("{Faction}", fme.getTag()))); //Set this to the text you want
-                    as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
+                    ArmorStand as = (ArmorStand) e.getBlockPlaced().getLocation().add(0.5, 1.0, 0.5).getWorld().spawnEntity(e.getBlockPlaced().getLocation().add(0.5, 1.0, 0.5), EntityType.ARMOR_STAND);
+                    as.setVisible(false);
+                    as.setGravity(false);
+                    as.setCanPickupItems(false);
+                    as.setCustomName(P.p.color(P.p.getConfig().getString("fbanners.BannerHolo").replace("{Faction}", fme.getTag())));
+                    as.setCustomNameVisible(true);
                     String tag = fme.getTag();
                     Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, () -> bannerCooldownMap.remove(tag), Long.parseLong(bannerCooldown + ""));
                     Block banner = e.getBlockPlaced();
                     Material bannerType = banner.getType();
                     Faction bannerFaction = fme.getFaction();
                     banner.getWorld().strikeLightningEffect(banner.getLocation());
-                    //  e.getPlayer().getWorld().playSound(e.getPlayer().getLocation(), Sound.ENTITY_LIGHTNING_IMPACT,2.0F,0.5F);
                     int radius = P.p.getConfig().getInt("fbanners.Banner-Effect-Radius");
                     List<String> effects = P.p.getConfig().getStringList("fbanners.Effects");
                     int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
-                        for (Entity e1 : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(), radius, 255, radius)) {
+                        for (Entity e1 : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(), (double) radius, 255.0, (double) radius)) {
                             if (e1 instanceof Player) {
                                 Player player = (Player) e1;
                                 FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-                                if (fplayer.getFaction() == bannerFaction) {
-                                    for (String effect : effects) {
-                                        String[] components = effect.split(":");
-                                        player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(components[0]), 100, Integer.parseInt(components[1])));
-                                    }
-                                    ParticleEffect.LAVA.display(1, 1, 1, 1, 10, banner.getLocation(), 16);
-                                    ParticleEffect.FLAME.display(1, 1, 1, 1, 10, banner.getLocation(), 16);
-
-                                    if (banner.getType() != bannerType) {
-                                        banner.setType(bannerType);
-                                    }
+                                if (fplayer.getFaction() != bannerFaction) {
+                                    continue;
                                 }
+                                for (String effect : effects) {
+                                    String[] components = effect.split(":");
+                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(components[0]), 100, Integer.parseInt(components[1])));
+                                }
+                                ParticleEffect.LAVA.display(1.0f, 1.0f, 1.0f, 1.0f, 10, banner.getLocation(), 16.0);
+                                ParticleEffect.FLAME.display(1.0f, 1.0f, 1.0f, 1.0f, 10, banner.getLocation(), 16.0);
+                                if (banner.getType() == bannerType) {
+                                    continue;
+                                }
+                                banner.setType(bannerType);
                             }
                         }
                     }, 0L, 20L);
@@ -410,7 +408,7 @@ public class FactionsBlockListener implements Listener {
                         as.remove();
                         banner.getWorld().strikeLightningEffect(banner.getLocation());
                         Bukkit.getScheduler().cancelTask(affectorTask);
-                        bannerLocations.remove(bannerFaction.getTag());
+                        FactionsBlockListener.bannerLocations.remove(bannerFaction.getTag());
                     }, Long.parseLong(bannerTime + ""));
                 } else {
                     fme.msg(TL.WARBANNER_INVALIDLOC);
