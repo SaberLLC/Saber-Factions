@@ -506,6 +506,11 @@ public enum TL {
     COMMAND_COLEADER_PROMOTED("&c&l[!]&7 You have &cpromoted &7%1$s to &ccoleader."),
     COMMAND_COLEADER_DESCRIPTION("Give or revoke coleader rights"),
 
+    COMMAND_CONVERTCONFIG_DESCRIPTION("Convert your SavageFactions config to SaberFactions"),
+    COMMAND_CONVERTCONFIG_SUCCESS("&cConfiguration successfully converted"),
+    COMMAND_CONVERTCONFIG_FAIL("&cConfiguration conversion failed!"),
+    COMMAND_CONVERTCONFIG_FAILCONFIGMISSING("&cPlease ensure you have placed SavageFactions files in a folder called SavageFactions"),
+
     COMMAND_MODIFYPOWER_ADDED("&c&l[!]&7 Added &c%1$f &7power to &c%2$s. &7New total rounded power: &c%3$d"),
     COMMAND_MODIFYPOWER_DESCRIPTION("Modify the power of a faction/player"),
 
@@ -1046,11 +1051,11 @@ public enum TL {
     /**
      * Roles
      */
-    ROLE_LEADER("leader"),
-    ROLE_COLEADER("coleader"),
-    ROLE_MODERATOR("moderator"),
-    ROLE_NORMAL("normal member"),
-    ROLE_RECRUIT("recruit"),
+    ROLE_LEADER("Leader"),
+    ROLE_COLEADER("Co-Leader"),
+    ROLE_MODERATOR("Moderator"),
+    ROLE_NORMAL("Normal Member"),
+    ROLE_RECRUIT("Recruit"),
 
     /**
      * Region types.

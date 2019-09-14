@@ -25,6 +25,7 @@ permissions:
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
+      factions.convertconfig: true
       factions.kit.admin: true
   factions.kit.mod:
     description: All faction permissions but configuration and persistance.

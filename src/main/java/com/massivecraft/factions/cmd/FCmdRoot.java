@@ -7,6 +7,7 @@ import com.massivecraft.factions.cmd.check.CmdCheck;
 import com.massivecraft.factions.cmd.check.CmdWeeWoo;
 import com.massivecraft.factions.cmd.chest.CmdChest;
 import com.massivecraft.factions.cmd.claim.*;
+import com.massivecraft.factions.cmd.configsf.CmdConvertConfig;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
 import com.massivecraft.factions.cmd.grace.CmdGrace;
 import com.massivecraft.factions.cmd.logout.CmdLogout;
@@ -144,7 +145,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdStrikes cmdStrikes = new CmdStrikes();
     public CmdCheck cmdCheck = new CmdCheck();
     public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
-
+    public CmdConvertConfig cmdConvertConfig = new CmdConvertConfig();
 
     public FCmdRoot() {
         super();
@@ -253,6 +254,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdStrikes);
         this.addSubCommand(this.cmdFGlobal);
         this.addSubCommand(this.cmdViewChest);
+        this.addSubCommand(this.cmdConvertConfig);
 
         if (Conf.useCheckSystem) {
             this.addSubCommand(this.cmdCheck);

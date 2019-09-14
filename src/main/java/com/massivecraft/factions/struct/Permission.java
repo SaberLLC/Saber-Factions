@@ -25,6 +25,7 @@ public enum Permission {
     CLAIM_RADIUS("claim.radius"),
     CONFIG("config"),
     CONVERT("convert"),
+    CONVERTCONFIG("convertconfig"),
     CREATE("create"),
     CORNER("corner"),
     DEFAULTRANK("defaultrank"),
