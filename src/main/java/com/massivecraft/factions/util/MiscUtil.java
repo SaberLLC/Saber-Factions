@@ -2,7 +2,7 @@ package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
@@ -68,16 +68,16 @@ public class MiscUtil {
         ArrayList<String> errors = new ArrayList<>();
 
         if (getComparisonString(str).length() < Conf.factionTagLengthMin) {
-            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), Conf.factionTagLengthMin));
+            errors.add(FactionsPlugin.getInstance().txt.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), Conf.factionTagLengthMin));
         }
 
         if (str.length() > Conf.factionTagLengthMax) {
-            errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), Conf.factionTagLengthMax));
+            errors.add(FactionsPlugin.getInstance().txt.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), Conf.factionTagLengthMax));
         }
 
         for (char c : str.toCharArray()) {
             if (!substanceChars.contains(String.valueOf(c))) {
-                errors.add(P.p.txt.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
+                errors.add(FactionsPlugin.getInstance().txt.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
             }
         }
 
@@ -96,7 +96,7 @@ public class MiscUtil {
             // Fix for some data being broken when we added the recruit rank.
             if (player.getRole() == null) {
                 player.setRole(Role.NORMAL);
-                P.p.log(Level.WARNING, String.format("Player %s had null role. Setting them to normal. This isn't good D:", player.getName()));
+                FactionsPlugin.getInstance().log(Level.WARNING, String.format("Player %s had null role. Setting them to normal. This isn't good D:", player.getName()));
             }
 
             switch (player.getRole()) {

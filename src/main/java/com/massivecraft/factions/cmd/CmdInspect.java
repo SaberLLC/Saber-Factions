@@ -9,26 +9,21 @@ public class CmdInspect extends FCommand {
         this.aliases.add("inspect");
         this.aliases.add("ins");
 
-        this.permission = Permission.INSPECT.node;
-        this.disableOnLock = true;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.INSPECT)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
 
     @Override
-    public void perform() {
-        if (fme.isInspectMode()) {
-            fme.setInspectMode(false);
-            msg(TL.COMMAND_INSPECT_DISABLED_MSG);
+    public void perform(CommandContext context) {
+        if (context.fPlayer.isInspectMode()) {
+            context.fPlayer.setInspectMode(false);
+            context.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
         } else {
-            fme.setInspectMode(true);
-            msg(TL.COMMAND_INSPECT_ENABLED);
+            context.fPlayer.setInspectMode(true);
+            context.msg(TL.COMMAND_INSPECT_ENABLED);
         }
 
     }
@@ -38,3 +33,4 @@ public class CmdInspect extends FCommand {
         return TL.COMMAND_INSPECT_DESCRIPTION;
     }
 }
+

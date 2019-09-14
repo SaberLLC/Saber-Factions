@@ -39,13 +39,13 @@ public class FTeamWrapper {
             return;
         }
 
-        if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false) || P.p.getConfig().getBoolean("See-Invisible-Faction-Members")) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false) || FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members")) {
             return;
         }
 
 
         if (updating.add(faction)) {
-            Bukkit.getScheduler().runTask(P.p, () -> {
+            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> {
                 updating.remove(faction);
                 applyUpdates(faction);
             });
@@ -61,7 +61,7 @@ public class FTeamWrapper {
             return;
         }
 
-        if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false) || P.p.getConfig().getBoolean("See-Invisible-Faction-Members")) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false) || FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members")) {
             return;
         }
 
@@ -153,7 +153,7 @@ public class FTeamWrapper {
     }
 
     private void updatePrefixes() {
-        if (P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             for (FScoreboard fboard : teams.keySet()) {
                 updatePrefix(fboard);
             }
@@ -161,19 +161,19 @@ public class FTeamWrapper {
     }
 
     private void updatePrefix(FScoreboard fboard) {
-        if (P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             FPlayer fplayer = fboard.getFPlayer();
             Team team = teams.get(fboard);
             boolean focused = false;
 
-            if (P.p.getConfig().getBoolean("See-Invisible-Faction-Members", false)) {
+            if (FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members", false)) {
                 team.setCanSeeFriendlyInvisibles(true);
             }
 
-            if ((P.p.getConfig().getBoolean("ffocus.Enabled")) && (fplayer.getFaction() != null) && (fplayer.getFaction().getFocused() != null)) {
+            if ((FactionsPlugin.getInstance().getConfig().getBoolean("ffocus.Enabled")) && (fplayer.getFaction() != null) && (fplayer.getFaction().getFocused() != null)) {
                 for (FPlayer fp : faction.getFPlayersWhereOnline(true)) {
                     if (fplayer.getFaction().getFocused().equalsIgnoreCase(fp.getName())) {
-                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', P.p.getConfig().getString("ffocus.Prefix", "&7»&b")));
+                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getConfig().getString("ffocus.Prefix", "&7»&b")));
                         focused = true;
                     }
                 }

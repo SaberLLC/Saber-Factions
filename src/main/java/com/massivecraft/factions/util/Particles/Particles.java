@@ -1,6 +1,6 @@
 package com.massivecraft.factions.util.Particles;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -24,7 +24,7 @@ public enum Particles {
 
 
     public void displayAtLocation(Location location, int amt) {
-        if (P.p.useNonPacketParticles) {
+        if (FactionsPlugin.getInstance().useNonPacketParticles) {
             // 1.9+ based servers will use the built in particleAPI instead of packet based.
             // any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
             // So setting the amount to 0 spawns 1 in the precise location
@@ -35,15 +35,15 @@ public enum Particles {
     }
 
     public void displayAtLocation(Location location, int amt, ParticleEffect.OrdinaryColor color) {
-        if (P.p.useNonPacketParticles) {
+        if (FactionsPlugin.getInstance().useNonPacketParticles) {
             // 1.9-1.11 & 1.13+ based servers will use the built in particleAPI instead of packet based.
             // any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
             // So setting the amount to 0 spawns 1 in the precise location
 
 
-            // Gotta do this so colorable ones have their data :P
+            // Gotta do this so colorable ones have their data :FactionsPlugin
             if (this == Particles.REDSTONE || this == Particles.CLOUD || this == Particles.NOTE) {
-                if (P.p.mc112) {
+                if (FactionsPlugin.getInstance().mc112) {
                     location.getWorld().spawnParticle(Particle.valueOf(over19), location, 0);
                 } else {
                     location.getWorld().spawnParticle(Particle.valueOf(over19), location, 0, new Particle.DustOptions(Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()), 1));

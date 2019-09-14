@@ -2,7 +2,7 @@ package com.massivecraft.factions.shop;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -41,7 +41,7 @@ public class ShopClickPersistence implements Listener {
     public void click(InventoryClickEvent e) {
         Inventory i = e.getClickedInventory();
         Player p = (Player) e.getWhoClicked();
-        FileConfiguration config = P.p.getConfig();
+        FileConfiguration config = FactionsPlugin.getInstance().getConfig();
         FPlayer fplayer = FPlayers.getInstance().getByPlayer(p);
 
         if (e.getView().getTitle().equalsIgnoreCase(color(config.getString("F-Shop.GUI.Name")))) {

@@ -3,7 +3,7 @@ package com.massivecraft.factions.zcore.fupgrades;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,13 +29,13 @@ public class EXPUpgrade implements Listener {
 
                 switch (level) {
                     case 1:
-                        multiplier = P.p.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1");
+                        multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1");
                         break;
                     case 2:
-                        multiplier = P.p.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2");
+                        multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2");
                         break;
                     case 3:
-                        multiplier = P.p.getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
+                        multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
                         break;
                 }
 

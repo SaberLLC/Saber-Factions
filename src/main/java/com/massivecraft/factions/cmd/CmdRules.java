@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -15,69 +15,65 @@ public class CmdRules extends FCommand {
         aliases.add("rules");
 
         this.optionalArgs.put("add/remove/set/clear", "");
-        this.errorOnToManyArgs = false;
 
-        permission = Permission.RULES.node;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = true;
-        senderMustBeAdmin = false;
-
+        this.requirements = new CommandRequirements.Builder(Permission.RULES)
+                .playerOnly()
+                .memberOnly()
+                .noErrorOnManyArgs()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("frules.Enabled")) {
-            fme.msg(TL.COMMAND_RULES_DISABLED_MSG);
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("frules.Enabled")) {
+            context.msg(TL.COMMAND_RULES_DISABLED_MSG);
             return;
         }
-        if (this.args.size() == 0) {
-            HashMap<Integer, String> rules = fme.getFaction().getRulesMap();
+        if (context.args.size() == 0) {
+            HashMap<Integer, String> rules = context.faction.getRulesMap();
             if (rules.size() == 0) {
-                List<String> ruleList = P.p.getConfig().getStringList("frules.default-rules");
-                fme.sendMessage(P.p.colorList(ruleList));
+                List<String> ruleList = FactionsPlugin.getInstance().getConfig().getStringList("frules.default-rules");
+                context.sendMessage(FactionsPlugin.getInstance().colorList(ruleList));
 
             } else {
                 for (int i = 0; i <= rules.size() - 1; i++) {
-                    fme.sendMessage(P.p.color(rules.get(i)));
+                    context.sendMessage(FactionsPlugin.getInstance().color(rules.get(i)));
                 }
             }
 
         }
-        if (this.args.size() == 1) {
-            if (args.get(0).equalsIgnoreCase("add")) {
-                fme.msg(TL.COMMAND_RULES_ADD_INVALIDARGS);
+        if (context.args.size() == 1) {
+            if (context.args.get(0).equalsIgnoreCase("add")) {
+                context.msg(TL.COMMAND_RULES_ADD_INVALIDARGS);
             }
-            if (args.get(0).equalsIgnoreCase("set")) {
-                fme.msg(TL.COMMAND_RULES_SET_INVALIDARGS);
+            if (context.args.get(0).equalsIgnoreCase("set")) {
+                context.msg(TL.COMMAND_RULES_SET_INVALIDARGS);
             }
-            if (args.get(0).equalsIgnoreCase("remove")) {
-                fme.msg(TL.COMMAND_RULES_REMOVE_INVALIDARGS);
+            if (context.args.get(0).equalsIgnoreCase("remove")) {
+                context.msg(TL.COMMAND_RULES_REMOVE_INVALIDARGS);
             }
-            if (args.get(0).equalsIgnoreCase("clear")) {
-                fme.getFaction().clearRules();
-                fme.msg(TL.COMMAND_RULES_CLEAR_SUCCESS);
+            if (context.args.get(0).equalsIgnoreCase("clear")) {
+                context.faction.clearRules();
+                context.msg(TL.COMMAND_RULES_CLEAR_SUCCESS);
             }
 
         }
-        if (this.args.size() >= 2) {
-            if (args.get(0).equalsIgnoreCase("add")) {
+        if (context.args.size() >= 2) {
+            if (context.args.get(0).equalsIgnoreCase("add")) {
                 String message = "";
                 StringBuilder string = new StringBuilder(message);
-                for (int i = 1; i <= args.size() - 1; i++) {
-                    string.append(" ").append(args.get(i));
+                for (int i = 1; i <= context.args.size() - 1; i++) {
+                    string.append(" " + context.args.get(i));
                 }
-                fme.getFaction().addRule(string.toString());
-                fme.msg(TL.COMMAND_RULES_ADD_SUCCESS);
+                context.faction.addRule(string.toString());
+                context.msg(TL.COMMAND_RULES_ADD_SUCCESS);
             }
 
-            if (this.args.size() == 2) {
-                if (args.get(0).equalsIgnoreCase("remove")) {
-                    int index = argAsInt(1);
-                    fme.getFaction().removeRule(index - 1);
-                    fme.msg(TL.COMMAND_RULES_REMOVE_SUCCESS);
+            if (context.args.size() == 2) {
+                if (context.args.get(0).equalsIgnoreCase("remove")) {
+                    int index = context.argAsInt(1);
+                    context.faction.removeRule(index - 1);
+                    context.msg(TL.COMMAND_RULES_REMOVE_SUCCESS);
                 }
             }
 

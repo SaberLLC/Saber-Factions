@@ -1,6 +1,8 @@
 package com.massivecraft.factions.cmd.econ;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -21,15 +23,7 @@ public class CmdMoney extends FCommand {
         //this.requiredArgs.add("");
         //this.optionalArgs.put("","")
 
-        this.isMoneyCommand = true;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
-
-        this.helpLong.add(p.txt.parseTags(TL.COMMAND_MONEY_LONG.toString()));
+        this.helpLong.add(FactionsPlugin.getInstance().txt.parseTags(TL.COMMAND_MONEY_LONG.toString()));
 
         this.addSubCommand(this.cmdMoneyBalance);
         this.addSubCommand(this.cmdMoneyDeposit);
@@ -37,13 +31,16 @@ public class CmdMoney extends FCommand {
         this.addSubCommand(this.cmdMoneyTransferFf);
         this.addSubCommand(this.cmdMoneyTransferFp);
         this.addSubCommand(this.cmdMoneyTransferPf);
-
     }
 
     @Override
-    public void perform() {
-        this.commandChain.add(this);
-        P.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+    public void perform(CommandContext context) {
+        if (!Conf.econEnabled) {
+            context.msg(TL.ECON_OFF, "economy option is enabled, please set \'econEnabled\' to true in conf.json");
+            return;
+        }
+        context.commandChain.add(this);
+        FactionsPlugin.getInstance().cmdAutoHelp.execute(context);
     }
 
     @Override

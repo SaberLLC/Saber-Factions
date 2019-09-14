@@ -3,7 +3,7 @@ package com.massivecraft.factions.zcore;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -311,7 +311,7 @@ public abstract class MCommand<T extends MPlugin> {
             s = s.replace("{power}", power);
         }
         if (s.contains("{group}")) {
-            String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
+            String group = FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
             s = s.replace("{group}", group);
         }
         return s;

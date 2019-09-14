@@ -325,7 +325,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         if (Conf.logFactionDisband) {
             //TODO: Format this correctly and translate.
-            P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") was disbanded by " + (disbanderIsConsole ? "console command" : fdisbander.getName()) + ".");
+            FactionsPlugin.getInstance().log("The faction " + this.getTag() + " (" + this.getId() + ") was disbanded by " + (disbanderIsConsole ? "console command" : fdisbander.getName()) + ".");
         }
 
         if (Econ.shouldBeUsed() && !disbanderIsConsole) {
@@ -341,7 +341,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                     String amountString = Econ.moneyString(amount);
                     msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
                     //TODO: Format this correctly and translate
-                    P.p.log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
+                    FactionsPlugin.getInstance().log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
                 }
             }
         }
@@ -425,16 +425,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         int size = 9;
         switch (getUpgrade(UpgradeType.CHEST)) {
             case 1:
-                size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1") * 9;
+                size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1") * 9;
                 break;
             case 2:
-                size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2") * 9;
+                size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2") * 9;
                 break;
             case 3:
-                size = P.p.getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
+                size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
                 break;
         }
-        chest = Bukkit.createInventory(null, size, P.p.color(P.p.getConfig().getString("fchest.Inventory-Title")));
+        chest = Bukkit.createInventory(null, size, FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
         return chest;
     }
 
@@ -442,7 +442,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     @Override
     public void setChestSize(int chestSize) {
         ItemStack[] contents = this.getChestInventory().getContents();
-        chest = Bukkit.createInventory(null, chestSize, P.p.color(P.p.getConfig().getString("fchest.Inventory-Title")));
+        chest = Bukkit.createInventory(null, chestSize, FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
         chest.setContents(contents);
     }
 
@@ -658,7 +658,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean isPowerFrozen() {
-        int freezeSeconds = P.p.getConfig().getInt("hcf.powerfreeze", 0);
+        int freezeSeconds = FactionsPlugin.getInstance().getConfig().getInt("hcf.powerfreeze", 0);
         return freezeSeconds != 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
 
     }
@@ -743,7 +743,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void resetPerms() {
-        P.p.log(Level.WARNING, "Resetting permissions for Faction: " + tag);
+        FactionsPlugin.getInstance().log(Level.WARNING, "Resetting permissions for Faction: " + tag);
 
         permissions.clear();
 
@@ -880,7 +880,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (this.relationWish.containsKey(otherFaction.getId())) {
             return this.relationWish.get(otherFaction.getId());
         }
-        return Relation.fromString(P.p.getConfig().getString("default-relation", "neutral")); // Always default to old behavior.
+        return Relation.fromString(FactionsPlugin.getInstance().getConfig().getString("default-relation", "neutral")); // Always default to old behavior.
     }
 
     public void setRelationWish(Faction otherFaction, Relation relation) {
@@ -1086,7 +1086,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return ret;
         }
 
-        for (Player player : P.p.getServer().getOnlinePlayers()) {
+        for (Player player : FactionsPlugin.getInstance().getServer().getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
             if (fplayer.getFaction() == this && !fplayer.isAlt()) {
                 ret.add(player);
@@ -1104,7 +1104,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return false;
         }
 
-        for (Player player : P.p.getServer().getOnlinePlayers()) {
+        for (Player player : FactionsPlugin.getInstance().getServer().getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
             if (fplayer != null && fplayer.getFaction() == this) {
                 return true;
@@ -1156,7 +1156,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
             // no members left and faction isn't permanent, so disband it
             if (Conf.logFactionDisband) {
-                P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left" + (autoLeave ? " and by inactivity" : "") + ".");
+                FactionsPlugin.getInstance().log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left" + (autoLeave ? " and by inactivity" : "") + ".");
             }
 
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
@@ -1174,7 +1174,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             replacements.get(0).setRole(Role.LEADER);
             //TODO:TL
             this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
-            P.p.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
+            FactionsPlugin.getInstance().log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
         }
     }
 
@@ -1182,7 +1182,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // Messages
     // ----------------------------------------------//
     public void msg(String message, Object... args) {
-        message = P.p.txt.parse(message, args);
+        message = FactionsPlugin.getInstance().txt.parse(message, args);
 
         for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) {
             fplayer.sendMessage(message);

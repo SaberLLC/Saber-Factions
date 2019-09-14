@@ -35,7 +35,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
     // Return the plugin version since this expansion is bundled with the dependency
     @Override
     public String getVersion() {
-        return P.p.getDescription().getVersion();
+        return FactionsPlugin.getInstance().getDescription().getVersion();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fPlayer.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
                 return fPlayer.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fPlayer.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
             case "player_group":
-                return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fPlayer.getId())));
+                return FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fPlayer.getId())));
             case "player_balance":
                 return Econ.isSetup() ? Econ.getFriendlyBalance(fPlayer) : TL.ECON_OFF.format("balance");
             case "player_power":
@@ -131,7 +131,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             case "faction_warps":
                 return String.valueOf(faction.getWarps().size());
             case "faction_raidable":
-                boolean raid = P.p.getConfig().getBoolean("hcf.raidable", false) && faction.getLandRounded() >= faction.getPowerRounded();
+                boolean raid = FactionsPlugin.getInstance().getConfig().getBoolean("hcf.raidable", false) && faction.getLandRounded() >= faction.getPowerRounded();
                 return raid ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
             case "faction_home_world":
                 return faction.hasHome() ? faction.getHome().getWorld().getName() : "";

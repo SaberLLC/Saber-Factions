@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
 
 import java.text.SimpleDateFormat;
@@ -16,10 +16,10 @@ public class CheckTask implements Runnable {
     private static List<String> wallChecks = new CopyOnWriteArrayList<>();
     private static List<String> bufferChecks = new CopyOnWriteArrayList<>();
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Conf.dateFormat);
-    private P plugin;
+    private FactionsPlugin plugin;
     private int minute;
 
-    public CheckTask(P plugin, int minute) {
+    public CheckTask(FactionsPlugin plugin, int minute) {
         this.plugin = plugin;
         this.minute = minute;
     }

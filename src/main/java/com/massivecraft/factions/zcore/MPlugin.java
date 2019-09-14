@@ -242,7 +242,7 @@ public abstract class MPlugin extends JavaPlugin {
     // COMMAND HANDLING
     // -------------------------------------------- //
 
-    // can be overridden by P method, to provide option
+    // can be overridden by FactionsPlugin method, to provide option
     public boolean logPlayerCommands() {
         return true;
     }

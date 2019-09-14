@@ -3,7 +3,7 @@ package com.massivecraft.factions.zcore.fupgrades;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.CropState;
 import org.bukkit.Material;
@@ -30,13 +30,13 @@ public class CropUpgrades implements Listener {
 
                 switch (level) {
                     case 1:
-                        chance = P.p.getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-1");
+                        chance = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-1");
                         break;
                     case 2:
-                        chance = P.p.getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-2");
+                        chance = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-2");
                         break;
                     case 3:
-                        chance = P.p.getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-3");
+                        chance = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-3");
                         break;
                 }
 

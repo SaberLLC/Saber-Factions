@@ -14,46 +14,45 @@ public class CmdCheckpoint extends FCommand {
 
         this.optionalArgs.put("set", "");
 
-        this.permission = Permission.CHECKPOINT.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.CHECKPOINT)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("checkpoints.Enabled")) {
-            fme.msg(TL.COMMAND_CHECKPOINT_DISABLED);
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("checkpoints.Enabled")) {
+            context.msg(TL.COMMAND_CHECKPOINT_DISABLED);
             return;
         }
-        if (args.size() == 1) {
-            FLocation myLocation = new FLocation(fme.getPlayer().getLocation());
+        if (context.args.size() == 1) {
+            FLocation myLocation = new FLocation(context.player.getLocation());
             Faction myLocFaction = Board.getInstance().getFactionAt(myLocation);
-            if (myLocFaction == Factions.getInstance().getWilderness() || myLocFaction == fme.getFaction()) {
-                fme.getFaction().setCheckpoint(fme.getPlayer().getLocation());
-                fme.msg(TL.COMMAND_CHECKPOINT_SET);
+            if (myLocFaction == Factions.getInstance().getWilderness() || myLocFaction == context.faction) {
+                context.faction.setCheckpoint(context.player.getLocation());
+                context.msg(TL.COMMAND_CHECKPOINT_SET);
                 return;
             } else {
-                fme.msg(TL.COMMAND_CHECKPOINT_INVALIDLOCATION);
+                context.msg(TL.COMMAND_CHECKPOINT_INVALIDLOCATION);
                 return;
             }
         }
-        if (fme.getFaction().getCheckpoint() == null) {
-            fme.msg(TL.COMMAND_CHECKPOINT_NOT_SET);
+        if (context.faction.getCheckpoint() == null) {
+            context.msg(TL.COMMAND_CHECKPOINT_NOT_SET);
             return;
         }
-        FLocation checkLocation = new FLocation(fme.getFaction().getCheckpoint());
+        FLocation checkLocation = new FLocation(context.faction.getCheckpoint());
         Faction checkfaction = Board.getInstance().getFactionAt(checkLocation);
 
-        if (checkfaction.getId().equals(Factions.getInstance().getWilderness().getId()) || checkfaction.getId().equals(fme.getFaction().getId())) {
-            fme.msg(TL.COMMAND_CHECKPOINT_GO);
-            this.doWarmUp(WarmUpUtil.Warmup.CHECKPOINT, TL.WARMUPS_NOTIFY_TELEPORT, "Checkpoint", () -> fme.getPlayer().teleport(fme.getFaction().getCheckpoint()), this.p.getConfig().getLong("warmups.f-checkpoint", 0));
+        if (checkfaction.getId().equals(Factions.getInstance().getWilderness().getId()) || checkfaction.getId().equals(context.faction.getId())) {
+            context.msg(TL.COMMAND_CHECKPOINT_GO);
+
+            context.doWarmUp(WarmUpUtil.Warmup.CHECKPOINT, TL.WARMUPS_NOTIFY_TELEPORT, "Checkpoint", () -> {
+                context.player.teleport(context.faction.getCheckpoint());
+            }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-checkpoint", 0));
         } else {
-            fme.msg(TL.COMMAND_CHECKPOINT_CLAIMED);
+            context.msg(TL.COMMAND_CHECKPOINT_CLAIMED);
         }
 
 

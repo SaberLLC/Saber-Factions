@@ -4,14 +4,12 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Particle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -28,52 +26,27 @@ public class CmdFly extends FCommand {
     public CmdFly() {
         super();
         this.aliases.add("fly");
-
         this.optionalArgs.put("on/off", "flip");
 
-
-        this.permission = Permission.FLY.node;
-        this.senderMustBeMember = true;
-        this.senderMustBeModerator = false;
+        this.requirements = new CommandRequirements.Builder(Permission.FLY)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     public static void startParticles() {
-        // Just a secondary check.
-        if (!P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
-            return;
-        }
 
-        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
+        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
             for (String name : flyMap.keySet()) {
                 Player player = Bukkit.getPlayer(name);
-                if (player == null) {
-                    continue;
-                }
-                if (!player.isFlying()) {
-                    continue;
-                }
-                if (!P.p.mc17) {
-                    if (player.getGameMode() == GameMode.SPECTATOR) {
-                        continue;
-                    }
+                if (player == null) continue;
+                if (!player.isFlying()) continue;
+                if (!FactionsPlugin.getInstance().mc17) {
+                    if (player.getGameMode() == GameMode.SPECTATOR) continue;
                 }
 
-                if (FPlayers.getInstance().getByPlayer(player).isVanished()) {
-                    // Actually, vanished players (such as admins) should not display particles to prevent others from knowing their vanished assistance for moderation.
-                    // But we can keep it as a config.
-                    if (P.p.getConfig().getBoolean("ffly.Particles.Enable-While-Vanished")) {
-                        return;
-                    }
-                    continue;
-                }
-                if (P.p.useNonPacketParticles) {
-                    // 1.9+ based servers will use the built in particleAPI instead of packet based.
-                    // any particle amount higher than 0 made them go everywhere, and the offset at 0 was not working.
-                    // So setting the amount to 0 spawns 1 in the precise location
-                    player.getWorld().spawnParticle(Particle.CLOUD, player.getLocation().add(0, -0.35, 0), 0);
-                } else {
-                    ParticleEffect.CLOUD.display((float) 0, (float) 0, (float) 0, (float) 0, 3, player.getLocation().add(0, -0.35, 0), 16);
-                }
+                FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
+                fplayer.isVanished();
 
             }
             if (flyMap.keySet().size() == 0) {
@@ -84,7 +57,7 @@ public class CmdFly extends FCommand {
     }
 
     public static void startFlyCheck() {
-        flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> { //threw the exception for now, until I recode fly :( Cringe.
+        flyid = Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> { //threw the exception for now, until I recode fly :( Cringe.
             checkTaskState();
             if (flyMap.keySet().size() != 0) {
                 for (String name : flyMap.keySet()) {
@@ -95,7 +68,7 @@ public class CmdFly extends FCommand {
                     if (player == null
                             || !player.isFlying()
                             || player.getGameMode() == GameMode.CREATIVE
-                            || !P.p.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
+                            || !FactionsPlugin.getInstance().mc17 && player.getGameMode() == GameMode.SPECTATOR) {
                         continue;
                     }
                     FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
@@ -105,7 +78,7 @@ public class CmdFly extends FCommand {
                         flyMap.remove(name);
                         continue;
                     }
-                    if (fPlayer.checkIfNearbyEnemies()) {
+                    if (player.hasPermission("factions.fly.bypassnearbyenemycheck") || fPlayer.checkIfNearbyEnemies()) {
                         continue;
                     }
                     FLocation myFloc = new FLocation(player.getLocation());
@@ -174,57 +147,53 @@ public class CmdFly extends FCommand {
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         // Disabled by default.
-        if (!P.p.getConfig().getBoolean("enable-faction-flight", false)) {
-            fme.msg(TL.COMMAND_FLY_DISABLED);
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", false)) {
+            context.fPlayer.msg(TL.COMMAND_FLY_DISABLED);
             return;
         }
 
-        FLocation myfloc = new FLocation(me.getLocation());
+        FLocation myfloc = new FLocation(context.player.getLocation());
         Faction toFac = Board.getInstance().getFactionAt(myfloc);
-        if (!checkBypassPerms(fme, me, toFac)) return;
-        List<Entity> entities = this.me.getNearbyEntities(16.0D, 256.0D, 16.0D);
+        if (!checkBypassPerms(context.fPlayer, context.player, toFac)) return;
+        List<Entity> entities = context.player.getNearbyEntities(16.0D, 256.0D, 16.0D);
 
         for (int i = 0; i <= entities.size() - 1; ++i) {
             if (entities.get(i) instanceof Player) {
                 Player eplayer = (Player) entities.get(i);
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer.getRelationTo(this.fme) == Relation.ENEMY && !efplayer.isStealthEnabled()) {
-                    this.fme.msg(TL.COMMAND_FLY_CHECK_ENEMY);
+                if (efplayer.getRelationTo(context.fPlayer) == Relation.ENEMY && !efplayer.isStealthEnabled()) {
+                    context.msg(TL.COMMAND_FLY_CHECK_ENEMY);
                     return;
                 }
             }
         }
 
 
-        if (args.size() == 0) {
-            toggleFlight(fme.isFlying(), me);
-        } else if (args.size() == 1) {
-            toggleFlight(argAsBool(0), me);
+        if (context.args.size() == 0) {
+            toggleFlight(context.fPlayer.isFlying(), context.fPlayer, context);
+        } else if (context.args.size() == 1) {
+            toggleFlight(context.argAsBool(0), context.fPlayer, context);
         }
     }
 
-    private void toggleFlight(final boolean toggle, final Player player) {
+    private void toggleFlight(final boolean toggle, final FPlayer fme, CommandContext context) {
         if (toggle) {
             fme.setFlying(false);
-            flyMap.remove(player.getName());
+            flyMap.remove(fme.getPlayer().getName());
             return;
         }
 
+
         if (fme.canFlyAtLocation())
-            this.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
+            context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
                 fme.setFlying(true);
-                flyMap.put(player.getName(), true);
-                if (id == -1) {
-                    if (P.p.getConfig().getBoolean("ffly.Particles.Enabled")) {
-                        startParticles();
-                    }
-                }
+                flyMap.put(fme.getPlayer().getName(), true);
                 if (flyid == -1) {
                     startFlyCheck();
                 }
-            }, this.p.getConfig().getLong("warmups.f-fly", 0));
+            }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-fly", 0));
     }
 
     @Override

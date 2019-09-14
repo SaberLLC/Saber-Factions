@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -24,44 +24,38 @@ public class CmdInventorySee extends FCommand {
 
         this.requiredArgs.add("member name");
 
-        this.permission = Permission.INVSEE.node;
-        this.disableOnLock = true;
-        this.disableOnSpam = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.INVSEE)
+                .playerOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("f-inventory-see.Enabled")) {
-            fme.msg(TL.GENERIC_DISABLED);
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled")) {
+            context.msg(TL.GENERIC_DISABLED);
             return;
         }
 
-        Access use = myFaction.getAccess(fme, PermissableAction.TERRITORY);
-        if (use == Access.DENY || (use == Access.UNDEFINED && !assertMinRole(Role.MODERATOR))) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "territory");
+        Access use = context.fPlayer.getFaction().getAccess(context.fPlayer, PermissableAction.TERRITORY);
+        if (use == Access.DENY || (use == Access.UNDEFINED && !context.assertMinRole(Role.MODERATOR))) {
+            context.msg(TL.GENERIC_NOPERMISSION, "territory");
             return;
         }
 
-        ArrayList<Player> fplayers = myFaction.getOnlinePlayers();
+        ArrayList<Player> fplayers = context.fPlayer.getFaction().getOnlinePlayers();
 
-        FPlayer targetInv = argAsFPlayer(0);
+        FPlayer targetInv = context.argAsFPlayer(0);
         if (targetInv == null || !fplayers.contains(targetInv.getPlayer())) {
-            fme.msg(TL.PLAYER_NOT_FOUND, Objects.requireNonNull(targetInv).toString());
+            context.msg(TL.PLAYER_NOT_FOUND, Objects.requireNonNull(targetInv).toString());
             return;
         }
 
-        Inventory inventory = Bukkit.createInventory(me, 36, targetInv.getName() + "'s Inventory");
+        Inventory inventory = Bukkit.createInventory(context.player, 36, targetInv.getName() + "'s Inventory");
         for (int i = 0; i < 36; i++)
             if (targetInv.getPlayer().getInventory().getItem(i) != null)
                 inventory.setItem(i, targetInv.getPlayer().getInventory().getItem(i));
 
-        me.openInventory(inventory);
+        context.player.openInventory(inventory);
     }
 
     @Override

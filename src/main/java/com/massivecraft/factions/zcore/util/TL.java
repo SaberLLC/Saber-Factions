@@ -59,6 +59,7 @@ public enum TL {
     /**
      * Command translations
      */
+    COMMAND_USEAGE_TEMPLATE_COLOR("&c"),
 
     /**
      * Messsges for /f help
@@ -113,6 +114,11 @@ public enum TL {
      * Messsges for Faction Admins/Mods
      */
 
+    COMMAND_CONTEXT_ADMINISTER_DIF_FACTION("&c[!] %1$s is not in the same faction as you."),
+    COMMAND_CONTEXT_ADMINISTER_ADMIN_REQUIRED("&c[!] Only the faction admin can do that."),
+    COMMAND_CONTEXT_ADMINISTER_SAME_RANK_CONTROL("&c[!] Moderators can't control each other..."),
+    COMMAND_CONTEXT_ADMINISTER_MOD_REQUIRED("&c[!] You must be a faction moderator to do that."),
+
     COMMAND_UPGRADES_DESCRIPTION("&cOpen the Upgrades Menu"),
     COMMAND_CORNER_CANT_CLAIM("&c&l[!] &cYou may not claim this corner!"),
     COMMAND_CORNER_CLAIMED("\n&2&l[!] &aYou have claimed the corner successfully, totalling in &b%1$d &achunks!\n"),
@@ -139,7 +145,6 @@ public enum TL {
 
     COMMAND_ANNOUNCE_DESCRIPTION("Announce a message to players in faction."),
     COMMAND_ALTS_DESCRIPTION("Faction Alts Commands"),
-    COMMAND_STRIKE_DESCRIPTION("Faction Strike Commands"),
 
     COMMAND_ALTS_LIST_DESCRIPTION("List all alts in your faction"),
 
@@ -689,25 +694,24 @@ public enum TL {
     COMMAND_SETHOME_SET("&c&l[!]&c %1$s&7 set the home for your faction. You can now use:"),
     COMMAND_SETHOME_SETOTHER("&c&l[!]&7 You have set the home for the &c%1$s&7 faction."),
     COMMAND_SETHOME_DESCRIPTION("Set the faction home"),
-    COMMAND_STRIKE_FACTION("View Factions Strikes"),
 
     COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
     COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
     COMMAND_ONCOOOLDOWN("&c&l[!] &7You cannot use this command for another &b%1$s &7seconds."),
 
-    COMMAND_SETSTRIKES_FAILURE("&c&l[!]&7 &c{faction} does not exist."),
-    COMMAND_SETSTRIKES_BROADCAST("&c&l[!]&7 &c{faction} has received a strike for {reason}"),
-    COMMAND_SETSTRIKES_SUCCESS("&c&l[!]&7 &c{faction}'s&7 new strikes are &c{strikes}"),
-    COMMAND_SETSTRIKES_DESCRIPTION("Set a faction's strikes"),
-    COMMAND_STRIKEREMOVE_DESCRIPTION("Remove a faction's strikes"),
-    COMMAND_STRIKE_MESSAGE("&c&l[!] &7{faction} has {strikes} strikes."),
-    COMMAND_STRIKE_NOTFOUND("&c&l[!] &7{faction} does not exist."),
-    COMMAND_STRIKE_NEEDFACTION("&c&l[!] &7&cYou need to join a faction to view your own!"),
+    COMMAND_STRIKES_CHANGED("&c&l[!] &7You have set &c%1$s's &7strikes to &c%2$s"),
+    COMMAND_STRIKES_INFO("&c&l[!] &7%1$s has %2$s strikes"),
+    COMMAND_STRIKES_TARGET_INVALID("&c&l[!] &7The faction %1$s is invalid."),
+    COMMAND_STRIKES_STRUCK("&c&l[!] &7Your faction strikes have changed by &c%1$s &7strike(s)! Your faction now has &c%2$s/%3$s"),
+    COMMAND_STRIKES_DESCRIPTION("Set strikes on factions to warn them"),
+    COMMAND_STRIKESGIVE_DESCRIPTION("Give a faction 1 strike"),
+    COMMAND_STRIKETAKE_DESCRIPTION("Take a strike from a faction"),
+    COMMAND_STRIKESET_DESCRIPTION("Set a faction's strikes explicitly."),
+    COMMAND_STRIKESINFO_DESCRIPTION("Get a faction's strikes"),
 
     SHOP_NOT_ENOUGH_POINTS("&c&l[!] &7Your faction does not have enough points to purchase this!"),
     SHOP_BOUGHT_BROADCAST_FACTION("\n&c&l[!] &e&lFactionShop » &b{player} &7bought &b{item}&7!\n"),
 
-    COMMAND_STRIKEGIVE_DESCRIPTION("Give a faction strikes"),
 
     COMMAND_VIEWCHEST_DESCRIPTION("view a factions chest/pv"),
 
@@ -826,6 +830,8 @@ public enum TL {
 
     COMMAND_TNT_DISABLED_MSG("&cThis command is disabled!"),
     COMMAND_TNT_INVALID_NUM("The amount needs to be a number!"),
+    COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT("&cNot enough tnt in bank."),
+    COMMAND_TNTFILL_NODISPENSERS("&c&l[!] &7No dispensers were found in a radius of {radius} blocks."),
     COMMAND_TNT_DEPOSIT_SUCCESS("&cSuccessfully deposited tnt."),
     COMMAND_TNT_EXCEEDLIMIT("&cThis exceeds the bank limit!"),
     COMMAND_TNT_WIDTHDRAW_SUCCESS("&cSuccessfully withdrew tnt."),
@@ -848,6 +854,7 @@ public enum TL {
 
     COMMAND_UNBAN_DESCRIPTION("Unban someone from your Faction"),
     COMMAND_UNBAN_NOTBANNED("&7%s &cisn't banned. Not doing anything."),
+    COMMAND_UNBAN_TARGET_IN_OTHER_FACTION("&c%1$s is not in your faction!"),
     COMMAND_UNBAN_UNBANNED("&e%1$s &cunbanned &7%2$s"),
     COMMAND_UNBAN_TARGET("&aYou were unbanned from &r%s"),
 
@@ -974,6 +981,10 @@ public enum TL {
     GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
     GENERIC_NOTENOUGHMONEY("&cYou dont have enough money!"),
     GENERIC_MONEYTAKE("&c{amount} has been taken from your account."),
+    GENERIC_FPERM_OWNER_NOPERMISSION("&7This land is ownerclaimed, you need to be an owner to %1$s it."),
+    GENERIC_NOFACTION_FOUND("&cCouldn't find a faction with that name!"),
+    GENERIC_YOUMUSTBE("&cYour must be atleast %1$s to do this!"),
+    GENERIC_MEMBERONLY("&cYou must be in a faction to do this!"),
 
 
     MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),

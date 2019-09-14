@@ -3,7 +3,7 @@ package com.massivecraft.factions.integration;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -35,24 +35,24 @@ public class Econ {
         String integrationFail = "Economy integration is " + (Conf.econEnabled ? "enabled, but" : "disabled, and") + " the plugin \"Vault\" ";
 
         if (Bukkit.getServer().getPluginManager().getPlugin("Vault") == null) {
-            P.p.log(integrationFail + "is not installed.");
+            FactionsPlugin.getInstance().log(integrationFail + "is not installed.");
             return;
         }
 
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
-            P.p.log(integrationFail + "is not hooked into an economy plugin.");
+            FactionsPlugin.getInstance().log(integrationFail + "is not hooked into an economy plugin.");
             return;
         }
         econ = rsp.getProvider();
 
-        P.p.log("Economy integration through Vault plugin successful.");
+        FactionsPlugin.getInstance().log("Economy integration through Vault plugin successful.");
 
         if (!Conf.econEnabled) {
-            P.p.log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+            FactionsPlugin.getInstance().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
         }
 
-        P.p.cmdBase.cmdHelp.updateHelp();
+        //FactionsPlugin.getInstance().cmdBase.cmdHelp.updateHelp();
     }
 
     public static boolean shouldBeUsed() {
@@ -83,7 +83,7 @@ public class Econ {
 
     public static void sendBalanceInfo(CommandSender to, Faction about) {
         if (!shouldBeUsed()) {
-            P.p.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
+            FactionsPlugin.getInstance().log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
             return;
         }
         to.sendMessage(String.format("%s's balance is %s.", about.getTag(), Econ.moneyString(econ.getBalance(about.getAccountId()))));

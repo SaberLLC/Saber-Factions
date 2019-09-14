@@ -1,6 +1,8 @@
 package com.massivecraft.factions.cmd.alts;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -18,29 +20,24 @@ public class CmdAlts extends FCommand {
         this.aliases.add("alts");
         this.aliases.add("alt");
 
-        this.permission = Permission.ALTS.node;
-        this.disableOnLock = false;
-        this.disableOnSpam = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
-
-
         this.addSubCommand(this.cmdInviteAlt);
         this.addSubCommand(this.cmdAltsList);
+
+        this.requirements = new CommandRequirements.Builder(Permission.ALTS)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("f-alts.Enabled", false)) {
-            fme.msg(TL.GENERIC_DISABLED);
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled", false)) {
+            context.msg(TL.GENERIC_DISABLED);
             return;
         }
 
-        this.commandChain.add(this);
-        P.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+        context.commandChain.add(this);
+        FactionsPlugin.getInstance().cmdAutoHelp.execute(context);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -11,22 +11,14 @@ public class CmdVersion extends FCommand {
         this.aliases.add("version");
         this.aliases.add("ver");
 
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("", "");
-
-        this.permission = Permission.VERSION.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.VERSION)
+                .build();
     }
 
     @Override
-    public void perform() {
-        msg(TL.COMMAND_VERSION_NAME); // Did this so people can differentiate between P and FactionsUUID (( Requested Feature ))
-        msg(TL.COMMAND_VERSION_VERSION, P.p.getDescription().getFullName());
+    public void perform(CommandContext context) {
+        context.msg(TL.COMMAND_VERSION_NAME); // Did this so people can differentiate between SavageFactions and FactionsUUID (( Requested Feature ))
+        context.msg(TL.COMMAND_VERSION_VERSION, FactionsPlugin.getInstance().getDescription().getFullName());
     }
 
     @Override

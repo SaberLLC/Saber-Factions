@@ -3,7 +3,7 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -12,19 +12,19 @@ import org.bukkit.Bukkit;
 public class UtilFly {
 
     public static void run() {
-        if (!P.p.getConfig().getBoolean("enable-faction-flight"))
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
             return;
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
             for (FPlayer fp : FPlayers.getInstance().getOnlinePlayers()) {
                 if (fp.isFlying())
                     fp.checkIfNearbyEnemies();
             }
-        }, 0, P.p.getConfig().getInt("fly-task-interval", 10));
+        }, 0, FactionsPlugin.getInstance().getConfig().getInt("fly-task-interval", 10));
     }
 
     public static void setFly(FPlayer fp, boolean fly, boolean silent, boolean damage) {
-        if (!P.p.getConfig().getBoolean("enable-faction-flight"))
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
             return;
 
         fp.getPlayer().setAllowFlight(fly);
@@ -44,7 +44,7 @@ public class UtilFly {
     }
 
     public static void checkFly(FPlayer me, Faction factionTo) {
-        if (!P.p.getConfig().getBoolean("enable-faction-flight"))
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
             return;
 
         if (me.isAdminBypassing() && me.isFlying() && me.getPlayer().hasPermission("factions.fly.enemy-bypass"))
@@ -82,13 +82,13 @@ public class UtilFly {
     public static void setFallDamage(FPlayer fp, boolean fly, boolean damage) {
         if (!fly) {
             if (!damage) {
-                fp.sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", P.p.getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
+                fp.sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
             }
 
-            int cooldown = P.p.getConfig().getInt("fly-falldamage-cooldown", 3);
+            int cooldown = FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3);
             if (cooldown > 0) {
                 fp.setTakeFallDamage(false);
-                Bukkit.getScheduler().runTaskLater(P.p, () -> fp.setTakeFallDamage(true), 20L * cooldown);
+                Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> fp.setTakeFallDamage(true), 20L * cooldown);
             }
         }
     }

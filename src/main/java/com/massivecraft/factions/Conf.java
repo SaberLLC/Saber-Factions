@@ -386,7 +386,7 @@ public class Conf {
         territoryDenyUseageMaterials.add(Material.BUCKET);
         territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
-        if (!P.p.mc17) {
+        if (!FactionsPlugin.getInstance().mc17) {
             territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
         }
 
@@ -398,7 +398,7 @@ public class Conf {
         territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
         territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
-        if (!P.p.mc17) {
+        if (!FactionsPlugin.getInstance().mc17) {
             territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
         }
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
@@ -426,11 +426,11 @@ public class Conf {
     }
 
     public static void load() {
-        P.p.persist.loadOrSaveDefault(i, Conf.class, "conf");
+        FactionsPlugin.getInstance().persist.loadOrSaveDefault(i, Conf.class, "conf");
     }
 
     public static void save() {
-        P.p.persist.save(i);
+        FactionsPlugin.getInstance().persist.save(i);
     }
 
     public enum Backend {

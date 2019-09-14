@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -17,7 +17,7 @@ public class CmdSeeChunk extends FCommand {
 
     //Used a hashmap cuz imma make a particle selection gui later, will store it where the boolean is rn.
     public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
-    Long interval;
+    private long interval;
     private boolean useParticles;
     private ParticleEffect effect;
     private int taskID = -1;
@@ -31,30 +31,26 @@ public class CmdSeeChunk extends FCommand {
         aliases.add("seechunk");
         aliases.add("sc");
 
-        permission = Permission.SEECHUNK.node;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
-
-
-        this.useParticles = p.getConfig().getBoolean("see-chunk.particles", true);
-        interval = P.p.getConfig().getLong("see-chunk.interval", 10L);
+        this.useParticles = FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.particles", true);
+        interval = FactionsPlugin.getInstance().getConfig().getLong("see-chunk.interval", 10L);
         if (effect == null) {
             effect = ParticleEffect.REDSTONE;
         }
 
+        this.requirements = new CommandRequirements.Builder(Permission.SEECHUNK)
+                .playerOnly()
+                .build();
+
     }
 
     @Override
-    public void perform() {
-        if (seeChunkMap.containsKey(me.getName())) {
-            seeChunkMap.remove(me.getName());
-            msg(TL.COMMAND_SEECHUNK_DISABLED);
+    public void perform(CommandContext context) {
+        if (seeChunkMap.containsKey(context.player.getName())) {
+            seeChunkMap.remove(context.player.getName());
+            context.msg(TL.COMMAND_SEECHUNK_DISABLED);
         } else {
-            seeChunkMap.put(me.getName(), true);
-            msg(TL.COMMAND_SEECHUNK_ENABLED);
+            seeChunkMap.put(context.player.getName(), true);
+            context.msg(TL.COMMAND_SEECHUNK_ENABLED);
             manageTask();
         }
     }
@@ -71,7 +67,7 @@ public class CmdSeeChunk extends FCommand {
     }
 
     private void startTask() {
-        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(P.p, () -> {
+        taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
             for (Object nameObject : seeChunkMap.keySet()) {
                 String name = nameObject + "";
                 Player player = Bukkit.getPlayer(name);
@@ -115,10 +111,10 @@ public class CmdSeeChunk extends FCommand {
                 continue;
             }
             if (useParticles) {
-                if (P.p.useNonPacketParticles) {
+                if (FactionsPlugin.getInstance().useNonPacketParticles) {
                     // Dust options only exists in the 1.13 API, so we use an
                     // alternative method to achieve this in lower versions.
-                    if (P.p.mc113) {
+                    if (FactionsPlugin.getInstance().mc113 || FactionsPlugin.getInstance().mc114) {
                         player.spawnParticle(Particle.REDSTONE, loc, 0, new Particle.DustOptions(Color.RED, 1));
                     } else {
                         player.getWorld().spawnParticle(Particle.REDSTONE, loc, 0, 255, 0, 0, 1);

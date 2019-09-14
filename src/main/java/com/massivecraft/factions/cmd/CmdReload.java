@@ -1,8 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.shop.ShopConfig;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -12,32 +11,24 @@ public class CmdReload extends FCommand {
         super();
         this.aliases.add("reload");
 
-        this.permission = Permission.RELOAD.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.RELOAD).build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
         Conf.save();
-        P.p.reloadConfig();
-        P.p.loadLang();
-        ShopConfig.loadShop();
+        FactionsPlugin.getInstance().reloadConfig();
+        FactionsPlugin.getInstance().loadLang();
 
 
-        if (P.p.getConfig().getBoolean("enable-faction-flight")) {
-            P.p.factionsFlight = true;
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
+            FactionsPlugin.getInstance().factionsFlight = true;
         }
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 
-        msg(TL.COMMAND_RELOAD_TIME, timeReload);
+        context.msg(TL.COMMAND_RELOAD_TIME, timeReload);
     }
 
     @Override

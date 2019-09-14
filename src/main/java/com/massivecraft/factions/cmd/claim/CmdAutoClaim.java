@@ -1,9 +1,13 @@
 package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdAutoClaim extends FCommand {
@@ -15,39 +19,45 @@ public class CmdAutoClaim extends FCommand {
         //this.requiredArgs.add("");
         this.optionalArgs.put("faction", "your");
 
-        this.permission = Permission.AUTOCLAIM.node;
-        this.disableOnLock = true;
-        this.disableOnSpam = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.AUTOCLAIM)
+                .playerOnly()
+                .withAction(PermissableAction.TERRITORY)
+                .build();
     }
 
     @Override
-    public void perform() {
-        Faction forFaction = this.argAsFaction(0, myFaction);
-        if (forFaction == null || forFaction == fme.getAutoClaimFor()) {
-            fme.setAutoClaimFor(null);
-            msg(TL.COMMAND_AUTOCLAIM_DISABLED);
+    public void perform(CommandContext context) {
+        Faction forFaction = context.argAsFaction(0, context.faction);
+
+        if (forFaction != context.fPlayer.getFaction()) {
+            if (!context.fPlayer.isAdminBypassing()) {
+                if (forFaction.getAccess(context.fPlayer, PermissableAction.TERRITORY) != Access.ALLOW) {
+                    context.msg(TL.COMMAND_CLAIM_DENIED);
+                    return;
+                }
+            }
+        }
+
+        if (forFaction == null || forFaction == context.fPlayer.getAutoClaimFor()) {
+            context.fPlayer.setAutoClaimFor(null);
+            context.msg(TL.COMMAND_AUTOCLAIM_DISABLED);
             return;
         }
 
-        if (!fme.canClaimForFaction(forFaction)) {
-            if (myFaction == forFaction) {
-                msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.getTranslation());
+        if (!context.fPlayer.canClaimForFaction(forFaction)) {
+            if (context.faction == forFaction) {
+                context.msg(TL.COMMAND_AUTOCLAIM_REQUIREDRANK, Role.MODERATOR.getTranslation());
             } else {
-                msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(fme));
+                context.msg(TL.COMMAND_AUTOCLAIM_OTHERFACTION, forFaction.describeTo(context.fPlayer));
             }
 
             return;
         }
 
-        fme.setAutoClaimFor(forFaction);
+        context.fPlayer.setAutoClaimFor(forFaction);
 
-        msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(fme));
-        fme.attemptClaim(forFaction, me.getLocation(), true);
+        context.msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(context.fPlayer));
+        context.fPlayer.attemptClaim(forFaction, context.fPlayer.getPlayer().getLocation(), true);
     }
 
     @Override

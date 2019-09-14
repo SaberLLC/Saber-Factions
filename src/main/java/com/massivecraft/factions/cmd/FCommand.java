@@ -1,351 +1,248 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.zcore.MCommand;
+import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import com.massivecraft.factions.zcore.util.TextUtil;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.*;
 
 
-public abstract class FCommand extends MCommand<P> {
+public abstract class FCommand {
 
-    public static final SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
+    public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
-    public boolean disableOnLock;
-    public boolean disableOnSpam;
+    // Command Aliases
+    public List<String> aliases;
 
-    public FPlayer fme;
-    public Faction myFaction;
-    public boolean senderMustBeMember;
-    public boolean senderMustBeModerator;
-    public boolean senderMustBeAdmin;
-    public boolean senderMustBeColeader;
+    // Information on the args
+    public List<String> requiredArgs;
+    public LinkedHashMap<String, String> optionalArgs;
 
-
-    public boolean isMoneyCommand;
+    // Requirements to execute this command
+    public CommandRequirements requirements;
+    /*
+        Subcommands
+     */
+    public List<FCommand> subCommands;
+    /*
+        Help
+     */
+    public List<String> helpLong;
+    public CommandVisibility visibility;
+    private String helpShort;
 
     public FCommand() {
-        super(P.p);
 
-        // Due to safety reasons it defaults to disable on lock.
-        disableOnLock = true;
-        disableOnSpam = false;
+        requirements = new CommandRequirements.Builder(null).build();
 
-        // The money commands must be disabled if money should not be used.
-        isMoneyCommand = false;
+        this.subCommands = new ArrayList<>();
+        this.aliases = new ArrayList<>();
 
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requiredArgs = new ArrayList<>();
+        this.optionalArgs = new LinkedHashMap<>();
+
+        this.helpShort = null;
+        this.helpLong = new ArrayList<>();
+        this.visibility = CommandVisibility.VISIBLE;
     }
 
-    @Override
-    public void setCommandSender(CommandSender sender) {
-        super.setCommandSender(sender);
-        if (sender instanceof Player) {
-            this.fme = FPlayers.getInstance().getByPlayer((Player) sender);
-            this.myFaction = this.fme.getFaction();
-        } else {
-            this.fme = null;
-            this.myFaction = null;
-        }
-    }
+    public abstract void perform(CommandContext context);
 
-    @Override
-    public void execute(CommandSender sender, List<String> args, List<MCommand<?>> commandChain) {
-        setCommandSender(sender);
-        super.execute(sender, args, commandChain);
-    }
-
-    @Override
-    public boolean isEnabled() {
-        if (p.getLocked() && this.disableOnLock) {
-            msg("<b>Factions was locked by an admin. Please try again later.");
-            return false;
-        }
-
-        if (p.getSpam() && this.disableOnSpam) {
-            msg("<b>Anti-Spam is currently enabled! Please try again later.");
-            return false;
-        }
-
-        if (this.isMoneyCommand && !Conf.econEnabled) {
-            msg("<b>Faction economy features are disabled on this server.");
-            return false;
-        }
-
-        if (this.isMoneyCommand && !Conf.bankEnabled) {
-            msg("<b>The faction bank system is disabled on this server.");
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean validSenderType(CommandSender sender, boolean informSenderIfNot) {
-        boolean superValid = super.validSenderType(sender, informSenderIfNot);
-        if (!superValid) {
-            return false;
-        }
-
-        if (!(this.senderMustBeMember || this.senderMustBeModerator || this.senderMustBeAdmin || this.senderMustBeColeader)) {
-            return true;
-        }
-
-        if (!(sender instanceof Player)) {
-            return false;
-        }
-
-        if (!fme.hasFaction()) {
-            if (informSenderIfNot) {
-                sender.sendMessage(p.txt.parse(TL.ACTIONS_NOFACTION.toString()));
-            }
-            return false;
-        }
-
-
-        if (this.senderMustBeModerator && !fme.getRole().isAtLeast(Role.MODERATOR)) {
-            if (informSenderIfNot) {
-                sender.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "moderator").replace("{action}", this.getHelpShort())));
-            }
-            return false;
-        }
-
-        if (this.senderMustBeColeader && !fme.getRole().isAtLeast(Role.COLEADER)) {
-            if (informSenderIfNot) {
-                sender.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "coleader").replace("{action}", this.getHelpShort())));
-            }
-            return false;
-        }
-
-        if (this.senderMustBeAdmin && !fme.getRole().isAtLeast(Role.LEADER)) {
-            if (informSenderIfNot) {
-                sender.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "admin").replace("{action}", this.getHelpShort())));
-            }
-            return false;
-        }
-
-
-        return true;
-    }
-
-    // -------------------------------------------- //
-    // Assertions
-    // -------------------------------------------- //
-
-    public boolean assertHasFaction() {
-        if (me == null) {
-            return true;
-        }
-
-        if (!fme.hasFaction()) {
-            msg(TL.ACTIONS_NOFACTION);
-            return false;
-        }
-        return true;
-    }
-
-    public boolean assertMinRole(Role role) {
-        if (me == null) {
-            return true;
-        }
-
-        if (fme.getRole().value < role.value) {
-            msg(TL.ACTIONS_MUSTBE.toString().replace("{role}", role.nicename).replace("{action}", this.getHelpShort()));
-            return false;
-        }
-        return true;
-    }
-
-    // -------------------------------------------- //
-    // Argument Readers
-    // -------------------------------------------- //
-
-    // FPLAYER ======================
-    public FPlayer strAsFPlayer(String name, FPlayer def, boolean msg) {
-        FPlayer ret = def;
-
-        if (name != null) {
-            for (FPlayer fplayer : FPlayers.getInstance().getAllFPlayers()) {
-                if (fplayer.getName().equalsIgnoreCase(name)) {
-                    ret = fplayer;
-                    break;
+    public void execute(CommandContext context) {
+        // Is there a matching sub command?
+        if (context.args.size() > 0) {
+            for (FCommand subCommand : this.subCommands) {
+                if (subCommand.aliases.contains(context.args.get(0).toLowerCase())) {
+                    context.args.remove(0);
+                    context.commandChain.add(this);
+                    subCommand.execute(context);
+                    return;
                 }
             }
         }
 
-        if (msg && ret == null) {
-            this.msg("<b>No player \"<plugin>%s<b>\" could be found.", name);
+        if (!validCall(context)) {
+            return;
         }
 
-        return ret;
-    }
-
-    public FPlayer argAsFPlayer(int idx, FPlayer def, boolean msg) {
-        return this.strAsFPlayer(this.argAsString(idx), def, msg);
-    }
-
-    public FPlayer argAsFPlayer(int idx, FPlayer def) {
-        return this.argAsFPlayer(idx, def, true);
-    }
-
-    public FPlayer argAsFPlayer(int idx) {
-        return this.argAsFPlayer(idx, null);
-    }
-
-    // BEST FPLAYER MATCH ======================
-    public FPlayer strAsBestFPlayerMatch(String name, FPlayer def, boolean msg) {
-        return strAsFPlayer(name, def, msg);
-    }
-
-    public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def, boolean msg) {
-        return this.strAsBestFPlayerMatch(this.argAsString(idx), def, msg);
-    }
-
-    public FPlayer argAsBestFPlayerMatch(int idx, FPlayer def) {
-        return this.argAsBestFPlayerMatch(idx, def, true);
-    }
-
-    public FPlayer argAsBestFPlayerMatch(int idx) {
-        return this.argAsBestFPlayerMatch(idx, null);
-    }
-
-    // FACTION ======================
-    public Faction strAsFaction(String name, Faction def, boolean msg) {
-        Faction ret = def;
-
-        if (name != null) {
-            // First we try an exact match
-            Faction faction = Factions.getInstance().getByTag(name); // Checks for faction name match.
-
-            // Now lets try for warzone / safezone. Helpful for custom warzone / safezone names.
-            // Do this after we check for an exact match in case they rename the warzone / safezone
-            // and a player created faction took one of the names.
-            if (faction == null) {
-                if (name.equalsIgnoreCase("warzone")) {
-                    faction = Factions.getInstance().getWarZone();
-                } else if (name.equalsIgnoreCase("safezone")) {
-                    faction = Factions.getInstance().getSafeZone();
-                }
-            }
-
-            // Next we match faction tags
-            if (faction == null) {
-                faction = Factions.getInstance().getBestTagMatch(name);
-            }
-
-            // Next we match player names
-            if (faction == null) {
-                FPlayer fplayer = strAsFPlayer(name, null, false);
-                if (fplayer != null) {
-                    faction = fplayer.getFaction();
-                }
-            }
-
-            if (faction != null) {
-                ret = faction;
-            }
+        if (!this.isEnabled(context)) {
+            return;
         }
 
-        if (msg && ret == null) {
-            this.msg("<b>The faction or player \"<plugin>%s<b>\" could not be found.", name);
+        perform(context);
+    }
+
+    public boolean validCall(CommandContext context) {
+        return requirements.computeRequirements(context, true) && validArgs(context);
+    }
+
+    public boolean isEnabled(CommandContext context) {
+        if (FactionsPlugin.getInstance().getLocked() && requirements.disableOnLock) {
+            context.msg("<b>Factions was locked by an admin. Please try again later.");
+            return false;
         }
-
-        return ret;
+        return true;
     }
 
-    public Faction argAsFaction(int idx, Faction def, boolean msg) {
-        return this.strAsFaction(this.argAsString(idx), def, msg);
-    }
-
-    public Faction argAsFaction(int idx, Faction def) {
-        return this.argAsFaction(idx, def, true);
-    }
-
-    public Faction argAsFaction(int idx) {
-        return this.argAsFaction(idx, null);
-    }
-
-    // -------------------------------------------- //
-    // Commonly used logic
-    // -------------------------------------------- //
-
-    public boolean canIAdministerYou(FPlayer i, FPlayer you) {
-        if (!i.getFaction().equals(you.getFaction())) {
-            i.sendMessage(p.txt.parse("%s <b>is not in the same faction as you.", you.describeTo(i, true)));
+    public boolean validArgs(CommandContext context) {
+        if (context.args.size() < this.requiredArgs.size()) {
+            if (context.sender != null) {
+                context.msg(TL.GENERIC_ARGS_TOOFEW);
+                context.sender.sendMessage(this.getUseageTemplate(context));
+            }
             return false;
         }
 
-        if (i.getRole().value > you.getRole().value || i.getRole().equals(Role.LEADER)) {
-            return true;
+        if (context.args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.requirements.errorOnManyArgs) {
+            if (context.sender != null) {
+                // Get the to many string slice
+                List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());
+                context.msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
+                context.sender.sendMessage(this.getUseageTemplate(context));
+            }
+            return false;
+        }
+        return true;
+    }
+
+    public void addSubCommand(FCommand subCommand) {
+        this.subCommands.add(subCommand);
+    }
+
+    public String getHelpShort() {
+        if (this.helpShort == null) {
+            return getUsageTranslation().toString();
         }
 
-        if (you.getRole().equals(Role.LEADER)) {
-            i.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "leader").replace("{action}", "do that")));
+        return this.helpShort;
+    }
 
-        } else if ((you.getRole().equals(Role.COLEADER))) {
-            if (i == you) {
-                return true;
+    public void setHelpShort(String val) {
+        this.helpShort = val;
+    }
+
+    public abstract TL getUsageTranslation();
+
+
+    /*
+        Common Logic
+     */
+    public List<String> getToolTips(FPlayer player) {
+        List<String> lines = new ArrayList<>();
+        for (String s : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
+            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
+        }
+        return lines;
+    }
+
+    public List<String> getToolTips(Faction faction) {
+        List<String> lines = new ArrayList<>();
+        for (String s : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
+            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
+        }
+        return lines;
+    }
+
+    public String replaceFPlayerTags(String s, FPlayer player) {
+        if (s.contains("{balance}")) {
+            String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
+            s = s.replace("{balance}", balance);
+        }
+        if (s.contains("{lastSeen}")) {
+            String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - player.getLastLoginTime(), true, true) + " ago";
+            String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online" : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
+            s = s.replace("{lastSeen}", lastSeen);
+        }
+        if (s.contains("{power}")) {
+            String power = player.getPowerRounded() + "/" + player.getPowerMaxRounded();
+            s = s.replace("{power}", power);
+        }
+        if (s.contains("{group}")) {
+            String group = FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
+            s = s.replace("{group}", group);
+        }
+        return s;
+    }
+
+    public String replaceFactionTags(String s, Faction faction) {
+        if (s.contains("{power}")) {
+            s = s.replace("{power}", String.valueOf(faction.getPowerRounded()));
+        }
+        if (s.contains("{maxPower}")) {
+            s = s.replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded()));
+        }
+        if (s.contains("{leader}")) {
+            FPlayer fLeader = faction.getFPlayerAdmin();
+            String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
+            s = s.replace("{leader}", leader);
+        }
+        if (s.contains("{chunks}")) {
+            s = s.replace("{chunks}", String.valueOf(faction.getLandRounded()));
+        }
+        if (s.contains("{members}")) {
+            s = s.replace("{members}", String.valueOf(faction.getSize()));
+
+        }
+        if (s.contains("{online}")) {
+            s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size()));
+        }
+        return s;
+    }
+
+    /*
+    Help and Usage information
+ */
+    public String getUseageTemplate(CommandContext context, boolean addShortHelp) {
+        StringBuilder ret = new StringBuilder();
+        ret.append(FactionsPlugin.getInstance().color(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString()));
+        ret.append('/');
+
+        for (FCommand fc : context.commandChain) {
+            ret.append(TextUtil.implode(fc.aliases, ","));
+            ret.append(' ');
+        }
+
+        ret.append(TextUtil.implode(this.aliases, ","));
+
+        List<String> args = new ArrayList<>();
+
+        for (String requiredArg : this.requiredArgs) {
+            args.add("<" + requiredArg + ">");
+        }
+
+        for (Map.Entry<String, String> optionalArg : this.optionalArgs.entrySet()) {
+            String val = optionalArg.getValue();
+            if (val == null) {
+                val = "";
             } else {
-                i.sendMessage(p.txt.parse(TL.ACTIONS_NOSAMEROLE.toString().replace("{role}", i.getRole().nicename)));
+                val = "=" + val;
             }
-
-        } else if (i.getRole().equals(Role.MODERATOR)) {
-            if (i == you) {
-                return true; //Moderators can control themselves
-            } else {
-                i.sendMessage(p.txt.parse(TL.ACTIONS_NOSAMEROLE.toString().replace("{role}", i.getRole().nicename)));
-            }
-        } else {
-            i.sendMessage(p.txt.parse(TL.ACTIONS_MUSTBE.toString().replace("{role}", "moderator").replace("{action}", "do that")));
+            args.add("[" + optionalArg.getKey() + val + "]");
         }
 
-        return false;
-    }
-
-    // if economy is enabled and they're not on the bypass list, make 'em pay; returns true unless person can't afford the cost
-    public boolean payForCommand(double cost, String toDoThis, String forDoingThis) {
-        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
-            return true;
+        if (args.size() > 0) {
+            ret.append(FactionsPlugin.getInstance().txt.parseTags(" "));
+            ret.append(TextUtil.implode(args, " "));
         }
 
-        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
-            return Econ.modifyMoney(myFaction, -cost, toDoThis, forDoingThis);
-        } else {
-            return Econ.modifyMoney(fme, -cost, toDoThis, forDoingThis);
-        }
-    }
-
-    public boolean payForCommand(double cost, TL toDoThis, TL forDoingThis) {
-        return payForCommand(cost, toDoThis.toString(), forDoingThis.toString());
-    }
-
-    // like above, but just make sure they can pay; returns true unless person can't afford the cost
-    public boolean canAffordCommand(double cost, String toDoThis) {
-        if (!Econ.shouldBeUsed() || this.fme == null || cost == 0.0 || fme.isAdminBypassing()) {
-            return true;
+        if (addShortHelp) {
+            ret.append(FactionsPlugin.getInstance().txt.parseTags(" "));
+            ret.append(this.getHelpShort());
         }
 
-        if (Conf.bankEnabled && Conf.bankFactionPaysCosts && fme.hasFaction()) {
-            return Econ.hasAtLeast(myFaction, cost, toDoThis);
-        } else {
-            return Econ.hasAtLeast(fme, cost, toDoThis);
-        }
+        return ret.toString();
     }
 
-    public void doWarmUp(WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
-        this.doWarmUp(this.fme, warmup, translationKey, action, runnable, delay);
+    public String getUseageTemplate(CommandContext context) {
+        return getUseageTemplate(context, false);
     }
 
-    public void doWarmUp(FPlayer player, WarmUpUtil.Warmup warmup, TL translationKey, String action, Runnable runnable, long delay) {
-        WarmUpUtil.process(player, warmup, translationKey, action, runnable, delay);
-    }
 }

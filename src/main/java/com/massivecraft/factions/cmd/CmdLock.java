@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -15,25 +16,17 @@ public class CmdLock extends FCommand {
     public CmdLock() {
         super();
         this.aliases.add("lock");
-
-        //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");
 
-        this.permission = Permission.LOCK.node;
-        this.disableOnLock = false;
-
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.LOCK)
+                .playerOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        p.setLocked(this.argAsBool(0, !p.getLocked()));
-        msg(p.getLocked() ? TL.COMMAND_LOCK_LOCKED : TL.COMMAND_LOCK_UNLOCKED);
+    public void perform(CommandContext context) {
+        FactionsPlugin.getInstance().setLocked(context.argAsBool(0, !FactionsPlugin.getInstance().getLocked()));
+        context.msg(FactionsPlugin.getInstance().getLocked() ? TL.COMMAND_LOCK_LOCKED : TL.COMMAND_LOCK_UNLOCKED);
     }
 
     @Override
@@ -42,3 +35,4 @@ public class CmdLock extends FCommand {
     }
 
 }
+

@@ -2,7 +2,7 @@ package com.massivecraft.factions.missions;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 
 public class MissionHandler implements Listener {
 
-    private P plugin;
+    private FactionsPlugin plugin;
 
-    public MissionHandler(P plugin) {
+    public MissionHandler(FactionsPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -121,7 +121,7 @@ public class MissionHandler implements Listener {
             return;
         }
         for (String command : section.getConfigurationSection("Reward").getStringList("Commands")) {
-            P.p.getServer().dispatchCommand(P.p.getServer().getConsoleSender(), command.replace("%faction%", fPlayer.getFaction().getTag()));
+            FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), command.replace("%faction%", fPlayer.getFaction().getTag()));
         }
         fPlayer.getFaction().getMissions().remove(mission.getName());
         fPlayer.getFaction().msg(TL.MISSION_MISSION_FINISHED, plugin.color(section.getString("Name")));

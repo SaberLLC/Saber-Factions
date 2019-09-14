@@ -5,7 +5,9 @@ import ch.njol.skript.SkriptAddon;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
+import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.ChestLogsHandler;
@@ -17,16 +19,18 @@ import com.massivecraft.factions.missions.MissionHandler;
 import com.massivecraft.factions.shop.ShopClickPersistence;
 import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.Particles.ReflectionUtils;
 import com.massivecraft.factions.zcore.CommandVisibility;
-import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.fupgrades.*;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
@@ -52,11 +56,11 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 
-public class P extends MPlugin {
+public class FactionsPlugin extends MPlugin {
 
     // Our single plugin instance.
     // Single 4 life.
-    public static P p;
+    public static FactionsPlugin instance;
     public static Permission perms = null;
     // This plugin sets the boolean true when fully enabled.
     // Plugins can check this boolean while hooking in have
@@ -85,8 +89,12 @@ public class P extends MPlugin {
     private Listener[] eventsListener;
 
 
-    public P() {
-        p = this;
+    public FactionsPlugin() {
+        instance = this;
+    }
+
+    public static FactionsPlugin getInstance() {
+        return instance;
     }
 
     public boolean getLocked() {
@@ -139,29 +147,29 @@ public class P extends MPlugin {
         // Vault dependency check.
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             log("Vault is not present, the plugin will not run properly.");
-            getServer().getPluginManager().disablePlugin(p);
+            getServer().getPluginManager().disablePlugin(instance);
             return;
         }
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         switch (version) {
             case 7:
-                P.p.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+                FactionsPlugin.instance.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
                 mc17 = true;
                 break;
             case 8:
-                P.p.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+                FactionsPlugin.instance.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
                 mc18 = true;
                 break;
             case 12:
                 mc112 = true;
                 break;
             case 13:
-                P.p.log("Minecraft Version 1.13 found, New Items will be used.");
+                FactionsPlugin.instance.log("Minecraft Version 1.13 found, New Items will be used.");
                 mc113 = true;
                 break;
             case 14:
-                P.p.log("Minecraft Version 1.14 found.");
+                FactionsPlugin.instance.log("Minecraft Version 1.14 found.");
                 mc114 = true;
                 break;
         }
@@ -206,7 +214,6 @@ public class P extends MPlugin {
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
         this.cmdAutoHelp = new CmdAutoHelp();
-        this.getBaseCommands().add(cmdBase);
 
         Econ.setup();
         setupPermissions();
@@ -230,7 +237,7 @@ public class P extends MPlugin {
         }
 
         if (getServer().getPluginManager().getPlugin("Skript") != null) {
-            log("Skript was found! Registering P Addon...");
+            log("Skript was found! Registering FactionsPlugin Addon...");
             skriptAddon = Skript.registerAddon(this);
             try {
                 skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
@@ -272,13 +279,13 @@ public class P extends MPlugin {
         for (Listener eventListener : eventsListener)
             getServer().getPluginManager().registerEvents(eventListener, this);
 
-        // since some other plugins execute commands directly through this command interface, provide it
-        getCommand(this.refCommand).setExecutor(this);
-        getCommand(this.refCommand).setTabCompleter(this);
+        this.getCommand(refCommand).setExecutor(cmdBase);
+
+        if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 
 
-        RegisteredServiceProvider<Economy> rsp = P.this.getServer().getServicesManager().getRegistration(Economy.class);
-        P.econ = rsp.getProvider();
+        RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
+        FactionsPlugin.econ = rsp.getProvider();
 
         if (getDescription().getFullName().contains("BETA")) {
             divider();
@@ -292,7 +299,7 @@ public class P extends MPlugin {
         this.postEnable();
         this.loadSuccessful = true;
         // Set startup finished to true. to give plugins hooking in a greenlight
-        P.startupFinished = true;
+        FactionsPlugin.startupFinished = true;
     }
 
     public SkriptAddon getSkriptAddon() {
@@ -455,14 +462,14 @@ public class P extends MPlugin {
     public ItemStack createLazyItem(Material material, int amount, short datavalue, String name, String lore) {
         ItemStack item = new ItemStack(material, amount, datavalue);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(color(P.p.getConfig().getString(name)));
-        meta.setLore(colorList(P.p.getConfig().getStringList(lore)));
+        meta.setDisplayName(color(FactionsPlugin.instance.getConfig().getString(name)));
+        meta.setLore(colorList(FactionsPlugin.instance.getConfig().getStringList(lore)));
         item.setItemMeta(meta);
         return item;
     }
 
     public Economy getEcon() {
-        RegisteredServiceProvider<Economy> rsp = P.p.getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = FactionsPlugin.instance.getServer().getServicesManager().getRegistration(Economy.class);
         return rsp.getProvider();
     }
 
@@ -488,48 +495,62 @@ public class P extends MPlugin {
         return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
     }
 
+    // This method must stay for < 1.12 versions
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) sender);
-        List<String> completions = new ArrayList<>();
+        // Must be a LinkedList to prevent UnsupportedOperationException.
+        List<String> argsList = new LinkedList<>(Arrays.asList(args));
+        CommandContext context = new CommandContext(sender, argsList, alias);
         String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
-        List<String> argsList = new ArrayList<>(Arrays.asList(args));
-        argsList.remove(argsList.size() - 1);
-        String cmdValid = (cmd + " " + TextUtil.implode(argsList, " ")).trim();
-        MCommand<?> commandEx = cmdBase;
-        List<MCommand<?>> commandsList = cmdBase.subCommands;
+//        String cmdValid = (cmd + " " + TextUtil.implode(context.args, " ")).trim();
+        List<FCommand> commandsList = cmdBase.subCommands;
+        FCommand commandsEx = cmdBase;
+        List<String> completions = new ArrayList<>();
 
-        for (; !commandsList.isEmpty() && !argsList.isEmpty(); argsList.remove(0)) {
-            String cmdName = argsList.get(0).toLowerCase();
-            MCommand<?> commandFounded = commandsList.stream()
-                    .filter(c -> c.aliases.contains(cmdName))
-                    .findFirst().orElse(null);
-
-            if (commandFounded != null) {
-                commandEx = commandFounded;
-                commandsList = commandFounded.subCommands;
-            } else break;
-        }
-
-        if (argsList.isEmpty()) {
-            for (MCommand<?> subCommand : commandEx.subCommands) {
-                subCommand.setCommandSender(sender);
-                if (handleCommand(sender, cmdValid + " " + subCommand.aliases.get(0), true)
-                        && subCommand.visibility != CommandVisibility.INVISIBLE
-                        && subCommand.validSenderType(sender, false)
-                        && subCommand.validSenderPermissions(sender, false))
+        // Check for "" first arg because spigot is mangled.
+        if (context.args.get(0).equals("")) {
+            for (FCommand subCommand : commandsEx.subCommands) {
+                if (subCommand.requirements.playerOnly && sender.hasPermission(subCommand.requirements.permission.node) && subCommand.visibility != CommandVisibility.INVISIBLE)
                     completions.addAll(subCommand.aliases);
             }
-        }
+            return completions;
+        } else if (context.args.size() == 1) {
+            for (; !commandsList.isEmpty() && !context.args.isEmpty(); context.args.remove(0)) {
+                String cmdName = context.args.get(0).toLowerCase();
+                boolean toggle = false;
+                for (FCommand fCommand : commandsList) {
+                    for (String s : fCommand.aliases) {
+                        if (s.startsWith(cmdName)) {
+                            commandsList = fCommand.subCommands;
+                            completions.addAll(fCommand.aliases);
+                            toggle = true;
+                            break;
+                        }
+                    }
+                    if (toggle) break;
+                }
+            }
+            String lastArg = args[args.length - 1].toLowerCase();
 
-        String lastArg = args[args.length - 1].toLowerCase();
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            completions.add(player.getName());
+            completions = completions.stream()
+                    .filter(m -> m.toLowerCase().startsWith(lastArg))
+                    .collect(Collectors.toList());
+
+            return completions;
+
+        } else {
+            String lastArg = args[args.length - 1].toLowerCase();
+
+            for (Role value : Role.values()) completions.add(value.nicename);
+            for (Relation value : Relation.values()) completions.add(value.nicename);
+            // The stream and foreach from the old implementation looped 2 times, by looping all players -> filtered -> looped filter and added -> filtered AGAIN at the end.
+            // This loops them once and just adds, because we are filtering the arguments at the end anyways
+            for (Player player : Bukkit.getServer().getOnlinePlayers()) completions.add(player.getName());
+            for (Faction faction : Factions.getInstance().getAllFactions())
+                completions.add(ChatColor.stripColor(faction.getTag()));
+            completions = completions.stream().filter(m -> m.toLowerCase().startsWith(lastArg)).collect(Collectors.toList());
+            return completions;
         }
-        completions = completions.stream()
-                .filter(m -> m.toLowerCase().startsWith(lastArg))
-                .collect(Collectors.toList());
-        return completions;
     }
 
     public void createTimedHologram(final Location location, String text, Long timeout) {
@@ -537,11 +558,11 @@ public class P extends MPlugin {
         as.setVisible(false); //Makes the ArmorStand invisible
         as.setGravity(false); //Make sure it doesn't fall
         as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-        as.setCustomName(P.p.color(text)); //Set this to the text you want
+        as.setCustomName(FactionsPlugin.instance.color(text)); //Set this to the text you want
         as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
         final ArmorStand armorStand = as;
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(P.p, () -> {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> {
                     armorStand.remove();
                     getLogger().info("Removing Hologram.");
                 }

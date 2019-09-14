@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
@@ -11,48 +11,42 @@ import org.bukkit.inventory.ItemStack;
 public class CmdGetVault extends FCommand {
     public CmdGetVault() {
         super();
-
         this.aliases.add("getvault");
 
-        this.permission = Permission.GETVAULT.node;
-        this.disableOnLock = true;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.GETVAULT)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("fvault.Enabled")) {
-            fme.sendMessage("This command is disabled!");
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fvault.Enabled")) {
+            context.fPlayer.sendMessage("This command is disabled!");
             return;
         }
-        Location vaultLocation = fme.getFaction().getVault();
-        ItemStack vault = P.p.createItem(Material.CHEST, 1, (short) 0, P.p.color(P.p.getConfig().getString("fvault.Item.Name")), P.p.colorList(P.p.getConfig().getStringList("fvault.Item.Lore")));
+        Location vaultLocation = context.faction.getVault();
+        ItemStack vault = FactionsPlugin.getInstance().createItem(Material.CHEST, 1, (short) 0, FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fvault.Item.Name")), FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fvault.Item.Lore")));
 
 
         //check if vault is set
         if (vaultLocation != null) {
-            fme.msg(TL.COMMAND_GETVAULT_ALREADYSET);
+            context.msg(TL.COMMAND_GETVAULT_ALREADYSET);
             return;
         }
 
 
         //has enough money?
-        int amount = P.p.getConfig().getInt("fvault.Price");
-        if (!fme.hasMoney(amount)) {
+        int amount = FactionsPlugin.getInstance().getConfig().getInt("fvault.Price");
+        if (!context.fPlayer.hasMoney(amount)) {
             return;
         }
 
 
         //success :)
-        fme.takeMoney(amount);
-        me.getInventory().addItem(vault);
-        fme.msg(TL.COMMAND_GETVAULT_RECEIVE);
+        context.fPlayer.takeMoney(amount);
+        context.player.getInventory().addItem(vault);
+        context.fPlayer.msg(TL.COMMAND_GETVAULT_RECEIVE);
 
     }
 

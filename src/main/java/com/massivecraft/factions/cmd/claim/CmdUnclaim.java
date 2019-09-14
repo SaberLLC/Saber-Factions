@@ -1,6 +1,8 @@
 package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.Econ;
@@ -19,51 +21,54 @@ public class CmdUnclaim extends FCommand {
         this.aliases.add("declaim");
 
         this.optionalArgs.put("radius", "1");
+        this.optionalArgs.put("faction", "yours");
 
-        this.permission = Permission.UNCLAIM.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.UNCLAIM)
+                .playerOnly()
+                .memberOnly()
+                .withAction(PermissableAction.TERRITORY)
+                .build();
     }
 
     @Override
-    public void perform() {
-        // Read and validate input
-        int radius = this.argAsInt(0, 1); // Default to 1
+    public void perform(CommandContext context) {
 
-        if (!fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(fme, PermissableAction.TERRITORY);
-            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
-                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage faction territory");
+        if (context.args.size() == 2) {
+            Faction target = context.argAsFaction(1);
+            // Dont have to say anything since the argsAsFaction method will tell the player for me.
+            if (target == null) return;
+            context.faction = target;
+            if (context.faction != context.fPlayer.getFaction() && !context.fPlayer.isAdminBypassing()) {
+                context.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
                 return;
             }
         }
 
+        // Read and validate input
+        int radius = context.argAsInt(0, 1); // Default to 1
+
         if (radius < 1) {
-            msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
+            context.msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
             return;
         }
 
-        if (radius < 2) {
+        if (radius == 1) {
             // single chunk
-            unClaim(new FLocation(me));
+            unClaim(new FLocation(context.player), context);
         } else {
             // radius claim
-            if (!Permission.CLAIM_RADIUS.has(sender, false)) {
-                msg(TL.COMMAND_CLAIM_DENIED);
+            if (!Permission.CLAIM_RADIUS.has(context.sender, false)) {
+                context.msg(TL.COMMAND_CLAIM_DENIED);
                 return;
             }
 
-            new SpiralTask(new FLocation(me), radius) {
+            new SpiralTask(new FLocation(context.player), radius) {
                 private final int limit = Conf.radiusClaimFailureLimit - 1;
                 private int failCount = 0;
 
                 @Override
                 public boolean work() {
-                    boolean success = unClaim(this.currentFLocation());
+                    boolean success = unClaim(currentFLocation(), context);
                     if (success) {
                         failCount = 0;
                     } else if (failCount++ >= limit) {
@@ -77,101 +82,101 @@ public class CmdUnclaim extends FCommand {
         }
     }
 
-    private boolean unClaim(FLocation target) {
+    private boolean unClaim(FLocation target, CommandContext context) {
         Faction targetFaction = Board.getInstance().getFactionAt(target);
         if (targetFaction.isSafeZone()) {
-            if (Permission.MANAGE_SAFE_ZONE.has(sender)) {
+            if (Permission.MANAGE_SAFE_ZONE.has(context.sender)) {
                 Board.getInstance().removeAt(target);
-                msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
+                context.msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+                    FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
                 }
                 return true;
             } else {
-                msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
+                context.msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
                 return false;
             }
         } else if (targetFaction.isWarZone()) {
-            if (Permission.MANAGE_WAR_ZONE.has(sender)) {
+            if (Permission.MANAGE_WAR_ZONE.has(context.sender)) {
                 Board.getInstance().removeAt(target);
-                msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
+                context.msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+                    FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
                 }
                 return true;
             } else {
-                msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
+                context.msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
                 return false;
             }
         }
 
-        if (fme.isAdminBypassing()) {
-            LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, fme);
-            Bukkit.getScheduler().runTask(P.p, () -> Bukkit.getServer().getPluginManager().callEvent(unclaimEvent));
+        if (context.fPlayer.isAdminBypassing()) {
+            LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, context.fPlayer);
+            Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
             if (unclaimEvent.isCancelled()) {
                 return false;
             }
 
             Board.getInstance().removeAt(target);
 
-            targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, fme.describeTo(targetFaction, true));
-            msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
+            targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, context.fPlayer.describeTo(targetFaction, true));
+            context.msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
 
             if (Conf.logLandUnclaims) {
-                P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+                FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
             }
 
             return true;
         }
 
+        if (targetFaction.getClaimOwnership().containsKey(target) && !targetFaction.isPlayerInOwnerList(context.fPlayer, target)) {
+            context.msg(TL.GENERIC_FPERM_OWNER_NOPERMISSION, "unclaim");
+            return false;
+        }
 
-        if (targetFaction.getAccess(fme, PermissableAction.TERRITORY) == Access.DENY) {
+        if (targetFaction.getAccess(context.fPlayer, PermissableAction.TERRITORY) == Access.DENY && context.fPlayer.getRole() != Role.LEADER) {
+            context.msg(TL.GENERIC_FPERM_NOPERMISSION, "unclaim");
+            return false;
+        }
+
+        if (!context.assertHasFaction()) {
+            context.msg(TL.ACTIONS_NOFACTION);
+            return false;
+        }
+
+        if (context.faction != targetFaction) {
+            context.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
             return false;
         }
 
 
-        if (!assertHasFaction()) {
-            return false;
-        }
-
-        if (targetFaction.getAccess(fme, PermissableAction.TERRITORY) != Access.ALLOW && !assertMinRole(Role.MODERATOR)) {
-            return false;
-        }
-
-
-        if (myFaction != targetFaction) {
-            msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
-            return false;
-        }
-
-
-        LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, fme);
-        Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
+        LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, context.fPlayer);
+        Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(unclaimEvent));
         if (unclaimEvent.isCancelled()) {
             return false;
         }
 
         if (Econ.shouldBeUsed()) {
-            double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
+            double refund = Econ.calculateClaimRefund(context.faction.getLandRounded());
 
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
-                if (!Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
+                if (!Econ.modifyMoney(context.faction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
                     return false;
                 }
             } else {
-                if (!Econ.modifyMoney(fme, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
+                if (!Econ.modifyMoney(context.fPlayer, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
                     return false;
                 }
             }
         }
 
         Board.getInstance().removeAt(target);
-        myFaction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, fme.describeTo(myFaction, true));
+        context.faction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, context.fPlayer.describeTo(context.faction, true));
 
         if (Conf.logLandUnclaims) {
-            P.p.log(TL.COMMAND_UNCLAIM_LOG.format(fme.getName(), target.getCoordString(), targetFaction.getTag()));
+            FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
         }
 
         return true;
