@@ -13,57 +13,57 @@ import java.util.List;
 
 public class CmdBanlist extends FCommand {
 
-     public CmdBanlist() {
-          super();
-          this.aliases.add("banlist");
-          this.aliases.add("bans");
-          this.aliases.add("banl");
+    public CmdBanlist() {
+        super();
+        this.aliases.add("banlist");
+        this.aliases.add("bans");
+        this.aliases.add("banl");
 
-          this.optionalArgs.put("faction", "faction");
+        this.optionalArgs.put("faction", "faction");
 
-          this.requirements = new CommandRequirements.Builder(Permission.BAN)
-                  .playerOnly()
-                  .memberOnly()
-                  .build();
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.BAN)
+                .playerOnly()
+                .memberOnly()
+                .build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
-          Faction target = context.faction;
-          if (!context.args.isEmpty()) {
-               target = context.argAsFaction(0);
-          }
+    @Override
+    public void perform(CommandContext context) {
+        Faction target = context.faction;
+        if (!context.args.isEmpty()) {
+            target = context.argAsFaction(0);
+        }
 
-          if (target == Factions.getInstance().getWilderness()) {
-               context.sender.sendMessage(TL.COMMAND_BANLIST_NOFACTION.toString());
-               return;
-          }
+        if (target == Factions.getInstance().getWilderness()) {
+            context.sender.sendMessage(TL.COMMAND_BANLIST_NOFACTION.toString());
+            return;
+        }
 
-          if (target == null) {
-               context.sender.sendMessage(TL.COMMAND_BANLIST_INVALID.format(context.argAsString(0)));
-               return;
-          }
+        if (target == null) {
+            context.sender.sendMessage(TL.COMMAND_BANLIST_INVALID.format(context.argAsString(0)));
+            return;
+        }
 
-          List<String> lines = new ArrayList<>();
-          lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(context.faction)));
-          int i = 1;
+        List<String> lines = new ArrayList<>();
+        lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(context.faction)));
+        int i = 1;
 
-          for (BanInfo info : target.getBannedPlayers()) {
-               FPlayer banned = FPlayers.getInstance().getById(info.getBanned());
-               FPlayer banner = FPlayers.getInstance().getById(info.getBanner());
-               String timestamp = TL.sdf.format(info.getTime());
+        for (BanInfo info : target.getBannedPlayers()) {
+            FPlayer banned = FPlayers.getInstance().getById(info.getBanned());
+            FPlayer banner = FPlayers.getInstance().getById(info.getBanner());
+            String timestamp = TL.sdf.format(info.getTime());
 
-               lines.add(TL.COMMAND_BANLIST_ENTRY.format(i, banned.getName(), banner.getName(), timestamp));
-               i++;
-          }
+            lines.add(TL.COMMAND_BANLIST_ENTRY.format(i, banned.getName(), banner.getName(), timestamp));
+            i++;
+        }
 
-          for (String s : lines) {
-               context.fPlayer.getPlayer().sendMessage(s);
-          }
-     }
+        for (String s : lines) {
+            context.fPlayer.getPlayer().sendMessage(s);
+        }
+    }
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_BANLIST_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_BANLIST_DESCRIPTION;
+    }
 }

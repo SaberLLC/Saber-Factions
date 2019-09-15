@@ -11,42 +11,42 @@ import org.bukkit.event.Cancellable;
  */
 public class FactionDisbandEvent extends FactionEvent implements Cancellable {
 
-     private final Player sender;
-     private final PlayerDisbandReason reason;
-     private boolean cancelled = false;
+    private final Player sender;
+    private final PlayerDisbandReason reason;
+    private boolean cancelled = false;
 
-     public FactionDisbandEvent(Player sender, String factionId, PlayerDisbandReason reason) {
-          super(Factions.getInstance().getFactionById(factionId));
-          this.sender = sender;
-          this.reason = reason;
-     }
+    public FactionDisbandEvent(Player sender, String factionId, PlayerDisbandReason reason) {
+        super(Factions.getInstance().getFactionById(factionId));
+        this.sender = sender;
+        this.reason = reason;
+    }
 
-     public FPlayer getFPlayer() {
-          return FPlayers.getInstance().getByPlayer(sender);
-     }
+    public FPlayer getFPlayer() {
+        return FPlayers.getInstance().getByPlayer(sender);
+    }
 
-     public Player getPlayer() {
-          return sender;
-     }
+    public Player getPlayer() {
+        return sender;
+    }
 
-     public PlayerDisbandReason getReason() {
-          return reason;
-     }
+    public PlayerDisbandReason getReason() {
+        return reason;
+    }
 
-     @Override
-     public boolean isCancelled() {
-          return cancelled;
-     }
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
 
-     @Override
-     public void setCancelled(boolean c) {
-          cancelled = c;
-     }
+    @Override
+    public void setCancelled(boolean c) {
+        cancelled = c;
+    }
 
-     public enum PlayerDisbandReason {
-          COMMAND,
-          PLUGIN,
-          INACTIVITY,
-          LEAVE,
-     }
+    public enum PlayerDisbandReason {
+        COMMAND,
+        PLUGIN,
+        INACTIVITY,
+        LEAVE,
+    }
 }

@@ -12,23 +12,23 @@ import java.util.List;
 
 public class RedstoneUpgrade implements Listener {
 
-     @EventHandler
-     public void onWaterRedstone(BlockFromToEvent e) {
-          List<String> unbreakable = FactionsPlugin.getInstance().getConfig().getStringList("no-water-destroy.Item-List");
-          String block = e.getToBlock().getType().toString();
-          FLocation floc = new FLocation(e.getToBlock().getLocation());
-          Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
+    @EventHandler
+    public void onWaterRedstone(BlockFromToEvent e) {
+        List<String> unbreakable = FactionsPlugin.getInstance().getConfig().getStringList("no-water-destroy.Item-List");
+        String block = e.getToBlock().getType().toString();
+        FLocation floc = new FLocation(e.getToBlock().getLocation());
+        Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
 
-          if (!factionAtLoc.isWilderness()) {
-               int level = factionAtLoc.getUpgrade(UpgradeType.REDSTONE);
-               if (level != 0) {
-                    if (level == 1) {
-                         FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.Cost");
-                    }
-                    if (unbreakable.contains(block)) {
-                         e.setCancelled(true);
-                    }
-               }
-          }
-     }
+        if (!factionAtLoc.isWilderness()) {
+            int level = factionAtLoc.getUpgrade(UpgradeType.REDSTONE);
+            if (level != 0) {
+                if (level == 1) {
+                    FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.Cost");
+                }
+                if (unbreakable.contains(block)) {
+                    e.setCancelled(true);
+                }
+            }
+        }
+    }
 }

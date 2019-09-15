@@ -12,40 +12,40 @@ import org.bukkit.event.Cancellable;
  */
 public class FPlayerRoleChangeEvent extends FactionPlayerEvent implements Cancellable {
 
-     private final Role from;
-     private boolean cancelled;
-     private Role to;
+    private final Role from;
+    private boolean cancelled;
+    private Role to;
 
-     public FPlayerRoleChangeEvent(Faction faction, FPlayer fPlayer, Role from, Role to) {
-          super(faction, fPlayer);
-          this.from = from;
-          this.to = to;
-     }
+    public FPlayerRoleChangeEvent(Faction faction, FPlayer fPlayer, Role from, Role to) {
+        super(faction, fPlayer);
+        this.from = from;
+        this.to = to;
+    }
 
-     public FPlayerRoleChangeEvent(Faction faction, FPlayer fPlayer, Role to) {
-          this(faction, fPlayer, fPlayer.getRole(), to);
-     }
+    public FPlayerRoleChangeEvent(Faction faction, FPlayer fPlayer, Role to) {
+        this(faction, fPlayer, fPlayer.getRole(), to);
+    }
 
-     @Override
-     public boolean isCancelled() {
-          return false;
-     }
+    @Override
+    public boolean isCancelled() {
+        return false;
+    }
 
-     @Override
-     public void setCancelled(boolean cancelled) {
-          this.cancelled = cancelled;
-     }
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
 
-     public Role getFrom() {
-          return from;
-     }
+    public Role getFrom() {
+        return from;
+    }
 
-     public Role getTo() {
-          return to;
-     }
+    public Role getTo() {
+        return to;
+    }
 
-     public void setTo(Role to) {
-          this.to = to;
-     }
+    public void setTo(Role to) {
+        this.to = to;
+    }
 
 }

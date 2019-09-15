@@ -9,25 +9,25 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdGrace extends FCommand {
 
-     public CmdGrace() {
-          super();
-          this.aliases.add("grace");
+    public CmdGrace() {
+        super();
+        this.aliases.add("grace");
 
-          this.requirements = new CommandRequirements.Builder(Permission.GRACE)
-                  .playerOnly()
-                  .build();
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.GRACE)
+                .playerOnly()
+                .build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
-          Conf.gracePeriod = !Conf.gracePeriod;
-          context.msg(TL.COMMAND_GRACE_TOGGLE, Conf.gracePeriod ? TL.GENERIC_ENABLED : TL.GENERIC_DISABLED);
-     }
+    @Override
+    public void perform(CommandContext context) {
+        Conf.gracePeriod = !Conf.gracePeriod;
+        context.msg(TL.COMMAND_GRACE_TOGGLE, Conf.gracePeriod ? TL.GENERIC_ENABLED : TL.GENERIC_DISABLED);
+    }
 
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_GRACE_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_GRACE_DESCRIPTION;
+    }
 
 }
