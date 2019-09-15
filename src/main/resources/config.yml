@@ -741,7 +741,7 @@ Missions-GUI-Title: '&bFaction Missions'
 MaximumMissionsAllowedAtOnce: 1
 Mission-Progress-Format: '&b&lProgression: &f{progress}&7/&e{total}'
 
-#Mission Types: KILL, MINE, FISH, BREED, TAME
+#Mission Types: KILL, MINE, PLACE, FISH, TAME
 Missions:
   sugarcane:
     Slot: 11
