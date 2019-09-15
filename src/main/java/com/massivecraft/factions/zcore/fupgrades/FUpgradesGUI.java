@@ -585,13 +585,13 @@ public class FUpgradesGUI implements Listener {
 
     private void updateTntBanks(Faction faction) {
         int level = faction.getUpgrade(UpgradeType.TNT);
-        int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.TNT.tnt-limit.level-" + (level + 1));
+        int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.TNT.tnt-limit.level-" + (level));
         faction.setTntBankLimit(size);
     }
 
     private void setWarpLimit(Faction faction) {
         int level = faction.getUpgrade(UpgradeType.WARP);
-        int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.warp-limit.level-" + (level + 1));
+        int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.warp-limit.level-" + (level));
         faction.setWarpsLimit(size);
     }
 
