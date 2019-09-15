@@ -11,49 +11,49 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPointsAdd extends FCommand {
 
-     public CmdPointsAdd() {
-          super();
-          this.aliases.add("add");
+    public CmdPointsAdd() {
+        super();
+        this.aliases.add("add");
 
-          this.requiredArgs.add("faction/player");
-          this.requiredArgs.add("# of points");
-
-
-          this.requirements = new CommandRequirements.Builder(Permission.ADDPOINTS)
-                  .build();
-     }
+        this.requiredArgs.add("faction/player");
+        this.requiredArgs.add("# of points");
 
 
-     @Override
-     public void perform(CommandContext context) {
-          Faction faction = Factions.getInstance().getByTag(context.args.get(0));
-
-          if (faction == null) {
-               FPlayer fPlayer = context.argAsFPlayer(0);
-               if (fPlayer != null) {
-                    faction = fPlayer.getFaction();
-               }
-          }
-
-          if (faction == null || faction.isWilderness()) {
-               context.msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", context.args.get(0)));
-               return;
-          }
-          if (context.argAsInt(1) <= 0) {
-               context.msg(TL.COMMAND_POINTS_INSUFFICIENT);
-               return;
-          }
-
-          faction.setPoints(faction.getPoints() + context.argAsInt(1));
-
-          context.msg(TL.COMMAND_POINTS_SUCCESSFUL, context.argAsInt(1), faction.getTag(), faction.getPoints());
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.ADDPOINTS)
+                .build();
+    }
 
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_ADDPOINTS_DESCRIPTION;
-     }
+    @Override
+    public void perform(CommandContext context) {
+        Faction faction = Factions.getInstance().getByTag(context.args.get(0));
+
+        if (faction == null) {
+            FPlayer fPlayer = context.argAsFPlayer(0);
+            if (fPlayer != null) {
+                faction = fPlayer.getFaction();
+            }
+        }
+
+        if (faction == null || faction.isWilderness()) {
+            context.msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", context.args.get(0)));
+            return;
+        }
+        if (context.argAsInt(1) <= 0) {
+            context.msg(TL.COMMAND_POINTS_INSUFFICIENT);
+            return;
+        }
+
+        faction.setPoints(faction.getPoints() + context.argAsInt(1));
+
+        context.msg(TL.COMMAND_POINTS_SUCCESSFUL, context.argAsInt(1), faction.getTag(), faction.getPoints());
+    }
+
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_ADDPOINTS_DESCRIPTION;
+    }
 
 
 }

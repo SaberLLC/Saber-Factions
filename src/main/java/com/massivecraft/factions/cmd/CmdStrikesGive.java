@@ -7,31 +7,31 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdStrikesGive extends FCommand {
 
 
-     public CmdStrikesGive() {
-          super();
-          this.aliases.add("give");
-          this.requiredArgs.add(0, "faction");
+    public CmdStrikesGive() {
+        super();
+        this.aliases.add("give");
+        this.requiredArgs.add(0, "faction");
 
-          this.requirements = new CommandRequirements.Builder(Permission.SETSTRIKES)
-                  .playerOnly()
-                  .build();
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.SETSTRIKES)
+                .playerOnly()
+                .build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
-          Faction target = context.argAsFaction(0);
-          if (target == null || target.isSystemFaction()) {
-               context.msg(TL.COMMAND_STRIKES_TARGET_INVALID, context.argAsString(0));
-               return;
-          }
-          target.setStrikes(target.getStrikes() + 1);
-          context.msg(TL.COMMAND_STRIKES_CHANGED, target.getTag(), target.getStrikes());
-     }
+    @Override
+    public void perform(CommandContext context) {
+        Faction target = context.argAsFaction(0);
+        if (target == null || target.isSystemFaction()) {
+            context.msg(TL.COMMAND_STRIKES_TARGET_INVALID, context.argAsString(0));
+            return;
+        }
+        target.setStrikes(target.getStrikes() + 1);
+        context.msg(TL.COMMAND_STRIKES_CHANGED, target.getTag(), target.getStrikes());
+    }
 
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_STRIKESGIVE_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_STRIKESGIVE_DESCRIPTION;
+    }
 
 }

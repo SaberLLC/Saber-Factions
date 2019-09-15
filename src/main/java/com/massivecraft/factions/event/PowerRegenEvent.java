@@ -9,20 +9,20 @@ import org.bukkit.event.Cancellable;
  */
 public class PowerRegenEvent extends FactionPlayerEvent implements Cancellable {
 
-     private boolean cancelled = false;
+    private boolean cancelled = false;
 
-     public PowerRegenEvent(Faction f, FPlayer p) {
-          super(f, p);
-     }
+    public PowerRegenEvent(Faction f, FPlayer p) {
+        super(f, p);
+    }
 
-     @Override
-     public boolean isCancelled() {
-          return cancelled;
-     }
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
 
-     @Override
-     public void setCancelled(boolean c) {
-          this.cancelled = c;
-     }
+    @Override
+    public void setCancelled(boolean c) {
+        this.cancelled = c;
+    }
 
 }

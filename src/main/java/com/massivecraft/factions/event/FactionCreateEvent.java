@@ -12,41 +12,41 @@ import org.bukkit.event.HandlerList;
  */
 public class FactionCreateEvent extends Event implements Cancellable {
 
-     private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
 
-     private String factionTag;
-     private Player sender;
-     private boolean cancelled;
+    private String factionTag;
+    private Player sender;
+    private boolean cancelled;
 
-     public FactionCreateEvent(Player sender, String tag) {
-          this.factionTag = tag;
-          this.sender = sender;
-          this.cancelled = false;
-     }
+    public FactionCreateEvent(Player sender, String tag) {
+        this.factionTag = tag;
+        this.sender = sender;
+        this.cancelled = false;
+    }
 
-     public static HandlerList getHandlerList() {
-          return handlers;
-     }
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
-     public FPlayer getFPlayer() {
-          return FPlayers.getInstance().getByPlayer(sender);
-     }
+    public FPlayer getFPlayer() {
+        return FPlayers.getInstance().getByPlayer(sender);
+    }
 
-     public String getFactionTag() {
-          return factionTag;
-     }
+    public String getFactionTag() {
+        return factionTag;
+    }
 
-     public HandlerList getHandlers() {
-          return handlers;
-     }
+    public HandlerList getHandlers() {
+        return handlers;
+    }
 
-     @Override
-     public boolean isCancelled() {
-          return cancelled;
-     }
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
 
-     @Override
-     public void setCancelled(boolean c) {
-          this.cancelled = c;
-     }
+    @Override
+    public void setCancelled(boolean c) {
+        this.cancelled = c;
+    }
 }

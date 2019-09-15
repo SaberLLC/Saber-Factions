@@ -13,58 +13,58 @@ import org.bukkit.inventory.Inventory;
 
 public class CmdVault extends FCommand {
 
-     public CmdVault() {
-          this.aliases.add("vault");
+    public CmdVault() {
+        this.aliases.add("vault");
 
-          this.requirements = new CommandRequirements.Builder(Permission.VAULT)
-                  .playerOnly()
-                  .memberOnly()
-                  .withAction(PermissableAction.VAULT)
-                  .build();
+        this.requirements = new CommandRequirements.Builder(Permission.VAULT)
+                .playerOnly()
+                .memberOnly()
+                .withAction(PermissableAction.VAULT)
+                .build();
 
-     }
+    }
 
-     @Override
-     public void perform(CommandContext context) {
+    @Override
+    public void perform(CommandContext context) {
 
-          if (!FactionsPlugin.getInstance().getConfig().getBoolean("fvault.Enabled")) {
-               context.fPlayer.sendMessage("This command is disabled!");
-               return;
-          }
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fvault.Enabled")) {
+            context.fPlayer.sendMessage("This command is disabled!");
+            return;
+        }
 
-          if (context.fPlayer.isInVault()) {
-               context.player.closeInventory();
-               return;
-          }
+        if (context.fPlayer.isInVault()) {
+            context.player.closeInventory();
+            return;
+        }
 
-          context.fPlayer.setInVault(true);
-          Location vaultLocation = context.faction.getVault();
-          if (vaultLocation == null) {
-               context.msg(TL.COMMAND_VAULT_INVALID);
-               return;
-          }
-          FLocation vaultFLocation = new FLocation(vaultLocation);
-          if (Board.getInstance().getFactionAt(vaultFLocation) != context.faction) {
-               context.faction.setVault(null);
-               context.msg(TL.COMMAND_VAULT_INVALID);
-               return;
-          }
-          if (vaultLocation.getBlock().getType() != Material.CHEST) {
-               context.faction.setVault(null);
-               context.msg(TL.COMMAND_VAULT_INVALID);
-               return;
-          }
-          Chest chest = (Chest) vaultLocation.getBlock().getState();
-          Inventory chestInv = chest.getBlockInventory();
-          context.msg(TL.COMMAND_VAULT_OPENING);
-          context.player.openInventory(chestInv);
+        context.fPlayer.setInVault(true);
+        Location vaultLocation = context.faction.getVault();
+        if (vaultLocation == null) {
+            context.msg(TL.COMMAND_VAULT_INVALID);
+            return;
+        }
+        FLocation vaultFLocation = new FLocation(vaultLocation);
+        if (Board.getInstance().getFactionAt(vaultFLocation) != context.faction) {
+            context.faction.setVault(null);
+            context.msg(TL.COMMAND_VAULT_INVALID);
+            return;
+        }
+        if (vaultLocation.getBlock().getType() != Material.CHEST) {
+            context.faction.setVault(null);
+            context.msg(TL.COMMAND_VAULT_INVALID);
+            return;
+        }
+        Chest chest = (Chest) vaultLocation.getBlock().getState();
+        Inventory chestInv = chest.getBlockInventory();
+        context.msg(TL.COMMAND_VAULT_OPENING);
+        context.player.openInventory(chestInv);
 
 
-     }
+    }
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_VAULT_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_VAULT_DESCRIPTION;
+    }
 
 }

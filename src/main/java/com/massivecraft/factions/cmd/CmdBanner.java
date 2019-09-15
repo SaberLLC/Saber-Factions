@@ -13,103 +13,103 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class CmdBanner extends FCommand {
-     public CmdBanner() {
-          this.aliases.add("banner");
-          this.aliases.add("warbanner");
-          this.requirements = new CommandRequirements.Builder(Permission.BANNER).playerOnly().memberOnly().build();
-     }
+    public CmdBanner() {
+        this.aliases.add("banner");
+        this.aliases.add("warbanner");
+        this.requirements = new CommandRequirements.Builder(Permission.BANNER).playerOnly().memberOnly().build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
-          if (!FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Enabled")) {
-               context.msg(TL.COMMAND_BANNER_DISABLED);
-               return;
-          }
-          if (context.faction.getBanner() == null) {
-               context.msg(TL.COMMAND_BANNER_NOBANNER);
-               return;
-          }
-          if (!context.fPlayer.hasMoney(FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000))) {
-               context.msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
-               return;
-          }
-          this.takeMoney(context.fPlayer, FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000));
-          this.takeMoney(context.fPlayer, FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000));
-          ItemStack warBanner = context.fPlayer.getFaction().getBanner();
-          ItemMeta warmeta = warBanner.getItemMeta();
-          warmeta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
-          warmeta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore")));
-          warBanner.setItemMeta(warmeta);
-          context.msg(TL.COMMAND_BANNER_SUCCESS);
-          warBanner.setAmount(1);
-          context.player.getInventory().addItem(warBanner);
-     }
+    @Override
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Enabled")) {
+            context.msg(TL.COMMAND_BANNER_DISABLED);
+            return;
+        }
+        if (context.faction.getBanner() == null) {
+            context.msg(TL.COMMAND_BANNER_NOBANNER);
+            return;
+        }
+        if (!context.fPlayer.hasMoney(FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000))) {
+            context.msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
+            return;
+        }
+        this.takeMoney(context.fPlayer, FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000));
+        this.takeMoney(context.fPlayer, FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000));
+        ItemStack warBanner = context.fPlayer.getFaction().getBanner();
+        ItemMeta warmeta = warBanner.getItemMeta();
+        warmeta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
+        warmeta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore")));
+        warBanner.setItemMeta(warmeta);
+        context.msg(TL.COMMAND_BANNER_SUCCESS);
+        warBanner.setAmount(1);
+        context.player.getInventory().addItem(warBanner);
+    }
 
-     public boolean hasMoney(FPlayer fme, int amt) {
-          Economy econ = FactionsPlugin.getInstance().getEcon();
-          if (econ.getBalance(fme.getPlayer()) >= amt) {
-               return true;
-          }
-          fme.msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
-          return false;
-     }
+    public boolean hasMoney(FPlayer fme, int amt) {
+        Economy econ = FactionsPlugin.getInstance().getEcon();
+        if (econ.getBalance(fme.getPlayer()) >= amt) {
+            return true;
+        }
+        fme.msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
+        return false;
+    }
 
-     public void takeMoney(FPlayer fme, int amt) {
-          if (this.hasMoney(fme, amt)) {
-               Economy econ = FactionsPlugin.getInstance().getEcon();
-               econ.withdrawPlayer(fme.getPlayer(), (double) amt);
-               fme.sendMessage(TL.COMMAND_BANNER_MONEYTAKE.toString().replace("{amount}", amt + ""));
-          }
-     }
+    public void takeMoney(FPlayer fme, int amt) {
+        if (this.hasMoney(fme, amt)) {
+            Economy econ = FactionsPlugin.getInstance().getEcon();
+            econ.withdrawPlayer(fme.getPlayer(), (double) amt);
+            fme.sendMessage(TL.COMMAND_BANNER_MONEYTAKE.toString().replace("{amount}", amt + ""));
+        }
+    }
 
-     public boolean inventoryContains(Inventory inventory, ItemStack item) {
-          int count = 0;
-          ItemStack[] items = inventory.getContents();
-          for (ItemStack item1 : items) {
-               if (item1 != null && item1.getType() == item.getType() && item1.getDurability() == item.getDurability()) {
-                    count += item1.getAmount();
-               }
-               if (count >= item.getAmount()) {
-                    return true;
-               }
-          }
-          return false;
-     }
+    public boolean inventoryContains(Inventory inventory, ItemStack item) {
+        int count = 0;
+        ItemStack[] items = inventory.getContents();
+        for (ItemStack item1 : items) {
+            if (item1 != null && item1.getType() == item.getType() && item1.getDurability() == item.getDurability()) {
+                count += item1.getAmount();
+            }
+            if (count >= item.getAmount()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-     public void removeFromInventory(Inventory inventory, ItemStack item) {
-          int amt = item.getAmount();
-          ItemStack[] items = inventory.getContents();
-          for (int i = 0; i < items.length; ++i) {
-               if (items[i] != null && items[i].getType() == item.getType() && items[i].getDurability() == item.getDurability()) {
-                    if (items[i].getAmount() > amt) {
-                         items[i].setAmount(items[i].getAmount() - amt);
-                         break;
-                    }
-                    if (items[i].getAmount() == amt) {
-                         items[i] = null;
-                         break;
-                    }
-                    amt -= items[i].getAmount();
+    public void removeFromInventory(Inventory inventory, ItemStack item) {
+        int amt = item.getAmount();
+        ItemStack[] items = inventory.getContents();
+        for (int i = 0; i < items.length; ++i) {
+            if (items[i] != null && items[i].getType() == item.getType() && items[i].getDurability() == item.getDurability()) {
+                if (items[i].getAmount() > amt) {
+                    items[i].setAmount(items[i].getAmount() - amt);
+                    break;
+                }
+                if (items[i].getAmount() == amt) {
                     items[i] = null;
-               }
-          }
-          inventory.setContents(items);
-     }
+                    break;
+                }
+                amt -= items[i].getAmount();
+                items[i] = null;
+            }
+        }
+        inventory.setContents(items);
+    }
 
-     public int getEmptySlots(Player p) {
-          PlayerInventory inventory = p.getInventory();
-          ItemStack[] cont = inventory.getContents();
-          int i = 0;
-          for (ItemStack item : cont) {
-               if (item != null && item.getType() != Material.AIR) {
-                    ++i;
-               }
-          }
-          return 36 - i;
-     }
+    public int getEmptySlots(Player p) {
+        PlayerInventory inventory = p.getInventory();
+        ItemStack[] cont = inventory.getContents();
+        int i = 0;
+        for (ItemStack item : cont) {
+            if (item != null && item.getType() != Material.AIR) {
+                ++i;
+            }
+        }
+        return 36 - i;
+    }
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_BANNER_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_BANNER_DESCRIPTION;
+    }
 }
