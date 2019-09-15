@@ -875,7 +875,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 18
+          - 31
     EXP:
       EXP-Boost:
         level-1: 1.5
@@ -906,7 +906,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 20
+          - 32
     Power:
       Power-Boost:
         level-1: 100.0
@@ -938,7 +938,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 4
+          - 22
     Redstone:
       Cost: 1000000
       RedstoneItem:
@@ -955,7 +955,7 @@ fupgrades:
           - '&7  - Cost: $1,000,000'
           - '&e&lClick to &nUnlock'
         slots:
-          - 26
+          - 23
     Spawners:
       Spawner-Boost:
         # This is a Percentage so .10 means 10% lowered spawner delay!
@@ -987,7 +987,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 24
+          - 30
     DamageReduct:
       DamageReductPercent:
         level-1: 3
@@ -999,7 +999,7 @@ fupgrades:
         level-3: 6000000
       ReduceItem:
         Name: '&c&lDamage Reduction Upgrade'
-        Type: DIAMOND_CHESTPLATE
+        Type: GOLD_CHESTPLATE
         Amount: 1
         Damage: 0
         Lore:
@@ -1019,7 +1019,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 0
+          - 7
     DamageIncrease:
       DamageIncreasePercent:
         level-1: 3
@@ -1051,7 +1051,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 8
+          - 1
     TNT:
       tnt-limit:
         level-1: 500000
@@ -1083,7 +1083,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 36
+          - 21
     Warps:
       warp-limit:
         level-1: 3
@@ -1115,7 +1115,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 44
+          - 24
     Chest:
       Chest-Size:
         # This is rows
@@ -1147,7 +1147,7 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 40
+          - 20
     Members:
       Members-Limit:
         level-1: 30
@@ -1178,7 +1178,39 @@ fupgrades:
           - ''
           - '&e&lClick to &nUnlock'
         slots:
-          - 22
+          - 40
+    Armor:
+      Armor-HP-Drop:
+        # HP Drop is in percent so .10 would mean it would drop 10% of the damage to the armor
+        level-1: .10
+        level-2: .15
+        level-3: .20
+      Cost:
+        level-1: 1000000
+        level-2: 2000000
+        level-3: 3000000
+      ArmorItem:
+        Name: '&c&lReinforced Armor Upgrade'
+        Type: DIAMOND_CHESTPLATE
+        Amount: 1
+        Damage: 0
+        Lore:
+          - '&7Decreases damage to armor.'
+          - ''
+          - '&c&lTier'
+          - '&f&l* &7Current Level: &3{level}/3'
+          - ''
+          - '&c&lPerks'
+          - '&f&l* &7Level 1 - &f10% Reduction'
+          - '&7  - Cost: $1,000,000'
+          - '&f&l* &7Level 2 - &f15% Reduction'
+          - '&7  - Cost: $2,000,000'
+          - '&f&l* &7Level 3 - &f20% Reduction'
+          - '&7  - Cost: $3,000,000'
+          - ''
+          - '&e&lClick to &nUnlock'
+        slots:
+          - 4
 
 ############################################################
 # +------------------------------------------------------+ #

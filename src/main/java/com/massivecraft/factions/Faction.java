@@ -23,6 +23,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
 
+    double getReinforcedArmor();
+
+    void setReinforcedArmor(double percent);
+
     int getWarpsLimit();
 
     void setWarpsLimit(int limit);
