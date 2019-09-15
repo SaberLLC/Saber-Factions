@@ -46,7 +46,7 @@ public class CmdSethome extends FCommand {
         faction.setHome(context.player.getLocation());
 
         faction.msg(TL.COMMAND_SETHOME_SET, context.fPlayer.describeTo(context.faction, true));
-        faction.sendMessage(FactionsPlugin.getInstance().cmdBase.cmdHome.getUseageTemplate(context));
+        faction.sendMessage(FactionsPlugin.getInstance().cmdBase.cmdHome.getUsageTemplate(context));
         if (faction != context.faction) {
             context.msg(TL.COMMAND_SETHOME_SETOTHER, faction.getTag(context.fPlayer));
         }

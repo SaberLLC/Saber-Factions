@@ -50,7 +50,7 @@ public class CmdPaypalSet extends FCommand {
                 context.msg(TL.GENERIC_NOPERMISSION, "set another factions paypal!");
             }
         } else {
-            context.msg(FactionsPlugin.getInstance().cmdBase.cmdPaypalSet.getUseageTemplate(context));
+            context.msg(FactionsPlugin.getInstance().cmdBase.cmdPaypalSet.getUsageTemplate(context));
         }
     }
 
