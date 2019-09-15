@@ -2,7 +2,7 @@ package com.massivecraft.factions.shop;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,16 +23,16 @@ public class ShopGUI {
      */
 
     public static void openShop(FPlayer p) {
-        FileConfiguration config = P.p.getConfig();
+        FileConfiguration config = FactionsPlugin.getInstance().getConfig();
         Faction fac = p.getFaction();
 
-        Inventory i = Bukkit.createInventory(null, P.p.getConfig().getInt("F-Shop.GUI.Size"), color(config.getString("F-Shop.GUI.Name")));
+        Inventory i = Bukkit.createInventory(null, FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Size"), color(config.getString("F-Shop.GUI.Name")));
         ItemStack glass = new ItemStack(XMaterial.BLACK_STAINED_GLASS_PANE.parseMaterial(), 1, (short) 7);
         ItemMeta glassmeta = glass.getItemMeta();
         glassmeta.setDisplayName(ChatColor.GOLD + " ");
         glass.setItemMeta(glassmeta);
 
-        for (int fill = 0; fill < P.p.getConfig().getInt("F-Shop.GUI.Size"); ++fill) {
+        for (int fill = 0; fill < FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Size"); ++fill) {
             i.setItem(fill, glass);
         }
 
@@ -59,7 +59,7 @@ public class ShopGUI {
             }
             countmeta.setLore(colorList(PointInfo));
             count.setItemMeta(countmeta);
-            i.setItem(P.p.getConfig().getInt("F-Shop.GUI.Information.slot"), count);
+            i.setItem(FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Information.slot"), count);
 
             ItemStack item = new ItemStack(material);
             ItemMeta meta = item.getItemMeta();
@@ -77,7 +77,7 @@ public class ShopGUI {
             if (lore.contains("")) {
                 meta.setLore(null);
             } else {
-                meta.setLore(P.p.colorList(lore));
+                meta.setLore(FactionsPlugin.getInstance().colorList(lore));
             }
             item.setItemMeta(meta);
             i.setItem(slot, item);

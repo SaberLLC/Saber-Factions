@@ -3,13 +3,12 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -30,20 +29,15 @@ public class CmdList extends FCommand {
         //this.requiredArgs.add("");
         this.optionalArgs.put("page", "1");
 
-        this.permission = Permission.LIST.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.LIST)
+                .playerOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostList, "to list the factions", "for listing the factions"))
+        if (!context.payForCommand(Conf.econCostList, "to list the factions", "for listing the factions"))
             return;
 
         ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
@@ -52,14 +46,14 @@ public class CmdList extends FCommand {
         factionList.remove(Factions.getInstance().getWarZone());
 
         // remove exempt factions
-        if (fme != null && fme.getPlayer() != null && !fme.getPlayer().hasPermission("factions.show.bypassexempt")) {
-            List<String> exemptFactions = P.p.getConfig().getStringList("show-exempt");
+        if (context.fPlayer != null && context.fPlayer.getPlayer() != null && !context.fPlayer.getPlayer().hasPermission("factions.show.bypassexempt")) {
+            List<String> exemptFactions = FactionsPlugin.getInstance().getConfig().getStringList("show-exempt");
 
             factionList.removeIf(next -> exemptFactions.contains(next.getTag()));
         }
 
         // Sort by total followers first
-        Collections.sort(factionList, (f1, f2) -> {
+        factionList.sort((f1, f2) -> {
             int f1Size = f1.getFPlayers().size();
             int f2Size = f2.getFPlayers().size();
             if (f1Size < f2Size) {
@@ -87,7 +81,7 @@ public class CmdList extends FCommand {
         factionList.add(0, Factions.getInstance().getWilderness());
 
         final int pageheight = 9;
-        int pagenumber = this.argAsInt(0, 1);
+        int pagenumber = context.argAsInt(0, 1);
         int pagecount = (factionList.size() / pageheight) + 1;
         if (pagenumber > pagecount) {
             pagenumber = pagecount;
@@ -101,18 +95,18 @@ public class CmdList extends FCommand {
         }
 
 
-        String header = p.getConfig().getString("list.header", defaults[0]);
+        String header = FactionsPlugin.getInstance().getConfig().getString("list.header", defaults[0]);
         header = header.replace("{pagenumber}", String.valueOf(pagenumber)).replace("{pagecount}", String.valueOf(pagecount));
-        lines.add(p.txt.parse(header));
+        lines.add(FactionsPlugin.getInstance().txt.parse(header));
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isWilderness()) {
-                lines.add(p.txt.parse(TagUtil.parsePlain(faction, p.getConfig().getString("list.factionless", defaults[1]))));
+                lines.add(FactionsPlugin.getInstance().txt.parse(TagUtil.parsePlain(faction, FactionsPlugin.getInstance().getConfig().getString("list.factionless", defaults[1]))));
                 continue;
             }
-            lines.add(p.txt.parse(TagUtil.parsePlain(faction, fme, p.getConfig().getString("list.entry", defaults[2]))));
+            lines.add(FactionsPlugin.getInstance().txt.parse(TagUtil.parsePlain(faction, context.fPlayer, FactionsPlugin.getInstance().getConfig().getString("list.entry", defaults[2]))));
         }
-        sendMessage(lines);
+        context.sendMessage(lines);
     }
 
     @Override

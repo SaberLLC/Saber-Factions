@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
@@ -20,50 +20,45 @@ public class CmdBanner extends FCommand {
         this.aliases.add("banner");
         this.aliases.add("warbanner");
 
-        this.permission = Permission.BANNER.node;
-        this.disableOnLock = false;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = true;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.BANNER)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("fbanners.Enabled")) {
-            msg(TL.COMMAND_BANNER_DISABLED);
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Enabled")) {
+            context.msg(TL.COMMAND_BANNER_DISABLED);
             return;
         }
-        if (!fme.hasMoney(P.p.getConfig().getInt("fbanners.Banner-Cost", 5000))) {
-            msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
+        if (!context.fPlayer.hasMoney(FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000))) {
+            context.msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
             return;
         }
-        takeMoney(fme, P.p.getConfig().getInt("fbanners.Banner-Cost", 5000));
+        takeMoney(context.fPlayer, FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000));
 
-        //ItemStack warBanner = P.p.createItem(Material.BANNER, 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+        //ItemStack warBanner = FactionsPlugin.getInstance().createItem(Material.BANNER, 1, (short) 1, FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name"), FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore"));
         //BannerMeta bannerMeta = (BannerMeta) warBanner.getItemMeta();
-        ItemStack warBanner = fme.getFaction().getBanner();
+        ItemStack warBanner = context.fPlayer.getFaction().getBanner();
         if (warBanner != null) {
             ItemMeta warmeta = warBanner.getItemMeta();
-            warmeta.setDisplayName(P.p.color(P.p.getConfig().getString("fbanners.Item.Name")));
-            warmeta.setLore(P.p.colorList(P.p.getConfig().getStringList("fbanners.Item.Lore")));
+            warmeta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
+            warmeta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore")));
             warBanner.setItemMeta(warmeta);
 
 
         } else {
-            warBanner = P.p.createItem(XMaterial.BLACK_BANNER.parseMaterial(), 1, (short) 1, P.p.getConfig().getString("fbanners.Item.Name"), P.p.getConfig().getStringList("fbanners.Item.Lore"));
+            warBanner = FactionsPlugin.getInstance().createItem(XMaterial.BLACK_BANNER.parseMaterial(), 1, (short) 1, FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name"), FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore"));
         }
-        fme.msg(TL.COMMAND_BANNER_SUCCESS);
+        context.msg(TL.COMMAND_BANNER_SUCCESS);
         warBanner.setAmount(1);
-        me.getInventory().addItem(warBanner);
+        context.player.getInventory().addItem(warBanner);
     }
 
 
     public boolean hasMoney(FPlayer fme, int amt) {
-        Economy econ = P.p.getEcon();
+        Economy econ = FactionsPlugin.getInstance().getEcon();
         if (econ.getBalance(fme.getPlayer()) >= amt) {
             return true;
         } else {
@@ -74,7 +69,7 @@ public class CmdBanner extends FCommand {
 
     public void takeMoney(FPlayer fme, int amt) {
         if (hasMoney(fme, amt)) {
-            Economy econ = P.p.getEcon();
+            Economy econ = FactionsPlugin.getInstance().getEcon();
             econ.withdrawPlayer(fme.getPlayer(), amt);
             fme.sendMessage(TL.COMMAND_BANNER_MONEYTAKE.toString().replace("{amount}", amt + ""));
         }

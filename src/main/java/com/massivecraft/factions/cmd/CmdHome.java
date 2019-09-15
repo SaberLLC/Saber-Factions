@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -23,106 +24,68 @@ public class CmdHome extends FCommand {
         super();
         this.aliases.add("home");
 
-        this.optionalArgs.put("faction", "yours");
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("", "");
-
-        this.permission = Permission.HOME.node;
-        this.disableOnLock = false;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.HOME)
+                .playerOnly()
+                .memberOnly()
+                .withAction(PermissableAction.HOME)
+                .build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         // TODO: Hide this command on help also.
-
-
         if (!Conf.homesEnabled) {
-            fme.msg(TL.COMMAND_HOME_DISABLED);
+            context.msg(TL.COMMAND_HOME_DISABLED);
             return;
         }
 
         if (!Conf.homesTeleportCommandEnabled) {
-            fme.msg(TL.COMMAND_HOME_TELEPORTDISABLED);
+            context.msg(TL.COMMAND_HOME_TELEPORTDISABLED);
             return;
         }
 
-        Faction factionArg;
-
-        if (args.isEmpty())
-            factionArg = myFaction;
-        else
-            factionArg = argAsFaction(0);
-
-
-        if (factionArg.isSystemFaction()) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "teleport to system faction home");
+        if (!context.faction.hasHome()) {
+            context.msg(TL.COMMAND_HOME_NOHOME.toString() + (context.fPlayer.getRole().value < Role.MODERATOR.value ? TL.GENERIC_ASKYOURLEADER.toString() : TL.GENERIC_YOUSHOULD.toString()));
+            context.sendMessage(FactionsPlugin.getInstance().cmdBase.cmdSethome.getUseageTemplate(context));
             return;
         }
 
-        myFaction = factionArg;
-
-
-        if (myFaction.isWilderness())
+        if (!Conf.homesTeleportAllowedFromEnemyTerritory && context.fPlayer.isInEnemyTerritory()) {
+            context.msg(TL.COMMAND_HOME_INENEMY);
             return;
+        }
 
-        if (!fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(fme, PermissableAction.HOME);
-            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
-                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
+        if (!Conf.homesTeleportAllowedFromDifferentWorld && context.player.getWorld().getUID() != context.faction.getHome().getWorld().getUID()) {
+            context.msg(TL.COMMAND_HOME_WRONGWORLD);
+            return;
+        }
+
+        if (!context.fPlayer.isAdminBypassing()) {
+            Access access = context.faction.getAccess(context.fPlayer, PermissableAction.HOME);
+            if (access != Access.ALLOW && context.fPlayer.getRole() != Role.LEADER) {
+                context.fPlayer.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
                 return;
             }
         }
 
 
-        if (!myFaction.hasHome()) {
-            fme.msg(TL.COMMAND_HOME_NOHOME.toString() + (fme.getRole().value < Role.MODERATOR.value ? TL.GENERIC_ASKYOURLEADER.toString() : TL.GENERIC_YOUSHOULD.toString()));
-            fme.sendMessage(p.cmdBase.cmdSethome.getUseageTemplate());
-            return;
-        }
-
-
-        if (!Conf.homesTeleportAllowedFromEnemyTerritory && fme.isInEnemyTerritory()) {
-            fme.msg(TL.COMMAND_HOME_INENEMY);
-            return;
-        }
-
-        if (!Conf.homesTeleportAllowedFromDifferentWorld && me.getWorld().getUID() != myFaction.getHome().getWorld().getUID()) {
-            fme.msg(TL.COMMAND_HOME_WRONGWORLD);
-            return;
-        }
-
-        if (!fme.isAdminBypassing()) {
-            Access access = fme.getFaction().getAccess(fme, PermissableAction.HOME);
-            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
-                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
-                return;
-            }
-        }
-
-        Faction faction = Board.getInstance().getFactionAt(new FLocation(me.getLocation()));
-        final Location loc = me.getLocation().clone();
+        Faction faction = Board.getInstance().getFactionAt(new FLocation(context.player.getLocation()));
+        final Location loc = context.player.getLocation().clone();
 
         // if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
-        if (Conf.homesTeleportAllowedEnemyDistance > 0 && !faction.isSafeZone() && (!fme.isInOwnTerritory() || !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory)) {
+        if (Conf.homesTeleportAllowedEnemyDistance > 0 && !faction.isSafeZone() && (!context.fPlayer.isInOwnTerritory() || !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory)) {
             World w = loc.getWorld();
             double x = loc.getX();
             double y = loc.getY();
             double z = loc.getZ();
 
-            for (Player p : me.getServer().getOnlinePlayers()) {
-                if (p == null || !p.isOnline() || p.isDead() || p == me || p.getWorld() != w) {
+            for (Player p : context.player.getServer().getOnlinePlayers()) {
+                if (p == null || !p.isOnline() || p.isDead() || p == context.player || p.getWorld() != w) {
                     continue;
                 }
 
                 FPlayer fp = FPlayers.getInstance().getByPlayer(p);
-                if (fme.getRelationTo(fp) != Relation.ENEMY || fp.isVanished()) {
+                if (context.fPlayer.getRelationTo(fp) != Relation.ENEMY || fp.isVanished()) {
                     continue;
                 }
 
@@ -137,37 +100,33 @@ public class CmdHome extends FCommand {
                     continue;
                 }
 
-                fme.msg(TL.COMMAND_HOME_ENEMYNEAR, String.valueOf(Conf.homesTeleportAllowedEnemyDistance));
+                context.msg(TL.COMMAND_HOME_ENEMYNEAR, String.valueOf(Conf.homesTeleportAllowedEnemyDistance));
                 return;
             }
         }
 
-
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostHome, TL.COMMAND_HOME_TOTELEPORT.toString(), TL.COMMAND_HOME_FORTELEPORT.toString())) {
+        if (!context.payForCommand(Conf.econCostHome, TL.COMMAND_HOME_TOTELEPORT.toString(), TL.COMMAND_HOME_FORTELEPORT.toString())) {
             return;
         }
 
-        // TODO: Need to document this better confusing everyone, removed for now.
-//		// if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
-//		if (Essentials.handleTeleport(me, myFaction.getHome())) {
-//			return;
-//		}
+        // if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
+        if (Essentials.handleTeleport(context.player, context.faction.getHome())) {
+            return;
+        }
 
-
-        this.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", () -> {
+        context.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", () -> {
             // Create a smoke effect
             if (Conf.homesTeleportCommandSmokeEffectEnabled) {
                 List<Location> smokeLocations = new ArrayList<>();
                 smokeLocations.add(loc);
                 smokeLocations.add(loc.add(0, 1, 0));
-                smokeLocations.add(CmdHome.this.myFaction.getHome());
-                smokeLocations.add(CmdHome.this.myFaction.getHome().clone().add(0, 1, 0));
+                smokeLocations.add(context.faction.getHome());
+                smokeLocations.add(context.faction.getHome().clone().add(0, 1, 0));
                 SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
             }
-
-            CmdHome.this.me.teleport(CmdHome.this.myFaction.getHome());
-        }, this.p.getConfig().getLong("warmups.f-home", 0));
+            context.player.teleport(context.faction.getHome());
+        }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-home", 0));
     }
 
     @Override

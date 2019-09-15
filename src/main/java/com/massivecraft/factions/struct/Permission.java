@@ -1,6 +1,6 @@
 package com.massivecraft.factions.struct;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.command.CommandSender;
 
 public enum Permission {
@@ -18,21 +18,25 @@ public enum Permission {
 	BYPASS("bypass"),
 	CHAT("chat"),
 	CHATSPY("chatspy"),
+	CHECK("check"),
 	CLAIM("claim"),
 	CLAIMAT("claimat"),
 	CLAIM_LINE("claim.line"),
 	CLAIM_RADIUS("claim.radius"),
 	CONFIG("config"),
 	CONVERT("convert"),
+	CONVERTCONFIG("convertconfig"),
 	CREATE("create"),
 	CORNER("corner"),
 	DEFAULTRANK("defaultrank"),
 	DEINVITE("deinvite"),
+	DELHOME("delhome"),
 	DESCRIPTION("description"),
 	DISBAND("disband"),
 	DISBAND_ANY("disband.any"),
 	FLY("fly"),
 	FOCUS("focus"),
+	GLOBALCHAT("globalchat"),
 	GRACE("grace"),
 	HELP("help"),
 	HOME("home"),
@@ -64,6 +68,7 @@ public enum Permission {
 	MONEY_F2P("money.f2p"),
 	MONEY_P2F("money.p2f"),
 	MONITOR_LOGINS("monitorlogins"),
+	NEAR("near"),
 	NO_BOOM("noboom"),
 	OPEN("open"),
 	OWNER("owner"),
@@ -75,6 +80,7 @@ public enum Permission {
 	PAYPAL("paypal"),
 	PAYPALSET("setpaypal"),
 	PERMISSIONS("permissions"),
+	POINTS("points"),
 	POWERBOOST("powerboost"),
 	POWER("power"),
 	POWER_ANY("power.any"),
@@ -101,6 +107,7 @@ public enum Permission {
 	SCOREBOARD("scoreboard"),
 	SEECHUNK("seechunk"),
 	SETWARP("setwarp"),
+	SHOP("shop"),
 	TOP("top"),
 	VIEWCHEST("viewchest"),
 	ADDPOINTS("addpoints"),
@@ -120,8 +127,7 @@ public enum Permission {
 	COORD("coords"),
 	SHOWCLAIMS("showclaims"),
 	WARP("warp"),
-	CHEST("chest"),
-	CONVERTCONFIG("convertconfig");
+	CHEST("chest");
 
 	public final String node;
 
@@ -130,7 +136,7 @@ public enum Permission {
 	}
 
 	public boolean has(CommandSender sender, boolean informSenderIfNot) {
-		return P.p.perm.has(sender, this.node, informSenderIfNot);
+		return FactionsPlugin.getInstance().perm.has(sender, this.node, informSenderIfNot);
 	}
 
 	public boolean has(CommandSender sender) {

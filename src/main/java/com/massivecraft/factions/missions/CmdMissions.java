@@ -1,5 +1,8 @@
 package com.massivecraft.factions.missions;
 
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -12,27 +15,23 @@ public class CmdMissions extends FCommand {
         this.aliases.add("objectives");
         this.aliases.add("objective");
 
-        this.permission = Permission.MISSIONS.node;
-
-        this.disableOnLock = true;
-        this.disableOnSpam = true;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.MISSIONS)
+                .memberOnly()
+                .playerOnly()
+                .build();
     }
 
 
     @Override
-    public void perform() {
-        if (myFaction == null) {
+    public void perform(CommandContext context) {
+        if (context.faction == null) {
             return;
         }
-        final MissionGUI missionsGUI = new MissionGUI(p, fme);
+        final MissionGUI missionsGUI = new MissionGUI(FactionsPlugin.getInstance(), context.fPlayer);
         missionsGUI.build();
-        fme.getPlayer().openInventory(missionsGUI.getInventory());
+        context.player.openInventory(missionsGUI.getInventory());
     }
+
 
     @Override
     public TL getUsageTranslation() {

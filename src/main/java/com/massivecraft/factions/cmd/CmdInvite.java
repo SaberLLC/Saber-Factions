@@ -2,9 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
@@ -18,72 +17,58 @@ public class CmdInvite extends FCommand {
         this.aliases.add("inv");
 
         this.requiredArgs.add("player name");
-        //this.optionalArgs.put("", "");
 
-        this.permission = Permission.INVITE.node;
-        this.disableOnLock = true;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.INVITE)
+                .playerOnly()
+                .withAction(PermissableAction.INVITE)
+                .build();
     }
 
     @Override
-    public void perform() {
-        FPlayer target = this.argAsBestFPlayerMatch(0);
+    public void perform(CommandContext context) {
+        FPlayer target = context.argAsBestFPlayerMatch(0);
         if (target == null) {
             return;
         }
 
-        if (target.getFaction() == myFaction) {
-            msg(TL.COMMAND_INVITE_ALREADYMEMBER, target.getName(), myFaction.getTag());
-            msg(TL.GENERIC_YOUMAYWANT.toString() + p.cmdBase.cmdKick.getUseageTemplate(false));
+        if (target.getFaction() == context.faction) {
+            context.msg(TL.COMMAND_INVITE_ALREADYMEMBER, target.getName(), context.faction.getTag());
+            context.msg(TL.GENERIC_YOUMAYWANT.toString() + FactionsPlugin.getInstance().cmdBase.cmdKick.getUseageTemplate(context));
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostInvite, TL.COMMAND_INVITE_TOINVITE.toString(), TL.COMMAND_INVITE_FORINVITE.toString())) {
+        if (!context.payForCommand(Conf.econCostInvite, TL.COMMAND_INVITE_TOINVITE.toString(), TL.COMMAND_INVITE_FORINVITE.toString())) {
             return;
         }
 
-        if (!fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
-            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
-                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
-                return;
-            }
-        }
-
-        if (myFaction.isInvited(target)) {
-            fme.msg(TL.COMMAND_INVITE_ALREADYINVITED, target.getName());
+        if (context.faction.isInvited(target)) {
+            context.msg(TL.COMMAND_INVITE_ALREADYINVITED, target.getName());
             return;
         }
-        if (myFaction.isBanned(target)) {
-            fme.msg(TL.COMMAND_INVITE_BANNED, target.getName());
+        if (context.faction.isBanned(target)) {
+            context.msg(TL.COMMAND_INVITE_BANNED, target.getName());
             return;
         }
 
-        myFaction.invite(target);
+        context.faction.invite(target);
         // Send the invitation to the target player when online, otherwise just ignore
         if (target.isOnline()) {
             // Tooltips, colors, and commands only apply to the string immediately before it.
-            FancyMessage message = new FancyMessage(fme.describeTo(target, true))
+            FancyMessage message = new FancyMessage(context.fPlayer.describeTo(target, true))
                     .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag())
+                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag())
                     .then(TL.COMMAND_INVITE_INVITEDYOU.toString())
                     .color(ChatColor.YELLOW)
                     .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag())
-                    .then(myFaction.describeTo(target)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag());
+                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag())
+                    .then(context.faction.describeTo(target)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
+                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag());
 
             message.send(target.getPlayer());
         }
 
-        myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), target.describeTo(myFaction));
+        context.faction.msg(TL.COMMAND_INVITE_INVITED, context.fPlayer.describeTo(context.faction, true), target.describeTo(context.faction));
     }
 
     @Override

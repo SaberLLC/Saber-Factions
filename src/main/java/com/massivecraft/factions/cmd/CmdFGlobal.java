@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,36 +12,28 @@ public class CmdFGlobal extends FCommand {
     public static List<UUID> toggled = new ArrayList<>();
 
     public CmdFGlobal() {
-
         super();
         this.aliases.add("gchat");
         this.aliases.add("global");
         this.aliases.add("globalchat");
 
-        this.disableOnLock = false;
-        this.disableOnSpam = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.GLOBALCHAT)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-
-        Player p = (Player) sender;
-
+    public void perform(CommandContext context) {
         // /f global
 
-        if (toggled.contains(p.getUniqueId())) {
-            toggled.remove(p.getUniqueId());
+        if (toggled.contains(context.player.getUniqueId())) {
+            toggled.remove(context.player.getUniqueId());
         } else {
-            toggled.add(p.getUniqueId());
+            toggled.add(context.player.getUniqueId());
         }
 
-        fme.msg(TL.COMMAND_F_GLOBAL_TOGGLE, toggled.contains(p.getUniqueId()) ? "disabled" : "enabled");
+        context.msg(TL.COMMAND_F_GLOBAL_TOGGLE, toggled.contains(context.player.getUniqueId()) ? "disabled" : "enabled");
     }
 
     @Override

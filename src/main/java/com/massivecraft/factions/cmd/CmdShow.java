@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
@@ -19,14 +19,12 @@ public class CmdShow extends FCommand {
     public CmdShow() {
         this.aliases.add("show");
         this.aliases.add("who");
-        this.aliases.add("f");
 
         // add defaults to /f show in case config doesnt have it
         defaults.add("{header}");
         defaults.add("<a>Description: <i>{description}");
         defaults.add("<a>Joining: <i>{joining}    {peaceful}");
         defaults.add("<a>Land / Power / Maxpower: <i> {chunks} / {power} / {maxPower}");
-        defaults.add("<a>Faction Strikes: {strikes}");
         defaults.add("<a>Founded: <i>{create-date}");
         defaults.add("<a>This faction is permanent, remaining even with no members.");
         defaults.add("<a>Land value: <i>{land-value} {land-refund}");
@@ -34,69 +32,63 @@ public class CmdShow extends FCommand {
         defaults.add("<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list}");
         defaults.add("<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}");
         defaults.add("<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}");
-        defaults.add("<a>Alt List: <i>{alts}");
 
         // this.requiredArgs.add("");
         this.optionalArgs.put("faction tag", "yours");
 
-        this.permission = Permission.SHOW.node;
-        this.disableOnLock = false;
-
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.SHOW).build();
     }
 
     @Override
-    public void perform() {
-        Faction faction = myFaction;
-        if (this.argIsSet(0))
-            faction = this.argAsFaction(0);
+    public void perform(CommandContext context) {
+        Faction faction = context.faction;
+        if (context.argIsSet(0))
+            faction = context.argAsFaction(0);
 
         if (faction == null)
             return;
 
-        if (fme != null && !fme.getPlayer().hasPermission("factions.show.bypassexempt")
-                && P.p.getConfig().getStringList("show-exempt").contains(faction.getTag())) {
-            msg(TL.COMMAND_SHOW_EXEMPT);
+        if (context.fPlayer != null && !context.player.getPlayer().hasPermission("factions.show.bypassexempt")
+                && FactionsPlugin.getInstance().getConfig().getStringList("show-exempt").contains(faction.getTag())) {
+            context.msg(TL.COMMAND_SHOW_EXEMPT);
             return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-        if (!payForCommand(Conf.econCostShow, TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
+        if (!context.payForCommand(Conf.econCostShow, TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
             return;
         }
 
-        List<String> show = P.p.getConfig().getStringList("show");
+        List<String> show = FactionsPlugin.getInstance().getConfig().getStringList("show");
         if (show == null || show.isEmpty())
             show = defaults;
 
         if (!faction.isNormal()) {
-            String tag = faction.getTag(fme);
+            String tag = faction.getTag(context.fPlayer);
             // send header and that's all
             String header = show.get(0);
             if (TagReplacer.HEADER.contains(header)) {
-                msg(p.txt.titleize(tag));
+                context.msg(FactionsPlugin.getInstance().txt.titleize(tag));
             } else {
-                msg(p.txt.parse(TagReplacer.FACTION.replace(header, tag)));
+                context.msg(FactionsPlugin.getInstance().txt.parse(TagReplacer.FACTION.replace(header, tag)));
             }
             return; // we only show header for non-normal factions
         }
 
         for (String raw : show) {
-            String parsed = TagUtil.parsePlain(faction, fme, raw); // use relations
+            String parsed = TagUtil.parsePlain(faction, context.fPlayer, raw); // use relations
             if (parsed == null) {
                 continue; // Due to minimal f show.
             }
 
-            if (fme != null) {
-                parsed = TagUtil.parsePlaceholders(fme.getPlayer(), parsed);
+            if (context.fPlayer != null) {
+                parsed = TagUtil.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
             }
 
             if (TagUtil.hasFancy(parsed)) {
-                List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
+                List<FancyMessage> fancy = TagUtil.parseFancy(faction, context.fPlayer, parsed);
                 if (fancy != null)
-                    sendFancyMessage(fancy);
+                    context.sendFancyMessage(fancy);
 
                 continue;
             }
@@ -108,7 +100,7 @@ public class CmdShow extends FCommand {
                 if (parsed.contains("%")) {
                     parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
                 }
-                msg(p.txt.parse(parsed));
+                context.msg(FactionsPlugin.getInstance().txt.parse(parsed));
             }
         }
     }

@@ -19,58 +19,46 @@ public class CmdMod extends FCommand {
         this.aliases.add("setofficer");
 
         this.optionalArgs.put("player name", "name");
-        //this.optionalArgs.put("", "");
 
-        this.permission = Permission.MOD.node;
-        this.disableOnLock = true;
-
-
-        senderMustBePlayer = false;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = true;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.MOD)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
+    public void perform(CommandContext context) {
+        FPlayer you = context.argAsBestFPlayerMatch(0);
         if (you == null) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_MOD_CANDIDATES.toString()).color(ChatColor.GOLD);
-            for (FPlayer player : myFaction.getFPlayersWhereRole(Role.NORMAL)) {
+            for (FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
                 String s = player.getName();
                 msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " mod " + s);
             }
 
-            sendFancyMessage(msg);
+            context.sendFancyMessage(msg);
             return;
         }
 
-        boolean permAny = Permission.MOD_ANY.has(sender, false);
+        boolean permAny = Permission.MOD_ANY.has(context.sender, false);
         Faction targetFaction = you.getFaction();
-
-        if (you.isAlt()) {
-            msg(ChatColor.RED + "You can not promote alt accounts.");
+        if (targetFaction != context.faction && !permAny) {
+            context.msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(context.fPlayer, true));
             return;
         }
 
-        if (targetFaction != myFaction && !permAny) {
-            msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(fme, true));
+        if (context.fPlayer != null && context.fPlayer.getRole() != Role.LEADER && !permAny) {
+            context.msg(TL.COMMAND_MOD_NOTADMIN);
             return;
         }
 
-        if (fme != null && fme.getRole() != Role.LEADER && !permAny) {
-            msg(TL.COMMAND_MOD_NOTADMIN);
-            return;
-        }
-
-        if (you == fme && !permAny) {
-            msg(TL.COMMAND_MOD_SELF);
+        if (you == context.fPlayer && !permAny) {
+            context.msg(TL.COMMAND_MOD_SELF);
             return;
         }
 
         if (you.getRole() == Role.LEADER) {
-            msg(TL.COMMAND_MOD_TARGETISADMIN);
+            context.msg(TL.COMMAND_MOD_TARGETISADMIN);
             return;
         }
 
@@ -78,12 +66,12 @@ public class CmdMod extends FCommand {
             // Revoke
             you.setRole(Role.NORMAL);
             targetFaction.msg(TL.COMMAND_MOD_REVOKED, you.describeTo(targetFaction, true));
-            msg(TL.COMMAND_MOD_REVOKES, you.describeTo(fme, true));
+            context.msg(TL.COMMAND_MOD_REVOKES, you.describeTo(context.fPlayer, true));
         } else {
             // Give
             you.setRole(Role.MODERATOR);
             targetFaction.msg(TL.COMMAND_MOD_PROMOTED, you.describeTo(targetFaction, true));
-            msg(TL.COMMAND_MOD_PROMOTES, you.describeTo(fme, true));
+            context.msg(TL.COMMAND_MOD_PROMOTES, you.describeTo(context.fPlayer, true));
         }
     }
 

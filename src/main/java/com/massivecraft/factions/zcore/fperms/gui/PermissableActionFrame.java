@@ -5,7 +5,7 @@ import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -23,10 +23,10 @@ public class PermissableActionFrame {
     private Gui gui;
 
     public PermissableActionFrame(Faction f) {
-        ConfigurationSection section = P.p.getConfig().getConfigurationSection("fperm-gui.action");
-        gui = new Gui(P.p,
+        ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.action");
+        gui = new Gui(FactionsPlugin.getInstance(),
                 section.getInt("rows", 3),
-                P.p.color(P.p.getConfig().getString("fperm-gui.action.name").replace("{faction}", f.getTag())));
+                FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.action.name").replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(FPlayer fplayer, Permissable perm) {
@@ -60,14 +60,14 @@ public class PermissableActionFrame {
                     }
                     if (success) fplayer.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), perm.name());
                     else fplayer.msg(TL.COMMAND_PERM_LOCKED);
-                    P.p.log(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.name()) + " for faction " + fplayer.getTag());
+                    FactionsPlugin.getInstance().log(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.name()) + " for faction " + fplayer.getTag());
                     // Closing and opening resets the cursor.
                     // fplayer.getPlayer().closeInventory();
                     buildGUI(fplayer, perm);
                 }
             }));
         }
-        GUIItems.set(P.p.getConfig().getInt("fperm-gui.action.slots.back"), new GuiItem(buildBackItem(), event -> {
+        GUIItems.set(FactionsPlugin.getInstance().getConfig().getInt("fperm-gui.action.slots.back"), new GuiItem(buildBackItem(), event -> {
             event.setCancelled(true);
             // Closing and opening resets the cursor.
             // fplayer.getPlayer().closeInventory();
@@ -81,21 +81,21 @@ public class PermissableActionFrame {
 
 
     private ItemStack buildDummyItem() {
-        ConfigurationSection config = P.p.getConfig().getConfigurationSection("fperm-gui.dummy-item");
+        ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.dummy-item");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
         ItemMeta meta = item.getItemMeta();
-        meta.setLore(P.p.colorList(config.getStringList("Lore")));
-        meta.setDisplayName(P.p.color(config.getString("Name")));
+        meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
+        meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
         item.setItemMeta(meta);
         return item;
     }
 
     private ItemStack buildBackItem() {
-        ConfigurationSection config = P.p.getConfig().getConfigurationSection("fperm-gui.back-item");
+        ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.back-item");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
         ItemMeta meta = item.getItemMeta();
-        meta.setLore(P.p.colorList(config.getStringList("Lore")));
-        meta.setDisplayName(P.p.color(config.getString("Name")));
+        meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
+        meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
         item.setItemMeta(meta);
         return item;
     }

@@ -1,12 +1,13 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.alts.CmdAlts;
 import com.massivecraft.factions.cmd.check.CmdCheck;
 import com.massivecraft.factions.cmd.check.CmdWeeWoo;
 import com.massivecraft.factions.cmd.chest.CmdChest;
 import com.massivecraft.factions.cmd.claim.*;
+import com.massivecraft.factions.cmd.configsf.CmdConvertConfig;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
 import com.massivecraft.factions.cmd.grace.CmdGrace;
 import com.massivecraft.factions.cmd.logout.CmdLogout;
@@ -22,12 +23,20 @@ import com.massivecraft.factions.cmd.tnt.CmdTntFill;
 import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.shop.CmdShop;
 import com.massivecraft.factions.zcore.util.TL;
+import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.logging.Level;
 
-public class FCmdRoot extends FCommand {
+public class FCmdRoot extends FCommand implements CommandExecutor {
+
+    public BrigadierManager brigadierManager;
 
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
@@ -124,43 +133,33 @@ public class FCmdRoot extends FCommand {
     public CmdTntFill cmdTntFill = new CmdTntFill();
     public CmdChest cmdChest = new CmdChest();
     public CmdSetBanner cmdSetBanner = new CmdSetBanner();
-    public CmdStrike cmdStrike = new CmdStrike();
-    public CmdStrikeSet cmdStrikeSet = new CmdStrikeSet();
     public CmdAlts cmdAlts = new CmdAlts();
-    public CmdSpam cmdSpam = new CmdSpam();
     public CmdCorner cmdCorner = new CmdCorner();
     public CmdInventorySee cmdInventorySee = new CmdInventorySee();
     public CmdFGlobal cmdFGlobal = new CmdFGlobal();
     public CmdViewChest cmdViewChest = new CmdViewChest();
     public CmdPoints cmdPoints = new CmdPoints();
     public CmdLogout cmdLogout = new CmdLogout();
-    public CmdNotifications cmdNotifications = new CmdNotifications();
     public CmdShop cmdShop = new CmdShop();
     public CmdMissions cmdMissions = new CmdMissions();
+    public CmdStrikes cmdStrikes = new CmdStrikes();
     public CmdCheck cmdCheck = new CmdCheck();
     public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
-
+    public CmdConvertConfig cmdConvertConfig = new CmdConvertConfig();
 
     public FCmdRoot() {
         super();
+
+        if (CommodoreProvider.isSupported()) brigadierManager = new BrigadierManager();
+
+
         this.aliases.addAll(Conf.baseCommandAliases);
-        this.aliases.removeAll(Collections.<String>singletonList(null));  // remove any nulls from extra commas
-        this.allowNoSlashAccess = Conf.allowNoSlashCommand;
-
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("","")
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
-
-        this.disableOnLock = false;
+        this.aliases.removeAll(Collections.<String>singletonList(null));
 
         this.setHelpShort("The faction base command");
-        this.helpLong.add(p.txt.parseTags("<i>This command contains all faction stuff."));
+        this.helpLong.add(FactionsPlugin.getInstance().txt.parseTags("<i>This command contains all faction stuff."));
 
-        //this.subCommands.add(plugin.cmdHelp);
+        if (CommodoreProvider.isSupported()) brigadierManager = new BrigadierManager();
 
         this.addSubCommand(this.cmdAdmin);
         this.addSubCommand(this.cmdAutoClaim);
@@ -175,7 +174,6 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdDeinvite);
         this.addSubCommand(this.cmdDescription);
         this.addSubCommand(this.cmdDisband);
-        this.addSubCommand(this.cmdStrike);
         this.addSubCommand(this.cmdHelp);
         this.addSubCommand(this.cmdHome);
         this.addSubCommand(this.cmdInvite);
@@ -187,7 +185,6 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdMap);
         this.addSubCommand(this.cmdMod);
         this.addSubCommand(this.cmdMoney);
-        this.addSubCommand(this.cmdNotifications);
         this.addSubCommand(this.cmdOpen);
         this.addSubCommand(this.cmdOwner);
         this.addSubCommand(this.cmdOwnerList);
@@ -253,72 +250,88 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdTntFill);
         this.addSubCommand(this.cmdChest);
         this.addSubCommand(this.cmdSetBanner);
-        this.addSubCommand(this.cmdStrikeSet);
-        this.addSubCommand(this.cmdSpam);
         this.addSubCommand(this.cmdCorner);
+        this.addSubCommand(this.cmdStrikes);
         this.addSubCommand(this.cmdFGlobal);
         this.addSubCommand(this.cmdViewChest);
+        this.addSubCommand(this.cmdConvertConfig);
 
         if (Conf.useCheckSystem) {
             this.addSubCommand(this.cmdCheck);
             this.addSubCommand(this.cmdWeeWoo);
         }
 
-        if (P.p.getConfig().getBoolean("Missions-Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("Missions-Enabled")) {
             this.addSubCommand(this.cmdMissions);
         }
 
-        if (P.p.getConfig().getBoolean("F-Shop.Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("F-Shop.Enabled")) {
             this.addSubCommand(this.cmdShop);
         }
 
-        if (P.p.getConfig().getBoolean("f-inventory-see.Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled")) {
             this.addSubCommand(this.cmdInventorySee);
         }
 
-        if (P.p.getConfig().getBoolean("f-points.Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-points.Enabled")) {
             this.addSubCommand(this.cmdPoints);
         }
 
-        if (P.p.getConfig().getBoolean("f-alts.Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled")) {
             this.addSubCommand(this.cmdAlts);
         }
 
-        if (P.p.getConfig().getBoolean("f-grace.Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-grace.Enabled")) {
             this.addSubCommand(this.cmdGrace);
         }
 
 
         if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null) {
-            P.p.log("Found CoreProtect, enabling Inspect");
+            FactionsPlugin.getInstance().log("Found CoreProtect, enabling Inspect");
             this.addSubCommand(this.cmdInspect);
         } else {
-            P.p.log("CoreProtect not found, disabling Inspect");
+            FactionsPlugin.getInstance().log("CoreProtect not found, disabling Inspect");
         }
-        if (P.p.getConfig().getBoolean("ffocus.Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("ffocus.Enabled")) {
             addSubCommand(this.cmdFocus);
         }
 
-        if (P.p.getConfig().getBoolean("enable-faction-flight", false)) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", false)) {
             this.addSubCommand(this.cmdFly);
         }
         if (Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null) {
-            P.p.log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
+            FactionsPlugin.getInstance().log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
         } else {
-            P.p.log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
+            FactionsPlugin.getInstance().log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
             this.addSubCommand(this.cmdTop);
         }
-        if (P.p.getConfig().getBoolean("fpaypal.Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled")) {
             this.addSubCommand(this.cmdPaypalSet);
             this.addSubCommand(this.cmdPaypalSee);
         }
 
+        if (CommodoreProvider.isSupported()) brigadierManager.build();
     }
 
     @Override
-    public void perform() {
-        this.commandChain.add(this);
-        this.cmdHelp.execute(this.sender, this.args, this.commandChain);
+    public void perform(CommandContext context) {
+        context.commandChain.add(this);
+        this.cmdHelp.execute(context);
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        this.execute(new CommandContext(sender, new ArrayList<>(Arrays.asList(args)), label));
+        return true;
+    }
+
+    @Override
+    public void addSubCommand(FCommand subCommand) {
+        super.addSubCommand(subCommand);
+        // People were getting NPE's as somehow CommodoreProvider#isSupported returned true on legacy versions.
+        if (CommodoreProvider.isSupported()) {
+            brigadierManager.addSubCommand(subCommand);
+        }
     }
 
     @Override

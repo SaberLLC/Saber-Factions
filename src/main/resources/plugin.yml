@@ -1,7 +1,7 @@
 name: Factions
 version: ${project.version}
 api-version: 1.13
-main: com.massivecraft.factions.P
+main: com.massivecraft.factions.FactionsPlugin
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, SvenjaReißaus, FroggyKnight, Driftay]
 softdepend: [Skript, CoreProtect, PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop]
 
@@ -26,6 +26,7 @@ permissions:
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
+      factions.convertconfig: true
       factions.kit.admin: true
   factions.kit.mod:
     description: All faction permissions but configuration and persistance.

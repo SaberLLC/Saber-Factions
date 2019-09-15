@@ -5,6 +5,8 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
+import com.mojang.brigadier.builder.ArgumentBuilder;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 public class CmdChat extends FCommand {
 
@@ -16,33 +18,29 @@ public class CmdChat extends FCommand {
         //this.requiredArgs.add("");
         this.optionalArgs.put("mode", "next");
 
-        this.permission = Permission.CHAT.node;
-        this.disableOnLock = false;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.CHAT)
+                .playerOnly()
+                .memberOnly()
+                .brigadier(ChatBrigadier.class)
+                .build();
     }
 
     @Override
-    public void perform() {
+    public void perform(CommandContext context) {
         if (!Conf.factionOnlyChat) {
-            msg(TL.COMMAND_CHAT_DISABLED.toString());
+            context.msg(TL.COMMAND_CHAT_DISABLED.toString());
             return;
         }
 
-        String modeString = this.argAsString(0);
-        ChatMode modeTarget = fme.getChatMode().getNext();
+        String modeString = context.argAsString(0);
+        ChatMode modeTarget = context.fPlayer.getChatMode().getNext();
 
         if (modeString != null) {
             modeString = modeString.toLowerCase();
             // Only allow Mods and higher rank to switch to this channel.
             if (modeString.startsWith("m")) {
-                if (!fme.getRole().isAtLeast(Role.MODERATOR)) {
-                    msg(TL.COMMAND_CHAT_MOD_ONLY);
+                if (!context.fPlayer.getRole().isAtLeast(Role.MODERATOR)) {
+                    context.msg(TL.COMMAND_CHAT_MOD_ONLY);
                     return;
                 } else modeTarget = ChatMode.MOD;
             } else if (modeString.startsWith("p")) {
@@ -54,28 +52,28 @@ public class CmdChat extends FCommand {
             } else if (modeString.startsWith("t")) {
                 modeTarget = ChatMode.TRUCE;
             } else {
-                msg(TL.COMMAND_CHAT_INVALIDMODE);
+                context.msg(TL.COMMAND_CHAT_INVALIDMODE);
                 return;
             }
         }
 
-        fme.setChatMode(modeTarget);
+        context.fPlayer.setChatMode(modeTarget);
 
-        switch (fme.getChatMode()) {
+        switch (context.fPlayer.getChatMode()) {
             case MOD:
-                msg(TL.COMMAND_CHAT_MODE_MOD);
+                context.msg(TL.COMMAND_CHAT_MODE_MOD);
                 break;
             case PUBLIC:
-                msg(TL.COMMAND_CHAT_MODE_PUBLIC);
+                context.msg(TL.COMMAND_CHAT_MODE_PUBLIC);
                 break;
             case ALLIANCE:
-                msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
+                context.msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
                 break;
             case TRUCE:
-                msg(TL.COMMAND_CHAT_MODE_TRUCE);
+                context.msg(TL.COMMAND_CHAT_MODE_TRUCE);
                 break;
             default:
-                msg(TL.COMMAND_CHAT_MODE_FACTION);
+                context.msg(TL.COMMAND_CHAT_MODE_FACTION);
                 break;
         }
     }
@@ -84,4 +82,16 @@ public class CmdChat extends FCommand {
     public TL getUsageTranslation() {
         return TL.COMMAND_CHAT_DESCRIPTION;
     }
+
+    protected class ChatBrigadier implements BrigadierProvider {
+        @Override
+        public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
+            return parent.then(LiteralArgumentBuilder.literal("public"))
+                    .then(LiteralArgumentBuilder.literal("mod"))
+                    .then(LiteralArgumentBuilder.literal("alliance"))
+                    .then(LiteralArgumentBuilder.literal("faction"))
+                    .then(LiteralArgumentBuilder.literal("truce"));
+        }
+    }
+
 }

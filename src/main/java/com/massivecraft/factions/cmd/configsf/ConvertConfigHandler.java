@@ -1,6 +1,6 @@
-package com.massivecraft.factions.cmd.config;
+package com.massivecraft.factions.cmd.configsf;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -32,7 +33,7 @@ public class ConvertConfigHandler {
         ConfigurationSection cs = sv.getConfigurationSection(s);
         sb.set(s, cs);
     }
-    static JavaPlugin plugin = JavaPlugin.getProvidingPlugin(P.class);
+    static JavaPlugin plugin = JavaPlugin.getProvidingPlugin(FactionsPlugin.class);
     public static void setBoolean(String s){
         sb.set(s, sv.getBoolean(s));
     }
@@ -126,10 +127,10 @@ public class ConvertConfigHandler {
                 setConfigSec("Tntfill");
                 try {
                     sb.save(configFile);
-                    P.p.reloadConfig();
+                    plugin.reloadConfig();
                 } catch (IOException e) {
                     player.sendMessage(TL.COMMAND_CONVERTCONFIG_FAIL.toString());
-                    Bukkit.getLogger().log(Level.SEVERE, e.getStackTrace().toString());
+                    Bukkit.getLogger().log(Level.SEVERE, Arrays.toString(e.getStackTrace()));
                 }
                 player.sendMessage(TL.COMMAND_CONVERTCONFIG_SUCCESS.toString());
             }, 0L);

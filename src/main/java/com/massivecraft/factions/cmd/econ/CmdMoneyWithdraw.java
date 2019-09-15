@@ -1,11 +1,14 @@
 package com.massivecraft.factions.cmd.econ;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -21,41 +24,30 @@ public class CmdMoneyWithdraw extends FCommand {
         this.requiredArgs.add("amount");
         this.optionalArgs.put("faction", "yours");
 
-        this.permission = Permission.MONEY_WITHDRAW.node;
-        this.isMoneyCommand = true;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.MONEY_F2P)
+                .playerOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-
-        double amount = this.argAsDouble(0, 0d);
-        EconomyParticipator faction = this.argAsFaction(1, myFaction);
+    public void perform(CommandContext context) {
+        double amount = context.argAsDouble(0, 0d);
+        EconomyParticipator faction = context.argAsFaction(1, context.faction);
         if (faction == null) {
             return;
         }
 
-        Access access = myFaction.getAccess(fme, PermissableAction.WITHDRAW);
-        if (access == Access.DENY) {
-            fme.msg(TL.GENERIC_NOPERMISSION, "withdraw");
-            return;
+        Access access = context.faction.getAccess(context.fPlayer, PermissableAction.WITHDRAW);
+        if (context.fPlayer.getRole() != Role.LEADER) {
+            if (access == Access.DENY) {
+                context.msg(TL.GENERIC_NOPERMISSION, "withdraw", "withdraw money from the bank");
+                return;
+            }
         }
-
-        if (Conf.econFactionStartingBalance != 0 && (System.currentTimeMillis() - myFaction.getFoundedDate()) <= (Conf.econDenyWithdrawWhenMinutesAgeLessThan * 6000)) {
-            msg("Your faction is too young to withdraw money like this");
-            return;
-        }
-
-        boolean success = Econ.transferMoney(fme, faction, fme, amount);
+        boolean success = Econ.transferMoney(context.fPlayer, faction, context.fPlayer, amount);
 
         if (success && Conf.logMoneyTransactions) {
-            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+            FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
         }
     }
 

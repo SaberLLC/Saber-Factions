@@ -3,6 +3,8 @@ package com.massivecraft.factions.cmd.points;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -17,44 +19,34 @@ public class CmdPointsAdd extends FCommand {
         this.requiredArgs.add("# of points");
 
 
-        this.errorOnToManyArgs = false;
-        //this.optionalArgs
-
-        this.permission = Permission.ADDPOINTS.node;
-
-        this.disableOnLock = true;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.ADDPOINTS)
+                .build();
     }
 
 
     @Override
-    public void perform() {
-        Faction faction = Factions.getInstance().getByTag(args.get(0));
+    public void perform(CommandContext context) {
+        Faction faction = Factions.getInstance().getByTag(context.args.get(0));
 
         if (faction == null) {
-            FPlayer fPlayer = this.argAsFPlayer(0);
+            FPlayer fPlayer = context.argAsFPlayer(0);
             if (fPlayer != null) {
                 faction = fPlayer.getFaction();
             }
         }
 
         if (faction == null || faction.isWilderness()) {
-            msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", args.get(0)));
+            context.msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", context.args.get(0)));
             return;
         }
-        if (argAsInt(1) <= 0) {
-            msg(TL.COMMAND_POINTS_INSUFFICIENT);
+        if (context.argAsInt(1) <= 0) {
+            context.msg(TL.COMMAND_POINTS_INSUFFICIENT);
             return;
         }
 
-        faction.setPoints(faction.getPoints() + argAsInt(1));
+        faction.setPoints(faction.getPoints() + context.argAsInt(1));
 
-        msg(TL.COMMAND_POINTS_SUCCESSFUL, argAsInt(1), faction.getTag(), faction.getPoints());
+        context.msg(TL.COMMAND_POINTS_SUCCESSFUL, context.argAsInt(1), faction.getTag(), faction.getPoints());
     }
 
 

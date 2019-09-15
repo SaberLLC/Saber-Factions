@@ -1,7 +1,7 @@
 package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Placeholder;
 import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.configuration.ConfigurationSection;
@@ -80,7 +80,7 @@ public enum PermissableAction {
     }
 
     public int getSlot() {
-        return P.p.getConfig().getInt("fperm-gui.action.slots." + this.name.toLowerCase());
+        return FactionsPlugin.getInstance().getConfig().getInt("fperm-gui.action.slots." + this.name.toLowerCase());
     }
 
     /**
@@ -98,18 +98,18 @@ public enum PermissableAction {
     }
 
     public ItemStack buildAsset(FPlayer fme, Permissable perm) {
-        ConfigurationSection section = P.p.getConfig().getConfigurationSection("fperm-gui.action");
+        ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.action");
         ItemStack item = XMaterial.matchXMaterial(section.getString("Materials." + this.name)).parseItem();
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(P.p.color(section.getString("placeholder-item.name").replace("{action}", this.name)));
+        meta.setDisplayName(FactionsPlugin.getInstance().color(section.getString("placeholder-item.name").replace("{action}", this.name)));
         List<String> lore = section.getStringList("placeholder-item.lore");
 
-        lore = P.p.replacePlaceholders(lore,
+        lore = FactionsPlugin.getInstance().replacePlaceholders(lore,
                 new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
                 new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
 
-        meta.setLore(P.p.colorList(lore));
+        meta.setLore(FactionsPlugin.getInstance().colorList(lore));
         item.setItemMeta(meta);
         return item;
     }

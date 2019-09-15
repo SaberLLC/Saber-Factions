@@ -1,7 +1,7 @@
 package com.massivecraft.factions.missions;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
@@ -20,12 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 public class MissionGUI implements FactionGUI {
-    private P plugin;
+    private FactionsPlugin plugin;
     private FPlayer fPlayer;
     private Inventory inventory;
     private Map<Integer, String> slots;
 
-    public MissionGUI(P plugin, FPlayer fPlayer) {
+    public MissionGUI(FactionsPlugin plugin, FPlayer fPlayer) {
         this.slots = new HashMap<>();
         this.plugin = plugin;
         this.fPlayer = fPlayer;

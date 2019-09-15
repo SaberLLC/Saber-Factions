@@ -9,24 +9,20 @@ public class CmdSetBanner extends FCommand {
         super();
         aliases.add("setbanner");
 
-        permission = Permission.BANNER.node;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = true;
-
-
+        this.requirements = new CommandRequirements.Builder(Permission.BANNER)
+                .playerOnly()
+                .build();
     }
 
-    public void perform() {
-        if (!me.getItemInHand().getType().toString().contains("BANNER")) {
-            fme.msg(TL.COMMAND_SETBANNER_NOTBANNER);
+    @Override
+    public void perform(CommandContext context) {
+        if (!context.player.getItemInHand().getType().toString().contains("BANNER")) {
+            context.msg(TL.COMMAND_SETBANNER_NOTBANNER);
             return;
         }
 
-        fme.getFaction().setBannerPattern(me.getItemInHand());
-        fme.msg(TL.COMMAND_SETBANNER_SUCCESS);
+        context.faction.setBannerPattern(context.player.getItemInHand());
+        context.msg(TL.COMMAND_SETBANNER_SUCCESS);
 
 
     }

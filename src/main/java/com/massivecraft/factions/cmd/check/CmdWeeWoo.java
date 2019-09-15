@@ -1,6 +1,9 @@
 package com.massivecraft.factions.cmd.check;
 
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdWeeWoo extends FCommand {
@@ -8,38 +11,35 @@ public class CmdWeeWoo extends FCommand {
         this.aliases.add("weewoo");
         this.requiredArgs.add("start/stop");
 
-        this.disableOnLock = true;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.CHECK)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
-    public void perform() {
-        if (myFaction == null || !myFaction.isNormal()) {
+    public void perform(CommandContext context) {
+        if (context.faction == null || !context.faction.isNormal()) {
             return;
         }
-        String argument = argAsString(0);
-        boolean weewoo = myFaction.isWeeWoo();
+        String argument = context.argAsString(0);
+        boolean weewoo = context.faction.isWeeWoo();
         if (argument.equalsIgnoreCase("start")) {
             if (weewoo) {
-                msg(TL.COMMAND_WEEWOO_ALREADY_STARTED);
+                context.msg(TL.COMMAND_WEEWOO_ALREADY_STARTED);
                 return;
             }
-            myFaction.setWeeWoo(true);
-            msg(TL.COMMAND_WEEWOO_STARTED, fme.getNameAndTag());
+            context.faction.setWeeWoo(true);
+            context.msg(TL.COMMAND_WEEWOO_STARTED, context.fPlayer.getNameAndTag());
 
         } else if (argument.equalsIgnoreCase("stop")) {
             if (!weewoo) {
-                msg(TL.COMMAND_WEEWOO_ALREADY_STOPPED);
+                context.msg(TL.COMMAND_WEEWOO_ALREADY_STOPPED);
                 return;
             }
-            myFaction.setWeeWoo(false);
-            msg(TL.COMMAND_WEEWOO_STOPPED, fme.getNameAndTag());
+            context.faction.setWeeWoo(false);
+            context.msg(TL.COMMAND_WEEWOO_STOPPED, context.fPlayer.getNameAndTag());
         } else {
-            msg("/f weewoo <start/stop>");
+            context.msg("/f weewoo <start/stop>");
         }
     }
 

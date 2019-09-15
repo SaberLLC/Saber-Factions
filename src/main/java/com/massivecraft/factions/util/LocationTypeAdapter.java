@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.google.gson.*;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -21,7 +21,7 @@ public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeseri
             return object;
         } catch (Exception ex) {
             ex.printStackTrace();
-            P.p.log(Level.WARNING, "Error encountered while serializing a Location.");
+            FactionsPlugin.getInstance().log(Level.WARNING, "Error encountered while serializing a Location.");
             return object;
         }
     }
@@ -38,7 +38,7 @@ public class LocationTypeAdapter implements JsonSerializer<Location>, JsonDeseri
                     object.get("z").getAsDouble());
         } catch (Exception ex) {
             ex.printStackTrace();
-            P.p.log(Level.WARNING, "Error encountered while" +
+            FactionsPlugin.getInstance().log(Level.WARNING, "Error encountered while" +
                     " deserializing a Location.");
             return null;
         }

@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -14,47 +14,43 @@ public class CmdPaypalSet extends FCommand {
 
         this.requiredArgs.add("email");
 
-        this.permission = Permission.PAYPALSET.node;
-
-        this.disableOnLock = false;
-        this.senderMustBePlayer = true;
-        this.senderMustBeMember = true;
-        this.senderMustBeModerator = false;
-        this.senderMustBeColeader = false;
-        this.senderMustBeAdmin = true;
+        this.requirements = new CommandRequirements.Builder(Permission.PAYPALSET)
+                .playerOnly()
+                .memberOnly()
+                .build();
 
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("fpaypal.Enabled")) {
-            fme.msg(TL.GENERIC_DISABLED);
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled")) {
+            context.fPlayer.msg(TL.GENERIC_DISABLED);
             return;
         }
 
-        if (args.size() == 1) {
-            if (isEmail(argAsString(0))) {
-                myFaction.paypalSet(argAsString(0));
-                msg(TL.COMMAND_PAYPALSET_SUCCESSFUL, argAsString(0));
+        if (context.args.size() == 1) {
+            if (isEmail(context.argAsString(0))) {
+                context.fPlayer.getFaction().paypalSet(context.argAsString(0));
+                context.msg(TL.COMMAND_PAYPALSET_SUCCESSFUL, context.argAsString(0));
             } else {
-                msg(TL.COMMAND_PAYPALSET_NOTEMAIL, argAsString(0));
+                context.msg(TL.COMMAND_PAYPALSET_NOTEMAIL, context.argAsString(0));
             }
-        } else if (args.size() == 2) {
-            if (fme.isAdminBypassing()) {
-                Faction faction = argAsFaction(1);
+        } else if (context.args.size() == 2) {
+            if (context.fPlayer.isAdminBypassing()) {
+                Faction faction = context.argAsFaction(1);
                 if (faction != null) {
-                    if (isEmail(argAsString(0))) {
-                        myFaction.paypalSet(argAsString(0));
-                        msg(TL.COMMAND_PAYPALSET_ADMIN_SUCCESSFUL, faction.getTag(), argAsString(0));
+                    if (isEmail(context.argAsString(0))) {
+                        context.fPlayer.getFaction().paypalSet(context.argAsString(0));
+                        context.msg(TL.COMMAND_PAYPALSET_ADMIN_SUCCESSFUL, faction.getTag(), context.argAsString(0));
                     } else {
-                        msg(TL.COMMAND_PAYPALSET_ADMIN_FAILED, argAsString(0));
+                        context.msg(TL.COMMAND_PAYPALSET_ADMIN_FAILED, context.argAsString(0));
                     }
                 }
             } else {
-                msg(TL.GENERIC_NOPERMISSION, "set another factions paypal!");
+                context.msg(TL.GENERIC_NOPERMISSION, "set another factions paypal!");
             }
         } else {
-            msg(P.p.cmdBase.cmdPaypalSet.getUseageTemplate());
+            context.msg(FactionsPlugin.getInstance().cmdBase.cmdPaypalSet.getUseageTemplate(context));
         }
     }
 

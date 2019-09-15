@@ -21,35 +21,31 @@ public class CmdBanlist extends FCommand {
 
         this.optionalArgs.put("faction", "faction");
 
-        this.permission = Permission.BAN.node;
-        this.disableOnLock = true;
-        this.disableOnSpam = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.BAN)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        Faction target = myFaction;
-        if (!args.isEmpty()) {
-            target = argAsFaction(0);
+    public void perform(CommandContext context) {
+        Faction target = context.faction;
+        if (!context.args.isEmpty()) {
+            target = context.argAsFaction(0);
         }
 
         if (target == Factions.getInstance().getWilderness()) {
-            sender.sendMessage(TL.COMMAND_BANLIST_NOFACTION.toString());
+            context.sender.sendMessage(TL.COMMAND_BANLIST_NOFACTION.toString());
             return;
         }
 
         if (target == null) {
-            sender.sendMessage(TL.COMMAND_BANLIST_INVALID.format(argAsString(0)));
+            context.sender.sendMessage(TL.COMMAND_BANLIST_INVALID.format(context.argAsString(0)));
             return;
         }
 
         List<String> lines = new ArrayList<>();
-        lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(myFaction)));
+        lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(context.faction)));
         int i = 1;
 
         for (BanInfo info : target.getBannedPlayers()) {
@@ -62,7 +58,7 @@ public class CmdBanlist extends FCommand {
         }
 
         for (String s : lines) {
-            fme.sendMessage(s);
+            context.fPlayer.getPlayer().sendMessage(s);
         }
     }
 

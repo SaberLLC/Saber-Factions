@@ -6,7 +6,7 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -25,8 +25,8 @@ public class FactionWarpsFrame {
     private ConfigurationSection section;
 
     public FactionWarpsFrame(final Faction f) {
-        this.section = P.p.getConfig().getConfigurationSection("fwarp-gui");
-        this.gui = new Gui(P.p, section.getInt("rows", 3), P.p.color(this.section.getString("name").replace("{faction}", f.getTag())));
+        this.section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fwarp-gui");
+        this.gui = new Gui(FactionsPlugin.getInstance(), section.getInt("rows", 3), FactionsPlugin.getInstance().color(this.section.getString("name").replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(final FPlayer fplayer) {
@@ -50,12 +50,12 @@ public class FactionWarpsFrame {
                 } else {
                     fplayer.setEnteringPassword(true, warp.getKey());
                     fplayer.msg(TL.COMMAND_FWARP_PASSWORD_REQUIRED);
-                    Bukkit.getScheduler().runTaskLater(P.p, () -> {
+                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
                         if (fplayer.isEnteringPassword()) {
                             fplayer.msg(TL.COMMAND_FWARP_PASSWORD_TIMEOUT);
                             fplayer.setEnteringPassword(false, "");
                         }
-                    }, P.p.getConfig().getInt("fwarp-gui.password-timeout", 5) * 20);
+                    }, FactionsPlugin.getInstance().getConfig().getInt("fwarp-gui.password-timeout", 5) * 20);
                 }
             }));
             ++count;
@@ -70,8 +70,8 @@ public class FactionWarpsFrame {
         final ConfigurationSection config = this.section.getConfigurationSection("warp-item");
         final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
         final ItemMeta meta = item.getItemMeta();
-        meta.setLore(P.p.colorList(P.p.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{warp-protected}", faction.hasWarpPassword(warp.getKey()) ? "Enabled" : "Disabled"), new Placeholder("{warp-cost}", P.p.getConfig().getBoolean("warp-cost.enabled", false) ? Integer.toString(P.p.getConfig().getInt("warp-cost.warp", 5)) : "Disabled"))));
-        meta.setDisplayName(P.p.color(config.getString("Name").replace("{warp}", warp.getKey())));
+        meta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().replacePlaceholders(config.getStringList("Lore"), new Placeholder("{warp-protected}", faction.hasWarpPassword(warp.getKey()) ? "Enabled" : "Disabled"), new Placeholder("{warp-cost}", FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) ? Integer.toString(FactionsPlugin.getInstance().getConfig().getInt("warp-cost.warp", 5)) : "Disabled"))));
+        meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name").replace("{warp}", warp.getKey())));
         item.setItemMeta(meta);
         return item;
     }
@@ -80,8 +80,8 @@ public class FactionWarpsFrame {
         final ConfigurationSection config = this.section.getConfigurationSection("dummy-item");
         final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
         final ItemMeta meta = item.getItemMeta();
-        meta.setLore(P.p.colorList(config.getStringList("Lore")));
-        meta.setDisplayName(P.p.color(config.getString("Name")));
+        meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
+        meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
         item.setItemMeta(meta);
         return item;
     }
@@ -93,12 +93,13 @@ public class FactionWarpsFrame {
                 player.teleport(fme.getFaction().getWarp(warp).getLocation());
                 fme.msg(TL.COMMAND_FWARP_WARPED, warp);
             }
-        }, P.p.getConfig().getLong("warmups.f-warp", 0));
+        }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 0));
     }
 
     private boolean transact(FPlayer player) {
-        if (!P.p.getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing()) return true;
-        double cost = P.p.getConfig().getDouble("warp-cost.warp", 5);
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing())
+            return true;
+        double cost = FactionsPlugin.getInstance().getConfig().getDouble("warp-cost.warp", 5);
         if (!Econ.shouldBeUsed() || cost == 0.0 || player.isAdminBypassing()) return true;
 
         if (Conf.bankEnabled && Conf.bankFactionPaysCosts && player.hasFaction()) {

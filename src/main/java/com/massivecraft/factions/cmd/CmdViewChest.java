@@ -1,40 +1,38 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdViewChest extends FCommand {
 
     public CmdViewChest() {
+        super();
         this.aliases.add("viewchest");
         this.aliases.add("viewpv");
 
         this.requiredArgs.add("faction name");
 
-
-        this.permission = Permission.VIEWCHEST.node;
-        this.disableOnLock = false;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.VIEWCHEST)
+                .playerOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("fchest.Enabled")) {
-            fme.msg(TL.GENERIC_DISABLED);
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fchest.Enabled")) {
+            context.msg(TL.GENERIC_DISABLED);
             return;
         }
 
-        Faction faction = this.argAsFaction(0, fme == null ? null : myFaction);
+        Faction myFaction = context.fPlayer.getFaction();
+
+        Faction faction = context.argAsFaction(0, context.fPlayer == null ? null : myFaction);
         if (faction == null) {
             return;
         }
-        me.openInventory(faction.getChestInventory());
+        context.player.openInventory(context.faction.getChestInventory());
     }
 
     @Override

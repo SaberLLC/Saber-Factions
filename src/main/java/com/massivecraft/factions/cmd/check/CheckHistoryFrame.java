@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd.check;
 import com.google.common.collect.Lists;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
@@ -18,12 +18,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CheckHistoryFrame implements FactionGUI {
-    private P plugin;
+    private FactionsPlugin plugin;
     private Faction faction;
     private Inventory inventory;
     private SimpleDateFormat simpleDateFormat;
 
-    public CheckHistoryFrame(P plugin, Faction faction) {
+    public CheckHistoryFrame(FactionsPlugin plugin, Faction faction) {
         this.simpleDateFormat = new SimpleDateFormat(Conf.dateFormat);
         this.plugin = plugin;
         this.faction = faction;

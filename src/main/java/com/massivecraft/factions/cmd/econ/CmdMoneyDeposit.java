@@ -1,7 +1,9 @@
 package com.massivecraft.factions.cmd.econ;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -20,29 +22,22 @@ public class CmdMoneyDeposit extends FCommand {
         this.requiredArgs.add("amount");
         this.optionalArgs.put("faction", "yours");
 
-        this.isMoneyCommand = true;
-
-        this.permission = Permission.MONEY_DEPOSIT.node;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.MONEY_DEPOSIT)
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        double amount = this.argAsDouble(0, 0d);
-        EconomyParticipator faction = this.argAsFaction(1, myFaction);
+    public void perform(CommandContext context) {
+        double amount = context.argAsDouble(0, 0d);
+        EconomyParticipator faction = context.argAsFaction(1, context.faction);
         if (faction == null) {
             return;
         }
-        boolean success = Econ.transferMoney(fme, fme, faction, amount);
+        boolean success = Econ.transferMoney(context.fPlayer, context.fPlayer, faction, amount);
 
         if (success && Conf.logMoneyTransactions) {
-            P.p.log(ChatColor.stripColor(P.p.txt.parse(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), fme.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+            FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
         }
     }
 
@@ -52,3 +47,4 @@ public class CmdMoneyDeposit extends FCommand {
     }
 
 }
+

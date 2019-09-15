@@ -2,14 +2,14 @@ package com.massivecraft.factions.cmd.check;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class WeeWooTask implements Runnable {
 
-    private P plugin;
+    private FactionsPlugin plugin;
 
-    public WeeWooTask(P plugin) {
+    public WeeWooTask(FactionsPlugin plugin) {
         this.plugin = plugin;
     }
 

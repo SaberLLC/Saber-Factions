@@ -1,6 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
 import com.massivecraft.factions.zcore.util.TL;
@@ -11,26 +11,20 @@ public class CmdUpgrades extends FCommand {
         this.aliases.add("upgrades");
         this.aliases.add("upgrade");
 
-        //this.requiredArgs.add("");
-        this.optionalArgs.put("mobs/crops/exp/power", "");
-
-        this.permission = Permission.UPGRADES.node;
-        this.disableOnLock = true;
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.UPGRADES)
+                .playerOnly()
+                .memberOnly()
+                .build();
 
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("fupgrades.Enabled")) {
-            fme.sendMessage("This command is disabled!");
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fupgrades.Enabled")) {
+            context.fPlayer.sendMessage("This command is disabled!");
             return;
         }
-        new FUpgradesGUI().openMainMenu(fme);
+        new FUpgradesGUI().openMainMenu(context.fPlayer);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -19,51 +20,59 @@ public class CmdDeinvite extends FCommand {
         this.aliases.add("deinv");
 
         this.optionalArgs.put("player name", "name");
-        //this.optionalArgs.put("", "");
 
-        this.permission = Permission.DEINVITE.node;
-        this.disableOnLock = true;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = false;
-        senderMustBeModerator = true;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.DEINVITE)
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        FPlayer you = this.argAsBestFPlayerMatch(0);
-        if (!fme.isAdminBypassing()) {
-            Access access = myFaction.getAccess(fme, PermissableAction.INVITE);
-            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
-                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
-                return;
-            }
-        }
-        if (you == null) {
+    public void perform(CommandContext context) {
+
+        // Check if arg 0 == null do you don't have
+        // `No player "null" could be found.` message.
+        if (context.args.get(0) == null) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
-            for (String id : myFaction.getInvites()) {
+            for (String id : context.faction.getInvites()) {
                 FPlayer fp = FPlayers.getInstance().getById(id);
                 String name = fp != null ? fp.getName() : id;
                 msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
             }
-            sendFancyMessage(msg);
+            context.sendFancyMessage(msg);
             return;
         }
 
-        if (you.getFaction() == myFaction) {
-            msg(TL.COMMAND_DEINVITE_ALREADYMEMBER, you.getName(), myFaction.getTag());
-            msg(TL.COMMAND_DEINVITE_MIGHTWANT, p.cmdBase.cmdKick.getUseageTemplate(false));
+        FPlayer you = context.argAsBestFPlayerMatch(0);
+        if (!context.fPlayer.isAdminBypassing()) {
+            Access access = context.faction.getAccess(context.fPlayer, PermissableAction.INVITE);
+            if (access != Access.ALLOW && context.fPlayer.getRole() != Role.LEADER) {
+                context.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
+                return;
+            }
+        }
+
+        if (you == null) {
+            FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
+            for (String id : context.faction.getInvites()) {
+                FPlayer fp = FPlayers.getInstance().getById(id);
+                String name = fp != null ? fp.getName() : id;
+                msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
+            }
+            context.sendFancyMessage(msg);
             return;
         }
 
-        myFaction.deinvite(you);
+        if (you.getFaction() == context.faction) {
+            context.msg(TL.COMMAND_DEINVITE_ALREADYMEMBER, you.getName(), context.faction.getTag());
+            context.msg(TL.COMMAND_DEINVITE_MIGHTWANT, FactionsPlugin.getInstance().cmdBase.cmdKick.getUseageTemplate(context));
+            return;
+        }
 
-        you.msg(TL.COMMAND_DEINVITE_REVOKED, fme.describeTo(you), myFaction.describeTo(you));
+        context.faction.deinvite(you);
 
-        myFaction.msg(TL.COMMAND_DEINVITE_REVOKES, fme.describeTo(myFaction), you.describeTo(myFaction));
+        you.msg(TL.COMMAND_DEINVITE_REVOKED, context.fPlayer.describeTo(you), context.faction.describeTo(you));
+
+        context.faction.msg(TL.COMMAND_DEINVITE_REVOKES, context.fPlayer.describeTo(context.faction), you.describeTo(context.faction));
     }
 
     @Override
@@ -72,3 +81,4 @@ public class CmdDeinvite extends FCommand {
     }
 
 }
+

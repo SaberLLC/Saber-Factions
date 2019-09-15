@@ -15,30 +15,28 @@ public class CmdSetDefaultRole extends FCommand {
         this.aliases.add("def");
         this.requiredArgs.add("role");
 
-        this.senderMustBeAdmin = true;
-        this.senderMustBePlayer = true;
-        senderMustBeColeader = false;
-
-
-        this.permission = Permission.DEFAULTRANK.node;
+        this.requirements = new CommandRequirements.Builder(Permission.DEFAULTRANK)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        Role target = Role.fromString(argAsString(0).toUpperCase());
+    public void perform(CommandContext context) {
+        Role target = Role.fromString(context.argAsString(0).toUpperCase());
         if (target == null) {
-            msg(TL.COMMAND_SETDEFAULTROLE_INVALIDROLE, argAsString(0));
+            context.msg(TL.COMMAND_SETDEFAULTROLE_INVALIDROLE, context.argAsString(0));
             return;
         }
 
         if (target == Role.LEADER) {
-            msg(TL.COMMAND_SETDEFAULTROLE_NOTTHATROLE, argAsString(0));
+            context.msg(TL.COMMAND_SETDEFAULTROLE_NOTTHATROLE, context.argAsString(0));
             return;
         }
 
 
-        myFaction.setDefaultRole(target);
-        msg(TL.COMMAND_SETDEFAULTROLE_SUCCESS, target.nicename);
+        context.faction.setDefaultRole(target);
+        context.msg(TL.COMMAND_SETDEFAULTROLE_SUCCESS, target.nicename);
     }
 
     @Override

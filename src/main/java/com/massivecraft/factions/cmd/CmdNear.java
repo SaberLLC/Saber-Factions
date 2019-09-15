@@ -2,7 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -10,37 +11,32 @@ import org.bukkit.entity.Player;
 public class CmdNear extends FCommand {
     public CmdNear() {
         super();
-
         this.aliases.add("near");
         this.aliases.add("nearby");
 
-        this.disableOnLock = true;
-
-
-        senderMustBePlayer = true;
-        senderMustBeMember = true;
-        senderMustBeModerator = false;
-        senderMustBeColeader = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.NEAR)
+                .playerOnly()
+                .memberOnly()
+                .build();
     }
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("fnear.Enabled")) {
-            fme.msg(TL.COMMAND_NEAR_DISABLED_MSG);
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fnear.Enabled")) {
+            context.msg(TL.COMMAND_NEAR_DISABLED_MSG);
             return;
         }
 
-        double range = P.p.getConfig().getInt("fnear.Radius");
+        double range = FactionsPlugin.getInstance().getConfig().getInt("fnear.Radius");
         String format = TL.COMMAND_NEAR_FORMAT.toString();
-        fme.msg(TL.COMMAND_NEAR_USE_MSG);
-        for (Entity e : me.getNearbyEntities(range, 255, range)) {
+        context.msg(TL.COMMAND_NEAR_USE_MSG);
+        for (Entity e : context.player.getNearbyEntities(range, 255, range)) {
             if (e instanceof Player) {
                 Player player = (((Player) e).getPlayer());
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-                if (fme.getFaction() == fplayer.getFaction()) {
-                    double distance = me.getLocation().distance(player.getLocation());
-                    fme.sendMessage(format.replace("{playername}", player.getDisplayName()).replace("{distance}", (int) distance + ""));
+                if (context.faction == fplayer.getFaction()) {
+                    double distance = context.player.getLocation().distance(player.getLocation());
+                    context.sendMessage(format.replace("{playername}", player.getDisplayName()).replace("{distance}", (int) distance + ""));
                 }
             }
 

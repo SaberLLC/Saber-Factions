@@ -1,7 +1,10 @@
 package com.massivecraft.factions.cmd.points;
 
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPoints extends FCommand {
@@ -14,13 +17,9 @@ public class CmdPoints extends FCommand {
         super();
         this.aliases.add("points");
 
-        this.disableOnLock = false;
-        this.disableOnSpam = false;
-
-        senderMustBePlayer = false;
-        senderMustBeMember = false;
-        senderMustBeModerator = false;
-        senderMustBeAdmin = false;
+        this.requirements = new CommandRequirements.Builder(Permission.POINTS)
+                .playerOnly()
+                .build();
 
 
         this.addSubCommand(this.cmdPointsAdd);
@@ -30,13 +29,13 @@ public class CmdPoints extends FCommand {
 
 
     @Override
-    public void perform() {
-        if (!P.p.getConfig().getBoolean("f-points.Enabled", true)) {
-            msg(TL.GENERIC_DISABLED);
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-points.Enabled", true)) {
+            context.msg(TL.GENERIC_DISABLED);
             return;
         }
-        this.commandChain.add(this);
-        P.p.cmdAutoHelp.execute(this.sender, this.args, this.commandChain);
+        context.commandChain.add(this);
+        FactionsPlugin.getInstance().cmdAutoHelp.execute(context);
     }
 
     @Override

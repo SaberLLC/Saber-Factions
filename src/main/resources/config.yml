@@ -741,7 +741,7 @@ Missions-GUI-Title: '&bFaction Missions'
 MaximumMissionsAllowedAtOnce: 1
 Mission-Progress-Format: '&b&lProgression: &f{progress}&7/&e{total}'
 
-#Mission Types: KILL, MINE, FISH
+#Mission Types: KILL, MINE, FISH, BREED, TAME
 Missions:
   sugarcane:
     Slot: 11
@@ -775,6 +775,18 @@ Missions:
       - "&b&lCatch fish &n100&r &d&ltimes"
     Mission:
       Type: "FISH"
+      Amount: 100
+    Reward:
+      Commands: ["f points add %faction% 100"]
+  animaltaming:
+    Slot: 20
+    Material: "BONE"
+    Name: "&f100 &cTamed Animals"
+    Lore:
+      - "&b&lTame an animal &n100&r &d&ltimes"
+    Mission:
+      Type: "TAME"
+      EntityType: "ALL"
       Amount: 100
     Reward:
       Commands: ["f points add %faction% 100"]
@@ -1040,17 +1052,22 @@ fupgrades:
         slots:
           - 22
 
+############################################################
+# +------------------------------------------------------+ #
+# |                  Faction Banners                     | #
+# +------------------------------------------------------+ #
+############################################################
 fbanners:
-  Enabled: false
+  Enabled: true
   Item:
-    Name: '&e&l*&f&l*&e&l* &c&lWar Banner &7(Place) &e&l*&f&l*&e&l*'
+    Name: '&c&l*&f&l*&c&l* &c&lWar Banner &7(Place) &c&l*&f&l*&c&l*'
     Lore:
       - '&7Place this banner in the &nWarzone.&7 This'
       - '&7will create a &nWarp Point&7 for your faction members.'
       - ''
-      - '&c&lEffects'
-      - '&c&l* &fStrength II'
-      - '&c&l* &fSpeed II'
+      - '&e&lEffects'
+      - '&e&l* &fStrength II'
+      - '&e&l* &fSpeed II'
   Banner-Cost: 5000 #The amount charged to change a banner into a War Banner
   Banner-Time: 60 #IN SECONDS - This is how long the banner will last.
   Banner-Place-Cooldown: 300

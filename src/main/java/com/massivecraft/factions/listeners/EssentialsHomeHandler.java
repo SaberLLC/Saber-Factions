@@ -5,7 +5,7 @@ import com.earth2me.essentials.User;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -37,7 +37,7 @@ public class EssentialsHomeHandler implements Listener {
             Faction factionAt = Board.getInstance().getFactionAt(floc);
             if (factionAt.equals(faction) && factionAt.isNormal()) {
                 user.delHome(homeName);
-                P.p.log(Level.INFO, "FactionLeaveEvent: Removing home %s, player %s, in territory of %s", homeName, event.getfPlayer().getName(), faction.getTag());
+                FactionsPlugin.getInstance().log(Level.INFO, "FactionLeaveEvent: Removing home %s, player %s, in territory of %s", homeName, event.getfPlayer().getName(), faction.getTag());
             }
         }
     }
