@@ -11,47 +11,47 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPointsSet extends FCommand {
 
-    public CmdPointsSet() {
-        super();
-        this.aliases.add("set");
+     public CmdPointsSet() {
+          super();
+          this.aliases.add("set");
 
-        this.requiredArgs.add("faction/player");
-        this.requiredArgs.add("# of points");
-
-
-        this.requirements = new CommandRequirements.Builder(Permission.SETPOINTS)
-                .build();
-    }
+          this.requiredArgs.add("faction/player");
+          this.requiredArgs.add("# of points");
 
 
-    @Override
-    public void perform(CommandContext context) {
-        Faction faction = Factions.getInstance().getByTag(context.args.get(0));
-
-        FPlayer fPlayer = context.argAsFPlayer(0);
-        if (fPlayer != null) {
-            faction = fPlayer.getFaction();
-        }
-
-        if (faction == null || faction.isWilderness()) {
-            context.msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", context.args.get(0)));
-            return;
-        }
-
-        if (context.argAsInt(1) < 0) {
-            context.msg(TL.COMMAND_POINTS_INSUFFICIENT);
-            return;
-        }
-
-        faction.setPoints(context.argAsInt(1));
-        context.msg(TL.COMMAND_SETPOINTS_SUCCESSFUL, context.argAsInt(1), faction.getTag(), faction.getPoints());
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.SETPOINTS)
+                  .build();
+     }
 
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_SETPOINTS_DESCRIPTION;
-    }
+     @Override
+     public void perform(CommandContext context) {
+          Faction faction = Factions.getInstance().getByTag(context.args.get(0));
+
+          FPlayer fPlayer = context.argAsFPlayer(0);
+          if (fPlayer != null) {
+               faction = fPlayer.getFaction();
+          }
+
+          if (faction == null || faction.isWilderness()) {
+               context.msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", context.args.get(0)));
+               return;
+          }
+
+          if (context.argAsInt(1) < 0) {
+               context.msg(TL.COMMAND_POINTS_INSUFFICIENT);
+               return;
+          }
+
+          faction.setPoints(context.argAsInt(1));
+          context.msg(TL.COMMAND_SETPOINTS_SUCCESSFUL, context.argAsInt(1), faction.getTag(), faction.getPoints());
+     }
+
+
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_SETPOINTS_DESCRIPTION;
+     }
 
 
 }

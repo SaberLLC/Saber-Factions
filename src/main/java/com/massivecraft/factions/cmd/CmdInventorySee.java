@@ -16,50 +16,50 @@ import java.util.Objects;
 
 public class CmdInventorySee extends FCommand {
 
-    public CmdInventorySee() {
-        super();
+     public CmdInventorySee() {
+          super();
 
-        this.aliases.add("invsee");
-        this.aliases.add("inventorysee");
+          this.aliases.add("invsee");
+          this.aliases.add("inventorysee");
 
-        this.requiredArgs.add("member name");
+          this.requiredArgs.add("member name");
 
-        this.requirements = new CommandRequirements.Builder(Permission.INVSEE)
-                .playerOnly()
-                .build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.INVSEE)
+                  .playerOnly()
+                  .build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled")) {
-            context.msg(TL.GENERIC_DISABLED);
-            return;
-        }
+     @Override
+     public void perform(CommandContext context) {
+          if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled")) {
+               context.msg(TL.GENERIC_DISABLED);
+               return;
+          }
 
-        Access use = context.fPlayer.getFaction().getAccess(context.fPlayer, PermissableAction.TERRITORY);
-        if (use == Access.DENY || (use == Access.UNDEFINED && !context.assertMinRole(Role.MODERATOR))) {
-            context.msg(TL.GENERIC_NOPERMISSION, "territory");
-            return;
-        }
+          Access use = context.fPlayer.getFaction().getAccess(context.fPlayer, PermissableAction.TERRITORY);
+          if (use == Access.DENY || (use == Access.UNDEFINED && !context.assertMinRole(Role.MODERATOR))) {
+               context.msg(TL.GENERIC_NOPERMISSION, "territory");
+               return;
+          }
 
-        ArrayList<Player> fplayers = context.fPlayer.getFaction().getOnlinePlayers();
+          ArrayList<Player> fplayers = context.fPlayer.getFaction().getOnlinePlayers();
 
-        FPlayer targetInv = context.argAsFPlayer(0);
-        if (targetInv == null || !fplayers.contains(targetInv.getPlayer())) {
-            context.msg(TL.PLAYER_NOT_FOUND, Objects.requireNonNull(targetInv).toString());
-            return;
-        }
+          FPlayer targetInv = context.argAsFPlayer(0);
+          if (targetInv == null || !fplayers.contains(targetInv.getPlayer())) {
+               context.msg(TL.PLAYER_NOT_FOUND, Objects.requireNonNull(targetInv).toString());
+               return;
+          }
 
-        Inventory inventory = Bukkit.createInventory(context.player, 36, targetInv.getName() + "'s Inventory");
-        for (int i = 0; i < 36; i++)
-            if (targetInv.getPlayer().getInventory().getItem(i) != null)
-                inventory.setItem(i, targetInv.getPlayer().getInventory().getItem(i));
+          Inventory inventory = Bukkit.createInventory(context.player, 36, targetInv.getName() + "'s Inventory");
+          for (int i = 0; i < 36; i++)
+               if (targetInv.getPlayer().getInventory().getItem(i) != null)
+                    inventory.setItem(i, targetInv.getPlayer().getInventory().getItem(i));
 
-        context.player.openInventory(inventory);
-    }
+          context.player.openInventory(inventory);
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_INVENTORYSEE_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_INVENTORYSEE_DESCRIPTION;
+     }
 }

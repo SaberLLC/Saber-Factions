@@ -6,33 +6,33 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLock extends FCommand {
 
-    // TODO: This solution needs refactoring.
+     // TODO: This solution needs refactoring.
     /*
        factions.lock:
 	description: use the /f lock [on/off] command to temporarily lock the data files from being overwritten
 	default: op
 	 */
 
-    public CmdLock() {
-        super();
-        this.aliases.add("lock");
-        this.optionalArgs.put("on/off", "flip");
+     public CmdLock() {
+          super();
+          this.aliases.add("lock");
+          this.optionalArgs.put("on/off", "flip");
 
-        this.requirements = new CommandRequirements.Builder(Permission.LOCK)
-                .playerOnly()
-                .build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.LOCK)
+                  .playerOnly()
+                  .build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().setLocked(context.argAsBool(0, !FactionsPlugin.getInstance().getLocked()));
-        context.msg(FactionsPlugin.getInstance().getLocked() ? TL.COMMAND_LOCK_LOCKED : TL.COMMAND_LOCK_UNLOCKED);
-    }
+     @Override
+     public void perform(CommandContext context) {
+          FactionsPlugin.getInstance().setLocked(context.argAsBool(0, !FactionsPlugin.getInstance().getLocked()));
+          context.msg(FactionsPlugin.getInstance().getLocked() ? TL.COMMAND_LOCK_LOCKED : TL.COMMAND_LOCK_UNLOCKED);
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_LOCK_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_LOCK_DESCRIPTION;
+     }
 
 }
 

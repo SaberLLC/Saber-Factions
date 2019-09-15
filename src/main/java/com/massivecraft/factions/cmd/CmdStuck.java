@@ -13,93 +13,93 @@ import org.bukkit.entity.Player;
 
 public class CmdStuck extends FCommand {
 
-    public CmdStuck() {
-        super();
-        this.aliases.add("stuck");
-        this.aliases.add("halp!"); // halp!c:
+     public CmdStuck() {
+          super();
+          this.aliases.add("stuck");
+          this.aliases.add("halp!"); // halp!c:
 
 
-        this.requirements = new CommandRequirements.Builder(Permission.STUCK)
-                .playerOnly()
-                .build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.STUCK)
+                  .playerOnly()
+                  .build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        final Player player = context.player;
-        final Location sentAt = player.getLocation();
-        final FLocation chunk = context.fPlayer.getLastStoodAt();
-        final long delay = FactionsPlugin.getInstance().getConfig().getLong("hcf.stuck.delay", 30);
-        final int radius = FactionsPlugin.getInstance().getConfig().getInt("hcf.stuck.radius", 10);
+     @Override
+     public void perform(CommandContext context) {
+          final Player player = context.player;
+          final Location sentAt = player.getLocation();
+          final FLocation chunk = context.fPlayer.getLastStoodAt();
+          final long delay = FactionsPlugin.getInstance().getConfig().getLong("hcf.stuck.delay", 30);
+          final int radius = FactionsPlugin.getInstance().getConfig().getInt("hcf.stuck.radius", 10);
 
-        if (FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
-            long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
-            String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
-            context.msg(TL.COMMAND_STUCK_EXISTS, time);
-        } else {
+          if (FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
+               long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
+               String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
+               context.msg(TL.COMMAND_STUCK_EXISTS, time);
+          } else {
 
-            // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-            if (!context.payForCommand(Conf.econCostStuck, TL.COMMAND_STUCK_TOSTUCK.format(context.fPlayer.getName()), TL.COMMAND_STUCK_FORSTUCK.format(context.fPlayer.getName()))) {
-                return;
-            }
+               // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+               if (!context.payForCommand(Conf.econCostStuck, TL.COMMAND_STUCK_TOSTUCK.format(context.fPlayer.getName()), TL.COMMAND_STUCK_FORSTUCK.format(context.fPlayer.getName()))) {
+                    return;
+               }
 
-            final int id = Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), new Runnable() {
+               final int id = Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), new Runnable() {
 
-                @Override
-                public void run() {
-                    if (!FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
-                        return;
+                    @Override
+                    public void run() {
+                         if (!FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
+                              return;
+                         }
+
+                         // check for world difference or radius exceeding
+                         final World world = chunk.getWorld();
+                         if (world.getUID() != player.getWorld().getUID() || sentAt.distance(player.getLocation()) > radius) {
+                              context.msg(TL.COMMAND_STUCK_OUTSIDE.format(radius));
+                              FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
+                              FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
+                              return;
+                         }
+
+                         final Board board = Board.getInstance();
+                         // spiral task to find nearest wilderness chunk
+                         new SpiralTask(new FLocation(context.player), radius * 2) {
+                              @Override
+                              public boolean work() {
+                                   FLocation chunk = currentFLocation();
+                                   Faction faction = board.getFactionAt(chunk);
+                                   int buffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0) - 1;
+                                   if (faction.isWilderness() && !chunk.isOutsideWorldBorder(buffer)) {
+                                        int cx = FLocation.chunkToBlock((int) chunk.getX());
+                                        int cz = FLocation.chunkToBlock((int) chunk.getZ());
+                                        int y = world.getHighestBlockYAt(cx, cz);
+                                        Location tp = new Location(world, cx, y, cz);
+                                        context.msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
+                                        FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
+                                        FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
+                                        if (!Essentials.handleTeleport(player, tp)) {
+                                             player.teleport(tp);
+                                             FactionsPlugin.getInstance().debug("/f stuck used regular teleport, not essentials!");
+                                        }
+                                        this.stop();
+                                        return false;
+                                   }
+                                   return true;
+                              }
+                         };
                     }
+               }, delay * 20).getTaskId();
 
-                    // check for world difference or radius exceeding
-                    final World world = chunk.getWorld();
-                    if (world.getUID() != player.getWorld().getUID() || sentAt.distance(player.getLocation()) > radius) {
-                        context.msg(TL.COMMAND_STUCK_OUTSIDE.format(radius));
-                        FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
-                        FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
-                        return;
-                    }
+               FactionsPlugin.getInstance().getTimers().put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
+               long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
+               String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
+               context.msg(TL.COMMAND_STUCK_START, time);
+               FactionsPlugin.getInstance().getStuckMap().put(player.getUniqueId(), id);
+          }
+     }
 
-                    final Board board = Board.getInstance();
-                    // spiral task to find nearest wilderness chunk
-                    new SpiralTask(new FLocation(context.player), radius * 2) {
-                        @Override
-                        public boolean work() {
-                            FLocation chunk = currentFLocation();
-                            Faction faction = board.getFactionAt(chunk);
-                            int buffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0) - 1;
-                            if (faction.isWilderness() && !chunk.isOutsideWorldBorder(buffer)) {
-                                int cx = FLocation.chunkToBlock((int) chunk.getX());
-                                int cz = FLocation.chunkToBlock((int) chunk.getZ());
-                                int y = world.getHighestBlockYAt(cx, cz);
-                                Location tp = new Location(world, cx, y, cz);
-                                context.msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
-                                FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
-                                FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
-                                if (!Essentials.handleTeleport(player, tp)) {
-                                    player.teleport(tp);
-                                    FactionsPlugin.getInstance().debug("/f stuck used regular teleport, not essentials!");
-                                }
-                                this.stop();
-                                return false;
-                            }
-                            return true;
-                        }
-                    };
-                }
-            }, delay * 20).getTaskId();
-
-            FactionsPlugin.getInstance().getTimers().put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
-            long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
-            String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
-            context.msg(TL.COMMAND_STUCK_START, time);
-            FactionsPlugin.getInstance().getStuckMap().put(player.getUniqueId(), id);
-        }
-    }
-
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_STUCK_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_STUCK_DESCRIPTION;
+     }
 }
 

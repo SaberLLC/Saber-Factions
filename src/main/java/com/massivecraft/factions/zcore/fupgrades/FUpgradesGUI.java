@@ -21,414 +21,414 @@ import java.util.List;
 
 
 public class FUpgradesGUI implements Listener {
-    public void openMainMenu(FPlayer fme) {
-        Inventory inventory = Bukkit.createInventory(null, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DummyItem.rows") * 9, FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())));
-        ItemStack dummyItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DummyItem.Type")).parseItem();
-        ItemMeta meta = dummyItem.getItemMeta();
-        meta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.DummyItem.Lore")));
-        meta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DummyItem.Name")));
-        dummyItem.setItemMeta(meta);
+     public void openMainMenu(FPlayer fme) {
+          Inventory inventory = Bukkit.createInventory(null, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DummyItem.rows") * 9, FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())));
+          ItemStack dummyItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DummyItem.Type")).parseItem();
+          ItemMeta meta = dummyItem.getItemMeta();
+          meta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.DummyItem.Lore")));
+          meta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DummyItem.Name")));
+          dummyItem.setItemMeta(meta);
 
-        for (int fill = 0; fill < FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DummyItem.rows") * 9; ++fill) {
-            inventory.setItem(fill, dummyItem);
-        }
+          for (int fill = 0; fill < FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DummyItem.rows") * 9; ++fill) {
+               inventory.setItem(fill, dummyItem);
+          }
 
-        ItemStack[] items = buildItems(fme);
-        List<Integer> cropSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Crops.CropItem.slots");
-        List<Integer> spawnerSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Spawners.SpawnerItem.slots");
-        List<Integer> expSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.EXP.EXPItem.slots");
-        List<Integer> chestSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Chest.ChestItem.slots");
-        List<Integer> powerSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Power.PowerItem.slots");
-        List<Integer> redSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Redstone.RedstoneItem.slots");
-        List<Integer> memberSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Members.MembersItem.slots");
+          ItemStack[] items = buildItems(fme);
+          List<Integer> cropSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Crops.CropItem.slots");
+          List<Integer> spawnerSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Spawners.SpawnerItem.slots");
+          List<Integer> expSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.EXP.EXPItem.slots");
+          List<Integer> chestSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Chest.ChestItem.slots");
+          List<Integer> powerSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Power.PowerItem.slots");
+          List<Integer> redSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Redstone.RedstoneItem.slots");
+          List<Integer> memberSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Members.MembersItem.slots");
 
-        for (Integer cropSlot : cropSlots) if (cropSlot != -1) inventory.setItem(cropSlot, items[2]);
+          for (Integer cropSlot : cropSlots) if (cropSlot != -1) inventory.setItem(cropSlot, items[2]);
 
-        for (Integer spawnerSlot : spawnerSlots) if (spawnerSlot != -1) inventory.setItem(spawnerSlot, items[1]);
+          for (Integer spawnerSlot : spawnerSlots) if (spawnerSlot != -1) inventory.setItem(spawnerSlot, items[1]);
 
-        for (Integer expSlot : expSlots) if (expSlot != -1) inventory.setItem(expSlot, items[0]);
+          for (Integer expSlot : expSlots) if (expSlot != -1) inventory.setItem(expSlot, items[0]);
 
-        for (Integer chestSlot : chestSlots) if (chestSlot != -1) inventory.setItem(chestSlot, items[3]);
+          for (Integer chestSlot : chestSlots) if (chestSlot != -1) inventory.setItem(chestSlot, items[3]);
 
-        for (Integer powerSlot : powerSlots) if (powerSlot != -1) inventory.setItem(powerSlot, items[4]);
+          for (Integer powerSlot : powerSlots) if (powerSlot != -1) inventory.setItem(powerSlot, items[4]);
 
-        for (Integer redSlot : redSlots) if (redSlot != -1) inventory.setItem(redSlot, items[5]);
+          for (Integer redSlot : redSlots) if (redSlot != -1) inventory.setItem(redSlot, items[5]);
 
-        for (Integer memberSlot : memberSlots) if (memberSlot != -1) inventory.setItem(memberSlot, items[6]);
+          for (Integer memberSlot : memberSlots) if (memberSlot != -1) inventory.setItem(memberSlot, items[6]);
 
-        fme.getPlayer().openInventory(inventory);
-    }
+          fme.getPlayer().openInventory(inventory);
+     }
 
-    @EventHandler
-    public void onClick(InventoryClickEvent e) {
-        if (e.getClickedInventory() == null || e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null || e.getCursor() == null)
-            return;
+     @EventHandler
+     public void onClick(InventoryClickEvent e) {
+          if (e.getClickedInventory() == null || e.getCurrentItem() == null || e.getCurrentItem().getItemMeta() == null || e.getCursor() == null)
+               return;
 
-        FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
-        if (e.getView().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())))) {
-            e.setCancelled(true);
-            ItemStack[] items = buildItems(fme);
-            ItemStack cropItem = items[2];
-            ItemStack expItem = items[0];
-            ItemStack chestitem = items[3];
-            ItemStack spawnerItem = items[1];
-            ItemStack powerItem = items[4];
-            ItemStack redItem = items[5];
-            ItemStack memberItem = items[6];
+          FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
+          if (e.getView().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())))) {
+               e.setCancelled(true);
+               ItemStack[] items = buildItems(fme);
+               ItemStack cropItem = items[2];
+               ItemStack expItem = items[0];
+               ItemStack chestitem = items[3];
+               ItemStack spawnerItem = items[1];
+               ItemStack powerItem = items[4];
+               ItemStack redItem = items[5];
+               ItemStack memberItem = items[6];
 
-            if (e.getCurrentItem().equals(cropItem)) {
-                int cropLevel = fme.getFaction().getUpgrade(UpgradeType.CROP);
-                switch (cropLevel) {
-                    case 3:
-                        return;
-                    case 2:
-                        upgradeItem(fme, UpgradeType.CROP, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-3"));
-                        break;
-                    case 1:
-                        upgradeItem(fme, UpgradeType.CROP, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-2"));
-                        break;
-                    case 0:
-                        upgradeItem(fme, UpgradeType.CROP, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-1"));
-                        break;
-                }
-            } else if (e.getCurrentItem().equals(powerItem)) {
-                int powerLevel = fme.getFaction().getUpgrade(UpgradeType.POWER);
-                switch (powerLevel) {
-                    case 3:
-                        return;
-                    case 2:
-                        upgradeItem(fme, UpgradeType.POWER, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Cost.level-3"));
-                        updatePower(fme.getFaction());
-                        break;
-                    case 1:
-                        upgradeItem(fme, UpgradeType.POWER, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Cost.level-2"));
-                        updatePower(fme.getFaction());
-                        break;
-                    case 0:
-                        upgradeItem(fme, UpgradeType.POWER, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Cost.level-1"));
-                        updatePower(fme.getFaction());
-                        break;
-                }
-            } else if (e.getCurrentItem().equals(spawnerItem)) {
-                int spawnerLevel = fme.getFaction().getUpgrade(UpgradeType.SPAWNER);
-                switch (spawnerLevel) {
-                    case 3:
-                        return;
-                    case 2:
-                        upgradeItem(fme, UpgradeType.SPAWNER, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-3"));
-                        break;
-                    case 1:
-                        upgradeItem(fme, UpgradeType.SPAWNER, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-2"));
-                        break;
-                    case 0:
-                        upgradeItem(fme, UpgradeType.SPAWNER, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-1"));
-                        break;
-                }
-            } else if (e.getCurrentItem().equals(expItem)) {
-                int expLevel = fme.getFaction().getUpgrade(UpgradeType.EXP);
-
-                switch (expLevel) {
-                    case 3:
-                        return;
-                    case 2:
-                        upgradeItem(fme, UpgradeType.EXP, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-3"));
-                        break;
-                    case 1:
-                        upgradeItem(fme, UpgradeType.EXP, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-2"));
-                        break;
-                    case 0:
-                        upgradeItem(fme, UpgradeType.EXP, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-1"));
-                        break;
-                }
-            } else if (e.getCurrentItem().equals(redItem)) {
-                int redLevel = fme.getFaction().getUpgrade(UpgradeType.REDSTONE);
-                switch (redLevel) {
-                    case 1:
-                        return;
-                    case 0:
-                        upgradeItem(fme, UpgradeType.REDSTONE, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.Cost"));
-                        break;
-                }
-            } else if (e.getCurrentItem().equals(chestitem)) {
-                int chestLevel = fme.getFaction().getUpgrade(UpgradeType.CHEST);
-                switch (chestLevel) {
-                    case 3:
-                        return;
-                    case 2: {
-                        if (upgradeItem(fme, UpgradeType.CHEST, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-3")))
-                            updateChests(fme.getFaction());
-                        break;
+               if (e.getCurrentItem().equals(cropItem)) {
+                    int cropLevel = fme.getFaction().getUpgrade(UpgradeType.CROP);
+                    switch (cropLevel) {
+                         case 3:
+                              return;
+                         case 2:
+                              upgradeItem(fme, UpgradeType.CROP, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-3"));
+                              break;
+                         case 1:
+                              upgradeItem(fme, UpgradeType.CROP, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-2"));
+                              break;
+                         case 0:
+                              upgradeItem(fme, UpgradeType.CROP, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Cost.level-1"));
+                              break;
                     }
-                    case 1: {
-                        if (upgradeItem(fme, UpgradeType.CHEST, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-2")))
-                            updateChests(fme.getFaction());
-                        break;
+               } else if (e.getCurrentItem().equals(powerItem)) {
+                    int powerLevel = fme.getFaction().getUpgrade(UpgradeType.POWER);
+                    switch (powerLevel) {
+                         case 3:
+                              return;
+                         case 2:
+                              upgradeItem(fme, UpgradeType.POWER, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Cost.level-3"));
+                              updatePower(fme.getFaction());
+                              break;
+                         case 1:
+                              upgradeItem(fme, UpgradeType.POWER, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Cost.level-2"));
+                              updatePower(fme.getFaction());
+                              break;
+                         case 0:
+                              upgradeItem(fme, UpgradeType.POWER, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Cost.level-1"));
+                              updatePower(fme.getFaction());
+                              break;
                     }
-                    case 0: {
-                        if (upgradeItem(fme, UpgradeType.CHEST, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-1")))
-                            updateChests(fme.getFaction());
-                        break;
+               } else if (e.getCurrentItem().equals(spawnerItem)) {
+                    int spawnerLevel = fme.getFaction().getUpgrade(UpgradeType.SPAWNER);
+                    switch (spawnerLevel) {
+                         case 3:
+                              return;
+                         case 2:
+                              upgradeItem(fme, UpgradeType.SPAWNER, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-3"));
+                              break;
+                         case 1:
+                              upgradeItem(fme, UpgradeType.SPAWNER, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-2"));
+                              break;
+                         case 0:
+                              upgradeItem(fme, UpgradeType.SPAWNER, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.Cost.level-1"));
+                              break;
                     }
-                }
-            } else if (e.getCurrentItem().equals(memberItem)) {
-                int memberLevel = fme.getFaction().getUpgrade(UpgradeType.MEMBERS) + 1;
-                if (!FactionsPlugin.getInstance().getConfig().isSet("fupgrades.MainMenu.Members.Cost.level-" + memberLevel)) {
-                    return;
-                }
-                int cost = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.Cost.level-" + memberLevel);
-                if (hasMoney(fme, cost)) {
-                    fme.getFaction().setUpgrade(UpgradeType.MEMBERS, memberLevel);
-                    fme.getPlayer().closeInventory();
-                    takeMoney(fme, cost);
-                }
-            }
-        }
-    }
+               } else if (e.getCurrentItem().equals(expItem)) {
+                    int expLevel = fme.getFaction().getUpgrade(UpgradeType.EXP);
 
-    private void updateChests(Faction faction) {
-        String invName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"));
+                    switch (expLevel) {
+                         case 3:
+                              return;
+                         case 2:
+                              upgradeItem(fme, UpgradeType.EXP, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-3"));
+                              break;
+                         case 1:
+                              upgradeItem(fme, UpgradeType.EXP, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-2"));
+                              break;
+                         case 0:
+                              upgradeItem(fme, UpgradeType.EXP, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.Cost.level-1"));
+                              break;
+                    }
+               } else if (e.getCurrentItem().equals(redItem)) {
+                    int redLevel = fme.getFaction().getUpgrade(UpgradeType.REDSTONE);
+                    switch (redLevel) {
+                         case 1:
+                              return;
+                         case 0:
+                              upgradeItem(fme, UpgradeType.REDSTONE, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.Cost"));
+                              break;
+                    }
+               } else if (e.getCurrentItem().equals(chestitem)) {
+                    int chestLevel = fme.getFaction().getUpgrade(UpgradeType.CHEST);
+                    switch (chestLevel) {
+                         case 3:
+                              return;
+                         case 2: {
+                              if (upgradeItem(fme, UpgradeType.CHEST, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-3")))
+                                   updateChests(fme.getFaction());
+                              break;
+                         }
+                         case 1: {
+                              if (upgradeItem(fme, UpgradeType.CHEST, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-2")))
+                                   updateChests(fme.getFaction());
+                              break;
+                         }
+                         case 0: {
+                              if (upgradeItem(fme, UpgradeType.CHEST, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-1")))
+                                   updateChests(fme.getFaction());
+                              break;
+                         }
+                    }
+               } else if (e.getCurrentItem().equals(memberItem)) {
+                    int memberLevel = fme.getFaction().getUpgrade(UpgradeType.MEMBERS) + 1;
+                    if (!FactionsPlugin.getInstance().getConfig().isSet("fupgrades.MainMenu.Members.Cost.level-" + memberLevel)) {
+                         return;
+                    }
+                    int cost = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.Cost.level-" + memberLevel);
+                    if (hasMoney(fme, cost)) {
+                         fme.getFaction().setUpgrade(UpgradeType.MEMBERS, memberLevel);
+                         fme.getPlayer().closeInventory();
+                         takeMoney(fme, cost);
+                    }
+               }
+          }
+     }
 
-        for (Player player : faction.getOnlinePlayers()) {
-            if (player.getInventory().getTitle() != null && player.getInventory().getTitle().equalsIgnoreCase(invName))
-                player.closeInventory();
-        }
+     private void updateChests(Faction faction) {
+          String invName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"));
 
-        int level = faction.getUpgrade(UpgradeType.CHEST);
-        int size = 1;
+          for (Player player : faction.getOnlinePlayers()) {
+               if (player.getInventory().getTitle() != null && player.getInventory().getTitle().equalsIgnoreCase(invName))
+                    player.closeInventory();
+          }
 
-        switch (level) {
-            case 1:
-                size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1");
-                break;
-            case 2:
-                size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2");
-                break;
-            case 3:
-                size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3");
-                break;
-        }
-        faction.setChestSize(size * 9);
-    }
+          int level = faction.getUpgrade(UpgradeType.CHEST);
+          int size = 1;
 
-    private void updatePower(Faction faction) {
-        int level = faction.getUpgrade(UpgradeType.POWER);
-        double power = 0.0;
+          switch (level) {
+               case 1:
+                    size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1");
+                    break;
+               case 2:
+                    size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2");
+                    break;
+               case 3:
+                    size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3");
+                    break;
+          }
+          faction.setChestSize(size * 9);
+     }
 
-        switch (level) {
-            case 1:
-                power = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Power-Boost.level-1");
-                break;
-            case 2:
-                power = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Power-Boost.level-2");
-                break;
-            case 3:
-                power = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Power-Boost.level-3");
-                break;
-        }
-        faction.setPowerBoost(power);
-    }
+     private void updatePower(Faction faction) {
+          int level = faction.getUpgrade(UpgradeType.POWER);
+          double power = 0.0;
 
-    @SuppressWarnings("Duplicates")
-    private ItemStack[] buildItems(FPlayer fme) {
-        Material expMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Type"));
-        int expAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Amount");
-        short expData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Damage") + "");
-        String expName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Name"));
-        List<String> expLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.EXP.EXPItem.Lore"));
-        int expLevel = fme.getFaction().getUpgrade(UpgradeType.EXP);
+          switch (level) {
+               case 1:
+                    power = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Power-Boost.level-1");
+                    break;
+               case 2:
+                    power = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Power-Boost.level-2");
+                    break;
+               case 3:
+                    power = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Power-Boost.level-3");
+                    break;
+          }
+          faction.setPowerBoost(power);
+     }
 
-        for (int i = 0; i <= expLore.size() - 1; i++)
-            expLore.set(i, expLore.get(i).replace("{level}", expLevel + ""));
+     @SuppressWarnings("Duplicates")
+     private ItemStack[] buildItems(FPlayer fme) {
+          Material expMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Type"));
+          int expAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Amount");
+          short expData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Damage") + "");
+          String expName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Name"));
+          List<String> expLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.EXP.EXPItem.Lore"));
+          int expLevel = fme.getFaction().getUpgrade(UpgradeType.EXP);
 
-        ItemStack expItem = FactionsPlugin.getInstance().createItem(expMaterial, expAmt, expData, expName, expLore);
+          for (int i = 0; i <= expLore.size() - 1; i++)
+               expLore.set(i, expLore.get(i).replace("{level}", expLevel + ""));
 
-        if (expLevel >= 1) {
-            ItemMeta itemMeta = expItem.getItemMeta();
-            if (!FactionsPlugin.getInstance().mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+          ItemStack expItem = FactionsPlugin.getInstance().createItem(expMaterial, expAmt, expData, expName, expLore);
 
-            expItem.setItemMeta(itemMeta);
-            expItem.setAmount(expLevel);
-        }
+          if (expLevel >= 1) {
+               ItemMeta itemMeta = expItem.getItemMeta();
+               if (!FactionsPlugin.getInstance().mc17) {
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+               }
+               itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
 
-        Material spawnerMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Type"));
-        int spawnerAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.SpawnerItem.Amount");
-        short spawnerData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.SpawnerItem.Damage") + "");
-        String spawnerName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Name"));
-        List<String> spawnerLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Spawners.SpawnerItem.Lore"));
-        int spawnerLevel = fme.getFaction().getUpgrade(UpgradeType.SPAWNER);
+               expItem.setItemMeta(itemMeta);
+               expItem.setAmount(expLevel);
+          }
 
-        for (int i = 0; i <= spawnerLore.size() - 1; i++) {
-            spawnerLore.set(i, spawnerLore.get(i).replace("{level}", spawnerLevel + ""));
-        }
+          Material spawnerMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Type"));
+          int spawnerAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.SpawnerItem.Amount");
+          short spawnerData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.SpawnerItem.Damage") + "");
+          String spawnerName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Name"));
+          List<String> spawnerLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Spawners.SpawnerItem.Lore"));
+          int spawnerLevel = fme.getFaction().getUpgrade(UpgradeType.SPAWNER);
+
+          for (int i = 0; i <= spawnerLore.size() - 1; i++) {
+               spawnerLore.set(i, spawnerLore.get(i).replace("{level}", spawnerLevel + ""));
+          }
 
 
-        Material cropMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Type"));
-        int cropAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.CropItem.Amount");
-        short cropData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.CropItem.Damage") + "");
-        String cropName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Name"));
-        List<String> cropLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Crops.CropItem.Lore"));
-        int cropLevel = fme.getFaction().getUpgrade(UpgradeType.CROP);
+          Material cropMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Type"));
+          int cropAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.CropItem.Amount");
+          short cropData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.CropItem.Damage") + "");
+          String cropName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Name"));
+          List<String> cropLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Crops.CropItem.Lore"));
+          int cropLevel = fme.getFaction().getUpgrade(UpgradeType.CROP);
 
-        for (int i = 0; i <= cropLore.size() - 1; i++) {
-            String line = cropLore.get(i);
-            line = line.replace("{level}", cropLevel + "");
-            cropLore.set(i, line);
-        }
+          for (int i = 0; i <= cropLore.size() - 1; i++) {
+               String line = cropLore.get(i);
+               line = line.replace("{level}", cropLevel + "");
+               cropLore.set(i, line);
+          }
 
-        ItemStack cropItem = FactionsPlugin.getInstance().createItem(cropMaterial, cropAmt, cropData, cropName, cropLore);
-        cropItem.getItemMeta().setLore(cropLore);
+          ItemStack cropItem = FactionsPlugin.getInstance().createItem(cropMaterial, cropAmt, cropData, cropName, cropLore);
+          cropItem.getItemMeta().setLore(cropLore);
 
-        if (cropLevel >= 1) {
-            ItemMeta itemMeta = cropItem.getItemMeta();
-            if (!FactionsPlugin.getInstance().mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
-            cropItem.setItemMeta(itemMeta);
+          if (cropLevel >= 1) {
+               ItemMeta itemMeta = cropItem.getItemMeta();
+               if (!FactionsPlugin.getInstance().mc17) {
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+               }
+               itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+               cropItem.setItemMeta(itemMeta);
 
-            cropItem.setAmount(cropLevel);
-        }
+               cropItem.setAmount(cropLevel);
+          }
 
-        ItemStack spawnerItem = FactionsPlugin.getInstance().createItem(spawnerMaterial, spawnerAmt, spawnerData, spawnerName, spawnerLore);
-        spawnerItem.getItemMeta().setLore(spawnerLore);
-        if (spawnerLevel >= 1) {
-            ItemMeta itemMeta = spawnerItem.getItemMeta();
-            if (!FactionsPlugin.getInstance().mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+          ItemStack spawnerItem = FactionsPlugin.getInstance().createItem(spawnerMaterial, spawnerAmt, spawnerData, spawnerName, spawnerLore);
+          spawnerItem.getItemMeta().setLore(spawnerLore);
+          if (spawnerLevel >= 1) {
+               ItemMeta itemMeta = spawnerItem.getItemMeta();
+               if (!FactionsPlugin.getInstance().mc17) {
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+               }
+               itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
 
-            spawnerItem.setItemMeta(itemMeta);
-            spawnerItem.setAmount(spawnerLevel);
-        }
+               spawnerItem.setItemMeta(itemMeta);
+               spawnerItem.setAmount(spawnerLevel);
+          }
 
-        Material chestMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Type"));
-        int chesttAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Amount");
-        short chestData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Damage") + "");
-        String chestName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Name", "&e&lUpgrade Chest Size"));
-        List<String> chestLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Chest.ChestItem.Lore"));
-        int chestlevel = fme.getFaction().getUpgrade(UpgradeType.CHEST);
+          Material chestMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Type"));
+          int chesttAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Amount");
+          short chestData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Damage") + "");
+          String chestName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Name", "&e&lUpgrade Chest Size"));
+          List<String> chestLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Chest.ChestItem.Lore"));
+          int chestlevel = fme.getFaction().getUpgrade(UpgradeType.CHEST);
 
-        for (int i = 0; i <= chestLore.size() - 1; i++) {
-            String line = chestLore.get(i);
-            line = line.replace("{level}", chestlevel + "");
-            chestLore.set(i, line);
-        }
+          for (int i = 0; i <= chestLore.size() - 1; i++) {
+               String line = chestLore.get(i);
+               line = line.replace("{level}", chestlevel + "");
+               chestLore.set(i, line);
+          }
 
-        ItemStack chestItem = FactionsPlugin.getInstance().createItem(chestMaterial, chesttAmt, chestData, chestName, chestLore);
+          ItemStack chestItem = FactionsPlugin.getInstance().createItem(chestMaterial, chesttAmt, chestData, chestName, chestLore);
 
-        if (chestlevel >= 1) {
-            ItemMeta itemMeta = chestItem.getItemMeta();
-            if (!FactionsPlugin.getInstance().mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+          if (chestlevel >= 1) {
+               ItemMeta itemMeta = chestItem.getItemMeta();
+               if (!FactionsPlugin.getInstance().mc17) {
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+               }
+               itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
 
-            chestItem.setItemMeta(itemMeta);
-            chestItem.setAmount(chestlevel);
-        }
+               chestItem.setItemMeta(itemMeta);
+               chestItem.setAmount(chestlevel);
+          }
 
-        Material memberMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Members.MembersItem.Type"));
-        int memberAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.MembersItem.Amount");
-        short memberData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.MembersItem.Damage") + "");
-        String memberName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Members.MembersItem.Name", "&e&lUpgrade Member Size"));
-        List<String> memberLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Members.MembersItem.Lore"));
-        int memberlevel = fme.getFaction().getUpgrade(UpgradeType.MEMBERS);
+          Material memberMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Members.MembersItem.Type"));
+          int memberAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.MembersItem.Amount");
+          short memberData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.MembersItem.Damage") + "");
+          String memberName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Members.MembersItem.Name", "&e&lUpgrade Member Size"));
+          List<String> memberLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Members.MembersItem.Lore"));
+          int memberlevel = fme.getFaction().getUpgrade(UpgradeType.MEMBERS);
 
-        for (int i = 0; i <= memberLore.size() - 1; i++) {
-            String line = memberLore.get(i);
-            line = line.replace("{level}", memberlevel + "");
-            memberLore.set(i, line);
-        }
+          for (int i = 0; i <= memberLore.size() - 1; i++) {
+               String line = memberLore.get(i);
+               line = line.replace("{level}", memberlevel + "");
+               memberLore.set(i, line);
+          }
 
-        ItemStack memberItem = FactionsPlugin.getInstance().createItem(memberMaterial, memberAmt, memberData, memberName, memberLore);
+          ItemStack memberItem = FactionsPlugin.getInstance().createItem(memberMaterial, memberAmt, memberData, memberName, memberLore);
 
-        if (memberlevel >= 1) {
-            ItemMeta itemMeta = memberItem.getItemMeta();
-            if (!FactionsPlugin.getInstance().mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+          if (memberlevel >= 1) {
+               ItemMeta itemMeta = memberItem.getItemMeta();
+               if (!FactionsPlugin.getInstance().mc17) {
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+               }
+               itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
 
-            memberItem.setItemMeta(itemMeta);
-            memberItem.setAmount(memberlevel);
-        }
+               memberItem.setItemMeta(itemMeta);
+               memberItem.setAmount(memberlevel);
+          }
 
-        Material powerMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Power.PowerItem.Type"));
-        int powerAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.PowerItem.Amount");
-        short powerData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.PowerItem.Damage") + "");
-        String powerName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Power.PowerItem.Name"));
-        List<String> powerLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Power.PowerItem.Lore"));
-        int powerLevel = fme.getFaction().getUpgrade(UpgradeType.POWER);
+          Material powerMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Power.PowerItem.Type"));
+          int powerAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.PowerItem.Amount");
+          short powerData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.PowerItem.Damage") + "");
+          String powerName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Power.PowerItem.Name"));
+          List<String> powerLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Power.PowerItem.Lore"));
+          int powerLevel = fme.getFaction().getUpgrade(UpgradeType.POWER);
 
-        for (int i = 0; i <= powerLore.size() - 1; i++) {
-            String line = powerLore.get(i);
-            line = line.replace("{level}", powerLevel + "");
-            powerLore.set(i, line);
-        }
+          for (int i = 0; i <= powerLore.size() - 1; i++) {
+               String line = powerLore.get(i);
+               line = line.replace("{level}", powerLevel + "");
+               powerLore.set(i, line);
+          }
 
-        ItemStack powerItem = FactionsPlugin.getInstance().createItem(powerMaterial, powerAmt, powerData, powerName, powerLore);
-        powerItem.getItemMeta().setLore(powerLore);
+          ItemStack powerItem = FactionsPlugin.getInstance().createItem(powerMaterial, powerAmt, powerData, powerName, powerLore);
+          powerItem.getItemMeta().setLore(powerLore);
 
-        if (powerLevel >= 1) {
-            ItemMeta itemMeta = powerItem.getItemMeta();
-            if (!FactionsPlugin.getInstance().mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
-            powerItem.setItemMeta(itemMeta);
+          if (powerLevel >= 1) {
+               ItemMeta itemMeta = powerItem.getItemMeta();
+               if (!FactionsPlugin.getInstance().mc17) {
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+               }
+               itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+               powerItem.setItemMeta(itemMeta);
 
-            powerItem.setAmount(powerLevel);
-        }
+               powerItem.setAmount(powerLevel);
+          }
 
-        Material redMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Redstone.RedstoneItem.Type"));
-        int redAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.RedstoneItem.Amount");
-        short redData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.RedstoneItem.Damage") + "");
-        String redName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Redstone.RedstoneItem.Name"));
-        List<String> redLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Redstone.RedstoneItem.Lore"));
-        int redLevel = fme.getFaction().getUpgrade(UpgradeType.REDSTONE);
+          Material redMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Redstone.RedstoneItem.Type"));
+          int redAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.RedstoneItem.Amount");
+          short redData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.RedstoneItem.Damage") + "");
+          String redName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Redstone.RedstoneItem.Name"));
+          List<String> redLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Redstone.RedstoneItem.Lore"));
+          int redLevel = fme.getFaction().getUpgrade(UpgradeType.REDSTONE);
 
-        for (int i = 0; i <= redLore.size() - 1; i++) {
-            String line = redLore.get(i);
-            line = line.replace("{level}", redLevel + "");
-            redLore.set(i, line);
-        }
+          for (int i = 0; i <= redLore.size() - 1; i++) {
+               String line = redLore.get(i);
+               line = line.replace("{level}", redLevel + "");
+               redLore.set(i, line);
+          }
 
-        ItemStack redItem = FactionsPlugin.getInstance().createItem(redMaterial, redAmt, redData, redName, redLore);
-        redItem.getItemMeta().setLore(redLore);
+          ItemStack redItem = FactionsPlugin.getInstance().createItem(redMaterial, redAmt, redData, redName, redLore);
+          redItem.getItemMeta().setLore(redLore);
 
-        if (redLevel >= 1) {
-            ItemMeta itemMeta = redItem.getItemMeta();
-            if (!FactionsPlugin.getInstance().mc17) {
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            }
-            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
-            redItem.setItemMeta(itemMeta);
+          if (redLevel >= 1) {
+               ItemMeta itemMeta = redItem.getItemMeta();
+               if (!FactionsPlugin.getInstance().mc17) {
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+               }
+               itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+               redItem.setItemMeta(itemMeta);
 
-            redItem.setAmount(redLevel);
-        }
+               redItem.setAmount(redLevel);
+          }
 
-        return new ItemStack[]{expItem, spawnerItem, cropItem, chestItem, powerItem, redItem, memberItem};
-    }
+          return new ItemStack[]{expItem, spawnerItem, cropItem, chestItem, powerItem, redItem, memberItem};
+     }
 
-    private boolean hasMoney(FPlayer fme, int amt) {
-        return fme.hasMoney(amt);
-    }
+     private boolean hasMoney(FPlayer fme, int amt) {
+          return fme.hasMoney(amt);
+     }
 
-    private void takeMoney(FPlayer fme, int amt) {
-        fme.takeMoney(amt);
-    }
+     private void takeMoney(FPlayer fme, int amt) {
+          fme.takeMoney(amt);
+     }
 
-    private boolean upgradeItem(FPlayer fme, UpgradeType upgrade, int level, int cost) {
-        if (hasMoney(fme, cost)) {
-            takeMoney(fme, cost);
-            fme.getFaction().setUpgrade(upgrade, level);
-            fme.getPlayer().closeInventory();
-            return true;
-        }
-        return false;
-    }
+     private boolean upgradeItem(FPlayer fme, UpgradeType upgrade, int level, int cost) {
+          if (hasMoney(fme, cost)) {
+               takeMoney(fme, cost);
+               fme.getFaction().setUpgrade(upgrade, level);
+               fme.getPlayer().closeInventory();
+               return true;
+          }
+          return false;
+     }
 }

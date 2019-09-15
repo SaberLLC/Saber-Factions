@@ -6,30 +6,30 @@ import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdUpgrades extends FCommand {
-    public CmdUpgrades() {
-        super();
-        this.aliases.add("upgrades");
-        this.aliases.add("upgrade");
+     public CmdUpgrades() {
+          super();
+          this.aliases.add("upgrades");
+          this.aliases.add("upgrade");
 
-        this.requirements = new CommandRequirements.Builder(Permission.UPGRADES)
-                .playerOnly()
-                .memberOnly()
-                .build();
+          this.requirements = new CommandRequirements.Builder(Permission.UPGRADES)
+                  .playerOnly()
+                  .memberOnly()
+                  .build();
 
-    }
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fupgrades.Enabled")) {
-            context.fPlayer.sendMessage("This command is disabled!");
-            return;
-        }
-        new FUpgradesGUI().openMainMenu(context.fPlayer);
-    }
+     @Override
+     public void perform(CommandContext context) {
+          if (!FactionsPlugin.getInstance().getConfig().getBoolean("fupgrades.Enabled")) {
+               context.fPlayer.sendMessage("This command is disabled!");
+               return;
+          }
+          new FUpgradesGUI().openMainMenu(context.fPlayer);
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_UPGRADES_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_UPGRADES_DESCRIPTION;
+     }
 
 }
