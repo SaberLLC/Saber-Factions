@@ -779,7 +779,7 @@ Missions:
     Reward:
       Commands: ["f points add %faction% 100"]
   animaltaming:
-    Slot: 20
+    Slot: 21
     Material: "BONE"
     Name: "&f100 &cTamed Animals"
     Lore:
