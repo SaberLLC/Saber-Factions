@@ -22,6 +22,7 @@ permissions:
       factions.modifypower: true
       factions.ahome: true
       factions.setmaxvaults: true
+      factions.convertconfig: true
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
