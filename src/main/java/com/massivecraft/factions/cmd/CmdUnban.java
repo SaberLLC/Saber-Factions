@@ -31,7 +31,7 @@ public class CmdUnban extends FCommand {
         if (target.getFaction() != context.fPlayer.getFaction()) {
             if (target.getFaction().getAccess(context.fPlayer, PermissableAction.BAN) != Access.ALLOW) {
                 if (!context.fPlayer.isAdminBypassing()) {
-                    context.fPlayer.msg(TL.COMMAND_UNBAN_TARGET_IN_OTHER_FACTION);
+                    context.fPlayer.msg(TL.COMMAND_UNBAN_TARGET_IN_OTHER_FACTION, target.getName());
                 }
             }
         }
