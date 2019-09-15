@@ -177,12 +177,10 @@ public class UpgradesListener implements Listener {
         if (FPlayers.getInstance().getByPlayer(e.getPlayer()) == null) {
             return;
         }
-        System.out.print(e.getItem().toString());
         if (e.getItem().getType().toString().contains("LEGGINGS") || e.getItem().getType().toString().contains("CHESTPLATE") || e.getItem().getType().toString().contains("HELMET") || e.getItem().getType().toString().contains("BOOTS")) {
             int lvl = FPlayers.getInstance().getByPlayer(e.getPlayer()).getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
             double drop = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);
             int newDamage = (int) Math.round(e.getDamage() - e.getDamage() * drop);
-            System.out.print(newDamage);
             e.setDamage(newDamage);
         }
     }
