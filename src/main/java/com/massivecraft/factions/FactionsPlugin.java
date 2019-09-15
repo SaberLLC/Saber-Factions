@@ -268,6 +268,7 @@ public class FactionsPlugin extends MPlugin {
                 new FactionsBlockListener(),
                 new FUpgradesGUI(),
                 new ShopClickPersistence(),
+                new UpgradesListener(),
                 new MissionHandler(this),
                 new ChestLogsHandler()
         };
