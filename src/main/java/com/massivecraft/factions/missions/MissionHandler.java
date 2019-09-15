@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -26,26 +27,6 @@ public class MissionHandler implements Listener {
 
     public MissionHandler(FactionsPlugin plugin) {
         this.plugin = plugin;
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onEntityBreed(EntityBreedEvent event) {
-        if (event.getEntity() == null) {
-            return;
-        }
-        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(event.getEntity().getKiller());
-        if (fPlayer == null) {
-            return;
-        }
-        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("breed")).collect(Collectors.toList());
-        for (Mission mission2 : missions) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
-            if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType"))) {
-                continue;
-            }
-            mission2.incrementProgress();
-            checkIfDone(fPlayer, mission2, section);
-        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
