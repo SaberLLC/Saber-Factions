@@ -82,6 +82,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private boolean weeWoo;
     private int tntBankSize;
     private int warpLimit;
+    private double reinforcedArmor;
 
 
     // -------------------------------------------- //
@@ -480,6 +481,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public void setTntBankLimit(int newLimit) {
         tntBankSize = newLimit;
     }
+
+    @Override
+    public double getReinforcedArmor() { return this.reinforcedArmor; }
+
+    @Override
+    public void setReinforcedArmor(double newPercent) { reinforcedArmor = newPercent; }
 
     @Override
     public ItemStack getBanner() {

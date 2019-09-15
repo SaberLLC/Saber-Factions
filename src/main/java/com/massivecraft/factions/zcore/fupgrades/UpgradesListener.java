@@ -15,6 +15,7 @@ import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.material.Crops;
 
 import java.util.List;
@@ -169,6 +170,20 @@ public class UpgradesListener implements Listener {
             int level = fme.getFaction().getUpgrade(UpgradeType.DAMAGEINCREASE);
             double increase = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.DamageIncrease.DamageIncreasePercent.level-" + level);
             e.setDamage(damage + damage / 100.0 * increase);
+        }
+    }
+    @EventHandler
+    public void onArmorDamage(PlayerItemDamageEvent e) {
+        if (FPlayers.getInstance().getByPlayer(e.getPlayer()) == null) {
+            return;
+        }
+        System.out.print(e.getItem().toString());
+        if (e.getItem().getType().toString().contains("LEGGINGS") || e.getItem().getType().toString().contains("CHESTPLATE") || e.getItem().getType().toString().contains("HELMET") || e.getItem().getType().toString().contains("BOOTS")) {
+            int lvl = FPlayers.getInstance().getByPlayer(e.getPlayer()).getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
+            double drop = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);
+            int newDamage = (int) Math.round(e.getDamage() - e.getDamage() * drop);
+            System.out.print(newDamage);
+            e.setDamage(newDamage);
         }
     }
 }

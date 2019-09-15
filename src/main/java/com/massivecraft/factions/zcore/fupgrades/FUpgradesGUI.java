@@ -45,6 +45,7 @@ public class FUpgradesGUI implements Listener {
         List<Integer> increaseSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.DamageIncrease.IncreaseItem.slots");
         List<Integer> tntSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.TNT.TntItem.slots");
         List<Integer> warpSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Warps.WarpItem.slots");
+        List<Integer> armorSlots = FactionsPlugin.getInstance().getConfig().getIntegerList("fupgrades.MainMenu.Armor.ArmorItem.slots");
 
         for (Integer cropSlot : cropSlots) if (cropSlot != -1) inventory.setItem(cropSlot, items[2]);
 
@@ -67,6 +68,8 @@ public class FUpgradesGUI implements Listener {
         for(Integer tntSlot : tntSlots) if(tntSlot != -1) inventory.setItem(tntSlot, items[9]);
 
         for(Integer warpSlot : warpSlots) if(warpSlot != -1) inventory.setItem(warpSlot, items[10]);
+
+        for(Integer armorSlot : armorSlots) if(armorSlot != -1) inventory.setItem(armorSlot, items[11]);
 
         fme.getPlayer().openInventory(inventory);
     }
@@ -91,6 +94,7 @@ public class FUpgradesGUI implements Listener {
             ItemStack increaseItem = items[8];
             ItemStack tntItem = items[9];
             ItemStack warpItem = items[10];
+            ItemStack armorItem = items[11];
 
             if (e.getCurrentItem().equals(cropItem)) {
                 int cropLevel = fme.getFaction().getUpgrade(UpgradeType.CROP);
@@ -183,6 +187,24 @@ public class FUpgradesGUI implements Listener {
                     case 0: {
                         if (upgradeItem(fme, UpgradeType.CHEST, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Cost.level-1")))
                             updateChests(fme.getFaction());
+                        break;
+                    }
+                }
+            } else if (e.getCurrentItem().equals(armorItem)) {
+                int armorLevel = fme.getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
+                switch (armorLevel) {
+                    case 3:
+                        return;
+                    case 2: {
+                        if (upgradeItem(fme, UpgradeType.REINFORCEDARMOR, 3, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.Cost.level-3")))
+                        break;
+                    }
+                    case 1: {
+                        if (upgradeItem(fme, UpgradeType.REINFORCEDARMOR, 2, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.Cost.level-2")))
+                        break;
+                    }
+                    case 0: {
+                        if (upgradeItem(fme, UpgradeType.REINFORCEDARMOR, 1, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.Cost.level-1")))
                         break;
                     }
                 }
@@ -580,7 +602,34 @@ public class FUpgradesGUI implements Listener {
             warpItem.setAmount(warpLevel);
         }
 
-        return new ItemStack[]{expItem, spawnerItem, cropItem, chestItem, powerItem, redItem, memberItem, reduceItem, increaseItem, tntItem, warpItem};
+        Material armorMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Armor.ArmorItem.Type"));
+        int armorAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.ArmorItem.Amount");
+        short armorData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.ArmorItem.Damage") + "");
+        String armorName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Armor.ArmorItem.Name"));
+        List<String> armorLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Armor.ArmorItem.Lore"));
+        int armorLevel = fme.getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
+
+        for (int i = 0; i <= armorLore.size() - 1; i++) {
+            String line = armorLore.get(i);
+            line = line.replace("{level}", armorLevel + "");
+            armorLore.set(i, line);
+        }
+
+        ItemStack armorItem = FactionsPlugin.getInstance().createItem(armorMaterial, armorAmt, armorData, armorName, armorLore);
+        armorItem.getItemMeta().setLore(armorLore);
+
+        if (armorLevel >= 1) {
+            ItemMeta itemMeta = armorItem.getItemMeta();
+            if (!FactionsPlugin.getInstance().mc17) {
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+            itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
+            armorItem.setItemMeta(itemMeta);
+
+            armorItem.setAmount(armorLevel);
+        }
+
+        return new ItemStack[]{expItem, spawnerItem, cropItem, chestItem, powerItem, redItem, memberItem, reduceItem, increaseItem, tntItem, warpItem, armorItem};
     }
 
     private void updateTntBanks(Faction faction) {

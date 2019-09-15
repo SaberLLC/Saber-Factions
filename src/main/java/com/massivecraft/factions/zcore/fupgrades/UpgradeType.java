@@ -12,7 +12,8 @@ public enum UpgradeType {
     TNT("TNT"),
     WARP("Warps"),
     DAMAGEINCREASE("DamageIncrease"),
-    DAMAGEDECREASE("DamageDecrease");
+    DAMAGEDECREASE("DamageDecrease"),
+    REINFORCEDARMOR("ReinforcedArmor");
 
     private String id;
 
