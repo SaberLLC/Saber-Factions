@@ -57,6 +57,7 @@ import java.util.stream.Collectors;
 
 
 public class FactionsPlugin extends MPlugin {
+
     // Our single plugin instance.
     // Single 4 life.
     public static FactionsPlugin instance;
