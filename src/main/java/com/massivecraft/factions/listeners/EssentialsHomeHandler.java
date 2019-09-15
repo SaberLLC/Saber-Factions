@@ -37,7 +37,7 @@ public class EssentialsHomeHandler implements Listener {
             Faction factionAt = Board.getInstance().getFactionAt(floc);
             if (factionAt.equals(faction) && factionAt.isNormal()) {
                 user.delHome(homeName);
-                FactionsPlugin.getInstance().log(Level.INFO, "FactionLeaveEvent: Removing home %s, player %s, in territory of %s", homeName, event.getfPlayer().getName(), faction.getTag());
+                FactionsPlugin.getInstance().log(Level.INFO, "Removing home %s, player %s, in territory of %s", homeName, event.getfPlayer().getName(), faction.getTag());
             }
         }
     }
