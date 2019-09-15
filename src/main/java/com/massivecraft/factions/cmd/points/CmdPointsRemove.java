@@ -11,48 +11,48 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPointsRemove extends FCommand {
 
-     public CmdPointsRemove() {
-          super();
-          this.aliases.add("remove");
+    public CmdPointsRemove() {
+        super();
+        this.aliases.add("remove");
 
-          this.requiredArgs.add("faction/player");
-          this.requiredArgs.add("# of points");
+        this.requiredArgs.add("faction/player");
+        this.requiredArgs.add("# of points");
 
-          this.requirements = new CommandRequirements.Builder(Permission.REMOVEPOINTS)
-                  .build();
+        this.requirements = new CommandRequirements.Builder(Permission.REMOVEPOINTS)
+                .build();
 
-     }
-
-
-     @Override
-     public void perform(CommandContext context) {
-          Faction faction = Factions.getInstance().getByTag(context.args.get(0));
+    }
 
 
-          FPlayer fPlayer = context.argAsFPlayer(0);
-          if (fPlayer != null) {
-               faction = fPlayer.getFaction();
-          }
-
-          if (faction == null || faction.isWilderness()) {
-               context.msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", context.args.get(0)));
-               return;
-          }
-
-          if (context.argAsInt(1) <= 0) {
-               context.msg(TL.COMMAND_POINTS_INSUFFICIENT);
-               return;
-          }
-
-          faction.setPoints(faction.getPoints() - context.argAsInt(1));
-          context.msg(TL.COMMAND_REMOVEPOINTS_SUCCESSFUL, context.argAsInt(1), faction.getTag(), faction.getPoints());
-     }
+    @Override
+    public void perform(CommandContext context) {
+        Faction faction = Factions.getInstance().getByTag(context.args.get(0));
 
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_REMOVEPOINTS_DESCRIPTION;
-     }
+        FPlayer fPlayer = context.argAsFPlayer(0);
+        if (fPlayer != null) {
+            faction = fPlayer.getFaction();
+        }
+
+        if (faction == null || faction.isWilderness()) {
+            context.msg(TL.COMMAND_POINTS_FAILURE.toString().replace("{faction}", context.args.get(0)));
+            return;
+        }
+
+        if (context.argAsInt(1) <= 0) {
+            context.msg(TL.COMMAND_POINTS_INSUFFICIENT);
+            return;
+        }
+
+        faction.setPoints(faction.getPoints() - context.argAsInt(1));
+        context.msg(TL.COMMAND_REMOVEPOINTS_SUCCESSFUL, context.argAsInt(1), faction.getTag(), faction.getPoints());
+    }
+
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_REMOVEPOINTS_DESCRIPTION;
+    }
 
 
 }

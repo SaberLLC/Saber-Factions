@@ -7,37 +7,37 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdViewChest extends FCommand {
 
-     public CmdViewChest() {
-          super();
-          this.aliases.add("viewchest");
-          this.aliases.add("viewpv");
+    public CmdViewChest() {
+        super();
+        this.aliases.add("viewchest");
+        this.aliases.add("viewpv");
 
-          this.requiredArgs.add("faction name");
+        this.requiredArgs.add("faction name");
 
-          this.requirements = new CommandRequirements.Builder(Permission.VIEWCHEST)
-                  .playerOnly()
-                  .build();
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.VIEWCHEST)
+                .playerOnly()
+                .build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
-          if (!FactionsPlugin.getInstance().getConfig().getBoolean("fchest.Enabled")) {
-               context.msg(TL.GENERIC_DISABLED);
-               return;
-          }
+    @Override
+    public void perform(CommandContext context) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fchest.Enabled")) {
+            context.msg(TL.GENERIC_DISABLED);
+            return;
+        }
 
-          Faction myFaction = context.fPlayer.getFaction();
+        Faction myFaction = context.fPlayer.getFaction();
 
-          Faction faction = context.argAsFaction(0, context.fPlayer == null ? null : myFaction);
-          if (faction == null) {
-               return;
-          }
-          context.player.openInventory(context.faction.getChestInventory());
-     }
+        Faction faction = context.argAsFaction(0, context.fPlayer == null ? null : myFaction);
+        if (faction == null) {
+            return;
+        }
+        context.player.openInventory(context.faction.getChestInventory());
+    }
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_VIEWCHEST_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_VIEWCHEST_DESCRIPTION;
+    }
 }
 

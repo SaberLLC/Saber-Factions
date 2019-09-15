@@ -11,36 +11,36 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdClaimAt extends FCommand {
 
-     public CmdClaimAt() {
-          super();
-          this.aliases.add("claimat");
+    public CmdClaimAt() {
+        super();
+        this.aliases.add("claimat");
 
-          this.requiredArgs.add("world");
-          this.requiredArgs.add("x");
-          this.requiredArgs.add("z");
+        this.requiredArgs.add("world");
+        this.requiredArgs.add("x");
+        this.requiredArgs.add("z");
 
-          this.requirements = new CommandRequirements.Builder(Permission.CLAIMAT)
-                  .playerOnly()
-                  .memberOnly()
-                  .withAction(PermissableAction.TERRITORY)
-                  .build();
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.CLAIMAT)
+                .playerOnly()
+                .memberOnly()
+                .withAction(PermissableAction.TERRITORY)
+                .build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
-          int x = context.argAsInt(1);
-          int z = context.argAsInt(2);
-          FLocation location = new FLocation(context.argAsString(0), x, z);
-          if (!((context.player.getLocation().getX() + (x * 16)) > (context.player.getLocation().getX() + (Conf.mapWidth * 16))) &&
-                  !((context.player.getLocation().getZ() + (z * 16)) > (context.player.getLocation().getZ() + (Conf.mapHeight * 16))) &&
-                  !context.argAsString(0).equals(context.player.getLocation().getWorld().getName())) {
-               context.fPlayer.attemptClaim(context.faction, location, true);
-          } else context.fPlayer.msg(TL.COMMAND_CLAIM_DENIED);
-     }
+    @Override
+    public void perform(CommandContext context) {
+        int x = context.argAsInt(1);
+        int z = context.argAsInt(2);
+        FLocation location = new FLocation(context.argAsString(0), x, z);
+        if (!((context.player.getLocation().getX() + (x * 16)) > (context.player.getLocation().getX() + (Conf.mapWidth * 16))) &&
+                !((context.player.getLocation().getZ() + (z * 16)) > (context.player.getLocation().getZ() + (Conf.mapHeight * 16))) &&
+                !context.argAsString(0).equals(context.player.getLocation().getWorld().getName())) {
+            context.fPlayer.attemptClaim(context.faction, location, true);
+        } else context.fPlayer.msg(TL.COMMAND_CLAIM_DENIED);
+    }
 
 
-     @Override
-     public TL getUsageTranslation() {
-          return null;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return null;
+    }
 }

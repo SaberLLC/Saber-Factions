@@ -17,42 +17,42 @@ import org.bukkit.ChatColor;
 
 public class CmdMoneyWithdraw extends FCommand {
 
-     public CmdMoneyWithdraw() {
-          this.aliases.add("w");
-          this.aliases.add("withdraw");
+    public CmdMoneyWithdraw() {
+        this.aliases.add("w");
+        this.aliases.add("withdraw");
 
-          this.requiredArgs.add("amount");
-          this.optionalArgs.put("faction", "yours");
+        this.requiredArgs.add("amount");
+        this.optionalArgs.put("faction", "yours");
 
-          this.requirements = new CommandRequirements.Builder(Permission.MONEY_F2P)
-                  .playerOnly()
-                  .build();
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.MONEY_F2P)
+                .playerOnly()
+                .build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
-          double amount = context.argAsDouble(0, 0d);
-          EconomyParticipator faction = context.argAsFaction(1, context.faction);
-          if (faction == null) {
-               return;
-          }
+    @Override
+    public void perform(CommandContext context) {
+        double amount = context.argAsDouble(0, 0d);
+        EconomyParticipator faction = context.argAsFaction(1, context.faction);
+        if (faction == null) {
+            return;
+        }
 
-          Access access = context.faction.getAccess(context.fPlayer, PermissableAction.WITHDRAW);
-          if (context.fPlayer.getRole() != Role.LEADER) {
-               if (access == Access.DENY) {
-                    context.msg(TL.GENERIC_NOPERMISSION, "withdraw", "withdraw money from the bank");
-                    return;
-               }
-          }
-          boolean success = Econ.transferMoney(context.fPlayer, faction, context.fPlayer, amount);
+        Access access = context.faction.getAccess(context.fPlayer, PermissableAction.WITHDRAW);
+        if (context.fPlayer.getRole() != Role.LEADER) {
+            if (access == Access.DENY) {
+                context.msg(TL.GENERIC_NOPERMISSION, "withdraw", "withdraw money from the bank");
+                return;
+            }
+        }
+        boolean success = Econ.transferMoney(context.fPlayer, faction, context.fPlayer, amount);
 
-          if (success && Conf.logMoneyTransactions) {
-               FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
-          }
-     }
+        if (success && Conf.logMoneyTransactions) {
+            FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+        }
+    }
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_MONEYWITHDRAW_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_MONEYWITHDRAW_DESCRIPTION;
+    }
 }

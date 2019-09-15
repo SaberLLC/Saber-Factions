@@ -11,42 +11,42 @@ import org.bukkit.event.entity.EntityDeathEvent;
 
 public class EXPUpgrade implements Listener {
 
-     @EventHandler
-     public void onDeath(EntityDeathEvent e) {
-          Entity killer = e.getEntity().getKiller();
+    @EventHandler
+    public void onDeath(EntityDeathEvent e) {
+        Entity killer = e.getEntity().getKiller();
 
-          if (killer == null)
-               return;
+        if (killer == null)
+            return;
 
-          FLocation floc = new FLocation(e.getEntity().getLocation());
-          Faction faction = Board.getInstance().getFactionAt(floc);
+        FLocation floc = new FLocation(e.getEntity().getLocation());
+        Faction faction = Board.getInstance().getFactionAt(floc);
 
-          if (!faction.isWilderness()) {
-               int level = faction.getUpgrade(UpgradeType.EXP);
-               if (level != 0) {
+        if (!faction.isWilderness()) {
+            int level = faction.getUpgrade(UpgradeType.EXP);
+            if (level != 0) {
 
-                    double multiplier = -1;
+                double multiplier = -1;
 
-                    switch (level) {
-                         case 1:
-                              multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1");
-                              break;
-                         case 2:
-                              multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2");
-                              break;
-                         case 3:
-                              multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
-                              break;
-                    }
+                switch (level) {
+                    case 1:
+                        multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-1");
+                        break;
+                    case 2:
+                        multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-2");
+                        break;
+                    case 3:
+                        multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-3");
+                        break;
+                }
 
-                    if (multiplier >= 0)
-                         spawnMoreExp(e, multiplier);
-               }
-          }
-     }
+                if (multiplier >= 0)
+                    spawnMoreExp(e, multiplier);
+            }
+        }
+    }
 
-     private void spawnMoreExp(EntityDeathEvent e, double multiplier) {
-          double newExp = e.getDroppedExp() * multiplier;
-          e.setDroppedExp((int) newExp);
-     }
+    private void spawnMoreExp(EntityDeathEvent e, double multiplier) {
+        double newExp = e.getDroppedExp() * multiplier;
+        e.setDroppedExp((int) newExp);
+    }
 }

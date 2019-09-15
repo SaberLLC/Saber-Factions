@@ -6,30 +6,30 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSB extends FCommand {
 
-     public CmdSB() {
-          this.aliases.add("sb");
-          this.aliases.add("scoreboard");
+    public CmdSB() {
+        this.aliases.add("sb");
+        this.aliases.add("scoreboard");
 
-          this.requirements = new CommandRequirements.Builder(Permission.SCOREBOARD)
-                  .playerOnly()
-                  .build();
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.SCOREBOARD)
+                .playerOnly()
+                .build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
-          boolean toggleTo = !context.fPlayer.showScoreboard();
-          FScoreboard board = FScoreboard.get(context.fPlayer);
-          if (board == null) {
-               context.msg(TL.COMMAND_TOGGLESB_DISABLED.toString());
-          } else {
-               context.msg(TL.TOGGLE_SB.toString().replace("{value}", String.valueOf(toggleTo)));
-               board.setSidebarVisibility(toggleTo);
-          }
-          context.fPlayer.setShowScoreboard(toggleTo);
-     }
+    @Override
+    public void perform(CommandContext context) {
+        boolean toggleTo = !context.fPlayer.showScoreboard();
+        FScoreboard board = FScoreboard.get(context.fPlayer);
+        if (board == null) {
+            context.msg(TL.COMMAND_TOGGLESB_DISABLED.toString());
+        } else {
+            context.msg(TL.TOGGLE_SB.toString().replace("{value}", String.valueOf(toggleTo)));
+            board.setSidebarVisibility(toggleTo);
+        }
+        context.fPlayer.setShowScoreboard(toggleTo);
+    }
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_SCOREBOARD_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_SCOREBOARD_DESCRIPTION;
+    }
 }

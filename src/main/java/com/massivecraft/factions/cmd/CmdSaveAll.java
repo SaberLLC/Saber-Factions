@@ -10,28 +10,28 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSaveAll extends FCommand {
 
-     public CmdSaveAll() {
-          super();
-          this.aliases.add("saveall");
-          this.aliases.add("save");
+    public CmdSaveAll() {
+        super();
+        this.aliases.add("saveall");
+        this.aliases.add("save");
 
-          this.requirements = new CommandRequirements.Builder(Permission.SAVE)
-                  .build();
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.SAVE)
+                .build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
-          FPlayers.getInstance().forceSave(false);
-          Factions.getInstance().forceSave(false);
-          Board.getInstance().forceSave(false);
-          Conf.save();
-          ShopConfig.saveShop();
-          context.msg(TL.COMMAND_SAVEALL_SUCCESS);
-     }
+    @Override
+    public void perform(CommandContext context) {
+        FPlayers.getInstance().forceSave(false);
+        Factions.getInstance().forceSave(false);
+        Board.getInstance().forceSave(false);
+        Conf.save();
+        ShopConfig.saveShop();
+        context.msg(TL.COMMAND_SAVEALL_SUCCESS);
+    }
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_SAVEALL_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_SAVEALL_DESCRIPTION;
+    }
 
 }

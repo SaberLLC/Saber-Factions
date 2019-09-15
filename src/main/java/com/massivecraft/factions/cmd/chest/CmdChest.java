@@ -10,31 +10,31 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdChest extends FCommand {
 
-     public CmdChest() {
-          this.aliases.add("chest");
-          this.aliases.add("pv");
+    public CmdChest() {
+        this.aliases.add("chest");
+        this.aliases.add("pv");
 
-          this.requirements = new CommandRequirements.Builder(Permission.CHEST)
-                  .playerOnly()
-                  .memberOnly()
-                  .withAction(PermissableAction.CHEST)
-                  .build();
-     }
+        this.requirements = new CommandRequirements.Builder(Permission.CHEST)
+                .playerOnly()
+                .memberOnly()
+                .withAction(PermissableAction.CHEST)
+                .build();
+    }
 
-     @Override
-     public void perform(CommandContext context) {
+    @Override
+    public void perform(CommandContext context) {
 
 
-          if (!FactionsPlugin.getInstance().getConfig().getBoolean("fchest.Enabled")) {
-               context.fPlayer.sendMessage("This command is disabled!");
-               return;
-          }
-          // This permission check is way too explicit but it's clean
-          context.player.openInventory(context.faction.getChestInventory());
-     }
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fchest.Enabled")) {
+            context.fPlayer.sendMessage("This command is disabled!");
+            return;
+        }
+        // This permission check is way too explicit but it's clean
+        context.player.openInventory(context.faction.getChestInventory());
+    }
 
-     @Override
-     public TL getUsageTranslation() {
-          return TL.COMMAND_VAULT_DESCRIPTION;
-     }
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_VAULT_DESCRIPTION;
+    }
 }
