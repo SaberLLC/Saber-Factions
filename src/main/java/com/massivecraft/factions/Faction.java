@@ -23,6 +23,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
 
+    int getWarpsLimit();
+
+    void setWarpsLimit(int limit);
+
+    int getTntBankLimit();
+
+    void setTntBankLimit(int limit);
 
     int getWallCheckMinutes();
 

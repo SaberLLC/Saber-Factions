@@ -736,7 +736,8 @@ public class FactionsPlayerListener implements Listener {
             }
             if (me.getAutoClaimFor() != null) {
                 me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
-                if (Conf.disableFlightOnFactionClaimChange && event.getPlayer().getGameMode() != GameMode.CREATIVE) CmdFly.disableFlight(me);
+                if (Conf.disableFlightOnFactionClaimChange && event.getPlayer().getGameMode() != GameMode.CREATIVE)
+                    CmdFly.disableFlight(me);
             } else if (me.isAutoSafeClaimEnabled()) {
                 if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
                     me.setIsAutoSafeClaimEnabled(false);
@@ -805,7 +806,7 @@ public class FactionsPlayerListener implements Listener {
         Player player = event.getPlayer();
         // Check if the material is bypassing protection
         if (block == null) return;  // clicked in air, apparently
-        if(event.getItem() != null) {
+        if (event.getItem() != null) {
             if (Conf.territoryBypassProtectedMaterials.contains(event.getItem().getType())) return;
         }
         if (GetPermissionFromUsableBlock(event.getClickedBlock().getType()) != null) {

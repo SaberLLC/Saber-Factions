@@ -23,20 +23,25 @@ public class ConvertConfigHandler {
     static FileConfiguration sv = YamlConfiguration.loadConfiguration(savageConfigFile);
     static File configFile = new File("plugins/Factions/config.yml");
     static FileConfiguration sb = YamlConfiguration.loadConfiguration(configFile);
-    public static void setString(String s){
+    static JavaPlugin plugin = JavaPlugin.getProvidingPlugin(FactionsPlugin.class);
+
+    public static void setString(String s) {
         sb.set(s, sv.getString(s));
     }
-    public static void setInt(String s){
+
+    public static void setInt(String s) {
         sb.set(s, sv.getInt(s));
     }
-    public static void setConfigSec(String s){
+
+    public static void setConfigSec(String s) {
         ConfigurationSection cs = sv.getConfigurationSection(s);
         sb.set(s, cs);
     }
-    static JavaPlugin plugin = JavaPlugin.getProvidingPlugin(FactionsPlugin.class);
-    public static void setBoolean(String s){
+
+    public static void setBoolean(String s) {
         sb.set(s, sv.getBoolean(s));
     }
+
     public static void convertconfig(Player player) {
         if (new File("plugins/Factions/SavageFactions/config.yml").exists()) {
             BukkitScheduler scheduler = plugin.getServer().getScheduler();

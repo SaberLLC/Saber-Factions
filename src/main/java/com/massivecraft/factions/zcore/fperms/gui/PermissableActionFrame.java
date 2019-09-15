@@ -34,7 +34,8 @@ public class PermissableActionFrame {
         List<GuiItem> GUIItems = new ArrayList<>();
         ItemStack dumby = buildDummyItem();
         // Fill background of GUI with dumbyitem & replace GUI assets after
-        for (int x = 0; x <= (gui.getRows() * 9) - 1; x++) GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
+        for (int x = 0; x <= (gui.getRows() * 9) - 1; x++)
+            GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
         for (PermissableAction action : PermissableAction.values()) {
             if (action.getSlot() == -1) continue;
             GUIItems.set(action.getSlot(), new GuiItem(action.buildAsset(fplayer, perm), e -> {

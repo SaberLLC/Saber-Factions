@@ -4,16 +4,13 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -30,6 +27,26 @@ public class MissionHandler implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerTame(EntityTameEvent event) {
+        if (!(event.getOwner() instanceof Player)) {
+            return;
+        }
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) event.getOwner());
+        if (fPlayer == null) {
+            return;
+        }
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("tame")).collect(Collectors.toList());
+        for (Mission mission2 : missions) {
+            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType")) && !section.getConfigurationSection("Mission").getString("EntityType").equalsIgnoreCase("ALL")) {
+                continue;
+            }
+            mission2.incrementProgress();
+            checkIfDone(fPlayer, mission2, section);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
         if (event.getEntity() == null || event.getEntity().getKiller() == null) {
             return;
@@ -41,7 +58,7 @@ public class MissionHandler implements Listener {
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("kill")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
-            if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType")) && !section.getConfigurationSection("Mission").getString("EntityType").equalsIgnoreCase("ALL")) {
+            if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType"))) {
                 continue;
             }
             mission2.incrementProgress();
@@ -58,7 +75,7 @@ public class MissionHandler implements Listener {
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("mine")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
-            if (!event.getBlock().getType().toString().equals(section.getConfigurationSection("Mission").getString("Material")) && !section.getConfigurationSection("Mission").getString("Material").equalsIgnoreCase("ALL")) {
+            if (!event.getBlock().getType().toString().equals(section.getConfigurationSection("Mission").getString("Material"))) {
                 continue;
             }
             mission2.incrementProgress();
@@ -75,7 +92,7 @@ public class MissionHandler implements Listener {
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("place")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
-            if (!event.getBlock().getType().toString().equals(section.getConfigurationSection("Mission").getString("Material")) && !section.getConfigurationSection("Mission").getString("Material").equalsIgnoreCase("ALL")) {
+            if (!event.getBlock().getType().toString().equals(section.getConfigurationSection("Mission").getString("Material"))) {
                 continue;
             }
             mission2.incrementProgress();
@@ -95,26 +112,6 @@ public class MissionHandler implements Listener {
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("fish")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
-            mission2.incrementProgress();
-            checkIfDone(fPlayer, mission2, section);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerTame(EntityTameEvent event) {
-        if (!(event.getOwner() instanceof Player)) {
-            return;
-        }
-        FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player)event.getOwner());
-        if (fPlayer == null) {
-            return;
-        }
-        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("tame")).collect(Collectors.toList());
-        for (Mission mission2 : missions) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
-            if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType")) && !section.getConfigurationSection("Mission").getString("EntityType").equalsIgnoreCase("ALL")) {
-                continue;
-            }
             mission2.incrementProgress();
             checkIfDone(fPlayer, mission2, section);
         }

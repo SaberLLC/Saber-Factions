@@ -267,13 +267,10 @@ public class FactionsPlugin extends MPlugin {
                 new FactionsExploitListener(),
                 new FactionsBlockListener(),
                 new FUpgradesGUI(),
-                new EXPUpgrade(),
-                new CropUpgrades(),
-                new RedstoneUpgrade(),
                 new ShopClickPersistence(),
+                new UpgradesListener(),
                 new MissionHandler(this),
-                new ChestLogsHandler(),
-                new SpawnerUpgrades()
+                new ChestLogsHandler()
         };
 
         for (Listener eventListener : eventsListener)

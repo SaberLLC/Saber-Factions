@@ -33,7 +33,8 @@ public class PermissableRelationFrame {
         List<GuiItem> GUIItems = new ArrayList<>();
         ItemStack dumby = buildDummyItem();
         // Fill background of GUI with dumbyitem & replace GUI assets after
-        for (int x = 0; x <= (gui.getRows() * 9) - 1; x++) GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
+        for (int x = 0; x <= (gui.getRows() * 9) - 1; x++)
+            GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
         ConfigurationSection sec = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.relation");
         for (String key : sec.getConfigurationSection("slots").getKeys(false)) {
             GUIItems.set(sec.getInt("slots." + key), new GuiItem(buildAsset("fperm-gui.relation.materials." + key, key), e -> {
