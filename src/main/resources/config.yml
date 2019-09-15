@@ -741,7 +741,7 @@ Missions-GUI-Title: '&bFaction Missions'
 MaximumMissionsAllowedAtOnce: 1
 Mission-Progress-Format: '&b&lProgression: &f{progress}&7/&e{total}'
 
-#Mission Types: KILL, MINE, FISH
+#Mission Types: KILL, MINE, PLACE, FISH, TAME
 Missions:
   sugarcane:
     Slot: 11
@@ -775,6 +775,18 @@ Missions:
       - "&b&lCatch fish &n100&r &d&ltimes"
     Mission:
       Type: "FISH"
+      Amount: 100
+    Reward:
+      Commands: ["f points add %faction% 100"]
+  animaltaming:
+    Slot: 21
+    Material: "BONE"
+    Name: "&f100 &cTamed Animals"
+    Lore:
+      - "&b&lTame an animal &n100&r &d&ltimes"
+    Mission:
+      Type: "TAME"
+      EntityType: "ALL"
       Amount: 100
     Reward:
       Commands: ["f points add %faction% 100"]
