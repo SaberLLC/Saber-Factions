@@ -328,6 +328,21 @@ public class FactionsBlockListener implements Listener {
     }
 
     @EventHandler
+    public void onBannerBreak(BlockBreakEvent e){
+        FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
+        if (FactionsPlugin.getInstance().mc17) {
+            return;
+        }
+
+        if(bannerLocations.containsValue(e.getBlock().getLocation())){
+            if(e.getBlock().getType().name().contains("BANNER")) {
+                e.setCancelled(true);
+                fme.msg(TL.BANNER_CANNOT_BREAK);
+            }
+        }
+    }
+
+    @EventHandler
     public void onBannerPlace(BlockPlaceEvent e) {
         if (FactionsPlugin.getInstance().mc17) {
             return;

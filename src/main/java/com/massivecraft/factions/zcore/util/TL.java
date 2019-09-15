@@ -200,6 +200,8 @@ public enum TL {
     COMMAND_BYPASS_DESCRIPTION("Enable admin bypass mode"),
 
     COMMAND_BANNER_DESCRIPTION("Turn a held banner into a war banner"),
+    BANNER_CANNOT_BREAK("&c&l[!] &7You may not break a faction banner!"),
+    COMMAND_BANNER_NOBANNER("&c&l[!] &cPlease set a banner using /f setbanner"),
     COMMAND_BANNER_NOTENOUGHMONEY("&c&l[!] &7You do&c not&7 have enough money"),
     COMMAND_BANNER_MONEYTAKE("&c&l[!] $&c{amount} &7has been taken from your account."),
     COMMAND_BANNER_SUCCESS("&c&l[!] &7You have created a &c&lWarBanner!"),
