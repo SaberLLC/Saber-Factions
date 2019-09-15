@@ -13,37 +13,37 @@ import java.util.UUID;
 
 public class LogoutHandler {
 
-    public static Map<String, LogoutHandler> factionDatas = new HashMap<>();
-    private Map<UUID, Long> logoutCooldown = new HashMap<>();
-    private String name;
+     public static Map<String, LogoutHandler> factionDatas = new HashMap<>();
+     private Map<UUID, Long> logoutCooldown = new HashMap<>();
+     private String name;
 
-    public LogoutHandler(String name) {
-        this.name = name;
-        factionDatas.put(name, this);
-    }
+     public LogoutHandler(String name) {
+          this.name = name;
+          factionDatas.put(name, this);
+     }
 
-    public static LogoutHandler getByName(String name) {
-        LogoutHandler logoutHandler = factionDatas.get(name);
-        return logoutHandler == null ? new LogoutHandler(name) : factionDatas.get(name);
-    }
+     public static LogoutHandler getByName(String name) {
+          LogoutHandler logoutHandler = factionDatas.get(name);
+          return logoutHandler == null ? new LogoutHandler(name) : factionDatas.get(name);
+     }
 
-    public boolean isLogoutActive(Player player) {
-        return logoutCooldown.containsKey(player.getUniqueId()) && System.currentTimeMillis() < logoutCooldown.get(player.getUniqueId());
-    }
+     public boolean isLogoutActive(Player player) {
+          return logoutCooldown.containsKey(player.getUniqueId()) && System.currentTimeMillis() < logoutCooldown.get(player.getUniqueId());
+     }
 
-    public void cancelLogout(Player player) {
-        logoutCooldown.remove(player.getUniqueId());
-    }
+     public void cancelLogout(Player player) {
+          logoutCooldown.remove(player.getUniqueId());
+     }
 
-    public void applyLogoutCooldown(Player player) {
-        logoutCooldown.put(player.getUniqueId(), System.currentTimeMillis() + (30 * 1000));
+     public void applyLogoutCooldown(Player player) {
+          logoutCooldown.put(player.getUniqueId(), System.currentTimeMillis() + (30 * 1000));
 
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-            if (isLogoutActive(player)) {
-                player.setMetadata("Logout", new FixedMetadataValue(FactionsPlugin.getInstance(), true));
-                player.kickPlayer(String.valueOf(TL.COMMAND_LOGOUT_KICK_MESSAGE));
-                cancelLogout(player);
-            }
-        }, Conf.logoutCooldown * 20L);
-    }
+          Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+               if (isLogoutActive(player)) {
+                    player.setMetadata("Logout", new FixedMetadataValue(FactionsPlugin.getInstance(), true));
+                    player.kickPlayer(String.valueOf(TL.COMMAND_LOGOUT_KICK_MESSAGE));
+                    cancelLogout(player);
+               }
+          }, Conf.logoutCooldown * 20L);
+     }
 }

@@ -10,39 +10,39 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdAlts extends FCommand {
 
 
-    public CmdInviteAlt cmdInviteAlt = new CmdInviteAlt();
-    public CmdAltsList cmdAltsList = new CmdAltsList();
+     public CmdInviteAlt cmdInviteAlt = new CmdInviteAlt();
+     public CmdAltsList cmdAltsList = new CmdAltsList();
 
 
-    public CmdAlts() {
-        super();
+     public CmdAlts() {
+          super();
 
-        this.aliases.add("alts");
-        this.aliases.add("alt");
+          this.aliases.add("alts");
+          this.aliases.add("alt");
 
-        this.addSubCommand(this.cmdInviteAlt);
-        this.addSubCommand(this.cmdAltsList);
+          this.addSubCommand(this.cmdInviteAlt);
+          this.addSubCommand(this.cmdAltsList);
 
-        this.requirements = new CommandRequirements.Builder(Permission.ALTS)
-                .playerOnly()
-                .memberOnly()
-                .build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.ALTS)
+                  .playerOnly()
+                  .memberOnly()
+                  .build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled", false)) {
-            context.msg(TL.GENERIC_DISABLED);
-            return;
-        }
+     @Override
+     public void perform(CommandContext context) {
+          if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled", false)) {
+               context.msg(TL.GENERIC_DISABLED);
+               return;
+          }
 
-        context.commandChain.add(this);
-        FactionsPlugin.getInstance().cmdAutoHelp.execute(context);
-    }
+          context.commandChain.add(this);
+          FactionsPlugin.getInstance().cmdAutoHelp.execute(context);
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_ALTS_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_ALTS_DESCRIPTION;
+     }
 
 }

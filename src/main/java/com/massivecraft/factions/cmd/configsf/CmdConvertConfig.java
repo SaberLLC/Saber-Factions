@@ -8,22 +8,22 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdConvertConfig extends FCommand {
 
-    public CmdConvertConfig() {
-        super();
-        this.aliases.add("convertconfig");
+     public CmdConvertConfig() {
+          super();
+          this.aliases.add("convertconfig");
 
-        this.requirements = new CommandRequirements.Builder(Permission.CONVERTCONFIG)
-                .playerOnly()
-                .build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.CONVERTCONFIG)
+                  .playerOnly()
+                  .build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        ConvertConfigHandler.convertconfig(context.player);
-    }
+     @Override
+     public void perform(CommandContext context) {
+          ConvertConfigHandler.convertconfig(context.player);
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_CONVERTCONFIG_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_CONVERTCONFIG_DESCRIPTION;
+     }
 }

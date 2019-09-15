@@ -9,36 +9,36 @@ import org.bukkit.command.ConsoleCommandSender;
 
 public class CmdConvert extends FCommand {
 
-    public CmdConvert() {
-        this.aliases.add("convert");
-        this.requiredArgs.add("[MYSQL|JSON]");
+     public CmdConvert() {
+          this.aliases.add("convert");
+          this.requiredArgs.add("[MYSQL|JSON]");
 
-        this.requirements = new CommandRequirements.Builder(Permission.CONVERT)
-                .build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.CONVERT)
+                  .build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        if (!(context.sender instanceof ConsoleCommandSender)) {
-            context.sender.sendMessage(TL.GENERIC_CONSOLEONLY.toString());
-        }
-        Backend nb = Backend.valueOf(context.argAsString(0).toUpperCase());
-        if (nb == Conf.backEnd) {
-            context.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_RUNNING.toString());
-            return;
-        }
-        if (nb == Backend.JSON) {
-            FactionsJSON.convertTo();
-        } else {
-            context.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_INVALID.toString());
-            return;
-        }
-        Conf.backEnd = nb;
-    }
+     @Override
+     public void perform(CommandContext context) {
+          if (!(context.sender instanceof ConsoleCommandSender)) {
+               context.sender.sendMessage(TL.GENERIC_CONSOLEONLY.toString());
+          }
+          Backend nb = Backend.valueOf(context.argAsString(0).toUpperCase());
+          if (nb == Conf.backEnd) {
+               context.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_RUNNING.toString());
+               return;
+          }
+          if (nb == Backend.JSON) {
+               FactionsJSON.convertTo();
+          } else {
+               context.sender.sendMessage(TL.COMMAND_CONVERT_BACKEND_INVALID.toString());
+               return;
+          }
+          Conf.backEnd = nb;
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_CONVERT_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_CONVERT_DESCRIPTION;
+     }
 
 }

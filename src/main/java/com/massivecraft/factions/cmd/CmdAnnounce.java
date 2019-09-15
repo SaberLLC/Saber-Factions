@@ -12,46 +12,46 @@ import org.bukkit.entity.Player;
 
 public class CmdAnnounce extends FCommand {
 
-    public CmdAnnounce() {
-        super();
-        this.aliases.add("ann");
-        this.aliases.add("announce");
+     public CmdAnnounce() {
+          super();
+          this.aliases.add("ann");
+          this.aliases.add("announce");
 
-        this.requiredArgs.add("message");
+          this.requiredArgs.add("message");
 
-        this.requirements = new CommandRequirements.Builder(Permission.ANNOUNCE)
-                .playerOnly()
-                .memberOnly()
-                .brigadier(AnnounceBrigadier.class)
-                .noErrorOnManyArgs()
-                .build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.ANNOUNCE)
+                  .playerOnly()
+                  .memberOnly()
+                  .brigadier(AnnounceBrigadier.class)
+                  .noErrorOnManyArgs()
+                  .build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        String prefix = ChatColor.GREEN + context.faction.getTag() + ChatColor.YELLOW + " [" + ChatColor.GRAY + context.player.getName() + ChatColor.YELLOW + "] " + ChatColor.RESET;
-        String message = StringUtils.join(context.args, " ");
+     @Override
+     public void perform(CommandContext context) {
+          String prefix = ChatColor.GREEN + context.faction.getTag() + ChatColor.YELLOW + " [" + ChatColor.GRAY + context.player.getName() + ChatColor.YELLOW + "] " + ChatColor.RESET;
+          String message = StringUtils.join(context.args, " ");
 
-        for (Player player : context.faction.getOnlinePlayers()) {
-            player.sendMessage(prefix + message);
-        }
+          for (Player player : context.faction.getOnlinePlayers()) {
+               player.sendMessage(prefix + message);
+          }
 
-        // Add for offline players.
-        for (FPlayer fp : context.faction.getFPlayersWhereOnline(false)) {
-            context.faction.addAnnouncement(fp, prefix + message);
-        }
-    }
+          // Add for offline players.
+          for (FPlayer fp : context.faction.getFPlayersWhereOnline(false)) {
+               context.faction.addAnnouncement(fp, prefix + message);
+          }
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_ANNOUNCE_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_ANNOUNCE_DESCRIPTION;
+     }
 
-    protected class AnnounceBrigadier implements BrigadierProvider {
-        @Override
-        public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
-            return parent.then(RequiredArgumentBuilder.argument("message", StringArgumentType.greedyString()));
-        }
-    }
+     protected class AnnounceBrigadier implements BrigadierProvider {
+          @Override
+          public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
+               return parent.then(RequiredArgumentBuilder.argument("message", StringArgumentType.greedyString()));
+          }
+     }
 
 }
