@@ -9,26 +9,26 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdShop extends FCommand {
 
-    public CmdShop() {
-        super();
-        this.aliases.add("shop");
-        this.requirements = new CommandRequirements.Builder(Permission.SHOP)
-                .memberOnly()
-                .playerOnly()
-                .build();
-    }
+     public CmdShop() {
+          super();
+          this.aliases.add("shop");
+          this.requirements = new CommandRequirements.Builder(Permission.SHOP)
+                  .memberOnly()
+                  .playerOnly()
+                  .build();
+     }
 
 
-    @Override
-    public void perform(CommandContext context) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("F-Shop.Enabled")) {
-            return;
-        }
-        ShopGUI.openShop(context.fPlayer);
-    }
+     @Override
+     public void perform(CommandContext context) {
+          if (!FactionsPlugin.getInstance().getConfig().getBoolean("F-Shop.Enabled")) {
+               return;
+          }
+          ShopGUI.openShop(context.fPlayer);
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return null;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return null;
+     }
 }

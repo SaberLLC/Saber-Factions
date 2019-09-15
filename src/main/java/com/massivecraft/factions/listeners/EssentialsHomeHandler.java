@@ -17,28 +17,28 @@ import java.util.logging.Level;
 
 public class EssentialsHomeHandler implements Listener {
 
-    private IEssentials ess;
+     private IEssentials ess;
 
-    public EssentialsHomeHandler(IEssentials essentials) {
-        this.ess = essentials;
-    }
+     public EssentialsHomeHandler(IEssentials essentials) {
+          this.ess = essentials;
+     }
 
-    @EventHandler
-    public void onLeave(FPlayerLeaveEvent event) throws Exception {
-        Faction faction = event.getFaction();
-        User user = ess.getUser(UUID.fromString(event.getfPlayer().getId()));
-        List<String> homes = user.getHomes();
-        if (homes == null || homes.isEmpty()) {
-            return;
-        }
-        for (String homeName : user.getHomes()) {
-            Location loc = user.getHome(homeName);
-            FLocation floc = new FLocation(loc);
-            Faction factionAt = Board.getInstance().getFactionAt(floc);
-            if (factionAt.equals(faction) && factionAt.isNormal()) {
-                user.delHome(homeName);
-                FactionsPlugin.getInstance().log(Level.INFO, "FactionLeaveEvent: Removing home %s, player %s, in territory of %s", homeName, event.getfPlayer().getName(), faction.getTag());
-            }
-        }
-    }
+     @EventHandler
+     public void onLeave(FPlayerLeaveEvent event) throws Exception {
+          Faction faction = event.getFaction();
+          User user = ess.getUser(UUID.fromString(event.getfPlayer().getId()));
+          List<String> homes = user.getHomes();
+          if (homes == null || homes.isEmpty()) {
+               return;
+          }
+          for (String homeName : user.getHomes()) {
+               Location loc = user.getHome(homeName);
+               FLocation floc = new FLocation(loc);
+               Faction factionAt = Board.getInstance().getFactionAt(floc);
+               if (factionAt.equals(faction) && factionAt.isNormal()) {
+                    user.delHome(homeName);
+                    FactionsPlugin.getInstance().log(Level.INFO, "FactionLeaveEvent: Removing home %s, player %s, in territory of %s", homeName, event.getfPlayer().getName(), faction.getTag());
+               }
+          }
+     }
 }

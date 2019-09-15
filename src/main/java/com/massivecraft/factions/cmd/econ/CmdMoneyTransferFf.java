@@ -16,39 +16,39 @@ import org.bukkit.entity.Player;
 public class CmdMoneyTransferFf extends FCommand {
 
 
-    public CmdMoneyTransferFf() {
-        this.aliases.add("ff");
+     public CmdMoneyTransferFf() {
+          this.aliases.add("ff");
 
-        this.requiredArgs.add("amount");
-        this.requiredArgs.add("faction");
-        this.requiredArgs.add("faction");
+          this.requiredArgs.add("amount");
+          this.requiredArgs.add("faction");
+          this.requiredArgs.add("faction");
 
-        this.requirements = new CommandRequirements.Builder(Permission.MONEY_F2F).build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.MONEY_F2F).build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        double amount = context.argAsDouble(0, 0d);
-        EconomyParticipator from = context.argAsFaction(1);
-        if (from == null) {
-            return;
-        }
-        EconomyParticipator to = context.argAsFaction(2);
-        if (to == null) {
-            return;
-        }
+     @Override
+     public void perform(CommandContext context) {
+          double amount = context.argAsDouble(0, 0d);
+          EconomyParticipator from = context.argAsFaction(1);
+          if (from == null) {
+               return;
+          }
+          EconomyParticipator to = context.argAsFaction(2);
+          if (to == null) {
+               return;
+          }
 
-        boolean success = Econ.transferMoney(context.fPlayer, from, to, amount);
+          boolean success = Econ.transferMoney(context.fPlayer, from, to, amount);
 
-        if (success && Conf.logMoneyTransactions) {
-            String name = context.sender instanceof Player ? context.fPlayer.getName() : context.sender.getName();
-            FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
-        }
-    }
+          if (success && Conf.logMoneyTransactions) {
+               String name = context.sender instanceof Player ? context.fPlayer.getName() : context.sender.getName();
+               FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYTRANSFERFF_TRANSFER.toString(), name, Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+          }
+     }
 
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_MONEYTRANSFERFF_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_MONEYTRANSFERFF_DESCRIPTION;
+     }
 }

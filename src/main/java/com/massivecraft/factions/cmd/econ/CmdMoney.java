@@ -8,44 +8,44 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdMoney extends FCommand {
 
-    public CmdMoneyBalance cmdMoneyBalance = new CmdMoneyBalance();
-    public CmdMoneyDeposit cmdMoneyDeposit = new CmdMoneyDeposit();
-    public CmdMoneyWithdraw cmdMoneyWithdraw = new CmdMoneyWithdraw();
-    public CmdMoneyTransferFf cmdMoneyTransferFf = new CmdMoneyTransferFf();
-    public CmdMoneyTransferFp cmdMoneyTransferFp = new CmdMoneyTransferFp();
-    public CmdMoneyTransferPf cmdMoneyTransferPf = new CmdMoneyTransferPf();
+     public CmdMoneyBalance cmdMoneyBalance = new CmdMoneyBalance();
+     public CmdMoneyDeposit cmdMoneyDeposit = new CmdMoneyDeposit();
+     public CmdMoneyWithdraw cmdMoneyWithdraw = new CmdMoneyWithdraw();
+     public CmdMoneyTransferFf cmdMoneyTransferFf = new CmdMoneyTransferFf();
+     public CmdMoneyTransferFp cmdMoneyTransferFp = new CmdMoneyTransferFp();
+     public CmdMoneyTransferPf cmdMoneyTransferPf = new CmdMoneyTransferPf();
 
-    public CmdMoney() {
-        super();
-        this.aliases.add("money");
-        this.aliases.add("bank");
+     public CmdMoney() {
+          super();
+          this.aliases.add("money");
+          this.aliases.add("bank");
 
-        //this.requiredArgs.add("");
-        //this.optionalArgs.put("","")
+          //this.requiredArgs.add("");
+          //this.optionalArgs.put("","")
 
-        this.helpLong.add(FactionsPlugin.getInstance().txt.parseTags(TL.COMMAND_MONEY_LONG.toString()));
+          this.helpLong.add(FactionsPlugin.getInstance().txt.parseTags(TL.COMMAND_MONEY_LONG.toString()));
 
-        this.addSubCommand(this.cmdMoneyBalance);
-        this.addSubCommand(this.cmdMoneyDeposit);
-        this.addSubCommand(this.cmdMoneyWithdraw);
-        this.addSubCommand(this.cmdMoneyTransferFf);
-        this.addSubCommand(this.cmdMoneyTransferFp);
-        this.addSubCommand(this.cmdMoneyTransferPf);
-    }
+          this.addSubCommand(this.cmdMoneyBalance);
+          this.addSubCommand(this.cmdMoneyDeposit);
+          this.addSubCommand(this.cmdMoneyWithdraw);
+          this.addSubCommand(this.cmdMoneyTransferFf);
+          this.addSubCommand(this.cmdMoneyTransferFp);
+          this.addSubCommand(this.cmdMoneyTransferPf);
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        if (!Conf.econEnabled) {
-            context.msg(TL.ECON_OFF, "economy option is enabled, please set \'econEnabled\' to true in conf.json");
-            return;
-        }
-        context.commandChain.add(this);
-        FactionsPlugin.getInstance().cmdAutoHelp.execute(context);
-    }
+     @Override
+     public void perform(CommandContext context) {
+          if (!Conf.econEnabled) {
+               context.msg(TL.ECON_OFF, "economy option is enabled, please set \'econEnabled\' to true in conf.json");
+               return;
+          }
+          context.commandChain.add(this);
+          FactionsPlugin.getInstance().cmdAutoHelp.execute(context);
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_MONEY_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_MONEY_DESCRIPTION;
+     }
 
 }

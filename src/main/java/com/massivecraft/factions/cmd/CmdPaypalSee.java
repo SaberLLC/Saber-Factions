@@ -6,52 +6,52 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPaypalSee extends FCommand {
-    public CmdPaypalSee() {
-        this.aliases.add("seepaypal");
-        this.aliases.add("paypal");
+     public CmdPaypalSee() {
+          this.aliases.add("seepaypal");
+          this.aliases.add("paypal");
 
-        this.optionalArgs.put("faction", "yours");
+          this.optionalArgs.put("faction", "yours");
 
-        this.requirements = new CommandRequirements.Builder(Permission.PAYPAL)
-                .memberOnly()
-                .build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.PAYPAL)
+                  .memberOnly()
+                  .build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled")) {
-            context.msg(TL.GENERIC_DISABLED);
-            return;
-        }
+     @Override
+     public void perform(CommandContext context) {
+          if (!FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled")) {
+               context.msg(TL.GENERIC_DISABLED);
+               return;
+          }
 
-        if (context.args.size() == 0) {
-            if (context.fPlayer.getFaction().getPaypal().isEmpty()) {
-                context.msg(TL.COMMAND_PAYPAL_NOTSET);
-            } else {
-                context.msg(TL.PAYPALSEE_PLAYER_PAYPAL, context.fPlayer.getFaction().getPaypal());
-            }
-        } else if (context.args.size() == 1) {
-            if (context.fPlayer.isAdminBypassing()) {
-                Faction faction = context.argAsFaction(0);
-                if (faction != null) {
-                    if (faction.getPaypal().isEmpty()) {
-                        context.msg(TL.COMMAND_PAYPALSEE_FACTION_NOTSET, faction.getTag());
-                    } else {
-                        context.msg(TL.COMMAND_PAYPALSEE_FACTION_PAYPAL.toString(), faction.getTag(), faction.getPaypal());
+          if (context.args.size() == 0) {
+               if (context.fPlayer.getFaction().getPaypal().isEmpty()) {
+                    context.msg(TL.COMMAND_PAYPAL_NOTSET);
+               } else {
+                    context.msg(TL.PAYPALSEE_PLAYER_PAYPAL, context.fPlayer.getFaction().getPaypal());
+               }
+          } else if (context.args.size() == 1) {
+               if (context.fPlayer.isAdminBypassing()) {
+                    Faction faction = context.argAsFaction(0);
+                    if (faction != null) {
+                         if (faction.getPaypal().isEmpty()) {
+                              context.msg(TL.COMMAND_PAYPALSEE_FACTION_NOTSET, faction.getTag());
+                         } else {
+                              context.msg(TL.COMMAND_PAYPALSEE_FACTION_PAYPAL.toString(), faction.getTag(), faction.getPaypal());
+                         }
                     }
-                }
-            } else {
-                context.msg(TL.GENERIC_NOPERMISSION, "see another factions paypal.");
-            }
-        } else {
-            context.msg(FactionsPlugin.getInstance().cmdBase.cmdPaypalSee.getUseageTemplate(context));
-        }
-    }
+               } else {
+                    context.msg(TL.GENERIC_NOPERMISSION, "see another factions paypal.");
+               }
+          } else {
+               context.msg(FactionsPlugin.getInstance().cmdBase.cmdPaypalSee.getUseageTemplate(context));
+          }
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_PAYPALSEE_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_PAYPALSEE_DESCRIPTION;
+     }
 }
 
 

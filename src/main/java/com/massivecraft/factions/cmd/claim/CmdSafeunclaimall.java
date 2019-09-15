@@ -14,42 +14,42 @@ import org.bukkit.World;
 
 public class CmdSafeunclaimall extends FCommand {
 
-    public CmdSafeunclaimall() {
-        this.aliases.add("safeunclaimall");
-        this.aliases.add("safedeclaimall");
-        this.optionalArgs.put("world", "all");
+     public CmdSafeunclaimall() {
+          this.aliases.add("safeunclaimall");
+          this.aliases.add("safedeclaimall");
+          this.optionalArgs.put("world", "all");
 
-        this.requirements = new CommandRequirements.Builder(Permission.MANAGE_SAFE_ZONE)
-                .build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.MANAGE_SAFE_ZONE)
+                  .build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        String worldName = context.argAsString(0);
-        World world = null;
+     @Override
+     public void perform(CommandContext context) {
+          String worldName = context.argAsString(0);
+          World world = null;
 
-        if (worldName != null) {
-            world = Bukkit.getWorld(worldName);
-        }
+          if (worldName != null) {
+               world = Bukkit.getWorld(worldName);
+          }
 
-        String id = Factions.getInstance().getSafeZone().getId();
+          String id = Factions.getInstance().getSafeZone().getId();
 
-        if (world == null) {
-            Board.getInstance().unclaimAll(id);
-        } else {
-            Board.getInstance().unclaimAllInWorld(id, world);
-        }
+          if (world == null) {
+               Board.getInstance().unclaimAll(id);
+          } else {
+               Board.getInstance().unclaimAllInWorld(id, world);
+          }
 
-        context.msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
+          context.msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
 
-        if (Conf.logLandUnclaims) {
-            FactionsPlugin.getInstance().log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(context.sender.getName()));
-        }
-    }
+          if (Conf.logLandUnclaims) {
+               FactionsPlugin.getInstance().log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(context.sender.getName()));
+          }
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_SAFEUNCLAIMALL_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_SAFEUNCLAIMALL_DESCRIPTION;
+     }
 
 }

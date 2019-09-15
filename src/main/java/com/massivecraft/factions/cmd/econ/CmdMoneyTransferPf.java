@@ -14,37 +14,37 @@ import org.bukkit.ChatColor;
 
 public class CmdMoneyTransferPf extends FCommand {
 
-    public CmdMoneyTransferPf() {
-        this.aliases.add("pf");
+     public CmdMoneyTransferPf() {
+          this.aliases.add("pf");
 
-        this.requiredArgs.add("amount");
-        this.requiredArgs.add("player");
-        this.requiredArgs.add("faction");
+          this.requiredArgs.add("amount");
+          this.requiredArgs.add("player");
+          this.requiredArgs.add("faction");
 
-        this.requirements = new CommandRequirements.Builder(Permission.MONEY_P2F).build();
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.MONEY_P2F).build();
+     }
 
-    @Override
-    public void perform(CommandContext context) {
-        double amount = context.argAsDouble(0, 0d);
-        EconomyParticipator from = context.argAsBestFPlayerMatch(1);
-        if (from == null) {
-            return;
-        }
-        EconomyParticipator to = context.argAsFaction(2);
-        if (to == null) {
-            return;
-        }
+     @Override
+     public void perform(CommandContext context) {
+          double amount = context.argAsDouble(0, 0d);
+          EconomyParticipator from = context.argAsBestFPlayerMatch(1);
+          if (from == null) {
+               return;
+          }
+          EconomyParticipator to = context.argAsFaction(2);
+          if (to == null) {
+               return;
+          }
 
-        boolean success = Econ.transferMoney(context.fPlayer, from, to, amount);
+          boolean success = Econ.transferMoney(context.fPlayer, from, to, amount);
 
-        if (success && Conf.logMoneyTransactions) {
-            FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYTRANSFERPF_TRANSFER.toString(), context.fPlayer.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
-        }
-    }
+          if (success && Conf.logMoneyTransactions) {
+               FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYTRANSFERPF_TRANSFER.toString(), context.fPlayer.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+          }
+     }
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_MONEYTRANSFERPF_DESCRIPTION;
-    }
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_MONEYTRANSFERPF_DESCRIPTION;
+     }
 }

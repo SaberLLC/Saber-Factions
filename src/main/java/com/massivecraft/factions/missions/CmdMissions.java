@@ -9,32 +9,32 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdMissions extends FCommand {
 
-    public CmdMissions() {
-        this.aliases.add("missions");
-        this.aliases.add("mission");
-        this.aliases.add("objectives");
-        this.aliases.add("objective");
+     public CmdMissions() {
+          this.aliases.add("missions");
+          this.aliases.add("mission");
+          this.aliases.add("objectives");
+          this.aliases.add("objective");
 
-        this.requirements = new CommandRequirements.Builder(Permission.MISSIONS)
-                .memberOnly()
-                .playerOnly()
-                .build();
-    }
-
-
-    @Override
-    public void perform(CommandContext context) {
-        if (context.faction == null) {
-            return;
-        }
-        final MissionGUI missionsGUI = new MissionGUI(FactionsPlugin.getInstance(), context.fPlayer);
-        missionsGUI.build();
-        context.player.openInventory(missionsGUI.getInventory());
-    }
+          this.requirements = new CommandRequirements.Builder(Permission.MISSIONS)
+                  .memberOnly()
+                  .playerOnly()
+                  .build();
+     }
 
 
-    @Override
-    public TL getUsageTranslation() {
-        return TL.COMMAND_MISSION_DESCRIPTION;
-    }
+     @Override
+     public void perform(CommandContext context) {
+          if (context.faction == null) {
+               return;
+          }
+          final MissionGUI missionsGUI = new MissionGUI(FactionsPlugin.getInstance(), context.fPlayer);
+          missionsGUI.build();
+          context.player.openInventory(missionsGUI.getInventory());
+     }
+
+
+     @Override
+     public TL getUsageTranslation() {
+          return TL.COMMAND_MISSION_DESCRIPTION;
+     }
 }

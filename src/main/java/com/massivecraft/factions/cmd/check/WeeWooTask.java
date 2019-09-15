@@ -7,19 +7,19 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class WeeWooTask implements Runnable {
 
-    private FactionsPlugin plugin;
+     private FactionsPlugin plugin;
 
-    public WeeWooTask(FactionsPlugin plugin) {
-        this.plugin = plugin;
-    }
+     public WeeWooTask(FactionsPlugin plugin) {
+          this.plugin = plugin;
+     }
 
-    @Override
-    public void run() {
-        for (Faction faction : Factions.getInstance().getAllFactions()) {
-            if (!faction.isWeeWoo()) {
-                continue;
-            }
-            faction.msg(TL.WEE_WOO_MESSAGE);
-        }
-    }
+     @Override
+     public void run() {
+          for (Faction faction : Factions.getInstance().getAllFactions()) {
+               if (!faction.isWeeWoo()) {
+                    continue;
+               }
+               faction.msg(TL.WEE_WOO_MESSAGE);
+          }
+     }
 }
