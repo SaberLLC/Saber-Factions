@@ -2,7 +2,17 @@ package com.massivecraft.factions.zcore.fupgrades;
 
 public enum UpgradeType {
 
-    CHEST("Chest"), SPAWNER("Spawner"), EXP("Exp"), CROP("Crop"), POWER("Power"), REDSTONE("Redstone"), MEMBERS("Members");
+    CHEST("Chest"),
+    SPAWNER("Spawner"),
+    EXP("Exp"),
+    CROP("Crop"),
+    POWER("Power"),
+    REDSTONE("Redstone"),
+    MEMBERS("Members"),
+    TNT("TNT"),
+    WARP("Warps"),
+    DAMAGEINCREASE("DamageIncrease"),
+    DAMAGEDECREASE("DamageDecrease");
 
     private String id;
 

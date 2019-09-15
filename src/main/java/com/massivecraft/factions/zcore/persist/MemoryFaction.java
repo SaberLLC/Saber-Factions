@@ -80,6 +80,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private Map<UUID, Integer> playerWallCheckCount;
     private Map<UUID, Integer> playerBufferCheckCount;
     private boolean weeWoo;
+    private int tntBankSize;
+    private int warpLimit;
 
 
     // -------------------------------------------- //
@@ -450,6 +452,33 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     @Override
     public void setBannerPattern(ItemStack banner) {
         bannerSerialized = banner.serialize();
+    }
+
+
+    @Override
+    public int getWarpsLimit() {
+        if (warpLimit == 0) {
+            return FactionsPlugin.getInstance().getConfig().getInt("max-warps");
+        }
+        return warpLimit;
+    }
+
+    @Override
+    public void setWarpsLimit(int warpLimit) {
+        this.warpLimit = warpLimit;
+    }
+
+    @Override
+    public int getTntBankLimit() {
+        if (tntBankSize == 0) {
+            return FactionsPlugin.getInstance().getConfig().getInt("ftnt.Bank-Limit");
+        }
+        return tntBankSize;
+    }
+
+    @Override
+    public void setTntBankLimit(int newLimit) {
+        tntBankSize = newLimit;
     }
 
     @Override

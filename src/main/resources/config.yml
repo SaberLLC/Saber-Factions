@@ -918,7 +918,7 @@ fupgrades:
         level-3: 3000000
       PowerItem:
         Name: '&c&lFaction Power'
-        Type: DIAMOND_SWORD
+        Type: NETHER_STAR
         Amount: 1
         Damage: 0
         Lore:
@@ -942,7 +942,7 @@ fupgrades:
     Redstone:
       Cost: 1000000
       RedstoneItem:
-        Name: '&c&lUnbreakable  Redstone'
+        Name: '&c&lUnbreakable Redstone'
         Type: REDSTONE
         Amount: 1
         Damage: 0
@@ -988,6 +988,134 @@ fupgrades:
           - '&e&lClick to &nUnlock'
         slots:
           - 24
+    DamageReduct:
+      DamageReductPercent:
+        level-1: 3
+        level-2: 5
+        level-3: 7
+      Cost:
+        level-1: 2000000
+        level-2: 4000000
+        level-3: 6000000
+      ReduceItem:
+        Name: '&c&lDamage Reduction Upgrade'
+        Type: DIAMOND_CHESTPLATE
+        Amount: 1
+        Damage: 0
+        Lore:
+          - '&7Reduce the amount of damage taken'
+          - '&7in your faction claims.'
+          - ''
+          - '&c&lTier'
+          - '&f&l* &7Current Level: &3{level}/3'
+          - ''
+          - '&c&lPerks'
+          - '&f&l* &7Level 1 - &7((&f-3% Damage Per Hit&7))'
+          - '&7  - Cost: $2,000,000'
+          - '&f&l* &7Level 2 - &7((&f-5% Damage Per Hit&7))'
+          - '&7  - Cost: $4,000,000'
+          - '&f&l* &7Level 3 - &7((&f-7% Damage Per Hit&7))'
+          - '&7  - Cost: $6,000,000'
+          - ''
+          - '&e&lClick to &nUnlock'
+        slots:
+          - 0
+    DamageIncrease:
+      DamageIncreasePercent:
+        level-1: 3
+        level-2: 5
+        level-3: 7
+      Cost:
+        level-1: 2000000
+        level-2: 4000000
+        level-3: 6000000
+      IncreaseItem:
+        Name: '&c&lDamage Increase Upgrade'
+        Type: DIAMOND_SWORD
+        Amount: 1
+        Damage: 0
+        Lore:
+          - '&7Increase the amount of damage given'
+          - '&7in your faction claims.'
+          - ''
+          - '&c&lTier'
+          - '&f&l* &7Current Level: &3{level}/3'
+          - ''
+          - '&c&lPerks'
+          - '&f&l* &7Level 1 - &7((&f+3% Damage Per Hit&7))'
+          - '&7  - Cost: $2,000,000'
+          - '&f&l* &7Level 2 - &7((&f+5% Damage Per Hit&7))'
+          - '&7  - Cost: $4,000,000'
+          - '&f&l* &7Level 3 - &7((&f+7% Damage Per Hit&7))'
+          - '&7  - Cost: $6,000,000'
+          - ''
+          - '&e&lClick to &nUnlock'
+        slots:
+          - 8
+    TNT:
+      tnt-limit:
+        level-1: 500000
+        level-2: 1000000
+        level-3: 2000000
+      Cost:
+        level-1: 2000000
+        level-2: 4000000
+        level-3: 6000000
+      TntItem:
+        Name: '&c&lTNT Bank Upgrade'
+        Type: TNT
+        Amount: 1
+        Damage: 0
+        Lore:
+          - '&7Upgrade Your tnt bank limit,'
+          - '&7to be eligible to store more tnt.'
+          - ''
+          - '&c&lTier'
+          - '&f&l* &7Current Level: &3{level}/3'
+          - ''
+          - '&c&lPerks'
+          - '&f&l* &7Level 1 - &f500,000 TNT'
+          - '&7  - Cost: $2,000,000'
+          - '&f&l* &7Level 2 - &f1,000,000 TNT'
+          - '&7  - Cost: $4,000,000'
+          - '&f&l* &7Level 3 - &f2,000,000 TNT'
+          - '&7  - Cost: $6,000,000'
+          - ''
+          - '&e&lClick to &nUnlock'
+        slots:
+          - 36
+    Warps:
+      warp-limit:
+        level-1: 3
+        level-2: 4
+        level-3: 5
+      Cost:
+        level-1: 1000000
+        level-2: 2000000
+        level-3: 3000000
+      WarpItem:
+        Name: '&c&lWarp Upgrade'
+        Type: EYE_OF_ENDER
+        Amount: 1
+        Damage: 0
+        Lore:
+          - '&7Upgrade Your warp limit,'
+          - '&7to be able to set more warps.'
+          - ''
+          - '&c&lTier'
+          - '&f&l* &7Current Level: &3{level}/3'
+          - ''
+          - '&c&lPerks'
+          - '&f&l* &7Level 1 - &f3 Warps'
+          - '&7  - Cost: $1,000,000'
+          - '&f&l* &7Level 2 - &f4 Warps'
+          - '&7  - Cost: $2,000,000'
+          - '&f&l* &7Level 3 - &f5 Warps'
+          - '&7  - Cost: $3,000,000'
+          - ''
+          - '&e&lClick to &nUnlock'
+        slots:
+          - 44
     Chest:
       Chest-Size:
         # This is rows
