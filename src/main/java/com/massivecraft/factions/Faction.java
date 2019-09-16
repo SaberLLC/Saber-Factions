@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
 
+    void checkPerms();
+
     double getReinforcedArmor();
 
     void setReinforcedArmor(double percent);

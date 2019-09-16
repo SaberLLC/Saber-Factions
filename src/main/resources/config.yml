@@ -1323,6 +1323,7 @@ Tntfill:
 #  - {player-maxpower} : Player max power
 #  - {player-kills} : # of kills the player has
 #  - {player-deaths}: # of deaths the player has
+#  - {total-online-visible}: # of players online from the perspective of the current player
 # Faction variables. Can be used in tooltips.list, scoreboards, or /f show
 #  - {header}    : Default factions header (ex. /f show)
 #  - {faction}   : Factions tag (if none, uses lang.yml for factionless name)

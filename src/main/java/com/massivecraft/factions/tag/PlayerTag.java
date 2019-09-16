@@ -4,7 +4,9 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.function.Function;
 
@@ -19,6 +21,19 @@ public enum PlayerTag implements Tag {
     PLAYER_KILLS("{player-kills}", (fp) -> String.valueOf(fp.getKills())),
     PLAYER_DEATHS("{player-deaths}", (fp) -> String.valueOf(fp.getDeaths())),
     PLAYER_NAME("{name}", FPlayer::getName),
+    TOTAL_ONLINE_VISIBLE("total-online-visible", (fp) -> {
+        if (fp == null) {
+            return String.valueOf(Bukkit.getOnlinePlayers().size());
+        }
+        int count = 0;
+        Player me = fp.getPlayer();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (me.canSee(player)) {
+                count++;
+            }
+        }
+        return String.valueOf(count);
+    }),
     ;
 
     private final String tag;
