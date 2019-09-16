@@ -314,9 +314,9 @@ public class FUpgradesGUI implements Listener {
 
     @SuppressWarnings("Duplicates")
     private ItemStack[] buildItems(FPlayer fme) {
-        Material expMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Type"));
+        byte expData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Damage"));
+        Material expMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Type"), expData);
         int expAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Amount");
-        short expData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.EXPItem.Damage") + "");
         String expName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Name"));
         List<String> expLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.EXP.EXPItem.Lore"));
         int expLevel = fme.getFaction().getUpgrade(UpgradeType.EXP);

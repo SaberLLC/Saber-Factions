@@ -182,12 +182,6 @@ public class FactionsPlugin extends MPlugin {
         this.loadSuccessful = false;
 
         saveDefaultConfig();
-        if (mc114) {
-            if (getConfig().getString("fupgrades.MainMenu.EXP.EXPItem.Type").equals("EXP_BOTTLE")) getConfig().set("fupgrades.MainMenu.EXP.EXPItem.Type", "EXPERIENCE_BOTTLE");
-            if (getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Type").equals("MOB_SPAWNER")) getConfig().set("fupgrades.MainMenu.Spawners.SpawnerItem.Type", "SPAWNER");
-            if (getConfig().getString("fupgrades.MainMenu.DamageReduct.ReduceItem.Type").equals("GOLD_CHESTPLATE")) getConfig().set("fupgrades.MainMenu.DamageReduct.ReduceItem.Type", "GOLDEN_CHESTPLATE");
-            if (getConfig().getString("fupgrades.MainMenu.Warps.WarpItem.Type").equals("EYE_OF_ENDER")) getConfig().set("fupgrades.MainMenu.Warps.WarpItem.Type", "ENDER_EYE");
-        }
 
         // Load Conf from disk
         Conf.load();
