@@ -11,9 +11,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -112,6 +114,37 @@ public class MissionHandler implements Listener {
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("fish")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            mission2.incrementProgress();
+            checkIfDone(fPlayer, mission2, section);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerEnchant(EnchantItemEvent e) {
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(e.getEnchanter());
+        if (fPlayer == null) {
+            return;
+        }
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("enchant")).collect(Collectors.toList());
+        for (Mission mission2 : missions) {
+            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            mission2.incrementProgress();
+            checkIfDone(fPlayer, mission2, section);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerConsume(PlayerItemConsumeEvent e) {
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
+        if (fPlayer == null) {
+            return;
+        }
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("consume")).collect(Collectors.toList());
+        for (Mission mission2 : missions) {
+            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            if (!e.getItem().toString().contains(section.getConfigurationSection("Mission").getString("Item")) && !section.getConfigurationSection("Mission").getString("Item").equalsIgnoreCase("ALL")) {
+                continue;
+            }
             mission2.incrementProgress();
             checkIfDone(fPlayer, mission2, section);
         }
