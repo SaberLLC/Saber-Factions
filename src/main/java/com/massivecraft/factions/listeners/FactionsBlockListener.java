@@ -155,6 +155,14 @@ public class FactionsBlockListener implements Listener {
 
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
             event.setCancelled(true);
+            return;
+        }
+
+        if (event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial())) {
+            if (Conf.spawnerLock) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
+            }
         }
     }
 

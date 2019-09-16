@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.grace;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -21,7 +22,7 @@ public class CmdGrace extends FCommand {
     @Override
     public void perform(CommandContext context) {
         Conf.gracePeriod = !Conf.gracePeriod;
-        context.msg(TL.COMMAND_GRACE_TOGGLE, Conf.gracePeriod ? TL.GENERIC_ENABLED : TL.GENERIC_DISABLED);
+        context.msg(TL.COMMAND_GRACE_TOGGLE, Conf.gracePeriod ? FactionsPlugin.getInstance().color("&aEnabled") : FactionsPlugin.getInstance().color("&4Disabled"));
     }
 
 
