@@ -337,9 +337,9 @@ public class FUpgradesGUI implements Listener {
             expItem.setAmount(expLevel);
         }
 
-        Material spawnerMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Type"));
+        byte spawnerData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.SpawnerItem.Damage"));
+        Material spawnerMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Type"), spawnerData);
         int spawnerAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.SpawnerItem.Amount");
-        short spawnerData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.SpawnerItem.Damage") + "");
         String spawnerName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Spawners.SpawnerItem.Name"));
         List<String> spawnerLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Spawners.SpawnerItem.Lore"));
         int spawnerLevel = fme.getFaction().getUpgrade(UpgradeType.SPAWNER);
@@ -349,9 +349,9 @@ public class FUpgradesGUI implements Listener {
         }
 
 
-        Material cropMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Type"));
+        byte cropData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.CropItem.Damage"));
+        Material cropMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Type"), cropData);
         int cropAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.CropItem.Amount");
-        short cropData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.CropItem.Damage") + "");
         String cropName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Crops.CropItem.Name"));
         List<String> cropLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Crops.CropItem.Lore"));
         int cropLevel = fme.getFaction().getUpgrade(UpgradeType.CROP);
@@ -388,10 +388,9 @@ public class FUpgradesGUI implements Listener {
             spawnerItem.setItemMeta(itemMeta);
             spawnerItem.setAmount(spawnerLevel);
         }
-
-        Material chestMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Type"));
-        int chesttAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Amount");
-        short chestData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Damage") + "");
+        byte chestData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Damage"));
+        Material chestMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Type"), chestData);
+        int chestAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.ChestItem.Amount");
         String chestName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Chest.ChestItem.Name", "&e&lUpgrade Chest Size"));
         List<String> chestLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Chest.ChestItem.Lore"));
         int chestlevel = fme.getFaction().getUpgrade(UpgradeType.CHEST);
@@ -402,7 +401,7 @@ public class FUpgradesGUI implements Listener {
             chestLore.set(i, line);
         }
 
-        ItemStack chestItem = FactionsPlugin.getInstance().createItem(chestMaterial, chesttAmt, chestData, chestName, chestLore);
+        ItemStack chestItem = FactionsPlugin.getInstance().createItem(chestMaterial, chestAmt, chestData, chestName, chestLore);
 
         if (chestlevel >= 1) {
             ItemMeta itemMeta = chestItem.getItemMeta();
@@ -415,9 +414,9 @@ public class FUpgradesGUI implements Listener {
             chestItem.setAmount(chestlevel);
         }
 
-        Material memberMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Members.MembersItem.Type"));
+        byte memberData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.MembersItem.Damage"));
+        Material memberMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Members.MembersItem.Type"), memberData);
         int memberAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.MembersItem.Amount");
-        short memberData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.MembersItem.Damage") + "");
         String memberName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Members.MembersItem.Name", "&e&lUpgrade Member Size"));
         List<String> memberLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Members.MembersItem.Lore"));
         int memberlevel = fme.getFaction().getUpgrade(UpgradeType.MEMBERS);
@@ -441,9 +440,9 @@ public class FUpgradesGUI implements Listener {
             memberItem.setAmount(memberlevel);
         }
 
-        Material powerMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Power.PowerItem.Type"));
+        byte powerData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.PowerItem.Damage"));
+        Material powerMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Power.PowerItem.Type"), powerData);
         int powerAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.PowerItem.Amount");
-        short powerData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.PowerItem.Damage") + "");
         String powerName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Power.PowerItem.Name"));
         List<String> powerLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Power.PowerItem.Lore"));
         int powerLevel = fme.getFaction().getUpgrade(UpgradeType.POWER);
@@ -468,9 +467,9 @@ public class FUpgradesGUI implements Listener {
             powerItem.setAmount(powerLevel);
         }
 
-        Material redMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Redstone.RedstoneItem.Type"));
+        byte redData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.RedstoneItem.Damage"));
+        Material redMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Redstone.RedstoneItem.Type"), redData);
         int redAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.RedstoneItem.Amount");
-        short redData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.RedstoneItem.Damage") + "");
         String redName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Redstone.RedstoneItem.Name"));
         List<String> redLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Redstone.RedstoneItem.Lore"));
         int redLevel = fme.getFaction().getUpgrade(UpgradeType.REDSTONE);
@@ -494,9 +493,9 @@ public class FUpgradesGUI implements Listener {
             redItem.setAmount(redLevel);
         }
 
-        Material reduceMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DamageReduct.ReduceItem.Type"));
+        byte reduceData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageReduct.ReduceItem.Damage"));
+        Material reduceMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DamageReduct.ReduceItem.Type"), reduceData);
         int reduceAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageReduct.ReduceItem.Amount");
-        short reduceData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageReduct.ReduceItem.Damage") + "");
         String reduceName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DamageReduct.ReduceItem.Name"));
         List<String> reduceLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.DamageReduct.ReduceItem.Lore"));
         int reduceLevel = fme.getFaction().getUpgrade(UpgradeType.DAMAGEDECREASE);
@@ -521,9 +520,9 @@ public class FUpgradesGUI implements Listener {
             reduceItem.setAmount(reduceLevel);
         }
 
-        Material increaseMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DamageIncrease.IncreaseItem.Type"));
+        byte increaseData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageIncrease.IncreaseItem.Damage"));
+        Material increaseMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DamageIncrease.IncreaseItem.Type"), increaseData);
         int increaseAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageIncrease.IncreaseItem.Amount");
-        short increaseData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageIncrease.IncreaseItem.Damage") + "");
         String increaseName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DamageIncrease.IncreaseItem.Name"));
         List<String> increaseLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.DamageIncrease.IncreaseItem.Lore"));
         int increaseLevel = fme.getFaction().getUpgrade(UpgradeType.DAMAGEINCREASE);
@@ -547,10 +546,9 @@ public class FUpgradesGUI implements Listener {
 
             increaseItem.setAmount(increaseLevel);
         }
-
-        Material tntMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.TNT.TntItem.Type"));
+        byte tntData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.TNT.TntItem.Damage"));
+        Material tntMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.TNT.TntItem.Type"), tntData);
         int tntAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.TNT.TntItem.Amount");
-        short tntData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.TNT.TntItem.Damage") + "");
         String tntName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.TNT.TntItem.Name"));
         List<String> tntLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.TNT.TntItem.Lore"));
         int tntLevel = fme.getFaction().getUpgrade(UpgradeType.TNT);
@@ -574,10 +572,9 @@ public class FUpgradesGUI implements Listener {
 
             tntItem.setAmount(tntLevel);
         }
-
-        Material warpMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Warps.WarpItem.Type"));
+        byte warpData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.WarpItem.Damage"));
+        Material warpMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Warps.WarpItem.Type"), warpData);
         int warpAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.WarpItem.Amount");
-        short warpData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.WarpItem.Damage") + "");
         String warpName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Warps.WarpItem.Name"));
         List<String> warpLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Warps.WarpItem.Lore"));
         int warpLevel = fme.getFaction().getUpgrade(UpgradeType.WARP);
@@ -602,9 +599,9 @@ public class FUpgradesGUI implements Listener {
             warpItem.setAmount(warpLevel);
         }
 
-        Material armorMaterial = Material.getMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Armor.ArmorItem.Type"));
+        byte armorData = (byte) (FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.ArmorItem.Damage"));
+        Material armorMaterial = XMaterial.parseMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Armor.ArmorItem.Type"), warpData);
         int armorAmt = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.ArmorItem.Amount");
-        short armorData = Short.parseShort(FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.ArmorItem.Damage") + "");
         String armorName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Armor.ArmorItem.Name"));
         List<String> armorLore = FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fupgrades.MainMenu.Armor.ArmorItem.Lore"));
         int armorLevel = fme.getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
