@@ -741,7 +741,7 @@ Missions-GUI-Title: '&bFaction Missions'
 MaximumMissionsAllowedAtOnce: 1
 Mission-Progress-Format: '&b&lProgression: &f{progress}&7/&e{total}'
 
-#Mission Types: KILL, MINE, PLACE, FISH, TAME
+#Mission Types: KILL, MINE, PLACE, FISH, TAME, ENCHANT, CONSUME
 Missions:
   sugarcane:
     Slot: 11
@@ -779,7 +779,7 @@ Missions:
     Reward:
       Commands: ["f points add %faction% 100"]
   animaltaming:
-    Slot: 21
+    Slot: 20
     Material: "BONE"
     Name: "&f100 &cTamed Animals"
     Lore:
@@ -787,6 +787,30 @@ Missions:
     Mission:
       Type: "TAME"
       EntityType: "ALL"
+      Amount: 100
+    Reward:
+      Commands: ["f points add %faction% 100"]
+  enchant:
+    Slot: 22
+    Material: "BOOK"
+    Name: "&f100 &dEnchants"
+    Lore:
+      - "&b&lEnchant &n100&r &d&litems"
+    Mission:
+      Type: "ENCHANT"
+      Amount: 100
+    Reward:
+      Commands: ["f points add %faction% 100"]
+  consume:
+    Slot: 24
+    Material: "COOKED_BEEF"
+    Name: "&f100 &dSteak"
+    Lore:
+      - "&b&lConsume &n100&r &d&lsteak"
+    Mission:
+      Type: "CONSUME"
+      # "ALL" can also be used for item
+      Item: "COOKED_BEEF"
       Amount: 100
     Reward:
       Commands: ["f points add %faction% 100"]
