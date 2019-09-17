@@ -683,15 +683,12 @@ F-Shop:
   Enabled: true
   GUI:
     Name: '&b&lFaction Shop'
-    Size: 36
-    Information:
-      name: '&b&lInformation'
-      lore:
-        - '&bPoints &7are gained by capturing koths/conquests.'
-        - ''
-        - '&b&l[!] &bFaction Points: &f%points%'
-      slot: 22
-
+    Rows: 4
+    dummy-item:
+      Type: BLACK_STAINED_GLASS_PANE
+      Name: '&cFaction Points: &b{points}'
+      Lore:
+        - ' '
 ############################################################
 # +------------------------------------------------------+ #
 # |           Faction Command Cooldowns                  | #

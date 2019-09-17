@@ -24,7 +24,7 @@ public class CmdShop extends FCommand {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("F-Shop.Enabled")) {
             return;
         }
-        ShopGUI.openShop(context.fPlayer);
+        new ShopGUIFrame(context.faction).buildGUI(context.fPlayer);
     }
 
     @Override

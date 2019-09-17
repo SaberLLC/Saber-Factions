@@ -16,7 +16,6 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.missions.MissionHandler;
-import com.massivecraft.factions.shop.ShopClickPersistence;
 import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
@@ -267,7 +266,6 @@ public class FactionsPlugin extends MPlugin {
                 new FactionsExploitListener(),
                 new FactionsBlockListener(),
                 new FUpgradesGUI(),
-                new ShopClickPersistence(),
                 new UpgradesListener(),
                 new MissionHandler(this),
                 new ChestLogsHandler()

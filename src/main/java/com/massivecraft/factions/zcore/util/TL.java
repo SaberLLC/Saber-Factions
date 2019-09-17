@@ -721,7 +721,7 @@ public enum TL {
     COMMAND_STRIKESINFO_DESCRIPTION("Get a faction's strikes"),
 
     SHOP_NOT_ENOUGH_POINTS("&c&l[!] &7Your faction does not have enough points to purchase this!"),
-    SHOP_BOUGHT_BROADCAST_FACTION("\n&c&l[!] &e&lFactionShop » &b{player} &7bought &b{item}&7!\n"),
+    SHOP_BOUGHT_BROADCAST_FACTION("\n&c&l[!] &e&lFactionShop » &b{player} &7bought &b{item}&7 for &b{cost} &7points!\n"),
 
 
     COMMAND_VIEWCHEST_DESCRIPTION("view a factions chest/pv"),
