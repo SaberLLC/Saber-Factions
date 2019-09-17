@@ -477,24 +477,18 @@ public class FactionsBlockListener implements Listener {
     //Grace
     @EventHandler
     public void onBreak(EntityExplodeEvent e) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-grace.Enabled"))
-            return;
+        if (!Conf.gracePeriod) return;
 
-        if (!graceisEnabled()) {
-            e.setCancelled(true);
-        }
+        e.setCancelled(true);
     }
 
     @EventHandler
     public void entityDamage(EntityDamageEvent e) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-grace.Enabled"))
-            return;
+        if (!Conf.gracePeriod) return;
 
-        if (!graceisEnabled()) {
             if (e.getEntity() instanceof Player) {
                 if (e.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                     e.setCancelled(true);
-                }
             }
         }
     }
@@ -502,10 +496,9 @@ public class FactionsBlockListener implements Listener {
     @EventHandler
     public void onTNTPlace(BlockPlaceEvent e1) {
         FPlayer fp = FPlayers.getInstance().getByPlayer(e1.getPlayer());
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-grace.Enabled"))
-            return;
+        if (!Conf.gracePeriod) return;
 
-        if (!graceisEnabled() && !fp.isAdminBypassing()) {
+        if (!fp.isAdminBypassing()) {
             if (e1.getBlock().getType().equals(Material.TNT)) {
                 e1.setCancelled(true);
 
