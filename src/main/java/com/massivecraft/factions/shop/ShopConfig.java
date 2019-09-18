@@ -34,6 +34,7 @@ public class ShopConfig {
         if (!shop.exists()) {
             try {
                 shop.createNewFile();
+
                 getShop().set("prefix", "&4&lFactionShop&8» &7Purchased &f%item% &7for &b%points% Points&7!");
                 getShop().set("items.1.slot", 1);
                 getShop().set("items.1.block", "STONE");
@@ -51,6 +52,8 @@ public class ShopConfig {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            s.options().copyDefaults(true);
         }
     }
 }
