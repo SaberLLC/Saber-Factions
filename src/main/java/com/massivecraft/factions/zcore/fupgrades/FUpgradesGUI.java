@@ -8,6 +8,7 @@ import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -272,7 +273,7 @@ public class FUpgradesGUI implements Listener {
     private void updateChests(Faction faction) {
         String invName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"));
 
-        for (Player player : faction.getOnlinePlayers()) {
+        for (HumanEntity player : faction.getChestInventory().getViewers()) {
             if (player.getInventory().getTitle() != null && player.getInventory().getTitle().equalsIgnoreCase(invName))
                 player.closeInventory();
         }

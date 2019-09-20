@@ -423,8 +423,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     @Override
     public Inventory getChestInventory() {
-        if (chest != null) return chest;
+        if (chest == null) {
+            this.chest = Bukkit.createInventory(null, getChestSize(), FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
+            return chest;
+        }
+        return chest;
+    }
 
+    private int getChestSize() {
         int size = 9;
         switch (getUpgrade(UpgradeType.CHEST)) {
             case 1:
@@ -437,8 +443,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
                 break;
         }
-        chest = Bukkit.createInventory(null, size, FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
-        return chest;
+        return size;
     }
 
 

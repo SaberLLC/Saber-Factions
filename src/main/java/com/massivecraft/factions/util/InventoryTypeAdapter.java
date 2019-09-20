@@ -1,6 +1,8 @@
 package com.massivecraft.factions.util;
 
 import com.google.gson.*;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.inventory.Inventory;
 
 import java.lang.reflect.Type;
@@ -20,8 +22,6 @@ public class InventoryTypeAdapter implements JsonSerializer<Inventory>, JsonDese
     @Override
     public Inventory deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
         JsonObject object = jsonElement.getAsJsonObject();
-        return InventoryUtil.fromBase64(object.get("contents").getAsString());
+        return InventoryUtil.fromBase64(object.get("contents").getAsString(), FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
     }
-
-
 }
