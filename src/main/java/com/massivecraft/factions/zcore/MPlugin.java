@@ -329,6 +329,6 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public void log(Level level, Object msg) {
-        getLogger().log(level, "[" + this.getDescription().getFullName() + "] " + msg);
+        getLogger().log(level, "[" + this.getDescription().getVersion() + "] " + msg); // Full name is really ugly
     }
 }

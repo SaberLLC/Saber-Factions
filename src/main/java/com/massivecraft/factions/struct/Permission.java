@@ -50,6 +50,7 @@ public enum Permission {
     LEAVE("leave"),
     LIST("list"),
     LOCK("lock"),
+    LOCKSPAWNERS("lockspawners"),
     LOGOUT("logout"),
     MAP("map"),
     MAPHEIGHT("mapheight"),

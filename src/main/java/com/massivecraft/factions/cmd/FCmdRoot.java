@@ -146,6 +146,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdCheck cmdCheck = new CmdCheck();
     public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
     public CmdConvertConfig cmdConvertConfig = new CmdConvertConfig();
+    public CmdSpawnerLock cmdSpawnerLock = new CmdSpawnerLock();
 
     public FCmdRoot() {
         super();
@@ -255,6 +256,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdFGlobal);
         this.addSubCommand(this.cmdViewChest);
         this.addSubCommand(this.cmdConvertConfig);
+        this.addSubCommand(this.cmdSpawnerLock);
 
         if (Conf.useCheckSystem) {
             this.addSubCommand(this.cmdCheck);

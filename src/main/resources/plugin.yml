@@ -188,6 +188,8 @@ permissions:
     description: see a list of the factions
   factions.lock:
     description: lock all write stuff
+  factions.lockspawners:
+    description: toggle placement of spawners
   factions.managesafezone:
     description: claim land as a safe zone and build/destroy within safe zones
   factions.managewarzone:

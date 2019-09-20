@@ -29,7 +29,7 @@ public class CmdAutoHelp extends FCommand {
 
         for (FCommand scmd : pcmd.subCommands) {
             if (scmd.visibility == CommandVisibility.VISIBLE) {
-                lines.add(scmd.getUseageTemplate(context, true));
+                lines.add(scmd.getUsageTemplate(context, true));
             }
             // TODO deal with other visibilities
         }

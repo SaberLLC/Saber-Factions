@@ -592,6 +592,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.tag;
     }
 
+    public void checkPerms() {
+        if (this.permissions == null || this.permissions.isEmpty()) {
+            this.resetPerms();
+        }
+    }
+
     public void setTag(String str) {
         if (Conf.factionTagForceUpperCase) {
             str = str.toUpperCase();

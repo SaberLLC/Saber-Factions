@@ -67,7 +67,14 @@ public enum FactionTag implements Tag {
             return String.valueOf(fac.getFPlayersWhereOnline(true).size());
         }
     }),
-    OFFLINE_COUNT("{offline}", (fac) -> String.valueOf(fac.getFPlayers().size() - fac.getOnlinePlayers().size())),
+    OFFLINE_COUNT("offline", (fac, fp) -> {
+        if (fp != null && fp.isOnline()) {
+            return String.valueOf(fac.getFPlayers().size() - fac.getFPlayersWhereOnline(true, fp).size());
+        } else {
+            // Only console should ever get here.
+            return String.valueOf(fac.getFPlayersWhereOnline(false).size());
+        }
+    }),
     FACTION_SIZE("{members}", (fac) -> String.valueOf(fac.getFPlayers().size())),
     FACTION_KILLS("{faction-kills}", (fac) -> String.valueOf(fac.getKills())),
     FACTION_DEATHS("{faction-deaths}", (fac) -> String.valueOf(fac.getDeaths())),
@@ -118,18 +125,15 @@ public enum FactionTag implements Tag {
         if (!this.foundInString(text)) {
             return text;
         }
-        if (this.biFunction == null) {
-            return this.replace(text, faction);
+        String result = null;
+        if (this.biFunction != null) {
+            result = this.function == null ? this.biFunction.apply(faction, player) : this.function.apply(faction);
         }
-        String result = this.biFunction.apply(faction, player);
         return result == null ? null : text.replace(this.tag, result);
     }
 
     public String replace(String text, Faction faction) {
-        if (this.function == null || !this.foundInString(text)) {
-            return text;
-        }
-        String result = this.function.apply(faction);
-        return result == null ? null : text.replace(this.tag, result);
+        return this.replace(text, faction, null);
+
     }
 }

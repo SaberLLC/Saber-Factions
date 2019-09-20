@@ -96,7 +96,7 @@ public abstract class FCommand {
         if (context.args.size() < this.requiredArgs.size()) {
             if (context.sender != null) {
                 context.msg(TL.GENERIC_ARGS_TOOFEW);
-                context.sender.sendMessage(this.getUseageTemplate(context));
+                context.sender.sendMessage(this.getUsageTemplate(context));
             }
             return false;
         }
@@ -106,7 +106,7 @@ public abstract class FCommand {
                 // Get the to many string slice
                 List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());
                 context.msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
-                context.sender.sendMessage(this.getUseageTemplate(context));
+                context.sender.sendMessage(this.getUsageTemplate(context));
             }
             return false;
         }
@@ -200,7 +200,7 @@ public abstract class FCommand {
     /*
     Help and Usage information
  */
-    public String getUseageTemplate(CommandContext context, boolean addShortHelp) {
+    public String getUsageTemplate(CommandContext context, boolean addShortHelp) {
         StringBuilder ret = new StringBuilder();
         ret.append(FactionsPlugin.getInstance().color(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString()));
         ret.append('/');
@@ -241,8 +241,8 @@ public abstract class FCommand {
         return ret.toString();
     }
 
-    public String getUseageTemplate(CommandContext context) {
-        return getUseageTemplate(context, false);
+    public String getUsageTemplate(CommandContext context) {
+        return getUsageTemplate(context, false);
     }
 
 }
