@@ -158,6 +158,10 @@ permissions:
     description: create a new faction
   factions.deinvite:
     description: remove a pending invitation
+  factions.setdiscord:
+    description: set discord link
+  factions.discord:
+    description: view factions discord
   factions.description:
     description: change the faction description
   factions.disband:

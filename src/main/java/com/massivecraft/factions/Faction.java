@@ -23,6 +23,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
 
+    String getDiscord();
+
+    void setDiscord(String link);
+
     void checkPerms();
 
     double getReinforcedArmor();

@@ -566,6 +566,18 @@ public enum TL {
     COMMAND_OWNERLIST_OWNERS("&c&l[!]&7 Current owner(s) of this land: %1$s"),
     COMMAND_OWNERLIST_DESCRIPTION("List owner(s) of this claimed land"),
 
+    COMMAND_DISCORDSET_ADMIN_SUCCESSFUL("&c&l[!] &7You have set &b%1$s's &7discord to &b%2$s&7."),
+    COMMAND_DISCORDSET_ADMIN_FAILED("&c&l[!] &b%1$s &7is not an discord link!"),
+    COMMAND_DISCORDSET_NOTEMAIL("&c&l[!] &b%1$s &7is not an discord link!"),
+    COMMAND_DISCORDSET_DESCRIPTION("&c&l[!] &7Set the link of your factions discord."),
+    COMMAND_DISCORDSET_SUCCESSFUL("&c&l[!] &7Successfully set your factions discord link - &b%1$s&7."),
+    DISCORD_PLAYER_DISCORD("&c&l[!] &7You're factions discord link is: &b%1$s&7."),
+    COMMAND_DISCORD_NOTSET("&c&l[!] &7Your faction does not have their discord set!"),
+    COMMAND_DISCORDSEE_FACTION_NOTSET("&c&l[!] &b%1$s's &7discord has not yet been set!"),
+    COMMAND_DISCORDSEE_FACTION_DISCORD("&c&l[!] &b%1$s's &7faction has their discord link set to &b%2$s&7."),
+    COMMAND_DISCORDSEE_DESCRIPTION("&c&l[!] &7View a specific factions discord link with &b/f discord <faction>&b."),
+
+
     PAYPALSEE_PLAYER_PAYPAL("&c&l[!] &7You're factions paypal is: &b%1$s&7."),
     COMMAND_PAYPAL_NOTSET("&c&l[!] &7Your faction does not have their paypal set!"),
     COMMAND_PAYPALSET_ADMIN_SUCCESSFUL("&c&l[!] &7You have set &b%1$s's &7paypal to &b%2$s&7."),

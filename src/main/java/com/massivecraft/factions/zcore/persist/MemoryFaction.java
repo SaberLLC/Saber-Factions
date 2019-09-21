@@ -84,6 +84,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private int warpLimit;
     private double reinforcedArmor;
     private List<String> completedMissions;
+    protected String discord;
 
 
     // -------------------------------------------- //
@@ -215,6 +216,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean isWarpPassword(String warp, String password) {
         return hasWarpPassword(warp) && warpPasswords.get(warp.toLowerCase()).equals(password);
+    }
+
+    public String getDiscord() {
+        return this.discord;
+    }
+
+    public void setDiscord(String link) {
+        this.discord = link;
     }
 
     public String getPaypal() {
