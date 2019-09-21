@@ -737,6 +737,7 @@ Missions-Enabled: true
 Missions-GUI-Title: '&bFaction Missions'
 MaximumMissionsAllowedAtOnce: 1
 Mission-Progress-Format: '&b&lProgression: &f{progress}&7/&e{total}'
+DenyMissionsMoreThenOnce: true #this setting to true, means that if they complete a mission they cannot redo the same mission
 
 #Mission Types: KILL, MINE, PLACE, FISH, TAME, ENCHANT, CONSUME
 Missions:

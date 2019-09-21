@@ -159,5 +159,6 @@ public class MissionHandler implements Listener {
         }
         fPlayer.getFaction().getMissions().remove(mission.getName());
         fPlayer.getFaction().msg(TL.MISSION_MISSION_FINISHED, plugin.color(section.getString("Name")));
+        fPlayer.getFaction().getCompletedMissions().add(mission.getName());
     }
 }

@@ -35,7 +35,7 @@ public class CmdMoney extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!Conf.econEnabled) {
+        if (!Conf.econEnabled || !Conf.bankEnabled) {
             context.msg(TL.ECON_OFF, "economy option is enabled, please set \'econEnabled\' to true in conf.json");
             return;
         }

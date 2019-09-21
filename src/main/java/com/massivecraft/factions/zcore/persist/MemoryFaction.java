@@ -83,6 +83,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private int tntBankSize;
     private int warpLimit;
     private double reinforcedArmor;
+    private List<String> completedMissions;
 
 
     // -------------------------------------------- //
@@ -112,6 +113,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.checks = new ConcurrentHashMap<>();
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
+        this.completedMissions = new ArrayList<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -130,6 +132,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         money = old.money;
         powerBoost = old.powerBoost;
         missions = new ConcurrentHashMap<>();
+        this.completedMissions = new ArrayList<>();
         relationWish = old.relationWish;
         claimOwnership = old.claimOwnership;
         fplayers = new HashSet<>();
@@ -509,7 +512,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.wallCheckMinutes;
     }
 
-    public void setWallCheckMinutes(final int wallCheckMinutes) {
+    public void setWallCheckMinutes(int wallCheckMinutes) {
         this.wallCheckMinutes = wallCheckMinutes;
     }
 
@@ -517,7 +520,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.bufferCheckMinutes;
     }
 
-    public void setBufferCheckMinutes(final int bufferCheckMinutes) {
+    public void setBufferCheckMinutes(int bufferCheckMinutes) {
         this.bufferCheckMinutes = bufferCheckMinutes;
     }
 
@@ -537,7 +540,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.weeWoo;
     }
 
-    public void setWeeWoo(final boolean weeWoo) {
+    public void setWeeWoo(boolean weeWoo) {
         this.weeWoo = weeWoo;
     }
 
@@ -1265,6 +1268,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public Map<String, Mission> getMissions() {
         return this.missions;
     }
+
+    @Override
+    public List<String> getCompletedMissions() {return this.completedMissions;}
 
     public void clearAllClaimOwnership() {
         claimOwnership.clear();

@@ -59,6 +59,8 @@ public interface Faction extends EconomyParticipator {
 
     Map<String, Mission> getMissions();
 
+    List<String> getCompletedMissions();
+
     void deinviteAlt(FPlayer alt);
 
     void deinviteAllAlts();
