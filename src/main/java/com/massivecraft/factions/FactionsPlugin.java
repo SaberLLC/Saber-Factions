@@ -10,6 +10,7 @@ import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
+import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.chest.ChestLogsHandler;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
@@ -86,6 +87,7 @@ public class FactionsPlugin extends MPlugin {
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
     private Listener[] eventsListener;
+    public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
 
 
     public FactionsPlugin() {
@@ -268,6 +270,7 @@ public class FactionsPlugin extends MPlugin {
                 new FUpgradesGUI(),
                 new UpgradesListener(),
                 new MissionHandler(this),
+                new AntiChestListener(),
                 new ChestLogsHandler()
         };
 

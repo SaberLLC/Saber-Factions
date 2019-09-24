@@ -857,6 +857,9 @@ fvault:
 fchest:
   Enabled: true
   Inventory-Title: '&2&lFaction Chest'
+  Items-Not-Allowed:
+    - 'MOB_SPAWNER'
+    - 'COOKIE'
   # Chest size upgrades can be configured in the upgrades section of config
 
 ############################################################

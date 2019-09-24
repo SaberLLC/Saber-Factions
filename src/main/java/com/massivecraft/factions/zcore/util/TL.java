@@ -239,6 +239,8 @@ public enum TL {
     COMMAND_CLAIMLINE_ABOVEMAX("&c&l[!]&7 The &cmaximum&7 limit for claim line is &c%s&7."),
     COMMAND_CLAIMLINE_NOTVALID("&c&l[!]&7 &c%s&7 is not a &ccardinal &7direction. You may use &cnorth&7, &ceast&7, &csouth &7or &cwest&7."),
 
+    CHEST_ITEM_DENIED_TRANSFER("&c&l[!] &7You may not transfer &b%1$s &7into your factions chest!"),
+
     COMMAND_CONFIG_NOEXIST("&c&l[!]&7 No configuration setting \"&c%1$s&7\" exists."),
     COMMAND_CONFIG_SET_TRUE("\" option set to true (enabled)."),
     COMMAND_CONFIG_SET_FALSE("\" option set to false (disabled)."),
