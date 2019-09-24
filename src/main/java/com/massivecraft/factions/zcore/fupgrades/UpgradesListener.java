@@ -156,12 +156,17 @@ public class UpgradesListener implements Listener {
         if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) {
             return;
         }
+
+        if(e.getDamager().hasMetadata("NPC") || e.getEntity().hasMetadata("NPC")) return;
+
         FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
         FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
         if (fme == null || dame == null) {
             return;
         }
-        FLocation floc = new FLocation(fme.getPlayer().getLocation());
+
+        FLocation floc = new FLocation((Player) fme.getPlayer().getLocation());
+
         if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
             if (dame.getFaction() == fme.getFaction()) {
                 return;
