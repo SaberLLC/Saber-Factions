@@ -239,6 +239,8 @@ public enum TL {
     COMMAND_CLAIMLINE_ABOVEMAX("&c&l[!]&7 The &cmaximum&7 limit for claim line is &c%s&7."),
     COMMAND_CLAIMLINE_NOTVALID("&c&l[!]&7 &c%s&7 is not a &ccardinal &7direction. You may use &cnorth&7, &ceast&7, &csouth &7or &cwest&7."),
 
+    CHEST_ITEM_DENIED_TRANSFER("&c&l[!] &7You may not transfer &b%1$s &7into your factions chest!"),
+
     COMMAND_CONFIG_NOEXIST("&c&l[!]&7 No configuration setting \"&c%1$s&7\" exists."),
     COMMAND_CONFIG_SET_TRUE("\" option set to true (enabled)."),
     COMMAND_CONFIG_SET_FALSE("\" option set to false (disabled)."),
@@ -565,6 +567,18 @@ public enum TL {
     COMMAND_OWNERLIST_NONE("&c&l[!]&7 No owners are set here; everyone in the faction has access."),
     COMMAND_OWNERLIST_OWNERS("&c&l[!]&7 Current owner(s) of this land: %1$s"),
     COMMAND_OWNERLIST_DESCRIPTION("List owner(s) of this claimed land"),
+
+    COMMAND_DISCORDSET_ADMIN_SUCCESSFUL("&c&l[!] &7You have set &b%1$s's &7discord to &b%2$s&7."),
+    COMMAND_DISCORDSET_ADMIN_FAILED("&c&l[!] &b%1$s &7is not an discord link!"),
+    COMMAND_DISCORDSET_NOTEMAIL("&c&l[!] &b%1$s &7is not an discord link!"),
+    COMMAND_DISCORDSET_DESCRIPTION("&c&l[!] &7Set the link of your factions discord."),
+    COMMAND_DISCORDSET_SUCCESSFUL("&c&l[!] &7Successfully set your factions discord link - &b%1$s&7."),
+    DISCORD_PLAYER_DISCORD("&c&l[!] &7You're factions discord link is: &b%1$s&7."),
+    COMMAND_DISCORD_NOTSET("&c&l[!] &7Your faction does not have their discord set!"),
+    COMMAND_DISCORDSEE_FACTION_NOTSET("&c&l[!] &b%1$s's &7discord has not yet been set!"),
+    COMMAND_DISCORDSEE_FACTION_DISCORD("&c&l[!] &b%1$s's &7faction has their discord link set to &b%2$s&7."),
+    COMMAND_DISCORDSEE_DESCRIPTION("&c&l[!] &7View a specific factions discord link with &b/f discord <faction>&b."),
+
 
     PAYPALSEE_PLAYER_PAYPAL("&c&l[!] &7You're factions paypal is: &b%1$s&7."),
     COMMAND_PAYPAL_NOTSET("&c&l[!] &7Your faction does not have their paypal set!"),
@@ -999,6 +1013,7 @@ public enum TL {
 
 
     MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),
+    MISSION_ALREAD_COMPLETED("&c&l[!] &7You may not restart a mission you have already completed"),
     MISSION_MISSION_ACTIVE("&c&l[!] &7This mission is currently active!"),
     MISSION_MISSION_MAX_ALLOWED("&c&l[!] &7You may not have more then &b%1$s &7missions active at once."),
     MISSION_MISSION_FINISHED("&c&l[!] &7Your faction has successfully completed %1$s mission!"),

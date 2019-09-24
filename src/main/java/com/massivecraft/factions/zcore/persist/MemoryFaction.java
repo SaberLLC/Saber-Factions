@@ -83,6 +83,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private int tntBankSize;
     private int warpLimit;
     private double reinforcedArmor;
+    private List<String> completedMissions;
+    protected String discord;
 
 
     // -------------------------------------------- //
@@ -112,6 +114,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.checks = new ConcurrentHashMap<>();
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
+        this.completedMissions = new ArrayList<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -130,6 +133,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         money = old.money;
         powerBoost = old.powerBoost;
         missions = new ConcurrentHashMap<>();
+        this.completedMissions = new ArrayList<>();
         relationWish = old.relationWish;
         claimOwnership = old.claimOwnership;
         fplayers = new HashSet<>();
@@ -212,6 +216,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean isWarpPassword(String warp, String password) {
         return hasWarpPassword(warp) && warpPasswords.get(warp.toLowerCase()).equals(password);
+    }
+
+    public String getDiscord() {
+        return this.discord;
+    }
+
+    public void setDiscord(String link) {
+        this.discord = link;
     }
 
     public String getPaypal() {
@@ -423,8 +435,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     @Override
     public Inventory getChestInventory() {
-        if (chest != null) return chest;
+        if (chest == null) {
+            this.chest = Bukkit.createInventory(null, getChestSize(), FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
+            return chest;
+        }
+        return chest;
+    }
 
+    private int getChestSize() {
         int size = 9;
         switch (getUpgrade(UpgradeType.CHEST)) {
             case 1:
@@ -437,8 +455,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
                 break;
         }
-        chest = Bukkit.createInventory(null, size, FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
-        return chest;
+        return size;
     }
 
 
@@ -504,7 +521,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.wallCheckMinutes;
     }
 
-    public void setWallCheckMinutes(final int wallCheckMinutes) {
+    public void setWallCheckMinutes(int wallCheckMinutes) {
         this.wallCheckMinutes = wallCheckMinutes;
     }
 
@@ -512,7 +529,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.bufferCheckMinutes;
     }
 
-    public void setBufferCheckMinutes(final int bufferCheckMinutes) {
+    public void setBufferCheckMinutes(int bufferCheckMinutes) {
         this.bufferCheckMinutes = bufferCheckMinutes;
     }
 
@@ -532,7 +549,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.weeWoo;
     }
 
-    public void setWeeWoo(final boolean weeWoo) {
+    public void setWeeWoo(boolean weeWoo) {
         this.weeWoo = weeWoo;
     }
 
@@ -1260,6 +1277,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public Map<String, Mission> getMissions() {
         return this.missions;
     }
+
+    @Override
+    public List<String> getCompletedMissions() {return this.completedMissions;}
 
     public void clearAllClaimOwnership() {
         claimOwnership.clear();

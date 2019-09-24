@@ -55,6 +55,13 @@ public class MissionGUI implements FactionGUI {
         if (section == null) {
             return;
         }
+        if(FactionsPlugin.getInstance().getConfig().getBoolean("DenyMissionsMoreThenOnce")) {
+            if (fPlayer.getFaction().getCompletedMissions().contains(missionName)) {
+                fPlayer.msg(TL.MISSION_ALREAD_COMPLETED);
+                return;
+            }
+        }
+
         ConfigurationSection missionSection = section.getConfigurationSection("Mission");
         if (missionSection == null) {
             return;

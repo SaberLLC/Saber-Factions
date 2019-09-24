@@ -147,6 +147,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
     public CmdConvertConfig cmdConvertConfig = new CmdConvertConfig();
     public CmdSpawnerLock cmdSpawnerLock = new CmdSpawnerLock();
+    public CmdSetDiscord cmdSetDiscord = new CmdSetDiscord();
+    public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
 
     public FCmdRoot() {
         super();
@@ -307,6 +309,12 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             FactionsPlugin.getInstance().log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
             this.addSubCommand(this.cmdTop);
         }
+
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("fdiscord.Enabled")) {
+            this.addSubCommand(this.cmdSetDiscord);
+            this.addSubCommand(this.cmdSeeDiscord);
+        }
+
         if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled")) {
             this.addSubCommand(this.cmdPaypalSet);
             this.addSubCommand(this.cmdPaypalSee);

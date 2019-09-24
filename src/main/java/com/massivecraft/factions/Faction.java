@@ -23,6 +23,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
 
+    String getDiscord();
+
+    void setDiscord(String link);
+
     void checkPerms();
 
     double getReinforcedArmor();
@@ -58,6 +62,8 @@ public interface Faction extends EconomyParticipator {
     boolean altInvited(FPlayer fplayer);
 
     Map<String, Mission> getMissions();
+
+    List<String> getCompletedMissions();
 
     void deinviteAlt(FPlayer alt);
 
