@@ -793,9 +793,8 @@ public class FactionsPlayerListener implements Listener {
         Player player = event.getPlayer();
         // Check if the material is bypassing protection
         if (block == null) return;  // clicked in air, apparently
-        if (event.getItem() != null) {
-            if (Conf.territoryBypassProtectedMaterials.contains(event.getItem().getType())) return;
-        }
+        if (Conf.territoryBypassProtectedMaterials.contains(block.getType())) return;
+
         if (GetPermissionFromUsableBlock(event.getClickedBlock().getType()) != null) {
             if (!canPlayerUseBlock(player, block, false)) {
                 event.setCancelled(true);
