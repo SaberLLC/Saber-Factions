@@ -58,10 +58,10 @@ public class FactionChatHandler extends ListenerAdapter {
         if (textChannel == null) {
             return;
         }
-        //if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, Permission.MANAGE_WEBHOOKS)) {
-            //textChannel.sendMessage("Missing `Manage Webhooks` permission in this channel").queue();
-            //return;
-        //}
+        if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, Permission.MANAGE_WEBHOOKS)) {
+            textChannel.sendMessage("Missing `Manage Webhooks` permission in this channel").queue();
+            return;
+        }
         Webhook webhook = (textChannel.getWebhooks().complete()).stream().filter(w -> w.getName().equals(Conf.webhookName)).findAny().orElse(null);
         WebhookClient webhookClient;
         if (webhook != null) {
