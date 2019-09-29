@@ -11,6 +11,7 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.entities.Webhook;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
@@ -21,6 +22,7 @@ import org.bukkit.ChatColor;
 
 import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,6 +47,7 @@ public class FactionChatHandler extends ListenerAdapter {
 
     public static void sendMessage(FactionsPlugin plugin, Faction faction, UUID uuid, String username, String message) {
         String factionsChatChannelId = faction.getFactionChatChannelId();
+        String messageWithMentions = null;
         if (factionsChatChannelId == null || factionsChatChannelId.isEmpty()) {
             return;
         }
@@ -55,16 +58,38 @@ public class FactionChatHandler extends ListenerAdapter {
         if (textChannel == null) {
             return;
         }
-        if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, Permission.MANAGE_WEBHOOKS)) {
-            textChannel.sendMessage("Missing `Manage Webhooks` permission in this channel").queue();
-            return;
-        }
+        //if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, Permission.MANAGE_WEBHOOKS)) {
+            //textChannel.sendMessage("Missing `Manage Webhooks` permission in this channel").queue();
+            //return;
+        //}
         Webhook webhook = (textChannel.getWebhooks().complete()).stream().filter(w -> w.getName().equals(Conf.webhookName)).findAny().orElse(null);
         WebhookClient webhookClient;
         if (webhook != null) {
             webhookClient = webhook.newClient().build();
         } else {
             webhookClient = textChannel.createWebhook(Conf.webhookName).complete().newClient().build();
+        }
+        if (message.contains("@")) {
+            List<String> x = new ArrayList<>(Arrays.asList(message.split(" ")));
+            for (String y : x) {
+                if (y.contains("@")) {
+                    if (!jda.getUsersByName(y.replace("@", ""), false).isEmpty() && jda.getUsersByName(y.replace("@", ""), false).size() < 2) {
+                        x.set(x.indexOf(y), jda.getUsersByName(y.replace("@", ""), false).get(0).getAsMention());
+                    }
+                }
+            }
+            StringBuilder sB = new StringBuilder();
+            for (String s : x) {
+                sB.append(s);
+                sB.append(" ");
+            }
+            messageWithMentions = sB.toString();
+        }
+        if (messageWithMentions != null) {
+            WebhookMessage webhookMessage = new WebhookMessageBuilder().setUsername(ChatColor.stripColor(username)).setAvatarUrl(Conf.avatarUrl.replace("%uuid%", uuid.toString())).setContent(ChatColor.stripColor(messageWithMentions)).build();
+            webhookClient.send(webhookMessage).join();
+            webhookClient.close();
+            return;
         }
         WebhookMessage webhookMessage = new WebhookMessageBuilder().setUsername(ChatColor.stripColor(username)).setAvatarUrl(Conf.avatarUrl.replace("%uuid%", uuid.toString())).setContent(ChatColor.stripColor(message)).build();
         webhookClient.send(webhookMessage).join();
