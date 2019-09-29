@@ -16,7 +16,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.attribute.FileAttribute;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.*;
@@ -37,26 +36,29 @@ public class DiscordListener extends ListenerAdapter {
 
     private static JSONGuilds loadGuilds() {
         try {
-            if (!DiscordListener.file.exists()) {
-                Files.createFile(DiscordListener.file.toPath(), (FileAttribute<?>[]) new FileAttribute[0]);
-                Files.write(DiscordListener.file.toPath(), "{}".getBytes());
-            }
-            return FactionsPlugin.getInstance().gson.fromJson(String.join("\n", Files.readAllLines(DiscordListener.file.toPath())), JSONGuilds.class);
+            if (file.exists())
+                return FactionsPlugin.getInstance().gson.fromJson(String.join("\n", Files.readAllLines(file.toPath())), JSONGuilds.class);
+            Files.createFile(file.toPath());
+            Files.write(file.toPath(), "{}".getBytes());
+            return FactionsPlugin.getInstance().gson.fromJson(String.join("\n", Files.readAllLines(file.toPath())), JSONGuilds.class);
         } catch (IOException e) {
             e.printStackTrace();
             throw new NullPointerException();
         }
     }
 
+
     public static void saveGuilds() {
         try {
-            String content = FactionsPlugin.getInstance().gson.toJson(DiscordListener.guilds);
-            Files.write(DiscordListener.file.toPath(), content.getBytes());
-        } catch (IOException e) {
+            String content = FactionsPlugin.getInstance().gson.toJson(guilds);
+            Files.write(file.toPath(), content.getBytes());
+        }
+        catch (IOException e) {
             e.printStackTrace();
             throw new NullPointerException();
         }
     }
+
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         try {
