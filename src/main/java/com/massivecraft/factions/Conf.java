@@ -99,7 +99,7 @@ public class Conf {
     public static boolean worldGuardBuildPriority = false;
     //DISCORD
     public static boolean useDiscordSystem = true;
-    public static String discordBotToken = "NjI3NzUxOTI1MzYxODAzMjc0.XZBOUQ.IFeQmnsCMWk6fmDicVtJKNAewXc";
+    public static String discordBotToken = "<token here>";
     public static String fromDiscordFactionChatPrefix = "&f[&dDiscord&f] ";
     public static String avatarUrl = "http://cravatar.eu/helmavatar/%uuid%.png";
     public static String webhookName = "SaberFactions Hook";
