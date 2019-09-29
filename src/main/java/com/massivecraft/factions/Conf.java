@@ -97,6 +97,12 @@ public class Conf {
     public static boolean autoLeaveDeleteFPlayerData = true; // Let them just remove player from Faction.
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
+    //DISCORD
+    public static boolean useDiscordSystem = true;
+    public static String discordBotToken = "<token here>";
+    public static String fromDiscordFactionChatPrefix = "&f[&dDiscord&f] ";
+    public static String avatarUrl = "http://cravatar.eu/helmavatar/%uuid%.png";
+    public static String webhookName = "SaberFactions Hook";
     // server logging options
     public static boolean logFactionCreate = true;
     public static boolean logFactionDisband = true;

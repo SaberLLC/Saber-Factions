@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-U0.2.1-1.9.5-BETA</version>
+    <version>1.6.9.5-U0.2.1-1.9.7-BETA</version>
     <packaging>jar</packaging>
 
     <name>SaberFactions</name>
@@ -175,6 +175,18 @@
                 <exclusion>
                     <artifactId>worldedit</artifactId>
                     <groupId>com.sk89q</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>net.dv8tion</groupId>
+            <artifactId>JDA</artifactId>
+            <version>3.8.3_463</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>club.minnced</groupId>
+                    <artifactId>opus-java</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -369,9 +381,21 @@
             <artifactId>worldguardwrapper</artifactId>
             <version>1.1.6-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.jagrosh</groupId>
+            <artifactId>jda-utilities</artifactId>
+            <version>2.1</version>
+            <scope>compile</scope>
+            <type>pom</type>
+        </dependency>
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>central</id>
+            <name>bintray</name>
+            <url>http://jcenter.bintray.com</url>
+        </repository>
         <repository>
             <id>net.coreprotect</id>
             <url>http://maven.playpro.com/</url>
@@ -391,6 +415,11 @@
         <repository>
             <id>maven.sk89q.com</id>
             <url>http://maven.sk89q.com/repo/</url>
+        </repository>
+        <repository>
+            <id>jcenter</id>
+            <name>jcenter-bintray</name>
+            <url>https://jcenter.bintray.com</url>
         </repository>
         <repository>
             <id>repo.mikeprimm.com</id>

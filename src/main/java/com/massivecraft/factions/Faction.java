@@ -23,6 +23,38 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
 
+    String getMemberRoleId();
+
+    void setMemberRoleId(String roleId);
+
+    String getGuildId();
+
+    void setGuildId(String id);
+
+    String getWallNotifyChannelId();
+
+    void setWallNotifyChannelId(String channelId);
+
+    String getBufferNotifyChannelId();
+
+    void setBufferNotifyChannelId(String channelId);
+
+    String getWeeWooChannelId();
+
+    void setWeeWooChannelId(String channelId);
+
+    String getNotifyFormat();
+
+    void setNotifyFormat(String format);
+
+    String getWeeWooFormat();
+
+    void setWeeWooFormat(String format);
+
+    String getFactionChatChannelId();
+
+    void setFactionChatChannelId(String channelId);
+
     String getDiscord();
 
     void setDiscord(String link);

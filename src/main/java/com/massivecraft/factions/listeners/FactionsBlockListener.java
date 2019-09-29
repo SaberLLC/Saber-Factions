@@ -101,9 +101,6 @@ public class FactionsBlockListener implements Listener {
         return false;
     }
 
-    public static boolean graceisEnabled() {
-        return Conf.gracePeriod;
-    }
 
     private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action, boolean shouldHurt) {
         boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());

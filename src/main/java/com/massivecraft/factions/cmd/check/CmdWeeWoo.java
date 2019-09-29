@@ -1,10 +1,14 @@
 package com.massivecraft.factions.cmd.check;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.discord.FactionChatHandler;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 public class CmdWeeWoo extends FCommand {
     public CmdWeeWoo() {
@@ -30,7 +34,19 @@ public class CmdWeeWoo extends FCommand {
             }
             context.faction.setWeeWoo(true);
             context.msg(TL.COMMAND_WEEWOO_STARTED, context.fPlayer.getNameAndTag());
-
+            if (!Conf.useDiscordSystem) return;
+            String discordChannelId = context.faction.getWeeWooChannelId();
+            if (discordChannelId != null && !discordChannelId.isEmpty()) {
+                TextChannel textChannel = FactionChatHandler.jda.getTextChannelById(discordChannelId);
+                if (textChannel == null) {
+                    return;
+                }
+                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.core.Permission.MESSAGE_READ, net.dv8tion.jda.core.Permission.MESSAGE_WRITE)) {
+                    textChannel.getGuild().getOwner().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
+                    return;
+                }
+                textChannel.sendMessage(TL.WEEWOO_STARTED_DISCORD.format(context.fPlayer.getNameAndTag())).queue();
+            }
         } else if (argument.equalsIgnoreCase("stop")) {
             if (!weewoo) {
                 context.msg(TL.COMMAND_WEEWOO_ALREADY_STOPPED);
@@ -38,6 +54,19 @@ public class CmdWeeWoo extends FCommand {
             }
             context.faction.setWeeWoo(false);
             context.msg(TL.COMMAND_WEEWOO_STOPPED, context.fPlayer.getNameAndTag());
+            if(!Conf.useDiscordSystem) return;
+            String discordChannelId = context.faction.getWeeWooChannelId();
+            if (discordChannelId != null && !discordChannelId.isEmpty()) {
+                TextChannel textChannel = FactionChatHandler.jda.getTextChannelById(discordChannelId);
+                if (textChannel == null) {
+                    return;
+                }
+                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.core.Permission.MESSAGE_READ, net.dv8tion.jda.core.Permission.MESSAGE_WRITE)) {
+                    textChannel.getGuild().getOwner().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
+                    return;
+                }
+                textChannel.sendMessage(TL.WEEWOO_STOPPED_DISCORD.format(context.fPlayer.getNameAndTag())).queue();
+            }
         } else {
             context.msg("/f weewoo <start/stop>");
         }

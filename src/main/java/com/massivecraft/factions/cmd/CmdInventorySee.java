@@ -38,7 +38,7 @@ public class CmdInventorySee extends FCommand {
 
         Access use = context.fPlayer.getFaction().getAccess(context.fPlayer, PermissableAction.TERRITORY);
         if (use == Access.DENY || (use == Access.UNDEFINED && !context.assertMinRole(Role.MODERATOR))) {
-            context.msg(TL.GENERIC_NOPERMISSION, "territory");
+            context.msg(TL.GENERIC_NOPERMISSION, "see other faction members inventories");
             return;
         }
 
@@ -46,7 +46,7 @@ public class CmdInventorySee extends FCommand {
 
         FPlayer targetInv = context.argAsFPlayer(0);
         if (targetInv == null || !fplayers.contains(targetInv.getPlayer())) {
-            context.msg(TL.PLAYER_NOT_FOUND, Objects.requireNonNull(targetInv).toString());
+            context.msg(TL.PLAYER_NOT_FOUND, Objects.requireNonNull(targetInv.getName()));
             return;
         }
 

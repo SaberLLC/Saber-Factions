@@ -288,19 +288,6 @@ public class FactionsPlayerListener implements Listener {
         return false;
     }
 
-    /// <summary>
-    ///	This checks if the current player can execute an action based on it's factions access and surroundings
-    /// It will grant access in the following priorities:
-    /// - If Faction Land is Owned and the Owner is the current player, or player is faction leader.
-    /// - If Faction Land is not Owned and my access value is not set to DENY
-    /// - If none of the filters above matches, then we consider access is set to ALLOW|UNDEFINED
-    /// This check does not performs any kind of bypass check (i.e.: me.isAdminBypassing())
-    /// </summary>
-    /// <param name="player">The player entity which the check will be made upon</param>
-    /// <param name="me">The Faction player object related to the player</param>
-    /// <param name="loc">The World location where the action is being executed</param>
-    /// <param name="myFaction">The faction of the player being checked</param>
-    /// <param name="access">The current's faction access permission for the action</param>
     private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction factionToCheck, Access access, PermissableAction action, boolean pain) {
         boolean doPain = pain && Conf.handleExploitInteractionSpam;
         if (access != null && access != Access.UNDEFINED) {
@@ -806,9 +793,8 @@ public class FactionsPlayerListener implements Listener {
         Player player = event.getPlayer();
         // Check if the material is bypassing protection
         if (block == null) return;  // clicked in air, apparently
-        if (event.getItem() != null) {
-            if (Conf.territoryBypassProtectedMaterials.contains(event.getItem().getType())) return;
-        }
+        if (Conf.territoryBypassProtectedMaterials.contains(block.getType())) return;
+
         if (GetPermissionFromUsableBlock(event.getClickedBlock().getType()) != null) {
             if (!canPlayerUseBlock(player, block, false)) {
                 event.setCancelled(true);
@@ -852,7 +838,6 @@ public class FactionsPlayerListener implements Listener {
                 && event.hasItem() && event.getItem().getType() == XMaterial.BONE_MEAL.parseMaterial()) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD.name(), true)) {
                 FPlayer me = FPlayers.getInstance().getById(event.getPlayer().getUniqueId().toString());
-                Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
                 Faction myFaction = me.getFaction();
 
                 me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", "use bone meal"));
