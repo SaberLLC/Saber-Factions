@@ -38,6 +38,9 @@ public class FactionChatHandler extends ListenerAdapter {
     private void startBot() {
         try {
             jda = new JDABuilder(AccountType.BOT).setToken(Conf.discordBotToken).buildBlocking();
+            if(jda == null) {
+                System.out.println("\n\n\n SABER-FACTIONS-DISCORD-INTEGRATION - Please Make a Valid Token To Use Discord Features! Location Conf.json discordBotToken.\n\n\n");
+            }
         } catch (LoginException | InterruptedException e) {
             e.printStackTrace();
         }
