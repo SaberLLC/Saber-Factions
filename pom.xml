@@ -383,10 +383,9 @@
         </dependency>
         <dependency>
             <groupId>com.jagrosh</groupId>
-            <artifactId>jda-utilities</artifactId>
+            <artifactId>jda-utilities-commons</artifactId>
             <version>2.1</version>
             <scope>compile</scope>
-            <type>pom</type>
         </dependency>
     </dependencies>
 
