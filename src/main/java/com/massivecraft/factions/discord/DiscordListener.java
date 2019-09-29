@@ -208,7 +208,7 @@ public class DiscordListener extends ListenerAdapter {
         EmbedBuilder embedBuilder = new EmbedBuilder().setColor(Color.MAGENTA).setTitle("Faction Stats").setAuthor(ChatColor.stripColor(faction.getTag())).addField("Description", faction.getDescription(), false).addField("Players Online", String.valueOf(faction.getOnlinePlayers().size()), true).addField("Total players", String.valueOf(faction.getFPlayers().size()), true).addField("Alts", String.valueOf(faction.getAltPlayers().size()), true).addField("Land", String.valueOf(faction.getLandRounded()), true).addField("Power", faction.getPowerRounded() + "/" + faction.getPowerMaxRounded(), true);
         Faction guildFaction = this.getFaction(event.getGuild());
         if (guildFaction != null && guildFaction.getId().equals(faction.getId()) && this.canAccessRole(guildFaction, event.getMember())) {
-            embedBuilder.addField("Kills", String.valueOf(faction.getKills()), true).addField("Deaths", String.valueOf(faction.getDeaths()), true);
+            embedBuilder.addField("Kills", String.valueOf(faction.getKills()), true).addField("Points", String.valueOf(faction.getPoints()), true).addField("Deaths", String.valueOf(faction.getDeaths()), true);
         }
         event.getChannel().sendMessage(embedBuilder.build()).queue();
     }
