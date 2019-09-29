@@ -85,6 +85,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private double reinforcedArmor;
     private List<String> completedMissions;
     protected String discord;
+    private String factionChatChannelId;
+    private String wallNotifyChannelId;
+    private String bufferNotifyChannelId;
+    private String weeWooChannelId;
+    private String notifyFormat;
+    private String weeWooFormat;
+    private String guildId;
+    private String memberRoleId;
 
 
     // -------------------------------------------- //
@@ -115,6 +123,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
         this.completedMissions = new ArrayList<>();
+        this.wallNotifyChannelId = null;
+        this.bufferNotifyChannelId = null;
+        this.notifyFormat = "@everyone, check %type%";
+        this.weeWooFormat = "@everyone, we're being raided! Get online!";
+        this.memberRoleId = null;
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -543,6 +556,86 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Map<UUID, Integer> getPlayerWallCheckCount() {
         return this.playerWallCheckCount;
+    }
+
+    @Override
+    public String getGuildId() {
+        return this.guildId;
+    }
+
+    @Override
+    public void setGuildId(final String guildId) {
+        this.guildId = guildId;
+    }
+
+    @Override
+    public String getMemberRoleId() {
+        return this.memberRoleId;
+    }
+
+    @Override
+    public String getFactionChatChannelId() {
+        return this.factionChatChannelId;
+    }
+
+    @Override
+    public String getWallNotifyChannelId() {
+        return this.wallNotifyChannelId;
+    }
+
+    @Override
+    public void setWallNotifyChannelId(final String wallNotifyChannelId) {
+        this.wallNotifyChannelId = wallNotifyChannelId;
+    }
+
+    @Override
+    public String getBufferNotifyChannelId() {
+        return this.bufferNotifyChannelId;
+    }
+
+    @Override
+    public void setBufferNotifyChannelId(final String bufferNotifyChannelId) {
+        this.bufferNotifyChannelId = bufferNotifyChannelId;
+    }
+
+    @Override
+    public String getWeeWooChannelId() {
+        return this.weeWooChannelId;
+    }
+
+    @Override
+    public void setWeeWooChannelId(final String weeWooChannelId) {
+        this.weeWooChannelId = weeWooChannelId;
+    }
+
+    @Override
+    public String getNotifyFormat() {
+        return this.notifyFormat;
+    }
+
+    @Override
+    public void setNotifyFormat(final String notifyFormat) {
+        this.notifyFormat = notifyFormat;
+    }
+
+    @Override
+    public String getWeeWooFormat() {
+        return this.weeWooFormat;
+    }
+
+    @Override
+    public void setWeeWooFormat(final String weeWooFormat) {
+        this.weeWooFormat = weeWooFormat;
+    }
+
+    @Override
+    public void setFactionChatChannelId(final String factionChatChannelId) {
+        this.factionChatChannelId = factionChatChannelId;
+    }
+
+    @Override
+    public void setMemberRoleId(final String memberRoleId) {
+        this.memberRoleId = memberRoleId;
     }
 
     public boolean isWeeWoo() {

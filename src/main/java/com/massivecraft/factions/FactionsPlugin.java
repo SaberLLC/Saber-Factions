@@ -12,6 +12,8 @@ import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.chest.ChestLogsHandler;
+import com.massivecraft.factions.discord.DiscordListener;
+import com.massivecraft.factions.discord.FactionChatHandler;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
@@ -257,6 +259,10 @@ public class FactionsPlugin extends MPlugin {
             this.getServer().getScheduler().runTaskTimer(this, CheckTask::cleanupTask, 0L, 1200L);
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new WeeWooTask(this), 600L, 600L);
         }
+        if(Conf.useDiscordSystem) {
+            new FactionChatHandler(this);
+        }
+
         ShopConfig.setup();
 
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
@@ -416,7 +422,6 @@ public class FactionsPlugin extends MPlugin {
         if (this.loadSuccessful) {
             // Dont save, as this is kind of pointless, as the /f config command manually saves.
             // So any edits done are saved, this way manual edits to json can go through.
-
             // Conf.save();
         }
 
@@ -424,7 +429,7 @@ public class FactionsPlugin extends MPlugin {
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
             AutoLeaveTask = null;
         }
-
+        DiscordListener.saveGuilds();
         super.onDisable();
     }
 

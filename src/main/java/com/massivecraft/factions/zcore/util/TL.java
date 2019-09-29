@@ -319,6 +319,25 @@ public enum TL {
     CHECK_LEADERBOARD_LINE("&f%1$s. &d%2$s: &f%3$s (%4$s Buffer, %5$s Walls)"),
     CHECK_LEADERBOARD_NO_DATA("&8No data"),
 
+    //DISCORD
+    WEEWOO_ALREADY_STARTED_DISCORD("Weewoo already started"),
+    WEEWOO_ALREADY_STARTED_INGAME("&cWeewoo already started"),
+    WEEWOO_STARTED_DISCORD("Weewoo started by %1$s"),
+    WEEWOO_ALREADY_STOPPED_DISCORD("Weewoo already stopped"),
+    WEEWOO_STOPPED_DISCORD("Weewoo stopped by %1$s"),
+    INVITE_BOT_USAGE("Gets the invite for the Discord bot"),
+    SET_GUILD_ID_USAGE("Sets the guild id for the faction"),
+    SET_GUILD_ID_SUCCESS("&aSuccesfully set guild id"),
+    SET_GUILD_ID_INVALID_ID("&cInvalid guild id (is the bot in the guild?)"),
+    SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER("&cUnable to message guild owner"),
+    SET_GUILD_ID_TIMED_OUT_MINECRAFT("&cTimed out"),
+    SET_GUILD_ID_TIMED_OUT_DISCORD("Timed out"),
+    SET_GUILD_ID_GUILD_ALREADY_LINKED("&cThat guild is already linked to a faction"),
+    SET_GUILD_ID_RESET_ID("&cGuild id removed"),
+    SET_GUILD_ID_PMING_OWNER("&aNow Direct messaging the Discord server owner to approve the link, times out in 15 seconds."),
+    CANT_FORCE_SET_GUILD_ID("&cYou cannot forcefully set guild ids for other guilds."),
+
+
     COMMAND_DEINVITE_CANDEINVITE("&c&l[!]&7 Players you can &cdeinvite: "),
     COMMAND_DEINVITE_CLICKTODEINVITE("&c&l[!]&7 Click to &crevoke&7 invite for &c%1$s"),
     COMMAND_DEINVITE_ALREADYMEMBER("&c&l[!]&7 &c%1$s&7 is already a member of &c%2$s"),

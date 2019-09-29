@@ -20,6 +20,8 @@ import com.massivecraft.factions.cmd.roles.CmdDemote;
 import com.massivecraft.factions.cmd.roles.CmdPromote;
 import com.massivecraft.factions.cmd.tnt.CmdTnt;
 import com.massivecraft.factions.cmd.tnt.CmdTntFill;
+import com.massivecraft.factions.discord.CmdInviteBot;
+import com.massivecraft.factions.discord.CmdSetGuild;
 import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.shop.CmdShop;
 import com.massivecraft.factions.zcore.util.TL;
@@ -149,6 +151,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSpawnerLock cmdSpawnerLock = new CmdSpawnerLock();
     public CmdSetDiscord cmdSetDiscord = new CmdSetDiscord();
     public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
+    public CmdInviteBot cmdInviteBot = new CmdInviteBot();
+    public CmdSetGuild cmdSetGuild = new CmdSetGuild();
 
     public FCmdRoot() {
         super();
@@ -259,6 +263,11 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdViewChest);
         this.addSubCommand(this.cmdConvertConfig);
         this.addSubCommand(this.cmdSpawnerLock);
+
+        if(Conf.useDiscordSystem){
+            this.addSubCommand(this.cmdInviteBot);
+            this.addSubCommand(this.cmdSetGuild);
+        }
 
         if (Conf.useCheckSystem) {
             this.addSubCommand(this.cmdCheck);

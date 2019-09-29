@@ -165,7 +165,9 @@ public class UpgradesListener implements Listener {
             return;
         }
 
-        FLocation floc = new FLocation((Player) fme.getPlayer().getLocation());
+        FLocation floc = new FLocation(fme.getPlayer().getLocation());
+
+        if(floc == null) return;
 
         if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
             if (dame.getFaction() == fme.getFaction()) {
