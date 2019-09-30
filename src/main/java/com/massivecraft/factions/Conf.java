@@ -98,7 +98,7 @@ public class Conf {
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
     //DISCORD
-    public static boolean useDiscordSystem = true;
+    public static boolean useDiscordSystem = false;
     public static String discordBotToken = "<token here>";
     public static String fromDiscordFactionChatPrefix = "&f[&dDiscord&f] ";
     public static String avatarUrl = "http://cravatar.eu/helmavatar/%uuid%.png";
