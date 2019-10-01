@@ -805,7 +805,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         int factionBuffer = FactionsPlugin.getInstance().getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0);
 
-        if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(flocation)) {
+        if (Conf.worldGuardChecking && Worldguard.checkForRegionsInChunk(flocation) && !this.isAdminBypassing()) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_PROTECTED.toString());
         } else if (flocation.isOutsideWorldBorder(FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0))) {
@@ -1226,7 +1226,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
-        Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getPluginManager().callEvent(claimEvent));
+        Bukkit.getPluginManager().callEvent(claimEvent);
         if (claimEvent.isCancelled()) {
             return false;
         }

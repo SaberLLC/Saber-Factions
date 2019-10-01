@@ -77,6 +77,9 @@ public class CheckTask implements Runnable {
             }
             faction.msg(TL.CHECK_WALLS_CHECK);
 
+            if (!Conf.useDiscordSystem) return;
+
+
             String channelId = faction.getWallNotifyChannelId();
             if (channelId == null) {
                 continue;
@@ -122,6 +125,10 @@ public class CheckTask implements Runnable {
                 CheckTask.bufferChecks.add(faction.getId());
             }
             faction.msg(TL.CHECK_BUFFERS_CHECK);
+
+            if (!Conf.useDiscordSystem) return;
+
+
             String channelId = faction.getBufferNotifyChannelId();
             if (channelId == null) {
                 continue;

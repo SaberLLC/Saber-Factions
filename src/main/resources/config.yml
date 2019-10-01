@@ -274,19 +274,19 @@ hcf:
 show:
   # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
   - '&8&m--------------&7 &8<&e{faction}&8> &8&m--------------'
-  - '&6 * &cOwner: &7{leader}'
-  - '&6 * &cDescription: &7{description}'
-  - '&6 * &cLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'
-  - '&6 * &cFaction Strikes: &7{strikes}'
-  - '&6 * &cFaction Points: &7{faction-points}'
-  - '&6 * &cFounded: &7{create-date}'
-  - '&6 * &cBalance: &f{faction-balance}'
-  - '&6 * &cAllies: &5{allies-list}'
-  - '&6 * &cEnemies: &c{enemies-list}'
-  - '&6 * &cOnline Members: &8(&7{online}/{members}&8) &7{online-list}'
-  - '&6 * &cOffline Members: &8(&7{offline}/{members}&8) &7{offline-list}'
-  - '&6 * &cAlts: &8{alts}'
-  - '&6 * &cBans: &7{faction-bancount}'
+  - '&4&l* &cOwner: &f{leader}'
+  - '&4&l* &cDescription: &f{description}'
+  - '&4&l* &cLand / Power / Max Power: &f{chunks} &8/ &f{power} &8/ &f{maxPower}'
+  - '&4&l* &cFaction Strikes: &f{strikes}'
+  - '&4&l* &cFaction Points: &f{faction-points}'
+  - '&4&l* &cFounded: &f{create-date}'
+  - '&4&l* &cBalance: &f{faction-balance}'
+  - '&4&l* &cAllies: &a{allies-list}'
+  - '&4&l* &cEnemies: &4{enemies-list}'
+  - '&4&l* &cOnline Members: &8[&f{online}/{members}&8] &a{online-list}'
+  - '&4&l* &cOffline Members: &8[&f{offline}/{members}&8] &a{offline-list}'
+  - '&4&l* &cAlts: &f{alts}'
+  - '&4&l* &cBans: &f{faction-bancount}'
   - '&8&m----------------------------------------'
 # For a /f show that does not display fancy messages that are essentially empty, use minimal-show
 minimal-show: false
@@ -303,13 +303,15 @@ show-exempt:
 # Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
 map:
   # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
-  - '&6* &cFaction: &7{faction}'
-  - '&6* &cOwner: &7{leader}'
-  - '&6* &cLand / Power / Max Power: &7{chunks} &8/ &7{power} &8/ &7{maxPower}'
-  - '&6* &cAllies: &5{allies-list}'
-  - '&6* &cEnemies: &c{enemies-list}'
-  - '&6* &cOnline Members: &8(&7{online}/{members}&8) {online-list}'
-  - '&6* &cOffline Members: &7{offline-list}'
+  - ''
+  - '&4&l* &cFaction &f{faction}'
+  - '&4&l* &cOwner &f{leader}'
+  - '&4&l* &cLand / Power / Max Power: &f{chunks} &8/ &f{power} &8/ &f{maxPower}'
+  - '&4&l* &cAllies &a{allies-list}'
+  - '&4&l* &cEnemies &4{enemies-list}'
+  - '&4&l* &cOnline Members &8[&f{online}/{members}&8] &a{online-list}'
+  - '&4&l* &cOffline Members &4{offline-list}'
+  - ''
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -426,7 +428,7 @@ help:
 fperm-gui:
   relation:
     # GUI Name
-    name: 'Faction Permissions'
+    name: '&8&lFaction Permissions'
     # Amount of inventory rows, No larger than 5
     rows: 4
     # These are the slots where the relations are going to be placed on the first GUI
@@ -452,7 +454,7 @@ fperm-gui:
       enemy: DIAMOND_AXE
       neutral: WOOD_AXE
     Placeholder-Item:
-      Name: '&cClick to edit {relation} permissions!'
+      Name: '&c{relation}&f permissions!'
   action:
     name: 'Faction Permissions'
     rows: 6
@@ -527,14 +529,14 @@ fperm-gui:
     # {action-access} Access name eg: Allow, Deny
     # {action-access-color} Access color eg: Allow;GREEN
     placeholder-item:
-      name: '&c&l(!) &ePermission: &6&n{action}'
+      name: '&c&lPermission to {action}'
       lore:
         - ''
-        - '&6&l * &cStatus: &8[{action-access-color}{action-access}&8]'
+        - '&4&l* &cStatus: &f{action-access-color}{action-access}'
         - ''
-        - '&7Left click to &a&nAllow&7.'
-        - '&7Right click to &c&nDeny&7.'
-        - '&7Middle click to &7&nUndefined&7.'
+        - '&2&l* &aLeft click to &alAllow&a.'
+        - '&4&l* &cRight click to &c&lDeny&c.'
+        - '&8&l* &7Middle click to &7&lUndefine&7.'
   # Back item will be take you to the previous GUI
   back-item:
     Type: ARROW
@@ -566,16 +568,16 @@ fwarp-gui:
     - 15
   warp-item:
     Type: EYE_OF_ENDER
-    Name: '&c&l(!) &eFaction Warp: &6&n{warp}'
+    Name: '&c&lFaction Warp {warp}'
     # {warp-protected} Warp protection by password, Enabled & Disabled
     # {warp-cost} Warp cost
     Lore:
       - ''
-      - '&6&l * &cPassword: &7{warp-protected}'
-      - '&6&l * &cCost: &7{warp-cost}'
+      - '&4&l* &cPassword: &f{warp-protected}'
+      - '&4&l* &cCost: &f{warp-cost}'
       - ''
-      - '&c&lNote: &7You need pay to teleport to'
-      - '&7a faction warp. Unless it''s &nDisabled&7.'
+      - '&7&o(( Tip: You need &c&opay&7&o to &f&oteleport to'
+      - '&7&oa &a&ofaction warp&7&o. Unless it''s &c&oDisabled&7&o. ))'
   # Dummy Items
   dummy-item:
     Type: BLACK_STAINED_GLASS_PANE
@@ -638,8 +640,13 @@ f-alts:
 frules:
   Enabled: true
   default-rules:
-    - '&cDefault Faction Rules :('
-    - '&cUse /f rules add <rule> to add a rule'
+    - '&f'
+    - '&r &r &r &r &r &r &r &r &r &r &r &r &r &r &r &r &r &r &r &r &r &r &f&l«&c&l*&4&l*&c&l*&f&l»&r &c&lFaction Rules &r &f&l«&c&l*&4&l*&c&l*&f&l»'
+    - '&r &r &r &fWith this feature you can set &cstandars&f for your &afaction'
+    - '&r &r &r &r &r &r &fPut as many &crules&f as you desire for your &amembers'
+    - '&f'
+    - '&r &r &r &r &r &r &r &r &r &r &r &7&o(( Tip: Use &f&o/f rules add <rule>&7&o add a &c&orule&7&o ))'
+    - ''
 ############################################################
 # +------------------------------------------------------+ #
 # |                  Faction TNT Bank                    | #
@@ -742,7 +749,7 @@ f-points:
 ############################################################
 MissionGUISize: 3
 Missions-Enabled: true
-Missions-GUI-Title: '&bFaction Missions'
+Missions-GUI-Title: '&8&lFaction Missions'
 MaximumMissionsAllowedAtOnce: 1
 Mission-Progress-Format: '&b&lProgression: &f{progress}&7/&e{total}'
 DenyMissionsMoreThenOnce: true #this setting to true, means that if they complete a mission they cannot redo the same mission
@@ -870,7 +877,7 @@ fchest:
 fupgrades:
   Enabled: true
   MainMenu:
-    Title: '{faction}''s Upgrade Menu'
+    Title: '&8&l{faction}''s Upgrade Menu'
     DummyItem:
       rows: 5
       Name: '&f'
@@ -887,26 +894,25 @@ fupgrades:
         level-2: 500000
         level-3: 750000
       CropItem:
-        Name: '&c&lUpgrade Growth Speed'
+        Name: '&c&lGrowth Speed'
         Type: WHEAT
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Increase growth speed of crops in claims.'
-          - '&7&o(Chance to Grow Two Levels)'
+          - '&7&oIncrease growth &c&ospeed&7&o of crops in &c&oclaims.'
+          - '&7&oChance to Grow Two Levels. Current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lChances'
+          - '&4&l* &cLevel 1: &f10% Chance'
+          - '&4&l* &cLevel 2: &f20% Chance'
+          - '&4&l* &cLevel 3: &f30% Chance'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$250,000'
+          - '&4&l* &cLevel 2: &f$500,000'
+          - '&4&l* &cLevel 3: &f$750,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &f10% Chance'
-          - '&7  - Cost: $250,000'
-          - '&f&l* &7Level 2 - &f20% Chance'
-          - '&7  - Cost: $500,000'
-          - '&f&l* &7Level 3 - &f30% Chance'
-          - '&7  - Cost: $750,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 31
     EXP:
@@ -919,25 +925,25 @@ fupgrades:
         level-2: 4000000
         level-3: 6000000
       EXPItem:
-        Name: '&c&lUpgrade EXP Drop Rate'
+        Name: '&c&lEXP Drop Rate'
         Type: EXP_BOTTLE
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Increased Vanilla XP gained from monsters.'
+          - '&7&oIncreased Vanilla &e&oEXP&7&o gained from &c&omonsters&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lMultipliers'
+          - '&4&l* &cLevel 1: &f1.5'
+          - '&4&l* &cLevel 2: &f2.0'
+          - '&4&l* &cLevel 3: &f2.5'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &f1.5x Multiplier'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 2 - &f2.0x Multiplier'
-          - '&7  - Cost: $4,000,000'
-          - '&f&l* &7Level 3 - &f2.5x Multiplier'
-          - '&7  - Cost: $6,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 32
     Power:
@@ -955,21 +961,20 @@ fupgrades:
         Amount: 1
         Damage: 0
         Lore:
-          - '&7&o(Increase the amount of power'
-          - '&7&oyour faction has)'
+          - '&a&oIncrease&7&o the amount of &c&opower'
+          - '&7&oyour &a&ofaction has&7&o. Current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lIncreased Faction Power'
+          - '&4&l* &cLevel 1: &f100'
+          - '&4&l* &cLevel 2: &f200'
+          - '&4&l* &cLevel 3: &f300'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &f100 Increased Faction Power'
-          - '&7  - Cost: $1,000,000'
-          - '&f&l* &7Level 2 - &f200 Increased Faction Power'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 3 - &f300 Increased Faction Power'
-          - '&7  - Cost: $3,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 22
     Redstone:
@@ -980,13 +985,12 @@ fupgrades:
         Amount: 1
         Damage: 0
         Lore:
-          - '&7&o(Prevents water from being'
-          - '&7&oable to break redstone)'
+          - '&7&oPrevents &e&owater&7&o from being'
+          - '&7&oable to break &c&oredstone'
           - ''
-          - '&f&l* &7Current Level: &3{level}/1'
+          - '&4&l* &cCost: &f$1,000,000'
           - ''
-          - '&7  - Cost: $1,000,000'
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oLeft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 23
     Spawners:
@@ -1000,25 +1004,25 @@ fupgrades:
         level-2: 2000000
         level-3: 3000000
       SpawnerItem:
-        Name: '&c&lUpgrade Spawn Rate'
+        Name: '&c&lSpawn Rate'
         Type: MOB_SPAWNER
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Decreased mob spawner delay in claims.'
+          - '&c&oDecreased&7&o mob spawner delay in &a&oclaims&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lDecreased Spawner Delay'
+          - '&4&l* &cLevel 1: &f0.10%'
+          - '&4&l* &cLevel 2: &f0.20%'
+          - '&4&l* &cLevel 3: &f0.30'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &f10% Lower Delay'
-          - '&7  - Cost: $1,000,000'
-          - '&f&l* &7Level 2 - &f20% Lower Delay'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 3 - &f30% Lower Delay'
-          - '&7  - Cost: $3,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 30
     DamageReduct:
@@ -1031,26 +1035,25 @@ fupgrades:
         level-2: 4000000
         level-3: 6000000
       ReduceItem:
-        Name: '&c&lDamage Reduction Upgrade'
+        Name: '&c&lDamage Reduction'
         Type: GOLD_CHESTPLATE
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Reduce the amount of damage taken'
-          - '&7in your faction claims.'
+          - '&a&oReduce&7&o the amount of &a&odamage taken&7&o in faction claims.'
+          - '&7&oYour current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lDamage Increase'
+          - '&4&l* &cLevel 1: &f3%'
+          - '&4&l* &cLevel 2: &f5%'
+          - '&4&l* &cLevel 3: &f7%'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &7((&f-3% Damage Per Hit&7))'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 2 - &7((&f-5% Damage Per Hit&7))'
-          - '&7  - Cost: $4,000,000'
-          - '&f&l* &7Level 3 - &7((&f-7% Damage Per Hit&7))'
-          - '&7  - Cost: $6,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 7
     DamageIncrease:
@@ -1063,26 +1066,25 @@ fupgrades:
         level-2: 4000000
         level-3: 6000000
       IncreaseItem:
-        Name: '&c&lDamage Increase Upgrade'
+        Name: '&c&lDamage Increase'
         Type: DIAMOND_SWORD
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Increase the amount of damage given'
-          - '&7in your faction claims.'
+          - '&a&oIncrease&7&o the amount of &a&odamage given&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lDamage Increase'
+          - '&4&l* &cLevel 1: &f3%'
+          - '&4&l* &cLevel 2: &f5%'
+          - '&4&l* &cLevel 3: &f7%'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &7((&f+3% Damage Per Hit&7))'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 2 - &7((&f+5% Damage Per Hit&7))'
-          - '&7  - Cost: $4,000,000'
-          - '&f&l* &7Level 3 - &7((&f+7% Damage Per Hit&7))'
-          - '&7  - Cost: $6,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 1
     TNT:
@@ -1095,26 +1097,25 @@ fupgrades:
         level-2: 4000000
         level-3: 6000000
       TntItem:
-        Name: '&c&lTNT Bank Upgrade'
+        Name: '&c&lTNT Bank'
         Type: TNT
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Upgrade Your tnt bank limit,'
-          - '&7to be eligible to store more tnt.'
+          - '&a&oUpgrade&7&o your &a&ofactions tnt&7&o limit.'
+          - '&7&oYour current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lFaction Tnt Limit'
+          - '&4&l* &cLevel 1: &f500,000'
+          - '&4&l* &cLevel 2: &f1,000,000'
+          - '&4&l* &cLevel 3: &f2,000,000'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &f500,000 TNT'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 2 - &f1,000,000 TNT'
-          - '&7  - Cost: $4,000,000'
-          - '&f&l* &7Level 3 - &f2,000,000 TNT'
-          - '&7  - Cost: $6,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 21
     Warps:
@@ -1127,26 +1128,25 @@ fupgrades:
         level-2: 2000000
         level-3: 3000000
       WarpItem:
-        Name: '&c&lWarp Upgrade'
+        Name: '&c&lWarps'
         Type: EYE_OF_ENDER
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Upgrade Your warp limit,'
-          - '&7to be able to set more warps.'
+          - '&a&oIncrease&7&o the &a&ofaction warp&7&o limit.'
+          - '&7&oYour current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lFaction Warp Limit'
+          - '&4&l* &cLevel 1: &f3'
+          - '&4&l* &cLevel 2: &f4'
+          - '&4&l* &cLevel 3: &f5'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &f3 Warps'
-          - '&7  - Cost: $1,000,000'
-          - '&f&l* &7Level 2 - &f4 Warps'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 3 - &f5 Warps'
-          - '&7  - Cost: $3,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 24
     Chest:
@@ -1160,25 +1160,25 @@ fupgrades:
         level-2: 2000000
         level-3: 3000000
       ChestItem:
-        Name: '&c&lUpgrade Faction Chest Size'
+        Name: '&c&lFaction Chest'
         Type: CHEST
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Increased Faction Chest Size.'
+          - '&a&oIncreased&7&o Faction Chest Size.'
+          - '&7&oYour current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lFaction Chest Size'
+          - '&4&l* &cLevel 1: &f2 Rows'
+          - '&4&l* &cLevel 2: &f3 Rows'
+          - '&4&l* &cLevel 3: &f4 Rows'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &f2 Rows'
-          - '&7  - Cost: $1,000,000'
-          - '&f&l* &7Level 2 - &f3 Rows'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 3 - &f4 Rows'
-          - '&7  - Cost: $3,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 20
     Members:
@@ -1191,25 +1191,25 @@ fupgrades:
         level-2: 2000000
         level-3: 3000000
       MembersItem:
-        Name: '&c&lUpgrade Faction Members'
+        Name: '&c&lFaction Members'
         Type: PAPER
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Increase faction member limit.'
+          - '&a&oIncrease&7&o the &a&ofaction member&7&o limit.'
+          - '&7&oYour current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lFaction Member Limit'
+          - '&4&l* &cLevel 1: &f30'
+          - '&4&l* &cLevel 2: &f35'
+          - '&4&l* &cLevel 3: &f40'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &f30 Members'
-          - '&7  - Cost: $1,000,000'
-          - '&f&l* &7Level 2 - &f35 Members'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 3 - &f40 Members'
-          - '&7  - Cost: $3,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 40
     Armor:
@@ -1223,25 +1223,25 @@ fupgrades:
         level-2: 2000000
         level-3: 3000000
       ArmorItem:
-        Name: '&c&lReinforced Armor Upgrade'
+        Name: '&c&lReinforced Armor'
         Type: DIAMOND_CHESTPLATE
         Amount: 1
         Damage: 0
         Lore:
-          - '&7Decreases damage to armor.'
+          - '&a&oDecreases&7&o damage done &a&oto armor&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
           - ''
-          - '&c&lTier'
-          - '&f&l* &7Current Level: &3{level}/3'
+          - '&c&lReinforced Armor'
+          - '&4&l* &cLevel 1: &f0.10%'
+          - '&4&l* &cLevel 2: &f0.15%'
+          - '&4&l* &cLevel 3: &f0.20%'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
           - ''
-          - '&c&lPerks'
-          - '&f&l* &7Level 1 - &f10% Reduction'
-          - '&7  - Cost: $1,000,000'
-          - '&f&l* &7Level 2 - &f15% Reduction'
-          - '&7  - Cost: $2,000,000'
-          - '&f&l* &7Level 3 - &f20% Reduction'
-          - '&7  - Cost: $3,000,000'
-          - ''
-          - '&e&lClick to &nUnlock'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         slots:
           - 4
 
