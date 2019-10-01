@@ -900,7 +900,8 @@ fupgrades:
         Damage: 0
         Lore:
           - '&7&oIncrease growth &c&ospeed&7&o of crops in &c&oclaims.'
-          - '&7&oChance to Grow Two Levels. Current level is &e&l&o{level}'
+          - '&7&oChance to Grow Two Levels.'
+          - 'Current level is &e&l&o{level}'
           - ''
           - '&c&lChances'
           - '&4&l* &cLevel 1: &f10% Chance'
@@ -962,7 +963,8 @@ fupgrades:
         Damage: 0
         Lore:
           - '&a&oIncrease&7&o the amount of &c&opower'
-          - '&7&oyour &a&ofaction has&7&o. Current level is &e&l&o{level}'
+          - '&7&oyour &a&ofaction has&7&o.'
+          - 'Current level is &e&l&o{level}'
           - ''
           - '&c&lIncreased Faction Power'
           - '&4&l* &cLevel 1: &f100'
