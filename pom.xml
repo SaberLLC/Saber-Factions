@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-U0.2.1-1.9.7-BETA</version>
+    <version>1.6.9.5-U0.2.1-2.0.2-BETA</version>
     <packaging>jar</packaging>
 
     <name>SaberFactions</name>
@@ -383,10 +383,9 @@
         </dependency>
         <dependency>
             <groupId>com.jagrosh</groupId>
-            <artifactId>jda-utilities</artifactId>
+            <artifactId>jda-utilities-commons</artifactId>
             <version>2.1</version>
             <scope>compile</scope>
-            <type>pom</type>
         </dependency>
     </dependencies>
 

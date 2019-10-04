@@ -261,6 +261,8 @@ public class FactionsPlugin extends MPlugin {
         }
         if(Conf.useDiscordSystem) {
             new FactionChatHandler(this);
+        } else {
+            System.out.println("\n\n\n SABER-FACTIONS-DISCORD-INTEGRATION - You are not using Discord integration features, set conf.json option useDiscordSystem to true and put a valid token in before using!\n\n\n");
         }
 
         ShopConfig.setup();

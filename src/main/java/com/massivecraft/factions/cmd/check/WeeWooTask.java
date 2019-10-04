@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd.check;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
@@ -24,9 +25,9 @@ public class WeeWooTask implements Runnable {
                 continue;
             }
             faction.msg(TL.WEE_WOO_MESSAGE);
-            if (!FactionChatHandler.jda.getStatus().equals(JDA.Status.CONNECTED)) {
-                continue;
-            }
+
+            if (!Conf.useDiscordSystem) return;
+
             String discordChannelId = faction.getWeeWooChannelId();
             if (discordChannelId == null || discordChannelId.isEmpty()) {
                 continue;

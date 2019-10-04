@@ -115,16 +115,16 @@ public class CmdTnt extends FCommand {
             context.msg(TL.GENERIC_ARGS_TOOFEW);
             context.msg(context.args.get(0).equalsIgnoreCase("take") || context.args.get(0).equalsIgnoreCase("t") ? TL.COMMAND_TNT_TAKE_DESCRIPTION : TL.COMMAND_TNT_ADD_DESCRIPTION);
         }
-        context.sendMessage(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{bankSize}", context.faction.getTntBankLimit() + ""));
+        context.msg(TL.COMMAND_TNT_AMOUNT, context.faction.getTnt(), context.faction.getTntBankLimit());
     }
 
 
     public boolean inventoryContains(Inventory inventory, ItemStack item) {
         int count = 0;
         ItemStack[] items = inventory.getContents();
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] != null && items[i].getType() == item.getType() && items[i].getDurability() == item.getDurability()) {
-                count += items[i].getAmount();
+        for (ItemStack item1 : items) {
+            if (item1 != null && item1.getType() == item.getType() && item1.getDurability() == item.getDurability()) {
+                count += item1.getAmount();
             }
             if (count >= item.getAmount()) {
                 return true;
