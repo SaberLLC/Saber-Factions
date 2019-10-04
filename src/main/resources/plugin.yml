@@ -65,6 +65,7 @@ permissions:
   factions.kit.halfplayer:
     description: Can do all but create factions.
     children:
+      factions.permissions: true
       factions.admin: true
       factions.autoclaim: true
       factions.promote: true
