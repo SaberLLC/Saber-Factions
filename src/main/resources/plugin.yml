@@ -65,6 +65,8 @@ permissions:
   factions.kit.halfplayer:
     description: Can do all but create factions.
     children:
+      factions.missions: true
+      factions.shop: true
       factions.permissions: true
       factions.setdiscord: true
       factions.discord: true
@@ -118,6 +120,7 @@ permissions:
       factions.checkpoint: true
       factions.rules: true
       factions.setwarp: true
+      factions.warp: true
       factions.banner: true
       factions.vault: true
       factions.getvault: true
