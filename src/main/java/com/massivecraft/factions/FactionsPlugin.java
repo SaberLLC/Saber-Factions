@@ -147,18 +147,10 @@ public class FactionsPlugin extends MPlugin {
     public void onEnable() {
         log("==== Setup ====");
 
-
-        // Vault dependency check.
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            log("Vault is not present, the plugin will not run properly.");
-            getServer().getPluginManager().disablePlugin(instance);
-            return;
-        }
-
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         switch (version) {
             case 7:
-                FactionsPlugin.instance.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, and Titles.");
+                FactionsPlugin.instance.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, corners, and Titles.");
                 mc17 = true;
                 break;
             case 8:
@@ -176,6 +168,18 @@ public class FactionsPlugin extends MPlugin {
                 FactionsPlugin.instance.log("Minecraft Version 1.14 found.");
                 mc114 = true;
                 break;
+        }
+        //Dependency checks
+        if (Bukkit.getPluginManager().isPluginEnabled("Vault") && Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
+            RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
+            FactionsPlugin.econ = rsp.getProvider();
+        } else {
+            divider();
+            System.out.println("You are missing dependencies!");
+            System.out.println("Please verify EssentialsX and Vault are installed!");
+            Bukkit.getPluginManager().disablePlugin(instance);
+            divider();
+            return;
         }
         migrateFPlayerLeaders();
         log("==== End Setup ====");
@@ -291,16 +295,6 @@ public class FactionsPlugin extends MPlugin {
         this.getCommand(refCommand).setExecutor(cmdBase);
 
         if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
-
-        if (Bukkit.getPluginManager().isPluginEnabled("Vault") && FactionsPlugin.this.getServer().getServicesManager().getRegistration(Essentials.class) != null) {
-            RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
-            FactionsPlugin.econ = rsp.getProvider();
-        } else {
-            divider();
-            System.out.println("You are missing dependencies!");
-            System.out.println("Please verify EssentialsX and Vault are installed!");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
 
         if (getDescription().getFullName().contains("BETA")) {
             divider();

@@ -54,18 +54,20 @@ public class FactionsPlayerListener implements Listener {
     private Map<String, InteractAttemptSpam> interactSpammers = new HashMap<>();
 
     public FactionsPlayerListener() {
-        this.corners = new HashSet<>();
         for (Player player : FactionsPlugin.getInstance().getServer().getOnlinePlayers()) {
             initPlayer(player);
         }
-        for (World world : FactionsPlugin.getInstance().getServer().getWorlds()) {
-            WorldBorder border = world.getWorldBorder();
-            if (border != null) {
-                int cornerCoord = (int) ((border.getSize() - 1.0) / 2.0);
-                this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(cornerCoord)));
-                this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(-cornerCoord)));
-                this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(cornerCoord)));
-                this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(-cornerCoord)));
+        if (!FactionsPlugin.getInstance().mc17) {
+            this.corners = new HashSet<>();
+            for (World world : FactionsPlugin.getInstance().getServer().getWorlds()) {
+                WorldBorder border = world.getWorldBorder();
+                if (border != null) {
+                    int cornerCoord = (int) ((border.getSize() - 1.0) / 2.0);
+                    this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(cornerCoord)));
+                    this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(-cornerCoord)));
+                    this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(cornerCoord)));
+                    this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(-cornerCoord)));
+                }
             }
         }
     }
