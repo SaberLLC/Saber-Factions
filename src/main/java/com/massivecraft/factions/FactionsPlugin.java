@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
+import com.earth2me.essentials.Essentials;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -185,6 +186,8 @@ public class FactionsPlugin extends MPlugin {
         this.loadSuccessful = false;
 
         saveDefaultConfig();
+        //Attempt to generate a permission list
+        PermissionList.generateFile();
 
         // Load Conf from disk
         Conf.load();
@@ -289,9 +292,15 @@ public class FactionsPlugin extends MPlugin {
 
         if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 
-
-        RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
-        FactionsPlugin.econ = rsp.getProvider();
+        if (Bukkit.getPluginManager().isPluginEnabled("Vault") && FactionsPlugin.this.getServer().getServicesManager().getRegistration(Essentials.class) != null) {
+            RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
+            FactionsPlugin.econ = rsp.getProvider();
+        } else {
+            divider();
+            System.out.println("You are missing dependencies!");
+            System.out.println("Please verify EssentialsX and Vault are installed!");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
 
         if (getDescription().getFullName().contains("BETA")) {
             divider();
