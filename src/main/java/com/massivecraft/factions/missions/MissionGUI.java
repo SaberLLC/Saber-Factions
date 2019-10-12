@@ -14,10 +14,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MissionGUI implements FactionGUI {
     private FactionsPlugin plugin;
@@ -79,30 +76,39 @@ public class MissionGUI implements FactionGUI {
         if (configurationSection == null) {
             return;
         }
+        for (int fill = 0; fill < configurationSection.getInt("FillItem.Rows") * 9; ++fill) {
+            ItemStack fillItem = new ItemStack(XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).parseItem());
+            ItemMeta meta = fillItem.getItemMeta();
+            meta.setDisplayName("");
+            fillItem.setItemMeta(meta);
+            inventory.setItem(fill, fillItem);
+        }
         for (String key : configurationSection.getKeys(false)) {
-            ConfigurationSection section = configurationSection.getConfigurationSection(key);
-            int slot = section.getInt("Slot");
+            if (!key.equals("FillItem")) {
+                ConfigurationSection section = configurationSection.getConfigurationSection(key);
+                int slot = section.getInt("Slot");
 
-            ItemStack itemStack = XMaterial.matchXMaterial(section.getString("Material")).parseItem();
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', section.getString("Name")));
-            List<String> loreLines = new ArrayList<>();
-            for (String line : section.getStringList("Lore")) {
-                loreLines.add(ChatColor.translateAlternateColorCodes('&', line));
+                ItemStack itemStack = XMaterial.matchXMaterial(section.getString("Material")).parseItem();
+                ItemMeta itemMeta = itemStack.getItemMeta();
+                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', section.getString("Name")));
+                List<String> loreLines = new ArrayList<>();
+                for (String line : section.getStringList("Lore")) {
+                    loreLines.add(ChatColor.translateAlternateColorCodes('&', line));
+                }
+                if (fPlayer.getFaction().getMissions().containsKey(key)) {
+                    Mission mission = fPlayer.getFaction().getMissions().get(key);
+                    itemMeta.addEnchant(Enchantment.SILK_TOUCH, 1, true);
+                    itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    loreLines.add("");
+                    loreLines.add(plugin.color(plugin.getConfig().getString("Mission-Progress-Format")
+                            .replace("{progress}", String.valueOf(mission.getProgress()))
+                            .replace("{total}", String.valueOf(section.getConfigurationSection("Mission").get("Amount")))));
+                }
+                itemMeta.setLore(loreLines);
+                itemStack.setItemMeta(itemMeta);
+                inventory.setItem(slot, itemStack);
+                slots.put(slot, key);
             }
-            if (fPlayer.getFaction().getMissions().containsKey(key)) {
-                Mission mission = fPlayer.getFaction().getMissions().get(key);
-                itemMeta.addEnchant(Enchantment.SILK_TOUCH, 1, true);
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                loreLines.add("");
-                loreLines.add(plugin.color(plugin.getConfig().getString("Mission-Progress-Format")
-                        .replace("{progress}", String.valueOf(mission.getProgress()))
-                        .replace("{total}", String.valueOf(section.getConfigurationSection("Mission").get("Amount")))));
-            }
-            itemMeta.setLore(loreLines);
-            itemStack.setItemMeta(itemMeta);
-            inventory.setItem(slot, itemStack);
-            slots.put(slot, key);
         }
     }
 

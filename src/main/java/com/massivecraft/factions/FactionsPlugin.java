@@ -2,7 +2,6 @@ package com.massivecraft.factions;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
-import com.earth2me.essentials.Essentials;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -189,7 +188,10 @@ public class FactionsPlugin extends MPlugin {
         }
         this.loadSuccessful = false;
 
-        saveDefaultConfig();
+        if (!new File(this.getDataFolder() + "/config.yml").exists()) {
+            this.saveResource("config.yml", false);
+            this.reloadConfig();
+        }
         //Attempt to generate a permission list
         PermissionList.generateFile();
 
@@ -266,7 +268,7 @@ public class FactionsPlugin extends MPlugin {
             this.getServer().getScheduler().runTaskTimer(this, CheckTask::cleanupTask, 0L, 1200L);
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new WeeWooTask(this), 600L, 600L);
         }
-        if(Conf.useDiscordSystem) {
+        if(Conf.useDiscordSystem && !Conf.discordBotToken.equals("<token here>")) {
             new FactionChatHandler(this);
         } else {
             System.out.println("\n\n\n SABER-FACTIONS-DISCORD-INTEGRATION - You are not using Discord integration features, set conf.json option useDiscordSystem to true and put a valid token in before using!\n\n\n");
