@@ -262,9 +262,9 @@ public class FactionsBlockListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler (ignoreCancelled = true)
     public void onHopperPlace(BlockPlaceEvent e) {
-        if (e.getItemInHand().getType() != Material.HOPPER && !FactionsPlugin.getInstance().getConfig().getBoolean("fvault.No-Hoppers-near-vault")) {
+        if (e.getItemInHand().getType() != Material.HOPPER || !FactionsPlugin.getInstance().getConfig().getBoolean("fvault.No-Hoppers-near-vault")) {
             return;
         }
 

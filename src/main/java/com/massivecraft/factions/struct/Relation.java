@@ -174,13 +174,13 @@ public enum Relation implements Permissable {
         if (isMember()) {
             return false;
         } else if (isEnemy()) {
-            return Conf.territoryEnemyDenyUseage;
+            return Conf.territoryEnemyDenyUsage;
         } else if (isAlly()) {
-            return Conf.territoryAllyDenyUseage;
+            return Conf.territoryAllyDenyUsage;
         } else if (isTruce()) {
-            return Conf.territoryTruceDenyUseage;
+            return Conf.territoryTruceDenyUsage;
         } else {
-            return Conf.territoryDenyUseage;
+            return Conf.territoryDenyUsage;
         }
     }
 
