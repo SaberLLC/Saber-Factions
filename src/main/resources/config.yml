@@ -756,6 +756,9 @@ DenyMissionsMoreThenOnce: true #this setting to true, means that if they complet
 
 #Mission Types: KILL, MINE, PLACE, FISH, TAME, ENCHANT, CONSUME
 Missions:
+  FillItem:
+    Material: BLACK_STAINED_GLASS_PANE
+    Rows: 3
   sugarcane:
     Slot: 11
     Material: "SUGAR_CANE"
