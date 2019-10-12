@@ -110,17 +110,17 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (otherFaction.hasPlayersOnline()) {
-            if (!Conf.territoryDenyUseageMaterials.contains(material)) {
+            if (!Conf.territoryDenyUsageMaterials.contains(material)) {
                 return true; // Item isn't one we're preventing for online factions.
             }
         } else {
-            if (!Conf.territoryDenyUseageMaterialsWhenOffline.contains(material)) {
+            if (!Conf.territoryDenyUsageMaterialsWhenOffline.contains(material)) {
                 return true; // Item isn't one we're preventing for offline factions.
             }
         }
 
         if (otherFaction.isWilderness()) {
-            if (!Conf.wildernessDenyUseage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
+            if (!Conf.wildernessDenyUsage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
                 return true; // This is not faction territory. Use whatever you like here.
             }
 
@@ -130,7 +130,7 @@ public class FactionsPlayerListener implements Listener {
 
             return false;
         } else if (otherFaction.isSafeZone()) {
-            if (!Conf.safeZoneDenyUseage || Permission.MANAGE_SAFE_ZONE.has(player)) {
+            if (!Conf.safeZoneDenyUsage || Permission.MANAGE_SAFE_ZONE.has(player)) {
                 return true;
             }
 
@@ -140,7 +140,7 @@ public class FactionsPlayerListener implements Listener {
 
             return false;
         } else if (otherFaction.isWarZone()) {
-            if (!Conf.warZoneDenyUseage || Permission.MANAGE_WAR_ZONE.has(player)) {
+            if (!Conf.warZoneDenyUsage || Permission.MANAGE_WAR_ZONE.has(player)) {
                 return true;
             }
 

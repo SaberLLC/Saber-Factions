@@ -161,22 +161,22 @@ public class Conf {
     public static boolean territoryDenyBuildWhenOffline = true;
     public static boolean territoryPainBuild = false;
     public static boolean territoryPainBuildWhenOffline = false;
-    public static boolean territoryDenyUseage = true;
+    public static boolean territoryDenyUsage = true;
     public static boolean territoryEnemyDenyBuild = true;
     public static boolean territoryEnemyDenyBuildWhenOffline = true;
     public static boolean territoryEnemyPainBuild = false;
     public static boolean territoryEnemyPainBuildWhenOffline = false;
-    public static boolean territoryEnemyDenyUseage = true;
+    public static boolean territoryEnemyDenyUsage = true;
     public static boolean territoryAllyDenyBuild = true;
     public static boolean territoryAllyDenyBuildWhenOffline = true;
     public static boolean territoryAllyPainBuild = false;
     public static boolean territoryAllyPainBuildWhenOffline = false;
-    public static boolean territoryAllyDenyUseage = true;
+    public static boolean territoryAllyDenyUsage = true;
     public static boolean territoryTruceDenyBuild = true;
     public static boolean territoryTruceDenyBuildWhenOffline = true;
     public static boolean territoryTrucePainBuild = false;
     public static boolean territoryTrucePainBuildWhenOffline = false;
-    public static boolean territoryTruceDenyUseage = true;
+    public static boolean territoryTruceDenyUsage = true;
     public static boolean territoryBlockCreepers = false;
     public static boolean territoryBlockCreepersWhenOffline = false;
     public static boolean territoryBlockFireballs = false;
@@ -186,12 +186,12 @@ public class Conf {
     public static boolean territoryDenyEndermanBlocks = true;
     public static boolean territoryDenyEndermanBlocksWhenOffline = true;
     public static boolean safeZoneDenyBuild = true;
-    public static boolean safeZoneDenyUseage = true;
+    public static boolean safeZoneDenyUsage = true;
     public static boolean safeZoneBlockTNT = true;
     public static boolean safeZonePreventAllDamageToPlayers = false;
     public static boolean safeZoneDenyEndermanBlocks = true;
     public static boolean warZoneDenyBuild = true;
-    public static boolean warZoneDenyUseage = true;
+    public static boolean warZoneDenyUsage = true;
     public static boolean warZoneBlockCreepers = false;
     public static boolean warZoneBlockFireballs = false;
     public static boolean warZoneBlockTNT = true;
@@ -199,7 +199,7 @@ public class Conf {
     public static boolean warZoneFriendlyFire = false;
     public static boolean warZoneDenyEndermanBlocks = true;
     public static boolean wildernessDenyBuild = false;
-    public static boolean wildernessDenyUseage = false;
+    public static boolean wildernessDenyUsage = false;
     public static boolean wildernessBlockCreepers = false;
     public static boolean wildernessBlockFireballs = false;
     public static boolean wildernessBlockTNT = false;
@@ -217,9 +217,9 @@ public class Conf {
     public static boolean ownedMessageByChunk = false;
     public static boolean pistonProtectionThroughDenyBuild = true;
     public static Set<Material> territoryProtectedMaterials = EnumSet.noneOf(Material.class);
-    public static Set<Material> territoryDenyUseageMaterials = EnumSet.noneOf(Material.class);
+    public static Set<Material> territoryDenyUsageMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
-    public static Set<Material> territoryDenyUseageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
+    public static Set<Material> territoryDenyUsageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
     public static transient Set<EntityType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(EntityType.class);
     /// <summary>
     /// This defines a set of materials which should always be allowed to use, regardless of factions permissions.
@@ -388,25 +388,25 @@ public class Conf {
         // Config is not loading if value is empty ???
         territoryBypassProtectedMaterials.add(Material.COOKIE);
 
-        territoryDenyUseageMaterials.add(XMaterial.FIRE_CHARGE.parseMaterial());
-        territoryDenyUseageMaterials.add(Material.FLINT_AND_STEEL);
-        territoryDenyUseageMaterials.add(Material.BUCKET);
-        territoryDenyUseageMaterials.add(Material.WATER_BUCKET);
-        territoryDenyUseageMaterials.add(Material.LAVA_BUCKET);
+        territoryDenyUsageMaterials.add(XMaterial.FIRE_CHARGE.parseMaterial());
+        territoryDenyUsageMaterials.add(Material.FLINT_AND_STEEL);
+        territoryDenyUsageMaterials.add(Material.BUCKET);
+        territoryDenyUsageMaterials.add(Material.WATER_BUCKET);
+        territoryDenyUsageMaterials.add(Material.LAVA_BUCKET);
         if (!FactionsPlugin.getInstance().mc17) {
-            territoryDenyUseageMaterials.add(Material.ARMOR_STAND);
+            territoryDenyUsageMaterials.add(Material.ARMOR_STAND);
         }
 
 
         territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
 
-        territoryDenyUseageMaterialsWhenOffline.add(XMaterial.FIRE_CHARGE.parseMaterial());
-        territoryDenyUseageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.BUCKET);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.WATER_BUCKET);
-        territoryDenyUseageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
+        territoryDenyUsageMaterialsWhenOffline.add(XMaterial.FIRE_CHARGE.parseMaterial());
+        territoryDenyUsageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
+        territoryDenyUsageMaterialsWhenOffline.add(Material.BUCKET);
+        territoryDenyUsageMaterialsWhenOffline.add(Material.WATER_BUCKET);
+        territoryDenyUsageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
         if (!FactionsPlugin.getInstance().mc17) {
-            territoryDenyUseageMaterialsWhenOffline.add(Material.ARMOR_STAND);
+            territoryDenyUsageMaterialsWhenOffline.add(Material.ARMOR_STAND);
         }
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
         safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
