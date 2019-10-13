@@ -28,6 +28,9 @@ public class CornerTask extends BukkitRunnable {
             FLocation fLocation = surrounding.remove(0);
             if (fPlayer.attemptClaim(fPlayer.getFaction(), fLocation, true)) {
                 ++amount;
+            } else {
+                fPlayer.sendMessage(TL.COMMAND_CORNER_FAIL_WITH_FEEDBACK.toString().replace("&", "§") + amount);
+                cancel();
             }
         }
     }

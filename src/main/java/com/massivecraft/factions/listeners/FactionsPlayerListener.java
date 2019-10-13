@@ -47,7 +47,7 @@ import java.util.logging.Level;
 public class FactionsPlayerListener implements Listener {
 
     HashMap<Player, Boolean> fallMap = new HashMap<>();
-    private Set<FLocation> corners;
+    public static Set<FLocation> corners;
     // Holds the next time a player can have a map shown.
     private HashMap<UUID, Long> showTimes = new HashMap<>();
     // for handling people who repeatedly spam attempts to open a door (or similar) in another faction's territory
@@ -58,16 +58,20 @@ public class FactionsPlayerListener implements Listener {
             initPlayer(player);
         }
         if (!FactionsPlugin.getInstance().mc17) {
-            this.corners = new HashSet<>();
-            for (World world : FactionsPlugin.getInstance().getServer().getWorlds()) {
-                WorldBorder border = world.getWorldBorder();
-                if (border != null) {
-                    int cornerCoord = (int) ((border.getSize() - 1.0) / 2.0);
-                    this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(cornerCoord)));
-                    this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(-cornerCoord)));
-                    this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(cornerCoord)));
-                    this.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(-cornerCoord)));
-                }
+            loadCorners();
+        }
+    }
+
+    public static void loadCorners() {
+        FactionsPlayerListener.corners = new HashSet<>();
+        for (World world : FactionsPlugin.getInstance().getServer().getWorlds()) {
+            WorldBorder border = world.getWorldBorder();
+            if (border != null) {
+                int cornerCoord = (int) ((border.getSize() - 1.0) / 2.0);
+                FactionsPlayerListener.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(cornerCoord)));
+                FactionsPlayerListener.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(-cornerCoord)));
+                FactionsPlayerListener.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(cornerCoord)));
+                FactionsPlayerListener.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(-cornerCoord)));
             }
         }
     }

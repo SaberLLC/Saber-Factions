@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -28,6 +29,11 @@ public class CmdReload extends FCommand {
         if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
             FactionsPlugin.getInstance().factionsFlight = true;
         }
+
+        if (!FactionsPlugin.getInstance().mc17) {
+            FactionsPlayerListener.loadCorners();
+        }
+
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 
         context.msg(TL.COMMAND_RELOAD_TIME, timeReload);
