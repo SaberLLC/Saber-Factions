@@ -29,11 +29,12 @@ public class CmdReload extends FCommand {
         if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
             FactionsPlugin.getInstance().factionsFlight = true;
         }
-        long timeReload = (System.currentTimeMillis() - timeInitStart);
 
         if (!FactionsPlugin.getInstance().mc17) {
             FactionsPlayerListener.loadCorners();
         }
+
+        long timeReload = (System.currentTimeMillis() - timeInitStart);
 
         context.msg(TL.COMMAND_RELOAD_TIME, timeReload);
     }
