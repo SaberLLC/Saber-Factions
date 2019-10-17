@@ -226,7 +226,8 @@ public class Conf {
     /// Useful for HCF features.
     /// </summary>
     public static Set<Material> territoryBypassProtectedMaterials = EnumSet.noneOf(Material.class);
-
+    // Dependency check
+    public static boolean dependencyCheck = true;
     // Economy settings
     public static boolean econEnabled = false;
     public static String econUniverseAccount = "";
