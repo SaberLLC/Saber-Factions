@@ -182,6 +182,8 @@ public class FactionsPlugin extends MPlugin {
         }
         //Attempt to generate a permission list
         PermissionList.generateFile();
+        // Load Conf from disk
+        Conf.load();
         //Dependency checks
         if (Conf.dependencyCheck && (Bukkit.getPluginManager().isPluginEnabled("Vault") && Bukkit.getPluginManager().isPluginEnabled("Essentials"))) {
             RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
@@ -194,8 +196,6 @@ public class FactionsPlugin extends MPlugin {
             divider();
             return;
         }
-        // Load Conf from disk
-        Conf.load();
         com.massivecraft.factions.integration.Essentials.setup();
         hookedPlayervaults = setupPlayervaults();
         FPlayers.getInstance().load();
