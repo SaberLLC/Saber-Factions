@@ -168,18 +168,6 @@ public class FactionsPlugin extends MPlugin {
                 mc114 = true;
                 break;
         }
-        //Dependency checks
-        if (Bukkit.getPluginManager().isPluginEnabled("Vault") && Bukkit.getPluginManager().isPluginEnabled("Essentials")) {
-            RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
-            FactionsPlugin.econ = rsp.getProvider();
-        } else {
-            divider();
-            System.out.println("You are missing dependencies!");
-            System.out.println("Please verify EssentialsX and Vault are installed!");
-            Bukkit.getPluginManager().disablePlugin(instance);
-            divider();
-            return;
-        }
         migrateFPlayerLeaders();
         log("==== End Setup ====");
 
@@ -194,7 +182,18 @@ public class FactionsPlugin extends MPlugin {
         }
         //Attempt to generate a permission list
         PermissionList.generateFile();
-
+        //Dependency checks
+        if (Conf.dependencyCheck && (Bukkit.getPluginManager().isPluginEnabled("Vault") && Bukkit.getPluginManager().isPluginEnabled("Essentials"))) {
+            RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
+            FactionsPlugin.econ = rsp.getProvider();
+        } else if (Conf.dependencyCheck) {
+            divider();
+            System.out.println("You are missing dependencies!");
+            System.out.println("Please verify EssentialsX and Vault are installed!");
+            Bukkit.getPluginManager().disablePlugin(instance);
+            divider();
+            return;
+        }
         // Load Conf from disk
         Conf.load();
         com.massivecraft.factions.integration.Essentials.setup();
