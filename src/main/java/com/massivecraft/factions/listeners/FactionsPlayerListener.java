@@ -576,6 +576,7 @@ public class FactionsPlayerListener implements Listener {
 
     public void enableFly(FPlayer me) {
         if (!me.getPlayer().hasPermission("factions.fly")) return;
+        me.setFFlying(true, false);
 
         if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")) {
             me.setFlying(true);
@@ -585,11 +586,11 @@ public class FactionsPlayerListener implements Listener {
                     CmdFly.startParticles();
                 }
             }
-            if (CmdFly.flyid == -1) {
+            if (CmdFly.flyTask == null) CmdFly.startFlyCheck();
                 CmdFly.startFlyCheck();
             }
         }
-    }
+
 
     //inspect
     @EventHandler
@@ -661,7 +662,9 @@ public class FactionsPlayerListener implements Listener {
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
 
         // clear visualization
-        if (event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
+        if (event.getFrom().getBlockX() != event.getTo().getBlockX()
+                || event.getFrom().getBlockY() != event.getTo().getBlockY()
+                || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
             VisualizeUtil.clear(event.getPlayer());
             if (me.isWarmingUp()) {
                 me.clearWarmup();
@@ -670,7 +673,9 @@ public class FactionsPlayerListener implements Listener {
         }
 
         // quick check to make sure player is moving between chunks; good performance boost
-        if (event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4 && event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4 && event.getFrom().getWorld() == event.getTo().getWorld()) {
+        if (event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4
+                && event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4
+                && event.getFrom().getWorld() == event.getTo().getWorld()) {
             return;
         }
 
