@@ -74,13 +74,13 @@ public class PowerLossEvent extends FactionPlayerEvent implements Cancellable {
      * Gets the configured damage to a players individual power on death
      * @return power to be lost as a Double.
      */
-    public Double getDefaultPowerLost() {return Conf.powerPerDeath;}
+    public double getDefaultPowerLost() {return Conf.powerPerDeath;}
 
     /**
      * Gets the variable power lost. Custom power ignored when less than or equal to zero.
      * @return custom power to be lost as a Double.
      */
-    public Double getCustomPowerLost() {return this.modified;}
+    public double getCustomPowerLost() {return this.modified;}
 
     /**
      * Sets the variable power lost. Custom power ignored when less than or equal to zero.

@@ -20,10 +20,10 @@ public class PowerRegenEvent extends FactionPlayerEvent implements Cancellable {
     }
 
     /**
-     * Get the amount of power this player will regen
+     * Get the amount of power this player will regen by default
      * @return power amount gained as a Double.
      */
-    public Double getPowerGained() {
+    public double getDefaultPowerGained() {
         return fPlayer.getMillisPassed() * Conf.powerPerMinute / 60000;
     }
 
