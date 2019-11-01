@@ -604,7 +604,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         return this.millisPassed;
     }
     public long getLastPowerUpdateTime() {
-        return this.millisPassed;
+        return this.lastPowerUpdateTime;
     }
 
     public void updatePower() {
