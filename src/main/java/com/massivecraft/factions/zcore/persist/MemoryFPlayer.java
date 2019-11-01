@@ -630,7 +630,11 @@ public abstract class MemoryFPlayer implements FPlayer {
         Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent));
 
         if (!powerRegenEvent.isCancelled())
-            this.alterPower(millisPassed * Conf.powerPerMinute / 60000); // millisPerMinute : 60 * 1000
+            if (!powerRegenEvent.usingCustomPower()) {
+                this.alterPower(millisPassed * Conf.powerPerMinute / 60000); // millisPerMinute : 60 * 1000
+            } else {
+                this.alterPower(+powerRegenEvent.getCustomPower());
+            }
     }
 
     public void losePowerFromBeingOffline() {

@@ -13,6 +13,7 @@ public class PowerLossEvent extends FactionPlayerEvent implements Cancellable {
 
     private boolean cancelled = false;
     private String message;
+    private double modified = 0;
 
     public PowerLossEvent(Faction f, FPlayer p) {
         super(f, p);
@@ -70,11 +71,33 @@ public class PowerLossEvent extends FactionPlayerEvent implements Cancellable {
     }
 
     /**
-     * Gets the damage to a players individual power
-     * @return power lost as a Double.
+     * Gets the configured damage to a players individual power on death
+     * @return power to be lost as a Double.
      */
-    public Double getPowerLost() {return Conf.powerPerDeath;}
+    public Double getDefaultPowerLost() {return Conf.powerPerDeath;}
 
+    /**
+     * Gets the variable power lost. Custom power ignored when less than or equal to zero.
+     * @return custom power to be lost as a Double.
+     */
+    public Double getCustomPowerLost() {return this.modified;}
+
+    /**
+     * Sets the variable power lost. Custom power ignored when less than or equal to zero.
+     * @param loss Double amount for the custom power loss to be set to.
+     */
+    public void setCustomPowerLost(Double loss) {modified = loss;}
+
+    /**
+     * Determines if custom power is to be used.
+     * @return If custom power is to be used as a boolean.
+     */
+    public boolean usingCustomPower() {
+        if (modified > 0) {
+            return true;
+        }
+        return false;
+    }
     @Override
     public boolean isCancelled() {
         return cancelled;

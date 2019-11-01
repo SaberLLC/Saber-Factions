@@ -13,6 +13,7 @@ import org.bukkit.event.Cancellable;
 public class PowerRegenEvent extends FactionPlayerEvent implements Cancellable {
 
     private boolean cancelled = false;
+    private double modified = 0;
 
     public PowerRegenEvent(Faction f, FPlayer p) {
         super(f, p);
@@ -25,6 +26,29 @@ public class PowerRegenEvent extends FactionPlayerEvent implements Cancellable {
     public Double getPowerGained() {
         return fPlayer.getMillisPassed() * Conf.powerPerMinute / 60000;
     }
+
+    /**
+     * Get the amount of custom power this player will gain. Ignored if less than or equal to 0.
+     * @return Custom power as a double
+     */
+    public double getCustomPower() {return modified;}
+
+    /**
+     * Get if we will be using the custom power gain instead of default.
+     * @return If we will process the event custom returned as a Boolean.
+     */
+    public boolean usingCustomPower() {
+        if (modified > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Set the custom power gain for this event.
+     * @param gain Amount of power to be added to player.
+     */
+    public void setCustomPower(Double gain) {modified = gain;}
 
     @Override
     public boolean isCancelled() {
