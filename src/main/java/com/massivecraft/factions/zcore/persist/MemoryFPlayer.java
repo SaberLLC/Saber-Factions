@@ -49,6 +49,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected double power;
     protected double powerBoost;
     protected long lastPowerUpdateTime;
+    protected long millisPassed;
     protected long lastLoginTime;
     protected ChatMode chatMode;
     protected boolean ignoreAllianceChat = false;
@@ -599,6 +600,12 @@ public abstract class MemoryFPlayer implements FPlayer {
     public int getPowerMinRounded() {
         return (int) Math.round(this.getPowerMin());
     }
+    public long getMillisPassed() {
+        return this.millisPassed;
+    }
+    public long getLastPowerUpdateTime() {
+        return this.millisPassed;
+    }
 
     public void updatePower() {
         if (this.isOffline()) {
@@ -611,7 +618,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         long now = System.currentTimeMillis();
-        long millisPassed = now - this.lastPowerUpdateTime;
+        this.millisPassed = now - this.lastPowerUpdateTime;
         this.lastPowerUpdateTime = now;
 
         Player thisPlayer = this.getPlayer();

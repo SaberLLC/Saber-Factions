@@ -1,7 +1,10 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
+import com.massivecraft.factions.zcore.persist.MemoryFPlayers;
 import org.bukkit.event.Cancellable;
 
 /**
@@ -13,6 +16,14 @@ public class PowerRegenEvent extends FactionPlayerEvent implements Cancellable {
 
     public PowerRegenEvent(Faction f, FPlayer p) {
         super(f, p);
+    }
+
+    /**
+     * Get the amount of power this player will regen
+     * @return power amount gained as a Double.
+     */
+    public Double getPowerGained() {
+        return fPlayer.getMillisPassed() * Conf.powerPerMinute / 60000;
     }
 
     @Override

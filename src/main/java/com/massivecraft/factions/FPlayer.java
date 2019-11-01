@@ -281,6 +281,10 @@ public interface FPlayer extends EconomyParticipator {
 
     int getPowerMinRounded();
 
+    long getMillisPassed();
+
+    long getLastPowerUpdateTime();
+
     void updatePower();
 
     void losePowerFromBeingOffline();

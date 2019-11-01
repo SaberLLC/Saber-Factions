@@ -1,5 +1,6 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import org.bukkit.entity.Player;
@@ -67,6 +68,12 @@ public class PowerLossEvent extends FactionPlayerEvent implements Cancellable {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    /**
+     * Gets the damage to a players individual power
+     * @return power lost as a Double.
+     */
+    public Double getPowerLost() {return Conf.powerPerDeath;}
 
     @Override
     public boolean isCancelled() {
