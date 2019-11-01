@@ -1158,42 +1158,42 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     @Override
     public Boolean canflyinWilderness() {
-        return getPlayer().hasPermission("factions.fly.wilderness");
+        return getPlayer().hasPermission(Permission.FLY_WILD.node);
     }
 
     @Override
     public Boolean canflyinWarzone() {
-        return getPlayer().hasPermission("factions.fly.warzone");
+        return getPlayer().hasPermission(Permission.FLY_WARZONE.node);
 
     }
 
     @Override
     public Boolean canflyinSafezone() {
-        return getPlayer().hasPermission("factions.fly.safezone");
+        return getPlayer().hasPermission(Permission.FLY_SAFEZONE.node);
 
     }
 
     @Override
     public Boolean canflyinEnemy() {
-        return getPlayer().hasPermission("factions.fly.enemy");
+        return getPlayer().hasPermission(Permission.FLY_ENEMY.node);
 
     }
 
     @Override
     public Boolean canflyinAlly() {
-        return getPlayer().hasPermission("factions.fly.ally");
+        return getPlayer().hasPermission(Permission.FLY_ALLY.node);
 
     }
 
     @Override
     public Boolean canflyinTruce() {
-        return getPlayer().hasPermission("factions.fly.truce");
+        return getPlayer().hasPermission(Permission.FLY_TRUCE.node);
 
     }
 
     @Override
     public Boolean canflyinNeutral() {
-        return getPlayer().hasPermission("factions.fly.neutral");
+        return getPlayer().hasPermission(Permission.FLY_NEUTRAL.node);
 
     }
 

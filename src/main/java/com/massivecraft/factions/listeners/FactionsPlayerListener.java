@@ -575,7 +575,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public void enableFly(FPlayer me) {
-        if (!me.getPlayer().hasPermission("factions.fly")) return;
+        if (!me.getPlayer().hasPermission(Permission.FLY.node)) return;
         me.setFFlying(true, false);
 
         if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")) {
