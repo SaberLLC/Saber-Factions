@@ -66,12 +66,13 @@ permissions:
     description: Can do all but create factions.
     children:
       factions.missions: true
+      factions.tntfill: true
       factions.shop: true
       factions.permissions: true
       factions.setdiscord: true
       factions.discord: true
       factions.paypal: true
-      factions.paypalset: true
+      factions.setpaypal: true
       factions.admin: true
       factions.autoclaim: true
       factions.promote: true

@@ -34,6 +34,9 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler
     public void onCreeperGlitch(EntityDamageEvent e) {
+        if (!Conf.preventCreeperGlitch) {
+            return;
+        }
         if (!e.getEntity().getType().equals(EntityType.CREEPER)) {
             return;
         }

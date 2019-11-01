@@ -114,6 +114,7 @@ public class Conf {
     public static boolean logMoneyTransactions = true;
     public static boolean logPlayerCommands = true;
     // prevent some potential exploits
+    public static boolean preventCreeperGlitch = true;
     public static boolean handleExploitObsidianGenerators = true;
     public static boolean handleExploitEnderPearlClipping = true;
     public static boolean handleExploitInteractionSpam = true;
