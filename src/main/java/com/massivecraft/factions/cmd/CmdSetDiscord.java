@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSetDiscord extends FCommand {
@@ -24,6 +25,11 @@ public class CmdSetDiscord extends FCommand {
     public void perform(CommandContext context) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("fdiscord.Enabled")) {
             context.fPlayer.msg(TL.GENERIC_DISABLED, "discord");
+            return;
+        }
+        if (context.fPlayer.getRole() != Role.LEADER && !context.fPlayer.isAdminBypassing()) {
+            //TODO: Create f perm for this
+            context.msg(TL.GENERIC_NOPERMISSION, "set your factions Discord!");
             return;
         }
 
