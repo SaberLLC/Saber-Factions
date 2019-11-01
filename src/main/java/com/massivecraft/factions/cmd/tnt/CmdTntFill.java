@@ -108,7 +108,7 @@ public class CmdTntFill extends FCommand {
             }
 
             // Take TNT from the bank.
-            removeFromBank(context, getFactionTnt);
+            context.faction.takeTnt(getFactionTnt);
         }
         fillDispensers(context.fPlayer, opDispensers, amount);
         // Remove used TNT from player inventory.
@@ -118,8 +118,9 @@ public class CmdTntFill extends FCommand {
     // Actually fill every dispenser with the precise amount.
     private void fillDispensers(FPlayer fPlayer, List<Dispenser> dispensers, int count) {
         for (Dispenser dispenser : dispensers) {
-            takeTnt(fPlayer, count);
-            dispenser.getInventory().addItem(new ItemStack(Material.TNT, count));
+            if (takeTnt(fPlayer, count)) {
+                dispenser.getInventory().addItem(new ItemStack(Material.TNT, count));
+            } else {return;}
         }
     }
 
@@ -160,7 +161,7 @@ public class CmdTntFill extends FCommand {
         context.player.updateInventory();
     }
 
-    private void takeTnt(FPlayer fme, int amount) {
+    private boolean takeTnt(FPlayer fme, int amount) {
         Inventory inv = fme.getPlayer().getInventory();
         int invTnt = 0;
         for (int i = 0; i <= inv.getSize(); i++) {
@@ -173,14 +174,15 @@ public class CmdTntFill extends FCommand {
         }
         if (amount > invTnt) {
             fme.msg(TL.COMMAND_TNTFILL_NOTENOUGH.toString());
-            return;
+            return false;
         }
         ItemStack tnt = new ItemStack(Material.TNT, amount);
         if (fme.getFaction().getTnt() + amount > FactionsPlugin.getInstance().getConfig().getInt("ftnt.Bank-Limit")) {
             fme.msg(TL.COMMAND_TNT_EXCEEDLIMIT.toString());
-            return;
+            return false;
         }
         removeFromInventory(fme.getPlayer().getInventory(), tnt);
+        return true;
     }
 
     // Counts the item type available in the inventory.
