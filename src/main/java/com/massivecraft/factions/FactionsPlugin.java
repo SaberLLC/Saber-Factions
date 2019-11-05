@@ -185,17 +185,19 @@ public class FactionsPlugin extends MPlugin {
         // Load Conf from disk
         Conf.load();
         //Dependency checks
-        if (Conf.dependencyCheck && (Bukkit.getPluginManager().isPluginEnabled("Vault") && Bukkit.getPluginManager().isPluginEnabled("Essentials"))) {
-            RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
-            FactionsPlugin.econ = rsp.getProvider();
-        } else if (Conf.dependencyCheck) {
+        if (Conf.dependencyCheck && (!Bukkit.getPluginManager().isPluginEnabled("Vault") && !Bukkit.getPluginManager().isPluginEnabled("Essentials"))) {
             divider();
             System.out.println("You are missing dependencies!");
             System.out.println("Please verify EssentialsX and Vault are installed!");
+            Conf.save();
             Bukkit.getPluginManager().disablePlugin(instance);
             divider();
             return;
         }
+        //Update their config if needed
+        Updater.updateIfNeeded(getConfig());
+        RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
+        FactionsPlugin.econ = rsp.getProvider();
         com.massivecraft.factions.integration.Essentials.setup();
         hookedPlayervaults = setupPlayervaults();
         FPlayers.getInstance().load();
