@@ -41,6 +41,7 @@ import java.util.*;
  */
 
 public abstract class MemoryFPlayer implements FPlayer {
+    public boolean inChest = false;
     public boolean inVault = false;
     protected HashMap<String, Long> commandCooldown = new HashMap<>();
     protected String factionId;
@@ -963,6 +964,12 @@ public abstract class MemoryFPlayer implements FPlayer {
         isFlying = fly;
     }
 
+    public boolean isInFactionsChest() {
+        return inChest;
+    }
+    public void setInFactionsChest(boolean b) {
+        inChest = b;
+    }
     public boolean isInVault() {
         return inVault;
     }

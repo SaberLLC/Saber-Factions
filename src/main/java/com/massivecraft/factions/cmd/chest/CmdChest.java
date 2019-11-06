@@ -30,6 +30,7 @@ public class CmdChest extends FCommand {
             return;
         }
         // This permission check is way too explicit but it's clean
+        context.fPlayer.setInFactionsChest(true);
         context.player.openInventory(context.faction.getChestInventory());
     }
 

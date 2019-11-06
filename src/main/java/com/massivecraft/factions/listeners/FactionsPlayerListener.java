@@ -791,8 +791,8 @@ public class FactionsPlayerListener implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
         FPlayer fme = FPlayers.getInstance().getById(e.getPlayer().getUniqueId().toString());
-        if (fme.isInVault())
-            fme.setInVault(false);
+        if (fme.isInVault()) fme.setInVault(false);
+        if (fme.isInFactionsChest()) fme.setInFactionsChest(false);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -1010,6 +1010,11 @@ public class FactionsPlayerListener implements Listener {
                 }
             }
         }
+    }
+    @EventHandler
+    public void onDisconnect(PlayerQuitEvent e) {
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
+        if (fPlayer.isInFactionsChest())  fPlayer.setInFactionsChest(false);
     }
 
     private static class InteractAttemptSpam {

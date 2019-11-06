@@ -19,7 +19,7 @@ public class AntiChestListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         Player player = (Player) e.getWhoClicked();
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-        if (!e.getView().getTopInventory().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")))) return;
+        if (!fPlayer.isInFactionsChest()) return;
 
         if (e.isCancelled()) return;
 
@@ -49,7 +49,7 @@ public class AntiChestListener implements Listener {
         Player p = (Player) e.getWhoClicked();
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(p);
 
-        if (!e.getView().getTopInventory().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")))) return;
+        if (!fPlayer.isInFactionsChest()) return;
         if (e.isCancelled()) return;
 
         ItemStack dragged = e.getOldCursor();

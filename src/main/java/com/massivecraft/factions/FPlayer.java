@@ -30,6 +30,17 @@ public interface FPlayer extends EconomyParticipator {
 
     boolean hasNotificationsEnabled();
 
+    /**
+     * Used to determine if a player is in their faction's chest
+     * @return if player is in their faction's as a boolean
+     */
+    boolean isInFactionsChest();
+
+    /**
+     * Set if the player is inside of their faction's chest
+     */
+    void setInFactionsChest(boolean b);
+
     boolean isAlt();
 
     void setAlt(boolean alt);
