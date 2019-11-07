@@ -11,7 +11,6 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
-import com.massivecraft.factions.cmd.chest.ChestLogsHandler;
 import com.massivecraft.factions.discord.DiscordListener;
 import com.massivecraft.factions.discord.FactionChatHandler;
 import com.massivecraft.factions.integration.Econ;
@@ -288,8 +287,7 @@ public class FactionsPlugin extends MPlugin {
                 new FUpgradesGUI(),
                 new UpgradesListener(),
                 new MissionHandler(this),
-                new AntiChestListener(),
-                new ChestLogsHandler()
+                new AntiChestListener()
         };
 
         for (Listener eventListener : eventsListener)

@@ -1020,6 +1020,7 @@ public enum TL {
     GENERIC_TRANSLATION_VERSION("Translation: %1$s(%2$s,%3$s) State: %4$s"),
     GENERIC_TRANSLATION_CONTRIBUTORS("Translation contributors: %1$s"),
     GENERIC_TRANSLATION_RESPONSIBLE("Responsible for translation: %1$s"),
+    GENERIC_FACTIONTAG_BLACKLIST("&cThat faction tag is blacklisted."),
     GENERIC_FACTIONTAG_TOOSHORT("The faction tag can't be shorter than %1$s chars."),
     GENERIC_FACTIONTAG_TOOLONG("The faction tag can't be longer than %s chars."),
     GENERIC_FACTIONTAG_ALPHANUMERIC("Faction tag must be alphanumeric. \"%s\" is not allowed."),
@@ -1043,6 +1044,7 @@ public enum TL {
 
     PLAYER_NOT_FOUND("&c&l[!] &b%1$s &7is either not online or not in your faction!"),
     PLACEHOLDER_ROLE_NAME("None"),
+    PLACEHOLDER_CUSTOM_FACTION("{faction} "),
 
 
     WARBANNER_NOFACTION("&cYou need a faction to use a warbanner!"),
