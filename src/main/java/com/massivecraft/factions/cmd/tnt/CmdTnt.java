@@ -71,7 +71,8 @@ public class CmdTnt extends FCommand {
 
                 context.faction.addTnt(amount);
                 context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
-                context.fPlayer.sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.fPlayer.getFaction().getTnt() + "")));
+                context.msg(TL.COMMAND_TNT_AMOUNT, context.fPlayer.getFaction().getTnt());
+               // context.fPlayer.sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.fPlayer.getFaction().getTnt() + "")));
                 return;
 
             }
