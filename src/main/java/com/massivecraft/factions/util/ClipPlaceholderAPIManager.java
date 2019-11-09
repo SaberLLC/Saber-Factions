@@ -146,7 +146,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return faction.hasHome() ? String.valueOf(faction.getHome().getBlockY()) : "";
             case "faction_home_z":
                 return faction.hasHome() ? String.valueOf(faction.getHome().getBlockZ()) : "";
-            case "facion_land_value":
+            case "faction_land_value":
                 return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(faction.getLandRounded())) : TL.ECON_OFF.format("value");
             case "faction_land_refund":
                 return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(faction.getLandRounded())) : TL.ECON_OFF.format("refund");

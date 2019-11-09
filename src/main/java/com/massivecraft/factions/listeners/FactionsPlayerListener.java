@@ -82,7 +82,7 @@ public class FactionsPlayerListener implements Listener {
                 faction.isWilderness();
     }
 
-    public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck) {
+    public static boolean playerCanUseItemHere(Player player, Location location, Material material, boolean justCheck, PermissableAction permissableAction) {
         String name = player.getName();
         if (Conf.playersWhoBypassAllProtection.contains(name)) {
             return true;
@@ -163,8 +163,8 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        Access access = otherFaction.getAccess(me, PermissableAction.ITEM);
-        return CheckPlayerAccess(player, me, loc, otherFaction, access, PermissableAction.ITEM, false);
+        Access access = otherFaction.getAccess(me, permissableAction);
+        return CheckPlayerAccess(player, me, loc, otherFaction, access, permissableAction, false);
     }
 
     @SuppressWarnings("deprecation")
@@ -729,7 +729,7 @@ public class FactionsPlayerListener implements Listener {
                         (relationTo == Relation.ALLY && me.canflyinAlly()) ||
                         (relationTo == Relation.TRUCE && me.canflyinTruce()) ||
                         (relationTo == Relation.NEUTRAL && me.canflyinNeutral() && !isSystemFaction(factionTo))) {
-                    enableFly(me);
+                    Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> enableFly(me));
                 }
             }
             if (me.getAutoClaimFor() != null) {
@@ -804,6 +804,15 @@ public class FactionsPlayerListener implements Listener {
         Player player = event.getPlayer();
         // Check if the material is bypassing protection
         if (block == null) return;  // clicked in air, apparently
+
+        Material type;
+        if (event.getItem() != null) {
+            // Convert 1.8 Material Names -> 1.14
+            type = XMaterial.matchXMaterial(event.getItem().getType().toString()).parseMaterial();
+        } else {
+            type = null;
+        }
+
         if (Conf.territoryBypassProtectedMaterials.contains(block.getType())) return;
 
         if (GetPermissionFromUsableBlock(event.getClickedBlock().getType()) != null) {
@@ -824,7 +833,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (event.getItem() == null) return;
-        if (!playerCanUseItemHere(player, block.getLocation(), event.getItem().getType(), false)) {
+        if (type != null && !playerCanUseItemHere(player, block.getLocation(), event.getItem().getType(), false, PermissableAction.ITEM)) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
         }
@@ -879,7 +888,7 @@ public class FactionsPlayerListener implements Listener {
         Block block = event.getBlockClicked();
         Player player = event.getPlayer();
 
-        if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false)) {
+        if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false, PermissableAction.BUILD)) {
             event.setCancelled(true);
         }
     }
@@ -889,7 +898,7 @@ public class FactionsPlayerListener implements Listener {
         Block block = event.getBlockClicked();
         Player player = event.getPlayer();
 
-        if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false)) {
+        if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false, PermissableAction.DESTROY)) {
             event.setCancelled(true);
         }
     }
