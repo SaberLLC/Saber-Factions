@@ -18,9 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class CmdTntFill extends FCommand {
 
@@ -40,7 +38,7 @@ public class CmdTntFill extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("Tntfill.enabled")) {
+        if (!FactionsPlugin.instance.getConfig().getBoolean("Tntfill.enabled")) {
             context.msg(TL.GENERIC_DISABLED);
             return;
         }
@@ -62,12 +60,12 @@ public class CmdTntFill extends FCommand {
             context.msg(TL.COMMAND_TNT_POSITIVE);
             return;
         }
-        if (radius > FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius")) {
-            context.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius") + ""));
+        if (radius > FactionsPlugin.instance.getConfig().getInt("Tntfill.max-radius")) {
+            context.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", FactionsPlugin.instance.getConfig().getInt("Tntfill.max-radius") + ""));
             return;
         }
-        if (amount > FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-amount")) {
-            context.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-amount") + ""));
+        if (amount > FactionsPlugin.instance.getConfig().getInt("Tntfill.max-amount")) {
+            context.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", FactionsPlugin.instance.getConfig().getInt("Tntfill.max-amount") + ""));
             return;
         }
 
@@ -108,19 +106,17 @@ public class CmdTntFill extends FCommand {
             }
 
             // Take TNT from the bank.
-            context.faction.takeTnt(getFactionTnt);
+            removeFromBank(context, getFactionTnt);
         }
         fillDispensers(context.fPlayer, opDispensers, amount);
         // Remove used TNT from player inventory.
         context.sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", requiredTnt + "").replace("{dispensers}", opDispensers.size() + ""));
     }
-
     // Actually fill every dispenser with the precise amount.
     private void fillDispensers(FPlayer fPlayer, List<Dispenser> dispensers, int count) {
         for (Dispenser dispenser : dispensers) {
-            if (takeTnt(fPlayer, count)) {
-                dispenser.getInventory().addItem(new ItemStack(Material.TNT, count));
-            } else {return;}
+            takeTnt(fPlayer, count);
+            dispenser.getInventory().addItem(new ItemStack(Material.TNT, count));
         }
     }
 
@@ -161,7 +157,7 @@ public class CmdTntFill extends FCommand {
         context.player.updateInventory();
     }
 
-    private boolean takeTnt(FPlayer fme, int amount) {
+    private void takeTnt(FPlayer fme, int amount) {
         Inventory inv = fme.getPlayer().getInventory();
         int invTnt = 0;
         for (int i = 0; i <= inv.getSize(); i++) {
@@ -174,15 +170,14 @@ public class CmdTntFill extends FCommand {
         }
         if (amount > invTnt) {
             fme.msg(TL.COMMAND_TNTFILL_NOTENOUGH.toString());
-            return false;
+            return;
         }
         ItemStack tnt = new ItemStack(Material.TNT, amount);
-        if (fme.getFaction().getTnt() + amount > FactionsPlugin.getInstance().getConfig().getInt("ftnt.Bank-Limit")) {
+        if (fme.getFaction().getTnt() + amount > FactionsPlugin.instance.getConfig().getInt("ftnt.Bank-Limit")) {
             fme.msg(TL.COMMAND_TNT_EXCEEDLIMIT.toString());
-            return false;
+            return;
         }
         removeFromInventory(fme.getPlayer().getInventory(), tnt);
-        return true;
     }
 
     // Counts the item type available in the inventory.

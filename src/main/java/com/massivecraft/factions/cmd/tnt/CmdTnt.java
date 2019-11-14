@@ -29,7 +29,7 @@ public class CmdTnt extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("ftnt.Enabled")) {
+        if (!FactionsPlugin.instance.getConfig().getBoolean("ftnt.Enabled")) {
             context.msg(TL.COMMAND_TNT_DISABLED_MSG);
             return;
         }
@@ -62,7 +62,7 @@ public class CmdTnt extends FCommand {
                     return;
                 }
                 ItemStack tnt = new ItemStack(Material.TNT, amount);
-                if (context.faction.getTnt() + amount > FactionsPlugin.getInstance().getConfig().getInt("ftnt.Bank-Limit")) {
+                if (context.faction.getTnt() + amount > FactionsPlugin.instance.getConfig().getInt("ftnt.Bank-Limit")) {
                     context.msg(TL.COMMAND_TNT_EXCEEDLIMIT);
                     return;
                 }
@@ -71,8 +71,7 @@ public class CmdTnt extends FCommand {
 
                 context.faction.addTnt(amount);
                 context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
-                context.msg(TL.COMMAND_TNT_AMOUNT, context.fPlayer.getFaction().getTnt());
-               // context.fPlayer.sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.fPlayer.getFaction().getTnt() + "")));
+                context.fPlayer.sendMessage(FactionsPlugin.instance.color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.fPlayer.getFaction().getTnt() + "")));
                 return;
 
             }
@@ -103,10 +102,8 @@ public class CmdTnt extends FCommand {
                     return;
                 }
 
-                for (int i = 0; i <= fullStacks - 1; i++)
-                    context.player.getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), 64));
-                if (remainderAmt != 0)
-                    context.player.getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), remainderAmt));
+                for (int i = 0; i <= fullStacks - 1; i++) context.player.getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), 64));
+                if (remainderAmt != 0) context.player.getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), remainderAmt));
 
                 context.faction.takeTnt(amount);
                 context.player.updateInventory();
@@ -116,7 +113,7 @@ public class CmdTnt extends FCommand {
             context.msg(TL.GENERIC_ARGS_TOOFEW);
             context.msg(context.args.get(0).equalsIgnoreCase("take") || context.args.get(0).equalsIgnoreCase("t") ? TL.COMMAND_TNT_TAKE_DESCRIPTION : TL.COMMAND_TNT_ADD_DESCRIPTION);
         }
-        context.msg(TL.COMMAND_TNT_AMOUNT, context.faction.getTnt(), context.faction.getTntBankLimit());
+        context.sendMessage(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + ""));
     }
 
 
@@ -135,7 +132,7 @@ public class CmdTnt extends FCommand {
     }
 
     public boolean hasAvaliableSlot(Player player, int howmany) {
-        Integer check = 0;
+        int check = 0;
         for (ItemStack item : player.getInventory().getContents()) {
             if (item == null) {
                 check++;
@@ -169,4 +166,3 @@ public class CmdTnt extends FCommand {
         return TL.COMMAND_TNT_DESCRIPTION;
     }
 }
-
