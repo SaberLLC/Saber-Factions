@@ -23,7 +23,7 @@ public class CmdHome extends FCommand {
     public CmdHome() {
         super();
         this.aliases.add("home");
-        this.optionalArgs.put("faction", "yours");
+        this.optionalArgs.put("home", "faction-name");
 
         this.requirements = new CommandRequirements.Builder(Permission.HOME)
                 .playerOnly()
@@ -87,7 +87,8 @@ public class CmdHome extends FCommand {
         if (Conf.homesTeleportAllowedEnemyDistance > 0
                 && !faction.isSafeZone()
                 && (!context.fPlayer.isInOwnTerritory()
-                || (context.fPlayer.isInOwnTerritory() && !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory))) {
+                || (context.fPlayer.isInOwnTerritory()
+                && !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory))) {
 
             World w = loc.getWorld();
             double x = loc.getX();
