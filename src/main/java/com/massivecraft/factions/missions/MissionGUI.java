@@ -13,7 +13,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import java.util.*;
 
 public class MissionGUI implements FactionGUI {
@@ -44,6 +43,9 @@ public class MissionGUI implements FactionGUI {
         if (missionName == null) {
             return;
         }
+        //if (missionName.equals(plugin.color(FactionsPlugin.getInstance().getConfig().getString("Randomization.Start-Item.Disallowed.Name")))) {
+            //return;
+        //}
         if (fPlayer.getFaction().getMissions().containsKey(missionName)) {
             fPlayer.msg(TL.MISSION_MISSION_ACTIVE);
             return;
@@ -63,6 +65,24 @@ public class MissionGUI implements FactionGUI {
         if (missionSection == null) {
             return;
         }
+        //Coming soon (:
+        //if (missionName.equals(plugin.color(FactionsPlugin.getInstance().getConfig().getString("Randomization.Start-Item.Allowed.Name")))) {
+            //Mission pickedMission = null;
+            //Set<String> keys = plugin.getConfig().getConfigurationSection("Missions").getKeys(false);
+            //while (pickedMission == null) {
+                //Random r = new Random();
+                //int pick = r.nextInt(keys.size() - 1);
+                //if (!keys.toArray()[pick].toString().equals("FillItem")) {
+                    //missionName = keys.toArray()[pick].toString();
+                    //pickedMission = new Mission(missionName, plugin.getConfig().getString("Missions." + missionName + ".Mission.Type"));
+                    //fPlayer.getFaction().getMissions().put(missionName, pickedMission);
+                    //fPlayer.msg(TL.MISSION_MISSION_STARTED, fPlayer.describeTo(fPlayer.getFaction()), plugin.color(plugin.getConfig().getString("Missions." + missionName + ".Name")));
+                    //build();
+                    //fPlayer.getPlayer().openInventory(inventory);
+                    //return;
+                //}
+            //}
+        //}
         Mission mission = new Mission(missionName, missionSection.getString("Type"));
         fPlayer.getFaction().getMissions().put(missionName, mission);
         fPlayer.msg(TL.MISSION_MISSION_STARTED, fPlayer.describeTo(fPlayer.getFaction()), plugin.color(section.getString("Name")));
@@ -109,6 +129,46 @@ public class MissionGUI implements FactionGUI {
                 inventory.setItem(slot, itemStack);
                 slots.put(slot, key);
             }
+        }
+        if (plugin.getConfig().getBoolean("Randomization.Enabled")) {
+            ItemStack start = null;
+            ItemMeta meta;
+            start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Allowed.Material")).parseItem();
+            meta = start.getItemMeta();
+            meta.setDisplayName(plugin.color(plugin.getConfig().getString("Randomization.Start-Item.Allowed.Name")));
+            List<String> loree = meta.getLore();
+            loree.clear();
+            for (String string : plugin.getConfig().getStringList("Randomization.Start-Item.Allowed.Lore")) {
+                loree.add(plugin.color(string));
+            }
+            meta.setLore(loree);
+            start.setItemMeta(meta);
+            if (fPlayer.getFaction().getCompletedMissions().size() >= configurationSection.getKeys(false).size() - 1 && plugin.getConfig().getBoolean("DenyMissionsMoreThenOnce")) {
+                start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Material")).parseItem();
+                meta = start.getItemMeta();
+                meta.setDisplayName(plugin.color(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Name")));
+                List<String> lore = meta.getLore();
+                lore.clear();
+                for (String string : plugin.getConfig().getStringList("Randomization.Start-Item.Disallowed.Lore")) {
+                    lore.add(plugin.color(string).replace("%reason%", TL.MISSION_MISSION_ALL_COMPLETED.toString()));
+                }
+                meta.setLore(lore);
+                start.setItemMeta(meta);
+            }
+            if (fPlayer.getFaction().getMissions().size() >= plugin.getConfig().getInt("MaximumMissionsAllowedAtOnce")) {
+                start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Material")).parseItem();
+                meta = start.getItemMeta();
+                meta.setDisplayName(plugin.color(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Name")));
+                List<String> lore = meta.getLore();
+                lore.clear();
+                for (String string : plugin.getConfig().getStringList("Randomization.Start-Item.Disallowed.Lore")) {
+                    lore.add(plugin.color(string).replace("%reason%", FactionsPlugin.getInstance().txt.parse(TL.MISSION_MISSION_MAX_ALLOWED.toString(), plugin.getConfig().getInt("MaximumMissionsAllowedAtOnce"))));
+                }
+                meta.setLore(lore);
+                start.setItemMeta(meta);
+            }
+            inventory.setItem(plugin.getConfig().getInt("Randomization.Start-Item.Slot"), start);
+            slots.put(plugin.getConfig().getInt("Randomization.Start-Item.Slot"), start.getItemMeta().getDisplayName());
         }
     }
 
