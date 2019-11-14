@@ -1,4 +1,4 @@
-Config-Version: 1.0
+Config-Version: 1.1
 # SaberFactions by Driftay
 # Report issues: https://github.com/Driftay/Saber-Factions/issues/new
 # Live support: https://discord.gg/TFxWKeX
@@ -753,6 +753,21 @@ Missions-Enabled: true
 Missions-GUI-Title: '&8&lFaction Missions'
 MaximumMissionsAllowedAtOnce: 1
 Mission-Progress-Format: '&b&lProgression: &f{progress}&7/&e{total}'
+Randomization:
+  Enabled: false
+  Start-Item:
+    # Allowed means that they are under maximum allowed missions at one AND if applicable they have not completed every mission more than once
+    Allowed:
+      Name: "&aStart!"
+      Material: GREEN_STAINED_GLASS_PANE
+      Lore: "&2Start a new mission!"
+    Disallowed:
+      # Placeholder %reason% supported throughout this section
+      Name: "&4Cannot start new mission"
+      Material: GRAY_STAINED_GLASS_PANE
+      Lore:
+        - '&4%reason%'
+    Slot: 23
 DenyMissionsMoreThenOnce: true #this setting to true, means that if they complete a mission they cannot redo the same mission
 
 #Mission Types: KILL, MINE, PLACE, FISH, TAME, ENCHANT, CONSUME

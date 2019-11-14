@@ -48,6 +48,10 @@ public class CmdHome extends FCommand {
         if (context.args.size() == 1) {
             Faction faction = context.argAsFaction(0);
             if (faction == null) return;
+            if (faction.getAccess(context.fPlayer, PermissableAction.HOME) != Access.ALLOW) {
+                context.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
+                return;
+            }
             context.faction = faction;
         }
 
