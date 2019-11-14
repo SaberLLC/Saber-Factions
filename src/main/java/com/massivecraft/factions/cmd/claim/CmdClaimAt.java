@@ -31,11 +31,7 @@ public class CmdClaimAt extends FCommand {
         int x = context.argAsInt(1);
         int z = context.argAsInt(2);
         FLocation location = new FLocation(context.argAsString(0), x, z);
-        if (!((context.player.getLocation().getX() + (x * 16)) > (context.player.getLocation().getX() + (Conf.mapWidth * 16))) &&
-                !((context.player.getLocation().getZ() + (z * 16)) > (context.player.getLocation().getZ() + (Conf.mapHeight * 16))) &&
-                !context.argAsString(0).equals(context.player.getLocation().getWorld().getName())) {
-            context.fPlayer.attemptClaim(context.faction, location, true);
-        } else context.fPlayer.msg(TL.COMMAND_CLAIM_DENIED);
+        context.fPlayer.attemptClaim(context.faction, location, true);
     }
 
 
