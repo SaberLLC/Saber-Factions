@@ -20,8 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class CmdFly extends FCommand {
 
 
-    public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<String, Boolean>();
-    public static int id = -1;
+    public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<>();
+    public static BukkitTask particleTask = null;
     public static BukkitTask flyTask = null;
 
 
@@ -38,7 +38,7 @@ public class CmdFly extends FCommand {
 
     public static void startParticles() {
 
-        id = Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
+        particleTask = Bukkit.getScheduler().runTaskTimerAsynchronously(FactionsPlugin.instance, () -> {
             for (String name : flyMap.keySet()) {
                 Player player = Bukkit.getPlayer(name);
                 if (player == null) continue;
@@ -49,11 +49,10 @@ public class CmdFly extends FCommand {
 
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
                 fplayer.isVanished();
-
             }
-            if (flyMap.keySet().size() == 0) {
-                Bukkit.getScheduler().cancelTask(id);
-                id = -1;
+            if (flyMap.isEmpty()) {
+                particleTask.cancel();
+                particleTask = null;
             }
         }, 10L, 3L);
     }
@@ -192,6 +191,10 @@ public class CmdFly extends FCommand {
             context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
                 fme.setFlying(true);
                 flyMap.put(fme.getPlayer().getName(), true);
+                if (particleTask == null) {
+                    startParticles();
+                }
+
                 if (flyTask == null) {
                     startFlyCheck();
                 }

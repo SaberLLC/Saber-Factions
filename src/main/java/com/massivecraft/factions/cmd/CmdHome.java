@@ -23,7 +23,7 @@ public class CmdHome extends FCommand {
     public CmdHome() {
         super();
         this.aliases.add("home");
-        this.optionalArgs.put("home", "faction-name");
+        this.optionalArgs.put("faction", "yours");
 
         this.requirements = new CommandRequirements.Builder(Permission.HOME)
                 .playerOnly()
