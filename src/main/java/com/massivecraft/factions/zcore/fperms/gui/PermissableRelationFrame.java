@@ -37,6 +37,7 @@ public class PermissableRelationFrame {
             GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
         ConfigurationSection sec = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.relation");
         for (String key : sec.getConfigurationSection("slots").getKeys(false)) {
+            if (key == null || sec.getInt("slots." + key) < 0) continue;
             GUIItems.set(sec.getInt("slots." + key), new GuiItem(buildAsset("fperm-gui.relation.materials." + key, key), e -> {
                 e.setCancelled(true);
                 // Closing and opening resets the cursor.
