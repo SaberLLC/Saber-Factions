@@ -39,7 +39,7 @@ public class CmdMoneyBalance extends FCommand {
         }
 
         if (context.fPlayer != null) {
-            Econ.sendBalanceInfo((CommandSender) context.fPlayer, faction);
+            Econ.sendBalanceInfo(context.sender, faction);
         } else {
             Econ.sendBalanceInfo(context.sender, faction);
         }
