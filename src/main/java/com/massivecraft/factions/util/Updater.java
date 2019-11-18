@@ -33,7 +33,7 @@ public class Updater {
             lore.clear();
             lore.add("&4%reason%");
             conf.set("Randomization.Start-Item.Disallowed.Lore", lore);
-            conf.set("Randomization.Start-Item.Slot", 23);
+            conf.set("Randomization.Start-Item.Slot", 28);
             conf.set("Config-Version", 1.1);
             version = 1.1;
 

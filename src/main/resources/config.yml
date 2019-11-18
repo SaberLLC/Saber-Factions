@@ -748,7 +748,7 @@ f-points:
 # |                Faction Missions                      | #
 # +------------------------------------------------------+ #
 ############################################################
-MissionGUISize: 3
+MissionGUISize: 4
 Missions-Enabled: true
 Missions-GUI-Title: '&8&lFaction Missions'
 MaximumMissionsAllowedAtOnce: 1
@@ -767,14 +767,15 @@ Randomization:
       Material: GRAY_STAINED_GLASS_PANE
       Lore:
         - '&4%reason%'
-    Slot: 23
+    # in default configuration you will need to change the GUI size to 4 and for best results change the fillitem rows to 4 as well.
+    Slot: 31
 DenyMissionsMoreThenOnce: true #this setting to true, means that if they complete a mission they cannot redo the same mission
 
 #Mission Types: KILL, MINE, PLACE, FISH, TAME, ENCHANT, CONSUME
 Missions:
   FillItem:
     Material: BLACK_STAINED_GLASS_PANE
-    Rows: 3
+    Rows: 4
   sugarcane:
     Slot: 11
     Material: "SUGAR_CANE"
