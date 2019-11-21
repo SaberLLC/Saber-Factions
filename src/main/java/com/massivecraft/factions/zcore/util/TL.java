@@ -56,6 +56,12 @@ public enum TL {
     ACTIONS_MUSTBE("Youmust be {role} to {action}."),
     ACTIONS_NOSAMEROLE("{role} can't control each other..."),
     ACTIONS_NOFACTION("You are not member of any faction."),
+
+    ACTION_DENIED_SAFEZONE("You can't use %1$s in safezone!"),
+    ACTION_DENIED_WARZONE("You can't use %1$s in warzone!"),
+    ACTION_DENIED_WILDERNESS("You can't use %1$s in wilderness!"),
+    ACTION_DENIED_OTHER("%1$s does not allow you to %2$s here!"),
+
     /**
      * Command translations
      */

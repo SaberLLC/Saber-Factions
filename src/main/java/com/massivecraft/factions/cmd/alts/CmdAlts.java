@@ -12,6 +12,7 @@ public class CmdAlts extends FCommand {
 
     public CmdInviteAlt cmdInviteAlt = new CmdInviteAlt();
     public CmdAltsList cmdAltsList = new CmdAltsList();
+    public CmdKickAlt cmdKickAlt = new CmdKickAlt();
 
 
     public CmdAlts() {
@@ -22,6 +23,7 @@ public class CmdAlts extends FCommand {
 
         this.addSubCommand(this.cmdInviteAlt);
         this.addSubCommand(this.cmdAltsList);
+        this.addSubCommand(this.cmdKickAlt);
 
         this.requirements = new CommandRequirements.Builder(Permission.ALTS)
                 .playerOnly()
