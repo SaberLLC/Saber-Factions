@@ -9,6 +9,7 @@ import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
+import com.massivecraft.factions.shield.TimeFrame;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -29,6 +30,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.Time;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -93,6 +95,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private String weeWooFormat;
     private String guildId;
     private String memberRoleId;
+    private TimeFrame timeFrame;
 
 
     // -------------------------------------------- //
@@ -128,6 +131,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.notifyFormat = "@everyone, check %type%";
         this.weeWooFormat = "@everyone, we're being raided! Get online!";
         this.memberRoleId = null;
+        this.timeFrame = null;
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -160,7 +164,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.checks = new ConcurrentHashMap<>();
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
-
+        this.timeFrame = null;
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -1504,5 +1508,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<FLocation> getAllClaims() {
         return Board.getInstance().getAllClaims(this);
+    }
+
+    public TimeFrame getTimeFrame(){
+        return this.timeFrame;
+    }
+
+    public void setTimeFrame(TimeFrame timeFrame){
+        this.timeFrame = timeFrame;
     }
 }
