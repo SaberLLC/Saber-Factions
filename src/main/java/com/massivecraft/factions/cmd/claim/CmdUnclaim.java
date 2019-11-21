@@ -54,7 +54,9 @@ public class CmdUnclaim extends FCommand {
 
         if (radius == 1) {
             // single chunk
-            unClaim(new FLocation(context.player), context);
+            boolean didUnClaim = unClaim(new FLocation(context.player), context);
+            if (didUnClaim && !context.fPlayer.canFlyAtLocation())
+                context.fPlayer.setFFlying(false, false);
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(context.sender, false)) {

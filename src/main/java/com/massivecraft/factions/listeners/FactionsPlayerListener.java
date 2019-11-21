@@ -555,6 +555,7 @@ public class FactionsPlayerListener implements Listener {
 
     public void enableFly(FPlayer me) {
         if (!FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable")) return; // Looks prettier sorry
+        if (!me.canFlyAtLocation()) return;
         me.setFFlying(true, false);
         CmdFly.flyMap.put(me.getName(), true);
         if (CmdFly.particleTask == null)
@@ -728,21 +729,8 @@ public class FactionsPlayerListener implements Listener {
                     }, 5);
                 }
             }
-
-            // enable fly :)
-            if (FactionsPlugin.instance.factionsFlight && me.hasFaction() && !me.isFlying()) {
-                if (factionTo == me.getFaction()) enableFly(me);
-                // bypass checks
-                Relation relationTo = factionTo.getRelationTo(me);
-                if ((factionTo.isWilderness() && me.canflyinWilderness()) ||
-                        (factionTo.isWarZone() && me.canflyinWarzone()) ||
-                        (factionTo.isSafeZone() && me.canflyinSafezone()) ||
-                        (relationTo == Relation.ENEMY && me.canflyinEnemy()) ||
-                        (relationTo == Relation.ALLY && me.canflyinAlly()) ||
-                        (relationTo == Relation.TRUCE && me.canflyinTruce()) ||
-                        (relationTo == Relation.NEUTRAL && me.canflyinNeutral() && !isSystemFaction(factionTo))) {
-                    Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> enableFly(me));
-                }
+            if (!me.isFlying()) {
+                enableFly(me);
             }
 
             if (me.getAutoClaimFor() != null) {

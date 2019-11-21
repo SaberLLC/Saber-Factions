@@ -988,7 +988,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return true;
         }
 
-        if (faction.isWilderness() || faction.isSafeZone() || faction.isWarZone()){
+        if (faction.isSystemFaction()) {
             return CmdFly.checkBypassPerms(this, this.getPlayer(), faction);
         }
 

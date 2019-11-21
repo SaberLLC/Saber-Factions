@@ -131,13 +131,14 @@ public class FactionsBlockListener implements Listener {
         
         // special case for flint&steel, which should only be prevented by DenyUsage list
         if (event.getBlockPlaced().getType() == Material.FIRE) return;
+        boolean isSpawner = event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial());
 
-        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), !isSpawner ? "build" : "mine spawners", false)) {
             event.setCancelled(true);
             return;
         }
 
-        if (event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial())) {
+        if (isSpawner) {
             if (Conf.spawnerLock) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
@@ -462,21 +463,10 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
+        boolean isSpawner = event.getBlock().getType() == XMaterial.SPAWNER.parseMaterial();
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), !isSpawner ? "destroy" : "mine spawners", false)) {
             event.setCancelled(true);
             return;
-        }
-        FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
-        if (fme == null || !fme.hasFaction()) {
-            return;
-        }
-        if (event.getBlock().getType() == XMaterial.SPAWNER.parseMaterial()) {
-            if (!fme.isAdminBypassing()) {
-                Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
-                if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
-                    fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");
-                }
-            }
         }
     }
 

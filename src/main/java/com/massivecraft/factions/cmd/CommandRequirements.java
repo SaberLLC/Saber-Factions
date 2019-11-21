@@ -52,6 +52,9 @@ public class CommandRequirements {
                 return false;
             }
 
+            if (context.fPlayer.isAdminBypassing()) return true;
+
+
             if (!FactionsPlugin.getInstance().perm.has(context.sender, permission.node, informIfNot)) return false;
 
             // Permissable Action provided compute that before role

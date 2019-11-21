@@ -116,20 +116,15 @@ public class CmdFly extends FCommand {
                 return false;
             }
 
-            if (!(me.hasPermission(Permission.FLY_NEUTRAL.node) || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.NEUTRAL && !isSystemFaction(toFac)) {
+            if (!(me.hasPermission(Permission.FLY_NEUTRAL.node) || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.NEUTRAL && !toFac.isSystemFaction()) {
                 fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
             return me.hasPermission(Permission.FLY.node) && (access != Access.DENY || toFac.isSystemFaction());
         }
-        return true;
+        return fme.canFlyAtLocation();
     }
 
-    public static Boolean isSystemFaction(Faction faction) {
-        return faction.isSafeZone() ||
-                faction.isWarZone() ||
-                faction.isWilderness();
-    }
 
     public static void checkTaskState() {
         if (flyMap.isEmpty()) {

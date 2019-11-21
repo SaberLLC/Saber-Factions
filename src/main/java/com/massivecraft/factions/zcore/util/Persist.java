@@ -103,6 +103,18 @@ public class Persist {
         return DiscUtil.writeCatch(file, p.gson.toJson(instance), false);
     }
 
+    public boolean saveSync(Object instance) {
+        return saveSync(instance, getFile(instance));
+    }
+
+    public boolean saveSync(Object instance, String name) {
+        return saveSync(instance, getFile(name));
+    }
+
+    public boolean saveSync(Object instance, File file) {
+        return DiscUtil.writeCatch(file, p.gson.toJson(instance), true);
+    }
+
     // LOAD BY CLASS
 
     public <T> T load(Class<T> clazz) {

@@ -425,9 +425,7 @@ public class FactionsPlugin extends MPlugin {
     public void onDisable() {
         // only save data if plugin actually completely loaded successfully
         if (this.loadSuccessful) {
-            // Dont save, as this is kind of pointless, as the /f config command manually saves.
-            // So any edits done are saved, this way manual edits to json can go through.
-            // Conf.save();
+            Conf.saveSync();
         }
 
         if (AutoLeaveTask != null) {
