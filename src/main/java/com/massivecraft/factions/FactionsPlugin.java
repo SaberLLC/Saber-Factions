@@ -89,6 +89,7 @@ public class FactionsPlugin extends MPlugin {
     private boolean mvdwPlaceholderAPIManager = false;
     private Listener[] eventsListener;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
+    private Worldguard wg;
 
 
     public FactionsPlugin() {
@@ -230,9 +231,7 @@ public class FactionsPlugin extends MPlugin {
         Econ.setup();
         setupPermissions();
 
-        if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
-            Worldguard.init(this);
-        }
+        if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) wg = new Worldguard();
 
         EngineDynmap.getInstance().init();
 
