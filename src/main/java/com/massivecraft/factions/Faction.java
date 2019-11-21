@@ -440,5 +440,4 @@ public interface Faction extends EconomyParticipator {
     String getPaypal();
 
     void paypalSet(String paypal);
-
 }
