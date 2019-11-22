@@ -62,7 +62,7 @@ public class CmdTnt extends FCommand {
                     return;
                 }
                 ItemStack tnt = new ItemStack(Material.TNT, amount);
-                if (context.faction.getTnt() + amount > FactionsPlugin.instance.getConfig().getInt("ftnt.Bank-Limit")) {
+                if (context.faction.getTnt() + amount > context.faction.getTntBankLimit()) {
                     context.msg(TL.COMMAND_TNT_EXCEEDLIMIT);
                     return;
                 }
@@ -71,7 +71,7 @@ public class CmdTnt extends FCommand {
 
                 context.faction.addTnt(amount);
                 context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
-                context.fPlayer.sendMessage(FactionsPlugin.instance.color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.fPlayer.getFaction().getTnt() + "")));
+                context.fPlayer.sendMessage(FactionsPlugin.instance.color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
                 return;
 
             }
@@ -113,7 +113,7 @@ public class CmdTnt extends FCommand {
             context.msg(TL.GENERIC_ARGS_TOOFEW);
             context.msg(context.args.get(0).equalsIgnoreCase("take") || context.args.get(0).equalsIgnoreCase("t") ? TL.COMMAND_TNT_TAKE_DESCRIPTION : TL.COMMAND_TNT_ADD_DESCRIPTION);
         }
-        context.sendMessage(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + ""));
+        context.sendMessage(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + ""));
     }
 
 

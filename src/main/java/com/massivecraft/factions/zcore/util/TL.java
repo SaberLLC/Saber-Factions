@@ -888,7 +888,7 @@ public enum TL {
     COMMAND_TNT_WIDTHDRAW_SUCCESS("&cSuccessfully withdrew tnt."),
     COMMAND_TNT_WIDTHDRAW_NOTENOUGH("&cNot enough tnt in bank."),
     COMMAND_TNT_DEPOSIT_NOTENOUGH("&cNot enough tnt in tnt inventory."),
-    COMMAND_TNT_AMOUNT("&cYour faction has %1$s tnt in the tnt bank."),
+    COMMAND_TNT_AMOUNT("&cYour faction has {amount}/{maxAmount} tnt in the tnt bank."),
     COMMAND_TNT_POSITIVE("&cPlease use positive numbers!"),
     COMMAND_TNT_DESCRIPTION("add/widthraw from faction's tnt bank"),
     COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE("&cNot enough space in your inventory."),

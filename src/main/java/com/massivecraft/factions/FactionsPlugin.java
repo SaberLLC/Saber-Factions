@@ -195,7 +195,7 @@ public class FactionsPlugin extends MPlugin {
             return;
         }
         //Update their config if needed
-        Updater.updateIfNeeded(getConfig());
+       // Updater.updateIfNeeded(getConfig());
         RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
         FactionsPlugin.econ = rsp.getProvider();
         com.massivecraft.factions.integration.Essentials.setup();

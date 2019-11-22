@@ -35,8 +35,7 @@ public class Updater {
             conf.set("Randomization.Start-Item.Disallowed.Lore", lore);
             conf.set("Randomization.Start-Item.Slot", 28);
             conf.set("Config-Version", 1.1);
-            version = 1.1;
-
+            currentVersion = 1.1;
         }
         //End with save + reload
         try {

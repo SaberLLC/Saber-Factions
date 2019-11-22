@@ -989,7 +989,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         if (faction.isSystemFaction()) {
-            return CmdFly.checkBypassPerms(this, this.getPlayer(), faction);
+            return CmdFly.checkBypassPerms(this, getPlayer(), faction);
         }
 
         Access access = faction.getAccess(this, PermissableAction.FLY);

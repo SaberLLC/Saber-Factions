@@ -122,7 +122,7 @@ public class CmdFly extends FCommand {
             }
             return me.hasPermission(Permission.FLY.node) && (access != Access.DENY || toFac.isSystemFaction());
         }
-        return fme.canFlyAtLocation();
+        return true;
     }
 
 
