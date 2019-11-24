@@ -1038,7 +1038,7 @@ public enum TL {
     GENERIC_YOUMUSTBE("&cYour must be atleast %1$s to do this!"),
     GENERIC_MEMBERONLY("&cYou must be in a faction to do this!"),
 
-
+   // MISSION_CREATED_COOLDOWN("&c&l[!] &7Due to your immediate faction creation, you may not start missions for &b%1$s minutes&7!"),
     MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),
     MISSION_ALREAD_COMPLETED("&c&l[!] &7You may not restart a mission you have already completed"),
     MISSION_MISSION_ACTIVE("&c&l[!] &7This mission is currently active!"),

@@ -18,6 +18,7 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.missions.MissionHandler;
+import com.massivecraft.factions.shield.TimeFrameTask;
 import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
@@ -266,6 +267,7 @@ public class FactionsPlugin extends MPlugin {
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 30), 0L, (long) (minute * 30));
             this.getServer().getScheduler().runTaskTimer(this, CheckTask::cleanupTask, 0L, 1200L);
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new WeeWooTask(this), 600L, 600L);
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new TimeFrameTask(), 1200, 1200); // every 1 minute...
         }
         if(Conf.useDiscordSystem && !Conf.discordBotToken.equals("<token here>")) {
             new FactionChatHandler(this);

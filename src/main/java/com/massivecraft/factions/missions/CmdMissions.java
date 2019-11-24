@@ -24,9 +24,6 @@ public class CmdMissions extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (context.faction == null) {
-            return;
-        }
         final MissionGUI missionsGUI = new MissionGUI(FactionsPlugin.getInstance(), context.fPlayer);
         missionsGUI.build();
         context.player.openInventory(missionsGUI.getInventory());

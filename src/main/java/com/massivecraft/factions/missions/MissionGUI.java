@@ -31,9 +31,7 @@ public class MissionGUI implements FactionGUI {
     @Override
     public void onClick(int slot, ClickType action) {
         String missionName = slots.get(slot);
-        if (missionName == null) {
-            return;
-        }
+        if (missionName == null) return;
         ConfigurationSection configurationSection = plugin.getConfig().getConfigurationSection("Missions");
         if (missionName.equals(plugin.color(FactionsPlugin.getInstance().getConfig().getString("Randomization.Start-Item.Allowed.Name")))) {
             Mission pickedMission = null;
@@ -54,25 +52,22 @@ public class MissionGUI implements FactionGUI {
                 }
             }
         } else if (plugin.getConfig().getBoolean("Randomization.Enabled")) {return;}
-        if (configurationSection == null) {
-            return;
-        }
+        if (configurationSection == null) return;
+
         int max = plugin.getConfig().getInt("MaximumMissionsAllowedAtOnce");
         if (fPlayer.getFaction().getMissions().size() >= max) {
             fPlayer.msg(TL.MISSION_MISSION_MAX_ALLOWED, max);
             return;
         }
-        if (missionName.equals(plugin.color(FactionsPlugin.getInstance().getConfig().getString("Randomization.Start-Item.Disallowed.Name")))) {
-            return;
-        }
+        if (missionName.equals(plugin.color(FactionsPlugin.getInstance().getConfig().getString("Randomization.Start-Item.Disallowed.Name")))) return;
+
         if (fPlayer.getFaction().getMissions().containsKey(missionName)) {
             fPlayer.msg(TL.MISSION_MISSION_ACTIVE);
             return;
         }
         ConfigurationSection section = configurationSection.getConfigurationSection(missionName);
-        if (section == null) {
-            return;
-        }
+        if (section == null) return;
+
         if(FactionsPlugin.getInstance().getConfig().getBoolean("DenyMissionsMoreThenOnce")) {
             if (fPlayer.getFaction().getCompletedMissions().contains(missionName)) {
                 fPlayer.msg(TL.MISSION_ALREAD_COMPLETED);
@@ -81,9 +76,7 @@ public class MissionGUI implements FactionGUI {
         }
 
         ConfigurationSection missionSection = section.getConfigurationSection("Mission");
-        if (missionSection == null) {
-            return;
-        }
+        if (missionSection == null) return;
 
         Mission mission = new Mission(missionName, missionSection.getString("Type"));
         fPlayer.getFaction().getMissions().put(missionName, mission);
