@@ -9,7 +9,6 @@ import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
-import com.massivecraft.factions.shield.TimeFrame;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -94,7 +93,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private String weeWooFormat;
     private String guildId;
     private String memberRoleId;
-    private TimeFrame timeFrame;
 
 
     // -------------------------------------------- //
@@ -130,7 +128,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.notifyFormat = "@everyone, check %type%";
         this.weeWooFormat = "@everyone, we're being raided! Get online!";
         this.memberRoleId = null;
-        this.timeFrame = null;
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -163,7 +160,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.checks = new ConcurrentHashMap<>();
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
-        this.timeFrame = null;
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -586,14 +582,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.wallNotifyChannelId;
     }
 
-    public TimeFrame getTimeFrame(){
-        return this.timeFrame;
-    }
-
-    public void setTimeFrame(TimeFrame timeFrame){
-        this.timeFrame = timeFrame;
-    }
-
     @Override
     public void setWallNotifyChannelId(final String wallNotifyChannelId) {
         this.wallNotifyChannelId = wallNotifyChannelId;
@@ -877,16 +865,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
      * @return
      */
     public Access getAccess(FPlayer player, PermissableAction permissableAction) {
-        if (player == null || permissableAction == null) {
-            return Access.UNDEFINED;
-        }
+        if (player == null || permissableAction == null) return Access.UNDEFINED;
 
-        Permissable perm = player.getFaction() == null ? player.getRole() : player.getFaction().getRelationTo(this);
+
+        Permissable perm = player.getFaction() == this ? player.getRole() : player.getFaction().getRelationTo(this);
 
         Map<PermissableAction, Access> accessMap = permissions.get(perm);
-        if (accessMap != null && accessMap.containsKey(permissableAction)) {
-            return accessMap.get(permissableAction);
-        }
+        if (accessMap != null && accessMap.containsKey(permissableAction)) return accessMap.get(permissableAction);
 
         return Access.UNDEFINED;
     }
@@ -901,7 +886,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void resetPerms() {
         FactionsPlugin.getInstance().log(Level.WARNING, "Resetting permissions for Faction: " + tag);
-
         permissions.clear();
 
         // First populate a map with undefined as the permission for each action.

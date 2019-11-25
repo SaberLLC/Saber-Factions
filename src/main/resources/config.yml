@@ -535,7 +535,7 @@ fperm-gui:
         - ''
         - '&4&l* &cStatus: &f{action-access-color}{action-access}'
         - ''
-        - '&2&l* &aLeft click to &alAllow&a.'
+        - '&2&l* &aLeft click to &a&lAllow&a.'
         - '&4&l* &cRight click to &c&lDeny&c.'
         - '&8&l* &7Middle click to &7&lUndefine&7.'
   # Back item will be take you to the previous GUI

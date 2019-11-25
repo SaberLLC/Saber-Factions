@@ -80,7 +80,6 @@ public class FactionsBlockListener implements Listener {
             boolean pain = !justCheck && myFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
             return CheckActionState(myFaction, loc, me, PermissableAction.fromString(action), pain);
         }
-
         // Something failed prevent build
         return false;
     }
@@ -137,7 +136,6 @@ public class FactionsBlockListener implements Listener {
             event.setCancelled(true);
             return;
         }
-
         if (isSpawner) {
             if (Conf.spawnerLock) {
                 event.setCancelled(true);

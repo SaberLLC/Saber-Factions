@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-U0.2.1-2.0.8-BETA</version>
+    <version>1.6.9.5-U0.2.1-2.0.9-BETA</version>
     <packaging>jar</packaging>
 
     <name>SaberFactions</name>
@@ -386,11 +386,6 @@
             <artifactId>jsonmessage</artifactId>
             <version>1.0.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.codemc.worldguardwrapper</groupId>
-            <artifactId>worldguardwrapper</artifactId>
-            <version>1.1.6-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.jagrosh</groupId>

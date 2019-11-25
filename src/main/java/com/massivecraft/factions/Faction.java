@@ -4,7 +4,6 @@ import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.missions.Mission;
-import com.massivecraft.factions.shield.TimeFrame;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -442,8 +441,4 @@ public interface Faction extends EconomyParticipator {
 
     void paypalSet(String paypal);
 
-    // shield
-
-    void setTimeFrame(TimeFrame timeFrame);
-    TimeFrame getTimeFrame();
 }
