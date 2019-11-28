@@ -553,9 +553,14 @@ public class FactionsPlayerListener implements Listener {
         return string;
     }
 
-    public void enableFly(FPlayer me) {
-        if (!FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable")) return; // Looks prettier sorry
-        if (!me.canFlyAtLocation()) return;
+    public void checkCanFly(FPlayer me) {
+        if (me.isFlying() && (!me.canFlyAtLocation() || me.checkIfNearbyEnemies())) {
+            me.setFFlying(false, false);
+            me.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(me.getLastStoodAt()).getTag());
+            return;
+        }
+        if (me.isFlying() || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
+            return;
         me.setFFlying(true, false);
         CmdFly.flyMap.put(me.getName(), true);
         if (CmdFly.particleTask == null)
@@ -729,9 +734,7 @@ public class FactionsPlayerListener implements Listener {
                     }, 5);
                 }
             }
-            if (!me.isFlying()) {
-                enableFly(me);
-            }
+            this.checkCanFly(me);
 
             if (me.getAutoClaimFor() != null) {
                 me.attemptClaim(me.getAutoClaimFor(), newLocation, true);

@@ -97,6 +97,9 @@ public class CmdFly extends FCommand {
     }
 
     public static boolean checkBypassPerms(FPlayer fme, Player me, Faction toFac) {
+        if (Conf.denyFlightIfInNoClaimingWorld && !Conf.worldsNoClaiming.isEmpty() && Conf.worldsNoClaiming.stream().anyMatch(me.getWorld().getName()::equalsIgnoreCase))
+            return false;
+
         if (toFac != fme.getFaction()) {
             if (!me.hasPermission(Permission.FLY_WILD.node) && toFac.isWilderness() || !me.hasPermission(Permission.FLY_SAFEZONE.node) && toFac.isSafeZone() || !me.hasPermission(Permission.FLY_WARZONE.node) && toFac.isWarZone()) {
                 fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
@@ -182,7 +185,7 @@ public class CmdFly extends FCommand {
         }
 
 
-        if (fme.canFlyAtLocation())
+        if (fme.canFlyAtLocation()) {
             context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
                 fme.setFlying(true);
                 flyMap.put(fme.getPlayer().getName(), true);
@@ -194,6 +197,9 @@ public class CmdFly extends FCommand {
                     startFlyCheck();
                 }
             }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-fly", 0));
+        } else {
+            fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(fme.getLastStoodAt()).getTag());
+        }
     }
 
     @Override

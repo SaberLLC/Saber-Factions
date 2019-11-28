@@ -1225,7 +1225,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
-        boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone();
+        boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone() && (Conf.econCostClaimWilderness != 0);
         double cost = 0.0;
         EconomyParticipator payee = null;
         if (mustPay) {

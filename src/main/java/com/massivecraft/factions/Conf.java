@@ -115,6 +115,7 @@ public class Conf {
     public static boolean logMoneyTransactions = true;
     public static boolean logPlayerCommands = true;
     // prevent some potential exploits
+    public static boolean denyFlightIfInNoClaimingWorld = false;
     public static boolean preventCreeperGlitch = true;
     public static boolean handleExploitObsidianGenerators = true;
     public static boolean handleExploitEnderPearlClipping = true;
@@ -540,6 +541,10 @@ public class Conf {
         defaultFactionPermissions.put("MODERATOR", new DefaultPermissions(true));
         defaultFactionPermissions.put("NORMAL MEMBER", new DefaultPermissions(false));
         defaultFactionPermissions.put("RECRUIT", new DefaultPermissions(false));
+        defaultFactionPermissions.put("ALLY", new DefaultPermissions(false));
+        defaultFactionPermissions.put("ENEMY", new DefaultPermissions(false));
+        defaultFactionPermissions.put("TRUCE", new DefaultPermissions(false));
+        defaultFactionPermissions.put("NEUTRAL", new DefaultPermissions(false));
     }
 
     public static void load() {
