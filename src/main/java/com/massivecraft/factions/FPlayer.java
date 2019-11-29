@@ -31,6 +31,18 @@ public interface FPlayer extends EconomyParticipator {
     boolean hasNotificationsEnabled();
 
     /**
+     * Used to check if this player should be served titles
+     * @return if this FPlayer has titles enabled as a boolean
+     */
+    boolean hasTitlesEnabled();
+
+    /**
+     * Used to set if player should be served titles
+     * @param b Boolean to titlesEnabled to
+     */
+    void setTitlesEnabled(Boolean b);
+
+    /**
      * Used to determine if a player is in their faction's chest
      * @return if player is in their faction's as a boolean
      */

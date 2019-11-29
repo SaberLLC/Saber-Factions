@@ -108,6 +108,7 @@ public enum Permission {
     STEALTH("stealth"),
     STUCK("stuck"),
     TAG("tag"),
+    TOGGLE_TITLES("toggletitles"),
     TNT("tnt"),
     TITLE("title"),
     TITLE_COLOR("title.color"),

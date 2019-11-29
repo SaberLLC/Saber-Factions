@@ -78,6 +78,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean shouldTakeFallDamage = true;
     protected boolean isStealthEnabled = false;
     protected boolean notificationsEnabled = true;
+    protected boolean titlesEnabled = true;
     protected boolean isAlt = false;
     boolean inspectMode = false;
 
@@ -217,7 +218,12 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean hasNotificationsEnabled() {
         return this.notificationsEnabled;
     }
-
+    public boolean hasTitlesEnabled() {
+        return this.titlesEnabled;
+    }
+    public void setTitlesEnabled(Boolean b) {
+        this.titlesEnabled = b;
+    }
     public String getFactionId() {
         return this.factionId;
     }
