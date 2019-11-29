@@ -126,6 +126,8 @@ public enum TL {
     COMMAND_CONTEXT_ADMINISTER_MOD_REQUIRED("&c[!] You must be a faction moderator to do that."),
 
     COMMAND_UPGRADES_DESCRIPTION("&cOpen the Upgrades Menu"),
+    COMMAND_UPGRADES_DISABLED("&c[!] &7Faction Upgrades are &cdisabled&7."),
+
     COMMAND_CORNER_CANT_CLAIM("&c&l[!] &cYou may not claim this corner!"),
     COMMAND_CORNER_CLAIMED("\n&2&l[!] &aYou have claimed the corner successfully, totalling in &b%1$d &achunks!\n"),
     COMMAND_CORNER_ATTEMPTING_CLAIM("&c&l[!] &7Attempting to claim corner..."),
@@ -141,6 +143,7 @@ public enum TL {
     COMMAND_ADMIN_DEMOTED("&c&l[!] &cYou have been demoted from the position of faction admin by &7%1$s&c"),
     COMMAND_ADMIN_PROMOTES("&e&l[!] &eYou have promoted &6%1$s &eto the position of faction admin."),
     COMMAND_ADMIN_PROMOTED("&e&l[!] &6%1$s &egave &6%2$s &ethe leadership of &6%3$s&e."),
+    COMMAND_ADMIN_PROMOTED_AUTOLEAVE("&e&l[!] &7Faction admin &c%s&7 has been removed. &c%s&7 has been promoted as the new faction admin."),
     COMMAND_ADMIN_DESCRIPTION("Hand over your admin rights"),
     COMMAND_ADMIN_NOMEMBERS("&e&l[!] &cNo one else to promote, please disband faction."),
 
@@ -368,6 +371,7 @@ public enum TL {
     COMMAND_DISBAND_IMMUTABLE("&c&l[!]&7 &7You &ccannot&7 disband &2Wilderness&7,&e SafeZone&7, or &4WarZone."),
     COMMAND_DISBAND_MARKEDPERMANENT("&c&l[!]&7 This faction is designated as&c permanent&7, so you cannot disband it."),
     COMMAND_DISBAND_BROADCAST_YOURS("&c&l[!]&7 &c%1$s&7 disbanded your &cfaction."),
+    COMMAND_DISBAND_BROADCAST_GENERIC("&c&l[!]&7 The Faction &c%1$s&7 was disbanded."),
     COMMAND_DISBAND_BROADCAST_NOTYOURS("&c&l[!]&7 &c%1$s &7disbanded the faction &c%2$s."),
     COMMAND_DISBAND_HOLDINGS("&c&l[!]&7 &7You have been given the disbanded &cfaction's bank&7, totaling &c%1$s."),
     COMMAND_DISBAND_PLAYER("&c&l[!] &7You have disbanded your &cfaction"),
@@ -411,6 +415,7 @@ public enum TL {
     COMMAND_HOME_DISABLED("&c&l[!]&7 Sorry, Faction homes are &cdisabled on this server."),
     COMMAND_HOME_TELEPORTDISABLED("&c&l[!]&7 Sorry, the ability to &cteleport &7to Faction homes is &cdisabled &7on this server."),
     COMMAND_HOME_NOHOME("&c&l[!]&7 Your faction does &cnot &7have a home. "),
+    COMMAND_HOME_UNSET("&c&l[!]&7 Sorry, your faction home has been &cun-set &7since it is no longer in your territory."),
     COMMAND_HOME_INENEMY("&c&l[!]&7 You &ccannot teleport &7to your &cfaction home&7 while in the territory of an &cenemy faction&7."),
     COMMAND_HOME_WRONGWORLD("&c&l[!]&7 You &ccannot &7teleport to your &cfaction home&7 while in a different world."),
     COMMAND_HOME_ENEMYNEAR("&c&l[!]&7 You &ccannot teleport&7 to your faction home while an enemy is within &c%s&7 blocks of you."),
@@ -547,6 +552,9 @@ public enum TL {
     COMMAND_MONEY_LONG("&c&l[!]&7 The faction money commands."),
     COMMAND_MONEY_DESCRIPTION("Faction money commands"),
 
+    COMMAND_MONEY_CANTAFFORD("&c&l[!]&7 &c%1$s&7 can't afford &c%2$s&7 %3$s"),
+    COMMAND_MONEY_GAINED("&c&l[!]&7 &c%1$s&7 gained &c%2$s %2%6"),
+
     COMMAND_MONEYBALANCE_SHORT("show faction balance"),
     COMMAND_MONEYBALANCE_DESCRIPTION("Show your factions current money balance"),
 
@@ -555,6 +563,8 @@ public enum TL {
 
     COMMAND_MONEYTRANSFERFF_DESCRIPTION("Transfer f -> f"),
     COMMAND_MONEYTRANSFERFF_TRANSFER("&c&l[!]&7 &c%1$s&7 transferred&c %2$s &7from the faction &c\"%3$s\"&7 to the faction&c \"%4$s\"&7"),
+    COMMAND_MONEYTRANSFERFF_TRANSFERCANTAFFORD("&c&l[!]&7 &c%1$s&7 can't afford to transfer &c%2$s &7to %3$s"),
+
 
     COMMAND_MONEYTRANSFERFP_DESCRIPTION("Transfer f -> plugin"),
     COMMAND_MONEYTRANSFERFP_TRANSFER("&c&l[!]&7 &c%1$s &7transferred&c %2$s &7from the faction&c \"%3$s\" &7to the player &c\"%4$s\""),
@@ -1016,9 +1026,11 @@ public enum TL {
     GENERIC_PUBLICLAND("Public faction land."),
     GENERIC_FACTIONLESS("factionless"),
     GENERIC_SERVERADMIN("A server admin"),
+    GENERIC_SERVER("Server"),
     GENERIC_DISABLED("disabled"),
     GENERIC_ENABLED("enabled"),
     GENERIC_INFINITY("âˆž"),
+    GENERIC_NULLPLAYER("null player"),
     GENERIC_CONSOLEONLY("This command cannot be run as a player."),
     GENERIC_PLAYERONLY("This command can only be used by ingame players."),
     GENERIC_ASKYOURLEADER(" Ask your leader to:"),
@@ -1082,8 +1094,19 @@ public enum TL {
 
     ECON_OFF("no %s"), // no balance, no value, no refund, etc
     ECON_FORMAT("###,###.###"),
+    ECON_MONEYTRASFERREDFROM("%1$s was transferred from %2$s to %3$s."),
+    ECON_PERSONGAVEMONEYTO("%1$s gave %2$s to %3$s."),
+    ECON_PERSONTOOKMONEYFROM("%1$s took %2$s from %3$s."),
     ECON_DISABLED("Factions econ is disabled."),
     ECON_OVER_BAL_CAP("&4The amount &e%s &4is over Essentials' balance cap."),
+    ECON_MONEYLOST("&c%s &7lost &c%s &7%s."),
+    ECON_CANTAFFORD("&c%s &7can't afford &c%s&7 %s."),
+    ECON_UNABLETOTRANSFER("&7Unable to transfer &c%s&7 to &c%s&7 from &c%s&7."),
+    ECON_PLAYERBALANCE("&c%s&7's balance is &c%s&7."),
+    ECON_DEPOSITFAILED("&c%s&7 would have gained &c%s&7 %s, but the deposit failed."),
+    ECON_CANTCONTROLMONEY("&c%s&7 lacks permission to control &c%s&7's money."),
+    ECON_MONEYTRASFERREDFROMPERSONTOPERSON("%1$s transferred %2$s from %3$s to %4$s."),
+
 
     /**
      * Relations

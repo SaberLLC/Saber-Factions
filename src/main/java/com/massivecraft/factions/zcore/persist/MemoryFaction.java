@@ -773,7 +773,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             return;
         }
 
-        msg("<b>Your faction home has been un-set since it is no longer in your territory.");
+        msg(TL.COMMAND_HOME_UNSET);
         this.home = null;
     }
 
@@ -1301,7 +1301,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             }
 
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
+                fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_GENERIC, this.getTag(fplayer));
             }
 
             FactionDisbandEvent disbandEvent = new FactionDisbandEvent(null, getId(), autoLeave ? PlayerDisbandReason.INACTIVITY : PlayerDisbandReason.LEAVE);
@@ -1313,8 +1313,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 oldLeader.setRole(Role.NORMAL);
             }
             replacements.get(0).setRole(Role.LEADER);
-            //TODO:TL
-            this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
+            this.msg(TL.COMMAND_ADMIN_PROMOTED_AUTOLEAVE, oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
             FactionsPlugin.getInstance().log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
         }
     }
@@ -1448,8 +1447,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 ownerList.append(", ");
             }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(anOwnerData));
-            //TODO:TL
-            ownerList.append(offlinePlayer != null ? offlinePlayer.getName() : "null player");
+            ownerList.append(offlinePlayer != null ? offlinePlayer.getName() : TL.GENERIC_NULLPLAYER.toString());
         }
         return ownerList.toString();
     }

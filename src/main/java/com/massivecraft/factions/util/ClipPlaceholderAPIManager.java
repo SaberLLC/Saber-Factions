@@ -132,7 +132,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString()) + powerBoost + ")";
             case "faction_leader":
                 FPlayer fAdmin = faction.getFPlayerAdmin();
-                return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
+                return fAdmin == null ? TL.GENERIC_SERVER.toString() : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
             case "faction_warps":
                 return String.valueOf(faction.getWarps().size());
             case "faction_raidable":

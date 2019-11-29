@@ -21,7 +21,7 @@ public class CmdUpgrades extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("fupgrades.Enabled")) {
-            context.fPlayer.sendMessage("This command is disabled!");
+            context.fPlayer.msg(TL.COMMAND_UPGRADES_DISABLED);
             return;
         }
         new FUpgradesGUI().openMainMenu(context.fPlayer);

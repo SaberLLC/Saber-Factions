@@ -17,7 +17,7 @@ public class CmdTnt extends FCommand {
     public CmdTnt() {
         super();
         this.aliases.add("tnt");
-        this.optionalArgs.put("add/take", "");
+        this.optionalArgs.put("add/take/addall", "");
         this.optionalArgs.put("amount", "number");
 
         this.requirements = new CommandRequirements.Builder(Permission.TNT)
@@ -91,7 +91,7 @@ public class CmdTnt extends FCommand {
                     context.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
                     return;
                 }
-                int fullStacks = Math.round(amount / 64);
+                int fullStacks = amount / 64;
                 int remainderAmt = amount - (fullStacks * 64);
                 if ((remainderAmt == 0 && !hasAvaliableSlot(context.player, fullStacks))) {
                     context.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_SPACE);
@@ -110,6 +110,31 @@ public class CmdTnt extends FCommand {
                 context.msg(TL.COMMAND_TNT_WIDTHDRAW_SUCCESS);
             }
         } else if (context.args.size() == 1) {
+            if (context.args.get(0).equalsIgnoreCase("addall")) {
+                Inventory inv = context.player.getInventory();
+                int invTnt = 0;
+                for (int i = 0; i <= inv.getSize(); i++) {
+                    if (inv.getItem(i) == null) { continue; }
+                    if (inv.getItem(i).getType() == Material.TNT) {
+                        invTnt += inv.getItem(i).getAmount();
+                    }
+                }
+                if (invTnt <= 0) {
+                    context.msg(TL.COMMAND_TNT_DEPOSIT_NOTENOUGH);
+                    return;
+                }
+                if (context.faction.getTnt() + invTnt > context.faction.getTntBankLimit()) {
+                    context.msg(TL.COMMAND_TNT_EXCEEDLIMIT);
+                    return;
+                }
+                removeItems(context.player.getInventory(), new ItemStack(Material.TNT), invTnt);
+                context.player.updateInventory();
+                context.faction.addTnt(invTnt);
+                context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
+                context.fPlayer.sendMessage(FactionsPlugin.instance.color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
+                return;
+
+            }
             context.msg(TL.GENERIC_ARGS_TOOFEW);
             context.msg(context.args.get(0).equalsIgnoreCase("take") || context.args.get(0).equalsIgnoreCase("t") ? TL.COMMAND_TNT_TAKE_DESCRIPTION : TL.COMMAND_TNT_ADD_DESCRIPTION);
         }
@@ -139,6 +164,24 @@ public class CmdTnt extends FCommand {
             }
         }
         return check >= howmany;
+    }
+
+    public static void removeItems(Inventory inventory, ItemStack item, int toRemove) {
+        if (toRemove <= 0 || inventory == null || item == null)
+            return;
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack loopItem = inventory.getItem(i);
+            if (loopItem == null || !item.isSimilar(loopItem))
+                continue;
+            if (toRemove <= 0)
+                return;
+            if (toRemove < loopItem.getAmount()) {
+                loopItem.setAmount(loopItem.getAmount() - toRemove);
+                return;
+            }
+            inventory.clear(i);
+            toRemove -= loopItem.getAmount();
+        }
     }
 
     public void removeFromInventory(Inventory inventory, ItemStack item) {
