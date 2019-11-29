@@ -563,7 +563,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public void setGuildId(final String guildId) {
+    public void setGuildId(String guildId) {
         this.guildId = guildId;
     }
 
@@ -583,7 +583,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public void setWallNotifyChannelId(final String wallNotifyChannelId) {
+    public void setWallNotifyChannelId(String wallNotifyChannelId) {
         this.wallNotifyChannelId = wallNotifyChannelId;
     }
 
@@ -593,7 +593,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public void setBufferNotifyChannelId(final String bufferNotifyChannelId) {
+    public void setBufferNotifyChannelId(String bufferNotifyChannelId) {
         this.bufferNotifyChannelId = bufferNotifyChannelId;
     }
 
@@ -603,7 +603,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public void setWeeWooChannelId(final String weeWooChannelId) {
+    public void setWeeWooChannelId(String weeWooChannelId) {
         this.weeWooChannelId = weeWooChannelId;
     }
 
@@ -613,7 +613,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public void setNotifyFormat(final String notifyFormat) {
+    public void setNotifyFormat(String notifyFormat) {
         this.notifyFormat = notifyFormat;
     }
 
@@ -623,17 +623,17 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public void setWeeWooFormat(final String weeWooFormat) {
+    public void setWeeWooFormat(String weeWooFormat) {
         this.weeWooFormat = weeWooFormat;
     }
 
     @Override
-    public void setFactionChatChannelId(final String factionChatChannelId) {
+    public void setFactionChatChannelId(String factionChatChannelId) {
         this.factionChatChannelId = factionChatChannelId;
     }
 
     @Override
-    public void setMemberRoleId(final String memberRoleId) {
+    public void setMemberRoleId(String memberRoleId) {
         this.memberRoleId = memberRoleId;
     }
 
