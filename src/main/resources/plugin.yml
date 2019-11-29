@@ -104,6 +104,7 @@ permissions:
       factions.show: true
       factions.stuck: true
       factions.tag: true
+      factions.toggletitles: true
       factions.title: true
       factions.version: true
       factions.unclaim: true

@@ -877,6 +877,10 @@ public enum TL {
     COMMAND_TITLE_CHANGED("%1$s changed a title: %2$s"),
     COMMAND_TITLE_DESCRIPTION("Set or remove a players title"),
 
+    COMMAND_TITLETOGGLE_TOGGLED("You have changed your title setting to &c%1$s"),
+    COMMAND_TITLETOGGLE_DESCRIPTION("Toggle titles to be served to you"),
+
+
     COMMAND_TOGGLEALLIANCECHAT_DESCRIPTION("Toggles whether or not you will see alliance chat"),
     COMMAND_TOGGLEALLIANCECHAT_IGNORE("Alliance chat is now ignored"),
     COMMAND_TOGGLEALLIANCECHAT_UNIGNORE("Alliance chat is no longer ignored"),

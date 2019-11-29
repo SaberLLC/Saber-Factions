@@ -87,6 +87,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdStuck cmdStuck = new CmdStuck();
     public CmdTag cmdTag = new CmdTag();
     public CmdTitle cmdTitle = new CmdTitle();
+    public CmdPlayerTitleToggle cmdPlayerTitleToggle = new CmdPlayerTitleToggle();
     public CmdToggleAllianceChat cmdToggleAllianceChat = new CmdToggleAllianceChat();
     public CmdUnclaim cmdUnclaim = new CmdUnclaim();
     public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
@@ -215,6 +216,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdLogout);
         this.addSubCommand(this.cmdTag);
         this.addSubCommand(this.cmdTitle);
+        this.addSubCommand(this.cmdPlayerTitleToggle);
         this.addSubCommand(this.cmdUnclaim);
         this.addSubCommand(this.cmdUnclaimall);
         this.addSubCommand(this.cmdVersion);

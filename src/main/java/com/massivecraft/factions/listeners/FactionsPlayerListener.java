@@ -714,7 +714,7 @@ public class FactionsPlayerListener implements Listener {
 
         if (changedFaction) {
             Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> Bukkit.getServer().getPluginManager().callEvent(new FPlayerEnteredFactionEvent(factionTo, factionFrom, me)));
-            if (FactionsPlugin.instance.getConfig().getBoolean("Title.Show-Title")) {
+            if (FactionsPlugin.instance.getConfig().getBoolean("Title.Show-Title") && me.hasTitlesEnabled()) {
                 String title = FactionsPlugin.instance.getConfig().getString("Title.Format.Title");
                 title = title.replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
                 title = parseAllPlaceholders(title, factionTo, player);
