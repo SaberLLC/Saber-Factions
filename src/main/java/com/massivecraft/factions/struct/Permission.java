@@ -12,6 +12,7 @@ public enum Permission {
     ADMIN_ANY("admin.any"),
     AHOME("ahome"),
     ANNOUNCE("announce"),
+    AUDIT("audit"),
     AUTOCLAIM("autoclaim"),
     AUTO_LEAVE_BYPASS("autoleavebypass"),
     BAN("ban"),

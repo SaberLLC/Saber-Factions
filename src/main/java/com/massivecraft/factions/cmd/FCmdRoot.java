@@ -154,6 +154,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
     public CmdInviteBot cmdInviteBot = new CmdInviteBot();
     public CmdSetGuild cmdSetGuild = new CmdSetGuild();
+    public CmdAudit cmdAudit = new CmdAudit();
 
     public FCmdRoot() {
         super();
@@ -265,6 +266,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdViewChest);
         this.addSubCommand(this.cmdConvertConfig);
         this.addSubCommand(this.cmdSpawnerLock);
+        this.addSubCommand(this.cmdAudit);
 
         if(Conf.useDiscordSystem){
             this.addSubCommand(this.cmdInviteBot);

@@ -11,12 +11,14 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
+import com.massivecraft.factions.cmd.chest.FChestListener;
 import com.massivecraft.factions.discord.DiscordListener;
 import com.massivecraft.factions.discord.FactionChatHandler;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
+import com.massivecraft.factions.listeners.menu.MenuListener;
 import com.massivecraft.factions.missions.MissionHandler;
 import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.ChatMode;
@@ -26,6 +28,8 @@ import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.Particles.ReflectionUtils;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MPlugin;
+import com.massivecraft.factions.zcore.faudit.FLogManager;
+import com.massivecraft.factions.zcore.faudit.FLogType;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -90,6 +94,7 @@ public class FactionsPlugin extends MPlugin {
     private Listener[] eventsListener;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     private Worldguard wg;
+    private FLogManager flogManager;
 
 
     public FactionsPlugin() {
@@ -184,6 +189,8 @@ public class FactionsPlugin extends MPlugin {
         PermissionList.generateFile();
         // Load Conf from disk
         Conf.load();
+        flogManager = new FLogManager();
+
         //Dependency checks
         if (Conf.dependencyCheck && (!Bukkit.getPluginManager().isPluginEnabled("Vault") && !Bukkit.getPluginManager().isPluginEnabled("Essentials"))) {
             divider();
@@ -274,7 +281,7 @@ public class FactionsPlugin extends MPlugin {
         }
 
         ShopConfig.setup();
-
+        flogManager.loadLogs(this);
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
         // Register Event Handlers
@@ -286,6 +293,8 @@ public class FactionsPlugin extends MPlugin {
                 new FUpgradesGUI(),
                 new UpgradesListener(),
                 new MissionHandler(this),
+                new FChestListener(),
+                new MenuListener(),
                 new AntiChestListener()
         };
 
@@ -434,6 +443,12 @@ public class FactionsPlugin extends MPlugin {
         }
         DiscordListener.saveGuilds();
         super.onDisable();
+
+        try {
+            flogManager.saveLogs();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void startAutoLeaveTask(boolean restartIfRunning) {
@@ -559,21 +574,6 @@ public class FactionsPlugin extends MPlugin {
         }
     }
 
-    public void createTimedHologram(final Location location, String text, Long timeout) {
-        ArmorStand as = (ArmorStand) location.add(0.5, 1, 0.5).getWorld().spawnEntity(location, EntityType.ARMOR_STAND); //Spawn the ArmorStand
-        as.setVisible(false); //Makes the ArmorStand invisible
-        as.setGravity(false); //Make sure it doesn't fall
-        as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-        as.setCustomName(FactionsPlugin.instance.color(text)); //Set this to the text you want
-        as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
-        final ArmorStand armorStand = as;
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> {
-                    armorStand.remove();
-                    getLogger().info("Removing Hologram.");
-                }
-                , timeout * 20);
-    }
 
 
     // -------------------------------------------- //
@@ -712,6 +712,14 @@ public class FactionsPlugin extends MPlugin {
 
     public boolean isHookedPlayervaults() {
         return hookedPlayervaults;
+    }
+
+    public FLogManager getFlogManager() {
+        return flogManager;
+    }
+
+    public void logFactionEvent(Faction faction, FLogType type, String... arguments) {
+        this.flogManager.log(faction, type, arguments);
     }
 
     public String getPrimaryGroup(OfflinePlayer player) {

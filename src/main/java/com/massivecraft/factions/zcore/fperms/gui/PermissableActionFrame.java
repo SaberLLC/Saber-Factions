@@ -3,14 +3,17 @@ package com.massivecraft.factions.zcore.fperms.gui;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.XMaterial;
+import com.massivecraft.factions.zcore.faudit.FLogType;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -47,10 +50,12 @@ public class PermissableActionFrame {
                         case LEFT:
                             access = Access.ALLOW;
                             success = fplayer.getFaction().setPermission(perm, action, access);
+                            FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS,fplayer.getName(), ChatColor.GREEN.toString() + ChatColor.BOLD + "ALLOWED", action.getName(), perm.name());
                             break;
                         case RIGHT:
                             access = Access.DENY;
                             success = fplayer.getFaction().setPermission(perm, action, access);
+                            FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS,fplayer.getName(), ChatColor.RED.toString() + ChatColor.BOLD + "DENIED", action.getName(), perm.name());
                             break;
                         case MIDDLE:
                             access = Access.UNDEFINED;

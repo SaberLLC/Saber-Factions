@@ -7,7 +7,9 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.faudit.FLogType;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
@@ -118,6 +120,8 @@ public class CmdKick extends FCommand {
         if (toKick.getRole() == Role.LEADER) {
             toKickFaction.promoteNewLeader();
         }
+
+        FactionsPlugin.instance.logFactionEvent(toKickFaction, FLogType.INVITES, context.fPlayer.getName(), CC.Red + "kicked", toKick.getName());
         toKickFaction.deinvite(toKick);
         toKick.resetFactionData();
     }

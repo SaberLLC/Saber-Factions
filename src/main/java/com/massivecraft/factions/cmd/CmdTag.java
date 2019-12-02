@@ -6,6 +6,7 @@ import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.faudit.FLogType;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
@@ -61,6 +62,7 @@ public class CmdTag extends FCommand {
 
         String oldtag = context.faction.getTag();
         context.faction.setTag(tag);
+        FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.FTAG_EDIT, context.fPlayer.getName(), tag);
 
         // Inform
         for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {

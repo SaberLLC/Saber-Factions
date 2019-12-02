@@ -1292,7 +1292,7 @@ fbanners:
     - SPEED:2
   BannerHolo: '&c{Faction}''s War Banner'
   Placeable:
-    Warzone: true
+    Warzone: false
     Enemy: true
 
 #Title when moving between chunks

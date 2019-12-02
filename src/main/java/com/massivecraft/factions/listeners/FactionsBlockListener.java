@@ -8,6 +8,8 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.ItemBuilder;
 import com.massivecraft.factions.util.Particles.ParticleEffect;
 import com.massivecraft.factions.util.XMaterial;
+import com.massivecraft.factions.zcore.faudit.FLogManager;
+import com.massivecraft.factions.zcore.faudit.LogTimer;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -15,6 +17,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -29,17 +33,22 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class FactionsBlockListener implements Listener {
 
     public static HashMap<String, Location> bannerLocations = new HashMap<>();
     private HashMap<String, Boolean> bannerCooldownMap = new HashMap<>();
+    private long placeTimer = TimeUnit.SECONDS.toMillis(15L);
 
     public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
 
@@ -126,6 +135,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
+        Faction at = Board.getInstance().getFactionAt(new FLocation(event.getBlockPlaced()));
         if (!event.canBuild()) return;
         
         // special case for flint&steel, which should only be prevented by DenyUsage list
@@ -140,6 +150,7 @@ public class FactionsBlockListener implements Listener {
             if (Conf.spawnerLock) {
                 event.setCancelled(true);
                 event.getPlayer().sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
+                return;
             }
         }
     }
@@ -416,14 +427,12 @@ public class FactionsBlockListener implements Listener {
     @EventHandler
     public void onBreak(EntityExplodeEvent e) {
         if (!Conf.gracePeriod) return;
-
         e.setCancelled(true);
     }
 
     @EventHandler
     public void entityDamage(EntityDamageEvent e) {
         if (!Conf.gracePeriod) return;
-
             if (e.getEntity() instanceof Player) {
                 if (e.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                     e.setCancelled(true);
@@ -439,7 +448,6 @@ public class FactionsBlockListener implements Listener {
         if (!fp.isAdminBypassing()) {
             if (e1.getBlock().getType().equals(Material.TNT)) {
                 e1.setCancelled(true);
-
                 fp.msg(TL.COMMAND_GRACE_ENABLED, e1.getBlockPlaced().getType().toString());
             }
         }
@@ -459,12 +467,59 @@ public class FactionsBlockListener implements Listener {
         return !rel.confDenyBuild(otherFaction.hasPlayersOnline());
     }
 
+
+    public void handleSpawnerUpdate(Faction at, Player player, ItemStack spawnerItem, LogTimer.TimerSubType subType) {
+        FLogManager manager = FactionsPlugin.instance.getFlogManager();
+        LogTimer logTimer = manager.getLogTimers().computeIfAbsent(player.getUniqueId(), e -> new LogTimer(player.getName(), at.getId()));
+        LogTimer.Timer timer = logTimer.attemptLog(LogTimer.TimerType.SPAWNER_EDIT, subType, 0L);
+        Map<MaterialData, AtomicInteger> currentCounts = (timer.getExtraData() == null) ? new HashMap<>() : ((Map) timer.getExtraData());
+        currentCounts.computeIfAbsent(spawnerItem.getData(), e -> new AtomicInteger(0)).addAndGet(1);
+        timer.setExtraData(currentCounts);
+        if (timer.isReadyToLog(this.placeTimer)) {
+            logTimer.pushLogs(at, LogTimer.TimerType.SPAWNER_EDIT);
+        }
+    }
+
+    @EventHandler(
+            priority = EventPriority.HIGH,
+            ignoreCancelled = true
+    )
+    public void onPlayerPlace(BlockPlaceEvent event) {
+        ItemStack item = event.getItemInHand();
+        if (item != null && item.getType() == XMaterial.SPAWNER.parseMaterial()) {
+            Faction at = Board.getInstance().getFactionAt(new FLocation(event.getBlockPlaced()));
+            if (at != null && at.isNormal()) {
+                FPlayer fplayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
+                if (fplayer != null && at.getRelationTo(fplayer.getFaction()).isAtLeast(Relation.TRUCE)) {
+                    this.handleSpawnerUpdate(at, event.getPlayer(), item, LogTimer.TimerSubType.SPAWNER_PLACE);
+                }
+            }
+        }
+    }
+
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+
+        Faction at = Board.getInstance().getFactionAt(new FLocation(block));
         boolean isSpawner = event.getBlock().getType() == XMaterial.SPAWNER.parseMaterial();
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), !isSpawner ? "destroy" : "mine spawners", false)) {
             event.setCancelled(true);
             return;
+        }
+        if (block != null && isSpawner) {
+            ItemStack item = new ItemStack(block.getType(), 1, (short) block.getData());
+            if (at != null && at.isNormal()) {
+                FPlayer fplayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
+                if (fplayer != null) {
+                    BlockState state = block.getState();
+                    if (state instanceof CreatureSpawner) {
+                        CreatureSpawner spawner = (CreatureSpawner) state;
+                        item.setDurability(spawner.getSpawnedType().getTypeId());
+                    }
+                    handleSpawnerUpdate(at, event.getPlayer(), item, LogTimer.TimerSubType.SPAWNER_BREAK);
+                }
+            }
         }
     }
 

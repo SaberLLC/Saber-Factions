@@ -17,8 +17,10 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.zcore.faudit.FLogType;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import net.milkbowl.vault.economy.Economy;
@@ -789,6 +791,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         this.resetFactionData();
+        FactionsPlugin.instance.logFactionEvent(myFaction, FLogType.INVITES, this.getName(), CC.Red + "left", "the faction");
         setFlying(false);
 
         if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {

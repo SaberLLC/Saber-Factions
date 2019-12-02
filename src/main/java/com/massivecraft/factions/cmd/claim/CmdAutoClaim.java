@@ -1,13 +1,17 @@
 package com.massivecraft.factions.cmd.claim;
 
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.faudit.FLogType;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdAutoClaim extends FCommand {
@@ -53,11 +57,10 @@ public class CmdAutoClaim extends FCommand {
 
             return;
         }
-
         context.fPlayer.setAutoClaimFor(forFaction);
-
         context.msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(context.fPlayer));
         context.fPlayer.attemptClaim(forFaction, context.fPlayer.getPlayer().getLocation(), true);
+        FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", new FLocation(context.fPlayer.getPlayer().getLocation()).formatXAndZ(","));
     }
 
     @Override

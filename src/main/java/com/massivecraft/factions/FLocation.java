@@ -244,6 +244,10 @@ public class FLocation implements Serializable {
         return (this.x << 9) + this.z + (this.worldName != null ? this.worldName.hashCode() : 0);
     }
 
+    public String formatXAndZ(String splitter) {
+        return chunkToBlock(this.x) + "x" + splitter + " " + chunkToBlock(this.z) + "z";
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {

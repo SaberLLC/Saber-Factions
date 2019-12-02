@@ -31,18 +31,9 @@ public class FTeamWrapper {
     }
 
     public static void applyUpdatesLater(final Faction faction) {
-        if (!FScoreboard.isSupportedByServer()) {
-            return;
-        }
-
-        if (faction.isWilderness()) {
-            return;
-        }
-
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false) || FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members")) {
-            return;
-        }
-
+        if (!FScoreboard.isSupportedByServer()) return;
+        if (faction.isWilderness()) return;
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false) || FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members")) return;
 
         if (updating.add(faction)) {
             Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> {
@@ -53,22 +44,12 @@ public class FTeamWrapper {
     }
 
     public static void applyUpdates(Faction faction) {
-        if (!FScoreboard.isSupportedByServer()) {
-            return;
-        }
+        if (!FScoreboard.isSupportedByServer()) return;
 
-        if (faction.isWilderness()) {
-            return;
-        }
+        if (faction.isWilderness()) return;
 
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false) || FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members")) {
-            return;
-        }
-
-        if (updating.contains(faction)) {
-            // Faction will be updated soon.
-            return;
-        }
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false) || FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members")) return;
+        if (updating.contains(faction)) return;
 
         FTeamWrapper wrapper = wrappers.get(faction);
         Set<FPlayer> factionMembers = faction.getFPlayers();

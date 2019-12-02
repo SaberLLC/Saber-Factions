@@ -1,13 +1,17 @@
 package com.massivecraft.factions.cmd.roles;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.faudit.FLogType;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.ChatColor;
 
 public class FPromoteCommand extends FCommand {
 
@@ -51,6 +55,7 @@ public class FPromoteCommand extends FCommand {
                 context.msg(TL.COMMAND_PROMOTE_NOT_SAME);
                 return;
             }
+
             // Don't allow people to promote people to their same or higher rank.
             if (context.fPlayer.getRole().value <= promotion.value) {
                 context.msg(TL.COMMAND_PROMOTE_NOT_ALLOWED);
@@ -78,6 +83,8 @@ public class FPromoteCommand extends FCommand {
         }
 
         context.msg(TL.COMMAND_PROMOTE_SUCCESS, action, target.getName(), promotion.nicename);
+        FactionsPlugin.instance.getFlogManager().log(context.faction, FLogType.ROLE_PERM_EDIT, context.fPlayer.getName(), action, target.getName(), promotion.nicename);
+
     }
 
     @Override

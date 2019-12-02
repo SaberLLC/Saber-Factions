@@ -1,13 +1,17 @@
 package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.faudit.FLogType;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -79,7 +83,7 @@ public class CmdClaimLine extends FCommand {
         for (int i = 0; i < amount; i++) {
             context.fPlayer.attemptClaim(forFaction, location, true);
             location = location.add(blockFace.getModX() * 16, 0, blockFace.getModZ() * 16);
-        }
+            FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", String.valueOf(i), new FLocation(context.player.getLocation()).formatXAndZ(","));        }
     }
 
     @Override

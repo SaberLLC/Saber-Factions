@@ -1,11 +1,13 @@
 package com.massivecraft.factions.cmd.tnt;
 
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.XMaterial;
+import com.massivecraft.factions.zcore.faudit.FLogType;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Material;
@@ -33,7 +35,6 @@ public class CmdTnt extends FCommand {
             context.msg(TL.COMMAND_TNT_DISABLED_MSG);
             return;
         }
-
         if (context.args.size() == 2) {
             if (context.args.get(0).equalsIgnoreCase("add") || context.args.get(0).equalsIgnoreCase("a")) {
                 try {
@@ -71,6 +72,7 @@ public class CmdTnt extends FCommand {
 
                 context.faction.addTnt(amount);
                 context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
+                FactionsPlugin.instance.getFlogManager().log(context.faction, FLogType.F_TNT, context.fPlayer.getName(), "DEPOSITED", amount + "x TNT");
                 context.fPlayer.sendMessage(FactionsPlugin.instance.color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
                 return;
 
@@ -108,6 +110,7 @@ public class CmdTnt extends FCommand {
                 context.faction.takeTnt(amount);
                 context.player.updateInventory();
                 context.msg(TL.COMMAND_TNT_WIDTHDRAW_SUCCESS);
+                FactionsPlugin.instance.getFlogManager().log(context.faction, FLogType.F_TNT, context.fPlayer.getName(), "WITHDREW", amount + "x TNT");
             }
         } else if (context.args.size() == 1) {
             if (context.args.get(0).equalsIgnoreCase("addall")) {
@@ -131,7 +134,9 @@ public class CmdTnt extends FCommand {
                 context.player.updateInventory();
                 context.faction.addTnt(invTnt);
                 context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
+
                 context.fPlayer.sendMessage(FactionsPlugin.instance.color(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
+                FactionsPlugin.instance.getFlogManager().log(context.faction, FLogType.F_TNT, context.fPlayer.getName(), "DEPOSITED", invTnt + "x TNT");
                 return;
 
             }
