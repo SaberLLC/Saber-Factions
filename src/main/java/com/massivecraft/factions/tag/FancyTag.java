@@ -13,6 +13,11 @@ import org.bukkit.ChatColor;
 import java.util.*;
 
 public enum FancyTag implements Tag {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     ALLIES_LIST("{allies-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.ALLY)),
     ENEMIES_LIST("{enemies-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.ENEMY)),
     TRUCES_LIST("{truces-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.TRUCE)),

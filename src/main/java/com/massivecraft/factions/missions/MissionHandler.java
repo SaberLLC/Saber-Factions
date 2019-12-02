@@ -22,6 +22,10 @@ import java.util.stream.Collectors;
 
 public class MissionHandler implements Listener {
 
+    /**
+     * @author Driftay
+     */
+
     private FactionsPlugin plugin;
 
     public MissionHandler(FactionsPlugin plugin) {

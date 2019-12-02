@@ -7,6 +7,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdViewChest extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdViewChest() {
         super();
         this.aliases.add("viewchest");

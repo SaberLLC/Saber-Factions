@@ -4,6 +4,12 @@ import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.command.CommandSender;
 
 public enum Permission {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
+
     MANAGE_SAFE_ZONE("managesafezone"),
     MANAGE_WAR_ZONE("managewarzone"),
     OWNERSHIP_BYPASS("ownershipbypass"),

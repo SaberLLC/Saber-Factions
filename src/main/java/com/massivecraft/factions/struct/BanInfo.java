@@ -2,6 +2,10 @@ package com.massivecraft.factions.struct;
 
 public class BanInfo {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     // FPlayer IDs
     private final String banner;
     private final String banned;

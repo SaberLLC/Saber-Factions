@@ -8,6 +8,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPaypalSet extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdPaypalSet() {
         this.aliases.add("setpaypal");
 

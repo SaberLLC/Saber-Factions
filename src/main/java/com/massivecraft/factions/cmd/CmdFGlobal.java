@@ -9,6 +9,10 @@ import java.util.UUID;
 
 public class CmdFGlobal extends FCommand {
 
+    /**
+     * @author Trent
+     */
+
     public static List<UUID> toggled = new ArrayList<>();
 
     public CmdFGlobal() {

@@ -6,6 +6,9 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdStrikes extends FCommand {
 
+    /**
+     * @author Driftay
+     */
 
     public CmdStrikesGive cmdStrikesGive = new CmdStrikesGive();
     public CmdStrikesInfo cmdStrikesInfo = new CmdStrikesInfo();

@@ -4,6 +4,11 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdStealth extends FCommand {
+
+    /**
+     * @author Driftay
+     */
+
     public CmdStealth() {
         this.aliases.add("ninja");
         this.aliases.add("stealth");

@@ -9,6 +9,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPoints extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdPointsRemove cmdPointsRemove = new CmdPointsRemove();
     public CmdPointsSet cmdPointsSet = new CmdPointsSet();
     public CmdPointsAdd cmdPointsAdd = new CmdPointsAdd();

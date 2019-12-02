@@ -18,6 +18,10 @@ import java.util.List;
 
 public class CmdCorner extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdCorner() {
         this.aliases.add("corner");
 

@@ -16,6 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Role implements Permissable {
+
+    /**
+     * @author Illyria Team
+     */
+
+
     LEADER(4, TL.ROLE_LEADER),
     COLEADER(3, TL.ROLE_COLEADER),
     MODERATOR(2, TL.ROLE_MODERATOR),

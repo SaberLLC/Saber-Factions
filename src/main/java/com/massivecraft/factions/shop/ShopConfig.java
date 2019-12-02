@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class ShopConfig {
 
+    /**
+     * @author Driftay
+     */
+
     //TODO: Shop YAML Converter mySQL
 
     public static File shop = new File("plugins/Factions/shop.yml");

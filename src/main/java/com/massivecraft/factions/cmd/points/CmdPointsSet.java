@@ -11,6 +11,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPointsSet extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdPointsSet() {
         super();
         this.aliases.add("set");

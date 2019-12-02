@@ -25,6 +25,10 @@ import java.util.stream.Collectors;
 
 public class ShopGUIFrame {
 
+    /**
+     * @author Driftay
+     */
+
     private Gui gui;
     private String s;
 

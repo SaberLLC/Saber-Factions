@@ -7,6 +7,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSeeDiscord extends FCommand{
 
+    /**
+     * @author Driftay
+     */
+
     public CmdSeeDiscord() {
         this.aliases.add("seediscord");
         this.aliases.add("discord");

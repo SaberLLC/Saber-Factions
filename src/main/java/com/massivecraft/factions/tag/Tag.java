@@ -7,6 +7,11 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
 public interface Tag {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     int ARBITRARY_LIMIT = 25000;
 
     /**

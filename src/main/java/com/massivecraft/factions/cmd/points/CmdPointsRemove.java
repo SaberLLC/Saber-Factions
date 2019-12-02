@@ -11,6 +11,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPointsRemove extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdPointsRemove() {
         super();
         this.aliases.add("remove");

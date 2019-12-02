@@ -6,6 +6,11 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPaypalSee extends FCommand {
+
+    /**
+     * @author Driftay
+     */
+
     public CmdPaypalSee() {
         this.aliases.add("seepaypal");
         this.aliases.add("paypal");

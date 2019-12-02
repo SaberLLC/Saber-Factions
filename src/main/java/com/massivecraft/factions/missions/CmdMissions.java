@@ -9,6 +9,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdMissions extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdMissions() {
         this.aliases.add("missions");
         this.aliases.add("mission");

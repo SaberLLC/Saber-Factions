@@ -27,6 +27,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class FactionChatHandler extends ListenerAdapter {
+
+    /**
+     * @author Driftay
+     */
+
     public static JDA jda;
     private FactionsPlugin plugin;
 

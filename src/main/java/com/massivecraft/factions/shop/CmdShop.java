@@ -9,6 +9,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdShop extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdShop() {
         super();
         this.aliases.add("shop");

@@ -17,6 +17,11 @@ import org.bukkit.ChatColor;
 import java.util.concurrent.TimeUnit;
 
 public class CmdSetGuild extends FCommand {
+
+    /**
+     * @author Driftay
+     */
+
     private EventWaiter eventWaiter;
     private boolean waiterAdded;
 

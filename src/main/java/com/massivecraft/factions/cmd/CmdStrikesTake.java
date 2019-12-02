@@ -6,6 +6,9 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdStrikesTake extends FCommand {
 
+    /**
+     * @author Driftay
+     */
 
     public CmdStrikesTake() {
         super();

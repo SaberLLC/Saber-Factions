@@ -16,6 +16,12 @@ import java.util.List;
 
 
 public enum Relation implements Permissable {
+
+    /**
+     * @author Illyria Team
+     */
+
+
     MEMBER(4, TL.RELATION_MEMBER_SINGULAR.toString()),
     ALLY(3, TL.RELATION_ALLY_SINGULAR.toString()),
     TRUCE(2, TL.RELATION_TRUCE_SINGULAR.toString()),

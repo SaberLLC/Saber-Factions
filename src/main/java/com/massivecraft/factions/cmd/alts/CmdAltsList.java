@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 public class CmdAltsList extends FCommand {
 
-
     /**
      * @author Driftay
      */

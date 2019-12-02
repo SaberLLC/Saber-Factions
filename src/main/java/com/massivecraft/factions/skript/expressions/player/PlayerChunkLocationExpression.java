@@ -12,6 +12,10 @@ import org.bukkit.event.Event;
 
 public class PlayerChunkLocationExpression extends SimpleExpression<String> {
 
+    /**
+     * @author Driftay
+     */
+
     static {
         Skript.registerExpression(PlayerChunkLocationExpression.class, String.class, ExpressionType.SIMPLE, "[the] faction chunk at %player%", "[the] %player%['s] chunk");
     }

@@ -16,6 +16,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 public class MissionGUI implements FactionGUI {
+
+    /**
+     * @author Driftay
+     */
+
     private FactionsPlugin plugin;
     private FPlayer fPlayer;
     private Inventory inventory;

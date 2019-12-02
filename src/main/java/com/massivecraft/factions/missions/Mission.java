@@ -1,6 +1,11 @@
 package com.massivecraft.factions.missions;
 
 public class Mission {
+
+    /**
+     * @author Driftay
+     */
+
     private long progress;
     private String name;
     private String type;

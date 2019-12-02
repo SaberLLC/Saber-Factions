@@ -16,6 +16,10 @@ import java.util.Objects;
 
 public class CmdInventorySee extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdInventorySee() {
         super();
 

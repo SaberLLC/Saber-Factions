@@ -3,6 +3,11 @@ package com.massivecraft.factions.struct;
 
 public class Placeholder {
 
+    /**
+     * @author Illyria Team
+     */
+
+
     private String tag;
     private String replace;
 

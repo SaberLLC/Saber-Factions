@@ -5,6 +5,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class JSONGuilds {
+
+    /**
+     * @author Driftay
+     */
+
     private Map<String, JSONGuild> guilds;
 
     public JSONGuilds() {

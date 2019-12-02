@@ -7,6 +7,11 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdFocus extends FCommand {
+
+    /**
+     * @author Driftay
+     */
+
     public CmdFocus() {
         aliases.add("focus");
 

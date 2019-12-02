@@ -22,6 +22,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class DiscordListener extends ListenerAdapter {
+
+    /**
+     * @author Driftay
+     */
+
     private static File file = new File(FactionsPlugin.getInstance().getDataFolder(), "discord_guilds.json");
     public static JSONGuilds guilds = loadGuilds();
     private final DecimalFormat decimalFormat;

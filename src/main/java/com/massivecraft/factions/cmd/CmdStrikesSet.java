@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdStrikesSet extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdStrikesSet() {
         super();
         this.aliases.add("set");

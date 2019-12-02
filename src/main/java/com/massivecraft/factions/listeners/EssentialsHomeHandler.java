@@ -17,6 +17,10 @@ import java.util.logging.Level;
 
 public class EssentialsHomeHandler implements Listener {
 
+    /**
+     * @author Driftay
+     */
+
     private IEssentials ess;
 
     public EssentialsHomeHandler(IEssentials essentials) {

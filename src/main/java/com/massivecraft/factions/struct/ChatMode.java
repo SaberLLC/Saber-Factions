@@ -3,6 +3,11 @@ package com.massivecraft.factions.struct;
 import com.massivecraft.factions.zcore.util.TL;
 
 public enum ChatMode {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     MOD(4, TL.CHAT_MOD),
     FACTION(3, TL.CHAT_FACTION),
     ALLIANCE(2, TL.CHAT_ALLIANCE),
