@@ -13,6 +13,10 @@ import java.util.logging.Level;
 
 public class CmdBan extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdBan() {
         super();
         this.aliases.add("ban");

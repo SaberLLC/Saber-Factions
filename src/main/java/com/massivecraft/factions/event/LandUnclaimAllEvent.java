@@ -6,6 +6,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
 public class LandUnclaimAllEvent extends FactionPlayerEvent implements Cancellable {
+
+    /**
+     * @author FactionsUUID Team
+     */
     private boolean cancelled;
 
     public LandUnclaimAllEvent(Faction f, FPlayer p) {

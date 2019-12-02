@@ -5,6 +5,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLogins extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdLogins() {
         super();
         this.aliases.add("login");

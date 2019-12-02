@@ -14,6 +14,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class AntiChestListener implements Listener {
 
+    /**
+     * @author Driftay
+     */
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {

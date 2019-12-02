@@ -10,6 +10,10 @@ import java.util.ArrayList;
 
 public class CmdStatus extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdStatus() {
         super();
         this.aliases.add("status");

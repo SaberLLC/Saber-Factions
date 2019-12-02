@@ -22,6 +22,11 @@ import java.util.List;
 
 
 public class FUpgradesGUI implements Listener {
+
+    /**
+     * @author Illyria Team
+     */
+
     public void openMainMenu(FPlayer fme) {
         Inventory inventory = Bukkit.createInventory(null, FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DummyItem.rows") * 9, FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", fme.getFaction().getTag())));
         ItemStack dummyItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.DummyItem.Type")).parseItem();

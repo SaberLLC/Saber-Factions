@@ -8,6 +8,10 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class CmdAHome extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdAHome() {
         super();
         this.aliases.add("ahome");

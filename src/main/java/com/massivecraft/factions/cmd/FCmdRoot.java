@@ -38,6 +38,10 @@ import java.util.logging.Level;
 
 public class FCmdRoot extends FCommand implements CommandExecutor {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public BrigadierManager brigadierManager;
 
     public CmdAdmin cmdAdmin = new CmdAdmin();

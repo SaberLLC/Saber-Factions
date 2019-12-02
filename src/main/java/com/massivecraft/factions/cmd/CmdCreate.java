@@ -15,6 +15,10 @@ import java.util.ArrayList;
 
 public class CmdCreate extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdCreate() {
         super();
         this.aliases.add("create");

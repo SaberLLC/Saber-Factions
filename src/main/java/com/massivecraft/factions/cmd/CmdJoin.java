@@ -9,6 +9,10 @@ import org.bukkit.Bukkit;
 
 public class CmdJoin extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdJoin() {
         super();
         this.aliases.add("join");

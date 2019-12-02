@@ -18,6 +18,10 @@ import org.bukkit.command.ConsoleCommandSender;
 
 public class CmdKickAlt extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdKickAlt(){
         super();
         this.aliases.add("kick");

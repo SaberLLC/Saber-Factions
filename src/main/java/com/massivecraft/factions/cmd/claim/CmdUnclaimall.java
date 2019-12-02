@@ -16,6 +16,10 @@ import org.bukkit.Bukkit;
 
 public class CmdUnclaimall extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdUnclaimall() {
         this.aliases.add("unclaimall");
         this.aliases.add("declaimall");

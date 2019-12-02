@@ -5,6 +5,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSetBanner extends FCommand {
 
+    /**
+     * @author Illyria Team
+     */
+
     public CmdSetBanner() {
         super();
         aliases.add("setbanner");

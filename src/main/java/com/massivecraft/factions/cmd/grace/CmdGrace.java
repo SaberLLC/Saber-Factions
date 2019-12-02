@@ -10,6 +10,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdGrace extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdGrace() {
         super();
         this.aliases.add("grace");

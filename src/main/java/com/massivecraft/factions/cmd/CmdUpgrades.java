@@ -6,6 +6,11 @@ import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdUpgrades extends FCommand {
+
+    /**
+     * @author Illyria Team
+     */
+
     public CmdUpgrades() {
         super();
         this.aliases.add("upgrades");

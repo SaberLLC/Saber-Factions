@@ -12,6 +12,10 @@ import org.bukkit.event.Cancellable;
  */
 public class PowerRegenEvent extends FactionPlayerEvent implements Cancellable {
 
+    /**
+     * @author Illyria Team
+     */
+
     private boolean cancelled = false;
     private double modified = 0;
 

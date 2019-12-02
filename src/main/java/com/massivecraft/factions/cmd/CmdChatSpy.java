@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdChatSpy extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdChatSpy() {
         super();
         this.aliases.add("chatspy");

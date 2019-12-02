@@ -13,6 +13,10 @@ import java.util.ArrayList;
 
 public class CmdTag extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdTag() {
         this.aliases.add("tag");
         this.aliases.add("rename");

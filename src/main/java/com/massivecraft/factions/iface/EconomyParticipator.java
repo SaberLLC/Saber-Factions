@@ -4,6 +4,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public interface EconomyParticipator extends RelationParticipator {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     String getAccountId();
 
     void msg(String str, Object... args);

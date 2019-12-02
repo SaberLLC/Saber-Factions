@@ -3,6 +3,11 @@ package com.massivecraft.factions.zcore.fperms;
 import com.massivecraft.factions.FactionsPlugin;
 
 public enum Access {
+
+    /**
+     * @author Illyria Team
+     */
+
     ALLOW("Allow"),
     DENY("Deny"),
     UNDEFINED("Undefined");

@@ -17,6 +17,10 @@ import java.util.*;
 
 public abstract class FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
     // Command Aliases

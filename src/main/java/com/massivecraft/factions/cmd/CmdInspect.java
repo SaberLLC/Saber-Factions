@@ -4,6 +4,11 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdInspect extends FCommand {
+
+    /**
+     * @author Illyria Team
+     */
+
     public CmdInspect() {
         super();
         this.aliases.add("inspect");

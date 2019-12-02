@@ -9,6 +9,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class CmdNear extends FCommand {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdNear() {
         super();
         this.aliases.add("near");

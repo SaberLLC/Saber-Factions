@@ -13,6 +13,10 @@ import java.util.List;
 
 public class CmdBanlist extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdBanlist() {
         super();
         this.aliases.add("banlist");

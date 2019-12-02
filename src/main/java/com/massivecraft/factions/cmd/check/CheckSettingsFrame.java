@@ -16,6 +16,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Collections;
 
 public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
+
+    /**
+     * @author Driftay
+     */
+
     private FactionsPlugin plugin;
     private FPlayer fPlayer;
     private Inventory inventory;

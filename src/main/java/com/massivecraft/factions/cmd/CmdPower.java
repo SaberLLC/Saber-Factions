@@ -7,6 +7,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPower extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdPower() {
         super();
         this.aliases.add("power");

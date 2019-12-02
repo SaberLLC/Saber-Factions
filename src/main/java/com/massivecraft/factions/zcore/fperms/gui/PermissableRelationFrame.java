@@ -19,6 +19,10 @@ import java.util.List;
 
 public class PermissableRelationFrame {
 
+    /**
+     * @author Illyria Team
+     */
+
     private Gui gui;
 
     public PermissableRelationFrame(Faction f) {

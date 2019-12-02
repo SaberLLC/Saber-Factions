@@ -11,6 +11,10 @@ import org.bukkit.ChatColor;
 
 public class CmdMod extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdMod() {
         super();
         this.aliases.add("mod");

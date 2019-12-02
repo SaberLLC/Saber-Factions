@@ -13,6 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FScoreboard {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     private static final Map<FPlayer, FScoreboard> fscoreboards = new HashMap<>();
 
     private final Scoreboard scoreboard;

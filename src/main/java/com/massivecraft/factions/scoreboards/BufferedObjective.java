@@ -11,6 +11,11 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public class BufferedObjective {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     private static final Method addEntryMethod;
     private static final int MAX_LINE_LENGTH;
 

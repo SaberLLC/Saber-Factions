@@ -11,6 +11,10 @@ import java.util.Objects;
 
 public abstract class FSidebarProvider {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public abstract String getTitle(FPlayer fplayer);
 
     public abstract List<String> getLines(FPlayer fplayer);

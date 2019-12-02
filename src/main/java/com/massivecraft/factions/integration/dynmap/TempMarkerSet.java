@@ -5,6 +5,10 @@ import org.dynmap.markers.MarkerSet;
 
 public class TempMarkerSet {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public String label;
     public int minimumZoom;
     public int priority;

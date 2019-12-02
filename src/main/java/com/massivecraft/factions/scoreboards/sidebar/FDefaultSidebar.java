@@ -10,6 +10,10 @@ import java.util.ListIterator;
 
 public class FDefaultSidebar extends FSidebarProvider {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     @Override
     public String getTitle(FPlayer fplayer) {
         return replaceTags(fplayer, FactionsPlugin.getInstance().getConfig().getString("scoreboard.default-title", "{name}"));

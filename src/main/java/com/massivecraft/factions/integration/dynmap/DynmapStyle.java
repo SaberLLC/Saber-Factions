@@ -3,6 +3,11 @@ package com.massivecraft.factions.integration.dynmap;
 import com.massivecraft.factions.Conf;
 
 public class DynmapStyle {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     // -------------------------------------------- //
     // FIELDS
     // -------------------------------------------- //

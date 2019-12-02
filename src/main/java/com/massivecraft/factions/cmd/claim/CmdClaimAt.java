@@ -11,6 +11,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdClaimAt extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdClaimAt() {
         super();
         this.aliases.add("claimat");

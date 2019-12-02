@@ -19,6 +19,10 @@ import java.util.List;
  */
 public class CommandContext {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CommandSender sender;
 
     public Player player;

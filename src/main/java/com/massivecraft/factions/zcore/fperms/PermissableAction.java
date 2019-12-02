@@ -13,6 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 public enum PermissableAction {
+
+    /**
+     * @author Illyria Team
+     */
+
     BAN("ban"),
     BUILD("build"),
     DESTROY("destroy"),

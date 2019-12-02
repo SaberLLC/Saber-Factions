@@ -13,6 +13,10 @@ import org.bukkit.inventory.Inventory;
 
 public class CmdVault extends FCommand {
 
+    /**
+     * @author Illyria Team
+     */
+
     public CmdVault() {
         this.aliases.add("vault");
 

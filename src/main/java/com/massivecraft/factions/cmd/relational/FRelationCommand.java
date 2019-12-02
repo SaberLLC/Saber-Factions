@@ -18,6 +18,10 @@ import org.bukkit.ChatColor;
 
 public abstract class FRelationCommand extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public Relation targetRelation;
 
     public FRelationCommand() {

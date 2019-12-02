@@ -12,6 +12,10 @@ import org.bukkit.event.Cancellable;
  */
 public class FPlayerRoleChangeEvent extends FactionPlayerEvent implements Cancellable {
 
+    /**
+     * @author Illyria Team
+     */
+
     private final Role from;
     private boolean cancelled;
     private Role to;

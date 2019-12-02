@@ -7,6 +7,11 @@ import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 
 public class TempMarker {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     // -------------------------------------------- //
     // FIELDS
     // -------------------------------------------- //

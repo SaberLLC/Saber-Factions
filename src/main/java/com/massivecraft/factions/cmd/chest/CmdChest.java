@@ -10,6 +10,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdChest extends FCommand {
 
+    /**
+     * @author Illyria Team
+     */
+
     public CmdChest() {
         this.aliases.add("chest");
         this.aliases.add("pv");

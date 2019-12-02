@@ -13,6 +13,11 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class CmdBanner extends FCommand {
+
+    /**
+     * @author Illyria Team
+     */
+
     public CmdBanner() {
         this.aliases.add("banner");
         this.aliases.add("warbanner");

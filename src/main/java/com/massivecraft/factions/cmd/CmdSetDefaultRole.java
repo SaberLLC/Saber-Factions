@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSetDefaultRole extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdSetDefaultRole() {
         super();
 

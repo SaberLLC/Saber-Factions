@@ -14,6 +14,10 @@ import org.bukkit.ChatColor;
 
 public class CmdDeinvite extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdDeinvite() {
         super();
         this.aliases.add("deinvite");

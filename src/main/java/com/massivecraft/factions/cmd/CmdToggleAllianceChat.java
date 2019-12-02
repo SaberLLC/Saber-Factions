@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdToggleAllianceChat extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdToggleAllianceChat() {
         super();
         this.aliases.add("tac");

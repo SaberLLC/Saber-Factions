@@ -11,6 +11,10 @@ import org.bukkit.Bukkit;
 
 public class CmdAdmin extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdAdmin() {
         super();
         this.aliases.add("admin");

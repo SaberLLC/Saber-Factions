@@ -11,6 +11,10 @@ import org.bukkit.event.Cancellable;
  */
 public class PowerLossEvent extends FactionPlayerEvent implements Cancellable {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     private boolean cancelled = false;
     private String message;
     private double modified = 0;

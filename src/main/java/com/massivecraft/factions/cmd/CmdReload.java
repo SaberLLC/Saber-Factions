@@ -9,6 +9,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdReload extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdReload() {
         super();
         this.aliases.add("reload");

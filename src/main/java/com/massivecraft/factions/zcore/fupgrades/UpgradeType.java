@@ -2,6 +2,10 @@ package com.massivecraft.factions.zcore.fupgrades;
 
 public enum UpgradeType {
 
+    /**
+     * @author Illyria Team
+     */
+
     CHEST("Chest"),
     SPAWNER("Spawner"),
     EXP("Exp"),

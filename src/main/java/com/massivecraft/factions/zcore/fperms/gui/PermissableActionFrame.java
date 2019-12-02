@@ -20,6 +20,10 @@ import java.util.List;
 
 public class PermissableActionFrame {
 
+    /**
+     * @author Illyria Team
+     */
+
     private Gui gui;
 
     public PermissableActionFrame(Faction f) {

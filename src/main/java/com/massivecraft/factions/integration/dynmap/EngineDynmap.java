@@ -17,6 +17,11 @@ import java.util.Map.Entry;
 
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.
 public class EngineDynmap {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     // -------------------------------------------- //
     // CONSTANTS
     // -------------------------------------------- //

@@ -16,6 +16,10 @@ import org.bukkit.ChatColor;
 
 public class CmdInviteAlt extends FCommand {
 
+    /**
+     * @author Driftay
+     */
+
     public CmdInviteAlt() {
         super();
         this.aliases.add("invite");

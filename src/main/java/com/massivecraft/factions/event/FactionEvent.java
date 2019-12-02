@@ -9,6 +9,10 @@ import org.bukkit.event.HandlerList;
  */
 public class FactionEvent extends Event {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     private static final HandlerList handlers = new HandlerList();
     private final Faction faction;
 

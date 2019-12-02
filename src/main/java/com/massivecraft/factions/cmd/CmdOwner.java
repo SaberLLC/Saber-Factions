@@ -8,6 +8,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdOwner extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdOwner() {
         super();
         this.aliases.add("owner");

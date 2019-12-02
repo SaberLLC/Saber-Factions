@@ -24,6 +24,10 @@ import java.util.logging.Level;
 
 public class Econ {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
     private static Economy econ = null;
 

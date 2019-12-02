@@ -11,6 +11,10 @@ import org.bukkit.command.CommandSender;
 
 public class CmdMoneyBalance extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdMoneyBalance() {
         super();
         this.aliases.add("b");

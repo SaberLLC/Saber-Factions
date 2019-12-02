@@ -10,6 +10,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSaveAll extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdSaveAll() {
         super();
         this.aliases.add("saveall");

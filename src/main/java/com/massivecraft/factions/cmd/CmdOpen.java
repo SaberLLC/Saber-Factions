@@ -9,6 +9,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdOpen extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdOpen() {
         super();
         this.aliases.add("open");

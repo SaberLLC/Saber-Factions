@@ -9,6 +9,11 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSetFWarp extends FCommand {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdSetFWarp() {
         this.aliases.add("setwarp");
         this.aliases.add("sw");

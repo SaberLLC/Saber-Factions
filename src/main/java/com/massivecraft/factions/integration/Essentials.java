@@ -17,6 +17,10 @@ import java.math.BigDecimal;
 
 public class Essentials {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     private static IEssentials essentials;
 
     public static void setup() {

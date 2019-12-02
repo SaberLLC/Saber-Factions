@@ -34,6 +34,10 @@ import java.util.List;
 
 public class Worldguard {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     private Object worldGuard;
     private WorldGuardPlugin worldGuardPlugin;
     private Object regionContainer;

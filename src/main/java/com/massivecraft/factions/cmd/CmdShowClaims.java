@@ -8,6 +8,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdShowClaims extends FCommand {
 
+    /**
+     * @author Illyria Team
+     */
+
     public CmdShowClaims() {
         this.aliases.add("showclaims");
         this.aliases.add("showclaim");

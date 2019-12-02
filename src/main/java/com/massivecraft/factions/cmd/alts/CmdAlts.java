@@ -9,6 +9,9 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdAlts extends FCommand {
 
+    /**
+     * @author Driftay
+     */
 
     public CmdInviteAlt cmdInviteAlt = new CmdInviteAlt();
     public CmdAltsList cmdAltsList = new CmdAltsList();

@@ -6,6 +6,11 @@ import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdCheckpoint extends FCommand {
+
+    /**
+     * @author Illyria Team
+     */
+
     public CmdCheckpoint() {
         super();
         this.aliases.add("checkp");

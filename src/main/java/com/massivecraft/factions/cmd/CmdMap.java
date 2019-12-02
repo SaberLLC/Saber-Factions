@@ -9,6 +9,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdMap extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdMap() {
         super();
         this.aliases.add("map");

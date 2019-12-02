@@ -4,6 +4,11 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdKillHolograms extends FCommand {
+
+    /**
+     * @author Illyria Team
+     */
+
     public CmdKillHolograms() {
         super();
         this.aliases.add("killholos");

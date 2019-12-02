@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class FInfoSidebar extends FSidebarProvider {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     private final Faction faction;
 
     public FInfoSidebar(Faction faction) {

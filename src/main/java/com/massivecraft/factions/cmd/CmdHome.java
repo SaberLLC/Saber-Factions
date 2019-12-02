@@ -20,6 +20,10 @@ import java.util.List;
 
 public class CmdHome extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdHome() {
         super();
         this.aliases.add("home");

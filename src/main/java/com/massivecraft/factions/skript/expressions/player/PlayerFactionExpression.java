@@ -17,6 +17,10 @@ import org.bukkit.event.Event;
 
 public class PlayerFactionExpression extends SimpleExpression<String> {
 
+    /**
+     * @author Illyria Team
+     */
+
 
     static {
         Skript.registerExpression(PlayerFactionExpression.class, String.class, ExpressionType.SIMPLE, "[the] faction of %player%", "[the] %player%['s] faction");

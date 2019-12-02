@@ -14,6 +14,10 @@ import org.bukkit.ChatColor;
 
 public class CmdMoneyDeposit extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdMoneyDeposit() {
         super();
         this.aliases.add("d");

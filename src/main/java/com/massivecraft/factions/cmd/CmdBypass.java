@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdBypass extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdBypass() {
         super();
         this.aliases.add("bypass");

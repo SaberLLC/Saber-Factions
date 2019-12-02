@@ -9,6 +9,10 @@ import org.bukkit.command.ConsoleCommandSender;
 
 public class CmdConvert extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdConvert() {
         this.aliases.add("convert");
         this.requiredArgs.add("[MYSQL|JSON]");

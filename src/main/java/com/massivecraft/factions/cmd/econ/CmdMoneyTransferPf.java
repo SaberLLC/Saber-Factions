@@ -14,6 +14,10 @@ import org.bukkit.ChatColor;
 
 public class CmdMoneyTransferPf extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdMoneyTransferPf() {
         this.aliases.add("pf");
 

@@ -7,6 +7,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSethome extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdSethome() {
         this.aliases.add("sethome");
         this.optionalArgs.put("faction tag", "mine");

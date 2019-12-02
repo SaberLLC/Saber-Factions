@@ -4,6 +4,11 @@ import org.dynmap.markers.AreaMarker;
 import org.dynmap.markers.MarkerSet;
 
 public class TempAreaMarker {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     // -------------------------------------------- //
     // FIELDS
     // -------------------------------------------- //

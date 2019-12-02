@@ -9,6 +9,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdOwnerList extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdOwnerList() {
         super();
         this.aliases.add("ownerlist");

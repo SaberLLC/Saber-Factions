@@ -15,6 +15,10 @@ import java.util.Map;
 
 public class BrigadierManager {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public Commodore commodore;
     public LiteralArgumentBuilder<Object> brigadier = LiteralArgumentBuilder.literal("factions");
 

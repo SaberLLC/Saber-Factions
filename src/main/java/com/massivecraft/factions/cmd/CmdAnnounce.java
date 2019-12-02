@@ -12,6 +12,10 @@ import org.bukkit.entity.Player;
 
 public class CmdAnnounce extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdAnnounce() {
         super();
         this.aliases.add("ann");

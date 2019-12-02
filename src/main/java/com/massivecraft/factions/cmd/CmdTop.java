@@ -12,6 +12,10 @@ import java.util.ArrayList;
 
 public class CmdTop extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdTop() {
         super();
         this.aliases.add("top");

@@ -17,6 +17,10 @@ import org.bukkit.ChatColor;
 
 public class CmdMoneyWithdraw extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdMoneyWithdraw() {
         this.aliases.add("w");
         this.aliases.add("withdraw");

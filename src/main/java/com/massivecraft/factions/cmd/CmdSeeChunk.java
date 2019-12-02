@@ -15,6 +15,10 @@ import java.util.HashMap;
 
 public class CmdSeeChunk extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     //Used a hashmap cuz imma make a particle selection gui later, will store it where the boolean is rn.
     public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
     private long interval;

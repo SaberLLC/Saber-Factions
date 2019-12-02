@@ -5,6 +5,10 @@ import org.bukkit.ChatColor;
 
 public interface RelationParticipator {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     String describeTo(RelationParticipator that);
 
     String describeTo(RelationParticipator that, boolean ucfirst);

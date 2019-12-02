@@ -7,6 +7,10 @@ import org.bukkit.Location;
 
 public class CmdCoords extends FCommand {
 
+    /**
+     * @author Illyria Team
+     */
+
     public CmdCoords() {
         super();
         this.aliases.add("coords");

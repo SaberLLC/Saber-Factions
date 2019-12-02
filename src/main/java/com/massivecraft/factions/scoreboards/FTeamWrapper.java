@@ -12,6 +12,11 @@ import org.bukkit.scoreboard.Team;
 import java.util.*;
 
 public class FTeamWrapper {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<>();
     private static final List<FScoreboard> tracking = new ArrayList<>();
     private static final Set<Faction> updating = new HashSet<>();

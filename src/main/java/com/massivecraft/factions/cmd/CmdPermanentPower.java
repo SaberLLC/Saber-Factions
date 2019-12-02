@@ -6,6 +6,11 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPermanentPower extends FCommand {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdPermanentPower() {
         super();
         this.aliases.add("permanentpower");

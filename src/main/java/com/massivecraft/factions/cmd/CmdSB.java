@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSB extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdSB() {
         this.aliases.add("sb");
         this.aliases.add("scoreboard");

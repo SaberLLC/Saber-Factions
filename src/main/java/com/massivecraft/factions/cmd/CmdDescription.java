@@ -9,6 +9,10 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdDescription extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdDescription() {
         super();
         this.aliases.add("desc");

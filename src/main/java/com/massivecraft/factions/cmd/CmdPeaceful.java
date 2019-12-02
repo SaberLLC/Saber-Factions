@@ -8,6 +8,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPeaceful extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdPeaceful() {
         super();
         this.aliases.add("peaceful");

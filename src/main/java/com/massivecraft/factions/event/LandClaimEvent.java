@@ -11,6 +11,10 @@ import org.bukkit.event.Cancellable;
  */
 public class LandClaimEvent extends FactionPlayerEvent implements Cancellable {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     private boolean cancelled;
     private FLocation location;
 

@@ -14,6 +14,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class CmdTnt extends FCommand {
+
+    /**
+     * @author Illyria Team
+     */
+
     public CmdTnt() {
         super();
         this.aliases.add("tnt");

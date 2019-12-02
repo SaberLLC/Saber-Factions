@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLock extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     // TODO: This solution needs refactoring.
     /*
        factions.lock:

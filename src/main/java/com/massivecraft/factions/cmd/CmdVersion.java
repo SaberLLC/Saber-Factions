@@ -7,6 +7,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdVersion extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdVersion() {
         this.aliases.add("version");
         this.aliases.add("ver");

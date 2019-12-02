@@ -10,6 +10,10 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 public class CmdChat extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdChat() {
         super();
         this.aliases.add("c");

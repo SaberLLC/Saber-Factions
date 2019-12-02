@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdBoom extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdBoom() {
         super();
         this.aliases.add("noboom");

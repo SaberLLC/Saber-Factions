@@ -19,6 +19,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CmdFly extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
 
     public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<>();
     public static BukkitTask particleTask = null;

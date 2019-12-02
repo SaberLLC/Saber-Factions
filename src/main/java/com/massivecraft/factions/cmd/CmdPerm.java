@@ -17,6 +17,10 @@ import java.util.Set;
 
 public class CmdPerm extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdPerm() {
         super();
         this.aliases.add("perm");

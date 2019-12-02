@@ -21,6 +21,11 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CheckTask implements Runnable {
+
+    /**
+     * @author Driftay
+     */
+
     private static List<String> wallChecks = new CopyOnWriteArrayList<>();
     private static List<String> bufferChecks = new CopyOnWriteArrayList<>();
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Conf.dateFormat);

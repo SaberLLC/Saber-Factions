@@ -9,6 +9,10 @@ import org.bukkit.command.ConsoleCommandSender;
 
 public class CmdPowerBoost extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdPowerBoost() {
         super();
         this.aliases.add("powerboost");

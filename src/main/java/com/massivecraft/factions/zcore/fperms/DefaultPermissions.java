@@ -1,6 +1,11 @@
 package com.massivecraft.factions.zcore.fperms;
 
 public class DefaultPermissions {
+
+    /**
+     * @author Illyria Team
+     */
+
     public boolean ban;
     public boolean build;
     public boolean destroy;

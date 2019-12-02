@@ -13,6 +13,10 @@ import org.bukkit.entity.Player;
 
 public class CmdStuck extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdStuck() {
         super();
         this.aliases.add("stuck");

@@ -16,6 +16,10 @@ import java.util.HashMap;
 
 public class CmdDisband extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
 
     private static HashMap<String, String> disbandMap = new HashMap<>();
 

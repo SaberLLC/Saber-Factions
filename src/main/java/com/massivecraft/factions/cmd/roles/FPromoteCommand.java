@@ -11,6 +11,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class FPromoteCommand extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public int relative = 0;
 
     public FPromoteCommand() {

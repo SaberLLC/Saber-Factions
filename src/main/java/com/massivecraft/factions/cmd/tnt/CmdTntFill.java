@@ -22,6 +22,10 @@ import java.util.*;
 
 public class CmdTntFill extends FCommand {
 
+    /**
+     * @author Illyria Team
+     */
+
     public CmdTntFill() {
         super();
         this.aliases.add("tntfill");

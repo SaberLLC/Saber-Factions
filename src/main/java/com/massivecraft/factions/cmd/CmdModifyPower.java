@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdModifyPower extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdModifyPower() {
         super();
 

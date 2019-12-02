@@ -8,6 +8,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdUnban extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdUnban() {
         super();
         this.aliases.add("unban");

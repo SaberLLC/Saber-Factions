@@ -14,6 +14,10 @@ import org.bukkit.block.BlockFace;
 
 public class CmdClaimLine extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public static final BlockFace[] axis = {BlockFace.SOUTH, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST};
 
     public CmdClaimLine() {

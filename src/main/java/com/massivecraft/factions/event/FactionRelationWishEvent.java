@@ -6,6 +6,11 @@ import com.massivecraft.factions.struct.Relation;
 import org.bukkit.event.Cancellable;
 
 public class FactionRelationWishEvent extends FactionPlayerEvent implements Cancellable {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     private final Faction targetFaction;
     private final Relation currentRelation;
     private final Relation targetRelation;

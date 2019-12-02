@@ -13,6 +13,10 @@ import java.util.List;
 
 public class CmdHelp extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public ArrayList<ArrayList<String>> helpPages;
 
     public CmdHelp() {

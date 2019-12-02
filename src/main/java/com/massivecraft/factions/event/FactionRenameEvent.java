@@ -6,6 +6,10 @@ import org.bukkit.event.Cancellable;
 
 public class FactionRenameEvent extends FactionPlayerEvent implements Cancellable {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     private boolean cancelled = false;
     private String tag;
 

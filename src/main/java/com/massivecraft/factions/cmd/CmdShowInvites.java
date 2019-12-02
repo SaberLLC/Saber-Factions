@@ -10,6 +10,10 @@ import org.bukkit.ChatColor;
 
 public class CmdShowInvites extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdShowInvites() {
         super();
         aliases.add("showinvites");

@@ -10,6 +10,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPermanent extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdPermanent() {
         super();
         this.aliases.add("permanent");

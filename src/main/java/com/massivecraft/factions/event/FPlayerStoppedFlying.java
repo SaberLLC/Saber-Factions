@@ -4,6 +4,11 @@ import com.massivecraft.factions.FPlayer;
 import org.bukkit.event.HandlerList;
 
 public class FPlayerStoppedFlying extends FactionPlayerEvent {
+
+    /**
+     * @author Illyria Team
+     */
+
     private static final HandlerList handlers = new HandlerList();
     private FPlayer fPlayer;
 

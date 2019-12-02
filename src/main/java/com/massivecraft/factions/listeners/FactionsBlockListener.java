@@ -38,6 +38,10 @@ import java.util.List;
 
 public class FactionsBlockListener implements Listener {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public static HashMap<String, Location> bannerLocations = new HashMap<>();
     private HashMap<String, Boolean> bannerCooldownMap = new HashMap<>();
 

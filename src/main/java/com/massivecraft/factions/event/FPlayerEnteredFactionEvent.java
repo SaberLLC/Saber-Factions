@@ -6,6 +6,10 @@ import org.bukkit.event.HandlerList;
 
 public class FPlayerEnteredFactionEvent extends FactionPlayerEvent {
 
+    /**
+     * @author Illyria Team
+     */
+
     private static final HandlerList handlers = new HandlerList();
     private FPlayer fPlayer;
     private Faction factionTo;

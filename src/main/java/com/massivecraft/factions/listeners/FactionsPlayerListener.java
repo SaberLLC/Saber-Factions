@@ -47,6 +47,10 @@ import java.util.logging.Level;
 
 public class FactionsPlayerListener implements Listener {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     HashMap<Player, Boolean> fallMap = new HashMap<>();
     public static Set<FLocation> corners;
     // Holds the next time a player can have a map shown.

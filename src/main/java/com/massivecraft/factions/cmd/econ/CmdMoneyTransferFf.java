@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 
 public class CmdMoneyTransferFf extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
 
     public CmdMoneyTransferFf() {
         this.aliases.add("ff");

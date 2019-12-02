@@ -7,6 +7,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLowPower extends FCommand {
 
+    /**
+     * @author Illyria Team
+     */
+
     public CmdLowPower() {
         super();
         this.aliases.add("lowpower");

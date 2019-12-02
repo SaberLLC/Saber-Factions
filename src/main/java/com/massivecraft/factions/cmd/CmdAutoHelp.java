@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 public class CmdAutoHelp extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdAutoHelp() {
         this.aliases.add("?");
         this.aliases.add("h");

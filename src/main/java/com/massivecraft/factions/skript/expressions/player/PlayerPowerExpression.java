@@ -15,6 +15,10 @@ import org.bukkit.event.Event;
 
 public class PlayerPowerExpression extends SimpleExpression<Number> {
 
+    /**
+     * @author Illyria Team
+     */
+
 
     static {
         Skript.registerExpression(PlayerPowerExpression.class, Number.class, ExpressionType.SIMPLE, "[the] power of %player%", "[the] %player%['s] power");

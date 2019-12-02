@@ -9,6 +9,10 @@ import org.bukkit.event.Cancellable;
  */
 public class FPlayerJoinEvent extends FactionPlayerEvent implements Cancellable {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     PlayerJoinReason reason;
     boolean cancelled = false;
 

@@ -8,6 +8,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdMoney extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdMoneyBalance cmdMoneyBalance = new CmdMoneyBalance();
     public CmdMoneyDeposit cmdMoneyDeposit = new CmdMoneyDeposit();
     public CmdMoneyWithdraw cmdMoneyWithdraw = new CmdMoneyWithdraw();

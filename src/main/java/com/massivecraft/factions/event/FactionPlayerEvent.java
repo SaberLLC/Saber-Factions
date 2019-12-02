@@ -8,6 +8,10 @@ import com.massivecraft.factions.Faction;
  */
 public class FactionPlayerEvent extends FactionEvent {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     protected final FPlayer fPlayer;
 
     public FactionPlayerEvent(Faction faction, FPlayer fPlayer) {

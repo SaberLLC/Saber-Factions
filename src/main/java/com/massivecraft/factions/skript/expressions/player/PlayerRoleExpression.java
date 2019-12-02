@@ -16,6 +16,10 @@ import org.bukkit.event.Event;
 
 public class PlayerRoleExpression extends SimpleExpression<String> {
 
+    /**
+     * @author Illyria Team
+     */
+
     static {
         Skript.registerExpression(PlayerRoleExpression.class, String.class, ExpressionType.SIMPLE, "[the] role of %player%", "[the] %player%['s] role");
     }

@@ -18,6 +18,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CheckHistoryFrame implements FactionGUI {
+
+    /**
+     * @author Driftay
+     */
+
     private FactionsPlugin plugin;
     private Faction faction;
     private Inventory inventory;

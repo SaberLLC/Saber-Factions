@@ -11,6 +11,11 @@ import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 public class CmdWeeWoo extends FCommand {
+
+    /**
+     * @author Driftay
+     */
+
     public CmdWeeWoo() {
         this.aliases.add("weewoo");
         this.requiredArgs.add("start/stop");

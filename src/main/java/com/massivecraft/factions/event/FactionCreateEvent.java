@@ -12,6 +12,10 @@ import org.bukkit.event.HandlerList;
  */
 public class FactionCreateEvent extends Event implements Cancellable {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     private static final HandlerList handlers = new HandlerList();
 
     private String factionTag;

@@ -5,6 +5,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdLeave extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdLeave() {
         super();
         this.aliases.add("leave");

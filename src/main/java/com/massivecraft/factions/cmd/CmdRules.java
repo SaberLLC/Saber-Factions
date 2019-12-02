@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CmdRules extends FCommand {
+
+    /**
+     * @author Illyria Team
+     */
+
     public CmdRules() {
         super();
         aliases.add("r");

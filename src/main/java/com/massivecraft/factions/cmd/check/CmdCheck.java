@@ -24,6 +24,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class CmdCheck extends FCommand {
+
+    /**
+     * @author Driftay
+     */
+
     private SimpleDateFormat simpleDateFormat;
 
     public CmdCheck() {

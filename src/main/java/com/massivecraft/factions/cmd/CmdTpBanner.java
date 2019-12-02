@@ -9,6 +9,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdTpBanner extends FCommand {
 
+    /**
+     * @author Illyria Team
+     */
+
     public CmdTpBanner() {
         super();
         this.aliases.add("tpbanner");

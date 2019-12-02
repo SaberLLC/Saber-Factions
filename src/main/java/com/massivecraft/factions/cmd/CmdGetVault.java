@@ -9,6 +9,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class CmdGetVault extends FCommand {
+
+    /**
+     * @author Illyria Team
+     */
+
     public CmdGetVault() {
         super();
         this.aliases.add("getvault");

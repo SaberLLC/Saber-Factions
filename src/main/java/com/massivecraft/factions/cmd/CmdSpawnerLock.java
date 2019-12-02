@@ -7,6 +7,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdSpawnerLock extends FCommand {
 
+    /**
+     * @author Illyria Team
+     */
+
     public CmdSpawnerLock(){
         super();
         this.aliases.add("lockspawners");

@@ -5,6 +5,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdMapHeight extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdMapHeight() {
         super();
 

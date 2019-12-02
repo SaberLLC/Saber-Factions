@@ -10,6 +10,11 @@ import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
 public class CmdColeader extends FCommand {
+
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdColeader() {
         super();
         this.aliases.add("co");

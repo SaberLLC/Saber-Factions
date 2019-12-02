@@ -8,6 +8,10 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdTitle extends FCommand {
 
+    /**
+     * @author FactionsUUID Team
+     */
+
     public CmdTitle() {
         this.aliases.add("title");
         this.requiredArgs.add("player name");

@@ -23,6 +23,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class UpgradesListener implements Listener {
 
+    /**
+     * @author Illyria Team
+     */
+
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
         Entity killer = e.getEntity().getKiller();
