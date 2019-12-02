@@ -38,7 +38,11 @@ public class FactionWarpsFrame {
             GUIItems.add(new GuiItem(buildDummyItem(), e -> e.setCancelled(true)));
         slots.forEach(slot -> GUIItems.set(slot, new GuiItem(XMaterial.AIR.parseItem())));
         for (final Map.Entry<String, LazyLocation> warp : fplayer.getFaction().getWarps().entrySet()) {
-            if (count > slots.size()) continue;
+            if (slots.size() < fplayer.getFaction().getWarps().entrySet().size()){
+                slots.add(slots.get(slots.size()-1)+1);
+                FactionsPlugin.instance.log("Automatically setting F WARP GUI slot since slot not specified. Head config.yml and add more entries in warp-slots section.");
+            }
+
             GUIItems.set(slots.get(count), new GuiItem(buildWarpAsset(warp, fplayer.getFaction()), e -> {
                 e.setCancelled(true);
                 fplayer.getPlayer().closeInventory();
