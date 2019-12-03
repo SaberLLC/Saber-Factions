@@ -1313,7 +1313,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 oldLeader.setRole(Role.NORMAL);
             }
             replacements.get(0).setRole(Role.LEADER);
-            this.msg(TL.COMMAND_ADMIN_PROMOTED_AUTOLEAVE, oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
+            this.msg(TL.AUTOLEAVE_ADMIN_PROMOTED, oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
             FactionsPlugin.getInstance().log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
         }
     }

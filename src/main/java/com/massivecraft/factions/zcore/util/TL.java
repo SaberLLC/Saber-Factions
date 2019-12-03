@@ -143,7 +143,6 @@ public enum TL {
     COMMAND_ADMIN_DEMOTED("&c&l[!] &cYou have been demoted from the position of faction admin by &7%1$s&c"),
     COMMAND_ADMIN_PROMOTES("&e&l[!] &eYou have promoted &6%1$s &eto the position of faction admin."),
     COMMAND_ADMIN_PROMOTED("&e&l[!] &6%1$s &egave &6%2$s &ethe leadership of &6%3$s&e."),
-    COMMAND_ADMIN_PROMOTED_AUTOLEAVE("&e&l[!] &7Faction admin &c%s&7 has been removed. &c%s&7 has been promoted as the new faction admin."),
     COMMAND_ADMIN_DESCRIPTION("Hand over your admin rights"),
     COMMAND_ADMIN_NOMEMBERS("&e&l[!] &cNo one else to promote, please disband faction."),
 
@@ -976,6 +975,7 @@ public enum TL {
     LEAVE_DISBANDED("%s was disbanded."),
     LEAVE_DISBANDEDLOG("The faction %s (%s) was disbanded due to the last player (%s) leaving."),
     LEAVE_DESCRIPTION("\\n  &a&l» &7Leave your faction"),
+    AUTOLEAVE_ADMIN_PROMOTED("&e&l[!] &7Faction admin &c%s&7 has been removed. &c%s&7 has been promoted as the new faction admin."),
 
     /**
      * Claiming - Same as above basically. No COMMAND_* because it's not in a command class, but...
