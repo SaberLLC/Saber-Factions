@@ -42,6 +42,10 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
+                            <pattern>net.dv8tion</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.net.dv8tion</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>mkremins.fanciful</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.mkremins.fanciful</shadedPattern>
                         </relocation>
