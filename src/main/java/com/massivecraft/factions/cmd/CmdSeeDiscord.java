@@ -25,7 +25,7 @@ public class CmdSeeDiscord extends FCommand{
     @Override
     public void perform(CommandContext context) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("fdiscord.Enabled")) {
-            context.msg(TL.GENERIC_DISABLED);
+            context.msg(TL.GENERIC_DISABLED, "Faction Discords");
             return;
         }
 

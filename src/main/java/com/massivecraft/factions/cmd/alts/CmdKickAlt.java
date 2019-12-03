@@ -37,7 +37,7 @@ public class CmdKickAlt extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled", false)) {
-            context.fPlayer.msg(TL.GENERIC_DISABLED);
+            context.msg(TL.GENERIC_DISABLED, "Faction Alts");
             return;
         }
 

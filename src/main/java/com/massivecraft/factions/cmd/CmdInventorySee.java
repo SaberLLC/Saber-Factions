@@ -36,7 +36,7 @@ public class CmdInventorySee extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled")) {
-            context.msg(TL.GENERIC_DISABLED);
+            context.msg(TL.GENERIC_DISABLED, "Inventory See");
             return;
         }
 

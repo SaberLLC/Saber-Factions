@@ -26,7 +26,7 @@ public class CmdViewChest extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("fchest.Enabled")) {
-            context.msg(TL.GENERIC_DISABLED);
+            context.msg(TL.GENERIC_DISABLED, "Faction Chests");
             return;
         }
 

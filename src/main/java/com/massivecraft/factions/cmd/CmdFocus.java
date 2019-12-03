@@ -26,7 +26,7 @@ public class CmdFocus extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("ffocus.Enabled")) {
-            context.msg(TL.GENERIC_DISABLED);
+            context.msg(TL.GENERIC_DISABLED, "Faction Focus");
             return;
         }
         FPlayer target = context.argAsFPlayer(0);

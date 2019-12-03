@@ -29,7 +29,7 @@ public class CmdPaypalSet extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled")) {
-            context.fPlayer.msg(TL.GENERIC_DISABLED);
+            context.fPlayer.msg(TL.GENERIC_DISABLED, "Faction Paypals");
             return;
         }
         if (context.fPlayer.getRole() != Role.LEADER && !context.fPlayer.isAdminBypassing()) {

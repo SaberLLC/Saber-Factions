@@ -36,7 +36,7 @@ public class CmdCorner extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (FactionsPlugin.getInstance().mc17) {
-            context.player.sendMessage(ChatColor.RED + "This command is disabled!");
+            context.msg(TL.GENERIC_DISABLED, "Faction Corners");
             return;
         }
         FLocation to = new FLocation(context.player.getLocation());

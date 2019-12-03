@@ -30,7 +30,7 @@ public class CmdChest extends FCommand {
 
 
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("fchest.Enabled")) {
-            context.fPlayer.sendMessage("This command is disabled!");
+            context.msg(TL.GENERIC_DISABLED, "Faction Chests");
             return;
         }
         // This permission check is way too explicit but it's clean

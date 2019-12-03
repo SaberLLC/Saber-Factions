@@ -1031,7 +1031,7 @@ public enum TL {
     GENERIC_FACTIONLESS("factionless"),
     GENERIC_SERVERADMIN("A server admin"),
     GENERIC_SERVER("Server"),
-    GENERIC_DISABLED("disabled"),
+    GENERIC_DISABLED("&c&l[!] &7The feature &b%1$s &7is currently disabled."),
     GENERIC_ENABLED("enabled"),
     GENERIC_INFINITY("âˆž"),
     GENERIC_NULLPLAYER("null player"),
