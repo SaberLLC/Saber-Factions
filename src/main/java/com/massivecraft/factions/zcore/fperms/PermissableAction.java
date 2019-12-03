@@ -15,7 +15,7 @@ import java.util.Map;
 public enum PermissableAction {
 
     /**
-     * @author Illyria Team
+     * @author FactionsUUID Team
      */
 
     BAN("ban"),

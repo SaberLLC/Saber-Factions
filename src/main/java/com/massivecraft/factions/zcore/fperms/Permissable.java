@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 public interface Permissable {
 
     /**
-     * @author Illyria Team
+     * @author FactionsUUID Team
      */
 
     ItemStack buildItem();

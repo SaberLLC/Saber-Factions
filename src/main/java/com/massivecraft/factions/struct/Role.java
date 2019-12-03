@@ -18,7 +18,7 @@ import java.util.List;
 public enum Role implements Permissable {
 
     /**
-     * @author Illyria Team
+     * @author FactionsUUID Team
      */
 
 
