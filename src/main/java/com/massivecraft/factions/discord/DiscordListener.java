@@ -6,7 +6,9 @@ import com.massivecraft.factions.zcore.util.TL;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.bukkit.ChatColor;
@@ -64,6 +66,23 @@ public class DiscordListener extends ListenerAdapter {
         }
     }
 
+    public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
+        Integer i = 0;
+        if (e.getAuthor().isBot()) {return;}
+        try {
+            i = Integer.valueOf(e.getMessage().getContentDisplay());
+        } catch (NumberFormatException ex) {e.getChannel().sendMessage(TL.DISCORD_CODE_INVALID_FORMAT.toString()).queue();
+        return;}
+        if (Discord.waitingLink.keySet().contains(i)) {
+            FPlayer f = Discord.waitingLink.get(i);
+            f.setDiscordSetup(true);
+            f.setDiscordUserID(e.getAuthor().getId());
+            e.getChannel().sendMessage(TL.DISCORD_LINK_SUCCESS.toString()).queue();
+            Discord.waitingLink.remove(i);
+            Discord.waitingLinkk.remove(f);
+        } else {e.getChannel().sendMessage(TL.DISCORD_CODE_INVALID_KEY.toString()).queue();
+        return;}
+    }
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         try {

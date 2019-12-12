@@ -21,7 +21,7 @@ public class CmdInviteBot extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        JDA jda = FactionChatHandler.jda;
+        JDA jda = Discord.jda;
         FancyMessage fancyMessage = new FancyMessage();
         fancyMessage.link(jda.asBot().getInviteUrl(Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.MESSAGE_HISTORY, Permission.MESSAGE_ADD_REACTION, Permission.MESSAGE_EMBED_LINKS));
         fancyMessage.text(FactionsPlugin.getInstance().color("&c&lFactions Bot - &2Click here to invite the bot"));

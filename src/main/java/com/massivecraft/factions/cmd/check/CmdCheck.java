@@ -1,18 +1,16 @@
 package com.massivecraft.factions.cmd.check;
 
 import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.discord.FactionChatHandler;
+import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.OfflinePlayer;
@@ -94,7 +92,7 @@ public class CmdCheck extends FCommand {
                 if (channelId == null || channelId.isEmpty()) {
                     return;
                 }
-                TextChannel textChannel = FactionChatHandler.jda.getTextChannelById(channelId);
+                TextChannel textChannel = Discord.jda.getTextChannelById(channelId);
                 if (textChannel == null) {
                     return;
                 }
@@ -126,7 +124,7 @@ public class CmdCheck extends FCommand {
                 if (channelId == null || channelId.isEmpty()) {
                     return;
                 }
-                TextChannel textChannel = FactionChatHandler.jda.getTextChannelById(channelId);
+                TextChannel textChannel = Discord.jda.getTextChannelById(channelId);
                 if (textChannel == null) {
                     return;
                 }

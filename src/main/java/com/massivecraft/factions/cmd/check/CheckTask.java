@@ -5,7 +5,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.discord.FactionChatHandler;
+import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.zcore.util.TL;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.MessageBuilder;
@@ -92,7 +92,7 @@ public class CheckTask implements Runnable {
             if (channelId.isEmpty()) {
                 continue;
             }
-            TextChannel textChannel = FactionChatHandler.jda.getTextChannelById(channelId);
+            TextChannel textChannel = Discord.jda.getTextChannelById(channelId);
             if (textChannel == null) {
                 continue;
             }
@@ -141,7 +141,7 @@ public class CheckTask implements Runnable {
             if (channelId.isEmpty()) {
                 continue;
             }
-            TextChannel textChannel = FactionChatHandler.jda.getTextChannelById(channelId);
+            TextChannel textChannel = Discord.jda.getTextChannelById(channelId);
             if (textChannel == null) {
                 continue;
             }

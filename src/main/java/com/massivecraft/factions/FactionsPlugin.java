@@ -11,6 +11,7 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
+import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.discord.DiscordListener;
 import com.massivecraft.factions.discord.FactionChatHandler;
 import com.massivecraft.factions.integration.Econ;
@@ -267,11 +268,8 @@ public class FactionsPlugin extends MPlugin {
             this.getServer().getScheduler().runTaskTimer(this, CheckTask::cleanupTask, 0L, 1200L);
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new WeeWooTask(this), 600L, 600L);
         }
-        if(Conf.useDiscordSystem && !Conf.discordBotToken.equals("<token here>")) {
-            new FactionChatHandler(this);
-        } else {
-            System.out.println("\n\n\n SABER-FACTIONS-DISCORD-INTEGRATION - You are not using Discord integration features, set conf.json option useDiscordSystem to true and put a valid token in before using!\n\n\n");
-        }
+        //Setup Discord Bot
+        new Discord(this);
 
         ShopConfig.setup();
 
@@ -415,7 +413,7 @@ public class FactionsPlugin extends MPlugin {
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
-    private void divider() {
+    public void divider() {
         System.out.println("  .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-");
         System.out.println(" / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\");
         System.out.println("`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'");

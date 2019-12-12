@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFly;
+import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.*;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
@@ -21,6 +22,9 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.exceptions.HierarchyException;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -42,6 +46,8 @@ import java.util.*;
 
 public abstract class MemoryFPlayer implements FPlayer {
     public boolean inChest = false;
+    public boolean discordSetup = false;
+    public String discordUserID = "";
     public boolean inVault = false;
     protected HashMap<String, Long> commandCooldown = new HashMap<>();
     protected String factionId;
@@ -218,12 +224,25 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean hasNotificationsEnabled() {
         return this.notificationsEnabled;
     }
+
+    public boolean discordSetup() {return this.discordSetup;}
+
+    public String discordUserID() {return this.discordUserID;}
+
+    public void setDiscordSetup(Boolean b) {this.discordSetup = b;}
+
+    public void setDiscordUserID(String s) {this.discordUserID = s;}
+
     public boolean hasTitlesEnabled() {
         return this.titlesEnabled;
     }
+
     public void setTitlesEnabled(Boolean b) {
         this.titlesEnabled = b;
     }
+
+    public User discordUser() {return Discord.jda.getUserById(this.discordUserID);}
+
     public String getFactionId() {
         return this.factionId;
     }
@@ -258,7 +277,23 @@ public abstract class MemoryFPlayer implements FPlayer {
         Bukkit.getPluginManager().callEvent(event);
 
         if (!event.isCancelled()) {
-            this.role = event.getTo();
+            try {
+                if (Discord.useDiscord && this.discordSetup() && Discord.isInMainGuild(this.discordUser()) && Discord.mainGuild != null) {
+                    Member m = Discord.mainGuild.getMember(this.discordUser());
+                    if (Conf.leaderRoles && this.role == Role.LEADER && event.getTo() != Role.LEADER) {
+                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.mainGuild.getRoleById(Conf.leaderRole)).queue();
+                    }
+                    if (Conf.leaderRoles && event.getTo() == Role.LEADER) {
+                        Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.mainGuild.getRoleById(Conf.leaderRole)).queue();
+                    }
+                    this.role = event.getTo();
+                    if (Conf.factionDiscordTags) {
+                        Discord.mainGuild.getController().setNickname(m, Discord.getNicknameString(this)).queue();
+                    }
+                } else {
+                    this.role = event.getTo();
+                }
+            } catch (HierarchyException e) {System.out.print(e.getMessage());}
         }
     }
 
@@ -376,6 +411,22 @@ public abstract class MemoryFPlayer implements FPlayer {
         // clean up any territory ownership in old faction, if there is one
         if (factionId != null && Factions.getInstance().isValidFactionId(this.getFactionId())) {
             Faction currentFaction = this.getFaction();
+            //Discord
+            try {
+                if (Discord.useDiscord && this.discordSetup() && Discord.isInMainGuild(this.discordUser()) && Discord.mainGuild != null) {
+                    Member m = Discord.mainGuild.getMember(this.discordUser());
+                    if (Conf.leaderRoles && this.role == Role.LEADER && Discord.leader != null) {
+                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.leader).queue();
+                    }
+                    if (Conf.factionRoles) {
+                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.createFactionRole(this.getFaction().getTag())).queue();
+                    }
+                    if (Conf.factionDiscordTags) {
+                        Discord.resetNick(this);
+                    }
+                }
+            } catch (HierarchyException e) {System.out.print(e.getMessage());}
+            //End Discord
             currentFaction.removeFPlayer(this);
             if (currentFaction.isNormal()) {
                 currentFaction.clearClaimOwnership(this);

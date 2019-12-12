@@ -4,10 +4,9 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.discord.FactionChatHandler;
+import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.TextChannel;
 
 public class CmdWeeWoo extends FCommand {
@@ -42,7 +41,7 @@ public class CmdWeeWoo extends FCommand {
             if (!Conf.useDiscordSystem) return;
             String discordChannelId = context.faction.getWeeWooChannelId();
             if (discordChannelId != null && !discordChannelId.isEmpty()) {
-                TextChannel textChannel = FactionChatHandler.jda.getTextChannelById(discordChannelId);
+                TextChannel textChannel = Discord.jda.getTextChannelById(discordChannelId);
                 if (textChannel == null) {
                     return;
                 }
@@ -62,7 +61,7 @@ public class CmdWeeWoo extends FCommand {
             if(!Conf.useDiscordSystem) return;
             String discordChannelId = context.faction.getWeeWooChannelId();
             if (discordChannelId != null && !discordChannelId.isEmpty()) {
-                TextChannel textChannel = FactionChatHandler.jda.getTextChannelById(discordChannelId);
+                TextChannel textChannel = Discord.jda.getTextChannelById(discordChannelId);
                 if (textChannel == null) {
                     return;
                 }

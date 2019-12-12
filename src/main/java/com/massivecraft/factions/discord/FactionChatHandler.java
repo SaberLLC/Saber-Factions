@@ -6,7 +6,6 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import mkremins.fanciful.FancyMessage;
 import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
@@ -25,29 +24,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class FactionChatHandler extends ListenerAdapter {
 
-    /**
-     * @author Driftay
-     */
-
-    public static JDA jda;
     private FactionsPlugin plugin;
 
     public FactionChatHandler(FactionsPlugin plugin) {
         this.plugin = plugin;
-        startBot();
-        jda.addEventListener(this);
-        jda.addEventListener(new DiscordListener(plugin));
-    }
-
-    private void startBot() {
-        try {
-            jda = new JDABuilder(AccountType.BOT).setToken(Conf.discordBotToken).buildBlocking();
-        } catch (LoginException | InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public static void sendMessage(FactionsPlugin plugin, Faction faction, UUID uuid, String username, String message) {
@@ -56,10 +40,10 @@ public class FactionChatHandler extends ListenerAdapter {
         if (factionsChatChannelId == null || factionsChatChannelId.isEmpty()) {
             return;
         }
-        if (jda == null) {
+        if (Discord.jda == null) {
             return;
         }
-        TextChannel textChannel = jda.getTextChannelById(factionsChatChannelId);
+        TextChannel textChannel = Discord.jda.getTextChannelById(factionsChatChannelId);
         if (textChannel == null) {
             return;
         }
@@ -78,8 +62,8 @@ public class FactionChatHandler extends ListenerAdapter {
             List<String> x = new ArrayList<>(Arrays.asList(message.split(" ")));
             for (String y : x) {
                 if (y.contains("@")) {
-                    if (!jda.getUsersByName(y.replace("@", ""), false).isEmpty() && jda.getUsersByName(y.replace("@", ""), false).size() < 2) {
-                        x.set(x.indexOf(y), jda.getUsersByName(y.replace("@", ""), false).get(0).getAsMention());
+                    if (!Discord.jda.getUsersByName(y.replace("@", ""), false).isEmpty() && Discord.jda.getUsersByName(y.replace("@", ""), false).size() < 2) {
+                        x.set(x.indexOf(y), Discord.jda.getUsersByName(y.replace("@", ""), false).get(0).getAsMention());
                     }
                 }
             }

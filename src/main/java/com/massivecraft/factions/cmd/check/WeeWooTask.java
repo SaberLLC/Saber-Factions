@@ -4,9 +4,8 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.discord.FactionChatHandler;
+import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -36,7 +35,7 @@ public class WeeWooTask implements Runnable {
             if (discordChannelId == null || discordChannelId.isEmpty()) {
                 continue;
             }
-            TextChannel textChannel = FactionChatHandler.jda.getTextChannelById(discordChannelId);
+            TextChannel textChannel = Discord.jda.getTextChannelById(discordChannelId);
             if (textChannel == null) {
                 continue;
             }

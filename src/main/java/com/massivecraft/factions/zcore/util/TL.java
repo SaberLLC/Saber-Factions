@@ -327,6 +327,9 @@ public enum TL {
     CHECK_LEADERBOARD_HEADER("&8---- Check Leaderboard ----"),
     CHECK_LEADERBOARD_LINE("&f%1$s. &d%2$s: &f%3$s (%4$s Buffer, %5$s Walls)"),
     CHECK_LEADERBOARD_NO_DATA("&8No data"),
+    COMMAND_DISCORD_DESCRIPTION("Link your Discord account"),
+    COMMAND_DEBUG_DESCRIPTION("Print debugging info to console"),
+    COMMAND_DEBUG_PRINTED("&c&l[!]&7 Debug info has been printed to console"),
 
     //DISCORD
     WEEWOO_ALREADY_STARTED_DISCORD("Weewoo already started"),
@@ -345,6 +348,12 @@ public enum TL {
     SET_GUILD_ID_RESET_ID("&cGuild id removed"),
     SET_GUILD_ID_PMING_OWNER("&aNow Direct messaging the Discord server owner to approve the link, times out in 15 seconds."),
     CANT_FORCE_SET_GUILD_ID("&cYou cannot forcefully set guild ids for other guilds."),
+    DISCORD_LINK_REQUIRED("&c&l[!] You cannot do this while your Discord is not linked! Link your account by using /f discord link"),
+    DISCORD_LINK_SUCCESS("Your account has been linked!"),
+    DISCORD_CODE_SENT("&c&l[!]&7 Your code is &f%1$s &7please send this to the SaberFactions bot on Discord"),
+    DISCORD_ALREADY_LINKED("&c&l[!]&7 Your account is already linked to &f%1$s"),
+    DISCORD_CODE_INVALID_KEY("That code is invalid, verify the code is correct."),
+    DISCORD_CODE_INVALID_FORMAT("If you are submitting a code please only type the code. Example message: 0000"),
 
 
     COMMAND_DEINVITE_CANDEINVITE("&c&l[!]&7 Players you can &cdeinvite: "),

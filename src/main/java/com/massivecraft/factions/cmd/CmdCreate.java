@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.integration.Econ;
@@ -8,7 +9,10 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.exceptions.HierarchyException;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 
@@ -32,6 +36,10 @@ public class CmdCreate extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
+        if (Conf.restrictActionsWhenNotLinked && !context.fPlayer.discordSetup()) {
+            context.player.sendMessage(ChatColor.translateAlternateColorCodes('&', TL.DISCORD_LINK_REQUIRED.toString()));
+            return;
+        }
         String tag = context.argAsString(0);
 
         if (context.fPlayer.hasFaction()) {
@@ -82,7 +90,6 @@ public class CmdCreate extends FCommand {
         FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);
         // join event cannot be cancelled or you'll have an empty faction
-
         // finish setting up the FPlayer
         context.fPlayer.setFaction(faction, false);
         // We should consider adding the role just AFTER joining the faction.
@@ -94,6 +101,22 @@ public class CmdCreate extends FCommand {
                 follower.msg(TL.COMMAND_CREATE_CREATED, context.fPlayer.getName(), faction.getTag(follower));
             }
         }
+        //Discord
+        try {
+            if (Discord.useDiscord && context.fPlayer.discordSetup() && Discord.isInMainGuild(context.fPlayer.discordUser()) && Discord.mainGuild != null) {
+                Member m = Discord.mainGuild.getMember(context.fPlayer.discordUser());
+                if (Conf.factionRoles) {
+                    Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.createFactionRole(faction.getTag())).queue();
+                }
+                if (Conf.leaderRoles && Discord.leader != null) {
+                    Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.leader).queue();
+                }
+                if (Conf.factionDiscordTags) {
+                    Discord.mainGuild.getController().setNickname(m, Discord.getNicknameString(context.fPlayer)).queue();
+                }
+            }
+        } catch (HierarchyException e) {System.out.print(e.getMessage());}
+        //End Discord
         context.msg(TL.COMMAND_CREATE_YOUSHOULD, FactionsPlugin.getInstance().cmdBase.cmdDescription.getUsageTemplate(context));
         if (Conf.econEnabled) Econ.setBalance(faction.getAccountId(), Conf.econFactionStartingBalance);
         if (Conf.logFactionCreate)

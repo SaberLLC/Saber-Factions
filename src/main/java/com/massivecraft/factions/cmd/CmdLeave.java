@@ -1,7 +1,9 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.ChatColor;
 
 public class CmdLeave extends FCommand {
 

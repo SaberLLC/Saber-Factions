@@ -43,7 +43,7 @@ public class CmdSetGuild extends FCommand {
     public void perform(CommandContext context) {
         String guildId = context.argAsString(0, null);
         Faction faction = context.argAsFaction(1, context.faction);
-        JDA jda = FactionChatHandler.jda;
+        JDA jda = Discord.jda;
         if (jda != null) {
             if (!this.waiterAdded) {
                 jda.addEventListener(new EventWaiter[]{this.eventWaiter});

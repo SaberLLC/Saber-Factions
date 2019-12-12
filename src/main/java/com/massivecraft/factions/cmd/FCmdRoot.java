@@ -158,6 +158,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
     public CmdInviteBot cmdInviteBot = new CmdInviteBot();
     public CmdSetGuild cmdSetGuild = new CmdSetGuild();
+    public CmdDiscord cmdDiscord = new CmdDiscord();
+    public CmdDebug cmdDebug = new CmdDebug();
 
     public FCmdRoot() {
         super();
@@ -239,7 +241,9 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdAHome);
         this.addSubCommand(this.cmdPerm);
         this.addSubCommand(this.cmdPromote);
+        this.addSubCommand(this.cmdDebug);
         this.addSubCommand(this.cmdDemote);
+        this.addSubCommand(this.cmdDiscord);
         this.addSubCommand(this.cmdSetDefaultRole);
         this.addSubCommand(this.cmdMapHeight);
         this.addSubCommand(this.cmdClaimAt);

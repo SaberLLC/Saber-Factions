@@ -94,6 +94,10 @@ public enum Role implements Permissable {
         return this.nicename;
     }
 
+    public String getRoleCapitalized() {
+        return this.nicename.replace(Character.toString(nicename.charAt(0)), Character.toString(nicename.charAt(0)).toUpperCase());
+    }
+
     public TL getTranslation() {
         return translation;
     }
