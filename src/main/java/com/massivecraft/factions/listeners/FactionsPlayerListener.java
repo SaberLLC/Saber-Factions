@@ -5,6 +5,7 @@ import com.massivecraft.factions.cmd.CmdFGlobal;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
+import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
@@ -26,6 +27,9 @@ import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -1024,9 +1028,51 @@ public class FactionsPlayerListener implements Listener {
             }
         }
     }
+
     @EventHandler
     public void onDisconnect(PlayerQuitEvent e) {
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
         if (fPlayer.isInFactionsChest()) fPlayer.setInFactionsChest(false);
+    }
+
+    @EventHandler
+    public void onTab(PlayerChatTabCompleteEvent e) {
+        if (!Discord.useDiscord) {
+            return;
+        }
+        String[] msg = e.getChatMessage().split(" ");
+        if (msg.length == 0 | !msg[msg.length - 1].contains("@")) {
+            return;
+        }
+        FPlayer fp = FPlayers.getInstance().getByPlayer(e.getPlayer());
+        if (fp == null | fp.getChatMode() != ChatMode.FACTION) {
+            return;
+        }
+        Faction f = fp.getFaction();
+        if (f == null | f.isSystemFaction()) {
+            return;
+        }
+        if (f.getGuildId() == null | f.getFactionChatChannelId() == null) {
+            return;
+        }
+        if (Discord.jda.getGuildById(f.getGuildId()) == null | Discord.jda.getGuildById(f.getGuildId()).getTextChannelById(f.getFactionChatChannelId()) == null) {
+            return;
+        }
+        TextChannel t = Discord.jda.getGuildById(f.getGuildId()).getTextChannelById(f.getFactionChatChannelId());
+        String target = msg[msg.length - 1].replace("@", "");
+        List<String> targets = new ArrayList<>();
+        if (target.equals("")) {
+            for (Member m : t.getMembers()) {
+                targets.add("@" + m.getUser().getName() + "#" + m.getUser().getDiscriminator());
+            }
+        } else {
+            for (Member m : t.getMembers()) {
+                if (m.getEffectiveName().contains(target) | m.getUser().getName().contains(target)){
+                    targets.add("@" + m.getUser().getName() + "#" + m.getUser().getDiscriminator());
+                }
+            }
+        }
+        e.getTabCompletions().clear();
+        e.getTabCompletions().addAll(targets);
     }
 }

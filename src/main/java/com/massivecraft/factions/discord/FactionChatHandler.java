@@ -58,12 +58,37 @@ public class FactionChatHandler extends ListenerAdapter {
         } else {
             webhookClient = textChannel.createWebhook(Conf.webhookName).complete().newClient().build();
         }
-        if (message.contains("@")) {
+        if (message.contains("@") && message.contains("#")) {
             List<String> x = new ArrayList<>(Arrays.asList(message.split(" ")));
             for (String y : x) {
-                if (y.contains("@")) {
-                    if (!Discord.jda.getUsersByName(y.replace("@", ""), false).isEmpty() && Discord.jda.getUsersByName(y.replace("@", ""), false).size() < 2) {
-                        x.set(x.indexOf(y), Discord.jda.getUsersByName(y.replace("@", ""), false).get(0).getAsMention());
+                if (y.contains("@") && y.contains("#")) {
+                    String[] target = y.replace("@", "").split("#");
+                    for (User u : Discord.jda.getUsersByName(target[0], false)) {
+                        if (u.getDiscriminator().equals(target[1])) {
+                            x.set(x.indexOf(y), u.getAsMention());
+                        }
+                    }
+                } else if (y.contains("@")) {
+                    List<Integer> ii = new ArrayList<>();
+                    int i = x.indexOf(y);
+                    String mention = "";
+                    while (i <= x.size() - 1) {
+                        mention = mention + " " + x.get(i);
+                        ii.add(i);
+                        if (mention.contains("#")) {break;}
+                        i++;
+                    }
+                    if (mention.contains("#")) {
+                        String[] mentionA = mention.replace(" @", "").split("#");
+
+                        for (User u : Discord.jda.getUsersByName(mentionA[0], false)) {
+                            if (u.getDiscriminator().equals(mentionA[1])) {
+                                for (Integer l : ii) {
+                                    x.set(l, "");
+                                }
+                                x.set(ii.get(0), u.getAsMention());
+                            }
+                        }
                     }
                 }
             }
