@@ -31,7 +31,7 @@ public class CmdReload extends FCommand {
         FactionsPlugin.getInstance().loadLang();
 
 
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", false)) {
             FactionsPlugin.getInstance().factionsFlight = true;
         }
 
@@ -40,7 +40,9 @@ public class CmdReload extends FCommand {
         }
 
         Discord.setupDiscord();
-
+        //Recheck if commands should truly be disabled and rebuild.
+        FCmdRoot.instance.addVariableCommands();
+        FCmdRoot.instance.rebuild();
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 
         context.msg(TL.COMMAND_RELOAD_TIME, timeReload);

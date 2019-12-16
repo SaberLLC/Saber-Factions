@@ -42,8 +42,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
      * @author FactionsUUID Team
      */
 
+    public static FCmdRoot instance;
     public BrigadierManager brigadierManager;
-
     public CmdAdmin cmdAdmin = new CmdAdmin();
     public CmdAutoClaim cmdAutoClaim = new CmdAutoClaim();
     public CmdBoom cmdBoom = new CmdBoom();
@@ -160,9 +160,24 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSetGuild cmdSetGuild = new CmdSetGuild();
     public CmdDiscord cmdDiscord = new CmdDiscord();
     public CmdDebug cmdDebug = new CmdDebug();
+    //Variables to know if we already setup certain sub commands
+    public Boolean discordEnabled = false;
+    public Boolean checkEnabled = false;
+    public Boolean missionsEnabled = false;
+    public Boolean fShopEnabled = false;
+    public Boolean invSeeEnabled = false;
+    public Boolean fPointsEnabled = false;
+    public Boolean fAltsEnabled = false;
+    public Boolean fGraceEnabled = false;
+    public Boolean fFocusEnabled = false;
+    public Boolean fFlyEnabled = false;
+    public Boolean fPayPalEnabled = false;
+    public Boolean coreProtectEnabled = false;
+    public Boolean internalFTOPEnabled = false;
 
     public FCmdRoot() {
         super();
+        instance = this;
 
         if (CommodoreProvider.isSupported()) brigadierManager = new BrigadierManager();
 
@@ -273,74 +288,87 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdViewChest);
         this.addSubCommand(this.cmdConvertConfig);
         this.addSubCommand(this.cmdSpawnerLock);
+        addVariableCommands();
+        if (CommodoreProvider.isSupported()) brigadierManager.build();
+    }
 
-        if(Conf.useDiscordSystem){
-            this.addSubCommand(this.cmdInviteBot);
-            this.addSubCommand(this.cmdSetGuild);
+    /**
+     * Add sub commands to the root if they are enabled
+     */
+    public void addVariableCommands() {
+        //Discord
+         if (Conf.useDiscordSystem && !discordEnabled) {
+             this.addSubCommand(this.cmdInviteBot);
+             this.addSubCommand(this.cmdSetGuild);
+             this.addSubCommand(this.cmdSetDiscord);
+             this.addSubCommand(this.cmdSeeDiscord);
+             this.addSubCommand(this.cmdDiscord);
+             discordEnabled = true;
+         }
+        //PayPal
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled", false) && !fPayPalEnabled) {
+            this.addSubCommand(this.cmdPaypalSet);
+            this.addSubCommand(this.cmdPaypalSee);
+            fPayPalEnabled = true;
         }
-
-        if (Conf.useCheckSystem) {
+        //Check
+        if (Conf.useCheckSystem && !checkEnabled) {
             this.addSubCommand(this.cmdCheck);
             this.addSubCommand(this.cmdWeeWoo);
+            checkEnabled = true;
         }
-
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("Missions-Enabled")) {
-            this.addSubCommand(this.cmdMissions);
-        }
-
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("F-Shop.Enabled")) {
-            this.addSubCommand(this.cmdShop);
-        }
-
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled")) {
-            this.addSubCommand(this.cmdInventorySee);
-        }
-
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-points.Enabled")) {
-            this.addSubCommand(this.cmdPoints);
-        }
-
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled")) {
-            this.addSubCommand(this.cmdAlts);
-        }
-
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-grace.Enabled")) {
-            this.addSubCommand(this.cmdGrace);
-        }
-
-
-        if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null) {
+        //CoreProtect
+        if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null && !coreProtectEnabled) {
             FactionsPlugin.getInstance().log("Found CoreProtect, enabling Inspect");
             this.addSubCommand(this.cmdInspect);
+            coreProtectEnabled = true;
         } else {
             FactionsPlugin.getInstance().log("CoreProtect not found, disabling Inspect");
         }
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("ffocus.Enabled")) {
-            addSubCommand(this.cmdFocus);
-        }
-
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", false)) {
-            this.addSubCommand(this.cmdFly);
-        }
-        if (Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null) {
+        //FTOP
+        if ((Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null) && !internalFTOPEnabled) {
             FactionsPlugin.getInstance().log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
         } else {
             FactionsPlugin.getInstance().log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
             this.addSubCommand(this.cmdTop);
+            internalFTOPEnabled = true;
         }
-
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("fdiscord.Enabled")) {
-            this.addSubCommand(this.cmdSetDiscord);
-            this.addSubCommand(this.cmdSeeDiscord);
+        //Other
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("Missions-Enabled", false) && !missionsEnabled) {
+            this.addSubCommand(this.cmdMissions);
+            missionsEnabled = true;
         }
-
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled")) {
-            this.addSubCommand(this.cmdPaypalSet);
-            this.addSubCommand(this.cmdPaypalSee);
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("F-Shop.Enabled", false) && !fShopEnabled) {
+            this.addSubCommand(this.cmdShop);
+            fShopEnabled = true;
         }
-
-        if (CommodoreProvider.isSupported()) brigadierManager.build();
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled", false) && !invSeeEnabled) {
+            this.addSubCommand(this.cmdInventorySee);
+            invSeeEnabled = true;
+        }
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-points.Enabled", false) && !fPointsEnabled) {
+            this.addSubCommand(this.cmdPoints);
+            fPointsEnabled = true;
+        }
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled", false) && !fAltsEnabled) {
+            this.addSubCommand(this.cmdAlts);
+            fAltsEnabled = true;
+        }
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-grace.Enabled", false) && !fGraceEnabled) {
+            this.addSubCommand(this.cmdGrace);
+            fGraceEnabled = true;
+        }
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("ffocus.Enabled") && !fFocusEnabled) {
+            addSubCommand(this.cmdFocus);
+            fFocusEnabled = true;
+        }
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", false) && !fFlyEnabled) {
+            this.addSubCommand(this.cmdFly);
+            fFlyEnabled = true;
+        }
     }
+
+    public void rebuild() {if (CommodoreProvider.isSupported()) brigadierManager.build();}
 
     @Override
     public void perform(CommandContext context) {
