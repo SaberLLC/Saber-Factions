@@ -5,6 +5,7 @@ import com.massivecraft.factions.cmd.CmdFGlobal;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
+import com.massivecraft.factions.cmd.wild.CmdWild;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
@@ -924,6 +925,10 @@ public class FactionsPlayerListener implements Listener {
             handler.cancelLogout(e.getPlayer());
             e.getPlayer().sendMessage(String.valueOf(TL.COMMAND_LOGOUT_MOVED));
         }
+        if (CmdWild.waitingTeleport.containsKey(e.getPlayer())) {
+            CmdWild.waitingTeleport.remove(e.getPlayer());
+            FPlayers.getInstance().getByPlayer(e.getPlayer()).msg(TL.COMMAND_WILD_INTERUPTED);
+        }
     }
 
     @EventHandler
@@ -934,6 +939,15 @@ public class FactionsPlayerListener implements Listener {
             if (handler.isLogoutActive(player)) {
                 handler.cancelLogout(player);
                 player.sendMessage(String.valueOf(TL.COMMAND_LOGOUT_DAMAGE_TAKEN));
+            }
+            if (CmdWild.waitingTeleport.containsKey(player)) {
+                CmdWild.waitingTeleport.remove(player);
+                FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_WILD_INTERUPTED);
+            }
+            if (CmdWild.teleporting.contains(player)) {
+                if (!FactionsPlugin.getInstance().getConfig().getBoolean("Wild.FallDamage") && e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                    e.setCancelled(true);
+                }
             }
         }
     }

@@ -959,6 +959,13 @@ public enum TL {
     COMMAND_WARUNCLAIMALL_SUCCESS("You unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
+    COMMAND_WILD_DESCRIPTION("Teleport to a random location"),
+    COMMAND_WILD_WAIT("&c&l[!] &7Teleporting in %1$s"),
+    COMMAND_WILD_SUCCESS("&c&l[!] &7Teleporting..."),
+    COMMAND_WILD_INTERUPTED("&c&l[!] &7Teleport cancelled!"),
+    COMMAND_WILD_FAILED("&c&l[!] &7Could not find a location to teleport you to!"),
+    COMMAND_WILD_INPROGRESS("&c&l[!] &7You are already teleporting somewhere!"),
+
     COMMAND_RULES_DISABLED_MSG("&cThis command is disabled!"),
     COMMAND_RULES_DESCRIPTION("set/remove/add rules!"),
     COMMAND_RULES_ADD_INVALIDARGS("Please include a rule!"),

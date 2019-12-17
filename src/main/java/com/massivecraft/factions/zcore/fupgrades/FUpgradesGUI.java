@@ -651,13 +651,16 @@ public class FUpgradesGUI implements Listener {
         return fme.hasMoney(amt);
     }
 
-    private void takeMoney(FPlayer fme, int amt) {
-        fme.takeMoney(amt);
+    private boolean takeMoney(FPlayer fme, int amt) {
+        if (fme.takeMoney(amt)) {
+            return true;
+        }
+        return false;
     }
 
     private boolean upgradeItem(FPlayer fme, UpgradeType upgrade, int level, int cost) {
         if (hasMoney(fme, cost)) {
-            takeMoney(fme, cost);
+            if (!takeMoney(fme, cost)) {return false;}
             fme.getFaction().setUpgrade(upgrade, level);
             fme.getPlayer().closeInventory();
             return true;

@@ -47,9 +47,9 @@ public class CmdGetVault extends FCommand {
             return;
         }
 
+        if (!context.fPlayer.takeMoney(amount)) {return;}
 
         //success :)
-        context.fPlayer.takeMoney(amount);
         context.player.getInventory().addItem(vault);
         context.fPlayer.msg(TL.COMMAND_GETVAULT_RECEIVE);
 

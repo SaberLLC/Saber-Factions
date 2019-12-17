@@ -20,6 +20,7 @@ import com.massivecraft.factions.cmd.roles.CmdDemote;
 import com.massivecraft.factions.cmd.roles.CmdPromote;
 import com.massivecraft.factions.cmd.tnt.CmdTnt;
 import com.massivecraft.factions.cmd.tnt.CmdTntFill;
+import com.massivecraft.factions.cmd.wild.CmdWild;
 import com.massivecraft.factions.discord.CmdInviteBot;
 import com.massivecraft.factions.discord.CmdSetGuild;
 import com.massivecraft.factions.missions.CmdMissions;
@@ -152,6 +153,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdStrikes cmdStrikes = new CmdStrikes();
     public CmdCheck cmdCheck = new CmdCheck();
     public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
+    public CmdWild cmdWild = new CmdWild();
     public CmdConvertConfig cmdConvertConfig = new CmdConvertConfig();
     public CmdSpawnerLock cmdSpawnerLock = new CmdSpawnerLock();
     public CmdSetDiscord cmdSetDiscord = new CmdSetDiscord();
@@ -174,6 +176,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public Boolean fPayPalEnabled = false;
     public Boolean coreProtectEnabled = false;
     public Boolean internalFTOPEnabled = false;
+    public Boolean fWildEnabled = false;
 
     public FCmdRoot() {
         super();
@@ -334,6 +337,10 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             internalFTOPEnabled = true;
         }
         //Other
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("Wild.Enabled", false) && !fWildEnabled) {
+            this.addSubCommand(this.cmdWild);
+            fWildEnabled = true;
+        }
         if (FactionsPlugin.getInstance().getConfig().getBoolean("Missions-Enabled", false) && !missionsEnabled) {
             this.addSubCommand(this.cmdMissions);
             missionsEnabled = true;

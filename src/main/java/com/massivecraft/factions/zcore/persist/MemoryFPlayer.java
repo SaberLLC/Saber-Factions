@@ -1376,11 +1376,14 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     @Override
-    public void takeMoney(int amt) {
+    public boolean takeMoney(int amt) {
         if (hasMoney(amt)) {
             Economy econ = FactionsPlugin.getInstance().getEcon();
-            econ.withdrawPlayer(getPlayer(), amt);
-            sendMessage(TL.GENERIC_MONEYTAKE.toString().replace("{amount}", commas(amt)));
+            if (econ.withdrawPlayer(getPlayer(), amt).transactionSuccess()) {
+                sendMessage(TL.GENERIC_MONEYTAKE.toString().replace("{amount}", commas(amt)));
+                return true;
+            }
         }
+        return false;
     }
 }

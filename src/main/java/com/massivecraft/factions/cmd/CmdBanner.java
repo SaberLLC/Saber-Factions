@@ -34,12 +34,10 @@ public class CmdBanner extends FCommand {
             context.msg(TL.COMMAND_BANNER_NOBANNER);
             return;
         }
-        if (!context.fPlayer.hasMoney(FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000))) {
+        if (!context.fPlayer.takeMoney(FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000))) {
             context.msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
             return;
         }
-        this.takeMoney(context.fPlayer, FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000));
-        this.takeMoney(context.fPlayer, FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Cost", 5000));
         ItemStack warBanner = context.fPlayer.getFaction().getBanner();
         ItemMeta warmeta = warBanner.getItemMeta();
         warmeta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
@@ -49,7 +47,7 @@ public class CmdBanner extends FCommand {
         warBanner.setAmount(1);
         context.player.getInventory().addItem(warBanner);
     }
-
+    @Deprecated
     public boolean hasMoney(FPlayer fme, int amt) {
         Economy econ = FactionsPlugin.getInstance().getEcon();
         if (econ.getBalance(fme.getPlayer()) >= amt) {
@@ -58,11 +56,10 @@ public class CmdBanner extends FCommand {
         fme.msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
         return false;
     }
-
+    @Deprecated
     public void takeMoney(FPlayer fme, int amt) {
         if (this.hasMoney(fme, amt)) {
             Economy econ = FactionsPlugin.getInstance().getEcon();
-            econ.withdrawPlayer(fme.getPlayer(), (double) amt);
             fme.sendMessage(TL.COMMAND_BANNER_MONEYTAKE.toString().replace("{amount}", amt + ""));
         }
     }

@@ -146,6 +146,7 @@ public enum Permission {
     COORD("coords"),
     SHOWCLAIMS("showclaims"),
     WARP("warp"),
+    WILD("wild"),
     CHEST("chest");
 
     public final String node;

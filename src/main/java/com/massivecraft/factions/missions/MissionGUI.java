@@ -96,11 +96,12 @@ public class MissionGUI implements FactionGUI {
         if (configurationSection == null) {
             return;
         }
+        ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).parseItem();
+        ItemMeta fillmeta = fillItem.getItemMeta();
+        fillmeta.setDisplayName("");
+        fillItem.setItemMeta(fillmeta);
         for (int fill = 0; fill < configurationSection.getInt("FillItem.Rows") * 9; ++fill) {
-            ItemStack fillItem = new ItemStack(XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).parseItem());
-            ItemMeta meta = fillItem.getItemMeta();
-            meta.setDisplayName("");
-            fillItem.setItemMeta(meta);
+            //Why were we generating a new itemstack per slot?????
             inventory.setItem(fill, fillItem);
         }
         for (String key : configurationSection.getKeys(false)) {
