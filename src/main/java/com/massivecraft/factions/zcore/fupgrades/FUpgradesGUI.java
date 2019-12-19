@@ -652,10 +652,7 @@ public class FUpgradesGUI implements Listener {
     }
 
     private boolean takeMoney(FPlayer fme, int amt) {
-        if (fme.takeMoney(amt)) {
-            return true;
-        }
-        return false;
+        return fme.takeMoney(amt);
     }
 
     private boolean upgradeItem(FPlayer fme, UpgradeType upgrade, int level, int cost) {

@@ -17,7 +17,7 @@ public class InventoryItem {
     private Runnable runnable;
 
     public InventoryItem(ItemStack original) {
-        this.clickMap = new HashMap();
+        this.clickMap = new HashMap<>();
         this.item = original;
     }
 

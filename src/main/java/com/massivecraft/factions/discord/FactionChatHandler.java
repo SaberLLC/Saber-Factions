@@ -71,15 +71,15 @@ public class FactionChatHandler extends ListenerAdapter {
                 } else if (y.contains("@")) {
                     List<Integer> ii = new ArrayList<>();
                     int i = x.indexOf(y);
-                    String mention = "";
+                    StringBuilder mention = new StringBuilder();
                     while (i <= x.size() - 1) {
-                        mention = mention + " " + x.get(i);
+                        mention.append(" ").append(x.get(i));
                         ii.add(i);
-                        if (mention.contains("#")) {break;}
+                        if (mention.toString().contains("#")) {break;}
                         i++;
                     }
-                    if (mention.contains("#")) {
-                        String[] mentionA = mention.replace(" @", "").split("#");
+                    if (mention.toString().contains("#")) {
+                        String[] mentionA = mention.toString().replace(" @", "").split("#");
 
                         for (User u : Discord.jda.getUsersByName(mentionA[0], false)) {
                             if (u.getDiscriminator().equals(mentionA[1])) {

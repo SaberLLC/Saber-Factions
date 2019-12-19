@@ -171,7 +171,6 @@ public class FactionsPlayerListener implements Listener {
         return CheckPlayerAccess(player, me, loc, otherFaction, access, permissableAction, false);
     }
 
-    @SuppressWarnings("deprecation")
     public static boolean canPlayerUseBlock(Player player, Block block, boolean justCheck) {
         if (Conf.playersWhoBypassAllProtection.contains(player.getName()))
             return true;

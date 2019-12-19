@@ -352,7 +352,7 @@ public class FactionsBlockListener implements Listener {
                     int radius = FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Effect-Radius");
                     List<String> effects = FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Effects");
                     int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
-                        for (Entity e1 : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(), (double) radius, 255.0, (double) radius)) {
+                        for (Entity e1 : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(), radius, 255.0, radius)) {
                             if (e1 instanceof Player) {
                                 Player player = (Player) e1;
                                 FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
@@ -468,7 +468,6 @@ public class FactionsBlockListener implements Listener {
         boolean isSpawner = event.getBlock().getType() == XMaterial.SPAWNER.parseMaterial();
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), !isSpawner ? "destroy" : "mine spawners", false)) {
             event.setCancelled(true);
-            return;
         }
     }
 

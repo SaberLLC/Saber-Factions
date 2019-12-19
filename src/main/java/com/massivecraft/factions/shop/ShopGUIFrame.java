@@ -30,13 +30,11 @@ public class ShopGUIFrame {
      */
 
     private Gui gui;
-    private String s;
 
     public ShopGUIFrame(Faction f) {
         gui = new Gui(FactionsPlugin.getInstance(),
                 FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Rows", 4),
                 FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("F-Shop.GUI.Name")));
-        this.s = s;
     }
 
     public void buildGUI(FPlayer fplayer) {

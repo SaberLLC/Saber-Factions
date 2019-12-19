@@ -46,6 +46,7 @@ public class CmdSetGuild extends FCommand {
         JDA jda = Discord.jda;
         if (jda != null) {
             if (!this.waiterAdded) {
+                //Do Not Change, Must Remain EventWaiter[]
                 jda.addEventListener(new EventWaiter[]{this.eventWaiter});
                 this.waiterAdded = true;
             }

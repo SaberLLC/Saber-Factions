@@ -46,7 +46,7 @@ public class MissionGUI implements FactionGUI {
                 int pick = r.nextInt(keys.size() - 1);
                 if (!keys.toArray()[pick].toString().equals("FillItem")) {
                     missionName = keys.toArray()[pick].toString();
-                    if (!fPlayer.getFaction().getMissions().keySet().contains(missionName)) {
+                    if (!fPlayer.getFaction().getMissions().containsKey(missionName)) {
                         pickedMission = new Mission(missionName, plugin.getConfig().getString("Missions." + missionName + ".Mission.Type"));
                         fPlayer.getFaction().getMissions().put(missionName, pickedMission);
                         fPlayer.msg(TL.MISSION_MISSION_STARTED, fPlayer.describeTo(fPlayer.getFaction()), plugin.color(plugin.getConfig().getString("Missions." + missionName + ".Name")));
@@ -132,7 +132,7 @@ public class MissionGUI implements FactionGUI {
             }
         }
         if (plugin.getConfig().getBoolean("Randomization.Enabled")) {
-            ItemStack start = null;
+            ItemStack start;
             ItemMeta meta;
             start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Allowed.Material")).parseItem();
             meta = start.getItemMeta();

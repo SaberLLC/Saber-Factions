@@ -70,8 +70,8 @@ public class FLocation implements Serializable {
         String worldName = string.substring(start, index);
         start = index + 1;
         index = string.indexOf(",", start);
-        int x = Integer.valueOf(string.substring(start, index));
-        int y = Integer.valueOf(string.substring(index + 1, string.length() - 1));
+        int x = Integer.parseInt(string.substring(start, index));
+        int y = Integer.parseInt(string.substring(index + 1, string.length() - 1));
         return new FLocation(worldName, x, y);
     }
 

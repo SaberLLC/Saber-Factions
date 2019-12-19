@@ -280,7 +280,7 @@ public abstract class MemoryBoard extends Board {
     //----------------------------------------------//
 
     private List<String> oneLineToolTip(Faction faction, FPlayer to) {
-        return Arrays.asList(faction.describeTo(to));
+        return Collections.singletonList(faction.describeTo(to));
     }
 
     @SuppressWarnings("unused")

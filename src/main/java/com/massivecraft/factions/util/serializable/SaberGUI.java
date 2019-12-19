@@ -18,8 +18,8 @@ import java.util.function.Consumer;
 
 
 public abstract class SaberGUI {
-    public static Set<String> allGUINames = new HashSet();
-    public static Map<UUID, SaberGUI> activeGUIs = new ConcurrentHashMap();
+    public static Set<String> allGUINames = new HashSet<>();
+    public static Map<UUID, SaberGUI> activeGUIs = new ConcurrentHashMap<>();
     public SaberGUI parentGUI;
     protected String title;
     protected int size;
@@ -34,7 +34,7 @@ public abstract class SaberGUI {
     }
 
     public SaberGUI(Player player, String title, int size, InventoryType type) {
-        this.inventoryItems = new HashMap();
+        this.inventoryItems = new HashMap<>();
         this.inventory = type == InventoryType.CHEST ? Bukkit.createInventory(null, size, title) : Bukkit.createInventory(null, type, title);
         this.player = player;
         this.size = size;

@@ -29,7 +29,7 @@ public class WildGUI implements FactionGUI {
     }
     @Override
     public void onClick(int slot, ClickType action) {
-        if (map.keySet().contains(slot)) {
+        if (map.containsKey(slot)) {
             String zone = map.get(slot);
             if (fplayer.hasMoney(FactionsPlugin.getInstance().getConfig().getInt("Wild.Zones." + zone + ".Cost"))) {
                 CmdWild.waitingTeleport.put(player, FactionsPlugin.getInstance().getConfig().getInt("Wild.Wait"));

@@ -60,10 +60,8 @@ public class TextUtil {
                         message.then(text).style(color);
                     }
                     text = "";
-                    color = ChatColor.getByChar(chars[i + 1]);
-                } else {
-                    color = ChatColor.getByChar(chars[i + 1]);
                 }
+                color = ChatColor.getByChar(chars[i + 1]);
                 i++; // skip color char
             } else {
                 text += chars[i];
@@ -119,8 +117,7 @@ public class TextUtil {
 
     public static String implode(List<String> list, String glue) {
         StringBuilder ret = new StringBuilder();
-        for (int i = 0; i < list.size(); i++)
-            ret.append(glue).append(list.get(i));
+        for (String s : list) ret.append(glue).append(s);
 
         return ret.length() > 0 ? ret.toString().substring(glue.length()) : "";
     }

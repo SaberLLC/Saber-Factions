@@ -419,7 +419,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                         Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.leader).queue();
                     }
                     if (Conf.factionRoles) {
-                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.createFactionRole(this.getFaction().getTag())).queue();
+                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getFaction().getTag()))).queue();
                     }
                     if (Conf.factionDiscordTags) {
                         Discord.resetNick(this);
@@ -1130,7 +1130,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setMapHeight(int height) {
-        this.mapHeight = height > (Conf.mapHeight * 2) ? (Conf.mapHeight * 2) : height;
+        this.mapHeight = Math.min(height, (Conf.mapHeight * 2));
     }
 
     public String getNameAndTitle(FPlayer fplayer) {

@@ -15,6 +15,7 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import javax.security.auth.login.LoginException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.logging.Level;
 
 public class Discord {
@@ -37,7 +38,7 @@ public class Discord {
     public static Emote negative;
 
     public Discord(FactionsPlugin plugin) {
-        this.plugin = plugin;
+        Discord.plugin = plugin;
         setupLog = new HashSet<>();
         waitingLink = new HashMap<>();
         waitingLinkk = new HashMap<>();
@@ -216,8 +217,8 @@ public class Discord {
                         mainGuild.getController().setNickname(m, Discord.getNicknameString(fp)).queue();
                     }
                     if (Conf.factionRoles) {
-                        mainGuild.getController().removeSingleRoleFromMember(m, getRoleFromName(oldTag)).queue();
-                        mainGuild.getController().addSingleRoleToMember(m, createFactionRole(f.getTag())).queue();
+                        mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(getRoleFromName(oldTag))).queue();
+                        mainGuild.getController().addSingleRoleToMember(m, Objects.requireNonNull(createFactionRole(f.getTag()))).queue();
                     }
                 } catch (HierarchyException e) {System.out.print(e.getMessage());}
             }

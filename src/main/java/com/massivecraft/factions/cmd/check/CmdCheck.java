@@ -63,7 +63,7 @@ public class CmdCheck extends FCommand {
                 }
             }
             List<Map.Entry<UUID, Integer>> entryList = players.entrySet().stream().sorted(Comparator.comparingInt(Map.Entry::getValue)).collect(Collectors.toList());
-            for (int max = (entryList.size() > 10) ? 10 : entryList.size(), current = 0; current < max; ++current) {
+            for (int max = Math.min(entryList.size(), 10), current = 0; current < max; ++current) {
                 Map.Entry<UUID, Integer> entry = entryList.get(current);
                 OfflinePlayer offlinePlayer = FactionsPlugin.getInstance().getServer().getOfflinePlayer(entry.getKey());
                 context.msg(TL.CHECK_LEADERBOARD_LINE.format(current + 1, offlinePlayer.getName(), entry.getValue(), context.faction.getPlayerBufferCheckCount().getOrDefault(entry.getKey(), 0), context.faction.getPlayerWallCheckCount().getOrDefault(entry.getKey(), 0)));

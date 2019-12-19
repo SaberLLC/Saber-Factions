@@ -42,11 +42,11 @@ public class ShopConfig {
                 getShop().set("items.1.slot", 1);
                 getShop().set("items.1.block", "STONE");
                 getShop().set("items.1.name", "&aTest Shop");
-                ArrayList lore = new ArrayList();
+                ArrayList lore = new ArrayList<>();
                 lore.add("&cFully Customizable Lore!");
                 lore.add("&b&l{cost} &7Points");
                 getShop().set("items.1.lore", lore);
-                ArrayList t = new ArrayList();
+                ArrayList t = new ArrayList<>();
                 t.add("broadcast %player% bought Test Shop!");
                 getShop().set("items.1.cmds", t);
                 getShop().set("items.1.cost", 5);

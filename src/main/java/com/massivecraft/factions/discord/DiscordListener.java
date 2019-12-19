@@ -6,7 +6,6 @@ import com.massivecraft.factions.zcore.util.TL;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.PermissionException;
@@ -38,7 +37,7 @@ public class DiscordListener extends ListenerAdapter {
         this.decimalFormat = new DecimalFormat("$#,###.##");
         this.plugin = plugin;
         int minute = 3600;
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, DiscordListener::saveGuilds, (long) (minute * 15), (long) (minute * 15));
+        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, DiscordListener::saveGuilds, minute * 15, minute * 15);
     }
 
     private static JSONGuilds loadGuilds() {
@@ -59,29 +58,33 @@ public class DiscordListener extends ListenerAdapter {
         try {
             String content = FactionsPlugin.getInstance().gson.toJson(guilds);
             Files.write(file.toPath(), content.getBytes());
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new NullPointerException();
         }
     }
 
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
-        Integer i = 0;
-        if (e.getAuthor().isBot()) {return;}
+        Integer i;
+        if (e.getAuthor().isBot()) {
+            return;
+        }
         try {
             i = Integer.valueOf(e.getMessage().getContentDisplay());
-        } catch (NumberFormatException ex) {e.getChannel().sendMessage(TL.DISCORD_CODE_INVALID_FORMAT.toString()).queue();
-        return;}
-        if (Discord.waitingLink.keySet().contains(i)) {
+        } catch (NumberFormatException ex) {
+            e.getChannel().sendMessage(TL.DISCORD_CODE_INVALID_FORMAT.toString()).queue();
+            return;
+        }
+        if (Discord.waitingLink.containsKey(i)) {
             FPlayer f = Discord.waitingLink.get(i);
             f.setDiscordSetup(true);
             f.setDiscordUserID(e.getAuthor().getId());
             e.getChannel().sendMessage(TL.DISCORD_LINK_SUCCESS.toString()).queue();
             Discord.waitingLink.remove(i);
             Discord.waitingLinkk.remove(f);
-        } else {e.getChannel().sendMessage(TL.DISCORD_CODE_INVALID_KEY.toString()).queue();
-        return;}
+        } else {
+            e.getChannel().sendMessage(TL.DISCORD_CODE_INVALID_KEY.toString()).queue();
+        }
     }
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
@@ -469,7 +472,7 @@ public class DiscordListener extends ListenerAdapter {
         List<Map.Entry<UUID, Integer>> entryList = players.entrySet().stream().sorted(Comparator.comparingInt(Map.Entry::getValue)).collect(Collectors.toList());
         EmbedBuilder embedBuilder = new EmbedBuilder().setTitle("Check Leaderboard").setColor(Color.MAGENTA);
         StringBuilder stringBuilder = new StringBuilder();
-        for (int max = (entryList.size() > 10) ? 10 : entryList.size(), current = 0; current < max; ++current) {
+        for (int max = Math.min(entryList.size(), 10), current = 0; current < max; ++current) {
             Map.Entry<UUID, Integer> entry2 = entryList.get(current);
             OfflinePlayer offlinePlayer = this.plugin.getServer().getOfflinePlayer(entry2.getKey());
             stringBuilder.append("**").append(current + 1).append(".** ").append(offlinePlayer.getName()).append(" __").append(entry2.getValue()).append(" Total (").append(faction.getPlayerBufferCheckCount().getOrDefault(entry2.getKey(), 0)).append(" Buffer, ").append(faction.getPlayerWallCheckCount().getOrDefault(entry2.getKey(), 0)).append(" Wall)__\n");

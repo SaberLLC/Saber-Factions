@@ -356,7 +356,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                     Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.mainGuild.getRoleById(Conf.leaderRole)).queue();
                 }
                 if (Conf.factionRoles) {
-                    Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.createFactionRole(this.getTag())).queue();
+                    Discord.mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getTag()))).queue();
                 }
                 if (Conf.factionDiscordTags) {
                     Discord.resetNick(fplayer);
@@ -455,7 +455,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public int getUpgrade(UpgradeType upgrade) {
-        if (upgrades.keySet().contains(upgrade.toString())) return upgrades.get(upgrade.toString());
+        if (upgrades.containsKey(upgrade.toString())) return upgrades.get(upgrade.toString());
         return 0;
     }
 
@@ -1330,7 +1330,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             if (Discord.useDiscord && replacements.get(0).discordSetup() && Discord.isInMainGuild(replacements.get(0).discordUser()) && Discord.mainGuild != null) {
                 Member m = Discord.mainGuild.getMember(replacements.get(0).discordUser());
                 if (Conf.factionRoles) {
-                    Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.createFactionRole(this.getTag())).queue();
+                    Discord.mainGuild.getController().addSingleRoleToMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getTag()))).queue();
                 }
                 if (Conf.leaderRoles) {
                     Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.mainGuild.getRoleById(Conf.leaderRole)).queue();
