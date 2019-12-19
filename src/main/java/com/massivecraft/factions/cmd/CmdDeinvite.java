@@ -33,13 +33,10 @@ public class CmdDeinvite extends FCommand {
     @Override
     public void perform(CommandContext context) {
 
-        // Check if arg 0 == null do you don't have
-        // `No player "null" could be found.` message.
 
-        if (context.args.get(0) == null) {
+        if (context.args.size() == 0) {
             FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
             for (String id : context.faction.getInvites()) {
-                if(context.faction.getInvites().isEmpty()) return;
                 FPlayer fp = FPlayers.getInstance().getById(id);
                 String name = fp != null ? fp.getName() : id;
                 msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
