@@ -46,7 +46,6 @@ public class FactionsBlockListener implements Listener {
     private HashMap<String, Boolean> bannerCooldownMap = new HashMap<>();
 
     public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
-
         if (Conf.playersWhoBypassAllProtection.contains(player.getName())) return true;
 
         FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
@@ -75,9 +74,8 @@ public class FactionsBlockListener implements Listener {
             if (!justCheck) me.msg(TL.ACTION_DENIED_WARZONE, action);
             return false;
         } else if (!otherFaction.getId().equals(myFaction.getId())) { // If the faction target is not my own
-            if (FactionsPlugin.instance.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
+            if (FactionsPlugin.getInstance().getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded())
                 return true;
-            // Get faction pain build access relation to me
             boolean pain = !justCheck && otherFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
             return CheckActionState(otherFaction, loc, me, PermissableAction.fromString(action), pain);
         } else if (otherFaction.getId().equals(myFaction.getId())) {
@@ -87,7 +85,6 @@ public class FactionsBlockListener implements Listener {
         // Something failed prevent build
         return false;
     }
-
 
     private static boolean CheckPlayerAccess(Player player, FPlayer me, FLocation loc, Faction myFaction, Access access, PermissableAction action, boolean shouldHurt) {
         boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());

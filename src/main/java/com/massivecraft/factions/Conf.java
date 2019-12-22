@@ -252,7 +252,6 @@ public class Conf {
 
     public static Set<Material> territoryCancelAndAllowItemUseMaterial = new HashSet<>();
     public static Set<Material> territoryDenySwitchMaterials = new HashSet<>();
-    public static Set<Material> territoryBypasssProtectedMaterials = EnumSet.noneOf(Material.class);
     public static boolean allowCreeperEggingChests = true;
 
     // Economy settings
