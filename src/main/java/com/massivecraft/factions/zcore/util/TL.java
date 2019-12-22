@@ -959,6 +959,8 @@ public enum TL {
     COMMAND_WARUNCLAIMALL_SUCCESS("You unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
+
+    COMMAND_DRAIN_DESCRIPTION("The ability to obtain all the money in faction members balances."),
     COMMAND_DRAIN_NO_PLAYERS("&c&l[!] &cYou cannot drain a faction with no other members!"),
     COMMAND_DRAIN_RECIEVED_AMOUNT("&c&l[!] &fYou have drained all of your faction members for &b%1$s."),
     COMMAND_DRAIN_INVALID_AMOUNT("&c&l[!] &fYou cannot drain a faction with no worth."),

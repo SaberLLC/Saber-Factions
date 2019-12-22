@@ -59,6 +59,6 @@ public class CmdDrain extends FCommand{
 
     @Override
     public TL getUsageTranslation() {
-        return null;
+        return TL.COMMAND_DRAIN_DESCRIPTION;
     }
 }
