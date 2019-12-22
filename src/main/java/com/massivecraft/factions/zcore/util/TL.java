@@ -1145,11 +1145,11 @@ public enum TL {
     /**
      * Roles
      */
-    ROLE_LEADER("Leader"),
-    ROLE_COLEADER("Co-Leader"),
-    ROLE_MODERATOR("Moderator"),
-    ROLE_NORMAL("Normal Member"),
-    ROLE_RECRUIT("Recruit"),
+    ROLE_LEADER("leader"),
+    ROLE_COLEADER("coleader"),
+    ROLE_MODERATOR("moderator"),
+    ROLE_NORMAL("normal member"),
+    ROLE_RECRUIT("recruit"),
 
     /**
      * Region types.

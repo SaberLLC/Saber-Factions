@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
-    public HashMap<Integer, String> rules = new HashMap<Integer, String>();
+    public HashMap<Integer, String> rules = new HashMap<>();
     public int tnt;
     public Location checkpoint;
     public LazyLocation vault;
@@ -186,7 +186,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void addAnnouncement(FPlayer fPlayer, String msg) {
-        List<String> list = announcements.containsKey(fPlayer.getId()) ? announcements.get(fPlayer.getId()) : new ArrayList<String>();
+        List<String> list = announcements.containsKey(fPlayer.getId()) ? announcements.get(fPlayer.getId()) : new ArrayList<>();
         list.add(msg);
         announcements.put(fPlayer.getId(), list);
     }
@@ -450,8 +450,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             vault = null;
             return;
         }
-        LazyLocation newlocation = new LazyLocation(vaultLocation);
-        vault = newlocation;
+        vault = new LazyLocation(vaultLocation);
     }
 
     public int getUpgrade(UpgradeType upgrade) {
@@ -899,46 +898,43 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void resetPerms() {
-        FactionsPlugin.getInstance().log(Level.WARNING, "Resetting permissions for Faction: " + tag);
+        FactionsPlugin.instance.log(Level.WARNING, "Resetting permissions for Faction: " + this.tag);
+
         permissions.clear();
 
         // First populate a map with undefined as the permission for each action.
         Map<PermissableAction, Access> freshMap = new HashMap<>();
-        for (PermissableAction permissableAction : PermissableAction.values()) {
-            freshMap.put(permissableAction, Access.UNDEFINED);
-        }
+        for (PermissableAction action : PermissableAction.values()) freshMap.put(action, Access.DENY);
 
         // Put the map in there for each relation.
         for (Relation relation : Relation.values()) {
-            if (relation != Relation.MEMBER) {
-                permissions.put(relation, new HashMap<>(freshMap));
-            }
+            if (relation == Relation.MEMBER) continue;
+            permissions.put(relation, new HashMap<>(freshMap));
         }
 
         // And each role.
         for (Role role : Role.values()) {
-            if (role != Role.LEADER) {
-                permissions.put(role, new HashMap<>(freshMap));
-            }
+            if (role == Role.LEADER) continue;
+            permissions.put(role, new HashMap<>(freshMap));
         }
     }
 
     public void setDefaultPerms() {
         Map<PermissableAction, Access> defaultMap = new HashMap<>();
-        for (PermissableAction action : PermissableAction.values()) defaultMap.put(action, Access.UNDEFINED);
+        for (PermissableAction action : PermissableAction.values()) defaultMap.put(action, Access.DENY);
 
         for (Relation rel : Relation.values()) {
-            if (rel != Relation.MEMBER) {
-                if (Conf.defaultFactionPermissions.containsKey(rel.nicename.toUpperCase())) {
-                    permissions.put(rel, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(rel.nicename.toUpperCase())));
-                } else permissions.put(rel, new HashMap<>(defaultMap));
-            }
-        }
-
-        for (Role rel : Role.values()) {
+            if (rel == Relation.MEMBER) continue;
             if (Conf.defaultFactionPermissions.containsKey(rel.nicename.toUpperCase())) {
                 permissions.put(rel, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(rel.nicename.toUpperCase())));
             } else permissions.put(rel, new HashMap<>(defaultMap));
+        }
+
+        for (Role role : Role.values()) {
+            if (role == Role.LEADER) continue;
+            if (Conf.defaultFactionPermissions.containsKey(role.nicename.toUpperCase())) {
+                permissions.put(role, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(role.nicename.toUpperCase())));
+            } else permissions.put(role, new HashMap<>(defaultMap));
         }
     }
 
