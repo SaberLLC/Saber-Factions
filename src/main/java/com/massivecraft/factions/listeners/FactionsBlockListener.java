@@ -38,10 +38,6 @@ import java.util.List;
 
 public class FactionsBlockListener implements Listener {
 
-    /**
-     * @author FactionsUUID Team
-     */
-
     public static HashMap<String, Location> bannerLocations = new HashMap<>();
     private HashMap<String, Boolean> bannerCooldownMap = new HashMap<>();
 
@@ -82,7 +78,6 @@ public class FactionsBlockListener implements Listener {
             boolean pain = !justCheck && myFaction.getAccess(me, PermissableAction.PAIN_BUILD) == Access.ALLOW;
             return CheckActionState(myFaction, loc, me, PermissableAction.fromString(action), pain);
         }
-        // Something failed prevent build
         return false;
     }
 
@@ -128,20 +123,15 @@ public class FactionsBlockListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         if (!event.canBuild()) return;
-        
-        // special case for flint&steel, which should only be prevented by DenyUsage list
         if (event.getBlockPlaced().getType() == Material.FIRE) return;
-        boolean isSpawner = event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial());
 
-        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), !isSpawner ? "build" : "mine spawners", false)) {
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
             event.setCancelled(true);
             return;
         }
-        if (isSpawner) {
-            if (Conf.spawnerLock) {
-                event.setCancelled(true);
-                event.getPlayer().sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
-            }
+        if (event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial()) && Conf.spawnerLock) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
         }
     }
 
@@ -425,9 +415,9 @@ public class FactionsBlockListener implements Listener {
     public void entityDamage(EntityDamageEvent e) {
         if (!Conf.gracePeriod) return;
 
-            if (e.getEntity() instanceof Player) {
-                if (e.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
-                    e.setCancelled(true);
+        if (e.getEntity() instanceof Player) {
+            if (e.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+                e.setCancelled(true);
             }
         }
     }
@@ -462,9 +452,17 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        boolean isSpawner = event.getBlock().getType() == XMaterial.SPAWNER.parseMaterial();
-        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), !isSpawner ? "destroy" : "mine spawners", false)) {
+        FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
+            return;
+        }
+        if (!fme.hasFaction()) return;
+        if (event.getBlock().getType() == XMaterial.SPAWNER.parseMaterial() && !fme.isAdminBypassing()) {
+            Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");
+            }
         }
     }
 
