@@ -1,5 +1,7 @@
 package com.massivecraft.factions.zcore.fperms;
 
+import com.massivecraft.factions.util.XMaterial;
+
 public class DefaultPermissions {
 
     /**
@@ -33,6 +35,7 @@ public class DefaultPermissions {
     public boolean withdraw;
     public boolean chest;
     public boolean check;
+    public boolean drain;
     public boolean spawner;
 
     public DefaultPermissions() {
@@ -66,6 +69,7 @@ public class DefaultPermissions {
         this.withdraw = def;
         this.chest = def;
         this.check = def;
+        this.drain = def;
         this.spawner = def;
     }
 
@@ -96,6 +100,7 @@ public class DefaultPermissions {
                               boolean canWithdraw,
                               boolean canChest,
                               boolean canCheck,
+                              boolean canDrain,
                               boolean canSpawners) {
         this.ban = canBan;
         this.build = canBuild;
@@ -124,6 +129,7 @@ public class DefaultPermissions {
         this.withdraw = canWithdraw;
         this.chest = canChest;
         this.check = canCheck;
+        this.drain = canDrain;
         this.spawner = canSpawners;
     }
 
@@ -156,6 +162,7 @@ public class DefaultPermissions {
         else if (name == "withdraw") return this.withdraw;
         else if (name == "chest") return this.chest;
         else if (name == "check") return this.check;
+        else if (name == "drain") return this.drain;
         else if (name == "spawner") return this.spawner;
         else return false;
     }

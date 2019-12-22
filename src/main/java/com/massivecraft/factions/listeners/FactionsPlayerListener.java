@@ -1052,16 +1052,21 @@ public class FactionsPlayerListener implements Listener {
         if (!Discord.useDiscord) {
             return;
         }
+
         String[] msg = e.getChatMessage().split(" ");
         if (msg.length == 0 | !msg[msg.length - 1].contains("@")) {
             return;
         }
         FPlayer fp = FPlayers.getInstance().getByPlayer(e.getPlayer());
-        if (fp == null | fp.getChatMode() != ChatMode.FACTION) {
+
+        if(fp == null) return;
+
+        if (fp.getChatMode() != ChatMode.FACTION) {
             return;
         }
         Faction f = fp.getFaction();
-        if (f == null | f.isSystemFaction()) {
+        if(f == null) return;
+        if (f.isSystemFaction()) {
             return;
         }
         if (f.getGuildId() == null | f.getFactionChatChannelId() == null) {

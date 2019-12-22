@@ -16,11 +16,11 @@ public class CmdSethome extends FCommand {
         this.optionalArgs.put("faction tag", "mine");
 
         this.requirements = new CommandRequirements.Builder(Permission.SETHOME)
-                .playerOnly()
+            .playerOnly()
                 .memberOnly()
                 .withAction(PermissableAction.SETHOME)
                 .build();
-    }
+}
 
     @Override
     public void perform(CommandContext context) {

@@ -959,6 +959,11 @@ public enum TL {
     COMMAND_WARUNCLAIMALL_SUCCESS("You unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
+    COMMAND_DRAIN_NO_PLAYERS("&c&l[!] &cYou cannot drain a faction with no other members!"),
+    COMMAND_DRAIN_RECIEVED_AMOUNT("&c&l[!] &fYou have drained all of your faction members for &b%1$s."),
+    COMMAND_DRAIN_INVALID_AMOUNT("&c&l[!] &fYou cannot drain a faction with no worth."),
+
+
     COMMAND_WILD_DESCRIPTION("Teleport to a random location"),
     COMMAND_WILD_WAIT("&c&l[!] &7Teleporting in %1$s"),
     COMMAND_WILD_SUCCESS("&c&l[!] &7Teleporting..."),

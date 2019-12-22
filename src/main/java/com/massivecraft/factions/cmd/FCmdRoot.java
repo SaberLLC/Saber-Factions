@@ -162,6 +162,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSetGuild cmdSetGuild = new CmdSetGuild();
     public CmdDiscord cmdDiscord = new CmdDiscord();
     public CmdDebug cmdDebug = new CmdDebug();
+    public CmdDrain cmdDrain = new CmdDrain();
     //Variables to know if we already setup certain sub commands
     public Boolean discordEnabled = false;
     public Boolean checkEnabled = false;
@@ -291,6 +292,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdViewChest);
         this.addSubCommand(this.cmdConvertConfig);
         this.addSubCommand(this.cmdSpawnerLock);
+        this.addSubCommand(this.cmdDrain);
         addVariableCommands();
         if (CommodoreProvider.isSupported()) brigadierManager.build();
     }

@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd.wild;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;

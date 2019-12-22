@@ -490,6 +490,7 @@ fperm-gui:
       tntfill: TNT
       chest: ENDER_CHEST
       check: WATCH
+      drain: BUCKET
       spawner: MOB_SPAWNER
       home: ENDER_EYE
     slots:
@@ -525,6 +526,7 @@ fperm-gui:
       chest: 42
       check: 50
       spawner: 38
+      drain: 49
       home: 48
     # {action} Action name eg: Setwarp, Kick
     # {action-access} Access name eg: Allow, Deny

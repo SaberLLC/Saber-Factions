@@ -99,6 +99,8 @@ public class Conf {
     public static boolean autoLeaveDeleteFPlayerData = true; // Let them just remove player from Faction.
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
+    public static boolean factionsDrainEnabled = false;
+
     //DISCORD
     public static boolean useDiscordSystem = false;
     public static String discordBotToken = "<token here>";

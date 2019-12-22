@@ -65,6 +65,7 @@ permissions:
   factions.kit.halfplayer:
     description: Can do all but create factions.
     children:
+      factions.drain: true
       factions.wild: true
       factions.missions: true
       factions.tntfill: true

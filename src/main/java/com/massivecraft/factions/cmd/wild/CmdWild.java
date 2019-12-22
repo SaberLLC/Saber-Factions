@@ -39,7 +39,7 @@ public class CmdWild extends FCommand {
     }
     @Override
     public void perform(CommandContext context) {
-        if (!waitingTeleport.keySet().contains(context.player)) {
+        if (!waitingTeleport.containsKey(context.player)) {
             context.player.openInventory(new WildGUI(context.player, context.fPlayer).getInventory());
         } else {context.fPlayer.msg(TL.COMMAND_WILD_WAIT);}
     }

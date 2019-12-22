@@ -21,6 +21,7 @@ public enum PermissableAction {
     BAN("ban"),
     BUILD("build"),
     DESTROY("destroy"),
+    DRAIN("drain"),
     FROST_WALK("frostwalk"),
     PAIN_BUILD("painbuild"),
     DOOR("door"),
