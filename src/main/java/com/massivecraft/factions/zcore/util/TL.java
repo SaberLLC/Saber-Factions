@@ -518,7 +518,7 @@ public enum TL {
     COMMAND_LOOKUP_INVALID("&c&l[!] &cInvalid Faction Found!"),
     COMMAND_LOOKUP_FACTION_HOME("&c&l[!] &cFaction Home: &f%1$dx %2$sy %3$sz"),
     COMMAND_LOOKUP_CLAIM_COUNT("&c&l[!] &cFound &c&n%1$s &cClaimed Chunk(s) for &f%2$s"),
-    COMMAND_LOOKUP_CLAIM_LIST("&f%1$s &7(%2$sx, %2$sz"),
+    COMMAND_LOOKUP_CLAIM_LIST("&f%1$s &7(%2$sx, %2$sz)"),
     COMMAND_LOOKUP_ONLY_NORMAL("&cYou can only enter normal factions."),
     COMMAND_LOOKUP_DESCRIPTION("Lookup claim & home stats for faction"),
 
