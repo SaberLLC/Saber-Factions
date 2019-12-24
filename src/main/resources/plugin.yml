@@ -154,6 +154,8 @@ permissions:
     description: auto-claim land as you walk around
   factions.bypass:
     description: enable admin bypass mode
+  factions.lookup:
+    description: Lookup claim & home stats for faction
   factions.chat:
     description: change chat mode
   factions.chatspy:

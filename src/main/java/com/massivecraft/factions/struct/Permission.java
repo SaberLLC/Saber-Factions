@@ -68,6 +68,7 @@ public enum Permission {
     LOCK("lock"),
     LOCKSPAWNERS("lockspawners"),
     LOGOUT("logout"),
+    LOOKUP("lookup"),
     MAP("map"),
     MAPHEIGHT("mapheight"),
     MOD("mod"),

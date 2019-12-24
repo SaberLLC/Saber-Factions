@@ -626,6 +626,7 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
+    /*
     @EventHandler
     public void onTravel(PlayerPortalEvent event) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("portals.limit", false))
@@ -653,6 +654,7 @@ public class FactionsEntityListener implements Listener {
             }
         }
     }
+     */
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent e) {

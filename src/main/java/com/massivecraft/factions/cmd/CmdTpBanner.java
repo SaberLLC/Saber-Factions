@@ -29,8 +29,6 @@ public class CmdTpBanner extends FCommand {
             return;
         }
 
-        final FactionsPlayerListener fpl = new FactionsPlayerListener();
-
         if (FactionsBlockListener.bannerLocations.containsKey(context.fPlayer.getTag())) {
             context.msg(TL.COMMAND_TPBANNER_SUCCESS);
             context.doWarmUp(WarmUpUtil.Warmup.BANNER, TL.WARMUPS_NOTIFY_TELEPORT, "Banner", () -> {

@@ -515,6 +515,14 @@ public enum TL {
     COMMAND_LOWPOWER_FORMAT("&c{player} &8(&c{player_power}&8/&c{maxpower}&8)"),
     COMMAND_LOWPOWER_DESCRIPTION("Shows a list of players in your faction with lower power levels"),
 
+    COMMAND_LOOKUP_INVALID("&c&l[!] &cInvalid Faction Found!"),
+    COMMAND_LOOKUP_FACTION_HOME("&c&l[!] &cFaction Home: &f%1$dx %2$sy %3$sz"),
+    COMMAND_LOOKUP_CLAIM_COUNT("&c&l[!] &cFound &c&n%1$s &cClaimed Chunk(s) for &f%2$s"),
+    COMMAND_LOOKUP_CLAIM_LIST("&f%1$s &7(%2$sx, %2$sz"),
+    COMMAND_LOOKUP_ONLY_NORMAL("&cYou can only enter normal factions."),
+    COMMAND_LOOKUP_DESCRIPTION("Lookup claim & home stats for faction"),
+
+
     COMMAND_MAP_TOSHOW("to show the map"),
     COMMAND_MAP_FORSHOW("for showing the map"),
     COMMAND_MAP_UPDATE_ENABLED("&c&l[!]&7 Map auto update &aENABLED."),

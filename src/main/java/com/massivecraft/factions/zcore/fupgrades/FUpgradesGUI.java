@@ -279,7 +279,7 @@ public class FUpgradesGUI implements Listener {
         String invName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"));
 
         for (HumanEntity player : faction.getChestInventory().getViewers()) {
-            if (player.getInventory().getTitle() != null && player.getInventory().getTitle().equalsIgnoreCase(invName))
+            if (player.getOpenInventory().getTitle() != null && player.getOpenInventory().getTitle().equalsIgnoreCase(invName))
                 player.closeInventory();
         }
 
