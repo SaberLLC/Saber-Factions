@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFGlobal;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
+import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
 import com.massivecraft.factions.cmd.wild.CmdWild;
 import com.massivecraft.factions.discord.Discord;
@@ -17,6 +18,7 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.FactionGUI;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.util.XMaterial;
@@ -745,6 +747,7 @@ public class FactionsPlayerListener implements Listener {
 
             if (me.getAutoClaimFor() != null) {
                 me.attemptClaim(me.getAutoClaimFor(), newLocation, true);
+                FactionsPlugin.instance.logFactionEvent(me.getAutoClaimFor(), FLogType.CHUNK_CLAIMS, me.getName(), CC.GreenB + "CLAIMED", String.valueOf(1), (new FLocation(player.getLocation())).formatXAndZ(","));
                 if (Conf.disableFlightOnFactionClaimChange) CmdFly.disableFlight(me);
             } else if (me.isAutoSafeClaimEnabled()) {
                 if (!Permission.MANAGE_SAFE_ZONE.has(player)) {

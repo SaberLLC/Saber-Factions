@@ -4,10 +4,12 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -126,6 +128,7 @@ public class CmdUnclaim extends FCommand {
             }
 
             Board.getInstance().removeAt(target);
+            FactionsPlugin.instance.logFactionEvent(targetFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.RedB + "UNCLAIMED", "1", (new FLocation(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
 
             targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, context.fPlayer.describeTo(targetFaction, true));
             context.msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
@@ -180,6 +183,7 @@ public class CmdUnclaim extends FCommand {
 
         Board.getInstance().removeAt(target);
         context.faction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, context.fPlayer.describeTo(context.faction, true));
+        FactionsPlugin.instance.logFactionEvent(targetFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.RedB + "UNCLAIMED", "1", (new FLocation(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
 
         if (Conf.logLandUnclaims) {
             FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));

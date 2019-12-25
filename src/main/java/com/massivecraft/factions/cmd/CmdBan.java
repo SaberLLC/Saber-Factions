@@ -2,9 +2,11 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -79,6 +81,7 @@ public class CmdBan extends FCommand {
 
         // Lets inform the people!
         target.msg(TL.COMMAND_BAN_TARGET, context.faction.getTag(target.getFaction()));
+        FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.BANS, context.fPlayer.getName(), CC.Green + "banned", target.getName());
         context.faction.msg(TL.COMMAND_BAN_BANNED, context.fPlayer.getName(), target.getName());
     }
 

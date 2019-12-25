@@ -8,6 +8,9 @@ import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.cmd.audit.FChestListener;
+import com.massivecraft.factions.cmd.audit.FLogManager;
+import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
@@ -90,6 +93,7 @@ public class FactionsPlugin extends MPlugin {
     private Listener[] eventsListener;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     private Worldguard wg;
+    private FLogManager fLogManager;
 
 
     public FactionsPlugin() {
@@ -184,6 +188,7 @@ public class FactionsPlugin extends MPlugin {
         PermissionList.generateFile();
         // Load Conf from disk
         Conf.load();
+        fLogManager = new FLogManager();
         //Dependency checks
         if (Conf.dependencyCheck && (!Bukkit.getPluginManager().isPluginEnabled("Vault") && !Bukkit.getPluginManager().isPluginEnabled("Essentials"))) {
             divider();
@@ -271,6 +276,7 @@ public class FactionsPlugin extends MPlugin {
         new Discord(this);
 
         ShopConfig.setup();
+        fLogManager.loadLogs(this);
 
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
@@ -283,6 +289,8 @@ public class FactionsPlugin extends MPlugin {
                 new FUpgradesGUI(),
                 new UpgradesListener(),
                 new MissionHandler(this),
+                new FChestListener(),
+                new MenuListener(),
                 new AntiChestListener()
         };
 
@@ -431,6 +439,11 @@ public class FactionsPlugin extends MPlugin {
         }
         DiscordListener.saveGuilds();
         super.onDisable();
+        try {
+            fLogManager.saveLogs();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void startAutoLeaveTask(boolean restartIfRunning) {
@@ -556,22 +569,6 @@ public class FactionsPlugin extends MPlugin {
         }
     }
 
-    public void createTimedHologram(final Location location, String text, Long timeout) {
-        ArmorStand as = (ArmorStand) location.add(0.5, 1, 0.5).getWorld().spawnEntity(location, EntityType.ARMOR_STAND); //Spawn the ArmorStand
-        as.setVisible(false); //Makes the ArmorStand invisible
-        as.setGravity(false); //Make sure it doesn't fall
-        as.setCanPickupItems(false); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-        as.setCustomName(FactionsPlugin.instance.color(text)); //Set this to the text you want
-        as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
-        final ArmorStand armorStand = as;
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> {
-                    armorStand.remove();
-                    getLogger().info("Removing Hologram.");
-                }
-                , timeout * 20);
-    }
-
 
     // -------------------------------------------- //
     // Functions for other plugins to hook into
@@ -649,6 +646,15 @@ public class FactionsPlugin extends MPlugin {
         }
 
         return tag;
+    }
+
+
+    public FLogManager getFlogManager() {
+        return fLogManager;
+    }
+
+    public void logFactionEvent(Faction faction, FLogType type, String... arguments) {
+        this.fLogManager.log(faction, type, arguments);
     }
 
     // Get a player's title within their faction, mainly for usage by chat plugins for local/channel chat

@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFly;
+import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.*;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
@@ -16,6 +17,7 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -840,6 +842,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         this.resetFactionData();
+        FactionsPlugin.instance.logFactionEvent(myFaction, FLogType.INVITES, this.getName(), CC.Red + "left", "the faction");
+
         setFlying(false);
 
         if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {

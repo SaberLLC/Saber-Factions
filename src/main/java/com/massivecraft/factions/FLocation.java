@@ -152,6 +152,8 @@ public class FLocation implements Serializable {
         return "" + x + "," + z;
     }
 
+    public String formatXAndZ(String splitter) { return chunkToBlock(this.x) + "x" + splitter + " " + chunkToBlock(this.z) + "z"; }
+
     //----------------------------------------------//
     // Misc Geometry
     //----------------------------------------------//

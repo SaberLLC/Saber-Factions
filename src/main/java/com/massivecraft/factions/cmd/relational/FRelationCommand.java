@@ -6,6 +6,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.event.FactionRelationWishEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
@@ -83,6 +84,8 @@ public abstract class FRelationCommand extends FCommand {
             // trigger the faction relation event
             FactionRelationEvent relationEvent = new FactionRelationEvent(context.faction, them, oldRelation, currentRelation);
             Bukkit.getServer().getPluginManager().callEvent(relationEvent);
+            FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.RELATION_CHANGE,context.fPlayer.getName(), this.targetRelation.getColor() + this.targetRelation.name(), oldRelation.getColor() + them.getTag());
+            FactionsPlugin.instance.logFactionEvent(them, FLogType.RELATION_CHANGE, oldRelation.getColor() + context.fPlayer.getName(), this.targetRelation.getColor() + this.targetRelation.name(), "your faction");
 
             them.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation(), currentRelationColor + context.faction.getTag());
             context.faction.msg(TL.COMMAND_RELATIONS_MUTUAL, currentRelationColor + targetRelation.getTranslation(), currentRelationColor + them.getTag());

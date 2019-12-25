@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FactionRenameEvent;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
@@ -69,6 +70,8 @@ public class CmdTag extends FCommand {
             String oldtag = context.faction.getTag();
             context.faction.setTag(tag);
             Discord.changeFactionTag(context.faction, oldtag);
+            FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.FTAG_EDIT, context.fPlayer.getName(), tag);
+
 
             // Inform
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
@@ -76,14 +79,12 @@ public class CmdTag extends FCommand {
                     fplayer.msg(TL.COMMAND_TAG_FACTION, context.fPlayer.describeTo(context.faction, true), context.faction.getTag(context.faction));
                     continue;
                 }
-
                 // Broadcast the tag change (if applicable)
                 if (Conf.broadcastTagChanges) {
                     Faction faction = fplayer.getFaction();
                     fplayer.msg(TL.COMMAND_TAG_CHANGED, context.fPlayer.getColorTo(faction) + oldtag, context.faction.getTag(faction));
                 }
             }
-
             FTeamWrapper.updatePrefixes(context.faction);
         });
     }
