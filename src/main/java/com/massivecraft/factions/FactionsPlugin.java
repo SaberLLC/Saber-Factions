@@ -264,11 +264,11 @@ public class FactionsPlugin extends MPlugin {
         }
         if (Conf.useCheckSystem) {
             int minute = 1200;
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 3), 0L, (long) (minute * 3));
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 5), 0L, (long) (minute * 5));
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 10), 0L, (long) (minute * 10));
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 15), 0L, (long) (minute * 15));
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 30), 0L, (long) (minute * 30));
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 3), 0L, minute * 3);
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 5), 0L, minute * 5);
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 10), 0L, minute * 10);
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 15), 0L, minute * 15);
+            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 30), 0L, minute * 30);
             this.getServer().getScheduler().runTaskTimer(this, CheckTask::cleanupTask, 0L, 1200L);
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new WeeWooTask(this), 600L, 600L);
         }

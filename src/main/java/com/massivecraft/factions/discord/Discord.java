@@ -64,7 +64,6 @@ public class Discord {
         try {
             jda = new JDABuilder(AccountType.BOT).setToken(Conf.discordBotToken).buildBlocking();
         } catch (LoginException | InterruptedException e) {
-            e.printStackTrace();
             FactionsPlugin.getInstance().getLogger().log(Level.WARNING, "Discord bot was unable to start! Please verify the bot token is correct.");
             setupLog.add(new DiscordSetupAttempt(e.getMessage(), System.currentTimeMillis()));
             return false;
