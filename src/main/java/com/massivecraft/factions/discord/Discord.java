@@ -61,6 +61,7 @@ public class Discord {
     }
 
     private static Boolean startBot() {
+        if (!Conf.useDiscordSystem) {return false;}
         try {
             jda = new JDABuilder(AccountType.BOT).setToken(Conf.discordBotToken).buildBlocking();
         } catch (LoginException | InterruptedException e) {
