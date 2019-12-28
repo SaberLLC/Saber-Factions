@@ -55,7 +55,7 @@ public class DiscordSetupAttempt {
      * @return String with formatted time difference
      */
     public String getDifferentialFormatted() {
-        Integer timeIndex = 0;
+        int timeIndex = 0;
         //Milliseconds
         Long inProcessTime = getDifferentialTime();
         if (inProcessTime >= 1000) {

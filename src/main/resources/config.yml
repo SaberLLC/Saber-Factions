@@ -1271,6 +1271,41 @@ fupgrades:
 
 ############################################################
 # +------------------------------------------------------+ #
+# |                   Faction Audit                      | #
+# +------------------------------------------------------+ #
+############################################################
+faudit-gui:
+  slots:
+    invites: 0
+    bans: 1
+    chunk_claims: 2
+    perm_edit_defaults: 3
+    bank_edit: 4
+    fchest_edit: 5
+    relation_change: 6
+    ftag_edit: 7
+    fdesc_edit: 8
+    role_perm_edit: 9
+    spawner_edit: 10
+    rank_edit: 11
+    f_tnt: 12
+  materials:
+    invites: 0
+    bans: 1
+    chunk_claims: 2
+    perm_edit_defaults: 3
+    bank_edit: 4
+    fchest_edit: 5
+    relation_change: 6
+    ftag_edit: 7
+    fdesc_edit: 8
+    role_perm_edit: 9
+    spawner_edit: 10
+    rank_edit: 11
+    f_tnt: 12
+
+############################################################
+# +------------------------------------------------------+ #
 # |                  Faction Banners                     | #
 # +------------------------------------------------------+ #
 ############################################################

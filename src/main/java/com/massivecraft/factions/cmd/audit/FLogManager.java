@@ -13,10 +13,8 @@ import org.bukkit.Bukkit;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.Map;
-import java.util.Timer;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 
 public class FLogManager {
     private Map<String, FactionLogs> factionLogMap = new ConcurrentHashMap<>();
@@ -41,7 +39,7 @@ public class FLogManager {
                 logFile.createNewFile();
             }
 
-            factionLogMap = (Map) JSONUtils.fromJson(logFile, logToken);
+            factionLogMap = (Map<String, FactionLogs>) JSONUtils.fromJson(logFile, logToken);
             if (factionLogMap == null) {
                 factionLogMap = new ConcurrentHashMap<>();
             }
@@ -64,8 +62,6 @@ public class FLogManager {
             e.printStackTrace();
         }
 
-        long delay = TimeUnit.SECONDS.toMillis(15L);
-        long sellDelay = TimeUnit.SECONDS.toMillis(30L);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.instance, () -> {
             if (saving) {
                 Bukkit.getLogger().info("Ignoring saveLogs scheduler due to saving == true!");
@@ -100,7 +96,7 @@ public class FLogManager {
             }
 
             if (type != null) {
-                Map<LogTimer.TimerSubType, Timer> timers = (Map) logTimer.get(type);
+                Map<LogTimer.TimerSubType, LogTimer.Timer> timers = logTimer.get(type);
                 if (timers != null && faction != null) {
                     logTimer.pushLogs(faction, type);
                 }
@@ -133,7 +129,7 @@ public class FLogManager {
             try {
                 JSONUtils.saveJSONToFile(logFile, factionLogMap,logToken);
             } catch (Exception e1) {
-                Bukkit.getLogger().info("ERRRO SAVING JSON LOGS: " + e1.getMessage());
+                Bukkit.getLogger().info("ERROR SAVING JSON LOGS: " + e1.getMessage());
                 e1.printStackTrace();
             }
 

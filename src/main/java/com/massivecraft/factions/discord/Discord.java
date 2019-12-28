@@ -189,9 +189,7 @@ public class Discord {
      * @return Boolean
      */
     public static Boolean isInMainGuild(User u) {
-        if (mainGuild == null) {
-            return false;
-        }
+        if (mainGuild == null) return false;
         return mainGuild.getMember(u) == null ? Boolean.FALSE : Boolean.TRUE;
     }
 

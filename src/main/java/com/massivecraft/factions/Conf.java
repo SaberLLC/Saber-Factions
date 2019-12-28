@@ -101,6 +101,9 @@ public class Conf {
     public static boolean worldGuardBuildPriority = false;
     public static boolean factionsDrainEnabled = false;
 
+    //AUDIT
+    public static boolean useAuditSystem = true;
+
     //DISCORD
     public static boolean useDiscordSystem = false;
     public static String discordBotToken = "<token here>";

@@ -37,16 +37,10 @@ public class FactionChatHandler extends ListenerAdapter {
     public static void sendMessage(FactionsPlugin plugin, Faction faction, UUID uuid, String username, String message) {
         String factionsChatChannelId = faction.getFactionChatChannelId();
         String messageWithMentions = null;
-        if (factionsChatChannelId == null || factionsChatChannelId.isEmpty()) {
-            return;
-        }
-        if (Discord.jda == null) {
-            return;
-        }
+        if (factionsChatChannelId == null || factionsChatChannelId.isEmpty()) return;
+        if (Discord.jda == null) return;
         TextChannel textChannel = Discord.jda.getTextChannelById(factionsChatChannelId);
-        if (textChannel == null) {
-            return;
-        }
+        if (textChannel == null) return;
         if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, Permission.MANAGE_WEBHOOKS)) {
             textChannel.sendMessage("Missing `Manage Webhooks` permission in this channel").queue();
             return;
@@ -80,7 +74,6 @@ public class FactionChatHandler extends ListenerAdapter {
                     }
                     if (mention.toString().contains("#")) {
                         String[] mentionA = mention.toString().replace(" @", "").split("#");
-
                         for (User u : Discord.jda.getUsersByName(mentionA[0], false)) {
                             if (u.getDiscriminator().equals(mentionA[1])) {
                                 for (Integer l : ii) {
@@ -112,13 +105,10 @@ public class FactionChatHandler extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if (event.isWebhookMessage() || event.getAuthor().isBot()) {
-            return;
-        }
+        if (event.isWebhookMessage() || event.getAuthor().isBot()) return;
         Faction faction = Factions.getInstance().getAllFactions().stream().filter(f -> event.getChannel().getId().equals(f.getFactionChatChannelId())).findAny().orElse(null);
-        if (faction == null) {
-            return;
-        }
+        if (faction == null) return;
+
         String content = event.getMessage().getContentDisplay();
         String message = (content.length() > 500) ? content.substring(0, 500) : content;
         FancyMessage fancyMessage = new FancyMessage();

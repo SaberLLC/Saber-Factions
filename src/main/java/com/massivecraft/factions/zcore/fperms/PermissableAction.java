@@ -66,7 +66,6 @@ public enum PermissableAction {
                 return permissableAction;
             }
         }
-
         return null;
     }
 

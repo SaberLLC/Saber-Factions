@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.alts.CmdAlts;
+import com.massivecraft.factions.cmd.audit.CmdAudit;
 import com.massivecraft.factions.cmd.check.CmdCheck;
 import com.massivecraft.factions.cmd.check.CmdWeeWoo;
 import com.massivecraft.factions.cmd.chest.CmdChest;
@@ -164,6 +165,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdDebug cmdDebug = new CmdDebug();
     public CmdDrain cmdDrain = new CmdDrain();
     public CmdLookup cmdLookup = new CmdLookup();
+    public CmdAudit cmdAudit = new CmdAudit();
     //Variables to know if we already setup certain sub commands
     public Boolean discordEnabled = false;
     public Boolean checkEnabled = false;
@@ -179,6 +181,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public Boolean coreProtectEnabled = false;
     public Boolean internalFTOPEnabled = false;
     public Boolean fWildEnabled = false;
+    public Boolean fAuditEnabled = false;
 
     public FCmdRoot() {
         super();
@@ -340,6 +343,12 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             this.addSubCommand(this.cmdTop);
             internalFTOPEnabled = true;
         }
+
+        if(Conf.useAuditSystem){
+            this.addSubCommand(cmdAudit);
+            fAuditEnabled = true;
+        }
+
         //Other
         if (FactionsPlugin.getInstance().getConfig().getBoolean("Wild.Enabled", false) && !fWildEnabled) {
             this.addSubCommand(this.cmdWild);

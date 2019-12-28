@@ -1,6 +1,8 @@
 package com.massivecraft.factions.cmd.audit;
 
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.XMaterial;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import org.bukkit.Material;
 
 /**
@@ -30,6 +32,25 @@ public enum FLogType {
     public String getDisplayName() {
         return this.displayName;
     }
+
+    /**
+     * Case insensitive check for action.
+     *
+     * @param check
+     * @return - action
+     */
+    public static FLogType fromString(String check) {
+        for (FLogType fLogType : values()) {
+            if (fLogType.displayName.equalsIgnoreCase(check)) {
+                return fLogType;
+            }
+        }
+        return null;
+    }
+    public int getSlot() {
+        return FactionsPlugin.getInstance().getConfig().getInt("faudit-gui.slots." + this.displayName.toLowerCase());
+    }
+
 
     public Material getDisplayMaterial() {
         return this.displayMaterial;

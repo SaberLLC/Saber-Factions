@@ -18,7 +18,6 @@ import java.util.concurrent.TimeUnit;
 public class FactionLogs {
     private Map<FLogType, LinkedList<FactionLog>> mostRecentLogs = new ConcurrentHashMap<>();
     public static transient SimpleDateFormat format = new SimpleDateFormat("MM/dd hh:mmaa");
-    private static transient int MAX_LOG_SIZE = 60;
 
     public FactionLogs() {
     }
@@ -28,7 +27,7 @@ public class FactionLogs {
             Bukkit.getLogger().info("INVALID ARGUMENT COUNT MET: " + type.getRequiredArgs() + " REQUIRED: ");
             Thread.dumpStack();
         } else {
-            LinkedList<FactionLog> logs = this.mostRecentLogs.computeIfAbsent(type, (lists) -> new LinkedList<>());
+            LinkedList<FactionLog> logs = mostRecentLogs.computeIfAbsent(type, (lists) -> new LinkedList<>());
             logs.add(new FactionLog(System.currentTimeMillis(), Lists.newArrayList(arguments)));
             int maxLog = type == FLogType.F_TNT ? 200 : 60;
             if (logs.size() > maxLog) {
@@ -69,16 +68,14 @@ public class FactionLogs {
                     toRemove.add(logType);
             }
         });
-        toRemove.forEach((rem) -> {
-            LinkedList linkedList = this.mostRecentLogs.remove(rem);
-        });
+        toRemove.forEach((rem) -> mostRecentLogs.remove(rem));
     }
 
     public Map<FLogType, LinkedList<FactionLog>> getMostRecentLogs() {
-        return this.mostRecentLogs;
+        return mostRecentLogs;
     }
 
-    public class FactionLog {
+    public static class FactionLog {
         private long t;
         private List<String> a;
 
@@ -88,19 +85,19 @@ public class FactionLogs {
         }
 
         public boolean isExpired(long duration) {
-            return System.currentTimeMillis() - this.t >= duration;
+            return System.currentTimeMillis() - t >= duration;
         }
 
         public String getLogLine(FLogType type, boolean timestamp) {
-            String[] args = this.a.toArray(new String[0]);
+            String[] args = a.toArray(new String[0]);
             String timeFormat = "";
             if (timestamp) {
-                timeFormat = FactionLogs.format.format(this.t);
+                timeFormat = FactionLogs.format.format(t);
                 if (timeFormat.startsWith("0")) {
                     timeFormat = timeFormat.substring(1);
                 }
             }
-            return String.format(ChatColor.translateAlternateColorCodes('&', type.getMsg()), (String[])args) + (timestamp ? ChatColor.GRAY + " - " + timeFormat : "");
+            return String.format(ChatColor.translateAlternateColorCodes('&', type.getMsg()), args) + (timestamp ? ChatColor.GRAY + " - " + timeFormat : "");
         }
     }
 }

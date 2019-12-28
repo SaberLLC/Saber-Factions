@@ -66,9 +66,7 @@ public class DiscordListener extends ListenerAdapter {
 
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
         Integer i;
-        if (e.getAuthor().isBot()) {
-            return;
-        }
+        if (e.getAuthor().isBot()) return;
         try {
             i = Integer.valueOf(e.getMessage().getContentDisplay());
         } catch (NumberFormatException ex) {
@@ -89,17 +87,13 @@ public class DiscordListener extends ListenerAdapter {
 
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         try {
-            if (event.getMessage().isWebhookMessage() || event.getAuthor().isBot()) {
-                return;
-            }
+            if (event.getMessage().isWebhookMessage() || event.getAuthor().isBot()) return;
             String prefix = DiscordListener.guilds.getGuildById(event.getGuild().getId()).getPrefix();
             if (prefix == null || prefix.isEmpty()) {
                 prefix = ".";
             }
             String content = event.getMessage().getContentRaw();
-            if (!content.startsWith(prefix) && !content.startsWith(event.getGuild().getSelfMember().getAsMention())) {
-                return;
-            }
+            if (!content.startsWith(prefix) && !content.startsWith(event.getGuild().getSelfMember().getAsMention())) return;
             if (content.startsWith(prefix + "help") || content.startsWith(event.getGuild().getSelfMember().getAsMention() + " help")) {
                 this.help(event, content, prefix);
             } else if (content.startsWith(prefix + "stats")) {
@@ -130,9 +124,7 @@ public class DiscordListener extends ListenerAdapter {
                 this.settings(event);
             }
         } catch (PermissionException exception) {
-            if (!event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_READ, Permission.MESSAGE_WRITE)) {
-                return;
-            }
+            if (!event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_READ, Permission.MESSAGE_WRITE)) return;
             event.getChannel().sendMessage((":x: Missing permission, `" + exception.getPermission().toString() + "`")).queue();
         }
     }
@@ -143,33 +135,25 @@ public class DiscordListener extends ListenerAdapter {
 
     private Faction getFactionWithWarning(TextChannel textChannel) {
         Faction faction = this.getFaction(textChannel.getGuild());
-        if (faction == null) {
-            textChannel.sendMessage((":x: This guild isn't linked to a faction, use `/f setguild " + textChannel.getGuild().getId() + "` in game")).queue();
-        }
+        if (faction == null) textChannel.sendMessage((":x: This guild isn't linked to a faction, use `/f setguild " + textChannel.getGuild().getId() + "` in game")).queue();
         return faction;
     }
 
     private boolean cantAccessPermissionWithWarning(TextChannel textChannel, Member member) {
         boolean can = member.hasPermission(Permission.MANAGE_SERVER);
-        if (!can) {
-            textChannel.sendMessage(":x: You need to have the Manage Server permission to do that").queue();
-        }
+        if (!can) textChannel.sendMessage(":x: You need to have the Manage Server permission to do that").queue();
         return !can;
     }
 
     private boolean canAccessRole(Faction faction, Member member) {
-        if (member.hasPermission(Permission.MANAGE_SERVER)) {
-            return true;
-        }
+        if (member.hasPermission(Permission.MANAGE_SERVER)) return true;
         Role role = member.getGuild().getRoleById(faction.getMemberRoleId());
         return role != null && member.getRoles().stream().anyMatch(r -> r.getPosition() >= role.getPosition());
     }
 
     private boolean cantAccessRoleWithWarning(TextChannel textChannel, Faction faction, Member member) {
         boolean can = this.canAccessRole(faction, member);
-        if (!can) {
-            textChannel.sendMessage(":x: You don't have a faction member role").queue();
-        }
+        if (!can) textChannel.sendMessage(":x: You don't have a faction member role").queue();
         return !can;
     }
 
@@ -261,9 +245,7 @@ public class DiscordListener extends ListenerAdapter {
     }
 
     private void setPrefix(GuildMessageReceivedEvent event, String content) {
-        if (this.cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) {
-            return;
-        }
+        if (cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) return;
         String[] split = content.split(" ");
         if (split.length != 3) {
             event.getChannel().sendMessage((":x: Usage, `@" + event.getGuild().getSelfMember().getEffectiveName() + " setprefix <prefix>`")).queue();
@@ -281,12 +263,8 @@ public class DiscordListener extends ListenerAdapter {
 
     private void setFChatChannel(GuildMessageReceivedEvent event) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
-        if (this.cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) {
-            return;
-        }
+        if (faction == null) return;
+        if (cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) return;
         List<TextChannel> mentionedChannels = event.getMessage().getMentionedChannels();
         if (mentionedChannels.isEmpty()) {
             faction.setFactionChatChannelId(null);
@@ -304,12 +282,8 @@ public class DiscordListener extends ListenerAdapter {
 
     private void setWallNotifyChannel(GuildMessageReceivedEvent event) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
-        if (this.cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) {
-            return;
-        }
+        if (faction == null) return;
+        if (cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) return;
         List<TextChannel> mentionedChannels = event.getMessage().getMentionedChannels();
         if (mentionedChannels.isEmpty()) {
             faction.setWallNotifyChannelId(null);
@@ -327,12 +301,8 @@ public class DiscordListener extends ListenerAdapter {
 
     private void setBufferNotifyChannel(GuildMessageReceivedEvent event) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
-        if (this.cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) {
-            return;
-        }
+        if (faction == null) return;
+        if (cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) return;
         List<TextChannel> mentionedChannels = event.getMessage().getMentionedChannels();
         if (mentionedChannels.isEmpty()) {
             faction.setBufferNotifyChannelId(null);
@@ -350,9 +320,7 @@ public class DiscordListener extends ListenerAdapter {
 
     private void setWeewooChannel(GuildMessageReceivedEvent event) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
+        if (faction == null) return;
         if (!event.getMember().hasPermission(Permission.MANAGE_SERVER)) {
             event.getChannel().sendMessage(":x: You need to have the Manage Server permission to do that").queue();
             return;
@@ -374,12 +342,8 @@ public class DiscordListener extends ListenerAdapter {
 
     private void setNotifyFormat(GuildMessageReceivedEvent event, String content, String prefix) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
-        if (this.cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) {
-            return;
-        }
+        if (faction == null)return;
+        if (cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) return;
         if (!content.contains(" ")) {
             event.getChannel().sendMessage((":x: Usage, `" + prefix + "setnotifyformat <format>` (%type%)")).queue();
             return;
@@ -397,12 +361,8 @@ public class DiscordListener extends ListenerAdapter {
 
     private void setWeewooFormat(GuildMessageReceivedEvent event, String content, String prefix) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
-        if (this.cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) {
-            return;
-        }
+        if (faction == null) return;
+        if (cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) return;
         if (!content.contains(" ")) {
             event.getChannel().sendMessage((":x: Usage, `" + prefix + "setweewooformat <format>`")).queue();
             return;
@@ -420,12 +380,8 @@ public class DiscordListener extends ListenerAdapter {
 
     private void setMemberRole(GuildMessageReceivedEvent event, String content, String prefix) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
-        if (this.cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) {
-            return;
-        }
+        if (faction == null) return;
+        if (cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) return;
         List<String> split = new ArrayList<>(Arrays.asList(content.split(" ")));
         if (split.size() < 2) {
             event.getChannel().sendMessage((":x: Usage, `" + prefix + "setmemberrole <@role/role name/role id>`")).queue();
@@ -452,12 +408,9 @@ public class DiscordListener extends ListenerAdapter {
 
     private void checkLeaderboard(GuildMessageReceivedEvent event) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
-        if (this.cantAccessRoleWithWarning(event.getChannel(), faction, event.getMember())) {
-            return;
-        }
+        if (faction == null) return;
+        if (cantAccessRoleWithWarning(event.getChannel(), faction, event.getMember())) return;
+
         Map<UUID, Integer> players = new HashMap<>();
         for (Map.Entry<UUID, Integer> entry : faction.getPlayerWallCheckCount().entrySet()) {
             players.put(entry.getKey(), entry.getValue());
@@ -485,12 +438,8 @@ public class DiscordListener extends ListenerAdapter {
 
     private void weewoo(GuildMessageReceivedEvent event, String content, String prefix) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
-        if (this.cantAccessRoleWithWarning(event.getChannel(), faction, event.getMember())) {
-            return;
-        }
+        if (faction == null) return;
+        if (cantAccessRoleWithWarning(event.getChannel(), faction, event.getMember())) return;
         if (!content.contains(" ")) {
             event.getChannel().sendMessage((":x: Usage, `" + prefix + "weewoo <start/stop>`")).queue();
             return;
@@ -508,9 +457,7 @@ public class DiscordListener extends ListenerAdapter {
             String discordChannelId = faction.getWeeWooChannelId();
             if (discordChannelId != null && !discordChannelId.isEmpty()) {
                 TextChannel textChannel = event.getJDA().getTextChannelById(discordChannelId);
-                if (textChannel == null) {
-                    return;
-                }
+                if (textChannel == null) return;
                 textChannel.sendMessage(TL.WEEWOO_STARTED_DISCORD.format(event.getAuthor().getAsTag())).queue();
             }
         } else if (arguments.get(1).equalsIgnoreCase("stop")) {
@@ -524,9 +471,7 @@ public class DiscordListener extends ListenerAdapter {
             String discordChannelId = faction.getWeeWooChannelId();
             if (discordChannelId != null && !discordChannelId.isEmpty()) {
                 TextChannel textChannel = event.getJDA().getTextChannelById(discordChannelId);
-                if (textChannel == null) {
-                    return;
-                }
+                if (textChannel == null) return;
                 textChannel.sendMessage(TL.WEEWOO_STOPPED_DISCORD.format(event.getAuthor().getAsTag())).queue();
             }
         } else {
@@ -536,12 +481,8 @@ public class DiscordListener extends ListenerAdapter {
 
     private void settings(GuildMessageReceivedEvent event) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null) {
-            return;
-        }
-        if (this.cantAccessRoleWithWarning(event.getChannel(), faction, event.getMember())) {
-            return;
-        }
+        if (faction == null) return;
+        if (cantAccessRoleWithWarning(event.getChannel(), faction, event.getMember())) return;
         int wallCheck = faction.getWallCheckMinutes();
         int bufferCheck = faction.getBufferCheckMinutes();
         String wallChannel = faction.getWallNotifyChannelId();

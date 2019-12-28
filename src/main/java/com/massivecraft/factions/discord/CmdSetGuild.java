@@ -53,10 +53,9 @@ public class CmdSetGuild extends FCommand {
 
             if (guildId != null && !guildId.equalsIgnoreCase("null")) {
                 Guild guild = null;
-
                 try {
                     guild = jda.getGuildById(guildId);
-                } catch (NumberFormatException var7) {
+                } catch (NumberFormatException e) {
                 }
 
                 if (guild == null) {

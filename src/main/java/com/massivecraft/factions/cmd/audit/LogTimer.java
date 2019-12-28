@@ -33,7 +33,6 @@ public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer
     }
 
     public void pushLogs(Faction faction, LogTimer.TimerType type) {
-        StringBuilder soldString = new StringBuilder();
         forEach((timerType, map) -> {
             if (timerType == type) {
                 if (timerType == LogTimer.TimerType.SPAWNER_EDIT) {
@@ -44,18 +43,18 @@ public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer
                             currentCounts.forEach((data, ints) -> {
                                 EntityType types = EntityType.fromId(data.getData());
                                 if (types == null) {
-                                    Bukkit.getLogger().info("Unable to find EntityType for " + data.getData() + " for " + subTimer + " for fac " + this.factionId + "!");
+                                    Bukkit.getLogger().info("Unable to find EntityType for " + data.getData() + " for " + subTimer + " for fac " + factionId + "!");
                                 } else {
                                     entityCounts.computeIfAbsent(types, (e) -> new AtomicInteger(0)).addAndGet(ints.get());
                                 }
                             });
-                            entityCounts.forEach((entityType, count) -> FactionsPlugin.instance.getFlogManager().log(faction, FLogType.SPAWNER_EDIT, this.username, subTimer == TimerSubType.SPAWNER_BREAK ? "broke" : "placed", count.get() + "x", StringUtils.capitaliseAllWords(entityType.name().toLowerCase().replace("_", " "))));
+                            entityCounts.forEach((entityType, count) -> FactionsPlugin.instance.getFlogManager().log(faction, FLogType.SPAWNER_EDIT, username, subTimer == TimerSubType.SPAWNER_BREAK ? "broke" : "placed", count.get() + "x", StringUtils.capitaliseAllWords(entityType.name().toLowerCase().replace("_", " "))));
                         }
                     });
                 }
             }
         });
-        this.remove(type);
+        remove(type);
     }
 
     public String getFactionId() {

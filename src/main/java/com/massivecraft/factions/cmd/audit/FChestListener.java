@@ -88,12 +88,12 @@ public class FChestListener implements Listener {
                     return;
                 }
 
-                this.logRemoveItem(currentItem, fplayer, player);
+                logRemoveItem(currentItem, fplayer, player);
             } else if (cursorItemType != Material.AIR && !event.isShiftClick()) {
-                this.logAddItem(cursorItem, fplayer, player);
+                logAddItem(cursorItem, fplayer, player);
             }
         } else if (event.isShiftClick() && currentItemType != Material.AIR) {
-            this.logAddItem(currentItem, fplayer, player);
+            logAddItem(currentItem, fplayer, player);
         }
     }
 
