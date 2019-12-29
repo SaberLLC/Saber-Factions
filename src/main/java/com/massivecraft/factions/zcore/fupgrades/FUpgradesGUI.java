@@ -284,7 +284,7 @@ public class FUpgradesGUI implements Listener {
         }
 
         int level = faction.getUpgrade(UpgradeType.CHEST);
-        int size = 1;
+        int size = FactionsPlugin.getInstance().getConfig().getInt("fchest.Default-Size");
 
         switch (level) {
             case 1:

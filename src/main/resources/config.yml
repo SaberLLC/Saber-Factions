@@ -885,6 +885,7 @@ fvault:
 ############################################################
 fchest:
   Enabled: true
+  Default-Size: 1 #In Rows
   Inventory-Title: '&2&lFaction Chest'
   Items-Not-Allowed:
     - 'MOB_SPAWNER'
