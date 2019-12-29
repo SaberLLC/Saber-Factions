@@ -36,8 +36,8 @@ Moving forward we plan to take all suggestions into consideration, as they come 
 We Plan on Releasing the latest and greatest factions/skyblock/prison plugins minecraft has to offer and wont settle for anything less
 
 ## Support
-Our Discord is Currently In Progress of a Massive Overhaul, but we still encourage our community to join and express any concerns/questions/suggestions they may have!
-https://discord.gg/37JvmM
+Our Discord is Currently In Progress of a Massive Overhaul, but we still encourage our community to join and express any concerns/questions/suggestions they may have
+https://Discord.Saber.pw
 
 Look forward to a bright future and a journey with all of you!
 
