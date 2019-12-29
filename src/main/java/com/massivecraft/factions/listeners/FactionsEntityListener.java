@@ -682,6 +682,8 @@ public class FactionsEntityListener implements Listener {
                     Player victim = (Player) e.getEntity();
                     FPlayer fdamager = FPlayers.getInstance().getByPlayer(damager);
                     FPlayer fvictim = FPlayers.getInstance().getByPlayer(victim);
+                    if(damager == victim) return;
+                    if(fdamager == fvictim) return;
                     if (fvictim.getRelationTo(fdamager) == Relation.TRUCE) {
                         fdamager.msg(TL.PLAYER_PVP_CANTHURT, fvictim.describeTo(fdamager));
                         e.setCancelled(true);
