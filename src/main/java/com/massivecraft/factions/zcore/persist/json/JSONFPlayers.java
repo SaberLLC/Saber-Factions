@@ -54,7 +54,6 @@ public class JSONFPlayers extends MemoryFPlayers {
                 entitiesThatShouldBeSaved.put(entity.getId(), (JSONFPlayer) entity);
             }
         }
-
         saveCore(file, entitiesThatShouldBeSaved, sync);
     }
 

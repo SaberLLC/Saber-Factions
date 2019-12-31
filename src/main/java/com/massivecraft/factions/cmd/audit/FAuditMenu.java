@@ -57,7 +57,7 @@ public class FAuditMenu extends GUIMenu {
                 lore.add("");
                 if (logsLeft > 0) lore.add(CC.Yellow + "Left-Click " + CC.Gray + "to view more logs");
                 lore.add(CC.Yellow + "Right-Click " + CC.Gray + "to toggle timestamps");
-                setItem(index++, (new ClickableItemStack((new ItemBuilder(type.getDisplayMaterial())).name(CC.GreenB + type.getDisplayName()).lore(lore).build())).setClickCallback((click) -> {
+                setItem(index++, (new ClickableItemStack((new ItemBuilder(type.getMaterial())).name(CC.GreenB + type.getDisplayName()).lore(lore).build())).setClickCallback((click) -> {
                     click.setCancelled(true);
                     if (click.getClick() == ClickType.RIGHT) {
                         showTimestamps = !showTimestamps;

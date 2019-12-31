@@ -15,6 +15,7 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.IllegalPluginAccessException;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -177,17 +178,20 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public void onDisable() {
-        if (saveTask != null) {
-            this.getServer().getScheduler().cancelTask(saveTask);
-            saveTask = null;
+        try {
+            if (saveTask != null) {
+                this.getServer().getScheduler().cancelTask(saveTask);
+                saveTask = null;
+            }
+            // only save data if plugin actually loaded successfully
+            if (loadSuccessful) {
+                Factions.getInstance().forceSave();
+                FPlayers.getInstance().forceSave();
+                Board.getInstance().forceSave();
+            }
+            log("Disabled");
+        } catch (IllegalPluginAccessException e){
         }
-        // only save data if plugin actually loaded successfully
-        if (loadSuccessful) {
-            Factions.getInstance().forceSave();
-            FPlayers.getInstance().forceSave();
-            Board.getInstance().forceSave();
-        }
-        log("Disabled");
     }
 
     // -------------------------------------------- //

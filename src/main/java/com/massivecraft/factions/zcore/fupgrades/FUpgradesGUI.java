@@ -378,7 +378,6 @@ public class FUpgradesGUI implements Listener {
             }
             itemMeta.addEnchant(Enchantment.DURABILITY, 3, true);
             cropItem.setItemMeta(itemMeta);
-
             cropItem.setAmount(cropLevel);
         }
 
