@@ -2,7 +2,7 @@ package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.util.serializable.ClickableItemStack;
 import com.massivecraft.factions.util.serializable.GUIMenu;
-import com.sk89q.worldedit.entity.Player;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -24,7 +24,7 @@ public class MenuListener implements Listener {
             event.setCancelled(true);
         }
 
-        Player player = (Player)event.getWhoClicked();
+        Player player = (Player) event.getWhoClicked();
         GUIMenu menu = GUIMenu.getMenus().get(player.getUniqueId());
         if (menu != null) {
             event.setCancelled(true);
