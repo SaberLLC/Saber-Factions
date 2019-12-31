@@ -100,7 +100,8 @@ public class Conf {
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
     public static boolean factionsDrainEnabled = false;
-
+    //RESERVE
+    public static boolean useReserveSystem = true;
     //AUDIT
     public static boolean useAuditSystem = true;
 

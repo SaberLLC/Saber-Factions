@@ -734,6 +734,11 @@ public enum TL {
     COMMAND_RELOAD_TIME("&c&l[!]&7 Reloaded &call &7configuration files from disk, took &c%1$d ms."),
     COMMAND_RELOAD_DESCRIPTION("Reload data file(s) from disk"),
 
+    COMMAND_RESERVE_DESCRIPTION("Reserve any faction name for any player"),
+    COMMAND_RESERVE_SUCCESS("&a&l[!] &7You have reserved the faction &a%1$s &7for player &a%2$s"),
+    COMMAND_RESERVE_ALREADYRESERVED("&c&l[!] &7The faction &b%1$s &7has already been reserved!"),
+
+
     COMMAND_SAFEUNCLAIMALL_DESCRIPTION("Unclaim all safezone land"),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMED("&c&l[!]&7 You unclaimed&c ALL&7 safe zone land."),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG("&c&l[!]&7 &c%1$s&7 unclaimed all safe zones."),

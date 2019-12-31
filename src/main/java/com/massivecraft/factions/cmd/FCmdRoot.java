@@ -17,6 +17,7 @@ import com.massivecraft.factions.cmd.relational.CmdRelationAlly;
 import com.massivecraft.factions.cmd.relational.CmdRelationEnemy;
 import com.massivecraft.factions.cmd.relational.CmdRelationNeutral;
 import com.massivecraft.factions.cmd.relational.CmdRelationTruce;
+import com.massivecraft.factions.cmd.reserve.CmdReserve;
 import com.massivecraft.factions.cmd.roles.CmdDemote;
 import com.massivecraft.factions.cmd.roles.CmdPromote;
 import com.massivecraft.factions.cmd.tnt.CmdTnt;
@@ -166,6 +167,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdDrain cmdDrain = new CmdDrain();
     public CmdLookup cmdLookup = new CmdLookup();
     public CmdAudit cmdAudit = new CmdAudit();
+    public CmdReserve cmdReserve = new CmdReserve();
     //Variables to know if we already setup certain sub commands
     public Boolean discordEnabled = false;
     public Boolean checkEnabled = false;
@@ -315,6 +317,11 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
              this.addSubCommand(this.cmdDiscord);
              discordEnabled = true;
          }
+         //Reserve
+        if(Conf.useReserveSystem){
+            this.addSubCommand(this.cmdReserve);
+        }
+
         //PayPal
         if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled", false) && !fPayPalEnabled) {
             this.addSubCommand(this.cmdPaypalSet);

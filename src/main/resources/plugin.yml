@@ -13,6 +13,7 @@ permissions:
   factions.kit.admin:
     description: All faction permissions.
     children:
+      factions.reserve: true
       factions.kit.mod: true
       factions.config: true
       factions.convert: true

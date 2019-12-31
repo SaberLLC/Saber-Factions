@@ -14,6 +14,8 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
+import com.massivecraft.factions.cmd.reserve.ListParameterizedType;
+import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.discord.DiscordListener;
 import com.massivecraft.factions.integration.Econ;
@@ -54,6 +56,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.OpenOption;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -94,6 +99,7 @@ public class FactionsPlugin extends MPlugin {
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     private Worldguard wg;
     private FLogManager fLogManager;
+    private List<ReserveObject> reserveObjects;
 
 
     public FactionsPlugin() {
@@ -300,6 +306,28 @@ public class FactionsPlugin extends MPlugin {
         this.getCommand(refCommand).setExecutor(cmdBase);
 
         if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
+        reserveObjects = new ArrayList<>();
+        String path = Paths.get(this.getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
+        File file = new File(path);
+        try {
+            String json;
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+            json = String.join("", Files.readAllLines(Paths.get(file.getPath()))).replace("\n", "").replace("\r", "");
+            if (json.equalsIgnoreCase("")) {
+                Files.write(Paths.get(path), "[]".getBytes());
+                json = "[]";
+            }
+            reserveObjects = this.getGsonBuilder().create().fromJson(json, new ListParameterizedType(ReserveObject.class));
+            if (reserveObjects == null) {
+                reserveObjects = new ArrayList<>();
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
 
         if (getDescription().getFullName().contains("BETA")) {
             divider();
@@ -687,6 +715,10 @@ public class FactionsPlugin extends MPlugin {
     // Get a list of all faction tags (names)
     public Set<String> getFactionTags() {
         return Factions.getInstance().getFactionTags();
+    }
+
+    public List<ReserveObject> getFactionReserves() {
+        return this.reserveObjects;
     }
 
     // Get a list of all players in the specified faction
