@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
+import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
@@ -40,6 +41,11 @@ public class CmdClaimAt extends FCommand {
         FLocation location = new FLocation(context.argAsString(0), x, z);
         context.fPlayer.attemptClaim(context.faction, location, true);
         FactionsPlugin.instance.logFactionEvent(context.fPlayer.getFaction(), FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (location).formatXAndZ(","));
+        showMap(context);
+    }
+
+    public void showMap(CommandContext context) {
+        context.sendFancyMessage(Board.getInstance().getMap(context.fPlayer, new FLocation(context.fPlayer), context.player.getLocation().getYaw()));
     }
 
 
