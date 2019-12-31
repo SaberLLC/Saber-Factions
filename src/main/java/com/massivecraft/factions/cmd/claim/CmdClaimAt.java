@@ -39,7 +39,7 @@ public class CmdClaimAt extends FCommand {
         int z = context.argAsInt(2);
         FLocation location = new FLocation(context.argAsString(0), x, z);
         context.fPlayer.attemptClaim(context.faction, location, true);
-        FactionsPlugin.instance.logFactionEvent(context.fPlayer.getFaction(), FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (new FLocation(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
+        FactionsPlugin.instance.logFactionEvent(context.fPlayer.getFaction(), FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (location).formatXAndZ(","));
     }
 
 
