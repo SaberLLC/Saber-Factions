@@ -31,11 +31,9 @@ public class FAuditMenu extends GUIMenu {
     }
 
     public void drawItems() {
-        int index = 0;
         for (FLogType type : FLogType.values()) {
             if (type.getSlot() == -1) continue;
             if (type != FLogType.F_TNT || FactionsPlugin.getInstance().getConfig().getBoolean("f-points.Enabled")) {
-                if (index == 9) index = FactionsPlugin.getInstance().getConfig().getBoolean("f-points.Enabled") ? 11 : 12;
                 FactionLogs logs = FactionsPlugin.instance.getFlogManager().getFactionLogMap().get(faction.getId());
                 if (logs == null) logs = new FactionLogs();
                 LinkedList<FactionLogs.FactionLog> recentLogs = logs.getMostRecentLogs().get(type);
@@ -57,7 +55,7 @@ public class FAuditMenu extends GUIMenu {
                 lore.add("");
                 if (logsLeft > 0) lore.add(CC.Yellow + "Left-Click " + CC.Gray + "to view more logs");
                 lore.add(CC.Yellow + "Right-Click " + CC.Gray + "to toggle timestamps");
-                setItem(index++, (new ClickableItemStack((new ItemBuilder(type.getMaterial())).name(CC.GreenB + type.getDisplayName()).lore(lore).build())).setClickCallback((click) -> {
+                setItem(type.getSlot(), (new ClickableItemStack((new ItemBuilder(type.getMaterial())).name(CC.GreenB + type.getDisplayName()).lore(lore).build())).setClickCallback((click) -> {
                     click.setCancelled(true);
                     if (click.getClick() == ClickType.RIGHT) {
                         showTimestamps = !showTimestamps;
@@ -72,7 +70,6 @@ public class FAuditMenu extends GUIMenu {
                 }));
             }
         }
-
     }
 
     static class FAuditLogMenu extends GUIMenu {
