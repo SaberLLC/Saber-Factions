@@ -61,6 +61,7 @@ public class CmdClaim extends FCommand {
         if (radius < 2) {
             // single chunk
             context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true);
+            FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (new FLocation(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(context.sender, true)) {
