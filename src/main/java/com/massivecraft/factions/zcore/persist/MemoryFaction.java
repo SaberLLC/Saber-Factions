@@ -339,7 +339,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public void disband(Player disbander, PlayerDisbandReason reason) {
 
         boolean disbanderIsConsole = disbander == null;
-        FPlayer fdisbander = FPlayers.getInstance().getByOfflinePlayer(disbander);
+        FPlayer fdisbander = null;
+        if(!disbanderIsConsole){
+          fdisbander=  FPlayers.getInstance().getByOfflinePlayer(disbander);
+        }
+
 
         FactionDisbandEvent disbandEvent = new FactionDisbandEvent(disbander, this.getId(), reason);
         Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
