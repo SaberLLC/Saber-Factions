@@ -63,24 +63,16 @@ public class JSONFPlayers extends MemoryFPlayers {
 
     public void load() {
         Map<String, JSONFPlayer> fplayers = this.loadCore();
-        if (fplayers == null) {
-            return;
-        }
+        if (fplayers == null) return;
         this.fPlayers.clear();
         this.fPlayers.putAll(fplayers);
         FactionsPlugin.getInstance().log("Loaded " + fPlayers.size() + " players");
     }
 
     private Map<String, JSONFPlayer> loadCore() {
-        if (!this.file.exists()) {
-            return new HashMap<>();
-        }
-
+        if (!this.file.exists()) return new HashMap<>();
         String content = DiscUtil.readCatch(this.file);
-        if (content == null) {
-            return null;
-        }
-
+        if (content == null) return null;
         Map<String, JSONFPlayer> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
         }.getType());
         Set<String> list = new HashSet<>();
@@ -161,12 +153,12 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     private boolean doesKeyNeedMigration(String key) {
-        if (!key.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
+        if (!key.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"))
             // Not a valid UUID..
             // Valid playername, we'll mark this as one for conversion
             // to UUID
             return key.matches("[a-zA-Z0-9_]{2,16}");
-        }
+
         return false;
     }
 

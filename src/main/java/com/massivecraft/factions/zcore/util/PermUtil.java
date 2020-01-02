@@ -28,14 +28,12 @@ public class PermUtil {
      */
     public final void setup() {
         for (Permission permission : p.getDescription().getPermissions()) {
-            //plugin.log("\""+permission.getName()+"\" = \""+permission.getDescription()+"\"");
             this.permissionDescriptions.put(permission.getName(), permission.getDescription());
         }
     }
 
     public String getPermissionDescription(String perm) {
         String desc = permissionDescriptions.get(perm);
-
         return desc != null ? desc : TL.GENERIC_DOTHAT.toString();
     }
 
@@ -47,28 +45,22 @@ public class PermUtil {
     }
 
     public boolean has(CommandSender me, String perm, boolean informSenderIfNot) {
-        if (has(me, perm)) {
+        if (has(me, perm))
             return true;
-        } else if (informSenderIfNot && me != null) {
+         else if (informSenderIfNot && me != null)
             me.sendMessage(this.getForbiddenMessage(perm));
-        }
         return false;
     }
 
     public <T> T pickFirstVal(CommandSender me, Map<String, T> perm2val) {
-        if (perm2val == null) {
-            return null;
-        }
+        if (perm2val == null) return null;
         T ret = null;
-
         for (Entry<String, T> entry : perm2val.entrySet()) {
             ret = entry.getValue();
             if (has(me, entry.getKey())) {
                 break;
             }
         }
-
         return ret;
     }
-
 }

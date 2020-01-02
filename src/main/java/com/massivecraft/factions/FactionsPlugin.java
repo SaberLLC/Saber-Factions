@@ -31,7 +31,8 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.fupgrades.*;
+import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
+import com.massivecraft.factions.zcore.fupgrades.UpgradesListener;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
@@ -39,8 +40,6 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -54,7 +53,6 @@ import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -144,7 +142,7 @@ public class FactionsPlugin extends MPlugin {
     }
 
     public void playSound(Player p, String sound) {
-        float pitch = Float.valueOf(sound.split(":")[1]);
+        float pitch = Float.parseFloat(sound.split(":")[1]);
         sound = sound.split(":")[0];
         p.playSound(p.getLocation(), Sound.valueOf(sound), pitch, 5.0F);
     }

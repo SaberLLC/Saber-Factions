@@ -16,9 +16,7 @@ public class SaveTask implements Runnable {
     }
 
     public void run() {
-        if (!p.getAutoSave() || running) {
-            return;
-        }
+        if (!p.getAutoSave() || running) return;
         running = true;
         p.preAutoSave();
         Factions.getInstance().forceSave(false);

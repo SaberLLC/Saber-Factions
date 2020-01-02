@@ -49,9 +49,8 @@ public class JSONFactions extends MemoryFactions {
 
     public void forceSave(boolean sync) {
         final Map<String, JSONFaction> entitiesThatShouldBeSaved = new HashMap<>();
-        for (Faction entity : this.factions.values()) {
+        for (Faction entity : this.factions.values())
             entitiesThatShouldBeSaved.put(entity.getId(), (JSONFaction) entity);
-        }
 
         saveCore(file, entitiesThatShouldBeSaved, sync);
     }
@@ -62,24 +61,16 @@ public class JSONFactions extends MemoryFactions {
 
     public void load() {
         Map<String, JSONFaction> factions = this.loadCore();
-        if (factions == null) {
-            return;
-        }
+        if (factions == null) return;
         this.factions.putAll(factions);
-
         super.load();
         FactionsPlugin.getInstance().log("Loaded " + factions.size() + " Factions");
     }
 
     private Map<String, JSONFaction> loadCore() {
-        if (!this.file.exists()) {
-            return new HashMap<>();
-        }
-
+        if (!this.file.exists()) return new HashMap<>();
         String content = DiscUtil.readCatch(this.file);
-        if (content == null) {
-            return null;
-        }
+        if (content == null) return null;
 
         Map<String, JSONFaction> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFaction>>() {
         }.getType());
@@ -95,9 +86,7 @@ public class JSONFactions extends MemoryFactions {
             f.setId(id);
             this.updateNextIdForId(id);
             needsUpdate += whichKeysNeedMigration(f.getInvites()).size();
-            for (Set<String> keys : f.getClaimOwnership().values()) {
-                needsUpdate += whichKeysNeedMigration(keys).size();
-            }
+            for (Set<String> keys : f.getClaimOwnership().values()) needsUpdate += whichKeysNeedMigration(keys).size();
         }
 
         if (needsUpdate > 0) {
@@ -198,9 +187,7 @@ public class JSONFactions extends MemoryFactions {
     // -------------------------------------------- //
 
     public String getNextId() {
-        while (!isIdFree(this.nextId)) {
-            this.nextId += 1;
-        }
+        while (!isIdFree(this.nextId)) this.nextId += 1;
         return Integer.toString(this.nextId);
     }
 
@@ -213,9 +200,7 @@ public class JSONFactions extends MemoryFactions {
     }
 
     protected synchronized void updateNextIdForId(int id) {
-        if (this.nextId < id) {
-            this.nextId = id + 1;
-        }
+        if (this.nextId < id) this.nextId = id + 1;
     }
 
     protected void updateNextIdForId(String id) {

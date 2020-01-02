@@ -14,7 +14,6 @@ import java.util.Set;
 public class FLocation implements Serializable {
     private static final long serialVersionUID = -8292915234027387983L;
     private static final boolean worldBorderSupport;
-
     static {
         boolean worldBorderClassPresent = false;
         try {
@@ -22,7 +21,6 @@ public class FLocation implements Serializable {
             worldBorderClassPresent = true;
         } catch (ClassNotFoundException ignored) {
         }
-
         worldBorderSupport = worldBorderClassPresent;
     }
 
@@ -45,7 +43,7 @@ public class FLocation implements Serializable {
     }
 
     public FLocation(Location location) {
-        this(location.getWorld().getName(), blockToChunk(location.getBlockX()), blockToChunk(location.getBlockZ()));
+        this(Objects.requireNonNull(location.getWorld()).getName(), blockToChunk(location.getBlockX()), blockToChunk(location.getBlockZ()));
     }
 
     public FLocation(Player player) {
@@ -180,9 +178,9 @@ public class FLocation implements Serializable {
     }
 
     public boolean isInChunk(Location loc) {
-        if (loc == null) {
-            return false;
-        }
+        if(loc == null) return false;
+        if(loc.getWorld() == null) return false;
+
         Chunk chunk = loc.getChunk();
         return loc.getWorld().getName().equalsIgnoreCase(getWorldName()) && chunk.getX() == x && chunk.getZ() == z;
     }
@@ -194,18 +192,23 @@ public class FLocation implements Serializable {
      * @return whether this location is outside of the border
      */
     public boolean isOutsideWorldBorder(int buffer) {
-        if (!worldBorderSupport) {
-            return false;
-        }
-
+        if (!worldBorderSupport) return false;
         WorldBorder border = getWorld().getWorldBorder();
-        Chunk chunk = border.getCenter().getChunk();
+        Location center = border.getCenter();
+        double size = border.getSize();
 
-        int lim = FLocation.chunkToRegion((int) border.getSize()) - buffer;
-        int diffX = chunk.getX() - x;
-        int diffZ = chunk.getZ() - z;
+        int bufferBlocks = buffer << 4;
 
-        return (diffX > lim || diffZ > lim) || (-diffX >= lim || -diffZ >= lim);
+        double borderMinX = (center.getX() - size / 2.0D) + bufferBlocks;
+        double borderMinZ = (center.getZ() - size / 2.0D) + bufferBlocks;
+        double borderMaxX = (center.getX() + size / 2.0D) - bufferBlocks;
+        double borderMaxZ = (center.getZ() + size / 2.0D) - bufferBlocks;
+
+        int chunkMinX = this.x << 4;
+        int chunkMaxX = chunkMinX | 15;
+        int chunkMinZ = this.z << 4;
+        int chunkMaxZ = chunkMinZ | 15;
+        return (chunkMinX >= borderMaxX) || (chunkMinZ >= borderMaxZ) || (chunkMaxX <= borderMinX) || (chunkMaxZ <= borderMinZ);
     }
 
     //----------------------------------------------//
@@ -215,10 +218,7 @@ public class FLocation implements Serializable {
         double radiusSquared = radius * radius;
 
         Set<FLocation> ret = new LinkedHashSet<>();
-        if (radius <= 0) {
-            return ret;
-        }
-
+        if (radius <= 0) return ret;
         int xfrom = (int) Math.floor(this.x - radius);
         int xto = (int) Math.ceil(this.x + radius);
         int zfrom = (int) Math.floor(this.z - radius);
@@ -232,7 +232,6 @@ public class FLocation implements Serializable {
                 }
             }
         }
-
         return ret;
     }
 
@@ -248,13 +247,8 @@ public class FLocation implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (!(obj instanceof FLocation)) {
-            return false;
-        }
-
+        if (obj == this) return true;
+        if (!(obj instanceof FLocation)) return false;
         FLocation that = (FLocation) obj;
         return this.x == that.x && this.z == that.z && (Objects.equals(this.worldName, that.worldName));
     }

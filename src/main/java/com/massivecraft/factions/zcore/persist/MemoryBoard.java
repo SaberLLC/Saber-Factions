@@ -338,7 +338,7 @@ public abstract class MemoryBoard extends Board {
 
     public abstract void convertFrom(MemoryBoard old);
 
-    public class MemoryBoardMap extends HashMap<FLocation, String> {
+    public static class MemoryBoardMap extends HashMap<FLocation, String> {
         private static final long serialVersionUID = -6689617828610585368L;
 
         Multimap<String, FLocation> factionToLandMap = HashMultimap.create();

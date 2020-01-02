@@ -203,17 +203,11 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setFaction(Faction faction, boolean alt) {
         Faction oldFaction = this.getFaction();
         if (oldFaction != null) {
-            if (this.isAlt()) {
-                oldFaction.removeAltPlayer(this);
-            }
-
+            if (this.isAlt()) oldFaction.removeAltPlayer(this);
             oldFaction.removeFPlayer(this);
         }
-        if (alt) {
-            faction.addAltPlayer(this);
-        } else {
-            faction.addFPlayer(this);
-        }
+        if (alt) faction.addAltPlayer(this);
+         else faction.addFPlayer(this);
         this.factionId = faction.getId();
     }
 
@@ -263,18 +257,12 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public Role getRole() {
         // Hack to fix null roles..
-        if (role == null) {
-            this.role = Role.NORMAL;
-        }
-
+        if (role == null) this.role = Role.NORMAL;
         return this.role;
     }
 
     public void setRole(Role role) {
-        if (this.role == role) {
-            return;
-        }
-
+        if (this.role == role) return;
         FPlayerRoleChangeEvent event = new FPlayerRoleChangeEvent(getFaction(), this, role);
         Bukkit.getPluginManager().callEvent(event);
 
@@ -343,10 +331,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setIsAutoSafeClaimEnabled(boolean enabled) {
         this.autoSafeZoneEnabled = enabled;
-        if (enabled) {
-            this.autoClaimFor = null;
+        if (enabled) this.autoClaimFor = null;
             this.autoWarZoneEnabled = false;
-        }
     }
 
     public boolean isAutoWarClaimEnabled() {
@@ -355,10 +341,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setIsAutoWarClaimEnabled(boolean enabled) {
         this.autoWarZoneEnabled = enabled;
-        if (enabled) {
-            this.autoClaimFor = null;
+        if (enabled) this.autoClaimFor = null;
             this.autoSafeZoneEnabled = false;
-        }
     }
 
     public boolean isAdminBypassing() {
@@ -374,9 +358,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public ChatMode getChatMode() {
-        if (this.factionId.equals("0") || !Conf.factionOnlyChat) {
-            this.chatMode = ChatMode.PUBLIC;
-        }
+        if (this.factionId.equals("0") || !Conf.factionOnlyChat) this.chatMode = ChatMode.PUBLIC;
         return chatMode;
     }
 
@@ -417,22 +399,14 @@ public abstract class MemoryFPlayer implements FPlayer {
             try {
                 if (Discord.useDiscord && this.discordSetup() && Discord.isInMainGuild(this.discordUser()) && Discord.mainGuild != null) {
                     Member m = Discord.mainGuild.getMember(this.discordUser());
-                    if (Conf.leaderRoles && this.role == Role.LEADER && Discord.leader != null) {
-                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.leader).queue();
-                    }
-                    if (Conf.factionRoles) {
-                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getFaction().getTag()))).queue();
-                    }
-                    if (Conf.factionDiscordTags) {
-                        Discord.resetNick(this);
-                    }
+                    if (Conf.leaderRoles && this.role == Role.LEADER && Discord.leader != null) Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.leader).queue();
+                    if (Conf.factionRoles) Discord.mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getFaction().getTag()))).queue();
+                    if (Conf.factionDiscordTags) Discord.resetNick(this);
                 }
             } catch (HierarchyException e) {System.out.print(e.getMessage());}
             //End Discord
             currentFaction.removeFPlayer(this);
-            if (currentFaction.isNormal()) {
-                currentFaction.clearClaimOwnership(this);
-            }
+            if (currentFaction.isNormal()) currentFaction.clearClaimOwnership(this);
         }
 
         this.factionId = "0"; // The default neutral faction
@@ -455,9 +429,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         losePowerFromBeingOffline();
         this.lastLoginTime = lastLoginTime;
         this.lastPowerUpdateTime = lastLoginTime;
-        if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) {
-            this.loginPvpDisabled = true;
-        }
+        if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) this.loginPvpDisabled = true;
+
     }
 
     public boolean isMapAutoUpdating() {
@@ -475,9 +448,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     // Base:
 
     public boolean hasLoginPvpDisabled() {
-        if (!loginPvpDisabled) {
-            return false;
-        }
+        if (!loginPvpDisabled) return false;
         if (this.lastLoginTime + (Conf.noPVPDamageToOthersForXSecondsAfterLogin * 1000) < System.currentTimeMillis()) {
             this.loginPvpDisabled = false;
             return false;
@@ -499,10 +470,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setTitle(CommandSender sender, String title) {
         // Check if the setter has it.
-        if (sender.hasPermission(Permission.TITLE_COLOR.node)) {
-            title = ChatColor.translateAlternateColorCodes('&', title);
-        }
-
+        if (sender.hasPermission(Permission.TITLE_COLOR.node)) title = ChatColor.translateAlternateColorCodes('&', title);
         this.title = title;
     }
 
@@ -532,9 +500,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public String getNameAndSomething(String something) {
         String ret = this.role.getPrefix();
-        if (something.length() > 0) {
-            ret += something + " ";
-        }
+        if (something.length() > 0) ret += something + " ";
         ret += this.getName();
         return ret;
     }
@@ -581,7 +547,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public int getDeaths() {
         return isOnline() ? getPlayer().getStatistic(Statistic.DEATHS) : this.deaths;
-
     }
 
     @Override
@@ -618,9 +583,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     //----------------------------------------------//
     public void heal(int amnt) {
         Player player = this.getPlayer();
-        if (player == null) {
-            return;
-        }
+        if (player == null) return;
         player.setHealth(player.getHealth() + amnt);
     }
 
@@ -634,11 +597,10 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void alterPower(double delta) {
         this.power += delta;
-        if (this.power > this.getPowerMax()) {
+        if (this.power > this.getPowerMax())
             this.power = this.getPowerMax();
-        } else if (this.power < this.getPowerMin()) {
+         else if (this.power < this.getPowerMin())
             this.power = this.getPowerMin();
-        }
     }
 
     public double getPowerMax() {
@@ -670,9 +632,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void updatePower() {
         if (this.isOffline()) {
             losePowerFromBeingOffline();
-            if (!Conf.powerRegenOffline) {
-                return;
-            }
+            if (!Conf.powerRegenOffline) return;
         } else if (hasFaction() && getFaction().isPowerFrozen()) {
             return; // Don't let power regen if faction power is frozen.
         }
@@ -682,19 +642,13 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.lastPowerUpdateTime = now;
 
         Player thisPlayer = this.getPlayer();
-        if (thisPlayer != null && thisPlayer.isDead()) {
-            return;  // don't let dead players regain power until they respawn
-        }
-
+        if (thisPlayer != null && thisPlayer.isDead()) return;  // don't let dead players regain power until they respawn
         PowerRegenEvent powerRegenEvent = new PowerRegenEvent(getFaction(), this);
         Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent));
 
         if (!powerRegenEvent.isCancelled())
-            if (!powerRegenEvent.usingCustomPower()) {
-                this.alterPower(millisPassed * Conf.powerPerMinute / 60000); // millisPerMinute : 60 * 1000
-            } else {
-                this.alterPower(+powerRegenEvent.getCustomPower());
-            }
+            if (!powerRegenEvent.usingCustomPower()) this.alterPower(millisPassed * Conf.powerPerMinute / 60000); // millisPerMinute : 60 * 1000
+             else this.alterPower(+powerRegenEvent.getCustomPower());
     }
 
     public void losePowerFromBeingOffline() {
@@ -704,9 +658,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             this.lastPowerUpdateTime = now;
 
             double loss = millisPassed * Conf.powerOfflineLossPerDay / (24 * 60 * 60 * 1000);
-            if (this.power - loss < Conf.powerOfflineLossLimit) {
-                loss = this.power;
-            }
+            if (this.power - loss < Conf.powerOfflineLossLimit) loss = this.power;
             this.alterPower(-loss);
         }
     }
@@ -714,9 +666,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void onDeath() {
         this.updatePower();
         this.alterPower(-Conf.powerPerDeath);
-        if (hasFaction()) {
-            getFaction().setLastDeath(System.currentTimeMillis());
-        }
+        if (hasFaction()) getFaction().setLastDeath(System.currentTimeMillis());
     }
 
     //----------------------------------------------//
@@ -750,9 +700,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
             showChat = FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.also-send-chat", true);
         }
-        if (showChat) {
-            this.sendMessage(FactionsPlugin.getInstance().txt.parse(TL.FACTION_LEAVE.format(from.getTag(this), toShow.getTag(this))));
-        }
+        if (showChat) this.sendMessage(FactionsPlugin.getInstance().txt.parse(TL.FACTION_LEAVE.format(from.getTag(this), toShow.getTag(this))));
     }
 
     // -------------------------------
@@ -801,64 +749,48 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
-        if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, TL.LEAVE_TOLEAVE.toString())) {
-            return;
-        }
-
+        if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, TL.LEAVE_TOLEAVE.toString())) return;
         FPlayerLeaveEvent leaveEvent = new FPlayerLeaveEvent(this, myFaction, FPlayerLeaveEvent.PlayerLeaveReason.LEAVE);
         Bukkit.getServer().getPluginManager().callEvent(leaveEvent);
-        if (leaveEvent.isCancelled()) {
-            return;
-        }
+        if (leaveEvent.isCancelled()) return;
+
 
         // then make 'em pay (if applicable)
-        if (makePay && !Econ.modifyMoney(this, -Conf.econCostLeave, TL.LEAVE_TOLEAVE.toString(), TL.LEAVE_FORLEAVE.toString())) {
+        if (makePay && !Econ.modifyMoney(this, -Conf.econCostLeave, TL.LEAVE_TOLEAVE.toString(), TL.LEAVE_FORLEAVE.toString()))
             return;
-        }
 
         // Am I the last one in the faction?
         if (myFaction.getFPlayers().size() == 1) {
             // Transfer all money
-            if (Econ.shouldBeUsed()) {
-                Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
-            }
+            if (Econ.shouldBeUsed()) Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
+
         }
 
         if (myFaction.isNormal()) {
-            for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true)) {
+            for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true))
                 fplayer.msg(TL.LEAVE_LEFT, this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
-            }
-
-            if (Conf.logFactionLeave) {
+            if (Conf.logFactionLeave)
                 FactionsPlugin.getInstance().log(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()));
-            }
         }
-
         myFaction.removeAnnouncements(this);
-
         if (this.isAlt()) {
             myFaction.removeAltPlayer(this);
             this.msg(TL.LEAVE_LEFT, this.describeTo(this, true), myFaction.describeTo(this));
         }
-
         this.resetFactionData();
         FactionsPlugin.instance.logFactionEvent(myFaction, FLogType.INVITES, this.getName(), CC.Red + "left", "the faction");
-
         setFlying(false);
-
         if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {
             // Remove this faction
-            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers())
                 fplayer.msg(TL.LEAVE_DISBANDED, myFaction.describeTo(fplayer, true));
-            }
+
 
             FactionDisbandEvent disbandEvent = new FactionDisbandEvent(getPlayer(), myFaction.getId(), PlayerDisbandReason.LEAVE);
             Bukkit.getPluginManager().callEvent(disbandEvent);
 
             Factions.getInstance().removeFaction(myFaction.getId());
-            if (Conf.logFactionDisband) {
-                FactionsPlugin.getInstance().log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName()));
-            }
+            if (Conf.logFactionDisband) FactionsPlugin.getInstance().log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName()));
         }
     }
 
@@ -942,9 +874,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
         // TODO: Add more else if statements.
 
-        if (notifyFailure && error != null) {
-            msg(error);
-        }
+        if (notifyFailure && error != null) msg(error);
         return error == null;
     }
 
@@ -1000,10 +930,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         if (!damage) {
             msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
-            if (!fly) {
-                sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
-            }
-
+            if (!fly) sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
         } else {
             msg(TL.COMMAND_FLY_DAMAGE);
         }
@@ -1021,7 +948,6 @@ public abstract class MemoryFPlayer implements FPlayer {
                 Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> setTakeFallDamage(true), 20L * cooldown);
             }
         }
-
         isFlying = fly;
     }
 
@@ -1045,14 +971,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
-        if ((faction == getFaction() && getRole() == Role.LEADER) || isAdminBypassing) {
-            return true;
-        }
-
-        if (faction.isSystemFaction()) {
-            return CmdFly.checkBypassPerms(this, getPlayer(), faction);
-        }
-
+        if ((faction == getFaction() && getRole() == Role.LEADER) || isAdminBypassing) return true;
+        if (faction.isSystemFaction()) return CmdFly.checkBypassPerms(this, getPlayer(), faction);
         Access access = faction.getAccess(this, PermissableAction.FLY);
         return access == null || access == Access.UNDEFINED || access == Access.ALLOW;
     }
@@ -1083,53 +1003,35 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void sendMessage(String msg) {
-        if (msg.contains("{null}")) {
-            return; // user wants this message to not send
-        }
+        if (msg.contains("{null}")) return; // user wants this message to not send
+
         if (msg.contains("/n/")) {
-            for (String s : msg.split("/n/")) {
-                sendMessage(s);
-            }
+            for (String s : msg.split("/n/")) sendMessage(s);
             return;
         }
         Player player = this.getPlayer();
-        if (player == null) {
-            return;
-        }
+        if (player == null) return;
         player.sendMessage(msg);
     }
 
     public void sendMessage(List<String> msgs) {
-        for (String msg : msgs) {
-            this.sendMessage(msg);
-        }
+        for (String msg : msgs) this.sendMessage(msg);
     }
 
     public void sendFancyMessage(FancyMessage message) {
         Player player = getPlayer();
-        if (player == null || !player.isOnGround()) {
-            return;
-        }
-
+        if (player == null || !player.isOnGround()) return;
         message.send(player);
     }
 
     public void sendFancyMessage(List<FancyMessage> messages) {
         Player player = getPlayer();
-        if (player == null) {
-            return;
-        }
-
-        for (FancyMessage msg : messages) {
-            msg.send(player);
-        }
+        if (player == null) return;
+        for (FancyMessage msg : messages) msg.send(player);
     }
 
     public int getMapHeight() {
-        if (this.mapHeight < 1) {
-            this.mapHeight = Conf.mapHeight;
-        }
-
+        if (this.mapHeight < 1) this.mapHeight = Conf.mapHeight;
         return this.mapHeight;
     }
 
@@ -1183,9 +1085,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     @Override
     public void addWarmup(WarmUpUtil.Warmup warmup, int taskId) {
-        if (this.warmup != null) {
-            this.clearWarmup();
-        }
+        if (this.warmup != null) this.clearWarmup();
         this.warmup = warmup;
         this.warmupTask = taskId;
     }
@@ -1194,24 +1094,15 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean checkIfNearbyEnemies() {
         Player me = this.getPlayer();
 
-        if (me == null) {
-            return false;
-        }
-
+        if (me == null) return false;
         int radius = Conf.stealthFlyCheckRadius;
         for (Entity e : me.getNearbyEntities(radius, 255, radius)) {
-            if (e == null) {
-                continue;
-            }
+            if (e == null) continue;
             if (e instanceof Player) {
                 Player eplayer = (((Player) e).getPlayer());
-                if (eplayer == null) {
-                    continue;
-                }
+                if (eplayer == null) continue;
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer == null) {
-                    continue;
-                }
+                if (efplayer == null) continue;
                 if (efplayer.isVanished()) continue;
                 if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled()) {
                     setFlying(false);
@@ -1281,10 +1172,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
         int ownedLand = forFaction.getLandRounded();
 
-        if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure)) {
-            return false;
-        }
-
+        if (!this.canClaimForFactionAtLocation(forFaction, flocation, notifyFailure)) return false;
         // if economy is enabled and they're not on the bypass list, make sure they can pay
         boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone() && (Conf.econCostClaimWilderness != 0);
         double cost = 0.0;
@@ -1303,42 +1191,33 @@ public abstract class MemoryFPlayer implements FPlayer {
                 payee = this;
             }
 
-            if (!Econ.hasAtLeast(payee, cost, TL.CLAIM_TOCLAIM.toString())) {
-                return false;
-            }
+            if (!Econ.hasAtLeast(payee, cost, TL.CLAIM_TOCLAIM.toString())) return false;
         }
 
         LandClaimEvent claimEvent = new LandClaimEvent(flocation, forFaction, this);
         Bukkit.getPluginManager().callEvent(claimEvent);
-        if (claimEvent.isCancelled()) {
-            return false;
-        }
+        if (claimEvent.isCancelled()) return false;
 
         // then make 'em pay (if applicable)
-        if (mustPay && !Econ.modifyMoney(payee, -cost, TL.CLAIM_TOCLAIM.toString(), TL.CLAIM_FORCLAIM.toString())) {
+        if (mustPay && !Econ.modifyMoney(payee, -cost, TL.CLAIM_TOCLAIM.toString(), TL.CLAIM_FORCLAIM.toString()))
             return false;
-        }
 
         // Was an over claim
-        if (mustPay && currentFaction.isNormal() && currentFaction.hasLandInflation()) {
+        if (mustPay && currentFaction.isNormal() && currentFaction.hasLandInflation())
             // Give them money for over claiming.
             Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
-        }
+
 
         // announce success
         Set<FPlayer> informTheseFPlayers = new HashSet<>();
         informTheseFPlayers.add(this);
         informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
-        for (FPlayer fp : informTheseFPlayers) {
+        for (FPlayer fp : informTheseFPlayers)
             fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
-        }
+
 
         Board.getInstance().setFactionAt(forFaction, flocation);
-
-        if (Conf.logLandClaims) {
-            FactionsPlugin.getInstance().log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
-        }
-
+        if (Conf.logLandClaims) FactionsPlugin.getInstance().log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
         return true;
     }
 
@@ -1358,7 +1237,6 @@ public abstract class MemoryFPlayer implements FPlayer {
             case LEADER:
                 return Conf.prefixLeader;
         }
-
         return null;
     }
 
