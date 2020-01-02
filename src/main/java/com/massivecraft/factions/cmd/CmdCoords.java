@@ -13,8 +13,7 @@ public class CmdCoords extends FCommand {
 
     public CmdCoords() {
         super();
-        this.aliases.add("coords");
-        this.aliases.add("coord");
+        this.aliases.addAll(Aliases.coords);
 
         this.requirements = new CommandRequirements.Builder(Permission.COORD)
                 .playerOnly()

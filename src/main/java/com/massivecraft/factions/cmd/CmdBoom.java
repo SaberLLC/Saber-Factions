@@ -12,9 +12,7 @@ public class CmdBoom extends FCommand {
 
     public CmdBoom() {
         super();
-        this.aliases.add("noboom");
-        this.aliases.add("explosions");
-        this.aliases.add("toggleexplosions");
+        this.aliases.addAll(Aliases.boom);
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");

@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.check;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -16,7 +17,7 @@ public class CmdWeeWoo extends FCommand {
      */
 
     public CmdWeeWoo() {
-        this.aliases.add("weewoo");
+        this.aliases.addAll(Aliases.weewoo);
         this.requiredArgs.add("start/stop");
 
         this.requirements = new CommandRequirements.Builder(Permission.CHECK)

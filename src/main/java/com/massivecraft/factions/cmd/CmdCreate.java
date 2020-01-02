@@ -25,7 +25,7 @@ public class CmdCreate extends FCommand {
 
     public CmdCreate() {
         super();
-        this.aliases.add("create");
+        this.aliases.addAll(Aliases.create);
 
         this.requiredArgs.add("faction tag");
 

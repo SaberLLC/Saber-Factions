@@ -19,10 +19,7 @@ public class CmdColeader extends FCommand {
 
     public CmdColeader() {
         super();
-        this.aliases.add("co");
-        this.aliases.add("setcoleader");
-        this.aliases.add("coleader");
-        this.aliases.add("setco");
+        this.aliases.addAll(Aliases.coleader);
 
         this.optionalArgs.put("player name", "name");
 

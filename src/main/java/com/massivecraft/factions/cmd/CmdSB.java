@@ -11,8 +11,7 @@ public class CmdSB extends FCommand {
      */
 
     public CmdSB() {
-        this.aliases.add("sb");
-        this.aliases.add("scoreboard");
+        this.aliases.addAll(Aliases.scoreboard);
 
         this.requirements = new CommandRequirements.Builder(Permission.SCOREBOARD)
                 .playerOnly()

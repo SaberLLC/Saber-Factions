@@ -15,7 +15,7 @@ public class CmdMap extends FCommand {
 
     public CmdMap() {
         super();
-        this.aliases.add("map");
+        this.aliases.addAll(Aliases.map_map);
         this.optionalArgs.put("on/off", "once");
 
         this.requirements = new CommandRequirements.Builder(Permission.MAP)

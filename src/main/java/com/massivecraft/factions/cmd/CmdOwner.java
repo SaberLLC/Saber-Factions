@@ -14,7 +14,7 @@ public class CmdOwner extends FCommand {
 
     public CmdOwner() {
         super();
-        this.aliases.add("owner");
+        this.aliases.addAll(Aliases.owner_owner);
         this.optionalArgs.put("player name", "you");
 
         this.requirements = new CommandRequirements.Builder(Permission.OWNER)

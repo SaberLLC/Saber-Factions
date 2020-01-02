@@ -11,7 +11,7 @@ public class CmdSetBanner extends FCommand {
 
     public CmdSetBanner() {
         super();
-        aliases.add("setbanner");
+        aliases.addAll(Aliases.setBanner);
 
         this.requirements = new CommandRequirements.Builder(Permission.BANNER)
                 .playerOnly()

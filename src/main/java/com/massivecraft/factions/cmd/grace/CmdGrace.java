@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd.grace;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -16,7 +17,7 @@ public class CmdGrace extends FCommand {
 
     public CmdGrace() {
         super();
-        this.aliases.add("grace");
+        this.aliases.addAll(Aliases.grace);
 
         this.requirements = new CommandRequirements.Builder(Permission.GRACE)
                 .build();

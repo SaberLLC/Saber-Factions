@@ -12,7 +12,7 @@ public class CmdBypass extends FCommand {
 
     public CmdBypass() {
         super();
-        this.aliases.add("bypass");
+        this.aliases.addAll(Aliases.bypass);
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");

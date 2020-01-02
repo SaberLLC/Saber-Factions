@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.tnt;
 
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -22,7 +23,7 @@ public class CmdTnt extends FCommand {
 
     public CmdTnt() {
         super();
-        this.aliases.add("tnt");
+        this.aliases.addAll(Aliases.tnt_tnt);
         this.optionalArgs.put("add/take/addall", "");
         this.optionalArgs.put("amount", "number");
 

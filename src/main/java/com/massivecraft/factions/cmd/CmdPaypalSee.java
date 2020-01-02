@@ -12,8 +12,7 @@ public class CmdPaypalSee extends FCommand {
      */
 
     public CmdPaypalSee() {
-        this.aliases.add("seepaypal");
-        this.aliases.add("paypal");
+        this.aliases.addAll(Aliases.paypal_see);
 
         this.optionalArgs.put("faction", "yours");
 

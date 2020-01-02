@@ -31,7 +31,7 @@ public class CmdFly extends FCommand {
 
     public CmdFly() {
         super();
-        this.aliases.add("fly");
+        this.aliases.addAll(Aliases.fly);
         this.optionalArgs.put("on/off", "flip");
 
         this.requirements = new CommandRequirements.Builder(Permission.FLY)

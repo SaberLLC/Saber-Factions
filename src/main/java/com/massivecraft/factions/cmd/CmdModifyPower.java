@@ -13,10 +13,7 @@ public class CmdModifyPower extends FCommand {
     public CmdModifyPower() {
         super();
 
-        this.aliases.add("pm");
-        this.aliases.add("mp");
-        this.aliases.add("modifypower");
-        this.aliases.add("modpower");
+        this.aliases.addAll(Aliases.modifyPower);
 
         this.requiredArgs.add("name");
         this.requiredArgs.add("power");

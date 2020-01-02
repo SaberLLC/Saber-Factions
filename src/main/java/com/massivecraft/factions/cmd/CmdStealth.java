@@ -10,8 +10,7 @@ public class CmdStealth extends FCommand {
      */
 
     public CmdStealth() {
-        this.aliases.add("ninja");
-        this.aliases.add("stealth");
+        this.aliases.addAll(Aliases.stealth);
 
         this.requirements = new CommandRequirements.Builder(Permission.STEALTH)
                 .playerOnly()

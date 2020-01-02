@@ -21,8 +21,7 @@ public class CmdShow extends FCommand {
     List<String> defaults = new ArrayList<>();
 
     public CmdShow() {
-        this.aliases.add("show");
-        this.aliases.add("who");
+        this.aliases.addAll(Aliases.show_show);
 
         // add defaults to /f show in case config doesnt have it
         defaults.add("{header}");

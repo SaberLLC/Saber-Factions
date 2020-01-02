@@ -16,7 +16,7 @@ public class CmdReload extends FCommand {
 
     public CmdReload() {
         super();
-        this.aliases.add("reload");
+        this.aliases.addAll(Aliases.reload);
 
         this.requirements = new CommandRequirements.Builder(Permission.RELOAD).build();
     }

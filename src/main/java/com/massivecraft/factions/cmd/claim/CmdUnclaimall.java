@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -20,8 +21,7 @@ public class CmdUnclaimall extends FCommand {
      */
 
     public CmdUnclaimall() {
-        this.aliases.add("unclaimall");
-        this.aliases.add("declaimall");
+        this.aliases.addAll(Aliases.unclaim_all_unsafe);
 
         this.optionalArgs.put("faction", "yours");
 

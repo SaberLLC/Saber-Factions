@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.alts;
 import com.google.common.base.Joiner;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -19,8 +20,7 @@ public class CmdAltsList extends FCommand {
 
     public CmdAltsList() {
         super();
-        this.aliases.add("list");
-        this.aliases.add("l");
+        this.aliases.addAll(Aliases.alts_list);
         this.optionalArgs.put("faction", "yours");
 
 

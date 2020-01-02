@@ -16,8 +16,7 @@ public class CmdStatus extends FCommand {
 
     public CmdStatus() {
         super();
-        this.aliases.add("status");
-        this.aliases.add("s");
+        this.aliases.addAll(Aliases.status);
 
         this.requirements = new CommandRequirements.Builder(Permission.STATUS)
                 .playerOnly()

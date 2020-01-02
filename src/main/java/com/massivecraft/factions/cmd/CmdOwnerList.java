@@ -15,7 +15,7 @@ public class CmdOwnerList extends FCommand {
 
     public CmdOwnerList() {
         super();
-        this.aliases.add("ownerlist");
+        this.aliases.addAll(Aliases.owner_list);
 
         this.requirements = new CommandRequirements.Builder(Permission.OWNERLIST)
                 .playerOnly()

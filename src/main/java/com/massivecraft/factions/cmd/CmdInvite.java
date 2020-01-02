@@ -19,8 +19,7 @@ public class CmdInvite extends FCommand {
 
     public CmdInvite() {
         super();
-        this.aliases.add("invite");
-        this.aliases.add("inv");
+        this.aliases.addAll(Aliases.invite);
 
         this.requiredArgs.add("player name");
 

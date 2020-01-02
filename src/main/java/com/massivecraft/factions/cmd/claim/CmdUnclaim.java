@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -23,8 +24,7 @@ public class CmdUnclaim extends FCommand {
      */
 
     public CmdUnclaim() {
-        this.aliases.add("unclaim");
-        this.aliases.add("declaim");
+        this.aliases.addAll(Aliases.unclaim_unclaim);
 
         this.optionalArgs.put("radius", "1");
         this.optionalArgs.put("faction", "yours");

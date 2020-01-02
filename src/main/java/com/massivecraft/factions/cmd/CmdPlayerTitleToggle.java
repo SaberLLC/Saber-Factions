@@ -7,7 +7,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdPlayerTitleToggle extends FCommand {
     public CmdPlayerTitleToggle() {
         super();
-        this.aliases.add("titles");
+        this.aliases.addAll(Aliases.titles);
         this.requirements = new CommandRequirements.Builder(Permission.TOGGLE_TITLES)
                 .build();
     }

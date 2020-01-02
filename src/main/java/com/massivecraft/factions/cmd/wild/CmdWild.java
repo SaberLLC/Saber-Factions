@@ -5,6 +5,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -28,7 +29,7 @@ public class CmdWild extends FCommand {
     public static HashSet<Player> teleporting;
     public CmdWild() {
         super();
-        this.aliases.add("wild");
+        this.aliases.addAll(Aliases.wild);
         this.requirements = new CommandRequirements.Builder(Permission.WILD)
                 .playerOnly()
                 .build();

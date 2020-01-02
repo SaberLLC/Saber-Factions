@@ -4,6 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -21,7 +22,7 @@ public class CmdClaimAt extends FCommand {
 
     public CmdClaimAt() {
         super();
-        this.aliases.add("claimat");
+        this.aliases.addAll(Aliases.claim_at);
 
         this.requiredArgs.add("world");
         this.requiredArgs.add("x");

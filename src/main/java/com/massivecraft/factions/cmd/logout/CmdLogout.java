@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.logout;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -11,7 +12,7 @@ public class CmdLogout extends FCommand {
 
     public CmdLogout() {
         super();
-        this.aliases.add("logout");
+        this.aliases.addAll(Aliases.logout);
 
         this.requirements = new CommandRequirements.Builder(Permission.LOGOUT)
                 .playerOnly()

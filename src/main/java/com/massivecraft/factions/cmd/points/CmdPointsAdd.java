@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.points;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -17,7 +18,7 @@ public class CmdPointsAdd extends FCommand {
 
     public CmdPointsAdd() {
         super();
-        this.aliases.add("add");
+        this.aliases.addAll(Aliases.points_add);
 
         this.requiredArgs.add("faction/player");
         this.requiredArgs.add("# of points");

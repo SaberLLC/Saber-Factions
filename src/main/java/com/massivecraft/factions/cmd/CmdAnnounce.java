@@ -18,8 +18,7 @@ public class CmdAnnounce extends FCommand {
 
     public CmdAnnounce() {
         super();
-        this.aliases.add("ann");
-        this.aliases.add("announce");
+        this.aliases.addAll(Aliases.announce);
 
         this.requiredArgs.add("message");
 

@@ -16,7 +16,7 @@ public class CmdGetVault extends FCommand {
 
     public CmdGetVault() {
         super();
-        this.aliases.add("getvault");
+        this.aliases.addAll(Aliases.getvault);
 
         this.requirements = new CommandRequirements.Builder(Permission.GETVAULT)
                 .playerOnly()

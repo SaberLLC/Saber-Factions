@@ -12,7 +12,7 @@ public class CmdStrikesSet extends FCommand {
 
     public CmdStrikesSet() {
         super();
-        this.aliases.add("set");
+        this.aliases.addAll(Aliases.strikes_set);
         this.requiredArgs.add(0, "faction");
         this.requiredArgs.add(1, "amount");
 

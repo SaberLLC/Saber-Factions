@@ -18,8 +18,7 @@ public class CmdDescription extends FCommand {
 
     public CmdDescription() {
         super();
-        this.aliases.add("desc");
-        this.aliases.add("description");
+        this.aliases.addAll(Aliases.description);
 
         this.requiredArgs.add("desc");
 

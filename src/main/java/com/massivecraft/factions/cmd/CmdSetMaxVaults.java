@@ -12,8 +12,7 @@ public class CmdSetMaxVaults extends FCommand {
      */
 
     public CmdSetMaxVaults() {
-        this.aliases.add("setmaxvaults");
-        this.aliases.add("smv");
+        this.aliases.addAll(Aliases.setMaxVaults);
         this.requiredArgs.add("faction");
         this.requiredArgs.add("number");
 

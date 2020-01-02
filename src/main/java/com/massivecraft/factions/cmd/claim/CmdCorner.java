@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd.claim;
 
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -23,7 +24,7 @@ public class CmdCorner extends FCommand {
      */
 
     public CmdCorner() {
-        this.aliases.add("corner");
+        this.aliases.addAll(Aliases.claim_corner);
 
 
         this.requirements = new CommandRequirements.Builder(Permission.CORNER)

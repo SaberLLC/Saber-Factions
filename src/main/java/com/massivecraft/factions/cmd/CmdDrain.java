@@ -16,7 +16,7 @@ import java.text.DecimalFormat;
  */
 public class CmdDrain extends FCommand{
     public CmdDrain(){
-        this.aliases.add("drain");
+        this.aliases.addAll(Aliases.drain);
         this.requirements = new CommandRequirements.Builder(Permission.DRAIN)
                 .playerOnly()
                 .memberOnly()

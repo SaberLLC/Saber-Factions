@@ -17,9 +17,7 @@ public class CmdFGlobal extends FCommand {
 
     public CmdFGlobal() {
         super();
-        this.aliases.add("gchat");
-        this.aliases.add("global");
-        this.aliases.add("globalchat");
+        this.aliases.addAll(Aliases.global);
 
         this.requirements = new CommandRequirements.Builder(Permission.GLOBALCHAT)
                 .playerOnly()

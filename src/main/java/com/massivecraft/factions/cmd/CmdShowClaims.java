@@ -13,8 +13,7 @@ public class CmdShowClaims extends FCommand {
      */
 
     public CmdShowClaims() {
-        this.aliases.add("showclaims");
-        this.aliases.add("showclaim");
+        this.aliases.addAll(Aliases.show_claims);
 
         this.requirements = new CommandRequirements.Builder(Permission.SHOWCLAIMS)
                 .playerOnly()

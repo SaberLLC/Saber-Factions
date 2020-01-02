@@ -13,7 +13,7 @@ public class CmdPermanentPower extends FCommand {
 
     public CmdPermanentPower() {
         super();
-        this.aliases.add("permanentpower");
+        this.aliases.addAll(Aliases.permanent_power);
         this.requiredArgs.add("faction");
         this.requiredArgs.add("power");
 

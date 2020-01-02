@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd.relational;
 
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.struct.Relation;
 
 public class CmdRelationEnemy extends FRelationCommand {
@@ -9,7 +10,7 @@ public class CmdRelationEnemy extends FRelationCommand {
      */
 
     public CmdRelationEnemy() {
-        aliases.add("enemy");
+        aliases.addAll(Aliases.relation_enemy);
         targetRelation = Relation.ENEMY;
     }
 }

@@ -23,8 +23,7 @@ public class CmdInventorySee extends FCommand {
     public CmdInventorySee() {
         super();
 
-        this.aliases.add("invsee");
-        this.aliases.add("inventorysee");
+        this.aliases.addAll(Aliases.invsee);
 
         this.requiredArgs.add("member name");
 

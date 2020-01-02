@@ -14,7 +14,7 @@ public class CmdConvert extends FCommand {
      */
 
     public CmdConvert() {
-        this.aliases.add("convert");
+        this.aliases.addAll(Aliases.convert);
         this.requiredArgs.add("[MYSQL|JSON]");
 
         this.requirements = new CommandRequirements.Builder(Permission.CONVERT)

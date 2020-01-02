@@ -23,10 +23,7 @@ public class CmdPerm extends FCommand {
 
     public CmdPerm() {
         super();
-        this.aliases.add("perm");
-        this.aliases.add("perms");
-        this.aliases.add("permission");
-        this.aliases.add("permissions");
+        this.aliases.addAll(Aliases.perm);
 
         this.optionalArgs.put("relation", "relation");
         this.optionalArgs.put("action", "action");

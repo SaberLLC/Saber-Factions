@@ -12,7 +12,7 @@ public class CmdStrikesTake extends FCommand {
 
     public CmdStrikesTake() {
         super();
-        this.aliases.add("take");
+        this.aliases.addAll(Aliases.strikes_take);
         this.requiredArgs.add(0, "faction");
         this.requiredArgs.add(1, "number of strikes");
 

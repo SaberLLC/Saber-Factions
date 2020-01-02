@@ -13,8 +13,7 @@ public class CmdSaveAll extends FCommand {
 
     public CmdSaveAll() {
         super();
-        this.aliases.add("saveall");
-        this.aliases.add("save");
+        this.aliases.addAll(Aliases.saveAll);
 
         this.requirements = new CommandRequirements.Builder(Permission.SAVE)
                 .build();
