@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.econ;
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -17,8 +18,7 @@ public class CmdMoneyBalance extends FCommand {
 
     public CmdMoneyBalance() {
         super();
-        this.aliases.add("b");
-        this.aliases.add("balance");
+        this.aliases.addAll(Aliases.money_balance);
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("faction", "yours");

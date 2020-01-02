@@ -18,7 +18,7 @@ public class CmdStrikes extends FCommand {
     public CmdStrikes() {
         super();
 
-        this.aliases.add("strikes");
+        this.aliases.addAll(Aliases.strikes_strikes);
 
         this.addSubCommand(cmdStrikesGive);
         this.addSubCommand(cmdStrikesInfo);

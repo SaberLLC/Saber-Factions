@@ -24,7 +24,7 @@ public class CmdKick extends FCommand {
 
     public CmdKick() {
         super();
-        this.aliases.add("kick");
+        this.aliases.addAll(Aliases.kick);
         this.optionalArgs.put("player name", "player name");
 
         this.requirements = new CommandRequirements.Builder(Permission.KICK)

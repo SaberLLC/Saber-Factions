@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.claim;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -22,7 +23,7 @@ public class CmdAutoClaim extends FCommand {
 
     public CmdAutoClaim() {
         super();
-        this.aliases.add("autoclaim");
+        this.aliases.addAll(Aliases.claim_auto);
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("faction", "your");

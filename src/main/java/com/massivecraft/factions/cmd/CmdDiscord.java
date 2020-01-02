@@ -9,7 +9,7 @@ import java.util.Random;
 public class CmdDiscord extends FCommand {
     public CmdDiscord() {
         super();
-        this.aliases.add("discord");
+        this.aliases.addAll(Aliases.discord_discord);
         this.requirements = new CommandRequirements.Builder(Permission.DISCORD)
                 .playerOnly()
                 .build();

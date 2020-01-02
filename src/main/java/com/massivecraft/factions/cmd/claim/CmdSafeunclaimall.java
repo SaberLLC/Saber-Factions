@@ -4,6 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -19,8 +20,7 @@ public class CmdSafeunclaimall extends FCommand {
      */
 
     public CmdSafeunclaimall() {
-        this.aliases.add("safeunclaimall");
-        this.aliases.add("safedeclaimall");
+        this.aliases.addAll(Aliases.unclaim_all_safe);
         this.optionalArgs.put("world", "all");
 
         this.requirements = new CommandRequirements.Builder(Permission.MANAGE_SAFE_ZONE)

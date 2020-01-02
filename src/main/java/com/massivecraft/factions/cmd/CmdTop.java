@@ -18,8 +18,7 @@ public class CmdTop extends FCommand {
 
     public CmdTop() {
         super();
-        this.aliases.add("top");
-        this.aliases.add("t");
+        this.aliases.addAll(Aliases.top);
         this.requiredArgs.add("criteria");
         this.optionalArgs.put("page", "1");
 

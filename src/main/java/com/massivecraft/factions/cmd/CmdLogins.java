@@ -11,10 +11,7 @@ public class CmdLogins extends FCommand {
 
     public CmdLogins() {
         super();
-        this.aliases.add("login");
-        this.aliases.add("logins");
-        this.aliases.add("logout");
-        this.aliases.add("logouts");
+        this.aliases.addAll(Aliases.logins);
 
         this.requirements = new CommandRequirements.Builder(Permission.MONITOR_LOGINS)
                 .playerOnly()

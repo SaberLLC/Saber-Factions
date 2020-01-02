@@ -19,7 +19,7 @@ public class CmdLock extends FCommand {
 
     public CmdLock() {
         super();
-        this.aliases.add("lock");
+        this.aliases.addAll(Aliases.lock);
         this.optionalArgs.put("on/off", "flip");
 
         this.requirements = new CommandRequirements.Builder(Permission.LOCK)

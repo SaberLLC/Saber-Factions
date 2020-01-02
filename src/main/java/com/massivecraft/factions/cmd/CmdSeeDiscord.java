@@ -12,8 +12,7 @@ public class CmdSeeDiscord extends FCommand{
      */
 
     public CmdSeeDiscord() {
-        this.aliases.add("seediscord");
-        this.aliases.add("discord");
+        this.aliases.addAll(Aliases.discord_see);
 
         this.optionalArgs.put("faction", "yours");
 

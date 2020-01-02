@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.exceptions.SaberException;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -77,7 +78,11 @@ public class Discord {
         try {
             confUseDiscord = Conf.useDiscordSystem;
             botToken = Conf.discordBotToken;
-            if (jda != null) {mainGuild = jda.getGuildById(Conf.mainGuildID);} else {mainGuild = null;}
+                if (jda != null && Conf.leaderRoles || Conf.factionDiscordTags) {
+                    mainGuild = jda.getGuildById(Conf.mainGuildID);
+                } else {
+                    mainGuild = null;
+                }
             mainGuildID = Conf.mainGuildID;
             useDiscord = !botToken.equals("<token here>") && !mainGuildID.equals("<Discord Server ID here>") && confUseDiscord;
             roleColor = new java.awt.Color(Conf.factionRoleColor.get(0), Conf.factionRoleColor.get(1), Conf.factionRoleColor.get(2));
@@ -93,7 +98,6 @@ public class Discord {
                 if (mainGuild != null) {leader = mainGuild.getRoleById(Conf.leaderRole);} else {leader = null;}
             } else {useEmotes = false; leader = null;}
         } catch (NullPointerException e) {
-            e.printStackTrace();
             setupLog.add(new DiscordSetupAttempt("Threw an NPE while setting up variables", System.currentTimeMillis()));
         }
     }

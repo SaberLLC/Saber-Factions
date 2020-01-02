@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd.check;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -31,7 +32,7 @@ public class CmdCheck extends FCommand {
 
     public CmdCheck() {
         this.simpleDateFormat = new SimpleDateFormat(Conf.dateFormat);
-        this.aliases.add("check");
+        this.aliases.addAll(Aliases.check);
         this.requiredArgs.add("walls/buffers/settings/leaderboard");
 
         this.requirements = new CommandRequirements.Builder(Permission.CHECK)

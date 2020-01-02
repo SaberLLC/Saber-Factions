@@ -4,10 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.cmd.CmdAutoHelp;
-import com.massivecraft.factions.cmd.CommandContext;
-import com.massivecraft.factions.cmd.FCmdRoot;
-import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.cmd.*;
 import com.massivecraft.factions.cmd.audit.FChestListener;
 import com.massivecraft.factions.cmd.audit.FLogManager;
 import com.massivecraft.factions.cmd.audit.FLogType;
@@ -234,7 +231,8 @@ public class FactionsPlugin extends MPlugin {
 
         Board.getInstance().load();
         Board.getInstance().clean();
-
+        //Load command aliases
+        Aliases.load();
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
         this.cmdAutoHelp = new CmdAutoHelp();

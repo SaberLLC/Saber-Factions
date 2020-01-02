@@ -11,9 +11,7 @@ public class CmdInspect extends FCommand {
 
     public CmdInspect() {
         super();
-        this.aliases.add("inspect");
-        this.aliases.add("ins");
-
+        this.aliases.addAll(Aliases.inspect);
         this.requirements = new CommandRequirements.Builder(Permission.INSPECT)
                 .playerOnly()
                 .memberOnly()

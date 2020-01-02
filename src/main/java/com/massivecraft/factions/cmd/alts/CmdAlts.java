@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.alts;
 
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -20,10 +21,7 @@ public class CmdAlts extends FCommand {
 
     public CmdAlts() {
         super();
-
-        this.aliases.add("alts");
-        this.aliases.add("alt");
-
+        this.aliases.addAll(Aliases.alts_alts);
         this.addSubCommand(this.cmdInviteAlt);
         this.addSubCommand(this.cmdAltsList);
         this.addSubCommand(this.cmdKickAlt);

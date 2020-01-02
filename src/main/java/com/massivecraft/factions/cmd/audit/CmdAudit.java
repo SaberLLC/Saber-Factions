@@ -5,6 +5,7 @@ package com.massivecraft.factions.cmd.audit;
  */
 
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -16,9 +17,7 @@ public class CmdAudit extends FCommand {
 
     public CmdAudit() {
         super();
-        this.aliases.add("audit");
-        this.aliases.add("logs");
-        this.aliases.add("log");
+        this.aliases.addAll(Aliases.audit);
 
 
         this.requirements = new CommandRequirements.Builder(Permission.AUDIT)

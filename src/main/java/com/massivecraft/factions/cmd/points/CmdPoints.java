@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.points;
 
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -19,7 +20,7 @@ public class CmdPoints extends FCommand {
 
     public CmdPoints() {
         super();
-        this.aliases.add("points");
+        this.aliases.addAll(Aliases.points_points);
 
         this.requirements = new CommandRequirements.Builder(Permission.POINTS)
                 .playerOnly()

@@ -12,7 +12,7 @@ public class CmdChatSpy extends FCommand {
 
     public CmdChatSpy() {
         super();
-        this.aliases.add("chatspy");
+        this.aliases.addAll(Aliases.chatspy);
 
         this.optionalArgs.put("on/off", "flip");
 

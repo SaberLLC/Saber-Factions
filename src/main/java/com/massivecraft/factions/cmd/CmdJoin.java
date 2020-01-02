@@ -22,7 +22,7 @@ public class CmdJoin extends FCommand {
 
     public CmdJoin() {
         super();
-        this.aliases.add("join");
+        this.aliases.addAll(Aliases.join);
         this.requiredArgs.add("faction name");
         this.optionalArgs.put("player", "you");
 

@@ -12,7 +12,7 @@ public class CmdSethome extends FCommand {
      */
 
     public CmdSethome() {
-        this.aliases.add("sethome");
+        this.aliases.addAll(Aliases.setHome);
         this.optionalArgs.put("faction tag", "mine");
 
         this.requirements = new CommandRequirements.Builder(Permission.SETHOME)

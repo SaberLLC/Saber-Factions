@@ -20,8 +20,7 @@ public class CmdFWarp extends FCommand {
 
     public CmdFWarp() {
         super();
-        this.aliases.add("warp");
-        this.aliases.add("warps");
+        this.aliases.addAll(Aliases.warp);
         this.optionalArgs.put("warpname", "warpname");
         this.optionalArgs.put("password", "password");
 

@@ -13,8 +13,7 @@ public class CmdViewChest extends FCommand {
 
     public CmdViewChest() {
         super();
-        this.aliases.add("viewchest");
-        this.aliases.add("viewpv");
+        this.aliases.addAll(Aliases.viewChest);
 
         this.requiredArgs.add("faction name");
 

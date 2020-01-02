@@ -13,7 +13,7 @@ public class CmdPaypalSet extends FCommand {
      */
 
     public CmdPaypalSet() {
-        this.aliases.add("setpaypal");
+        this.aliases.addAll(Aliases.paypal_set);
 
         this.optionalArgs.put("faction", "yours");
 

@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -26,7 +27,7 @@ public class CmdKickAlt extends FCommand {
 
     public CmdKickAlt(){
         super();
-        this.aliases.add("kick");
+        this.aliases.addAll(Aliases.alts_kick);
         this.requiredArgs.add("player name");
 
         this.requirements = new CommandRequirements.Builder(Permission.KICK)

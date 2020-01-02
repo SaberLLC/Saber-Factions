@@ -19,8 +19,7 @@ public class CmdStuck extends FCommand {
 
     public CmdStuck() {
         super();
-        this.aliases.add("stuck");
-        this.aliases.add("halp!"); // halp!c:
+        this.aliases.addAll(Aliases.stuck);
 
 
         this.requirements = new CommandRequirements.Builder(Permission.STUCK)

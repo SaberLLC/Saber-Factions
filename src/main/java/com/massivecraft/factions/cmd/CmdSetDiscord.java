@@ -14,7 +14,7 @@ public class CmdSetDiscord extends FCommand {
 
     public CmdSetDiscord(){
         super();
-        this.aliases.add("setdiscord");
+        this.aliases.addAll(Aliases.discord_set);
 
         this.optionalArgs.put("faction", "yours");
 

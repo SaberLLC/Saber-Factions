@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -25,7 +26,7 @@ public class CmdClaim extends FCommand {
 
     public CmdClaim() {
         super();
-        this.aliases.add("claim");
+        this.aliases.addAll(Aliases.claim_claim);
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("radius", "1");

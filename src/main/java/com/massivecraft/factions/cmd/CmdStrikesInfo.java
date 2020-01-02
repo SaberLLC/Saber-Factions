@@ -12,7 +12,7 @@ public class CmdStrikesInfo extends FCommand {
 
     public CmdStrikesInfo() {
         super();
-        this.aliases.add("info");
+        this.aliases.addAll(Aliases.strikes_info);
         this.optionalArgs.put("target", "faction");
 
         this.requirements = new CommandRequirements.Builder(Permission.SETSTRIKES)

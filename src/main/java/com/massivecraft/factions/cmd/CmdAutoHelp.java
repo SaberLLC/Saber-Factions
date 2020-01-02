@@ -13,9 +13,7 @@ public class CmdAutoHelp extends FCommand {
      */
 
     public CmdAutoHelp() {
-        this.aliases.add("?");
-        this.aliases.add("h");
-        this.aliases.add("help");
+        this.aliases.addAll(Aliases.help);
 
         this.setHelpShort("");
 

@@ -15,7 +15,7 @@ public class CmdPowerBoost extends FCommand {
 
     public CmdPowerBoost() {
         super();
-        this.aliases.add("powerboost");
+        this.aliases.addAll(Aliases.power_boost);
         this.requiredArgs.add("plugin|f|player|faction");
         this.requiredArgs.add("name");
         this.requiredArgs.add("# or reset");

@@ -13,7 +13,7 @@ public class CmdFocus extends FCommand {
      */
 
     public CmdFocus() {
-        aliases.add("focus");
+        aliases.addAll(Aliases.focus);
 
         requiredArgs.add("player");
 

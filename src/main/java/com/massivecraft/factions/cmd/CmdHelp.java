@@ -21,9 +21,7 @@ public class CmdHelp extends FCommand {
 
     public CmdHelp() {
         super();
-        this.aliases.add("help");
-        this.aliases.add("h");
-        this.aliases.add("?");
+        this.aliases.addAll(Aliases.help);
 
         //this.requiredArgs.add("");
         this.optionalArgs.put("page", "1");

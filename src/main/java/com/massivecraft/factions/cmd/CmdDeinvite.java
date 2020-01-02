@@ -20,8 +20,7 @@ public class CmdDeinvite extends FCommand {
 
     public CmdDeinvite() {
         super();
-        this.aliases.add("deinvite");
-        this.aliases.add("deinv");
+        this.aliases.addAll(Aliases.deinvite);
 
         this.optionalArgs.put("player name", "name");
 

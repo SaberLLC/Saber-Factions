@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd.econ;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -19,7 +20,7 @@ public class CmdMoneyTransferFp extends FCommand {
      */
 
     public CmdMoneyTransferFp() {
-        this.aliases.add("fp");
+        this.aliases.addAll(Aliases.money_transfer_Fp);
 
         this.requiredArgs.add("amount");
         this.requiredArgs.add("faction");

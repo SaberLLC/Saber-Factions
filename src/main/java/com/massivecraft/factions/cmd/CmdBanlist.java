@@ -19,9 +19,7 @@ public class CmdBanlist extends FCommand {
 
     public CmdBanlist() {
         super();
-        this.aliases.add("banlist");
-        this.aliases.add("bans");
-        this.aliases.add("banl");
+        this.aliases.addAll(Aliases.ban_banlist);
 
         this.optionalArgs.put("faction", "faction");
 

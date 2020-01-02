@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd.roles;
 
+import com.massivecraft.factions.cmd.Aliases;
+
 public class CmdDemote extends FPromoteCommand {
 
     /**
@@ -7,7 +9,7 @@ public class CmdDemote extends FPromoteCommand {
      */
 
     public CmdDemote() {
-        aliases.add("demote");
+        aliases.addAll(Aliases.roles_demote);
         this.relative = -1;
     }
 }

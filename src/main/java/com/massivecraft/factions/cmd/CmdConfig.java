@@ -20,7 +20,7 @@ public class CmdConfig extends FCommand {
 
     public CmdConfig() {
         super();
-        this.aliases.add("config");
+        this.aliases.addAll(Aliases.config);
 
         this.requiredArgs.add("setting");
         this.requiredArgs.add("value");

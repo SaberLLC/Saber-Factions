@@ -13,7 +13,7 @@ public class CmdLowPower extends FCommand {
 
     public CmdLowPower() {
         super();
-        this.aliases.add("lowpower");
+        this.aliases.addAll(Aliases.lowPower);
 
         this.requirements = new CommandRequirements.Builder(Permission.POWER_ANY)
                 .playerOnly()

@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.alts;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -24,7 +25,7 @@ public class CmdInviteAlt extends FCommand {
 
     public CmdInviteAlt() {
         super();
-        this.aliases.add("invite");
+        this.aliases.addAll(Aliases.alts_invite);
         this.requiredArgs.add("player name");
 
         this.requirements = new CommandRequirements.Builder(Permission.INVITE)

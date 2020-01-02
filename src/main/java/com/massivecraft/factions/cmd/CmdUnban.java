@@ -14,7 +14,7 @@ public class CmdUnban extends FCommand {
 
     public CmdUnban() {
         super();
-        this.aliases.add("unban");
+        this.aliases.addAll(Aliases.unban);
         this.requiredArgs.add("target");
 
         this.requirements = new CommandRequirements.Builder(Permission.BAN)

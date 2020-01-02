@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.chest;
 
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -15,8 +16,7 @@ public class CmdChest extends FCommand {
      */
 
     public CmdChest() {
-        this.aliases.add("chest");
-        this.aliases.add("pv");
+        this.aliases.addAll(Aliases.chest);
 
         this.requirements = new CommandRequirements.Builder(Permission.CHEST)
                 .playerOnly()

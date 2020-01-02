@@ -13,9 +13,7 @@ public class CmdCheckpoint extends FCommand {
 
     public CmdCheckpoint() {
         super();
-        this.aliases.add("checkp");
-        this.aliases.add("checkpoint");
-        this.aliases.add("cpoint");
+        this.aliases.addAll(Aliases.checkpoint);
 
         this.optionalArgs.put("set", "");
 

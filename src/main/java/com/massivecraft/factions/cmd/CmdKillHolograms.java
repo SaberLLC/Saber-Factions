@@ -11,7 +11,7 @@ public class CmdKillHolograms extends FCommand {
 
     public CmdKillHolograms() {
         super();
-        this.aliases.add("killholos");
+        this.aliases.addAll(Aliases.killholograms);
         this.requiredArgs.add("radius");
 
         this.requirements = new CommandRequirements.Builder(Permission.KILLHOLOS)

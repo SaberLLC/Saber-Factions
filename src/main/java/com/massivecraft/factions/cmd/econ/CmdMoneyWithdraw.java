@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.econ;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -25,8 +26,7 @@ public class CmdMoneyWithdraw extends FCommand {
      */
 
     public CmdMoneyWithdraw() {
-        this.aliases.add("w");
-        this.aliases.add("withdraw");
+        this.aliases.addAll(Aliases.money_withdraw);
 
         this.requiredArgs.add("amount");
         this.optionalArgs.put("faction", "yours");

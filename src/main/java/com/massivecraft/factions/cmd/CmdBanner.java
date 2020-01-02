@@ -19,8 +19,7 @@ public class CmdBanner extends FCommand {
      */
 
     public CmdBanner() {
-        this.aliases.add("banner");
-        this.aliases.add("warbanner");
+        this.aliases.addAll(Aliases.banner);
         this.requirements = new CommandRequirements.Builder(Permission.BANNER).playerOnly().memberOnly().build();
     }
 

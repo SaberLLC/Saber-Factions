@@ -14,7 +14,7 @@ public class CmdTitle extends FCommand {
      */
 
     public CmdTitle() {
-        this.aliases.add("title");
+        this.aliases.addAll(Aliases.title);
         this.requiredArgs.add("player name");
         this.optionalArgs.put("title", "");
 

@@ -13,7 +13,7 @@ public class CmdLeave extends FCommand {
 
     public CmdLeave() {
         super();
-        this.aliases.add("leave");
+        this.aliases.addAll(Aliases.leave);
 
         this.requirements = new CommandRequirements.Builder(Permission.LEAVE)
                 .playerOnly()

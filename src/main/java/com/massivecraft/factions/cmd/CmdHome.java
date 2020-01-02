@@ -26,7 +26,7 @@ public class CmdHome extends FCommand {
 
     public CmdHome() {
         super();
-        this.aliases.add("home");
+        this.aliases.addAll(Aliases.home);
         this.optionalArgs.put("faction", "yours");
 
         this.requirements = new CommandRequirements.Builder(Permission.HOME)

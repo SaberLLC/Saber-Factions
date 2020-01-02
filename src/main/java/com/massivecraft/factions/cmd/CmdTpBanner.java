@@ -15,7 +15,7 @@ public class CmdTpBanner extends FCommand {
 
     public CmdTpBanner() {
         super();
-        this.aliases.add("tpbanner");
+        this.aliases.addAll(Aliases.tpBanner);
 
         this.requirements = new CommandRequirements.Builder(Permission.TPBANNER)
                 .playerOnly()

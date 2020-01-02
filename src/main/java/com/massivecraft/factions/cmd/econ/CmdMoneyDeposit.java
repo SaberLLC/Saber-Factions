@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd.econ;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -21,8 +22,7 @@ public class CmdMoneyDeposit extends FCommand {
 
     public CmdMoneyDeposit() {
         super();
-        this.aliases.add("d");
-        this.aliases.add("deposit");
+        this.aliases.addAll(Aliases.money_deposit);
 
         this.requiredArgs.add("amount");
         this.optionalArgs.put("faction", "yours");

@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
@@ -27,8 +28,7 @@ public class CmdClaimLine extends FCommand {
     public CmdClaimLine() {
 
         // Aliases
-        this.aliases.add("claimline");
-        this.aliases.add("cl");
+        this.aliases.addAll(Aliases.claim_line);
 
         // Args
         this.optionalArgs.put("amount", "1");

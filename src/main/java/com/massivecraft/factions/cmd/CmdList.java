@@ -22,8 +22,7 @@ public class CmdList extends FCommand {
 
     public CmdList() {
         super();
-        this.aliases.add("list");
-        this.aliases.add("ls");
+        this.aliases.addAll(Aliases.list);
 
         // default values in case user has old config
         defaults[0] = "&e&m----------&r&e[ &2Faction List &9{pagenumber}&e/&9{pagecount} &e]&m----------";

@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd.relational;
 
+import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.struct.Relation;
 
 public class CmdRelationNeutral extends FRelationCommand {
@@ -9,7 +10,7 @@ public class CmdRelationNeutral extends FRelationCommand {
      */
 
     public CmdRelationNeutral() {
-        aliases.add("neutral");
+        aliases.addAll(Aliases.relation_neutral);
         targetRelation = Relation.NEUTRAL;
     }
 }
