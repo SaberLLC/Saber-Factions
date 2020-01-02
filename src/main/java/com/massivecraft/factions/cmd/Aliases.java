@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 
 import java.util.ArrayList;
