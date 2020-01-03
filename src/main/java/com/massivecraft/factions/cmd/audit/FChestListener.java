@@ -36,6 +36,7 @@ public class FChestListener implements Listener {
         e.getWhoClicked().sendMessage(CC.RedB + "(!) " + CC.Red + "You cannot drag items while viewing a /f chest!");
     }
 
+
     @EventHandler(
             priority = EventPriority.HIGHEST,
             ignoreCancelled = true
@@ -43,7 +44,8 @@ public class FChestListener implements Listener {
     public void onPlayerClickInventory(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-        if (!fPlayer.isInFactionsChest()) return;
+        Faction faction;
+        if(!event.getView().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")))) return;
         if (event.getClick() == ClickType.UNKNOWN) {
             event.setCancelled(true);
             player.sendMessage(CC.RedB + "(!) " + CC.Red + "You cannot use that click type inside the /f chest!");
@@ -55,30 +57,30 @@ public class FChestListener implements Listener {
         ItemStack cursorItem = event.getCursor();
         if (event.getClick() == ClickType.NUMBER_KEY) cursorItem = player.getInventory().getItem(event.getHotbarButton());
         Material cursorItemType = cursorItem != null ? cursorItem.getType() : Material.AIR;
-        FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-        Faction faction;
-        if (fplayer == null || !(faction = fplayer.getFaction()).isNormal()) {
+        if (fPlayer == null || !(faction = fPlayer.getFaction()).isNormal()) {
             player.closeInventory();
             player.sendMessage(CC.RedB + "(!) " + CC.Red + "You are no longer in your faction!");
             return;
         }
         if (event.getClickedInventory() == null) return;
-        if (event.getView().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")))) {
+        if (event.getView().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"))) && !event.getClick().isShiftClick()) {
             if (currentItemType != Material.AIR) {
                     Inventory ours = faction.getChestInventory();
-                    if (ours == null || !ours.contains(currentItem)) {
-                        event.setCancelled(true);
-                        player.sendMessage(CC.RedB + "(!) That item not longer exists!");
-                        Bukkit.getLogger().info("[FactionChest] " + player.getName() + " tried to remove " + currentItem + " from /f chest when it didnt contain! Items: " + (ours == null ? "none" : Arrays.toString(ours.getContents())));
-                        player.closeInventory();
-                        return;
+                    if(event.getClickedInventory() == ours) {
+                        if (ours == null || !ours.contains(currentItem)) {
+                            event.setCancelled(true);
+                            player.sendMessage(CC.RedB + "(!) That item not longer exists!");
+                            Bukkit.getLogger().info("[FactionChest] " + player.getName() + " tried to remove " + currentItem + " from /f chest when it didnt contain! Items: " + (ours == null ? "none" : Arrays.toString(ours.getContents())));
+                            player.closeInventory();
+                            return;
+                        }
                     }
-                logRemoveItem(currentItem, fplayer, player);
+                logRemoveItem(currentItem, fPlayer, player);
             } else if (cursorItemType != Material.AIR && !event.isShiftClick()) {
-                logAddItem(cursorItem, fplayer, player);
+                logAddItem(cursorItem, fPlayer, player);
             }
         } else if (event.isShiftClick() && currentItemType != Material.AIR) {
-            logAddItem(currentItem, fplayer, player);
+            logAddItem(currentItem, fPlayer, player);
         }
     }
 

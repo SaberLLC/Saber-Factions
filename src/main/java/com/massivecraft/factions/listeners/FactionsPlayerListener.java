@@ -577,6 +577,13 @@ public class FactionsPlayerListener implements Listener {
     }
 
 
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent e){
+        if(e.getMessage().equalsIgnoreCase("/f outpost")){
+            e.setMessage("/outpost");
+        }
+    }
+
     //inspect
     @EventHandler
     public void onInspect(PlayerInteractEvent e) {

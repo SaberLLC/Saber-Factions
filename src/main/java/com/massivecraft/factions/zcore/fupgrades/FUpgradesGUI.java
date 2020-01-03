@@ -300,6 +300,7 @@ public class FUpgradesGUI implements Listener {
         faction.setChestSize(size * 9);
     }
 
+
     private void updatePower(Faction faction) {
         int level = faction.getUpgrade(UpgradeType.POWER);
         double power = 0.0;

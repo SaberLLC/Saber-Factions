@@ -20,6 +20,7 @@ public class CmdDisband extends FCommand {
      * @author FactionsUUID Team
      */
 
+    //TODO: Add Disband Confirmation GUI
 
     private static HashMap<String, String> disbandMap = new HashMap<>();
 
@@ -27,12 +28,9 @@ public class CmdDisband extends FCommand {
     public CmdDisband() {
         super();
         this.aliases.addAll(Aliases.disband);
-
         this.optionalArgs.put("faction tag", "yours");
-
         this.requirements = new CommandRequirements.Builder(Permission.DISBAND)
                 .build();
-
     }
 
     @Override

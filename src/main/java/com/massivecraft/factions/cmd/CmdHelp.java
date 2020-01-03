@@ -18,7 +18,7 @@ public class CmdHelp extends FCommand {
      */
 
     public ArrayList<ArrayList<String>> helpPages;
-
+    //TODO: Add Help GUI
     public CmdHelp() {
         super();
         this.aliases.addAll(Aliases.help);

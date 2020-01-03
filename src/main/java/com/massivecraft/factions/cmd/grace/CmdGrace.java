@@ -15,6 +15,8 @@ public class CmdGrace extends FCommand {
      * @author Driftay
      */
 
+    //TODO: Make Timed Format For Grace Period
+
     public CmdGrace() {
         super();
         this.aliases.addAll(Aliases.grace);

@@ -20,6 +20,8 @@ public class CmdUnclaimall extends FCommand {
      * @author FactionsUUID Team
      */
 
+    //TODO: Add UnclaimAll Confirmation GUI
+
     public CmdUnclaimall() {
         this.aliases.addAll(Aliases.unclaim_all_unsafe);
 
