@@ -45,25 +45,16 @@ public class FChestListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         if (!fPlayer.isInFactionsChest()) return;
-
         if (event.getClick() == ClickType.UNKNOWN) {
             event.setCancelled(true);
             player.sendMessage(CC.RedB + "(!) " + CC.Red + "You cannot use that click type inside the /f chest!");
             return;
         }
-
         ItemStack currentItem = event.getCurrentItem();
-        if (event.getClick() == ClickType.NUMBER_KEY) {
-            currentItem = event.getClickedInventory().getItem(event.getSlot());
-        }
-
+        if (event.getClick() == ClickType.NUMBER_KEY) currentItem = event.getClickedInventory().getItem(event.getSlot());
         Material currentItemType = currentItem != null ? currentItem.getType() : Material.AIR;
-
         ItemStack cursorItem = event.getCursor();
-        if (event.getClick() == ClickType.NUMBER_KEY) {
-            cursorItem = player.getInventory().getItem(event.getHotbarButton());
-        }
-
+        if (event.getClick() == ClickType.NUMBER_KEY) cursorItem = player.getInventory().getItem(event.getHotbarButton());
         Material cursorItemType = cursorItem != null ? cursorItem.getType() : Material.AIR;
         FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
         Faction faction;
@@ -72,22 +63,17 @@ public class FChestListener implements Listener {
             player.sendMessage(CC.RedB + "(!) " + CC.Red + "You are no longer in your faction!");
             return;
         }
-
-        if (event.getClickedInventory() == null) {
-            return;
-        }
-
+        if (event.getClickedInventory() == null) return;
         if (event.getView().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")))) {
             if (currentItemType != Material.AIR) {
-                Inventory ours = faction.getChestInventory();
-                if (ours == null || !ours.contains(currentItem)) {
-                    event.setCancelled(true);
-                    player.sendMessage(CC.RedB + "(!) That item not longer exists!");
-                    Bukkit.getLogger().info("[FactionChest] " + player.getName() + " tried to remove " + currentItem + " from /f chest when it didnt contain! Items: " + (ours == null ? "none" : Arrays.toString(ours.getContents())));
-                    player.closeInventory();
-                    return;
-                }
-
+                    Inventory ours = faction.getChestInventory();
+                    if (ours == null) {
+                        event.setCancelled(true);
+                        player.sendMessage(CC.RedB + "(!) That item not longer exists!");
+                        Bukkit.getLogger().info("[FactionChest] " + player.getName() + " tried to remove " + currentItem + " from /f chest when it didnt contain! Items: " + (ours == null ? "none" : Arrays.toString(ours.getContents())));
+                        player.closeInventory();
+                        return;
+                    }
                 logRemoveItem(currentItem, fplayer, player);
             } else if (cursorItemType != Material.AIR && !event.isShiftClick()) {
                 logAddItem(cursorItem, fplayer, player);
