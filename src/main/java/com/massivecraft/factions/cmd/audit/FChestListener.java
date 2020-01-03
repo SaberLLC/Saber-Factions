@@ -36,7 +36,6 @@ public class FChestListener implements Listener {
         e.getWhoClicked().sendMessage(CC.RedB + "(!) " + CC.Red + "You cannot drag items while viewing a /f chest!");
     }
 
-
     @EventHandler(
             priority = EventPriority.HIGHEST,
             ignoreCancelled = true
@@ -67,7 +66,7 @@ public class FChestListener implements Listener {
         if (event.getView().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")))) {
             if (currentItemType != Material.AIR) {
                     Inventory ours = faction.getChestInventory();
-                    if (ours == null) {
+                    if (ours == null || !ours.contains(currentItem)) {
                         event.setCancelled(true);
                         player.sendMessage(CC.RedB + "(!) That item not longer exists!");
                         Bukkit.getLogger().info("[FactionChest] " + player.getName() + " tried to remove " + currentItem + " from /f chest when it didnt contain! Items: " + (ours == null ? "none" : Arrays.toString(ours.getContents())));
