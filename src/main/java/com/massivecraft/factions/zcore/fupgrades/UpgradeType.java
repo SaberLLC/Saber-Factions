@@ -64,8 +64,9 @@ public enum UpgradeType {
     }
 
     private ItemStack updateLevelStatus(ItemStack item, int level) {
-        if (level >= 2) {
+        if (level >= 1) {
             item.setAmount(level);
+            enchant(item);
         }
         return item;
     }
