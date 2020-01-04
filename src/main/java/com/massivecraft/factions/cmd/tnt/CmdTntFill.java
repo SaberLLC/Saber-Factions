@@ -111,7 +111,7 @@ public class CmdTntFill extends FCommand {
             }
 
             // Take TNT from the bank.
-            context.faction.takeTnt(getFactionTnt);
+            removeFromBank(context, getFactionTnt);
         }
         fillDispensers(context.fPlayer, opDispensers, amount);
         // Remove used TNT from player inventory.

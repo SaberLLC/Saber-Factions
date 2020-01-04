@@ -19,11 +19,6 @@ public class TimeFrame {
     private boolean starting; // pending starting countdown
     private boolean ending; // pending ending countdown
 
-    private enum times {
-        twelveAM, oneAM, twoAM, threeAM, fourAM, fiveAM, sixAM, sevenAM, eightAM, nineAM, tenAM, elevenAM, twelvePM,
-        onePM, twoPM, threePM, fourPM, fivePM, sixPM, sevenPM, eightPM, ninePM, tenPM, elevenPM;
-    }
-
 
     public TimeFrame(Faction faction, Enum startingTime, Enum endingTime, boolean starting, boolean ending, boolean inEffect, int currentMinutes){
         this.faction = faction;
