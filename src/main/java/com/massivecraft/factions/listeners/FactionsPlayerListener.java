@@ -575,14 +575,7 @@ public class FactionsPlayerListener implements Listener {
         if (CmdFly.particleTask == null)
             CmdFly.startParticles();
     }
-
-
-    @EventHandler
-    public void onCommand(PlayerCommandPreprocessEvent e){
-        if(e.getMessage().equalsIgnoreCase("/f outpost")){
-            e.setMessage("/outpost");
-        }
-    }
+    
 
     //inspect
     @EventHandler
