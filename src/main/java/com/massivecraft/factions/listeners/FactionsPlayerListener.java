@@ -552,7 +552,6 @@ public class FactionsPlayerListener implements Listener {
 
     public String parseAllPlaceholders(String string, Faction faction, Player player) {
         string = TagUtil.parsePlaceholders(player, string);
-
         string = string.replace("{Faction}", faction.getTag())
                 .replace("{online}", faction.getOnlinePlayers().size() + "")
                 .replace("{offline}", faction.getFPlayers().size() - faction.getOnlinePlayers().size() + "")
@@ -563,13 +562,13 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public void checkCanFly(FPlayer me) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) return;
         if (me.isFlying() && (!me.canFlyAtLocation() || me.checkIfNearbyEnemies())) {
             me.setFFlying(false, false);
             me.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(me.getLastStoodAt()).getTag());
             return;
         }
-        if (me.isFlying() || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
-            return;
+        if (me.isFlying() || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable")) return;
         me.setFFlying(true, false);
         CmdFly.flyMap.put(me.getName(), true);
         if (CmdFly.particleTask == null)
