@@ -918,7 +918,8 @@ fupgrades:
         level-3: 750000
       DisplayItem:
         Name: '&c&lGrowth Speed'
-        Type: WHEAT
+        Type: WHEAT #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&7&oIncrease growth &c&ospeed&7&o of crops in &c&oclaims.'
           - '&7&oChance to Grow Two Levels.'
@@ -947,7 +948,8 @@ fupgrades:
         level-3: 6000000
       DisplayItem:
         Name: '&c&lEXP Drop Rate'
-        Type: EXP_BOTTLE
+        Type: EXP_BOTTLE #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&7&oIncreased Vanilla &e&oEXP&7&o gained from &c&omonsters&7&o.'
           - '&7&oYour current level is &e&l&o{level}'
@@ -975,7 +977,8 @@ fupgrades:
         level-3: 3000000
       DisplayItem:
         Name: '&c&lFaction Power'
-        Type: NETHER_STAR
+        Type: NETHER_STAR #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&a&oIncrease&7&o the amount of &c&opower'
           - '&7&oyour &a&ofaction has&7&o.'
@@ -998,7 +1001,8 @@ fupgrades:
         level-1: 1000000
       DisplayItem:
         Name: '&c&lUnbreakable Redstone'
-        Type: REDSTONE
+        Type: REDSTONE #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&7&oPrevents &e&owater&7&o from being'
           - '&7&oable to break &c&oredstone'
@@ -1019,7 +1023,8 @@ fupgrades:
         level-3: 3000000
       DisplayItem:
         Name: '&c&lSpawn Rate'
-        Type: MOB_SPAWNER
+        Type: MOB_SPAWNER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&c&oDecreased&7&o mob spawner delay in &a&oclaims&7&o.'
           - '&7&oYour current level is &e&l&o{level}'
@@ -1047,7 +1052,8 @@ fupgrades:
         level-3: 6000000
       DisplayItem:
         Name: '&c&lDamage Reduction'
-        Type: GOLD_CHESTPLATE
+        Type: GOLD_CHESTPLATE #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&a&oReduce&7&o the amount of &a&odamage taken&7&o in faction claims.'
           - '&7&oYour current level is &e&l&o{level}'
@@ -1075,7 +1081,8 @@ fupgrades:
         level-3: 6000000
       DisplayItem:
         Name: '&c&lDamage Increase'
-        Type: DIAMOND_SWORD
+        Type: DIAMOND_SWORD #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&a&oIncrease&7&o the amount of &a&odamage given&7&o.'
           - '&7&oYour current level is &e&l&o{level}'
@@ -1103,7 +1110,8 @@ fupgrades:
         level-3: 6000000
       DisplayItem:
         Name: '&c&lTNT Bank'
-        Type: TNT
+        Type: TNT #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&a&oUpgrade&7&o your &a&ofactions tnt&7&o limit.'
           - '&7&oYour current level is &e&l&o{level}'
@@ -1131,7 +1139,8 @@ fupgrades:
         level-3: 3000000
       DisplayItem:
         Name: '&c&lWarps'
-        Type: EYE_OF_ENDER
+        Type: EYE_OF_ENDER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&a&oIncrease&7&o the &a&ofaction warp&7&o limit.'
           - '&7&oYour current level is &e&l&o{level}'
@@ -1160,7 +1169,8 @@ fupgrades:
         level-3: 3000000
       DisplayItem:
         Name: '&c&lFaction Chest'
-        Type: CHEST
+        Type: CHEST #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&a&oIncreased&7&o Faction Chest Size.'
           - '&7&oYour current level is &e&l&o{level}'
@@ -1188,7 +1198,8 @@ fupgrades:
         level-3: 3000000
       DisplayItem:
         Name: '&c&lFaction Members'
-        Type: PAPER
+        Type: PAPER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&a&oIncrease&7&o the &a&ofaction member&7&o limit.'
           - '&7&oYour current level is &e&l&o{level}'
@@ -1217,7 +1228,8 @@ fupgrades:
         level-3: 3000000
       DisplayItem:
         Name: '&c&lReinforced Armor'
-        Type: DIAMOND_CHESTPLATE
+        Type: DIAMOND_CHESTPLATE #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
         Lore:
           - '&a&oDecreases&7&o damage done &a&oto armor&7&o.'
           - '&7&oYour current level is &e&l&o{level}'

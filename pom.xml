@@ -386,6 +386,12 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>1.5.21</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>me.rayzr522</groupId>
             <artifactId>jsonmessage</artifactId>
             <version>1.0.0</version>
@@ -404,6 +410,10 @@
             <id>central</id>
             <name>bintray</name>
             <url>http://jcenter.bintray.com</url>
+        </repository>
+        <repository>
+            <id>mojang-repo</id>
+            <url>https://libraries.minecraft.net/</url>
         </repository>
         <repository>
             <id>net.coreprotect</id>
