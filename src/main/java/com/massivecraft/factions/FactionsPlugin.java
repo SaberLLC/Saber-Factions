@@ -123,21 +123,15 @@ public class FactionsPlugin extends MPlugin {
     }
 
     public void playSoundForAll(String sound) {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            playSound(pl, sound);
-        }
+        for (Player pl : Bukkit.getOnlinePlayers()) playSound(pl, sound);
     }
 
     public void playSoundForAll(List<String> sounds) {
-        for (Player pl : Bukkit.getOnlinePlayers()) {
-            playSound(pl, sounds);
-        }
+        for (Player pl : Bukkit.getOnlinePlayers()) playSound(pl, sounds);
     }
 
     public void playSound(Player p, List<String> sounds) {
-        for (String sound : sounds) {
-            playSound(p, sound);
-        }
+        for (String sound : sounds) playSound(p, sound);
     }
 
     public void playSound(Player p, String sound) {
@@ -175,9 +169,7 @@ public class FactionsPlugin extends MPlugin {
         migrateFPlayerLeaders();
         log("==== End Setup ====");
 
-        if (!preEnable()) {
-            return;
-        }
+        if (!preEnable()) return;
         this.loadSuccessful = false;
 
         if (!new File(this.getDataFolder() + "/config.yml").exists()) {
@@ -200,7 +192,7 @@ public class FactionsPlugin extends MPlugin {
             return;
         }
         //Update their config if needed
-       // Updater.updateIfNeeded(getConfig());
+        // Updater.updateIfNeeded(getConfig());
         RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
         FactionsPlugin.econ = rsp.getProvider();
         com.massivecraft.factions.integration.Essentials.setup();
@@ -215,16 +207,11 @@ public class FactionsPlugin extends MPlugin {
                 fPlayer.resetFactionData(false);
                 continue;
             }
-            if (fPlayer.isAlt()) {
-                faction.addAltPlayer(fPlayer);
-            } else {
-                faction.addFPlayer(fPlayer);
-            }
+            if (fPlayer.isAlt()) faction.addAltPlayer(fPlayer);
+            else faction.addFPlayer(fPlayer);
         }
+        if (getConfig().getBoolean("enable-faction-flight", true)) UtilFly.run();
 
-        if (getConfig().getBoolean("enable-faction-flight", true)) {
-            UtilFly.run();
-        }
 
         Board.getInstance().load();
         Board.getInstance().clean();
@@ -249,9 +236,7 @@ public class FactionsPlugin extends MPlugin {
             log("Minecraft Version 1.9 or higher found, using non packet based particle API");
         }
 
-        if (getConfig().getBoolean("enable-faction-flight")) {
-            factionsFlight = true;
-        }
+        if (getConfig().getBoolean("enable-faction-flight")) factionsFlight = true;
 
         if (getServer().getPluginManager().getPlugin("Skript") != null) {
             log("Skript was found! Registering FactionsPlugin Addon...");
@@ -375,7 +360,6 @@ public class FactionsPlugin extends MPlugin {
         try {
             BufferedReader br = new BufferedReader(new FileReader(fplayerFile));
             System.out.println("Migrating old players.json file.");
-
             String line;
             while ((line = br.readLine()) != null) {
                 if (line.contains("\"role\": \"ADMIN\"")) {
@@ -407,9 +391,7 @@ public class FactionsPlugin extends MPlugin {
     private boolean setupPermissions() {
         try {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-            if (rsp != null) {
-                perms = rsp.getProvider();
-            }
+            if (rsp != null) perms = rsp.getProvider();
         } catch (NoClassDefFoundError ex) {
             return false;
         }
@@ -447,9 +429,8 @@ public class FactionsPlugin extends MPlugin {
     @Override
     public void onDisable() {
         // only save data if plugin actually completely loaded successfully
-        if (this.loadSuccessful) {
-            Conf.saveSync();
-        }
+        if (this.loadSuccessful) Conf.saveSync();
+
 
         if (AutoLeaveTask != null) {
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
@@ -466,9 +447,7 @@ public class FactionsPlugin extends MPlugin {
 
     public void startAutoLeaveTask(boolean restartIfRunning) {
         if (AutoLeaveTask != null) {
-            if (!restartIfRunning) {
-                return;
-            }
+            if (!restartIfRunning) return;
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
         }
 
@@ -520,9 +499,7 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
-        if (split.length == 0) {
-            return handleCommand(sender, "/f help", false);
-        }
+        if (split.length == 0) return handleCommand(sender, "/f help", false);
 
         // otherwise, needs to be handled; presumably another plugin directly ran the command
         String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
@@ -535,8 +512,6 @@ public class FactionsPlugin extends MPlugin {
         // Must be a LinkedList to prevent UnsupportedOperationException.
         List<String> argsList = new LinkedList<>(Arrays.asList(args));
         CommandContext context = new CommandContext(sender, argsList, alias);
-        String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
-//        String cmdValid = (cmd + " " + TextUtil.implode(context.args, " ")).trim();
         List<FCommand> commandsList = cmdBase.subCommands;
         FCommand commandsEx = cmdBase;
         List<String> completions = new ArrayList<>();
@@ -565,16 +540,12 @@ public class FactionsPlugin extends MPlugin {
                 }
             }
             String lastArg = args[args.length - 1].toLowerCase();
-
             completions = completions.stream()
                     .filter(m -> m.toLowerCase().startsWith(lastArg))
                     .collect(Collectors.toList());
-
             return completions;
-
         } else {
             String lastArg = args[args.length - 1].toLowerCase();
-
             for (Role value : Role.values()) completions.add(value.nicename);
             for (Relation value : Relation.values()) completions.add(value.nicename);
             // The stream and foreach from the old implementation looped 2 times, by looping all players -> filtered -> looped filter and added -> filtered AGAIN at the end.
@@ -613,11 +584,8 @@ public class FactionsPlugin extends MPlugin {
     // Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
     // local chat, or anything else which targets individual recipients, so Faction Chat can be done
     public boolean isPlayerFactionChatting(Player player) {
-        if (player == null) {
-            return false;
-        }
+        if (player == null) return false;
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
-
         return me != null && me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
     }
 
@@ -638,15 +606,11 @@ public class FactionsPlugin extends MPlugin {
     public String getPlayerFactionTagRelation(Player speaker, Player listener) {
         String tag = "~";
 
-        if (speaker == null) {
-            return tag;
-        }
+        if (speaker == null) return tag;
+
 
         FPlayer me = FPlayers.getInstance().getByPlayer(speaker);
-        if (me == null) {
-            return tag;
-        }
-
+        if (me == null) return tag;
         // if listener isn't set, or config option is disabled, give back uncolored tag
         if (listener == null || !Conf.chatTagRelationColored) {
             tag = me.getChatTag().trim();
@@ -654,15 +618,11 @@ public class FactionsPlugin extends MPlugin {
             FPlayer you = FPlayers.getInstance().getByPlayer(listener);
             if (you == null) {
                 tag = me.getChatTag().trim();
-            } else  // everything checks out, give the colored tag
-            {
+            } else { // everything checks out, give the colored tag
                 tag = me.getChatTag(you).trim();
             }
         }
-        if (tag.isEmpty()) {
-            tag = "~";
-        }
-
+        if (tag.isEmpty()) tag = "~";
         return tag;
     }
 
@@ -677,15 +637,9 @@ public class FactionsPlugin extends MPlugin {
 
     // Get a player's title within their faction, mainly for usage by chat plugins for local/channel chat
     public String getPlayerTitle(Player player) {
-        if (player == null) {
-            return "";
-        }
-
+        if (player == null) return "";
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
-        if (me == null) {
-            return "";
-        }
-
+        if (me == null) return "";
         return me.getTitle().trim();
     }
 
@@ -696,9 +650,7 @@ public class FactionsPlugin extends MPlugin {
 
     //colors a string list
     public List<String> colorList(List<String> lore) {
-        for (int i = 0; i <= lore.size() - 1; i++) {
-            lore.set(i, color(lore.get(i)));
-        }
+        for (int i = 0; i <= lore.size() - 1; i++) lore.set(i, color(lore.get(i)));
         return lore;
     }
 
@@ -716,9 +668,7 @@ public class FactionsPlugin extends MPlugin {
         Set<String> players = new HashSet<>();
         Faction faction = Factions.getInstance().getByTag(factionTag);
         if (faction != null) {
-            for (FPlayer fplayer : faction.getFPlayers()) {
-                players.add(fplayer.getName());
-            }
+            for (FPlayer fplayer : faction.getFPlayers()) players.add(fplayer.getName());
         }
         return players;
     }
@@ -728,9 +678,7 @@ public class FactionsPlugin extends MPlugin {
         Set<String> players = new HashSet<>();
         Faction faction = Factions.getInstance().getByTag(factionTag);
         if (faction != null) {
-            for (FPlayer fplayer : faction.getFPlayersWhereOnline(true)) {
-                players.add(fplayer.getName());
-            }
+            for (FPlayer fplayer : faction.getFPlayersWhereOnline(true)) players.add(fplayer.getName());
         }
         return players;
     }
@@ -750,9 +698,7 @@ public class FactionsPlugin extends MPlugin {
     }
 
     public void debug(Level level, String s) {
-        if (getConfig().getBoolean("debug", false)) {
-            getLogger().log(level, s);
-        }
+        if (getConfig().getBoolean("debug", false)) getLogger().log(level, s);
     }
 
     public FactionsPlayerListener getFactionsPlayerListener() {

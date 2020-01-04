@@ -147,16 +147,16 @@ scoreboard:
   # {maxPower} - player's max power.
   # {powerBoost} - player's powerboost.
 
-  default-enabled: false # Default to false to keep original functionality.
+  ######################################################
+  ##################### SCOREBOARD #####################
+  ######################################################
+  default-enabled: false # This is to enable or disable the scoreboard: false = Disabled
   default-title: "&cSaberFactions" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
   default-update-interval: 2 # in seconds.
-
   # This will show faction prefixes colored based on relation on nametags and in the tab.
   #   The scoreboard needs to be enabled for this to work.
   default-prefixes: true
-
   # SUPPORTS PLACEHOLDERS
-
   default:
     - "&7&m--------------------------"
     - "&4&lFaction Info &8»"
@@ -183,6 +183,7 @@ scoreboard:
     - " &8» &cFaction: &fN/A"
     - " &8» &cOnline Players&7: &f{total-online}"
     - "&7&m---------------------------"
+
 
 
 # Configration section for warmups.
