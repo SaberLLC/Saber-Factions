@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
+import com.massivecraft.factions.zcore.fupgrades.FUpgradeFrame;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdUpgrades extends FCommand {
@@ -19,7 +19,6 @@ public class CmdUpgrades extends FCommand {
                 .playerOnly()
                 .memberOnly()
                 .build();
-
     }
 
     @Override
@@ -28,7 +27,7 @@ public class CmdUpgrades extends FCommand {
             context.fPlayer.msg(TL.COMMAND_UPGRADES_DISABLED);
             return;
         }
-        new FUpgradesGUI().openMainMenu(context.fPlayer);
+        new FUpgradeFrame(context.faction).buildGUI(context.fPlayer);
     }
 
     @Override

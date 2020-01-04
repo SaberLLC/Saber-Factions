@@ -575,7 +575,6 @@ public class FactionsPlayerListener implements Listener {
         if (CmdFly.particleTask == null)
             CmdFly.startParticles();
     }
-    
 
     //inspect
     @EventHandler

@@ -31,7 +31,6 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.fupgrades.FUpgradesGUI;
 import com.massivecraft.factions.zcore.fupgrades.UpgradesListener;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import me.lucko.commodore.CommodoreProvider;
@@ -288,7 +287,6 @@ public class FactionsPlugin extends MPlugin {
                 new FactionsEntityListener(),
                 new FactionsExploitListener(),
                 new FactionsBlockListener(),
-                new FUpgradesGUI(),
                 new UpgradesListener(),
                 new MissionHandler(this),
                 new FChestListener(),
@@ -317,14 +315,10 @@ public class FactionsPlugin extends MPlugin {
                 json = "[]";
             }
             reserveObjects = this.getGsonBuilder().create().fromJson(json, new ListParameterizedType(ReserveObject.class));
-            if (reserveObjects == null) {
-                reserveObjects = new ArrayList<>();
-            }
-        }
-        catch (Exception e) {
+            if (reserveObjects == null) reserveObjects = new ArrayList<>();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
         if (getDescription().getFullName().contains("BETA")) {
             divider();
             System.out.println("You are using a BETA version of the plugin!");
