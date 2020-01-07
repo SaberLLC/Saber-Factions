@@ -62,19 +62,12 @@ public class ShopGUIFrame {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                 meta.addEnchant(Enchantment.DURABILITY, 1, true);
             }
-            if (!glowing) {
-                meta.removeEnchant(Enchantment.DURABILITY);
-            }
-
+            if (!glowing) meta.removeEnchant(Enchantment.DURABILITY);
             List<String> replacedLore = lore.stream().map(t -> t.replace("{cost}", cost + "")).collect(Collectors.toList());
-
             meta.setLore(FactionsPlugin.instance.colorList(replacedLore));
-
             item.setItemMeta(meta);
-
             GUIItems.set(slot, new GuiItem(item, e -> {
                 e.setCancelled(true);
-
                 FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
                 if (fplayer.getFaction().getPoints() >= cost) {
                     fplayer.getFaction().setPoints(fplayer.getFaction().getPoints() - cost);

@@ -61,19 +61,20 @@ public class CmdTntFill extends FCommand {
         int radius = context.argAsInt(0, 0); // We don't know the max yet, so let's not assume.
         int amount = context.argAsInt(1, 0); // We don't know the max yet, so let's not assume.
 
-        if (amount < 0) {
+        if (amount <= 0 || radius <= 0) {
             context.msg(TL.COMMAND_TNT_POSITIVE);
             return;
         }
+
         if (radius > FactionsPlugin.instance.getConfig().getInt("Tntfill.max-radius")) {
             context.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", FactionsPlugin.instance.getConfig().getInt("Tntfill.max-radius") + ""));
             return;
         }
+
         if (amount > FactionsPlugin.instance.getConfig().getInt("Tntfill.max-amount")) {
             context.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", FactionsPlugin.instance.getConfig().getInt("Tntfill.max-amount") + ""));
             return;
         }
-
         // How many dispensers are we to fill in?
 
         Location start = context.player.getLocation();
