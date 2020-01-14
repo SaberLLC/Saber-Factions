@@ -437,6 +437,9 @@ public class FactionsPlugin extends MPlugin {
             AutoLeaveTask = null;
         }
         DiscordListener.saveGuilds();
+        if (Discord.jda != null) {
+            Discord.jda.shutdownNow();
+        }
         super.onDisable();
         try {
             fLogManager.saveLogs();
