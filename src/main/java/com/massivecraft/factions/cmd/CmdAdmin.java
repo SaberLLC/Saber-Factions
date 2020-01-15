@@ -70,7 +70,7 @@ public class CmdAdmin extends FCommand {
 
             // if target player is currently admin, demote and replace him
             if (fyou == admin) {
-                targetFaction.promoteNewLeader();
+                promoteNewLeader(targetFaction);
                 context.msg(TL.COMMAND_ADMIN_DEMOTES, fyou.describeTo(context.fPlayer, true));
                 fyou.msg(TL.COMMAND_ADMIN_DEMOTED, context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fyou, true));
                 return;
@@ -78,9 +78,9 @@ public class CmdAdmin extends FCommand {
 
             // promote target player, and demote existing admin if one exists
             if (admin != null) {
-                admin.setRole(Role.COLEADER);
+                setRole(admin, Role.COLEADER);
             }
-            fyou.setRole(Role.LEADER);
+            setRole(fyou, Role.LEADER);
             context.msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(context.fPlayer, true));
 
             FactionsPlugin.instance.getFlogManager().log(targetFaction, FLogType.RANK_EDIT, context.fPlayer.getName(), fyou.getName(), ChatColor.RED + "Admin");
@@ -91,6 +91,18 @@ public class CmdAdmin extends FCommand {
                         context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true),
                         fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
             }
+        });
+    }
+
+    private void setRole(FPlayer fp, Role r) {
+        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, () -> {
+            fp.setRole(r);
+        });
+    }
+
+    private void promoteNewLeader(Faction f) {
+        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, () -> {
+            f.promoteNewLeader();
         });
     }
 

@@ -32,7 +32,7 @@ public class FPlayerRoleChangeEvent extends FactionPlayerEvent implements Cancel
 
     @Override
     public boolean isCancelled() {
-        return false;
+        return cancelled;
     }
 
     @Override
