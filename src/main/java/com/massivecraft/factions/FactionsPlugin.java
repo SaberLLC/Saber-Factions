@@ -210,7 +210,6 @@ public class FactionsPlugin extends MPlugin {
             if (fPlayer.isAlt()) faction.addAltPlayer(fPlayer);
             else faction.addFPlayer(fPlayer);
         }
-        if (getConfig().getBoolean("enable-faction-flight", true)) UtilFly.run();
 
 
         Board.getInstance().load();

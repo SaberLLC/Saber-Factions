@@ -668,7 +668,7 @@ public class FactionsPlayerListener implements Listener {
                             if (!fPlayer.checkIfNearbyEnemies()) {
                                 FLocation myFloc = new FLocation(player.getLocation());
                                 if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-                                    if (!CmdFly.checkBypassPerms(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
+                                    if (!CmdFly.checkFly(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
                                         fPlayer.setFFlying(false, false);
                                         CmdFly.flyMap.remove(name);
                                     }

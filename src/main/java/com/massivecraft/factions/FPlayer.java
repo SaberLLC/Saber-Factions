@@ -32,6 +32,19 @@ public interface FPlayer extends EconomyParticipator {
     boolean hasNotificationsEnabled();
 
     /**
+     * Determine if a player has enemies nearby based on the enemy check task in CmdFly
+     * NOTE: THIS VALUE IS ONLY UPDATED WHEN A USER IS USING FLY
+     * @return enemiesNearby as a boolean
+     */
+    boolean hasEnemiesNearby();
+
+    /**
+     * Set if this FPlayer has an enemy nearby
+     * @param b enemiesNearby
+     */
+    void setEnemiesNearby(Boolean b);
+
+    /**
      * Get if a player has setup their Discord before
      * @return if the player setup Discord as a boolean
      */

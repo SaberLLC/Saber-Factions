@@ -10,7 +10,10 @@ import org.bukkit.Bukkit;
 
 
 public class UtilFly {
-
+    /**
+     * UtilFly is being removed very soon as all of its functionality has been updated and moved to CmdFly
+     */
+    @Deprecated
     public static void run() {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
             return;
@@ -22,7 +25,7 @@ public class UtilFly {
             }
         }, 0, FactionsPlugin.getInstance().getConfig().getInt("fly-task-interval", 10));
     }
-
+    @Deprecated
     public static void setFly(FPlayer fp, boolean fly, boolean silent, boolean damage) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
             return;
@@ -42,7 +45,7 @@ public class UtilFly {
 
         setFallDamage(fp, fly, damage);
     }
-
+    @Deprecated
     public static void checkFly(FPlayer me, Faction factionTo) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
             return;

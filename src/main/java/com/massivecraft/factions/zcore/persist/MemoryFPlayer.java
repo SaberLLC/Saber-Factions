@@ -47,6 +47,7 @@ import java.util.*;
  */
 
 public abstract class MemoryFPlayer implements FPlayer {
+    public boolean enemiesNearby = false;
     public boolean inChest = false;
     public boolean discordSetup = false;
     public String discordUserID = "";
@@ -220,6 +221,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean hasNotificationsEnabled() {
         return this.notificationsEnabled;
     }
+
+    public boolean hasEnemiesNearby() {return this.enemiesNearby;}
+
+    public void setEnemiesNearby(Boolean b) {this.enemiesNearby = b;}
 
     public boolean discordSetup() {return this.discordSetup;}
 
@@ -972,7 +977,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
         if ((faction == getFaction() && getRole() == Role.LEADER) || isAdminBypassing) return true;
-        if (faction.isSystemFaction()) return CmdFly.checkBypassPerms(this, getPlayer(), faction);
+        if (faction.isSystemFaction()) return CmdFly.checkFly(this, getPlayer(), faction);
         Access access = faction.getAccess(this, PermissableAction.FLY);
         return access == null || access == Access.UNDEFINED || access == Access.ALLOW;
     }
@@ -1108,16 +1113,18 @@ public abstract class MemoryFPlayer implements FPlayer {
                     setFlying(false);
                     msg(TL.COMMAND_FLY_ENEMY_NEAR);
                     Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));
+                    this.enemiesNearby = true;
                     return true;
                 }
             }
         }
+        this.enemiesNearby = false;
         return false;
     }
 
     @Override
     public Boolean canflyinWilderness() {
-        return getPlayer().hasPermission(Permission.FLY_WILD.node);
+        return getPlayer().hasPermission(Permission.FLY_WILDERNESS.node);
     }
 
     @Override

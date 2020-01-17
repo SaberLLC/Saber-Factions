@@ -9,6 +9,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -34,7 +35,7 @@ public class CmdFly extends FCommand {
         this.aliases.addAll(Aliases.fly);
         this.optionalArgs.put("on/off", "flip");
 
-        this.requirements = new CommandRequirements.Builder(Permission.FLY)
+        this.requirements = new CommandRequirements.Builder(Permission.FLY_FLY)
                 .playerOnly()
                 .memberOnly()
                 .build();
@@ -78,19 +79,15 @@ public class CmdFly extends FCommand {
                     }
                     FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
                     Faction myFaction = fPlayer.getFaction();
-                    if (myFaction.isWilderness()) {
-                        fPlayer.setFlying(false);
-                        flyMap.remove(name);
-                        continue;
-                    }
-                    if (player.hasPermission("factions.fly.bypassnearbyenemycheck") || fPlayer.checkIfNearbyEnemies()) {
+                    if (!player.hasPermission("factions.fly.bypassnearbyenemycheck") && !fPlayer.isAdminBypassing()) {
+                        if (fPlayer.hasEnemiesNearby()) disableFlightSync(fPlayer);
+                        checkEnemiesSync(fPlayer);
                         continue;
                     }
                     FLocation myFloc = new FLocation(player.getLocation());
                     if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-                        if (!checkBypassPerms(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
-                            Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> fPlayer.setFFlying(false, false));
-                            flyMap.remove(name);
+                        if (!checkFly(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
+                            disableFlightSync(fPlayer);
                         }
                     }
 
@@ -100,36 +97,15 @@ public class CmdFly extends FCommand {
         }, 20L, 20L);
     }
 
-    public static boolean checkBypassPerms(FPlayer fme, Player me, Faction toFac) {
+    public static boolean checkFly(FPlayer fme, Player me, Faction toFac) {
         if (Conf.denyFlightIfInNoClaimingWorld && !Conf.worldsNoClaiming.isEmpty() && Conf.worldsNoClaiming.stream().anyMatch(me.getWorld().getName()::equalsIgnoreCase))
             return false;
-
-        if (toFac != fme.getFaction()) {
-            if (!me.hasPermission(Permission.FLY_WILD.node) && toFac.isWilderness() || !me.hasPermission(Permission.FLY_SAFEZONE.node) && toFac.isSafeZone() || !me.hasPermission(Permission.FLY_WARZONE.node) && toFac.isWarZone()) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
-                return false;
-            }
-            Access access = toFac.getAccess(fme, PermissableAction.FLY);
-            if ((!(me.hasPermission(Permission.FLY_ENEMY.node) || access == Access.ALLOW)) && toFac.getRelationTo(fme.getFaction()) == Relation.ENEMY) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
-                return false;
-            }
-            if (!(me.hasPermission(Permission.FLY_ALLY.node) || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.ALLY) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
-                return false;
-            }
-            if (!(me.hasPermission(Permission.FLY_TRUCE.node) || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.TRUCE) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
-                return false;
-            }
-
-            if (!(me.hasPermission(Permission.FLY_NEUTRAL.node) || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.NEUTRAL && !toFac.isSystemFaction()) {
-                fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
-                return false;
-            }
-            return me.hasPermission(Permission.FLY.node) && (access != Access.DENY || toFac.isSystemFaction());
-        }
-        return true;
+        if (toFac.getAccess(fme, PermissableAction.FLY) == Access.ALLOW) return true;
+        if (fme.getFaction().isWilderness()) return false;
+        if (toFac.isSystemFaction()) return me.hasPermission(Permission.valueOf("FLY_" + ChatColor.stripColor(toFac.getTag()).toUpperCase()).node);
+        Relation relationTo = toFac.getRelationTo(fme.getFaction());
+        if (!relationTo.isEnemy() && !relationTo.isMember()) return me.hasPermission(Permission.valueOf("FLY_" + relationTo.name()).node);
+        return false;
     }
 
 
@@ -145,34 +121,43 @@ public class CmdFly extends FCommand {
         flyMap.remove(fme.getPlayer().getName());
     }
 
+    private static void disableFlightSync(FPlayer fme) {
+        Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> fme.setFFlying(false, false));
+        flyMap.remove(fme.getName());
+    }
+
     public boolean isInFlightChecker(Player player) {
         return flyMap.containsKey(player.getName());
     }
 
+    private static void checkEnemiesSync(FPlayer fp) {
+        Bukkit.getScheduler().runTask(FactionsPlugin.instance, fp::checkIfNearbyEnemies);
+    }
+
     @Override
     public void perform(CommandContext context) {
-        // Disabled by default.
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", false)) {
-            context.fPlayer.msg(TL.COMMAND_FLY_DISABLED);
-            return;
-        }
+        if (!context.fPlayer.isAdminBypassing()) {
+            List<Entity> entities = context.player.getNearbyEntities(16.0D, 256.0D, 16.0D);
 
-        FLocation myfloc = new FLocation(context.player.getLocation());
-        Faction toFac = Board.getInstance().getFactionAt(myfloc);
-        if (!checkBypassPerms(context.fPlayer, context.player, toFac)) return;
-        List<Entity> entities = context.player.getNearbyEntities(16.0D, 256.0D, 16.0D);
-
-        for (int i = 0; i <= entities.size() - 1; ++i) {
-            if (entities.get(i) instanceof Player) {
-                Player eplayer = (Player) entities.get(i);
-                FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer.getRelationTo(context.fPlayer) == Relation.ENEMY && !efplayer.isStealthEnabled()) {
-                    context.msg(TL.COMMAND_FLY_CHECK_ENEMY);
-                    return;
+            for (int i = 0; i <= entities.size() - 1; ++i) {
+                if (entities.get(i) instanceof Player) {
+                    Player eplayer = (Player) entities.get(i);
+                    FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
+                    if (efplayer.getRelationTo(context.fPlayer) == Relation.ENEMY && !efplayer.isStealthEnabled()) {
+                        context.msg(TL.COMMAND_FLY_CHECK_ENEMY);
+                        return;
+                    }
+                    context.fPlayer.setEnemiesNearby(false);
                 }
             }
-        }
 
+            FLocation myfloc = new FLocation(context.player.getLocation());
+            Faction toFac = Board.getInstance().getFactionAt(myfloc);
+            if (!checkFly(context.fPlayer, context.player, toFac)) {
+                context.fPlayer.sendMessage(TL.COMMAND_FLY_NO_ACCESS.format(toFac.getTag()));
+                return;
+            }
+        }
 
         if (context.args.size() == 0) {
             toggleFlight(context.fPlayer.isFlying(), context.fPlayer, context);
@@ -188,8 +173,6 @@ public class CmdFly extends FCommand {
             return;
         }
 
-
-        if (fme.canFlyAtLocation()) {
             context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
                 fme.setFlying(true);
                 flyMap.put(fme.getPlayer().getName(), true);
@@ -201,9 +184,6 @@ public class CmdFly extends FCommand {
                     startFlyCheck();
                 }
             }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-fly", 0));
-        } else {
-            fme.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(fme.getLastStoodAt()).getTag());
-        }
     }
 
     @Override
