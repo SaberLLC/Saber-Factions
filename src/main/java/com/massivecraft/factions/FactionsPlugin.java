@@ -69,7 +69,6 @@ public class FactionsPlugin extends MPlugin {
     // Plugins can check this boolean while hooking in have
     // a green light to use the api.
     public static boolean startupFinished = false;
-    public static Economy econ = null;
     public boolean PlaceholderApi;
     // Commands
     public FCmdRoot cmdBase;
@@ -182,10 +181,10 @@ public class FactionsPlugin extends MPlugin {
         Conf.load();
         fLogManager = new FLogManager();
         //Dependency checks
-        if (Conf.dependencyCheck && (!Bukkit.getPluginManager().isPluginEnabled("Vault") && !Bukkit.getPluginManager().isPluginEnabled("Essentials"))) {
+        if (Conf.dependencyCheck && (!Bukkit.getPluginManager().isPluginEnabled("Vault"))) {
             divider();
             System.out.println("You are missing dependencies!");
-            System.out.println("Please verify EssentialsX and Vault are installed!");
+            System.out.println("Please verify and Vault are installed!");
             Conf.save();
             Bukkit.getPluginManager().disablePlugin(instance);
             divider();
@@ -194,7 +193,6 @@ public class FactionsPlugin extends MPlugin {
         //Update their config if needed
         // Updater.updateIfNeeded(getConfig());
         RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
-        FactionsPlugin.econ = rsp.getProvider();
         com.massivecraft.factions.integration.Essentials.setup();
         hookedPlayervaults = setupPlayervaults();
         FPlayers.getInstance().load();

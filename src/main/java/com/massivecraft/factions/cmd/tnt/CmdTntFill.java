@@ -62,7 +62,7 @@ public class CmdTntFill extends FCommand {
             context.msg(TL.COMMAND_TNT_POSITIVE);
             return;
         }
-        
+
         if (radius > FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius")) {
             context.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius") + ""));
             return;
