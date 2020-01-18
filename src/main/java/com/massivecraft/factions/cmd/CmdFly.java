@@ -102,9 +102,11 @@ public class CmdFly extends FCommand {
             return false;
         if (toFac.getAccess(fme, PermissableAction.FLY) == Access.ALLOW) return true;
         if (fme.getFaction().isWilderness()) return false;
-        if (toFac.isSystemFaction()) return me.hasPermission(Permission.valueOf("FLY_" + ChatColor.stripColor(toFac.getTag()).toUpperCase()).node);
+        if (toFac.isSystemFaction())
+            return me.hasPermission(Permission.valueOf("FLY_" + ChatColor.stripColor(toFac.getTag()).toUpperCase()).node);
         Relation relationTo = toFac.getRelationTo(fme.getFaction());
-        if (!relationTo.isEnemy() && !relationTo.isMember()) return me.hasPermission(Permission.valueOf("FLY_" + relationTo.name()).node);
+        if (!relationTo.isEnemy() && !relationTo.isMember())
+            return me.hasPermission(Permission.valueOf("FLY_" + relationTo.name()).node);
         return false;
     }
 
@@ -126,12 +128,12 @@ public class CmdFly extends FCommand {
         flyMap.remove(fme.getName());
     }
 
-    public boolean isInFlightChecker(Player player) {
-        return flyMap.containsKey(player.getName());
-    }
-
     private static void checkEnemiesSync(FPlayer fp) {
         Bukkit.getScheduler().runTask(FactionsPlugin.instance, fp::checkIfNearbyEnemies);
+    }
+
+    public boolean isInFlightChecker(Player player) {
+        return flyMap.containsKey(player.getName());
     }
 
     @Override
@@ -173,17 +175,17 @@ public class CmdFly extends FCommand {
             return;
         }
 
-            context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
-                fme.setFlying(true);
-                flyMap.put(fme.getPlayer().getName(), true);
-                if (particleTask == null) {
-                    startParticles();
-                }
+        context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
+            fme.setFlying(true);
+            flyMap.put(fme.getPlayer().getName(), true);
+            if (particleTask == null) {
+                startParticles();
+            }
 
-                if (flyTask == null) {
-                    startFlyCheck();
-                }
-            }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-fly", 0));
+            if (flyTask == null) {
+                startFlyCheck();
+            }
+        }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-fly", 0));
     }
 
     @Override

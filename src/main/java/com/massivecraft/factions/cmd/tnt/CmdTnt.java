@@ -34,6 +34,24 @@ public class CmdTnt extends FCommand {
                 .build();
     }
 
+    public static void removeItems(Inventory inventory, ItemStack item, int toRemove) {
+        if (toRemove <= 0 || inventory == null || item == null)
+            return;
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack loopItem = inventory.getItem(i);
+            if (loopItem == null || !item.isSimilar(loopItem))
+                continue;
+            if (toRemove <= 0)
+                return;
+            if (toRemove < loopItem.getAmount()) {
+                loopItem.setAmount(loopItem.getAmount() - toRemove);
+                return;
+            }
+            inventory.clear(i);
+            toRemove -= loopItem.getAmount();
+        }
+    }
+
     @Override
     public void perform(CommandContext context) {
         if (!FactionsPlugin.instance.getConfig().getBoolean("ftnt.Enabled")) {
@@ -110,8 +128,10 @@ public class CmdTnt extends FCommand {
                     return;
                 }
 
-                for (int i = 0; i <= fullStacks - 1; i++) context.player.getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), 64));
-                if (remainderAmt != 0) context.player.getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), remainderAmt));
+                for (int i = 0; i <= fullStacks - 1; i++)
+                    context.player.getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), 64));
+                if (remainderAmt != 0)
+                    context.player.getInventory().addItem(new ItemStack(XMaterial.TNT.parseMaterial(), remainderAmt));
 
                 context.faction.takeTnt(amount);
                 context.player.updateInventory();
@@ -123,7 +143,9 @@ public class CmdTnt extends FCommand {
                 Inventory inv = context.player.getInventory();
                 int invTnt = 0;
                 for (int i = 0; i <= inv.getSize(); i++) {
-                    if (inv.getItem(i) == null) { continue; }
+                    if (inv.getItem(i) == null) {
+                        continue;
+                    }
                     if (inv.getItem(i).getType() == Material.TNT) {
                         invTnt += inv.getItem(i).getAmount();
                     }
@@ -152,7 +174,6 @@ public class CmdTnt extends FCommand {
         context.sendMessage(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + ""));
     }
 
-
     public boolean inventoryContains(Inventory inventory, ItemStack item) {
         int count = 0;
         ItemStack[] items = inventory.getContents();
@@ -175,24 +196,6 @@ public class CmdTnt extends FCommand {
             }
         }
         return check >= howmany;
-    }
-
-    public static void removeItems(Inventory inventory, ItemStack item, int toRemove) {
-        if (toRemove <= 0 || inventory == null || item == null)
-            return;
-        for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack loopItem = inventory.getItem(i);
-            if (loopItem == null || !item.isSimilar(loopItem))
-                continue;
-            if (toRemove <= 0)
-                return;
-            if (toRemove < loopItem.getAmount()) {
-                loopItem.setAmount(loopItem.getAmount() - toRemove);
-                return;
-            }
-            inventory.clear(i);
-            toRemove -= loopItem.getAmount();
-        }
     }
 
     public void removeFromInventory(Inventory inventory, ItemStack item) {

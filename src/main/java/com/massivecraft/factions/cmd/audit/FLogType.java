@@ -27,8 +27,10 @@ public enum FLogType {
     private String msg;
     private int requiredArgs;
 
-    public String getDisplayName() {
-        return this.displayName;
+    FLogType(String displayName, String msg, int requiredArgs) {
+        this.displayName = displayName;
+        this.msg = msg;
+        this.requiredArgs = requiredArgs;
     }
 
     /**
@@ -46,15 +48,22 @@ public enum FLogType {
         return null;
     }
 
-    @Override
-    public String toString() { return name(); }
-
-    public int getSlot() { return FactionsPlugin.getInstance().getConfig().getInt("faudit-gui.slots." + name().toLowerCase()); }
-
-    public Material getMaterial(){
-        return XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("faudit-gui.materials." + name().toLowerCase())).parseMaterial();
+    public String getDisplayName() {
+        return this.displayName;
     }
 
+    @Override
+    public String toString() {
+        return name();
+    }
+
+    public int getSlot() {
+        return FactionsPlugin.getInstance().getConfig().getInt("faudit-gui.slots." + name().toLowerCase());
+    }
+
+    public Material getMaterial() {
+        return XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("faudit-gui.materials." + name().toLowerCase())).parseMaterial();
+    }
 
     public String getMsg() {
         return this.msg;
@@ -62,11 +71,5 @@ public enum FLogType {
 
     public int getRequiredArgs() {
         return this.requiredArgs;
-    }
-
-    FLogType(String displayName, String msg, int requiredArgs) {
-        this.displayName = displayName;
-        this.msg = msg;
-        this.requiredArgs = requiredArgs;
     }
 }

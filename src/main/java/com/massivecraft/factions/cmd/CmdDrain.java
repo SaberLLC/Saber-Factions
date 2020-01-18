@@ -7,15 +7,14 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
 
 /**
  * @author Saser
  */
-public class CmdDrain extends FCommand{
-    public CmdDrain(){
+public class CmdDrain extends FCommand {
+    public CmdDrain() {
         this.aliases.addAll(Aliases.drain);
         this.requirements = new CommandRequirements.Builder(Permission.DRAIN)
                 .playerOnly()
@@ -34,12 +33,12 @@ public class CmdDrain extends FCommand{
 
         double totalBalance = 0;
 
-        for(FPlayer fPlayer : context.faction.getFPlayers()) {
-            if(context.faction.getFPlayers().size() == 1){
+        for (FPlayer fPlayer : context.faction.getFPlayers()) {
+            if (context.faction.getFPlayers().size() == 1) {
                 context.fPlayer.msg(TL.COMMAND_DRAIN_NO_PLAYERS);
                 return;
             }
-            if (FPlayers.getInstance().getByPlayer(context.player).equals(fPlayer)){
+            if (FPlayers.getInstance().getByPlayer(context.player).equals(fPlayer)) {
                 continue; // skip the command executor
             }
             double balance = FactionsPlugin.getInstance().getEcon().getBalance(fPlayer.getPlayer());

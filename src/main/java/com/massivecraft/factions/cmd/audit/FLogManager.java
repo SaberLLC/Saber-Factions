@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.audit;
 /**
  * @author Saser
  */
+
 import com.google.common.reflect.TypeToken;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -127,7 +128,7 @@ public class FLogManager {
             }
 
             try {
-                JSONUtils.saveJSONToFile(logFile, factionLogMap,logToken);
+                JSONUtils.saveJSONToFile(logFile, factionLogMap, logToken);
             } catch (Exception e1) {
                 Bukkit.getLogger().info("ERROR SAVING JSON LOGS: " + e1.getMessage());
                 e1.printStackTrace();

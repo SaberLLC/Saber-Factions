@@ -11,7 +11,7 @@ public class CmdSpawnerLock extends FCommand {
      * @author Illyria Team
      */
 
-    public CmdSpawnerLock(){
+    public CmdSpawnerLock() {
         super();
         this.aliases.addAll(Aliases.spawnerlock);
 
@@ -20,7 +20,7 @@ public class CmdSpawnerLock extends FCommand {
     }
 
     @Override
-    public void perform(CommandContext context){
+    public void perform(CommandContext context) {
         Conf.spawnerLock = !Conf.spawnerLock;
         context.msg(TL.COMMAND_SPAWNER_LOCK_TOGGLED, Conf.spawnerLock ? FactionsPlugin.getInstance().color("&aEnabled") : FactionsPlugin.getInstance().color("&4Disabled"));
     }

@@ -14,6 +14,7 @@ public class CmdDiscord extends FCommand {
                 .playerOnly()
                 .build();
     }
+
     @Override
     public void perform(CommandContext context) {
         if (context.fPlayer.discordSetup()) {

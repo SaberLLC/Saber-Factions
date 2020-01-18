@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.audit;
 /*
   @author Saser
  */
+
 import com.google.common.collect.Lists;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
@@ -92,9 +93,9 @@ public class FAuditMenu extends GUIMenu {
                 LinkedList<FactionLogs.FactionLog> log = logs.getMostRecentLogs().get(logType);
                 if (log != null) {
                     int slot = logType == FLogType.F_TNT ? 0 : 3;
-                    int pagesToShow = (int)Math.max(1.0D, Math.ceil((double)log.size() / (double)perPage));
+                    int pagesToShow = (int) Math.max(1.0D, Math.ceil((double) log.size() / (double) perPage));
 
-                    for(int page = 1; page <= pagesToShow; ++page) {
+                    for (int page = 1; page <= pagesToShow; ++page) {
                         int startIndex = log.size() - (page * perPage - perPage);
                         if (startIndex >= log.size()) {
                             startIndex = log.size() - 1;
@@ -102,7 +103,7 @@ public class FAuditMenu extends GUIMenu {
 
                         List<String> lore = Lists.newArrayList("", CC.GreenB + "Logs");
 
-                        for(int i = startIndex; i > startIndex - perPage; --i) {
+                        for (int i = startIndex; i > startIndex - perPage; --i) {
                             if (i < log.size()) {
                                 if (i < 0) {
                                     break;

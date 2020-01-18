@@ -5,7 +5,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
-public class CmdSeeDiscord extends FCommand{
+public class CmdSeeDiscord extends FCommand {
 
     /**
      * @author Driftay
@@ -27,7 +27,6 @@ public class CmdSeeDiscord extends FCommand{
             context.msg(TL.GENERIC_DISABLED, "Faction Discords");
             return;
         }
-
 
 
         if (context.args.size() == 0) {

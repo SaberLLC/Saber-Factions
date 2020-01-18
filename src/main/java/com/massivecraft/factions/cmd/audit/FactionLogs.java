@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.audit;
 /**
  * @author Saser
  */
+
 import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,8 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class FactionLogs {
-    private Map<FLogType, LinkedList<FactionLog>> mostRecentLogs = new ConcurrentHashMap<>();
     public static transient SimpleDateFormat format = new SimpleDateFormat("MM/dd hh:mmaa");
+    private Map<FLogType, LinkedList<FactionLog>> mostRecentLogs = new ConcurrentHashMap<>();
 
     public FactionLogs() {
     }

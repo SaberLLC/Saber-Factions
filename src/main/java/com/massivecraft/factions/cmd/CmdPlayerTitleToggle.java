@@ -11,11 +11,15 @@ public class CmdPlayerTitleToggle extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.TOGGLE_TITLES)
                 .build();
     }
+
     @Override
     public void perform(CommandContext context) {
         context.fPlayer.setTitlesEnabled(!context.fPlayer.hasTitlesEnabled());
         context.msg(TL.COMMAND_TITLETOGGLE_TOGGLED, context.fPlayer.hasTitlesEnabled() ? FactionsPlugin.getInstance().color("&dEnabled") : FactionsPlugin.getInstance().color("&dDisabled"));
     }
+
     @Override
-    public TL getUsageTranslation() {return TL.COMMAND_TITLETOGGLE_DESCRIPTION;}
+    public TL getUsageTranslation() {
+        return TL.COMMAND_TITLETOGGLE_DESCRIPTION;
+    }
 }

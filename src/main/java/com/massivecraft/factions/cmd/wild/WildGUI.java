@@ -23,11 +23,13 @@ public class WildGUI implements FactionGUI {
     FPlayer fplayer;
     HashMap<Integer, String> map;
     Inventory inv;
+
     public WildGUI(Player player, FPlayer fplayer) {
         this.player = player;
         this.fplayer = fplayer;
         map = new HashMap<>();
     }
+
     @Override
     public void onClick(int slot, ClickType action) {
         if (map.containsKey(slot)) {
@@ -46,7 +48,7 @@ public class WildGUI implements FactionGUI {
         inv = Bukkit.createInventory(this, FactionsPlugin.getInstance().getConfig().getInt("Wild.GUI.Size"), FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("Wild.GUI.Name")));
         ItemStack fillItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("Wild.GUI.FillMaterial")).parseItem();
         ItemMeta meta = fillItem.getItemMeta();
-        if(meta == null) return;
+        if (meta == null) return;
         meta.setDisplayName("");
         fillItem.setItemMeta(meta);
         for (int fill = 0; fill < FactionsPlugin.getInstance().getConfig().getInt("Wild.GUI.Size"); ++fill) {
@@ -55,7 +57,7 @@ public class WildGUI implements FactionGUI {
         for (String key : Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getConfigurationSection("Wild.Zones")).getKeys(false)) {
             ItemStack zoneItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("Wild.Zones." + key + ".Material")).parseItem();
             ItemMeta zoneMeta = zoneItem.getItemMeta();
-            if(zoneMeta == null) return;
+            if (zoneMeta == null) return;
             List<String> lore = new ArrayList<>();
             for (String s : FactionsPlugin.getInstance().getConfig().getStringList("Wild.Zones." + key + ".Lore")) {
                 lore.add(FactionsPlugin.getInstance().color(s));
@@ -72,7 +74,9 @@ public class WildGUI implements FactionGUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        if (inv == null) {build();}
+        if (inv == null) {
+            build();
+        }
         return inv;
     }
 }

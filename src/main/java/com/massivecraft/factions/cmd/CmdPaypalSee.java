@@ -29,7 +29,6 @@ public class CmdPaypalSee extends FCommand {
         }
 
 
-
         if (context.args.size() == 0) {
             if (context.fPlayer.getFaction().getPaypal() == null) {
                 context.msg(TL.COMMAND_PAYPAL_NOTSET);

@@ -308,16 +308,16 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
      */
     public void addVariableCommands() {
         //Discord
-         if (Conf.useDiscordSystem && !discordEnabled) {
-             this.addSubCommand(this.cmdInviteBot);
-             this.addSubCommand(this.cmdSetGuild);
-             this.addSubCommand(this.cmdSetDiscord);
-             this.addSubCommand(this.cmdSeeDiscord);
-             this.addSubCommand(this.cmdDiscord);
-             discordEnabled = true;
-         }
-         //Reserve
-        if(Conf.useReserveSystem){
+        if (Conf.useDiscordSystem && !discordEnabled) {
+            this.addSubCommand(this.cmdInviteBot);
+            this.addSubCommand(this.cmdSetGuild);
+            this.addSubCommand(this.cmdSetDiscord);
+            this.addSubCommand(this.cmdSeeDiscord);
+            this.addSubCommand(this.cmdDiscord);
+            discordEnabled = true;
+        }
+        //Reserve
+        if (Conf.useReserveSystem) {
             this.addSubCommand(this.cmdReserve);
         }
 
@@ -350,7 +350,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             internalFTOPEnabled = true;
         }
 
-        if(Conf.useAuditSystem){
+        if (Conf.useAuditSystem) {
             this.addSubCommand(cmdAudit);
             fAuditEnabled = true;
         }
@@ -394,7 +394,9 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         }
     }
 
-    public void rebuild() {if (CommodoreProvider.isSupported()) brigadierManager.build();}
+    public void rebuild() {
+        if (CommodoreProvider.isSupported()) brigadierManager.build();
+    }
 
     @Override
     public void perform(CommandContext context) {

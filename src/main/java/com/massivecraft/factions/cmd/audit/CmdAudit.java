@@ -26,10 +26,11 @@ public class CmdAudit extends FCommand {
                 .noErrorOnManyArgs()
                 .build();
     }
+
     @Override
     public void perform(CommandContext context) {
         Faction faction = context.args.size() == 1 && context.sender.isOp() ? context.argAsFaction(0) : context.faction;
-        new FAuditMenu((Player)context.sender, faction).open((Player)context.sender);
+        new FAuditMenu((Player) context.sender, faction).open((Player) context.sender);
     }
 
     @Override

@@ -27,22 +27,26 @@ public class CmdWild extends FCommand {
     public static HashMap<Player, Integer> waitingTeleport;
     public static HashMap<Player, String> teleportRange;
     public static HashSet<Player> teleporting;
+
     public CmdWild() {
         super();
         this.aliases.addAll(Aliases.wild);
         this.requirements = new CommandRequirements.Builder(Permission.WILD)
                 .playerOnly()
                 .build();
-         waitingTeleport = new HashMap<>();
+        waitingTeleport = new HashMap<>();
         teleporting = new HashSet<>();
         teleportRange = new HashMap<>();
         startWild();
     }
+
     @Override
     public void perform(CommandContext context) {
         if (!waitingTeleport.containsKey(context.player)) {
             context.player.openInventory(new WildGUI(context.player, context.fPlayer).getInventory());
-        } else {context.fPlayer.msg(TL.COMMAND_WILD_WAIT);}
+        } else {
+            context.fPlayer.msg(TL.COMMAND_WILD_WAIT);
+        }
     }
 
     public void startWild() {
@@ -64,6 +68,7 @@ public class CmdWild extends FCommand {
             }
         }, 0L, 20L);
     }
+
     public void attemptTeleport(Player p) {
         boolean success = false;
         int tries = 0;
@@ -84,26 +89,34 @@ public class CmdWild extends FCommand {
             }
             tries++;
         }
-        if (!success) {p.sendMessage(TL.COMMAND_WILD_FAILED.toString());}
+        if (!success) {
+            p.sendMessage(TL.COMMAND_WILD_FAILED.toString());
+        }
     }
+
     public void teleportPlayer(Player p, FLocation loc) {
         Location finalLoc;
         if (FactionsPlugin.getInstance().getConfig().getBoolean("Wild.Arrival.SpawnAbove")) {
             finalLoc = new Location(p.getWorld(), loc.getX(), p.getWorld().getHighestBlockYAt(Math.round(loc.getX()), Math.round(loc.getZ())) + FactionsPlugin.getInstance().getConfig().getInt("Wild.Arrival.SpawnAboveBlocks", 1), loc.getZ());
-        } else {finalLoc = new Location(p.getWorld(), loc.getX(), p.getWorld().getHighestBlockYAt(Math.round(loc.getX()), Math.round(loc.getZ())), loc.getZ());}
+        } else {
+            finalLoc = new Location(p.getWorld(), loc.getX(), p.getWorld().getHighestBlockYAt(Math.round(loc.getX()), Math.round(loc.getZ())), loc.getZ());
+        }
         p.teleport(finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         setTeleporting(p);
         applyEffects(p);
     }
+
     public void applyEffects(Player p) {
         for (String s : FactionsPlugin.getInstance().getConfig().getStringList("Wild.Arrival.Effects")) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(s), 40, 1));
         }
     }
+
     public void setTeleporting(Player p) {
         teleporting.add(p);
         Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> teleporting.remove(p), FactionsPlugin.getInstance().getConfig().getInt("Wild.Arrival.FallDamageWindow") * 20);
     }
+
     @Override
     public TL getUsageTranslation() {
         return TL.COMMAND_WILD_DESCRIPTION;

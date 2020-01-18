@@ -89,7 +89,7 @@ public class CmdClaimLine extends FCommand {
             location = location.add(blockFace.getModX() * 16, 0, blockFace.getModZ() * 16);
             FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", String.valueOf(i), new FLocation(context.player.getLocation()).formatXAndZ(","));
         }
-}
+    }
 
     @Override
     public TL getUsageTranslation() {

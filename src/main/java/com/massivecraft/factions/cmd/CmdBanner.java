@@ -46,6 +46,7 @@ public class CmdBanner extends FCommand {
         warBanner.setAmount(1);
         context.player.getInventory().addItem(warBanner);
     }
+
     @Deprecated
     public boolean hasMoney(FPlayer fme, int amt) {
         Economy econ = FactionsPlugin.getInstance().getEcon();
@@ -55,6 +56,7 @@ public class CmdBanner extends FCommand {
         fme.msg(TL.COMMAND_BANNER_NOTENOUGHMONEY);
         return false;
     }
+
     @Deprecated
     public void takeMoney(FPlayer fme, int amt) {
         if (this.hasMoney(fme, amt)) {

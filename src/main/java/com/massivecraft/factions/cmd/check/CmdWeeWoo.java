@@ -59,7 +59,7 @@ public class CmdWeeWoo extends FCommand {
             }
             context.faction.setWeeWoo(false);
             context.msg(TL.COMMAND_WEEWOO_STOPPED, context.fPlayer.getNameAndTag());
-            if(!Conf.useDiscordSystem) return;
+            if (!Conf.useDiscordSystem) return;
             String discordChannelId = context.faction.getWeeWooChannelId();
             if (discordChannelId != null && !discordChannelId.isEmpty()) {
                 TextChannel textChannel = Discord.jda.getTextChannelById(discordChannelId);

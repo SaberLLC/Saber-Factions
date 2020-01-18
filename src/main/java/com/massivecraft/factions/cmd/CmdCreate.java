@@ -115,7 +115,9 @@ public class CmdCreate extends FCommand {
                     Discord.mainGuild.getController().setNickname(m, Discord.getNicknameString(context.fPlayer)).queue();
                 }
             }
-        } catch (HierarchyException e) {System.out.print(e.getMessage());}
+        } catch (HierarchyException e) {
+            System.out.print(e.getMessage());
+        }
         //End Discord
         context.msg(TL.COMMAND_CREATE_YOUSHOULD, FactionsPlugin.getInstance().cmdBase.cmdDescription.getUsageTemplate(context));
         if (Conf.econEnabled) Econ.setBalance(faction.getAccountId(), Conf.econFactionStartingBalance);

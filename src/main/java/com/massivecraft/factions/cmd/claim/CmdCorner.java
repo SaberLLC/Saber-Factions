@@ -10,8 +10,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CornerTask;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Comparator;

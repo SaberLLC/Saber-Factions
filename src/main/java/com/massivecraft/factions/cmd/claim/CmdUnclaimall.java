@@ -21,7 +21,6 @@ public class CmdUnclaimall extends FCommand {
      */
 
     //TODO: Add UnclaimAll Confirmation GUI
-
     public CmdUnclaimall() {
         this.aliases.addAll(Aliases.unclaim_all_unsafe);
 

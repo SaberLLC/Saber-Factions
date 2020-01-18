@@ -139,7 +139,9 @@ public class CmdJoin extends FCommand {
                     Discord.mainGuild.getController().setNickname(m, Discord.getNicknameString(context.fPlayer)).queue();
                 }
             }
-        } catch (HierarchyException e) {System.out.print(e.getMessage());}
+        } catch (HierarchyException e) {
+            System.out.print(e.getMessage());
+        }
 
         if (Conf.logFactionJoin) {
             if (samePlayer) {

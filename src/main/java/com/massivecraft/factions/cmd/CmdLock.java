@@ -16,7 +16,6 @@ public class CmdLock extends FCommand {
 	description: use the /f lock [on/off] command to temporarily lock the data files from being overwritten
 	default: op
 	 */
-
     public CmdLock() {
         super();
         this.aliases.addAll(Aliases.lock);

@@ -13,6 +13,7 @@ public class CmdDebug extends FCommand {
         this.aliases.add("debug");
         this.requirements = new CommandRequirements.Builder(Permission.DEBUG).build();
     }
+
     @Override
     public void perform(CommandContext context) {
         FactionsPlugin.getInstance().divider();
@@ -51,7 +52,9 @@ public class CmdDebug extends FCommand {
         System.out.print("Emotes enabled: " + Discord.useEmotes);
         System.out.print("Leader role null: " + (Discord.leader == null ? "True" : "False"));
         System.out.print("Attempt Log:");
-        for (DiscordSetupAttempt d : Discord.setupLog) {System.out.print(d.getDifferentialFormatted() + " " + d.getSuccess() + " " + d.getReason());}
+        for (DiscordSetupAttempt d : Discord.setupLog) {
+            System.out.print(d.getDifferentialFormatted() + " " + d.getSuccess() + " " + d.getReason());
+        }
         System.out.print("End Attempt Log");
         System.out.print("----End Discord----");
         System.out.print("--------End Debug Info--------");

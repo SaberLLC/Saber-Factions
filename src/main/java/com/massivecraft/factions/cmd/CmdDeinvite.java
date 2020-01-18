@@ -31,47 +31,47 @@ public class CmdDeinvite extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-            if (context.args.size() == 0) {
-                FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
-                for (String id : context.faction.getInvites()) {
-                    FPlayer fp = FPlayers.getInstance().getById(id);
-                    String name = fp != null ? fp.getName() : id;
-                    msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
-                }
-                context.sendFancyMessage(msg);
+        if (context.args.size() == 0) {
+            FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
+            for (String id : context.faction.getInvites()) {
+                FPlayer fp = FPlayers.getInstance().getById(id);
+                String name = fp != null ? fp.getName() : id;
+                msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
+            }
+            context.sendFancyMessage(msg);
+            return;
+        }
+
+        FPlayer you = context.argAsBestFPlayerMatch(0);
+        if (!context.fPlayer.isAdminBypassing()) {
+            Access access = context.faction.getAccess(context.fPlayer, PermissableAction.INVITE);
+            if (access != Access.ALLOW && context.fPlayer.getRole() != Role.LEADER) {
+                context.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
                 return;
             }
+        }
 
-            FPlayer you = context.argAsBestFPlayerMatch(0);
-            if (!context.fPlayer.isAdminBypassing()) {
-                Access access = context.faction.getAccess(context.fPlayer, PermissableAction.INVITE);
-                if (access != Access.ALLOW && context.fPlayer.getRole() != Role.LEADER) {
-                    context.msg(TL.GENERIC_FPERM_NOPERMISSION, "manage invites");
-                    return;
-                }
+        if (you == null) {
+            FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
+            for (String id : context.faction.getInvites()) {
+                if (context.faction.getInvites().isEmpty()) return;
+                FPlayer fp = FPlayers.getInstance().getById(id);
+                String name = fp != null ? fp.getName() : id;
+                msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
             }
+            context.sendFancyMessage(msg);
+            return;
+        }
 
-            if (you == null) {
-                FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
-                for (String id : context.faction.getInvites()) {
-                    if (context.faction.getInvites().isEmpty()) return;
-                    FPlayer fp = FPlayers.getInstance().getById(id);
-                    String name = fp != null ? fp.getName() : id;
-                    msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
-                }
-                context.sendFancyMessage(msg);
-                return;
-            }
+        if (you.getFaction() == context.faction) {
+            context.msg(TL.COMMAND_DEINVITE_ALREADYMEMBER, you.getName(), context.faction.getTag());
+            context.msg(TL.COMMAND_DEINVITE_MIGHTWANT, FactionsPlugin.getInstance().cmdBase.cmdKick.getUsageTemplate(context));
+            return;
+        }
 
-            if (you.getFaction() == context.faction) {
-                context.msg(TL.COMMAND_DEINVITE_ALREADYMEMBER, you.getName(), context.faction.getTag());
-                context.msg(TL.COMMAND_DEINVITE_MIGHTWANT, FactionsPlugin.getInstance().cmdBase.cmdKick.getUsageTemplate(context));
-                return;
-            }
-
-            context.faction.deinvite(you);
-            you.msg(TL.COMMAND_DEINVITE_REVOKED, context.fPlayer.describeTo(you), context.faction.describeTo(you));
-            context.faction.msg(TL.COMMAND_DEINVITE_REVOKES, context.fPlayer.describeTo(context.faction), you.describeTo(context.faction));
+        context.faction.deinvite(you);
+        you.msg(TL.COMMAND_DEINVITE_REVOKED, context.fPlayer.describeTo(you), context.faction.describeTo(you));
+        context.faction.msg(TL.COMMAND_DEINVITE_REVOKES, context.fPlayer.describeTo(context.faction), you.describeTo(context.faction));
     }
 
     @Override

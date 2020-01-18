@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.tnt;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
@@ -23,13 +24,9 @@ import java.util.*;
 
 public class CmdTntFill extends FCommand {
 
-    /**
-     * @author Illyria Team
-     */
-
     public CmdTntFill() {
         super();
-        this.aliases.addAll(Aliases.tnt_tntfill);
+        this.aliases.add("tntfill");
 
         this.requiredArgs.add("radius");
         this.requiredArgs.add("amount");
@@ -43,8 +40,8 @@ public class CmdTntFill extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!FactionsPlugin.instance.getConfig().getBoolean("Tntfill.enabled")) {
-            context.msg(TL.COMMAND_TNT_DISABLED_MSG);
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("Tntfill.enabled")) {
+            context.msg(TL.GENERIC_DISABLED);
             return;
         }
 
@@ -58,23 +55,23 @@ public class CmdTntFill extends FCommand {
         }
 
         context.msg(TL.COMMAND_TNTFILL_HEADER);
-        int radius = context.argAsInt(0, 0); // We don't know the max yet, so let's not assume.
-        int amount = context.argAsInt(1, 0); // We don't know the max yet, so let's not assume.
+        // We don't know the max yet, so let's not assume.
+        int radius = context.argAsInt(0, 0);
+        int amount = context.argAsInt(1, 0);
 
-        if (amount <= 0 || radius <= 0) {
+        if (amount < 0) {
             context.msg(TL.COMMAND_TNT_POSITIVE);
             return;
         }
-
-        if (radius > FactionsPlugin.instance.getConfig().getInt("Tntfill.max-radius")) {
-            context.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", FactionsPlugin.instance.getConfig().getInt("Tntfill.max-radius") + ""));
+        if (radius > FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius")) {
+            context.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius") + ""));
+            return;
+        }
+        if (amount > FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-amount")) {
+            context.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-amount") + ""));
             return;
         }
 
-        if (amount > FactionsPlugin.instance.getConfig().getInt("Tntfill.max-amount")) {
-            context.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", FactionsPlugin.instance.getConfig().getInt("Tntfill.max-amount") + ""));
-            return;
-        }
         // How many dispensers are we to fill in?
 
         Location start = context.player.getLocation();
@@ -89,103 +86,82 @@ public class CmdTntFill extends FCommand {
                     if (block == null) continue;
                     BlockState blockState = block.getState();
                     if (!(blockState instanceof Dispenser)) continue;
+                    Dispenser dis = (Dispenser) blockState;
+                    // skip if we can't add anything
+                    if (isInvFull(dis.getInventory())) continue;
                     opDispensers.add((Dispenser) blockState);
                 }
         if (opDispensers.isEmpty()) {
             context.fPlayer.msg(TL.COMMAND_TNTFILL_NODISPENSERS.toString().replace("{radius}", radius + ""));
             return;
         }
-
-        // What's the required amount of resources
         int requiredTnt = (opDispensers.size() * amount);
-
-        // Do I have enough tnt in my inventory?
-        int playerTnt = inventoryItemCount(context.player.getInventory(), Material.TNT);
+        int playerTnt = getTNTInside(context.player);
+        // if player does not have enough tnt, just take whatever he has and add it to the bank
+        // then use the bank as source. If bank < required abort.
         if (playerTnt < requiredTnt) {
-            // How much TNT will I take from bank?
-            int getFactionTnt = requiredTnt - playerTnt;
-
             // Do I have enough tnt in bank?
-            if ((context.faction.getTnt() < getFactionTnt)) {
+            if ((context.faction.getTnt() < (requiredTnt - playerTnt))) {
                 context.fPlayer.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
                 return;
             }
-
-            // Take TNT from the bank.
-            removeFromBank(context, getFactionTnt);
+            // move whatever tnt you have to the bank, ignoring limit because its gonna be taken out later anyways
+            context.faction.addTnt(playerTnt);
+            removeItems(context.fPlayer.getPlayer().getInventory(), new ItemStack(Material.TNT), playerTnt);
+            // Take TNT from the bank
+            fillDispensers(context, opDispensers, amount);
+        } else {
+            // Take TNT from the player
+            fillDispensers(context.fPlayer, opDispensers, amount);
         }
-        fillDispensers(context.fPlayer, opDispensers, amount);
-        // Remove used TNT from player inventory.
         context.sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", requiredTnt + "").replace("{dispensers}", opDispensers.size() + ""));
     }
+
     // Actually fill every dispenser with the precise amount.
     private void fillDispensers(FPlayer fPlayer, List<Dispenser> dispensers, int count) {
         for (Dispenser dispenser : dispensers) {
-            if (takeTnt(fPlayer, count)) {
-                dispenser.getInventory().addItem(new ItemStack(Material.TNT, count));
-            } else {return;}
+            int canBeAdded = getAddable(dispenser.getInventory(), Material.TNT);
+            if (canBeAdded <= 0) continue;
+            int toAdd = Math.min(canBeAdded, count);
+            if (toAdd > getTNTInside(fPlayer.getPlayer())) {
+                fPlayer.msg(TL.COMMAND_TNTFILL_NOTENOUGH.toString());
+                return;
+            }
+            removeItems(fPlayer.getPlayer().getInventory(), new ItemStack(Material.TNT), toAdd);
+            dispenser.getInventory().addItem(new ItemStack(Material.TNT, toAdd));
         }
     }
 
-    private void removeFromBank(CommandContext context, int amount) {
-        try {
-            Integer.parseInt(context.args.get(1));
-        } catch (NumberFormatException e) {
-            context.fPlayer.msg(TL.COMMAND_TNT_INVALID_NUM.toString());
-            return;
+    private void fillDispensers(CommandContext context, List<Dispenser> dispensers, int count) {
+        for (Dispenser dispenser : dispensers) {
+            int canBeAdded = getAddable(dispenser.getInventory(), Material.TNT);
+            if (canBeAdded <= 0) continue;
+            int toAdd = Math.min(canBeAdded, count);
+            if (context.faction.getTnt() < toAdd) {
+                context.fPlayer.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
+                return;
+            }
+            context.faction.takeTnt(toAdd);
+            dispenser.getInventory().addItem(new ItemStack(Material.TNT, toAdd));
         }
-        if (amount < 0) {
-            context.fPlayer.msg(TL.COMMAND_TNT_POSITIVE.toString());
-            return;
-        }
-        if (context.faction.getTnt() < amount) {
-            context.fPlayer.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
-            return;
-        }
-        int fullStacks = amount / 64;
-        int remainderAmt = amount % 64;
-        if ((remainderAmt == 0 && getEmptySlots(context.player) <= fullStacks)) {
-            context.fPlayer.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
-            return;
-        }
-        if (getEmptySlots(context.player) + 1 <= fullStacks) {
-            context.fPlayer.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
-            return;
-        }
-        ItemStack tnt64 = new ItemStack(Material.TNT, 64);
-        for (int i = 0; i <= fullStacks - 1; i++) {
-            context.player.getInventory().addItem(tnt64);
-        }
-        if (remainderAmt != 0) {
-            ItemStack tnt = new ItemStack(Material.TNT, remainderAmt);
-            context.player.getInventory().addItem(tnt);
-        }
-        context.faction.takeTnt(amount);
-        context.player.updateInventory();
     }
 
-    private boolean takeTnt(FPlayer fme, int amount) {
-        Inventory inv = fme.getPlayer().getInventory();
-        int invTnt = 0;
-        for (int i = 0; i <= inv.getSize(); i++) {
-            if (inv.getItem(i) == null) {
+    public static void removeItems(Inventory inventory, ItemStack item, int toRemove) {
+        if (toRemove <= 0 || inventory == null || item == null)
+            return;
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack loopItem = inventory.getItem(i);
+            if (loopItem == null || !item.isSimilar(loopItem))
                 continue;
+            if (toRemove <= 0)
+                return;
+            if (toRemove < loopItem.getAmount()) {
+                loopItem.setAmount(loopItem.getAmount() - toRemove);
+                return;
             }
-            if (inv.getItem(i).getType() == Material.TNT) {
-                invTnt += inv.getItem(i).getAmount();
-            }
+            inventory.clear(i);
+            toRemove -= loopItem.getAmount();
         }
-        if (amount > invTnt) {
-            fme.msg(TL.COMMAND_TNTFILL_NOTENOUGH.toString());
-            return false;
-        }
-        ItemStack tnt = new ItemStack(Material.TNT, amount);
-        if (fme.getFaction().getTnt() + amount > FactionsPlugin.getInstance().getConfig().getInt("ftnt.Bank-Limit")) {
-            fme.msg(TL.COMMAND_TNT_EXCEEDLIMIT.toString());
-            return false;
-        }
-        removeFromInventory(fme.getPlayer().getInventory(), tnt);
-        return true;
     }
 
     // Counts the item type available in the inventory.
@@ -197,35 +173,37 @@ public class CmdTntFill extends FCommand {
         return count;
     }
 
-    private void removeFromInventory(Inventory inventory, ItemStack item) {
-        int amt = item.getAmount();
-        ItemStack[] items = inventory.getContents();
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] != null && items[i].getType() == item.getType() && items[i].getDurability() == item.getDurability()) {
-                if (items[i].getAmount() > amt) {
-                    items[i].setAmount(items[i].getAmount() - amt);
-                    break;
-                } else if (items[i].getAmount() == amt) {
-                    items[i] = null;
-                    break;
-                } else {
-                    amt -= items[i].getAmount();
-                    items[i] = null;
+    public int getAddable(Inventory inv, Material material) {
+        int output = 0;
+        int notempty = 0;
+        for (int i = 0; i < inv.getSize(); ++i) {
+            ItemStack is = inv.getItem(i);
+            if (is != null) {
+                ++notempty;
+                if (is.getType() == material) {
+                    int amount = is.getAmount();
+                    output += 64 - amount;
                 }
             }
         }
-        inventory.setContents(items);
+        return output + (inv.getSize() - notempty) * 64;
     }
 
-    private int getEmptySlots(Player p) {
-        PlayerInventory inventory = p.getInventory();
-        ItemStack[] cont = inventory.getContents();
-        int i = 0;
-        for (ItemStack item : cont)
-            if (item != null && item.getType() != Material.AIR) {
-                i++;
+    public boolean isInvFull(Inventory inv) {
+        return inv.firstEmpty() == -1;
+    }
+
+    public int getTNTInside(Player p) {
+        int result = 0;
+        PlayerInventory pi = p.getInventory();
+        ItemStack[] contents;
+        for (int length = (contents = pi.getContents()).length, i = 0; i < length; ++i) {
+            ItemStack is = contents[i];
+            if (is != null && is.getType() == Material.TNT) {
+                result += is.getAmount();
             }
-        return 36 - i;
+        }
+        return result;
     }
 
     @Override

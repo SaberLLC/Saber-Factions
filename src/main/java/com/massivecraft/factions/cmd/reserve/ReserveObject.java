@@ -6,13 +6,16 @@ package com.massivecraft.factions.cmd.reserve;
 public class ReserveObject {
     private String name;
     private String factionName;
-    public ReserveObject(String name, String factionName){
+
+    public ReserveObject(String name, String factionName) {
         this.name = name;
         this.factionName = factionName;
     }
+
     public String getName() {
         return this.name;
     }
+
     public String getFactionName() {
         return this.factionName;
     }

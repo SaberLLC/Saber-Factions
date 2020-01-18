@@ -25,7 +25,7 @@ public class CmdKickAlt extends FCommand {
      * @author Driftay
      */
 
-    public CmdKickAlt(){
+    public CmdKickAlt() {
         super();
         this.aliases.addAll(Aliases.alts_kick);
         this.requiredArgs.add("player name");
@@ -86,7 +86,7 @@ public class CmdKickAlt extends FCommand {
         // This statement allows us to check if they've specifically denied it,
         // or default to
         // the old setting of allowing moderators to kick
-        if (access !=  Access.ALLOW && !context.assertMinRole(Role.MODERATOR)) {
+        if (access != Access.ALLOW && !context.assertMinRole(Role.MODERATOR)) {
             context.msg(TL.GENERIC_NOPERMISSION, "kick");
             return;
         }

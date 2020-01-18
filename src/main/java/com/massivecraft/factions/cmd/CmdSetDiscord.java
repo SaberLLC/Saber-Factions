@@ -12,7 +12,7 @@ public class CmdSetDiscord extends FCommand {
      * @author Driftay
      */
 
-    public CmdSetDiscord(){
+    public CmdSetDiscord() {
         super();
         this.aliases.addAll(Aliases.discord_set);
 
@@ -64,7 +64,7 @@ public class CmdSetDiscord extends FCommand {
         }
     }
 
-    private boolean isDiscordInvite(String invite){
+    private boolean isDiscordInvite(String invite) {
         return invite.contains("discord.gg") || invite.contains("discord.me");
     }
 

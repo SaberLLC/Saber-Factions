@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.audit;
 /**
  * @author Saser
  */
+
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import org.apache.commons.lang.StringUtils;
@@ -65,10 +66,31 @@ public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer
         return this.username;
     }
 
+    public enum TimerSubType {
+        SPAWNER_BREAK,
+        SPAWNER_PLACE;
+
+        TimerSubType() {
+        }
+    }
+
+    public enum TimerType {
+        SPAWNER_EDIT;
+
+        TimerType() {
+        }
+    }
+
     public class Timer {
         private long startTime;
         private long count;
         private Object extraData;
+
+        public Timer(long startTime, long count, Object extraData) {
+            this.startTime = startTime;
+            this.count = count;
+            this.extraData = extraData;
+        }
 
         LogTimer.Timer increment(long amount) {
             this.count += amount;
@@ -79,47 +101,28 @@ public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer
             return System.currentTimeMillis() - this.startTime >= expiration;
         }
 
-        public Timer(long startTime, long count, Object extraData) {
-            this.startTime = startTime;
-            this.count = count;
-            this.extraData = extraData;
-        }
-
         public long getStartTime() {
             return this.startTime;
-        }
-
-        public long getCount() {
-            return this.count;
-        }
-
-        public Object getExtraData() {
-            return this.extraData;
         }
 
         public void setStartTime(long startTime) {
             this.startTime = startTime;
         }
 
+        public long getCount() {
+            return this.count;
+        }
+
         public void setCount(long count) {
             this.count = count;
         }
 
+        public Object getExtraData() {
+            return this.extraData;
+        }
+
         public void setExtraData(Object extraData) {
             this.extraData = extraData;
-        }
-    }
-
-    public enum TimerSubType {
-        SPAWNER_BREAK,
-        SPAWNER_PLACE;
-        TimerSubType() {
-        }
-    }
-
-    public enum TimerType {
-        SPAWNER_EDIT;
-        TimerType() {
         }
     }
 }

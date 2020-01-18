@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
 import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.Aliases;
