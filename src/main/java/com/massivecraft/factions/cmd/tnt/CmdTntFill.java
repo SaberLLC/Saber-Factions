@@ -40,8 +40,8 @@ public class CmdTntFill extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("Tntfill.enabled")) {
-            context.msg(TL.GENERIC_DISABLED);
+        if (!FactionsPlugin.instance.getConfig().getBoolean("Tntfill.enabled")) {
+            context.msg(TL.COMMAND_TNT_DISABLED_MSG);
             return;
         }
 
@@ -55,14 +55,14 @@ public class CmdTntFill extends FCommand {
         }
 
         context.msg(TL.COMMAND_TNTFILL_HEADER);
-        // We don't know the max yet, so let's not assume.
-        int radius = context.argAsInt(0, 0);
-        int amount = context.argAsInt(1, 0);
+        int radius = context.argAsInt(0, 0); // We don't know the max yet, so let's not assume.
+        int amount = context.argAsInt(1, 0); // We don't know the max yet, so let's not assume.
 
-        if (amount < 0) {
+        if (amount <= 0 || radius <= 0) {
             context.msg(TL.COMMAND_TNT_POSITIVE);
             return;
         }
+        
         if (radius > FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius")) {
             context.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius") + ""));
             return;
