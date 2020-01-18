@@ -73,6 +73,9 @@ public class EngineDynmap {
     }
 
     public static String escapeHtml(String string) {
+        if (string == null) {
+            return "";
+        }
         StringBuilder out = new StringBuilder(Math.max(16, string.length()));
         for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);

@@ -49,6 +49,7 @@ public enum FactionTag implements Tag {
         }
         return null;
     }),
+
     PEACEFUL("{peaceful}", (fac) -> fac.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
     PERMANENT("permanent", (fac) -> fac.isPermanent() ? "permanent" : "{notPermanent}"), // no braces needed
     LAND_VALUE("{land-value}", (fac) -> Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("value")),
@@ -61,6 +62,19 @@ public enum FactionTag implements Tag {
         }
         return Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance");
     }),
+    TNT_BALANCE("{tnt-balance}", (fac) -> {
+        if (FactionsPlugin.instance.getConfig().getBoolean("ftnt.Enabled")) {
+            return String.valueOf(fac.getTnt());
+        }
+        return Tag.isMinimalShow() ? null : "";
+    }),
+    TNT_MAX("{tnt-max-balance}", (fac) -> {
+        if (FactionsPlugin.instance.getConfig().getBoolean("ftnt.Enabled")) {
+            return String.valueOf(fac.getTntBankLimit());
+        }
+        return Tag.isMinimalShow() ? null : "";
+    }),
+
     ALLIES_COUNT("{allies}", (fac) -> String.valueOf(fac.getRelationCount(Relation.ALLY))),
     ENEMIES_COUNT("{enemies}", (fac) -> String.valueOf(fac.getRelationCount(Relation.ENEMY))),
     TRUCES_COUNT("{truces}", (fac) -> String.valueOf(fac.getRelationCount(Relation.TRUCE))),
@@ -80,6 +94,8 @@ public enum FactionTag implements Tag {
             return String.valueOf(fac.getFPlayersWhereOnline(false).size());
         }
     }),
+    FACTION_STRIKES("{faction-strikes}",(fac) -> String.valueOf(fac.getStrikes())),
+    FACTION_POINTS("{faction-points}", (fac) -> String.valueOf(fac.getPoints())),
     FACTION_SIZE("{members}", (fac) -> String.valueOf(fac.getFPlayers().size())),
     FACTION_KILLS("{faction-kills}", (fac) -> String.valueOf(fac.getKills())),
     FACTION_DEATHS("{faction-deaths}", (fac) -> String.valueOf(fac.getDeaths())),
