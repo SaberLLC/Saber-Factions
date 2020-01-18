@@ -3,6 +3,7 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -133,6 +134,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return faction.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
             case "faction_tntbank_balance":
                 return String.valueOf(faction.getTnt());
+            case "faction_tnt_max_balance":
+                return FactionTag.TNT_MAX.replace(FactionTag.TNT_MAX.getTag(), faction);
             case "faction_points":
                 return fPlayer.hasFaction() ? String.valueOf(faction.getPoints()) : "0";
             case "faction_powerboost":
@@ -172,6 +175,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(faction.getFPlayers().size() - faction.getOnlinePlayers().size());
             case "faction_size":
                 return String.valueOf(faction.getFPlayers().size());
+            case "faction_announcement":
+                return String.valueOf(faction.getAnnouncements());
             case "faction_kills":
                 return String.valueOf(faction.getKills());
             case "faction_deaths":
