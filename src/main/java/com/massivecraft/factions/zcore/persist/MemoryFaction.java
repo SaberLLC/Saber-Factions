@@ -883,7 +883,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
      */
     public Access getAccess(FPlayer player, PermissableAction permissableAction) {
         if (player == null || permissableAction == null) return Access.UNDEFINED;
-
+        if (player.getFaction() == this && player.getRole() == Role.LEADER) return Access.ALLOW;
 
         Permissable perm = player.getFaction() == this ? player.getRole() : player.getFaction().getRelationTo(this);
 
