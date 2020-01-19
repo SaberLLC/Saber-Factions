@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -41,6 +42,16 @@ public class CmdSethome extends FCommand {
                     Board.getInstance().getFactionAt(new FLocation(context.player)) != faction) {
                 context.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
                 return;
+            }
+
+            if (!context.args.isEmpty()) {
+                Faction target = context.argAsFaction(0);
+                if (target == null) return;
+                context.faction = target;
+                if (target.getAccess(context.fPlayer, PermissableAction.SETHOME) != Access.ALLOW) {
+                    context.fPlayer.msg(TL.GENERIC_FPERM_NOPERMISSION, "set faction home");
+                    return;
+                }
             }
 
             // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
