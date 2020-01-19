@@ -21,14 +21,9 @@ public class ItemBuilder {
         this.meta = item.getItemMeta();
     }
 
-    public ItemBuilder(Material material, int amount, int durability) {
-        this(new ItemStack(material, amount, (short) durability));
-    }
-
     public ItemBuilder(Material material, int amount) {
-        this(material, amount, 0);
+        this(new ItemStack(material, amount));
     }
-
     public ItemBuilder(Material material) {
         this(material, 1);
     }

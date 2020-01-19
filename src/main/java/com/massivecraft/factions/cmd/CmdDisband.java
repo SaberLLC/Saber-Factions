@@ -1,19 +1,19 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.zcore.fdisband.FDisbandFrame;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 
 public class CmdDisband extends FCommand {
@@ -37,6 +37,7 @@ public class CmdDisband extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
+        long time;
         // The faction, default to your own.. but null if console sender.
         Faction faction = context.argAsFaction(0, context.fPlayer == null ? null : context.faction);
         if (faction == null) return;
@@ -44,9 +45,7 @@ public class CmdDisband extends FCommand {
         boolean isMyFaction = context.fPlayer != null && faction == context.faction;
 
         if (!isMyFaction) {
-            if (!Permission.DISBAND_ANY.has(context.sender, true)) {
-                return;
-            }
+            if (!Permission.DISBAND_ANY.has(context.sender, true)) return;
         }
 
 
@@ -72,6 +71,21 @@ public class CmdDisband extends FCommand {
             faction.disband(null, PlayerDisbandReason.PLUGIN);
             return;
         }
+
+        boolean access = false;
+        if (context.fPlayer.getPlayer().hasMetadata("disband_confirm") && (time = context.fPlayer.getPlayer().getMetadata("disband_confirm").get(0).asLong()) != 0L && System.currentTimeMillis() - time <= TimeUnit.SECONDS.toMillis(3L)) {
+            access = true;
+        }
+
+        if (!access) {
+            if(Conf.useDisbandGUI) {
+                if (!disbandMap.containsKey(context.player.getUniqueId().toString())) {
+                    new FDisbandFrame(context.faction).buildGUI(context.fPlayer);
+                    return;
+                }
+            }
+        }
+
 
         // check for tnt before disbanding.
         if (!disbandMap.containsKey(context.player.getUniqueId().toString()) && faction.getTnt() > 0) {

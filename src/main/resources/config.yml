@@ -651,6 +651,7 @@ frules:
     - '&f'
     - '&r &r &r &r &r &r &r &r &r &r &r &7&o(( Tip: Use &f&o/f rules add <rule>&7&o add a &c&orule&7&o ))'
     - ''
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                  Faction TNT Bank                    | #
@@ -708,6 +709,7 @@ F-Shop:
       Name: '&cFaction Points: &b{points}'
       Lore:
         - ' '
+
 ############################################################
 # +------------------------------------------------------+ #
 # |           Faction Command Cooldowns                  | #
@@ -729,6 +731,27 @@ fcooldowns:
 #Recommended: true
 Falling-Block-Fix:
   enabled: true
+
+
+############################################################
+# +------------------------------------------------------+ #
+# |                  Faction Disband                     | #
+# +------------------------------------------------------+ #
+############################################################
+f-disband-gui:
+  confirm-item:
+    Type: LIME_STAINED_GLASS_PANE
+    Name: '&a&lConfirm'
+    Lore:
+      - ' '
+      - '&7Confirm disbanding of &a&b{faction}&7!'
+  deny-item:
+    Type: RED_STAINED_GLASS_PANE
+    Name: '&c&lCancel'
+    Lore:
+      - ' '
+      - '&7Click to cancel faction disband.'
+
 
 ############################################################
 # +------------------------------------------------------+ #

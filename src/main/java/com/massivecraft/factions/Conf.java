@@ -105,6 +105,9 @@ public class Conf {
     //AUDIT
     public static boolean useAuditSystem = true;
 
+    //GUI's
+    public static boolean useDisbandGUI = true;
+
     //DISCORD
     public static boolean useDiscordSystem = false;
     public static String discordBotToken = "<token here>";

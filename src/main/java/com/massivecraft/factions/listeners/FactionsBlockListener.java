@@ -265,7 +265,8 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onHopperPlace(BlockPlaceEvent e) {
-        if (e.getItemInHand().getType() != Material.HOPPER && !FactionsPlugin.instance.getConfig().getBoolean("fvault.No-Hoppers-near-vault")) return;
+        if (e.getItemInHand().getType() != Material.HOPPER && !FactionsPlugin.instance.getConfig().getBoolean("fvault.No-Hoppers-near-vault"))
+            return;
         Faction factionAt = Board.getInstance().getFactionAt(new FLocation(e.getBlockPlaced().getLocation()));
         if (factionAt.isWilderness() || factionAt.getVault() == null) return;
         FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
@@ -356,11 +357,7 @@ public class FactionsBlockListener implements Listener {
                         return;
                     }
                     for (FPlayer fplayer : fme.getFaction().getFPlayers()) {
-                        if (XMaterial.isVersionOrHigher(XMaterial.MinecraftVersion.VERSION_1_9)) {
-                            fplayer.getPlayer().sendTitle(FactionsPlugin.getInstance().color(fme.getTag() + " Placed A WarBanner!"), FactionsPlugin.getInstance().color("&7use &c/f tpbanner&7 to tp to the banner!"), 10, 70, 20);
-                        } else {
-                            fplayer.getPlayer().sendTitle(FactionsPlugin.getInstance().color(fme.getTag() + " Placed A WarBanner!"), FactionsPlugin.getInstance().color("&7use &c/f tpbanner&7 to tp to the banner!"));
-                        }
+                        fplayer.getPlayer().sendTitle(FactionsPlugin.getInstance().color(fme.getTag() + " Placed A WarBanner!"), FactionsPlugin.getInstance().color("&7use &c/f tpbanner&7 to tp to the banner!"));
                     }
                     bannerCooldownMap.put(fme.getTag(), true);
                     FactionsBlockListener.bannerLocations.put(fme.getTag(), e.getBlockPlaced().getLocation());
