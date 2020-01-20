@@ -62,7 +62,7 @@ public enum FLogType {
     }
 
     public Material getMaterial() {
-        return XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("faudit-gui.materials." + name().toLowerCase())).parseMaterial();
+        return XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("faudit-gui.materials." + name().toLowerCase())).get().parseMaterial();
     }
 
     public String getMsg() {

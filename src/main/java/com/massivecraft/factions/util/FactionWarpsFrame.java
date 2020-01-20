@@ -72,7 +72,7 @@ public class FactionWarpsFrame {
 
     private ItemStack buildWarpAsset(final Map.Entry<String, LazyLocation> warp, final Faction faction) {
         final ConfigurationSection config = this.section.getConfigurationSection("warp-item");
-        final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         final ItemMeta meta = item.getItemMeta();
         meta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().replacePlaceholders(config.getStringList("Lore"), new Placeholder("{warp-protected}", faction.hasWarpPassword(warp.getKey()) ? "Enabled" : "Disabled"), new Placeholder("{warp-cost}", FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) ? Integer.toString(FactionsPlugin.getInstance().getConfig().getInt("warp-cost.warp", 5)) : "Disabled"))));
         meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name").replace("{warp}", warp.getKey())));
@@ -82,7 +82,7 @@ public class FactionWarpsFrame {
 
     private ItemStack buildDummyItem() {
         final ConfigurationSection config = this.section.getConfigurationSection("dummy-item");
-        final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         final ItemMeta meta = item.getItemMeta();
         meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
         meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));

@@ -58,7 +58,7 @@ public enum UpgradeType {
 
     public ItemStack buildAsset(Faction f) {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fupgrades.MainMenu." + this.id + ".DisplayItem");
-        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         int level = f.getUpgrade(this);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {

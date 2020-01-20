@@ -56,7 +56,7 @@ public class PermissableRelationFrame {
     }
 
     private ItemStack buildAsset(String loc, String relation) {
-        ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString(loc)).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString(loc)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.Placeholder-Item.Name").replace("{relation}", relation)));
         item.setItemMeta(meta);
@@ -65,7 +65,7 @@ public class PermissableRelationFrame {
 
     private ItemStack buildDummyItem() {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.dummy-item");
-        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
         meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));

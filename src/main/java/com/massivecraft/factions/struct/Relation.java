@@ -210,7 +210,7 @@ public enum Relation implements Permissable {
         String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""));
         List<String> lore = new ArrayList<>();
 
-        Material material = XMaterial.matchXMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase())).parseMaterial();
+        Material material = XMaterial.matchXMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase())).get().parseMaterial();
         if (material == null) {
             return null;
         }

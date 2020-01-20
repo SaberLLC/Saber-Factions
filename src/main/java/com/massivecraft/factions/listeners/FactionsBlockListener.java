@@ -40,6 +40,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -377,7 +378,7 @@ public class FactionsBlockListener implements Listener {
                     int radius = FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Effect-Radius");
                     List<String> effects = FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Effects");
                     int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
-                        for (Entity e1 : banner.getLocation().getWorld().getNearbyEntities(banner.getLocation(), radius, 255.0, radius)) {
+                        for (Entity e1 : Objects.requireNonNull(banner.getLocation().getWorld()).getNearbyEntities(banner.getLocation(), radius, 255.0, radius)) {
                             if (e1 instanceof Player) {
                                 Player player = (Player) e1;
                                 FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
@@ -386,7 +387,7 @@ public class FactionsBlockListener implements Listener {
                                 }
                                 for (String effect : effects) {
                                     String[] components = effect.split(":");
-                                    player.addPotionEffect(new PotionEffect(PotionEffectType.getByName(components[0]), 100, Integer.parseInt(components[1])));
+                                    player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(components[0])), 100, Integer.parseInt(components[1])));
                                 }
                                 ParticleEffect.LAVA.display(1.0f, 1.0f, 1.0f, 1.0f, 10, banner.getLocation(), 16.0);
                                 ParticleEffect.FLAME.display(1.0f, 1.0f, 1.0f, 1.0f, 10, banner.getLocation(), 16.0);
@@ -499,7 +500,7 @@ public class FactionsBlockListener implements Listener {
             return;
         }
         if (block != null && isSpawner) {
-            ItemStack item = new ItemStack(block.getType(), 1, (short) block.getData());
+            ItemStack item = new ItemStack(block.getType(), 1, block.getData());
             if (at != null && at.isNormal()) {
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
                 if (fplayer != null) {

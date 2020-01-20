@@ -52,19 +52,19 @@ public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
 
     public void build() {
         Faction faction = fPlayer.getFaction();
-        ItemStack wallsStack = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("f-check.wall-check.Type")).parseItem();
+        ItemStack wallsStack = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("f-check.wall-check.Type")).get().parseItem();
         ItemMeta wallsMeta = wallsStack.getItemMeta();
         wallsMeta.setDisplayName(TL.CHECK_WALL_CHECK_GUI_ICON.toString());
         wallsMeta.setLore(Collections.singletonList(TL.CHECK_CHECK_LORE_LINE.format(getFormatted(faction.getWallCheckMinutes()))));
         wallsStack.setItemMeta(wallsMeta);
         inventory.setItem(FactionsPlugin.getInstance().getConfig().getInt("f-check.wall-check.slot"), wallsStack);
-        ItemStack bufferStack = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("f-check.buffer-check.Type")).parseItem();
+        ItemStack bufferStack = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("f-check.buffer-check.Type")).get().parseItem();
         ItemMeta bufferMeta = bufferStack.getItemMeta();
         bufferMeta.setDisplayName(TL.CHECK_BUFFER_CHECK_GUI_ICON.toString());
         bufferMeta.setLore(Collections.singletonList(TL.CHECK_CHECK_LORE_LINE.format(getFormatted(faction.getBufferCheckMinutes()))));
         bufferStack.setItemMeta(bufferMeta);
         inventory.setItem(FactionsPlugin.getInstance().getConfig().getInt("f-check.buffer-check.slot"), bufferStack);
-        ItemStack historyStack = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("f-check.history.Type")).parseItem();
+        ItemStack historyStack = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("f-check.history.Type")).get().parseItem();
         ItemMeta historyMeta = historyStack.getItemMeta();
         historyMeta.setDisplayName(TL.CHECK_HISTORY_GUI_ICON.toString());
         historyStack.setItemMeta(historyMeta);

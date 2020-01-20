@@ -61,7 +61,7 @@ public class FDisbandFrame {
 
     private ItemStack buildConfirmDummyItem(Faction faction) {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("f-disband-gui.confirm-item");
-        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             List<String> lore = new ArrayList<>();
@@ -77,7 +77,7 @@ public class FDisbandFrame {
 
     private ItemStack buildDenyDummyItem() {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("f-disband-gui.deny-item");
-        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));

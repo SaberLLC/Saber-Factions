@@ -46,7 +46,7 @@ public class WildGUI implements FactionGUI {
     @Override
     public void build() {
         inv = Bukkit.createInventory(this, FactionsPlugin.getInstance().getConfig().getInt("Wild.GUI.Size"), FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("Wild.GUI.Name")));
-        ItemStack fillItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("Wild.GUI.FillMaterial")).parseItem();
+        ItemStack fillItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("Wild.GUI.FillMaterial")).get().parseItem();
         ItemMeta meta = fillItem.getItemMeta();
         if (meta == null) return;
         meta.setDisplayName("");
@@ -55,7 +55,7 @@ public class WildGUI implements FactionGUI {
             inv.setItem(fill, fillItem);
         }
         for (String key : Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getConfigurationSection("Wild.Zones")).getKeys(false)) {
-            ItemStack zoneItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("Wild.Zones." + key + ".Material")).parseItem();
+            ItemStack zoneItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("Wild.Zones." + key + ".Material")).get().parseItem();
             ItemMeta zoneMeta = zoneItem.getItemMeta();
             if (zoneMeta == null) return;
             List<String> lore = new ArrayList<>();

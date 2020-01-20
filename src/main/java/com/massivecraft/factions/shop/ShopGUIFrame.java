@@ -47,7 +47,7 @@ public class ShopGUIFrame {
         for (int a = 1; a <= items; a++) {
             String s = a + "";
             int slot = ShopConfig.getShop().getInt("items." + s + ".slot");
-            Material material = XMaterial.matchXMaterial(ShopConfig.getShop().getString("items." + s + ".block")).parseMaterial();
+            Material material = XMaterial.matchXMaterial(ShopConfig.getShop().getString("items." + s + ".block")).get().parseMaterial();
             int cost = ShopConfig.getShop().getInt("items." + s + ".cost");
             String name = ShopConfig.getShop().getString("items." + s + ".name");
             boolean glowing = ShopConfig.getShop().getBoolean("items." + s + ".glowing");
@@ -93,7 +93,7 @@ public class ShopGUIFrame {
 
     private ItemStack buildDummyItem(Faction f) {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("F-Shop.GUI.dummy-item");
-        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));

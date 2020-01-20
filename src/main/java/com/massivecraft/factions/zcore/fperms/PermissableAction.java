@@ -104,7 +104,7 @@ public enum PermissableAction {
 
     public ItemStack buildAsset(FPlayer fme, Permissable perm) {
         ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.action");
-        ItemStack item = XMaterial.matchXMaterial(section.getString("Materials." + this.name)).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(section.getString("Materials." + this.name)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
 
         meta.setDisplayName(FactionsPlugin.getInstance().color(section.getString("placeholder-item.name").replace("{action}", this.name)));

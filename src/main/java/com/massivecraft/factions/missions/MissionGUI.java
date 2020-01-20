@@ -96,7 +96,7 @@ public class MissionGUI implements FactionGUI {
         if (configurationSection == null) {
             return;
         }
-        ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).parseItem();
+        ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).get().parseItem();
         ItemMeta fillmeta = fillItem.getItemMeta();
         fillmeta.setDisplayName("");
         fillItem.setItemMeta(fillmeta);
@@ -109,7 +109,7 @@ public class MissionGUI implements FactionGUI {
                 ConfigurationSection section = configurationSection.getConfigurationSection(key);
                 int slot = section.getInt("Slot");
 
-                ItemStack itemStack = XMaterial.matchXMaterial(section.getString("Material")).parseItem();
+                ItemStack itemStack = XMaterial.matchXMaterial(section.getString("Material")).get().parseItem();
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', section.getString("Name")));
                 List<String> loreLines = new ArrayList<>();
@@ -134,7 +134,7 @@ public class MissionGUI implements FactionGUI {
         if (plugin.getConfig().getBoolean("Randomization.Enabled")) {
             ItemStack start;
             ItemMeta meta;
-            start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Allowed.Material")).parseItem();
+            start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Allowed.Material")).get().parseItem();
             meta = start.getItemMeta();
             meta.setDisplayName(plugin.color(plugin.getConfig().getString("Randomization.Start-Item.Allowed.Name")));
             List<String> loree = new ArrayList<>();
@@ -144,7 +144,7 @@ public class MissionGUI implements FactionGUI {
             meta.setLore(loree);
             start.setItemMeta(meta);
             if (fPlayer.getFaction().getCompletedMissions().size() >= configurationSection.getKeys(false).size() - 1 && plugin.getConfig().getBoolean("DenyMissionsMoreThenOnce")) {
-                start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Material")).parseItem();
+                start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Material")).get().parseItem();
                 meta = start.getItemMeta();
                 meta.setDisplayName(plugin.color(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Name")));
                 List<String> lore = new ArrayList<>();
@@ -155,7 +155,7 @@ public class MissionGUI implements FactionGUI {
                 start.setItemMeta(meta);
             }
             if (fPlayer.getFaction().getMissions().size() >= plugin.getConfig().getInt("MaximumMissionsAllowedAtOnce")) {
-                start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Material")).parseItem();
+                start = XMaterial.matchXMaterial(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Material")).get().parseItem();
                 meta = start.getItemMeta();
                 meta.setDisplayName(plugin.color(plugin.getConfig().getString("Randomization.Start-Item.Disallowed.Name")));
                 List<String> lore = new ArrayList<>();

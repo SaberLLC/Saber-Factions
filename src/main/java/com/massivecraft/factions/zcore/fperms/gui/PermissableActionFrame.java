@@ -91,7 +91,7 @@ public class PermissableActionFrame {
 
     private ItemStack buildDummyItem() {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.dummy-item");
-        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
         meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
@@ -101,7 +101,7 @@ public class PermissableActionFrame {
 
     private ItemStack buildBackItem() {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.back-item");
-        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
         meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));

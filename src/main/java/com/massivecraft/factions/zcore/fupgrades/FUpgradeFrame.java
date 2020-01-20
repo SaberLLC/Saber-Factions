@@ -101,7 +101,7 @@ public class FUpgradeFrame {
 
     private ItemStack buildDummyItem() {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fupgrades.MainMenu.DummyItem");
-        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).parseItem();
+        ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));

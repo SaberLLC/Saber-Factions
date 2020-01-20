@@ -78,6 +78,7 @@ public class FactionsPlugin extends MPlugin {
     public boolean mc112 = false;
     public boolean mc113 = false;
     public boolean mc114 = false;
+    public boolean mc115 = false;
     public boolean useNonPacketParticles = false;
     public boolean factionsFlight = false;
     SkriptAddon skriptAddon;
@@ -163,6 +164,10 @@ public class FactionsPlugin extends MPlugin {
             case 14:
                 FactionsPlugin.instance.log("Minecraft Version 1.14 found.");
                 mc114 = true;
+                break;
+            case 15:
+                FactionsPlugin.instance.log("Minecraft Version 1.15 found.");
+                mc115 = true;
                 break;
         }
         migrateFPlayerLeaders();
@@ -464,7 +469,7 @@ public class FactionsPlugin extends MPlugin {
     }
 
     public ItemStack createItem(Material material, int amount, short datavalue, String name, List<String> lore) {
-        ItemStack item = new ItemStack(XMaterial.matchXMaterial(material.toString()).parseMaterial(), amount, datavalue);
+        ItemStack item = new ItemStack(XMaterial.matchXMaterial(material.toString()).get().parseMaterial(), amount, datavalue);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(color(name));
         meta.setLore(colorList(lore));
