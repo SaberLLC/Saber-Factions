@@ -1,6 +1,6 @@
 # SaberFactions
 
-![Downloads](https://img.shields.io/github/downloads/driftay/saber-factions/total.svg) [![CodeFactor](https://www.codefactor.io/repository/github/driftay/saber-factions/badge)](https://www.codefactor.io/repository/github/driftay/saber-factions)
+![Downloads](https://img.shields.io/github/downloads/driftay/saber-factions/total.svg) [![CodeFactor](https://www.codefactor.io/repository/github/driftay/saber-factions/badge)](https://www.codefactor.io/repository/github/driftay/saber-factions) [![License](https://img.shields.io/badge/license-GNU%20General%20Public%20License%20v3.0-brightgreen)](https://github.com/SaberLLC/Saber-Factions/blob/1.6.x/LICENSE) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/SaberLLC/Saber-Factions)
 
 SaberFactions is a fork of both FactionsUUID and SavageFactions. Creators of those plugins include DtrShock and ProSavage. Credits to them.
 SaberFactions is the newest, latest and greatest factions plugin designed for the best and most functional factions experience minecraft has seen!
