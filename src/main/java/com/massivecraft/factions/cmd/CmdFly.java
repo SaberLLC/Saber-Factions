@@ -9,7 +9,6 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -103,7 +102,7 @@ public class CmdFly extends FCommand {
         if (toFac.getAccess(fme, PermissableAction.FLY) == Access.ALLOW) return true;
         if (fme.getFaction().isWilderness()) return false;
         if (toFac.isSystemFaction())
-            return me.hasPermission(Permission.valueOf("FLY_" + ChatColor.stripColor(toFac.getTag()).toUpperCase()).node);
+            return me.hasPermission(toFac.isWilderness() ? Permission.FLY_WILDERNESS.node : toFac.isSafeZone() ? Permission.FLY_SAFEZONE.node : Permission.FLY_WARZONE.node);
         Relation relationTo = toFac.getRelationTo(fme.getFaction());
         if (!relationTo.isEnemy() && !relationTo.isMember())
             return me.hasPermission(Permission.valueOf("FLY_" + relationTo.name()).node);
