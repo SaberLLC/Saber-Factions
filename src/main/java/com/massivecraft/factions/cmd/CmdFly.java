@@ -103,7 +103,7 @@ public class CmdFly extends FCommand {
         if (toFac.getAccess(fme, PermissableAction.FLY) == Access.ALLOW) return true;
         if (fme.getFaction().isWilderness()) return false;
         if (toFac.isSystemFaction())
-            return me.hasPermission(Permission.valueOf("FLY_" + ChatColor.stripColor(toFac.getTag()).toUpperCase()).node);
+            return me.hasPermission(toFac.isWilderness() ? Permission.FLY_WILDERNESS.node : toFac.isSafeZone() ? Permission.FLY_SAFEZONE.node : Permission.FLY_WARZONE.node);
         Relation relationTo = toFac.getRelationTo(fme.getFaction());
         if (!relationTo.isEnemy() && !relationTo.isMember())
             return me.hasPermission(Permission.valueOf("FLY_" + relationTo.name()).node);
