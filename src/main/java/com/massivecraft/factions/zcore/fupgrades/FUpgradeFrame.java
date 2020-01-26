@@ -25,7 +25,7 @@ public class FUpgradeFrame {
 
     public FUpgradeFrame(Faction f) {
         this.gui = new Gui(FactionsPlugin.getInstance(),
-                FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.rows", 5),
+                FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Rows", 5),
                 FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", f.getTag()));
     }
 
