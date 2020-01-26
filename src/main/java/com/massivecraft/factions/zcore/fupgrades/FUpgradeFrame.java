@@ -95,7 +95,7 @@ public class FUpgradeFrame {
     private void updateFactionPowerBoost(Faction f) {
         double boost = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.Power.Power-Boost.level-" + (f.getUpgrade(UpgradeType.POWER) + 1));
         if (boost < 0.0) return;
-        f.setPowerBoost(f.getPower() + boost);
+        f.setPowerBoost(boost);
     }
 
 
