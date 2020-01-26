@@ -381,6 +381,8 @@ public class FactionsPlayerListener implements Listener {
                 case TRAPPED_CHEST:
                 case CHEST_MINECART:
 
+                case BARREL:
+
                 case SHULKER_BOX:
                 case BLACK_SHULKER_BOX:
                 case BLUE_SHULKER_BOX:
