@@ -26,7 +26,7 @@ public class CmdTntFill extends FCommand {
 
     public CmdTntFill() {
         super();
-        this.aliases.add("tntfill");
+        this.aliases.addAll(Aliases.tnt_tntfill);
 
         this.requiredArgs.add("radius");
         this.requiredArgs.add("amount");

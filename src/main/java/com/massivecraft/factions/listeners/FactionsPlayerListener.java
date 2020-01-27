@@ -920,6 +920,8 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
+
+
     @EventHandler
     public void onLogoutMove(PlayerMoveEvent e) {
         LogoutHandler handler = LogoutHandler.getByName(e.getPlayer().getName());
@@ -927,6 +929,12 @@ public class FactionsPlayerListener implements Listener {
             handler.cancelLogout(e.getPlayer());
             e.getPlayer().sendMessage(String.valueOf(TL.COMMAND_LOGOUT_MOVED));
         }
+
+        if (e.getTo().getBlockX() == e.getFrom().getBlockX() &&
+                e.getTo().getBlockY() == e.getFrom().getBlockY() &&
+                e.getTo().getBlockZ() == e.getFrom().getBlockZ())
+            return;
+
         if (CmdWild.waitingTeleport.containsKey(e.getPlayer())) {
             CmdWild.waitingTeleport.remove(e.getPlayer());
             FPlayers.getInstance().getByPlayer(e.getPlayer()).msg(TL.COMMAND_WILD_INTERUPTED);
@@ -1062,13 +1070,13 @@ public class FactionsPlayerListener implements Listener {
         }
         FPlayer fp = FPlayers.getInstance().getByPlayer(e.getPlayer());
 
-        if(fp == null) return;
+        if (fp == null) return;
 
         if (fp.getChatMode() != ChatMode.FACTION) {
             return;
         }
         Faction f = fp.getFaction();
-        if(f == null) return;
+        if (f == null) return;
         if (f.isSystemFaction()) {
             return;
         }
@@ -1087,7 +1095,7 @@ public class FactionsPlayerListener implements Listener {
             }
         } else {
             for (Member m : t.getMembers()) {
-                if (m.getEffectiveName().contains(target) | m.getUser().getName().contains(target)){
+                if (m.getEffectiveName().contains(target) | m.getUser().getName().contains(target)) {
                     targets.add("@" + m.getUser().getName() + "#" + m.getUser().getDiscriminator());
                 }
             }
