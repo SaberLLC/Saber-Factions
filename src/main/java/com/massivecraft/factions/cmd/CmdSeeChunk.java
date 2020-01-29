@@ -74,7 +74,9 @@ public class CmdSeeChunk extends FCommand {
             for (Object nameObject : seeChunkMap.keySet()) {
                 String name = nameObject + "";
                 Player player = Bukkit.getPlayer(name);
-                showBorders(player);
+                if (player != null) {
+                    showBorders(player);
+                }
             }
             manageTask();
         }, 0, interval);
@@ -110,9 +112,7 @@ public class CmdSeeChunk extends FCommand {
     private void showPillar(Player player, World world, int blockX, int blockZ) {
         for (int blockY = 0; blockY < player.getLocation().getBlockY() + 30; blockY++) {
             Location loc = new Location(world, blockX, blockY, blockZ).add(0.5, 0, 0.5);
-            if (loc.getBlock().getType() != Material.AIR) {
-                continue;
-            }
+            if (loc.getBlock().getType() != Material.AIR) continue;
             if (useParticles) {
                 if (FactionsPlugin.getInstance().useNonPacketParticles) {
                     // Dust options only exists in the 1.13 API, so we use an
@@ -125,8 +125,6 @@ public class CmdSeeChunk extends FCommand {
                 } else {
                     this.effect.display(0, 0, 0, 0, 1, loc, player);
                 }
-
-
             } else {
                 Material type = blockY % 5 == 0 ? XMaterial.REDSTONE_LAMP.parseMaterial() : XMaterial.BLACK_STAINED_GLASS.parseMaterial();
                 VisualizeUtil.addLocation(player, loc, type);
