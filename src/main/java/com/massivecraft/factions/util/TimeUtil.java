@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
  * Creation Date: 1/30/2020
  */
 public class TimeUtil {
-    
+
     public static long parseDateDiff(String time, boolean future) throws Exception {
         Pattern timePattern = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?(?:([0-9]+)\\s*(?:s[a-z]*)?)?", 2);
         Matcher m = timePattern.matcher(time);
