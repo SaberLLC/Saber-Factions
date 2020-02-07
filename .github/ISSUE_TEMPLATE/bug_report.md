@@ -23,7 +23,7 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Server VErsion (please complete the following information):**
+**Server Version (please complete the following information):**
  - Spigot Version: [e.g. Paperspigot 1.8.8]
  - Factions Version [use /f version]
  - Minecraft Version: [If a bug is dependent on client version]
