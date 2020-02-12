@@ -162,18 +162,20 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-        Faction at = Board.getInstance().getFactionAt(new FLocation(event.getBlockPlaced()));
 
         if (!event.canBuild()) return;
         if (event.getBlockPlaced().getType() == Material.FIRE) return;
-
+        boolean isSpawner = event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial());
         if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "build", false)) {
             event.setCancelled(true);
             return;
         }
-        if (event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial()) && Conf.spawnerLock) {
-            event.setCancelled(true);
-            event.getPlayer().sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
+
+        if (isSpawner) {
+            if (Conf.spawnerLock) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
+            }
         }
     }
 
@@ -494,12 +496,24 @@ public class FactionsBlockListener implements Listener {
         Block block = event.getBlock();
 
         Faction at = Board.getInstance().getFactionAt(new FLocation(block));
-        boolean isSpawner = event.getBlock().getType() == XMaterial.SPAWNER.parseMaterial();
-        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), !isSpawner ? "destroy" : "mine spawners", false)) {
+        boolean isSpawner = event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial());
+
+        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
             return;
         }
-        if (block != null && isSpawner) {
+
+        FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
+        if (fme == null || !fme.hasFaction()) return;
+
+        if (isSpawner) {
+            Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
+            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");
+            }
+        }
+
+        if (isSpawner && !fme.isAdminBypassing()) {
             ItemStack item = new ItemStack(block.getType(), 1, block.getData());
             if (at != null && at.isNormal()) {
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
