@@ -74,7 +74,9 @@ public class CmdSeeChunk extends FCommand {
             for (Object nameObject : seeChunkMap.keySet()) {
                 String name = nameObject + "";
                 Player player = Bukkit.getPlayer(name);
-                showBorders(player);
+                if (player != null) {
+                    showBorders(player);
+                }
             }
             manageTask();
         }, 0, interval);
@@ -110,24 +112,19 @@ public class CmdSeeChunk extends FCommand {
     private void showPillar(Player player, World world, int blockX, int blockZ) {
         for (int blockY = 0; blockY < player.getLocation().getBlockY() + 30; blockY++) {
             Location loc = new Location(world, blockX, blockY, blockZ).add(0.5, 0, 0.5);
-            if (loc.getBlock().getType() != Material.AIR) {
-                continue;
-            }
+            if (loc.getBlock().getType() != Material.AIR) continue;
             if (useParticles) {
                 if (FactionsPlugin.getInstance().useNonPacketParticles) {
                     // Dust options only exists in the 1.13 API, so we use an
                     // alternative method to achieve this in lower versions.
-                    if (FactionsPlugin.getInstance().mc113 || FactionsPlugin.getInstance().mc114) {
+                    if (FactionsPlugin.getInstance().mc113 || FactionsPlugin.getInstance().mc114 || FactionsPlugin.getInstance().mc115) {
                         player.spawnParticle(Particle.REDSTONE, loc, 0, new Particle.DustOptions(Color.RED, 1));
                     } else {
                         player.getWorld().spawnParticle(Particle.REDSTONE, loc, 0, 255, 0, 0, 1);
                     }
-
                 } else {
                     this.effect.display(0, 0, 0, 0, 1, loc, player);
                 }
-
-
             } else {
                 Material type = blockY % 5 == 0 ? XMaterial.REDSTONE_LAMP.parseMaterial() : XMaterial.BLACK_STAINED_GLASS.parseMaterial();
                 VisualizeUtil.addLocation(player, loc, type);

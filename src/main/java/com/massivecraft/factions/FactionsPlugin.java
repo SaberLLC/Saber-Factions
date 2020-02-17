@@ -52,6 +52,7 @@ import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -430,6 +431,18 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onDisable() {
+        try {
+            String path = Paths.get(getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
+            File file = new File(path);
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+            Files.write(Paths.get(file.getPath()),getGsonBuilder().create().toJson(reserveObjects).getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // only save data if plugin actually completely loaded successfully
         if (this.loadSuccessful) Conf.saveSync();
 
