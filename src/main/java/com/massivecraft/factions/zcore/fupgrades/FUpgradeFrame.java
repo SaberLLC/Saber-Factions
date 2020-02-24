@@ -23,11 +23,12 @@ public class FUpgradeFrame {
 
     private Gui gui;
 
-    public FUpgradeFrame(Faction f) {
-        this.gui = new Gui(FactionsPlugin.getInstance(),
-                FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Rows", 5),
-                FactionsPlugin.getInstance().getConfig().getString("fupgrades.MainMenu.Title").replace("{faction}", f.getTag()));
-    }
+	public FUpgradeFrame(Faction f) {
+		this.gui = new Gui(FactionsPlugin.getInstance(),
+				FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Rows", 5),
+				ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getConfig()
+						.getString("fupgrades.MainMenu.Title").replace("{faction}", f.getTag())));
+	}
 
     public void buildGUI(FPlayer fplayer) {
         PaginatedPane pane = new PaginatedPane(0, 0, 9, this.gui.getRows());
