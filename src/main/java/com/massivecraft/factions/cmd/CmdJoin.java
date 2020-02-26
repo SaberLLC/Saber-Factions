@@ -125,8 +125,6 @@ public class CmdJoin extends FCommand {
         } else {
             fplayer.setFaction(faction, false);
         }
-
-        faction.deinvite(fplayer);
         try {
             context.fPlayer.setRole(faction.getDefaultRole());
             FactionsPlugin.instance.logFactionEvent(faction, FLogType.INVITES, context.fPlayer.getName(), CC.Green + "joined", "the faction");
@@ -154,7 +152,7 @@ public class CmdJoin extends FCommand {
 
     private int getFactionMemberLimit(Faction f) {
         if (f.getUpgrade(UpgradeType.MEMBERS) == 0) return Conf.factionMemberLimit;
-        return Conf.factionMemberLimit + FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.Member-Boost.level-" + f.getUpgrade(UpgradeType.MEMBERS));
+        return Conf.factionMemberLimit + FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.Members-Limit.level-" + f.getUpgrade(UpgradeType.MEMBERS));
     }
 
     @Override
