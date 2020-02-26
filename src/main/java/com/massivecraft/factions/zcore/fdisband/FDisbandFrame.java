@@ -7,7 +7,9 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.XMaterial;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -43,8 +45,22 @@ public class FDisbandFrame {
                 fPlayer.getPlayer().performCommand("f disband");
             }));
         }
-
-        GUIItems.set(4, new GuiItem(XMaterial.BLACK_WOOL.parseItem(), (e) -> e.setCancelled(true)));
+        //Separator
+        FileConfiguration config = FactionsPlugin.getInstance().getConfig();
+        ItemStack separatorItem = XMaterial.matchXMaterial(config.getString("f-disband-gui.separation-item.Type")).get().parseItem();
+        ItemMeta separatorMeta = separatorItem.getItemMeta();
+        separatorMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString("f-disband-gui.separation-item.Name")));
+        List<String> separatorLore = config.getStringList("f-disband-gui.separation-item.Lore");
+        if (separatorMeta.getLore() != null) separatorMeta.getLore().clear();
+        if (separatorLore != null) {
+            List<String> lore = new ArrayList<>();
+            for (String loreEntry : config.getStringList("f-disband-gui.separation-item.Lore")) {
+                lore.add(ChatColor.translateAlternateColorCodes('&', loreEntry));
+            }
+            separatorMeta.setLore(lore);
+        }
+        GUIItems.set(4, new GuiItem(separatorItem, (e) -> e.setCancelled(true)));
+        //End Separator
 
         for (i = 5; i < 10; ++i) {
             GUIItems.add(new GuiItem(deny, (e) -> {

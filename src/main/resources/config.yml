@@ -751,6 +751,11 @@ f-disband-gui:
     Lore:
       - ' '
       - '&7Click to cancel faction disband.'
+  separation-item:
+    Type: BLACK_WOOL
+    Name: ' '
+    Lore:
+
 
 
 ############################################################
