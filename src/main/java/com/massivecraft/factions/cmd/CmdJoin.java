@@ -125,6 +125,9 @@ public class CmdJoin extends FCommand {
         } else {
             fplayer.setFaction(faction, false);
         }
+
+        faction.deinvite(fplayer);
+        
         try {
             context.fPlayer.setRole(faction.getDefaultRole());
             FactionsPlugin.instance.logFactionEvent(faction, FLogType.INVITES, context.fPlayer.getName(), CC.Green + "joined", "the faction");
