@@ -18,11 +18,8 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.FactionGUI;
-import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.Wait.WaitExecutor;
-import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
@@ -976,11 +973,15 @@ public class FactionsPlayerListener implements Listener {
             event.setCancelled(true);
             ((FactionGUI) event.getClickedInventory().getHolder()).onClick(event.getRawSlot(), event.getClick());
         }
+        if (event.getClickedInventory().getHolder() instanceof StaticGUI) {
+            event.setCancelled(true);
+            ((StaticGUI) event.getClickedInventory().getHolder()).click(event.getRawSlot(), event.getClick(), (Player) event.getWhoClicked());
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveGUI(InventoryDragEvent event) {
-        if (event.getInventory().getHolder() instanceof FactionGUI) event.setCancelled(true);
+        if (event.getInventory().getHolder() instanceof FactionGUI || event.getInventory().getHolder() instanceof StaticGUI) event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
