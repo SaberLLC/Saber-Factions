@@ -3,6 +3,8 @@ package com.massivecraft.factions.cmd.wild;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.FactionGUI;
+import com.massivecraft.factions.util.Wait.WaitExecutor;
+import com.massivecraft.factions.util.Wait.WaitTask;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -18,6 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author droppinganvil
+ */
+//TODO StaticGUI
 public class WildGUI implements FactionGUI {
     Player player;
     FPlayer fplayer;
@@ -35,7 +41,7 @@ public class WildGUI implements FactionGUI {
         if (map.containsKey(slot)) {
             String zone = map.get(slot);
             if (fplayer.hasMoney(FactionsPlugin.getInstance().getConfig().getInt("Wild.Zones." + zone + ".Cost"))) {
-                CmdWild.waitingTeleport.put(player, FactionsPlugin.getInstance().getConfig().getInt("Wild.Wait"));
+                WaitExecutor.taskMap.put(player, new WaitTask(FactionsPlugin.getInstance().getConfig().getInt("Wild.Wait"), TL.COMMAND_WILD_INPROGRESS, player, CmdWild.instance));
                 CmdWild.teleportRange.put(player, zone);
                 fplayer.msg(TL.COMMAND_WILD_WAIT, FactionsPlugin.getInstance().getConfig().getInt("Wild.Wait") + " Seconds");
                 player.closeInventory();

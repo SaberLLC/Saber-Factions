@@ -32,6 +32,8 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -47,6 +49,8 @@ import java.util.*;
  */
 
 public abstract class MemoryFPlayer implements FPlayer {
+    public boolean inDuel = false;
+    public Map<Integer, ItemStack> oldInv = null;
     public boolean enemiesNearby = false;
     public boolean inChest = false;
     public boolean discordSetup = false;
@@ -225,6 +229,14 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean hasEnemiesNearby() {return this.enemiesNearby;}
 
     public void setEnemiesNearby(Boolean b) {this.enemiesNearby = b;}
+
+    public Map<Integer, ItemStack> getOldInv() {return this.oldInv;}
+
+    public void setOldInv(Map<Integer, ItemStack> inv) {this.oldInv = inv;}
+
+    public void setInDuel(Boolean b) {this.inDuel = b;}
+
+    public boolean isInDuel() {return this.inDuel;}
 
     public boolean discordSetup() {return this.discordSetup;}
 

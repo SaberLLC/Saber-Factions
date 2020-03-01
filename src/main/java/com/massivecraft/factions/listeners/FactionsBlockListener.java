@@ -493,39 +493,45 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
-        Block block = event.getBlock();
+        //If there is an error its much safer to not allow the block to be broken
+        try {
+            Block block = event.getBlock();
 
-        Faction at = Board.getInstance().getFactionAt(new FLocation(block));
-        boolean isSpawner = event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial());
+            Faction at = Board.getInstance().getFactionAt(new FLocation(block));
+            boolean isSpawner = event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial());
 
-        if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
-            event.setCancelled(true);
-            return;
-        }
-
-        FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
-        if (fme == null || !fme.hasFaction()) return;
-
-        if (isSpawner) {
-            Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
-            if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
-                fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");
+            if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
+                event.setCancelled(true);
+                return;
             }
-        }
 
-        if (isSpawner && !fme.isAdminBypassing()) {
-            ItemStack item = new ItemStack(block.getType(), 1, block.getData());
-            if (at != null && at.isNormal()) {
-                FPlayer fplayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
-                if (fplayer != null) {
-                    BlockState state = block.getState();
-                    if (state instanceof CreatureSpawner) {
-                        CreatureSpawner spawner = (CreatureSpawner) state;
-                        item.setDurability(spawner.getSpawnedType().getTypeId());
-                    }
-                    handleSpawnerUpdate(at, event.getPlayer(), item, LogTimer.TimerSubType.SPAWNER_BREAK);
+            FPlayer fme = FPlayers.getInstance().getByPlayer(event.getPlayer());
+            if (fme == null || !fme.hasFaction()) return;
+
+            if (isSpawner) {
+                Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
+                if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
+                    fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");
                 }
             }
+
+            if (isSpawner && !fme.isAdminBypassing()) {
+                ItemStack item = new ItemStack(block.getType(), 1, block.getData());
+                if (at != null && at.isNormal()) {
+                    FPlayer fplayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
+                    if (fplayer != null) {
+                        BlockState state = block.getState();
+                        if (state instanceof CreatureSpawner) {
+                            CreatureSpawner spawner = (CreatureSpawner) state;
+                            item.setDurability(spawner.getSpawnedType().getTypeId());
+                        }
+                        handleSpawnerUpdate(at, event.getPlayer(), item, LogTimer.TimerSubType.SPAWNER_BREAK);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            event.setCancelled(true);
+            e.printStackTrace();
         }
     }
 

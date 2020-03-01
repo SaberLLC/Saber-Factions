@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * @author DroppingAnvil
+ */
 public class Aliases {
-    /**
-     * @author DroppingAnvil
-     */
     public static ArrayList<String> alts_alts = new ArrayList<>(Arrays.asList("alts", "alt"));
     public static ArrayList<String> alts_list = new ArrayList<>(Arrays.asList("list", "l"));
     public static ArrayList<String> alts_invite = new ArrayList<>(Collections.singletonList("invite"));

@@ -10,6 +10,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Wait.WaitedTask;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,18 +24,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
-public class CmdWild extends FCommand {
-    public static HashMap<Player, Integer> waitingTeleport;
+/**
+ * @author droppinganvil
+ */
+public class CmdWild extends FCommand implements WaitedTask {
     public static HashMap<Player, String> teleportRange;
     public static HashSet<Player> teleporting;
+    public static CmdWild instance;
 
     public CmdWild() {
         super();
+        if (this.instance == null) instance = this;
         this.aliases.addAll(Aliases.wild);
         this.requirements = new CommandRequirements.Builder(Permission.WILD)
                 .playerOnly()
                 .build();
-        waitingTeleport = new HashMap<>();
         teleporting = new HashSet<>();
         teleportRange = new HashMap<>();
         startWild();
@@ -42,7 +46,7 @@ public class CmdWild extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!waitingTeleport.containsKey(context.player)) {
+        if (!teleportRange.containsKey(context.player)) {
             context.player.openInventory(new WildGUI(context.player, context.fPlayer).getInventory());
         } else {
             context.fPlayer.msg(TL.COMMAND_WILD_WAIT);
@@ -50,23 +54,6 @@ public class CmdWild extends FCommand {
     }
 
     public void startWild() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.instance, () -> {
-            for (Player p : waitingTeleport.keySet()) {
-                int i = waitingTeleport.get(p) - 1;
-                if (i > 0) {
-                    if (i != 1) {
-                        p.sendMessage(TL.COMMAND_WILD_WAIT.format((i + " Seconds")));
-                    } else {
-                        p.sendMessage(TL.COMMAND_WILD_WAIT.format((i + " Second")));
-                    }
-                    waitingTeleport.replace(p, i);
-                } else {
-                    p.sendMessage(TL.COMMAND_WILD_SUCCESS.toString());
-                    waitingTeleport.remove(p);
-                    attemptTeleport(p);
-                }
-            }
-        }, 0L, 20L);
     }
 
     public void attemptTeleport(Player p) {
@@ -120,5 +107,15 @@ public class CmdWild extends FCommand {
     @Override
     public TL getUsageTranslation() {
         return TL.COMMAND_WILD_DESCRIPTION;
+    }
+
+    @Override
+    public void handleSuccess(Player player) {
+        attemptTeleport(player);
+    }
+
+    @Override
+    public void handleFailure(Player player) {
+        player.sendMessage(TL.COMMAND_WILD_INTERUPTED.toString());
     }
 }

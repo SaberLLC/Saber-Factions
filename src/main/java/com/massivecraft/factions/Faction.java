@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
 
+    void broadcast(String s);
+
     String getMemberRoleId();
 
     void setMemberRoleId(String roleId);

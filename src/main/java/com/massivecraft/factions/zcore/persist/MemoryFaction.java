@@ -1429,4 +1429,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public Set<FLocation> getAllClaims() {
         return Board.getInstance().getAllClaims(this);
     }
+
+    public void broadcast(String s) {
+        for (FPlayer fPlayer : getFPlayersWhereOnline(true)) {
+            fPlayer.sendMessage(s);
+        }
+    }
 }

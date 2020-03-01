@@ -6,6 +6,9 @@ import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.Random;
 
+/**
+ * @author droppinganvil
+ */
 public class CmdDiscord extends FCommand {
     public CmdDiscord() {
         super();

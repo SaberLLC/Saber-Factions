@@ -1,5 +1,8 @@
 package com.massivecraft.factions.discord;
 
+/**
+ * @author droppinganvil
+ */
 public class DiscordSetupAttempt {
     private Boolean success;
     private String reason;

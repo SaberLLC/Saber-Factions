@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.discord.Discord;
+import com.massivecraft.factions.duels.RequestGUI;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.Permission;
@@ -44,6 +45,9 @@ public class CmdReload extends FCommand {
         FCmdRoot.instance.addVariableCommands();
         FCmdRoot.instance.rebuild();
         long timeReload = (System.currentTimeMillis() - timeInitStart);
+        //Duels
+        RequestGUI.inv = null;
+        RequestGUI.responseMap.clear();
 
         context.msg(TL.COMMAND_RELOAD_TIME, timeReload);
     }

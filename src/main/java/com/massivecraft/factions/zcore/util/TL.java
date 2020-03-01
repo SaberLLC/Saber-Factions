@@ -355,6 +355,12 @@ public enum TL {
     DISCORD_CODE_INVALID_KEY("That code is invalid, verify the code is correct."),
     DISCORD_CODE_INVALID_FORMAT("If you are submitting a code please only type the code. Example message: 0000"),
 
+    //Duels
+    DUEL_REQUEST_REJECTED_FACTION("&c&l[!]&7 %1$s has rejected your duel request"),
+    DUEL_REQUEST_REJECTED_PLAYER("&c&l[!]&7 %1$s has exited the duel queue"),
+    DUEL_REQUEST_ACCEPTED_FACTION("&c&l[!]&7 %1$s has accepted your duel request"),
+    DUEL_REQUEST_ACCEPTED_PLAYER("&c&l[!]&7 %1$s has entered the duel queue"),
+
 
     COMMAND_DEINVITE_CANDEINVITE("&c&l[!]&7 Players you can &cdeinvite: "),
     COMMAND_DEINVITE_CLICKTODEINVITE("&c&l[!]&7 Click to &crevoke&7 invite for &c%1$s"),

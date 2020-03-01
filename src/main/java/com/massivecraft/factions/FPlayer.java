@@ -12,8 +12,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -43,6 +45,30 @@ public interface FPlayer extends EconomyParticipator {
      * @param b enemiesNearby
      */
     void setEnemiesNearby(Boolean b);
+
+    /**
+     * Get this players inventory prior to entering the duel (Will be set to null after duel!)
+     * @return Map of old inventory contents
+     */
+    Map<Integer, ItemStack> getOldInv();
+
+    /**
+     * Set this players stored inventory, this inventory will be retrieved after a duel is complete
+     * @param inv Map of inventory contents
+     */
+    void setOldInv(Map<Integer, ItemStack> inv);
+
+    /**
+     * Used to check if player has entered a duel and has not proceeded
+     * @return boolean determining if the player is in a duel
+     */
+    boolean isInDuel();
+
+    /**
+     * Used before and after duels to set the inDuel status of the FPlayer
+     * @param b Desired status
+     */
+    void setInDuel(Boolean b);
 
     /**
      * Get if a player has setup their Discord before

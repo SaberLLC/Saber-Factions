@@ -8,6 +8,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author droppinganvil
+ */
 public class PermissionList {
     public static void generateFile() {
         File file = new File(FactionsPlugin.getInstance().getDataFolder().toString() + "/" + "permissions.yml");

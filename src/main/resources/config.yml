@@ -1439,6 +1439,61 @@ Wild:
     SpawnAboveBlocks: 10
     Effects:
       - 'NIGHT_VISION'
+Duels:
+  Enabled: true
+  # Cooldown before a faction can request another faction to duel after dueling
+  Cooldown: 0
+  # In minutes
+  Time: 3
+  # After individual players receive the request for the duel how long should it take to start in seconds
+  WaitTime: 60
+  Broadcast:
+    BroadcastKill:
+      Enabled: true
+      # {team1_remaining} {team2_remaining} {team1_eliminated} {team2_eliminated} {team1_tag} {team2_tag} {eliminated_name}
+      Format: '&c&lFaction Duels&r &7{eliminated} has been eliminated. {team1_tag} &d{team1_remaining} &7| {team2_tag} &d{team2_remaining}'
+    BroadcastResult:
+      Enabled: true
+      # These placeholders are all for the winning team unless specified otherwise
+      # {remaining} {tag} {losers_tag}
+      Format: '&c&lFaction Duels&r &d{tag}&7 has defeated &d{losers_tag}&7 with {remaining} players remaining'
+      FormatTie: '&c&lFaction Duels&r &d{team1_tag} &7has tied with &d{team2_tag}'
+
+  SpawnPoints:
+    # Please change these to your arena
+    Team1:
+      # Make sure each player has somewhere to spawn if max faction size is 10 you need 10 spawn points for each team!
+      # SpawnPoint format: World,X,Y,Z
+      1: Duel,0,60,0
+      2: Duel,5,60,5
+      3: Duel,10,60,10
+    Team2:
+      1: Duel,50,50,50
+      2: Duel,55,50,55
+      3: Duel,60,50,60
+  GUI:
+    # Responses #
+    # Accepted: This player is queued for the duel, GUI closes
+    # Rejected: This player is not included in the duel, GUI closes
+    # Ignored: This player remains in GUI and no action is taken on their entry in the duel
+    # This happens when the click type is not left click
+    FallbackResponse: Ignored
+    Fill-Item:
+      Material: GRAY_STAINED_GLASS_PANE
+      Response: Ignored
+    Items:
+      12:
+        Material: GREEN_STAINED_GLASS_PANE
+        Name: '&2Accept'
+        Lore:
+          - '&2Join your faction''s duel'
+        Response: Accepted
+      13:
+        Material: RED_STAINED_GLASS_PANE
+        Name: '&cReject'
+        Lore:
+          - '&cLeave your faction''s duels'
+        Response: Rejected
 
 ############################################################
 # +------------------------------------------------------+ #

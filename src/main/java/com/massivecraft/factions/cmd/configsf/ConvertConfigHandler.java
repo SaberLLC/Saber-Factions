@@ -17,6 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ * @author droppinganvil
+ */
 public class ConvertConfigHandler {
 
     static File savageConfigFile = new File("plugins/Factions/SavageFactions/config.yml");

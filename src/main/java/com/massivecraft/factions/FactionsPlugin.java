@@ -26,6 +26,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.Particles.ReflectionUtils;
+import com.massivecraft.factions.util.Sync.SyncExecutor;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -181,6 +182,8 @@ public class FactionsPlugin extends MPlugin {
             this.saveResource("config.yml", false);
             this.reloadConfig();
         }
+        //Start synctask
+        SyncExecutor.startTask();
         //Attempt to generate a permission list
         PermissionList.generateFile();
         // Load Conf from disk
