@@ -27,6 +27,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.Particles.ReflectionUtils;
 import com.massivecraft.factions.util.Sync.SyncExecutor;
+import com.massivecraft.factions.util.Wait.WaitExecutor;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -184,6 +185,8 @@ public class FactionsPlugin extends MPlugin {
         }
         //Start synctask
         SyncExecutor.startTask();
+        //Start wait task executor
+        WaitExecutor.startTask();
         //Attempt to generate a permission list
         PermissionList.generateFile();
         // Load Conf from disk
@@ -193,7 +196,7 @@ public class FactionsPlugin extends MPlugin {
         if (Conf.dependencyCheck && (!Bukkit.getPluginManager().isPluginEnabled("Vault"))) {
             divider();
             System.out.println("You are missing dependencies!");
-            System.out.println("Please verify and Vault are installed!");
+            System.out.println("Please verify Vault is installed!");
             Conf.save();
             Bukkit.getPluginManager().disablePlugin(instance);
             divider();
