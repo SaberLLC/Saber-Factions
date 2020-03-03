@@ -1061,7 +1061,7 @@ fupgrades:
           - '&c&lDecreased Spawner Delay'
           - '&4&l* &cLevel 1: &f0.10%'
           - '&4&l* &cLevel 2: &f0.20%'
-          - '&4&l* &cLevel 3: &f0.30'
+          - '&4&l* &cLevel 3: &f0.30%'
           - '&f'
           - '&c&lCosts'
           - '&4&l* &cLevel 1: &f$1,000,000'
