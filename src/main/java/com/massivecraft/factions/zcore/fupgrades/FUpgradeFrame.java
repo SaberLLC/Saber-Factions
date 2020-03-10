@@ -8,6 +8,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.XMaterial;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Saser
@@ -26,8 +28,8 @@ public class FUpgradeFrame {
 	public FUpgradeFrame(Faction f) {
 		this.gui = new Gui(FactionsPlugin.getInstance(),
 				FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Rows", 5),
-				ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getConfig()
-						.getString("fupgrades.MainMenu.Title").replace("{faction}", f.getTag())));
+				ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FactionsPlugin.getInstance().getConfig()
+                        .getString("fupgrades.MainMenu.Title")).replace("{faction}", f.getTag())));
 	}
 
     public void buildGUI(FPlayer fplayer) {

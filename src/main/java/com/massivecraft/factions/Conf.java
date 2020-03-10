@@ -259,6 +259,7 @@ public class Conf {
     public static Set<Material> territoryBypassProtectedMaterials = EnumSet.noneOf(Material.class);
     // Dependency check
     public static boolean dependencyCheck = true;
+    public static boolean enableClickToClaim = true;
 
     public static Set<Material> territoryCancelAndAllowItemUseMaterial = new HashSet<>();
     public static Set<Material> territoryDenySwitchMaterials = new HashSet<>();

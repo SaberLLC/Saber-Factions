@@ -236,8 +236,10 @@ public abstract class MemoryBoard extends Board {
                         row.then("-").color(Conf.colorWilderness);
                         // Lol someone didnt add the x and z making it claim the wrong position Can i copyright this xD
                         if (fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
-                            row.tooltip(TL.CLAIM_CLICK_TO_CLAIM.format(dx + topLeft.getX(), dz + topLeft.getZ()))
-                                    .command(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx + topLeft.getX(), dz + topLeft.getZ()));
+                            if (Conf.enableClickToClaim) {
+                                row.tooltip(TL.CLAIM_CLICK_TO_CLAIM.format(dx + topLeft.getX(), dz + topLeft.getZ()))
+                                        .command(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx + topLeft.getX(), dz + topLeft.getZ()));
+                            }
                         }
                     } else if (factionHere.isSafeZone()) {
                         row.then("+").color(Conf.colorSafezone).tooltip(oneLineToolTip(factionHere, fplayer));
