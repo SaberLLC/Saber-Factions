@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -21,6 +22,11 @@ public class CmdInspect extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
+        if(!Conf.useInspectSystem){
+            context.fPlayer.msg(TL.GENERIC_DISABLED, "Faction Inspection");
+            return;
+        }
+
         if (context.fPlayer.isInspectMode()) {
             context.fPlayer.setInspectMode(false);
             context.msg(TL.COMMAND_INSPECT_DISABLED_MSG);

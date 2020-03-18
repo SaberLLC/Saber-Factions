@@ -105,6 +105,9 @@ public class Conf {
     //AUDIT
     public static boolean useAuditSystem = true;
 
+    //INSPECT
+    public static boolean useInspectSystem = true;
+
     //GUI's
     public static boolean useDisbandGUI = true;
 
