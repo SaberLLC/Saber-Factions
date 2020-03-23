@@ -21,7 +21,8 @@ public class CmdLeave extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        context.fPlayer.leave(true);
+
+            context.fPlayer.leave(true);
     }
 
     @Override

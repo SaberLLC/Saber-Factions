@@ -260,6 +260,7 @@ hcf:
   buffer-zone: 0
 
   stuck:
+    Enabled: false
     delay: 30
     radius: 10
 

@@ -35,6 +35,14 @@ public class CmdStuck extends FCommand {
         final long delay = FactionsPlugin.getInstance().getConfig().getLong("hcf.stuck.delay", 30);
         final int radius = FactionsPlugin.getInstance().getConfig().getInt("hcf.stuck.radius", 10);
 
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("hcf.stuck.Enabled", false)) {
+            context.msg(TL.GENERIC_DISABLED, "Factions Stuck");
+            return;
+        }
+
+
+
+
         if (FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
             long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
             String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);

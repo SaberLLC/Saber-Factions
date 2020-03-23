@@ -820,7 +820,7 @@ public class FactionsPlayerListener implements Listener {
 
         Material type;
         if (event.getItem() != null) {
-            // Convert 1.8 Material Names -> 1.14
+            // Convert 1.8 Material Names -> 1.15
             type = XMaterial.matchXMaterial(event.getItem().getType().toString()).get().parseMaterial();
         } else {
             type = null;
