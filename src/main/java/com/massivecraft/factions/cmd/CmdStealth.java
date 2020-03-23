@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -19,6 +21,12 @@ public class CmdStealth extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
+        if (!Conf.useSealthSystem) {
+            context.msg(TL.GENERIC_DISABLED, "Factions Stealth");
+            return;
+        }
+
+
         if (context.faction != null && !context.faction.getId().equalsIgnoreCase("0") && !context.faction.getId().equalsIgnoreCase("none") && !context.faction.getId().equalsIgnoreCase("safezone") && !context.faction.getId().equalsIgnoreCase("warzone")) {
             context.fPlayer.setStealth(!context.fPlayer.isStealthEnabled());
             context.msg(context.fPlayer.isStealthEnabled() ? TL.COMMAND_STEALTH_ENABLE : TL.COMMAND_STEALTH_DISABLE);

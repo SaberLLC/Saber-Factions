@@ -184,6 +184,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public Boolean internalFTOPEnabled = false;
     public Boolean fWildEnabled = false;
     public Boolean fAuditEnabled = false;
+    public Boolean fStrikes = false;
 
     public FCmdRoot() {
         super();
@@ -292,7 +293,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdChest);
         this.addSubCommand(this.cmdSetBanner);
         this.addSubCommand(this.cmdCorner);
-        this.addSubCommand(this.cmdStrikes);
         this.addSubCommand(this.cmdFGlobal);
         this.addSubCommand(this.cmdViewChest);
         this.addSubCommand(this.cmdConvertConfig);
@@ -353,6 +353,11 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         if (Conf.useAuditSystem) {
             this.addSubCommand(cmdAudit);
             fAuditEnabled = true;
+        }
+
+        if(Conf.useStrikeSystem){
+            this.addSubCommand(this.cmdStrikes);
+            fStrikes = true;
         }
 
         //Other

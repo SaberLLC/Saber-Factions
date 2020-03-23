@@ -111,6 +111,12 @@ public class Conf {
     //GUI's
     public static boolean useDisbandGUI = true;
 
+    //SEALTH
+    public static boolean useSealthSystem = true;
+
+    //STRIKES
+    public static boolean useStrikeSystem = true;
+
     //DISCORD
     public static boolean useDiscordSystem = false;
     public static String discordBotToken = "<token here>";
