@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Updater {
     public static double currentVersion = 1.1;
+
     public static void updateIfNeeded(FileConfiguration conf) {
         double version = conf.getDouble("Config-Version", 0);
         //Previous version
@@ -41,6 +42,8 @@ public class Updater {
         try {
             conf.save(new File("plugins/Factions/config.yml"));
             FactionsPlugin.getInstance().reloadConfig();
-        } catch (IOException e) {e.printStackTrace();}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

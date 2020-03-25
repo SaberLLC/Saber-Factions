@@ -24,6 +24,7 @@ public class ItemBuilder {
     public ItemBuilder(Material material, int amount) {
         this(new ItemStack(material, amount));
     }
+
     public ItemBuilder(Material material) {
         this(material, 1);
     }

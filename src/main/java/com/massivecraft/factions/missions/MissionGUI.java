@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
 import java.util.*;
 
 public class MissionGUI implements FactionGUI {
@@ -56,7 +57,9 @@ public class MissionGUI implements FactionGUI {
                     }
                 }
             }
-        } else if (plugin.getConfig().getBoolean("Randomization.Enabled")) {return;}
+        } else if (plugin.getConfig().getBoolean("Randomization.Enabled")) {
+            return;
+        }
         if (configurationSection == null) return;
 
         int max = plugin.getConfig().getInt("MaximumMissionsAllowedAtOnce");
@@ -64,7 +67,8 @@ public class MissionGUI implements FactionGUI {
             fPlayer.msg(TL.MISSION_MISSION_MAX_ALLOWED, max);
             return;
         }
-        if (missionName.equals(plugin.color(FactionsPlugin.getInstance().getConfig().getString("Randomization.Start-Item.Disallowed.Name")))) return;
+        if (missionName.equals(plugin.color(FactionsPlugin.getInstance().getConfig().getString("Randomization.Start-Item.Disallowed.Name"))))
+            return;
 
         if (fPlayer.getFaction().getMissions().containsKey(missionName)) {
             fPlayer.msg(TL.MISSION_MISSION_ACTIVE);
@@ -73,7 +77,7 @@ public class MissionGUI implements FactionGUI {
         ConfigurationSection section = configurationSection.getConfigurationSection(missionName);
         if (section == null) return;
 
-        if(FactionsPlugin.getInstance().getConfig().getBoolean("DenyMissionsMoreThenOnce")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("DenyMissionsMoreThenOnce")) {
             if (fPlayer.getFaction().getCompletedMissions().contains(missionName)) {
                 fPlayer.msg(TL.MISSION_ALREAD_COMPLETED);
                 return;

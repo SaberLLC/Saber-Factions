@@ -247,6 +247,8 @@ public interface Faction extends EconomyParticipator {
 
     void setHome(Location home);
 
+    void deleteHome();
+
     long getFoundedDate();
 
     void setFoundedDate(long newDate);

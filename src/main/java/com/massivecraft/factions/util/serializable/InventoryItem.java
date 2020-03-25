@@ -21,7 +21,9 @@ public class InventoryItem {
         this.item = original;
     }
 
-    public InventoryItem(ItemBuilder original) { this(original.build()); }
+    public InventoryItem(ItemBuilder original) {
+        this(original.build());
+    }
 
     public InventoryItem click(ClickType type, Runnable runnable) {
         this.clickMap.put(type, runnable);

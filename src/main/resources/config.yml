@@ -171,6 +171,7 @@ scoreboard:
     - " &8» &cYour Balance&7: &f{balance}"
     - "&7&m---------------------------"
 
+  #Formatted ONLY When A User is NOT in a Faction
   factionless-enabled: true
   factionless:
     - "&7&m--------------------------"
@@ -404,6 +405,7 @@ help:
     - '&c/f points &8- &7Check your factions points.'
     - '&c/f invsee &8- &7Check a faction members inventory.'
     - '&c/f stealth &8- &7Go into stealth mode to not disable enemies flight.'
+    - '&7&m--------------------&r &e/f help &7&m-----------------------'
 ############################################################
 # +------------------------------------------------------+ #
 # |                  F Permission GUI                    | #
@@ -594,8 +596,8 @@ fwarp-gui:
 # |         Faction Creation/Disband Broadcast           | #
 # +------------------------------------------------------+ #
 ############################################################
-faction-creation-broadcast: true
-faction-disband-broadcast: true
+faction-creation-broadcast: true #Disabling this will not make faction creation broadcasts appear in chat.
+faction-disband-broadcast: true #Disabling this will not make faction disband broadcasts appear in chat.
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -604,7 +606,7 @@ faction-disband-broadcast: true
 ############################################################
 #Everything else from display names to lores, is managed by lang.yml, so edit it there
 f-check:
-  gui-rows: 3
+  gui-rows: 3 #Rows for the check gui
   wall-check:
     Type: COBBLESTONE
     slot: 10
@@ -620,13 +622,16 @@ f-check:
 # |              Faction Invisibility                    | #
 # +------------------------------------------------------+ #
 ############################################################
-See-Invisible-Faction-Members: false
+#This option is to see if another faction member can see their faction members that have the invisible potion effect
+See-Invisible-Faction-Members: false #ONLY WHEN SCOREBOARD IS ENABLED
+
 
 ############################################################
 # +------------------------------------------------------+ #
 # |              Faction Inventory See                   | #
 # +------------------------------------------------------+ #
 ############################################################
+#This option is the ability to see other faction members inventories
 f-inventory-see:
   Enabled: true
 ############################################################
@@ -634,6 +639,7 @@ f-inventory-see:
 # |                Faction Alt Accounts                  | #
 # +------------------------------------------------------+ #
 ############################################################
+#Faction Alts for extra power, sand printing, afking spawners
 f-alts:
   Enabled: true
 
@@ -658,6 +664,7 @@ frules:
 # |                  Faction TNT Bank                    | #
 # +------------------------------------------------------+ #
 ############################################################
+#Faction Tnt Resolved Around A Virtual TNT Bank With Upgrades If Enabled
 ftnt:
   Enabled: true
   Bank-Limit: 250000
@@ -667,6 +674,7 @@ ftnt:
 # |                 Faction Discord                      | #
 # +------------------------------------------------------+ #
 ############################################################
+#This option allows factions to set their discord link to their specific faction
 fdiscord:
   Enabled: true
 
@@ -675,6 +683,7 @@ fdiscord:
 # |                  Faction PayPal                      | #
 # +------------------------------------------------------+ #
 ############################################################
+#This option allows factions to set their paypal link to their specific faction
 fpaypal:
   Enabled: true
 
@@ -683,6 +692,7 @@ fpaypal:
 # |                  Faction Checkpoints                 | #
 # +------------------------------------------------------+ #
 ############################################################
+#This option is for a quick fast and in a hurry teleport to raids etc.
 checkpoints:
   Enabled: true
 
@@ -691,6 +701,7 @@ checkpoints:
 # |                  Faction Near                        | #
 # +------------------------------------------------------+ #
 ############################################################
+#This option is to allow faction members to be seen via /f near
 fnear:
   Enabled: true
   Radius: 50
@@ -700,6 +711,7 @@ fnear:
 # |                  Faction Shop                        | #
 # +------------------------------------------------------+ #
 ############################################################
+#Faction Shop is 100% configurable (See More in shop.yml)
 F-Shop:
   Enabled: true
   GUI:
@@ -764,6 +776,7 @@ f-disband-gui:
 # |                Faction GracePeriod                   | #
 # +------------------------------------------------------+ #
 ############################################################
+#This option will deny all explosions
 f-grace:
   Enabled: true
 
@@ -895,6 +908,8 @@ ffocus:
 # |                  Faction Vault                       | #
 # +------------------------------------------------------+ #
 ############################################################
+#Faction Vaults are a placeable chest that can be accessed
+#While maintaining that factor it can still be raided by other factions.
 fvault:
   Enabled: true
   No-Hoppers-near-vault: true
@@ -913,6 +928,8 @@ fvault:
 # |                  Faction Chest                       | #
 # +------------------------------------------------------+ #
 ############################################################
+#Faction Chests are a virtual chest based system that cannot be raided
+#Used for storing items that equate to high value of the faction.
 fchest:
   Enabled: true
   Default-Size: 1 #In Rows
@@ -1375,6 +1392,7 @@ Tntfill:
   enabled: true
   max-radius: 32
   max-amount: 64
+
 Wild:
   Enabled: true
   # Time to wait in seconds #

@@ -93,7 +93,8 @@ public class DiscordListener extends ListenerAdapter {
                 prefix = ".";
             }
             String content = event.getMessage().getContentRaw();
-            if (!content.startsWith(prefix) && !content.startsWith(event.getGuild().getSelfMember().getAsMention())) return;
+            if (!content.startsWith(prefix) && !content.startsWith(event.getGuild().getSelfMember().getAsMention()))
+                return;
             if (content.startsWith(prefix + "help") || content.startsWith(event.getGuild().getSelfMember().getAsMention() + " help")) {
                 this.help(event, content, prefix);
             } else if (content.startsWith(prefix + "stats")) {
@@ -124,7 +125,8 @@ public class DiscordListener extends ListenerAdapter {
                 this.settings(event);
             }
         } catch (PermissionException exception) {
-            if (!event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_READ, Permission.MESSAGE_WRITE)) return;
+            if (!event.getGuild().getSelfMember().hasPermission(event.getChannel(), Permission.MESSAGE_READ, Permission.MESSAGE_WRITE))
+                return;
             event.getChannel().sendMessage((":x: Missing permission, `" + exception.getPermission().toString() + "`")).queue();
         }
     }
@@ -135,7 +137,8 @@ public class DiscordListener extends ListenerAdapter {
 
     private Faction getFactionWithWarning(TextChannel textChannel) {
         Faction faction = this.getFaction(textChannel.getGuild());
-        if (faction == null) textChannel.sendMessage((":x: This guild isn't linked to a faction, use `/f setguild " + textChannel.getGuild().getId() + "` in game")).queue();
+        if (faction == null)
+            textChannel.sendMessage((":x: This guild isn't linked to a faction, use `/f setguild " + textChannel.getGuild().getId() + "` in game")).queue();
         return faction;
     }
 
@@ -342,7 +345,7 @@ public class DiscordListener extends ListenerAdapter {
 
     private void setNotifyFormat(GuildMessageReceivedEvent event, String content, String prefix) {
         Faction faction = this.getFactionWithWarning(event.getChannel());
-        if (faction == null)return;
+        if (faction == null) return;
         if (cantAccessPermissionWithWarning(event.getChannel(), event.getMember())) return;
         if (!content.contains(" ")) {
             event.getChannel().sendMessage((":x: Usage, `" + prefix + "setnotifyformat <format>` (%type%)")).queue();

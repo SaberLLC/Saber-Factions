@@ -1,7 +1,5 @@
 package com.massivecraft.factions.zcore.fperms;
 
-import com.massivecraft.factions.util.XMaterial;
-
 public class DefaultPermissions {
 
     /**

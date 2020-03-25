@@ -21,8 +21,10 @@ public class Aliases {
     public static ArrayList<String> claim_auto = new ArrayList<>(Collections.singletonList("autoclaim"));
     public static ArrayList<String> claim_claim = new ArrayList<>(Collections.singletonList("claim"));
     public static ArrayList<String> claim_at = new ArrayList<>(Collections.singletonList("claimat"));
+    public static ArrayList<String> claim_claimFill = new ArrayList<>(Arrays.asList("claimfill", "cf"));
     public static ArrayList<String> claim_line = new ArrayList<>(Arrays.asList("claimline", "cl"));
     public static ArrayList<String> claim_corner = new ArrayList<>(Arrays.asList("corner"));
+    public static ArrayList<String> delfHome = new ArrayList<>(Arrays.asList("delhome", "deletehome"));
     public static ArrayList<String> unclaim_all_safe = new ArrayList<>(Arrays.asList("safeunclaimall", "safedeclaimall"));
     public static ArrayList<String> unclaim_unclaim = new ArrayList<>(Arrays.asList("unclaim", "declaim"));
     public static ArrayList<String> unclaim_all_unsafe = new ArrayList<>(Arrays.asList("unclaimall", "declaimall"));

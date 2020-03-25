@@ -81,6 +81,7 @@ public class FactionsPlugin extends MPlugin {
     public boolean mc115 = false;
     public boolean useNonPacketParticles = false;
     public boolean factionsFlight = false;
+    public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     SkriptAddon skriptAddon;
     private FactionsPlayerListener factionsPlayerListener;
     private boolean locked = false;
@@ -90,7 +91,6 @@ public class FactionsPlugin extends MPlugin {
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
     private Listener[] eventsListener;
-    public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     private Worldguard wg;
     private FLogManager fLogManager;
     private List<ReserveObject> reserveObjects;
@@ -437,7 +437,7 @@ public class FactionsPlugin extends MPlugin {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
-            Files.write(Paths.get(file.getPath()),getGsonBuilder().create().toJson(reserveObjects).getBytes());
+            Files.write(Paths.get(file.getPath()), getGsonBuilder().create().toJson(reserveObjects).getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }

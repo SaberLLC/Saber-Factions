@@ -9,7 +9,6 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.HashMap;
@@ -79,7 +78,7 @@ public class CmdDisband extends FCommand {
         }
 
         if (!access) {
-            if(Conf.useDisbandGUI && !context.fPlayer.isAdminBypassing() || !context.player.isOp()) {
+            if (Conf.useDisbandGUI && !context.fPlayer.isAdminBypassing() || !context.player.isOp()) {
                 if (!disbandMap.containsKey(context.player.getUniqueId().toString())) {
                     new FDisbandFrame(context.faction).buildGUI(context.fPlayer);
                     return;

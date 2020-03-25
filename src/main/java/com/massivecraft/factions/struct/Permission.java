@@ -28,6 +28,7 @@ public enum Permission {
     CHECK("check"),
     CLAIM("claim"),
     CLAIMAT("claimat"),
+    CLAIM_FILL("claimfill"),
     CLAIM_LINE("claim.line"),
     CLAIM_RADIUS("claim.radius"),
     CONFIG("config"),

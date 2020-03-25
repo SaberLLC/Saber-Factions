@@ -14,7 +14,7 @@ public class CmdInviteBot extends FCommand {
      * @author Driftay
      */
 
-    public CmdInviteBot(){
+    public CmdInviteBot() {
         super();
         this.aliases.add("invitebot");
     }

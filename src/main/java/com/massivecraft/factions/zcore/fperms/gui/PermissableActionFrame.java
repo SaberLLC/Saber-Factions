@@ -53,12 +53,12 @@ public class PermissableActionFrame {
                         case LEFT:
                             access = Access.ALLOW;
                             success = fplayer.getFaction().setPermission(perm, action, access);
-                            FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS,fplayer.getName(), ChatColor.GREEN.toString() + ChatColor.BOLD + "ALLOWED", action.getName(), perm.name());
+                            FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), ChatColor.GREEN.toString() + ChatColor.BOLD + "ALLOWED", action.getName(), perm.name());
                             break;
                         case RIGHT:
                             access = Access.DENY;
                             success = fplayer.getFaction().setPermission(perm, action, access);
-                            FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS,fplayer.getName(), ChatColor.RED.toString() + ChatColor.BOLD + "DENIED", action.getName(), perm.name());
+                            FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), ChatColor.RED.toString() + ChatColor.BOLD + "DENIED", action.getName(), perm.name());
                             break;
                         case MIDDLE:
                             access = Access.UNDEFINED;

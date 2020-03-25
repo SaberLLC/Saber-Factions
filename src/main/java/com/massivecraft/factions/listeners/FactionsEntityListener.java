@@ -7,7 +7,7 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.TravelAgent;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.ExplosiveMinecart;
@@ -20,7 +20,6 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -155,16 +154,17 @@ public class FactionsEntityListener implements Listener {
 
                     // Run the check for a player
                     if (damager instanceof Player) {
-                        // Generate the action message.
-                        String entityAction;
-
-                        if (damagee.getType() == EntityType.ITEM_FRAME) {
-                            entityAction = "item frames";
-                        } else {
-                            entityAction = "armor stands";
+                        Player player = (Player) damager;
+                        Material material = null;
+                        switch (sub.getEntity().getType()) {
+                            case ITEM_FRAME:
+                                material = Material.ITEM_FRAME;
+                                break;
+                            case ARMOR_STAND:
+                                material = Material.ARMOR_STAND;
+                                break;
                         }
-
-                        if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damagee.getLocation(), "destroy " + entityAction, false)) {
+                        if (material != null && !FactionsBlockListener.playerCanBuildDestroyBlock(player, damagee.getLocation(), "destroy " + material.toString().toLowerCase(), false)) {
                             event.setCancelled(true);
                         }
                     } else {
@@ -240,7 +240,7 @@ public class FactionsEntityListener implements Listener {
         UUID uuid = player.getUniqueId();
         if (FactionsPlugin.getInstance().getStuckMap().containsKey(uuid))
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
-            FactionsPlugin.getInstance().getStuckMap().remove(uuid);
+        FactionsPlugin.getInstance().getStuckMap().remove(uuid);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -292,7 +292,7 @@ public class FactionsEntityListener implements Listener {
 
         if (faction.noExplosionsInTerritory() || (faction.isPeaceful() && Conf.peacefulTerritoryDisableBoom))
             return false;
-            // faction is peaceful and has explosions set to disabled
+        // faction is peaceful and has explosions set to disabled
 
         boolean online = faction.hasPlayersOnline();
 
@@ -682,8 +682,8 @@ public class FactionsEntityListener implements Listener {
                     Player victim = (Player) e.getEntity();
                     FPlayer fdamager = FPlayers.getInstance().getByPlayer(damager);
                     FPlayer fvictim = FPlayers.getInstance().getByPlayer(victim);
-                    if(damager == victim) return;
-                    if(fdamager == fvictim) return;
+                    if (damager == victim) return;
+                    if (fdamager == fvictim) return;
                     if (fvictim.getRelationTo(fdamager) == Relation.TRUCE) {
                         fdamager.msg(TL.PLAYER_PVP_CANTHURT, fvictim.describeTo(fdamager));
                         e.setCancelled(true);

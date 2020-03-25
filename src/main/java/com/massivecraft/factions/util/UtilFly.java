@@ -25,6 +25,7 @@ public class UtilFly {
             }
         }, 0, FactionsPlugin.getInstance().getConfig().getInt("fly-task-interval", 10));
     }
+
     @Deprecated
     public static void setFly(FPlayer fp, boolean fly, boolean silent, boolean damage) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
@@ -45,6 +46,7 @@ public class UtilFly {
 
         setFallDamage(fp, fly, damage);
     }
+
     @Deprecated
     public static void checkFly(FPlayer me, Faction factionTo) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))

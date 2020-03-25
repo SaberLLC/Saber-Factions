@@ -47,7 +47,7 @@ public class PermUtil {
     public boolean has(CommandSender me, String perm, boolean informSenderIfNot) {
         if (has(me, perm))
             return true;
-         else if (informSenderIfNot && me != null)
+        else if (informSenderIfNot && me != null)
             me.sendMessage(this.getForbiddenMessage(perm));
         return false;
     }

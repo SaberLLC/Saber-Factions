@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.persist.json;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

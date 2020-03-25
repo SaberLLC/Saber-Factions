@@ -3,7 +3,7 @@ package com.massivecraft.factions.util;
 /**
  * @author Saser
  */
-import com.massivecraft.factions.util.XMaterial;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -24,7 +24,7 @@ public class ItemUtil {
         } else {
             int itemsFound = 0;
 
-            for(int i = 0; i < inventory.getSize(); ++i) {
+            for (int i = 0; i < inventory.getSize(); ++i) {
                 ItemStack item = inventory.getItem(i);
                 if (item != null && item.getType() != Material.AIR) {
                     ++itemsFound;
@@ -41,7 +41,7 @@ public class ItemUtil {
             return skull.clone();
         } else {
             skull = new ItemStack(XMaterial.PLAYER_HEAD.parseMaterial());
-            SkullMeta sm = (SkullMeta)skull.getItemMeta();
+            SkullMeta sm = (SkullMeta) skull.getItemMeta();
             sm.setOwner(name);
             skull.setItemMeta(sm);
             cachedSkulls.put(name, skull.clone());

@@ -5,8 +5,6 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import mkremins.fanciful.FancyMessage;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -19,12 +17,10 @@ import net.dv8tion.jda.webhook.WebhookMessage;
 import net.dv8tion.jda.webhook.WebhookMessageBuilder;
 import org.bukkit.ChatColor;
 
-import javax.security.auth.login.LoginException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class FactionChatHandler extends ListenerAdapter {
 
@@ -69,7 +65,9 @@ public class FactionChatHandler extends ListenerAdapter {
                     while (i <= x.size() - 1) {
                         mention.append(" ").append(x.get(i));
                         ii.add(i);
-                        if (mention.toString().contains("#")) {break;}
+                        if (mention.toString().contains("#")) {
+                            break;
+                        }
                         i++;
                     }
                     if (mention.toString().contains("#")) {

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd.tnt;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
@@ -20,7 +19,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class CmdTntFill extends FCommand {
 
@@ -36,6 +37,24 @@ public class CmdTntFill extends FCommand {
                 .memberOnly()
                 .withAction(PermissableAction.TNTFILL)
                 .build();
+    }
+
+    public static void removeItems(Inventory inventory, ItemStack item, int toRemove) {
+        if (toRemove <= 0 || inventory == null || item == null)
+            return;
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack loopItem = inventory.getItem(i);
+            if (loopItem == null || !item.isSimilar(loopItem))
+                continue;
+            if (toRemove <= 0)
+                return;
+            if (toRemove < loopItem.getAmount()) {
+                loopItem.setAmount(loopItem.getAmount() - toRemove);
+                return;
+            }
+            inventory.clear(i);
+            toRemove -= loopItem.getAmount();
+        }
     }
 
     @Override
@@ -143,24 +162,6 @@ public class CmdTntFill extends FCommand {
             }
             context.faction.takeTnt(toAdd);
             dispenser.getInventory().addItem(new ItemStack(Material.TNT, toAdd));
-        }
-    }
-
-    public static void removeItems(Inventory inventory, ItemStack item, int toRemove) {
-        if (toRemove <= 0 || inventory == null || item == null)
-            return;
-        for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack loopItem = inventory.getItem(i);
-            if (loopItem == null || !item.isSimilar(loopItem))
-                continue;
-            if (toRemove <= 0)
-                return;
-            if (toRemove < loopItem.getAmount()) {
-                loopItem.setAmount(loopItem.getAmount() - toRemove);
-                return;
-            }
-            inventory.clear(i);
-            toRemove -= loopItem.getAmount();
         }
     }
 

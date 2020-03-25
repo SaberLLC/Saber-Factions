@@ -1,7 +1,6 @@
 package com.massivecraft.factions.util;
 
 import com.google.gson.*;
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.inventory.Inventory;
 

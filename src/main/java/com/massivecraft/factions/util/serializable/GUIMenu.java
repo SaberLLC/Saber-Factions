@@ -3,6 +3,7 @@ package com.massivecraft.factions.util.serializable;
 /**
  * @author Saser
  */
+
 import com.google.common.collect.Lists;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
@@ -10,14 +11,12 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Role;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +25,9 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 public abstract class GUIMenu {
+    private static Map<UUID, GUIMenu> menus = new HashMap<>();
     protected Inventory menu;
     private Map<Integer, ClickableItemStack> menuItems = new HashMap<>();
-    private static Map<UUID, GUIMenu> menus = new HashMap<>();
     private Consumer<InventoryCloseEvent> closeCallback;
     private String name;
     private int size;
@@ -44,6 +43,14 @@ public abstract class GUIMenu {
         this.menu = Bukkit.createInventory(null, size, name);
     }
 
+    public static int fitSlots(int size) {
+        return size <= 9 ? 9 : (size <= 18 ? 18 : (size <= 27 ? 27 : (size <= 36 ? 36 : (size <= 45 ? 45 : (size <= 54 ? 54 : 54)))));
+    }
+
+    public static Map<UUID, GUIMenu> getMenus() {
+        return menus;
+    }
+
     public void setInventorySize(int size) {
         if (this.size != size) {
             int oldSize = this.size;
@@ -57,11 +64,6 @@ public abstract class GUIMenu {
                 Bukkit.getLogger().info("Reopening Menu for " + pl.getName() + " due to menu changing size from " + oldSize + " -> " + size);
             });
         }
-    }
-
-    public GUIMenu setPreviousMenu(GUIMenu menu) {
-        this.previousMenu = menu;
-        return this;
     }
 
     public void setItem(int slot, ClickableItemStack item) {
@@ -82,9 +84,9 @@ public abstract class GUIMenu {
     }
 
     public ClickableItemStack getBackButton(Material data, String name, String... lore) {
-        return (new ClickableItemStack(new ItemStack(data != null ? data : Material.RED_STAINED_GLASS_PANE, 1, data != null ? (short) 0 : 0 ))).setDisplayName(name != null ? name : ChatColor.RED + ChatColor.BOLD.toString() + "Back").setLore(lore != null ? Lists.newArrayList(lore) : Lists.newArrayList(ChatColor.GRAY + "Click to return to previous menu.")).setClickCallback((e) -> {
+        return (new ClickableItemStack(new ItemStack(data != null ? data : Material.RED_STAINED_GLASS_PANE, 1, data != null ? (short) 0 : 0))).setDisplayName(name != null ? name : ChatColor.RED + ChatColor.BOLD.toString() + "Back").setLore(lore != null ? Lists.newArrayList(lore) : Lists.newArrayList(ChatColor.GRAY + "Click to return to previous menu.")).setClickCallback((e) -> {
             if (this.previousMenu != null) {
-                this.previousMenu.open((Player)e.getWhoClicked());
+                this.previousMenu.open((Player) e.getWhoClicked());
             }
 
         });
@@ -113,7 +115,7 @@ public abstract class GUIMenu {
     }
 
     public void fillEmpty(ClickableItemStack item) {
-        for(int i = 0; i < this.menu.getSize(); ++i) {
+        for (int i = 0; i < this.menu.getSize(); ++i) {
             ItemStack is = this.menu.getItem(i);
             if (is == null || is.getType() == Material.AIR) {
                 this.setItem(i, item);
@@ -122,16 +124,8 @@ public abstract class GUIMenu {
 
     }
 
-    public static int fitSlots(int size) {
-        return size <= 9 ? 9 : (size <= 18 ? 18 : (size <= 27 ? 27 : (size <= 36 ? 36 : (size <= 45 ? 45 : (size <= 54 ? 54 : 54)))));
-    }
-
     public Map<Integer, ClickableItemStack> getMenuItems() {
         return this.menuItems;
-    }
-
-    public static Map<UUID, GUIMenu> getMenus() {
-        return menus;
     }
 
     public Consumer<InventoryCloseEvent> getCloseCallback() {
@@ -152,5 +146,10 @@ public abstract class GUIMenu {
 
     public GUIMenu getPreviousMenu() {
         return this.previousMenu;
+    }
+
+    public GUIMenu setPreviousMenu(GUIMenu menu) {
+        this.previousMenu = menu;
+        return this;
     }
 }

@@ -1,7 +1,6 @@
 package com.massivecraft.factions;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
@@ -99,6 +98,12 @@ public class Conf {
     public static boolean autoLeaveDeleteFPlayerData = true; // Let them just remove player from Faction.
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
+
+
+    //Claim Fill
+    public static int maxFillClaimCount = 25;
+    public static int maxFillClaimDistance = 5;
+
     public static boolean factionsDrainEnabled = false;
     //RESERVE
     public static boolean useReserveSystem = true;
@@ -132,7 +137,7 @@ public class Conf {
     public static Boolean factionDiscordTags = false;
     public static String factionTag = "(NAME) [FACTION]";
     public static Boolean factionRoles = false;
-    public static List<Integer> factionRoleColor = new ArrayList<Integer>(){{
+    public static List<Integer> factionRoleColor = new ArrayList<Integer>() {{
         add(25);
         add(162);
         add(203);
@@ -590,7 +595,9 @@ public class Conf {
         FactionsPlugin.getInstance().persist.save(i);
     }
 
-    public static void saveSync() { FactionsPlugin.instance.persist.saveSync(i); }
+    public static void saveSync() {
+        FactionsPlugin.instance.persist.saveSync(i);
+    }
 
     public enum Backend {
         JSON,

@@ -168,6 +168,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdLookup cmdLookup = new CmdLookup();
     public CmdAudit cmdAudit = new CmdAudit();
     public CmdReserve cmdReserve = new CmdReserve();
+    public CmdDelHome cmdDelHome = new CmdDelHome();
+    public CmdClaimFill cmdClaimFill = new CmdClaimFill();
     //Variables to know if we already setup certain sub commands
     public Boolean discordEnabled = false;
     public Boolean checkEnabled = false;
@@ -213,6 +215,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdCreate);
         this.addSubCommand(this.cmdDeinvite);
         this.addSubCommand(this.cmdDescription);
+        this.addSubCommand(this.cmdDelHome);
         this.addSubCommand(this.cmdDisband);
         this.addSubCommand(this.cmdHelp);
         this.addSubCommand(this.cmdHome);
@@ -263,6 +266,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdDelFWarp);
         this.addSubCommand(this.cmdModifyPower);
         this.addSubCommand(this.cmdLogins);
+        this.addSubCommand(this.cmdClaimFill);
         this.addSubCommand(this.cmdClaimLine);
         this.addSubCommand(this.cmdAHome);
         this.addSubCommand(this.cmdPerm);
@@ -355,7 +359,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             fAuditEnabled = true;
         }
 
-        if(Conf.useStrikeSystem){
+        if (Conf.useStrikeSystem) {
             this.addSubCommand(this.cmdStrikes);
             fStrikes = true;
         }

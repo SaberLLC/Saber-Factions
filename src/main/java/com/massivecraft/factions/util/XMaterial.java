@@ -1803,7 +1803,8 @@ public enum XMaterial {
      */
     @SuppressWarnings("deprecation")
     public int getId() {
-        if (this.data != 0 || (this.legacy.length != 0 && Integer.parseInt(this.legacy[0].substring(2)) >= 13)) return -1;
+        if (this.data != 0 || (this.legacy.length != 0 && Integer.parseInt(this.legacy[0].substring(2)) >= 13))
+            return -1;
         Material material = this.parseMaterial();
         return material == null ? -1 : material.getId();
     }

@@ -22,7 +22,7 @@ public class CmdInspect extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if(!Conf.useInspectSystem){
+        if (!Conf.useInspectSystem) {
             context.fPlayer.msg(TL.GENERIC_DISABLED, "Faction Inspection");
             return;
         }

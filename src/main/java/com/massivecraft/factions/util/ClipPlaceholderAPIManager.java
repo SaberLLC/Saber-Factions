@@ -121,7 +121,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             case "faction_description":
                 return faction.getDescription();
             case "faction_claims":
-            return fPlayer.hasFaction() ? String.valueOf(faction.getAllClaims().size()) : "0";
+                return fPlayer.hasFaction() ? String.valueOf(faction.getAllClaims().size()) : "0";
             case "faction_maxclaims":
                 return String.valueOf(Conf.claimedLandsMax);
             case "faction_founded":
@@ -169,10 +169,28 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return Econ.shouldBeUsed() ? Econ.moneyString(Econ.getBalance(faction.getAccountId())) : TL.ECON_OFF.format("balance");
             case "faction_allies":
                 return String.valueOf(faction.getRelationCount(Relation.ALLY));
+            case "faction_allies_players":
+                return String.valueOf(this.countOn(faction, Relation.ALLY, null, fPlayer));
+            case "faction_allies_players_online":
+                return String.valueOf(this.countOn(faction, Relation.ALLY, true, fPlayer));
+            case "faction_allies_players_offline":
+                return String.valueOf(this.countOn(faction, Relation.ALLY, false, fPlayer));
             case "faction_enemies":
                 return String.valueOf(faction.getRelationCount(Relation.ENEMY));
+            case "faction_enemies_players":
+                return String.valueOf(this.countOn(faction, Relation.ENEMY, null, fPlayer));
+            case "faction_enemies_players_online":
+                return String.valueOf(this.countOn(faction, Relation.ENEMY, true, fPlayer));
+            case "faction_enemies_players_offline":
+                return String.valueOf(this.countOn(faction, Relation.ENEMY, false, fPlayer));
             case "faction_truces":
                 return String.valueOf(faction.getRelationCount(Relation.TRUCE));
+            case "faction_truces_players":
+                return String.valueOf(this.countOn(faction, Relation.TRUCE, null, fPlayer));
+            case "faction_truces_players_online":
+                return String.valueOf(this.countOn(faction, Relation.TRUCE, true, fPlayer));
+            case "faction_truces_players_offline":
+                return String.valueOf(this.countOn(faction, Relation.TRUCE, false, fPlayer));
             case "faction_online":
                 return String.valueOf(faction.getOnlinePlayers().size());
             case "faction_offline":
@@ -187,6 +205,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(faction.getDeaths());
             case "faction_maxvaults":
                 return String.valueOf(faction.getMaxVaults());
+            case "faction_relation_color":
+                return fPlayer.getColorTo(faction).toString();
             case "faction_grace":
                 return String.valueOf(Conf.gracePeriod);
             case "faction_name_at_location":
@@ -195,5 +215,22 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
         }
 
         return null;
+    }
+
+
+    private int countOn(Faction f, Relation relation, Boolean status, FPlayer player) {
+        int count = 0;
+        for (Faction faction : Factions.getInstance().getAllFactions()) {
+            if (faction.getRelationTo(f) == relation) {
+                if (status == null) {
+                    count += faction.getFPlayers().size();
+                } else if (status) {
+                    count += faction.getFPlayersWhereOnline(true, player).size();
+                } else {
+                    count += faction.getFPlayersWhereOnline(false, player).size();
+                }
+            }
+        }
+        return count;
     }
 }

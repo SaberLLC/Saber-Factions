@@ -70,6 +70,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
     protected String player;
+    protected String discord;
     Inventory chest;
     Map<String, Object> bannerSerialized;
     private long lastDeath;
@@ -86,7 +87,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private int warpLimit;
     private double reinforcedArmor;
     private List<String> completedMissions;
-    protected String discord;
     private String factionChatChannelId;
     private String wallNotifyChannelId;
     private String bufferNotifyChannelId;
@@ -340,8 +340,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         boolean disbanderIsConsole = disbander == null;
         FPlayer fdisbander = null;
-        if(!disbanderIsConsole){
-          fdisbander=  FPlayers.getInstance().getByOfflinePlayer(disbander);
+        if (!disbanderIsConsole) {
+            fdisbander = FPlayers.getInstance().getByOfflinePlayer(disbander);
         }
 
 
@@ -376,7 +376,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (Econ.shouldBeUsed() && !disbanderIsConsole) {
             // Should we prevent to withdraw money if the faction was just created
             if (Conf.econFactionStartingBalance != 0 && (System.currentTimeMillis() - this.foundedDate) <= (Conf.econDenyWithdrawWhenMinutesAgeLessThan * 6000)) {
-                msg("Your faction is too young to withdraw money like this");
+                msg(TL.COMMAND_DISBAND_TOO_YOUNG);
             } else {
                 //Give all the faction's money to the disbander
                 double amount = Econ.getBalance(this.getAccountId());
@@ -529,10 +529,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public double getReinforcedArmor() { return this.reinforcedArmor; }
+    public double getReinforcedArmor() {
+        return this.reinforcedArmor;
+    }
 
     @Override
-    public void setReinforcedArmor(double newPercent) { reinforcedArmor = newPercent; }
+    public void setReinforcedArmor(double newPercent) {
+        reinforcedArmor = newPercent;
+    }
 
     @Override
     public ItemStack getBanner() {
@@ -590,8 +594,18 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
+    public void setMemberRoleId(String memberRoleId) {
+        this.memberRoleId = memberRoleId;
+    }
+
+    @Override
     public String getFactionChatChannelId() {
         return this.factionChatChannelId;
+    }
+
+    @Override
+    public void setFactionChatChannelId(String factionChatChannelId) {
+        this.factionChatChannelId = factionChatChannelId;
     }
 
     @Override
@@ -642,16 +656,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     @Override
     public void setWeeWooFormat(String weeWooFormat) {
         this.weeWooFormat = weeWooFormat;
-    }
-
-    @Override
-    public void setFactionChatChannelId(String factionChatChannelId) {
-        this.factionChatChannelId = factionChatChannelId;
-    }
-
-    @Override
-    public void setMemberRoleId(String memberRoleId) {
-        this.memberRoleId = memberRoleId;
     }
 
     public boolean isWeeWoo() {
@@ -718,17 +722,17 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.tag;
     }
 
-    public void checkPerms() {
-        if (this.permissions == null || this.permissions.isEmpty()) {
-            this.resetPerms();
-        }
-    }
-
     public void setTag(String str) {
         if (Conf.factionTagForceUpperCase) {
             str = str.toUpperCase();
         }
         this.tag = str;
+    }
+
+    public void checkPerms() {
+        if (this.permissions == null || this.permissions.isEmpty()) {
+            this.resetPerms();
+        }
     }
 
     public String getTag(String prefix) {
@@ -772,6 +776,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setHome(Location home) {
         this.home = new LazyLocation(home);
+    }
+
+
+    public void deleteHome() {
+        this.home = null;
     }
 
     public long getFoundedDate() {
@@ -1329,7 +1338,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public List<String> getCompletedMissions() {return this.completedMissions;}
+    public List<String> getCompletedMissions() {
+        return this.completedMissions;
+    }
 
     public void clearAllClaimOwnership() {
         claimOwnership.clear();

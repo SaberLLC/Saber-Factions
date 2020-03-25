@@ -4,7 +4,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.exceptions.SaberException;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -25,7 +24,6 @@ public class Discord {
     public static HashMap<FPlayer, Integer> waitingLinkk;
     //We want to track the amount of times setup has been tried and the result may be useful for determining issues
     public static HashSet<DiscordSetupAttempt> setupLog;
-    private static FactionsPlugin plugin;
     public static Boolean confUseDiscord;
     public static String botToken;
     public static String mainGuildID;
@@ -37,6 +35,7 @@ public class Discord {
     public static Boolean useEmotes;
     public static Emote positive;
     public static Emote negative;
+    private static FactionsPlugin plugin;
 
     public Discord(FactionsPlugin plugin) {
         Discord.plugin = plugin;
@@ -62,7 +61,9 @@ public class Discord {
     }
 
     private static Boolean startBot() {
-        if (!Conf.useDiscordSystem) {return false;}
+        if (!Conf.useDiscordSystem) {
+            return false;
+        }
         try {
             jda = new JDABuilder(AccountType.BOT).setToken(Conf.discordBotToken).buildBlocking();
         } catch (LoginException | InterruptedException e) {
@@ -78,11 +79,11 @@ public class Discord {
         try {
             confUseDiscord = Conf.useDiscordSystem;
             botToken = Conf.discordBotToken;
-                if (jda != null && Conf.leaderRoles || Conf.factionDiscordTags) {
-                    mainGuild = jda.getGuildById(Conf.mainGuildID);
-                } else {
-                    mainGuild = null;
-                }
+            if (jda != null && Conf.leaderRoles || Conf.factionDiscordTags) {
+                mainGuild = jda.getGuildById(Conf.mainGuildID);
+            } else {
+                mainGuild = null;
+            }
             mainGuildID = Conf.mainGuildID;
             useDiscord = !botToken.equals("<token here>") && !mainGuildID.equals("<Discord Server ID here>") && confUseDiscord;
             roleColor = new java.awt.Color(Conf.factionRoleColor.get(0), Conf.factionRoleColor.get(1), Conf.factionRoleColor.get(2));
@@ -90,13 +91,22 @@ public class Discord {
                 try {
                     positive = jda.getEmoteById(Conf.positiveReaction);
                     negative = jda.getEmoteById(Conf.negativeReaction);
-                    if (positive == null | negative == null) {useEmotes = false;}
+                    if (positive == null | negative == null) {
+                        useEmotes = false;
+                    }
                 } catch (NumberFormatException e) {
                     FactionsPlugin.getInstance().getLogger().log(Level.WARNING, "Invalid Emote(s) disabling them.");
                     useEmotes = false;
                 }
-                if (mainGuild != null) {leader = mainGuild.getRoleById(Conf.leaderRole);} else {leader = null;}
-            } else {useEmotes = false; leader = null;}
+                if (mainGuild != null) {
+                    leader = mainGuild.getRoleById(Conf.leaderRole);
+                } else {
+                    leader = null;
+                }
+            } else {
+                useEmotes = false;
+                leader = null;
+            }
         } catch (NullPointerException e) {
             setupLog.add(new DiscordSetupAttempt("Threw an NPE while setting up variables", System.currentTimeMillis()));
         }
@@ -111,11 +121,21 @@ public class Discord {
     public static String getNicknameString(FPlayer f) {
         if (useDiscord) {
             String temp = Conf.factionTag;
-            if (temp.contains("NAME")) { temp = temp.replace("NAME", f.getName()); }
-            if (temp.contains("DiscordName")) { temp = temp.replace("DiscordName", (f.discordUser() == null) ? (f.getName()) : (f.discordUser().getName())); }
-            if (temp.contains("FACTION")) { temp = temp.replace("FACTION", f.getFaction().getTag()); }
-            if (temp.contains("FactionRole")) { temp = temp.replace("FactionRole", f.getRole().getRoleCapitalized()); }
-            if (temp.contains("FactionRolePrefix")) { temp = temp.replace("FactionRolePrefix", f.getRole().getPrefix()); }
+            if (temp.contains("NAME")) {
+                temp = temp.replace("NAME", f.getName());
+            }
+            if (temp.contains("DiscordName")) {
+                temp = temp.replace("DiscordName", (f.discordUser() == null) ? (f.getName()) : (f.discordUser().getName()));
+            }
+            if (temp.contains("FACTION")) {
+                temp = temp.replace("FACTION", f.getFaction().getTag());
+            }
+            if (temp.contains("FactionRole")) {
+                temp = temp.replace("FactionRole", f.getRole().getRoleCapitalized());
+            }
+            if (temp.contains("FactionRolePrefix")) {
+                temp = temp.replace("FactionRolePrefix", f.getRole().getPrefix());
+            }
             return temp;
         }
         return null;
@@ -138,7 +158,9 @@ public class Discord {
     public static Role getRoleFromName(String s) {
         if (useDiscord && mainGuild != null) {
             for (Role r : mainGuild.getRoles()) {
-                if (r.getName().equals(s)) {return r;}
+                if (r.getName().equals(s)) {
+                    return r;
+                }
             }
         }
         return null;
@@ -151,8 +173,12 @@ public class Discord {
      * @return Role generated faction role
      */
     public static Role createFactionRole(String s) {
-        if (!useDiscord) { return null; }
-        if (mainGuild == null) { return null; }
+        if (!useDiscord) {
+            return null;
+        }
+        if (mainGuild == null) {
+            return null;
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(Conf.factionRolePrefix);
         sb.append(s);
@@ -176,6 +202,7 @@ public class Discord {
 
     /**
      * Get the name of the Faction Role that would be generated with the tag
+     *
      * @param tag Faction Name/Tag
      * @return Name of would be Role
      */
@@ -204,13 +231,19 @@ public class Discord {
      * @param f FPlayer target
      */
     public static void resetNick(FPlayer f) {
-        if (mainGuild == null) { return; }
-        if (mainGuild.getMember(f.discordUser()) == null) { return; }
+        if (mainGuild == null) {
+            return;
+        }
+        if (mainGuild.getMember(f.discordUser()) == null) {
+            return;
+        }
         mainGuild.getController().setNickname(mainGuild.getMember(f.discordUser()), f.discordUser().getName()).queue();
     }
 
     public static void changeFactionTag(Faction f, String oldTag) {
-        if (!useDiscord | mainGuild == null) { return; }
+        if (!useDiscord | mainGuild == null) {
+            return;
+        }
         for (FPlayer fp : f.getFPlayers()) {
             if (fp.discordSetup() && isInMainGuild(fp.discordUser())) {
                 try {
@@ -222,7 +255,9 @@ public class Discord {
                         mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(getRoleFromName(oldTag))).queue();
                         mainGuild.getController().addSingleRoleToMember(m, Objects.requireNonNull(createFactionRole(f.getTag()))).queue();
                     }
-                } catch (HierarchyException e) {System.out.print(e.getMessage());}
+                } catch (HierarchyException e) {
+                    System.out.print(e.getMessage());
+                }
             }
         }
 

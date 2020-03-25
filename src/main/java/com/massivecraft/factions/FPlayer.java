@@ -34,60 +34,70 @@ public interface FPlayer extends EconomyParticipator {
     /**
      * Determine if a player has enemies nearby based on the enemy check task in CmdFly
      * NOTE: THIS VALUE IS ONLY UPDATED WHEN A USER IS USING FLY
+     *
      * @return enemiesNearby as a boolean
      */
     boolean hasEnemiesNearby();
 
     /**
      * Set if this FPlayer has an enemy nearby
+     *
      * @param b enemiesNearby
      */
     void setEnemiesNearby(Boolean b);
 
     /**
      * Get if a player has setup their Discord before
+     *
      * @return if the player setup Discord as a boolean
      */
     boolean discordSetup();
 
     /**
      * Get the players Discord user ID
+     *
      * @return players Discord user ID as a String
      */
     String discordUserID();
 
     /**
      * Set the players Boolean defining if the player has setup their Discord
+     *
      * @param b Boolean for discordSetup to be defined to
      */
     void setDiscordSetup(Boolean b);
 
     /**
      * Set the players Discord user ID
+     *
      * @param s String for their user ID to be set to
      */
     void setDiscordUserID(String s);
 
     /**
      * Get the players Discord user (If the player has not setup Discord it will return null!)
+     *
      * @return User from players set Discord User ID
      */
     User discordUser();
 
     /**
      * Used to check if this player should be served titles
+     *
      * @return if this FPlayer has titles enabled as a boolean
      */
     boolean hasTitlesEnabled();
 
     /**
      * Used to set if player should be served titles
+     *
      * @param b Boolean to titlesEnabled to
      */
     void setTitlesEnabled(Boolean b);
 
     /**
      * Used to determine if a player is in their faction's chest
+     *
      * @return if player is in their faction's as a boolean
      */
     boolean isInFactionsChest();

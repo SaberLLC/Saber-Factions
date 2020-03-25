@@ -242,6 +242,14 @@ public enum TL {
     COMMAND_CLAIM_DENIED("&c&l[!]&7 You &cdo not &7have &cpermission&7 to &cclaim&7 in a radius."),
     COMMAND_CLAIM_DESCRIPTION("Claim land from where you are standing"),
 
+    COMMAND_CLAIMFILL_DESCRIPTION("Claim land filling in a gap in claims"),
+    COMMAND_CLAIMFILL_ABOVEMAX("&cThe maximum limit for claim fill is %s."),
+    COMMAND_CLAIMFILL_ALREADYCLAIMED("&cCannot claim fill using already claimed land!"),
+    COMMAND_CLAIMFILL_TOOFAR("&cThis fill would exceed the maximum distance of %.2f"),
+    COMMAND_CLAIMFILL_PASTLIMIT("&cThis claim would exceed the limit!"),
+    COMMAND_CLAIMFILL_NOTENOUGHLANDLEFT("%s &cdoes not have enough land left to make %d claims"),
+    COMMAND_CLAIMFILL_TOOMUCHFAIL("&cAborting claim fill after %d failures"),
+
     COMMAND_CLAIMLINE_INVALIDRADIUS("&c&l[!]&7 If you &cspecify&7 a distance, it must be at least &c1&7."),
     COMMAND_CLAIMLINE_DENIED("&c&l[!]&7 You &cdo not &7have&c permission&7 to claim in a line."),
     COMMAND_CLAIMLINE_DESCRIPTION("Claim land in a straight line."),
@@ -297,6 +305,11 @@ public enum TL {
     COMMAND_CREATE_YOUSHOULD("&c&l[!]&7 You should now: &c%1$s"),
     COMMAND_CREATE_CREATEDLOG(" created a new faction: "),
     COMMAND_CREATE_DESCRIPTION("Create a new faction"),
+
+
+    COMMAND_DELHOME_SUCCESS("%1$s has deleted your faction home"),
+    COMMAND_DELHOME_DESCRIPTION("delete home of your faction"),
+
 
     COMMAND_CHECK_DESCRIPTION("manage your factions check system!"),
     CHECK_BUFFERS_CHECK("\n &c&lFaction Walls&7 » &bCheck Your Buffers! \n"),
@@ -377,6 +390,7 @@ public enum TL {
     COMMAND_DESCRIPTION_DESCRIPTION("Change the faction description"),
 
     COMMAND_DISBAND_IMMUTABLE("&c&l[!]&7 &7You &ccannot&7 disband &2Wilderness&7,&e SafeZone&7, or &4WarZone."),
+    COMMAND_DISBAND_TOO_YOUNG("&c&l[!] &7Your Faction is too young to withdraw money like this!"),
     COMMAND_DISBAND_MARKEDPERMANENT("&c&l[!]&7 This faction is designated as&c permanent&7, so you cannot disband it."),
     COMMAND_DISBAND_BROADCAST_YOURS("&c&l[!]&7 &c%1$s&7 disbanded your &cfaction."),
     COMMAND_DISBAND_BROADCAST_GENERIC("&c&l[!]&7 The Faction &c%1$s&7 was disbanded."),
@@ -1091,7 +1105,7 @@ public enum TL {
     GENERIC_YOUMUSTBE("&cYour must be atleast %1$s to do this!"),
     GENERIC_MEMBERONLY("&cYou must be in a faction to do this!"),
 
-   // MISSION_CREATED_COOLDOWN("&c&l[!] &7Due to your immediate faction creation, you may not start missions for &b%1$s minutes&7!"),
+    // MISSION_CREATED_COOLDOWN("&c&l[!] &7Due to your immediate faction creation, you may not start missions for &b%1$s minutes&7!"),
     MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),
     MISSION_ALREAD_COMPLETED("&c&l[!] &7You may not restart a mission you have already completed"),
     MISSION_MISSION_ACTIVE("&c&l[!] &7This mission is currently active!"),

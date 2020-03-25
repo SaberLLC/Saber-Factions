@@ -3,12 +3,13 @@ package com.massivecraft.factions.util;
 /**
  * @author Saser
  */
+
 import org.bukkit.ChatColor;
 
 public class CC {
     public static String Black = ChatColor.BLACK.toString();
     public static String BlackB = ChatColor.BLACK + ChatColor.BOLD.toString();
-    public static String BlackI = ChatColor.BLACK + ChatColor.ITALIC.toString();;
+    public static String BlackI = ChatColor.BLACK + ChatColor.ITALIC.toString();
     public static String BlackU = ChatColor.BLACK + ChatColor.UNDERLINE.toString();
     public static String DarkBlue = ChatColor.DARK_BLUE.toString();
     public static String DarkBlueB = ChatColor.DARK_BLUE + ChatColor.BOLD.toString();

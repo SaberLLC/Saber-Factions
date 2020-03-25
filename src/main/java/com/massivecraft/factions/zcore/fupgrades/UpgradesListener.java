@@ -23,6 +23,63 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class UpgradesListener implements Listener {
 
+    @EventHandler
+    public static void onDamageReduction(EntityDamageByEntityEvent e) {
+        if (e.isCancelled()) {
+            return;
+        }
+        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) {
+            return;
+        }
+        FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
+        FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
+        if (fme == null || dame == null) {
+            return;
+        }
+        FLocation floc = new FLocation(fme.getPlayer().getLocation());
+        if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
+            if (dame.getFaction() == fme.getFaction()) {
+                return;
+            }
+            double damage = e.getDamage();
+            int level = fme.getFaction().getUpgrade(UpgradeType.DAMAGEDECREASE);
+            double increase = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.DamageReduction.DamageReductionPercent.level-" + level);
+            e.setDamage(damage - damage / 100.0 * increase);
+        }
+    }
+
+    @EventHandler
+    public static void onDamageIncrease(EntityDamageByEntityEvent e) {
+        if (e == null) {
+            return;
+        }
+        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) {
+            return;
+        }
+
+        if (e.getDamager().hasMetadata("NPC") || e.getEntity().hasMetadata("NPC")) return;
+
+        FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
+        FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
+        if (fme == null || dame == null) {
+            return;
+        }
+
+        FLocation floc = new FLocation(fme.getPlayer().getLocation());
+
+        if (floc == null) return;
+
+        if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
+            if (dame.getFaction() == fme.getFaction()) {
+                return;
+            }
+            double damage = e.getDamage();
+            int level = fme.getFaction().getUpgrade(UpgradeType.DAMAGEINCREASE);
+            double increase = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.DamageIncrease.DamageIncreasePercent.level-" + level);
+            e.setDamage(damage + damage / 100.0 * increase);
+        }
+    }
+
     /**
      * @author Illyria Team
      */
@@ -68,67 +125,41 @@ public class UpgradesListener implements Listener {
     }
 
     @EventHandler
-    public void onCropGrow( BlockGrowEvent e) {
-         FLocation floc = new FLocation(e.getBlock().getLocation());
-         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
+    public void onCropGrow(BlockGrowEvent e) {
+        FLocation floc = new FLocation(e.getBlock().getLocation());
+        Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
         if (!factionAtLoc.isWilderness()) {
-             int level = factionAtLoc.getUpgrade(UpgradeType.CROP);
-             int chance = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-" + level);
+            int level = factionAtLoc.getUpgrade(UpgradeType.CROP);
+            int chance = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-" + level);
             if (level == 0 || chance == 0) {
                 return;
             }
-             int randomNum = ThreadLocalRandom.current().nextInt(1, 101);
+            int randomNum = ThreadLocalRandom.current().nextInt(1, 101);
             if (randomNum <= chance) {
                 this.growCrop(e);
             }
         }
     }
 
-    private void growCrop( BlockGrowEvent e) {
+    private void growCrop(BlockGrowEvent e) {
         if (e.getBlock().getType().equals(XMaterial.WHEAT.parseMaterial())) {
             e.setCancelled(true);
-             Crops c = new Crops(CropState.RIPE);
-             BlockState bs = e.getBlock().getState();
+            Crops c = new Crops(CropState.RIPE);
+            BlockState bs = e.getBlock().getState();
             bs.setData(c);
             bs.update();
         }
-         Block below = e.getBlock().getLocation().subtract(0.0, 1.0, 0.0).getBlock();
+        Block below = e.getBlock().getLocation().subtract(0.0, 1.0, 0.0).getBlock();
         if (below.getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
-             Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
+            Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
             if (above.getType() == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
                 above.setType(XMaterial.SUGAR_CANE.parseMaterial());
             }
-        }
-        else if (below.getType() == Material.CACTUS) {
-             Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
+        } else if (below.getType() == Material.CACTUS) {
+            Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
             if (above.getType() == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
                 above.setType(Material.CACTUS);
             }
-        }
-    }
-
-    @EventHandler
-    public static void onDamageReduction(EntityDamageByEntityEvent e) {
-        if (e.isCancelled()) {
-            return;
-        }
-        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) {
-            return;
-        }
-        FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
-        FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
-        if (fme == null || dame == null) {
-            return;
-        }
-        FLocation floc = new FLocation(fme.getPlayer().getLocation());
-        if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
-            if (dame.getFaction() == fme.getFaction()) {
-                return;
-            }
-            double damage = e.getDamage();
-            int level = fme.getFaction().getUpgrade(UpgradeType.DAMAGEDECREASE);
-            double increase = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.DamageReduction.DamageReductionPercent.level-" + level);
-            e.setDamage(damage - damage / 100.0 * increase);
         }
     }
 
@@ -152,37 +183,6 @@ public class UpgradesListener implements Listener {
         }
     }
 
-    @EventHandler
-    public static void onDamageIncrease(EntityDamageByEntityEvent e) {
-        if (e == null) {
-            return;
-        }
-        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) {
-            return;
-        }
-
-        if(e.getDamager().hasMetadata("NPC") || e.getEntity().hasMetadata("NPC")) return;
-
-        FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
-        FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
-        if (fme == null || dame == null) {
-            return;
-        }
-
-        FLocation floc = new FLocation(fme.getPlayer().getLocation());
-
-        if(floc == null) return;
-
-        if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
-            if (dame.getFaction() == fme.getFaction()) {
-                return;
-            }
-            double damage = e.getDamage();
-            int level = fme.getFaction().getUpgrade(UpgradeType.DAMAGEINCREASE);
-            double increase = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.DamageIncrease.DamageIncreasePercent.level-" + level);
-            e.setDamage(damage + damage / 100.0 * increase);
-        }
-    }
     @EventHandler
     public void onArmorDamage(PlayerItemDamageEvent e) {
         if (FPlayers.getInstance().getByPlayer(e.getPlayer()) == null) {

@@ -41,8 +41,6 @@ public class CmdStuck extends FCommand {
         }
 
 
-
-
         if (FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
             long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
             String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);

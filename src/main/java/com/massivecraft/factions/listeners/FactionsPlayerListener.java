@@ -53,12 +53,14 @@ import java.util.logging.Level;
 
 public class FactionsPlayerListener implements Listener {
 
+    public static Set<FLocation> corners;
+    public static BukkitTask positionTask = null;
+    public static Map<UUID, Location> lastLocations = new HashMap<>();
     /**
      * @author FactionsUUID Team
      */
 
     HashMap<Player, Boolean> fallMap = new HashMap<>();
-    public static Set<FLocation> corners;
     // Holds the next time a player can have a map shown.
     private HashMap<UUID, Long> showTimes = new HashMap<>();
 
@@ -225,7 +227,6 @@ public class FactionsPlayerListener implements Listener {
         return CheckPlayerAccess(player, me, loc, myFaction, otherFaction.getAccess(me, action), action, Conf.territoryPainBuild);
     }
 
-
     public static boolean preventCommand(String fullCmd, Player player) {
         if ((Conf.territoryNeutralDenyCommands.isEmpty() && Conf.territoryEnemyDenyCommands.isEmpty() && Conf.permanentFactionMemberDenyCommands.isEmpty() && Conf.warzoneDenyCommands.isEmpty())) {
             return false;
@@ -261,7 +262,7 @@ public class FactionsPlayerListener implements Listener {
         Relation rel = at.getRelationTo(me);
         if (at.isNormal() && rel.isAlly() && !Conf.territoryAllyDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryAllyDenyCommands.iterator())) {
             me.msg(TL.PLAYER_COMMAND_ALLY, fullCmd);
-            return false;
+            return true;
         }
 
         if (at.isNormal() && rel.isNeutral() && !Conf.territoryNeutralDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryNeutralDenyCommands.iterator())) {
@@ -639,9 +640,6 @@ public class FactionsPlayerListener implements Listener {
         return (result.length() == 3 ? result + "0" : result) + "/hrs ago";
     }
 
-    public static BukkitTask positionTask = null;
-    public static Map<UUID, Location> lastLocations = new HashMap<>();
-
     public void startPositionCheck() {
         positionTask = Bukkit.getScheduler().runTaskTimer(FactionsPlugin.instance, () -> {
             if (Bukkit.getOnlinePlayers().size() > 0) {
@@ -919,7 +917,6 @@ public class FactionsPlayerListener implements Listener {
             event.setCancelled(true);
         }
     }
-
 
 
     @EventHandler

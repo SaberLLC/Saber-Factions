@@ -190,7 +190,7 @@ public abstract class MPlugin extends JavaPlugin {
                 Board.getInstance().forceSave();
             }
             log("Disabled");
-        } catch (IllegalPluginAccessException e){
+        } catch (IllegalPluginAccessException e) {
         }
     }
 

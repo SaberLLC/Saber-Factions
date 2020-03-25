@@ -1,7 +1,6 @@
 package com.massivecraft.factions.tag;
 
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;

@@ -208,7 +208,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             oldFaction.removeFPlayer(this);
         }
         if (alt) faction.addAltPlayer(this);
-         else faction.addFPlayer(this);
+        else faction.addFPlayer(this);
         this.factionId = faction.getId();
     }
 
@@ -222,17 +222,29 @@ public abstract class MemoryFPlayer implements FPlayer {
         return this.notificationsEnabled;
     }
 
-    public boolean hasEnemiesNearby() {return this.enemiesNearby;}
+    public boolean hasEnemiesNearby() {
+        return this.enemiesNearby;
+    }
 
-    public void setEnemiesNearby(Boolean b) {this.enemiesNearby = b;}
+    public void setEnemiesNearby(Boolean b) {
+        this.enemiesNearby = b;
+    }
 
-    public boolean discordSetup() {return this.discordSetup;}
+    public boolean discordSetup() {
+        return this.discordSetup;
+    }
 
-    public String discordUserID() {return this.discordUserID;}
+    public String discordUserID() {
+        return this.discordUserID;
+    }
 
-    public void setDiscordSetup(Boolean b) {this.discordSetup = b;}
+    public void setDiscordSetup(Boolean b) {
+        this.discordSetup = b;
+    }
 
-    public void setDiscordUserID(String s) {this.discordUserID = s;}
+    public void setDiscordUserID(String s) {
+        this.discordUserID = s;
+    }
 
     public boolean hasTitlesEnabled() {
         return this.titlesEnabled;
@@ -242,7 +254,9 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.titlesEnabled = b;
     }
 
-    public User discordUser() {return Discord.jda.getUserById(this.discordUserID);}
+    public User discordUser() {
+        return Discord.jda.getUserById(this.discordUserID);
+    }
 
     public String getFactionId() {
         return this.factionId;
@@ -288,7 +302,9 @@ public abstract class MemoryFPlayer implements FPlayer {
                 } else {
                     this.role = event.getTo();
                 }
-            } catch (HierarchyException e) {System.out.print(e.getMessage());}
+            } catch (HierarchyException e) {
+                System.out.print(e.getMessage());
+            }
         }
     }
 
@@ -337,7 +353,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setIsAutoSafeClaimEnabled(boolean enabled) {
         this.autoSafeZoneEnabled = enabled;
         if (enabled) this.autoClaimFor = null;
-            this.autoWarZoneEnabled = false;
+        this.autoWarZoneEnabled = false;
     }
 
     public boolean isAutoWarClaimEnabled() {
@@ -347,7 +363,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setIsAutoWarClaimEnabled(boolean enabled) {
         this.autoWarZoneEnabled = enabled;
         if (enabled) this.autoClaimFor = null;
-            this.autoSafeZoneEnabled = false;
+        this.autoSafeZoneEnabled = false;
     }
 
     public boolean isAdminBypassing() {
@@ -404,11 +420,15 @@ public abstract class MemoryFPlayer implements FPlayer {
             try {
                 if (Discord.useDiscord && this.discordSetup() && Discord.isInMainGuild(this.discordUser()) && Discord.mainGuild != null) {
                     Member m = Discord.mainGuild.getMember(this.discordUser());
-                    if (Conf.leaderRoles && this.role == Role.LEADER && Discord.leader != null) Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.leader).queue();
-                    if (Conf.factionRoles) Discord.mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getFaction().getTag()))).queue();
+                    if (Conf.leaderRoles && this.role == Role.LEADER && Discord.leader != null)
+                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.leader).queue();
+                    if (Conf.factionRoles)
+                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getFaction().getTag()))).queue();
                     if (Conf.factionDiscordTags) Discord.resetNick(this);
                 }
-            } catch (HierarchyException e) {System.out.print(e.getMessage());}
+            } catch (HierarchyException e) {
+                System.out.print(e.getMessage());
+            }
             //End Discord
             currentFaction.removeFPlayer(this);
             if (currentFaction.isNormal()) currentFaction.clearClaimOwnership(this);
@@ -475,7 +495,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setTitle(CommandSender sender, String title) {
         // Check if the setter has it.
-        if (sender.hasPermission(Permission.TITLE_COLOR.node)) title = ChatColor.translateAlternateColorCodes('&', title);
+        if (sender.hasPermission(Permission.TITLE_COLOR.node))
+            title = ChatColor.translateAlternateColorCodes('&', title);
         this.title = title;
     }
 
@@ -604,7 +625,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.power += delta;
         if (this.power > this.getPowerMax())
             this.power = this.getPowerMax();
-         else if (this.power < this.getPowerMin())
+        else if (this.power < this.getPowerMin())
             this.power = this.getPowerMin();
     }
 
@@ -627,9 +648,11 @@ public abstract class MemoryFPlayer implements FPlayer {
     public int getPowerMinRounded() {
         return (int) Math.round(this.getPowerMin());
     }
+
     public long getMillisPassed() {
         return this.millisPassed;
     }
+
     public long getLastPowerUpdateTime() {
         return this.lastPowerUpdateTime;
     }
@@ -647,13 +670,15 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.lastPowerUpdateTime = now;
 
         Player thisPlayer = this.getPlayer();
-        if (thisPlayer != null && thisPlayer.isDead()) return;  // don't let dead players regain power until they respawn
+        if (thisPlayer != null && thisPlayer.isDead())
+            return;  // don't let dead players regain power until they respawn
         PowerRegenEvent powerRegenEvent = new PowerRegenEvent(getFaction(), this);
         Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent));
 
         if (!powerRegenEvent.isCancelled())
-            if (!powerRegenEvent.usingCustomPower()) this.alterPower(millisPassed * Conf.powerPerMinute / 60000); // millisPerMinute : 60 * 1000
-             else this.alterPower(+powerRegenEvent.getCustomPower());
+            if (!powerRegenEvent.usingCustomPower())
+                this.alterPower(millisPassed * Conf.powerPerMinute / 60000); // millisPerMinute : 60 * 1000
+            else this.alterPower(+powerRegenEvent.getCustomPower());
     }
 
     public void losePowerFromBeingOffline() {
@@ -705,7 +730,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
             showChat = FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.also-send-chat", true);
         }
-        if (showChat) this.sendMessage(FactionsPlugin.getInstance().txt.parse(TL.FACTION_LEAVE.format(from.getTag(this), toShow.getTag(this))));
+        if (showChat)
+            this.sendMessage(FactionsPlugin.getInstance().txt.parse(TL.FACTION_LEAVE.format(from.getTag(this), toShow.getTag(this))));
     }
 
     // -------------------------------
@@ -767,7 +793,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         // Am I the last one in the faction?
         if (myFaction.getFPlayers().size() == 1) {
             // Transfer all money
-            if (Econ.shouldBeUsed()) Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
+            if (Econ.shouldBeUsed())
+                Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
 
         }
 
@@ -795,7 +822,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             Bukkit.getPluginManager().callEvent(disbandEvent);
 
             Factions.getInstance().removeFaction(myFaction.getId());
-            if (Conf.logFactionDisband) FactionsPlugin.getInstance().log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName()));
+            if (Conf.logFactionDisband)
+                FactionsPlugin.getInstance().log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName()));
         }
     }
 
@@ -927,6 +955,9 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setFFlying(boolean fly, boolean damage) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
+            return;
+
         Player player = getPlayer();
         if (player == null) return;
 
@@ -935,7 +966,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         if (!damage) {
             msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
-            if (!fly) sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
+            if (!fly)
+                sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
         } else {
             msg(TL.COMMAND_FLY_DAMAGE);
         }
@@ -959,9 +991,11 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean isInFactionsChest() {
         return inChest;
     }
+
     public void setInFactionsChest(boolean b) {
         inChest = b;
     }
+
     public boolean isInVault() {
         return inVault;
     }
@@ -1224,7 +1258,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 
         Board.getInstance().setFactionAt(forFaction, flocation);
-        if (Conf.logLandClaims) FactionsPlugin.getInstance().log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
+        if (Conf.logLandClaims)
+            FactionsPlugin.getInstance().log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag());
         return true;
     }
 

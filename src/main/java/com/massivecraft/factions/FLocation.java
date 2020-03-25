@@ -14,6 +14,7 @@ import java.util.Set;
 public class FLocation implements Serializable {
     private static final long serialVersionUID = -8292915234027387983L;
     private static final boolean worldBorderSupport;
+
     static {
         boolean worldBorderClassPresent = false;
         try {
@@ -150,7 +151,9 @@ public class FLocation implements Serializable {
         return "" + x + "," + z;
     }
 
-    public String formatXAndZ(String splitter) { return chunkToBlock(this.x) + "x" + splitter + " " + chunkToBlock(this.z) + "z"; }
+    public String formatXAndZ(String splitter) {
+        return chunkToBlock(this.x) + "x" + splitter + " " + chunkToBlock(this.z) + "z";
+    }
 
     //----------------------------------------------//
     // Misc Geometry
@@ -178,8 +181,8 @@ public class FLocation implements Serializable {
     }
 
     public boolean isInChunk(Location loc) {
-        if(loc == null) return false;
-        if(loc.getWorld() == null) return false;
+        if (loc == null) return false;
+        if (loc.getWorld() == null) return false;
 
         Chunk chunk = loc.getChunk();
         return loc.getWorld().getName().equalsIgnoreCase(getWorldName()) && chunk.getX() == x && chunk.getZ() == z;

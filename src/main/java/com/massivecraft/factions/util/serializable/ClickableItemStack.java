@@ -3,6 +3,7 @@ package com.massivecraft.factions.util.serializable;
 /**
  * @author Saser
  */
+
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
