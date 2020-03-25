@@ -66,6 +66,7 @@ permissions:
   factions.kit.halfplayer:
     description: Can do all but create factions.
     children:
+      factions.check: true
       factions.audit: true
       factions.drain: true
       factions.wild: true
