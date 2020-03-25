@@ -705,13 +705,7 @@ public class FactionsPlugin extends MPlugin {
     }
 
     public String getPrimaryGroup(OfflinePlayer player) {
-        AtomicReference<String> primaryGroup = new AtomicReference<>();
-
-        if (perms == null || !perms.hasGroupSupport()) return " ";
-        else {
-            Bukkit.getScheduler().runTaskAsynchronously(this, () -> primaryGroup.set(perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player)));
-            return primaryGroup.get();
-        }
+        return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
     }
 
     public void debug(Level level, String s) {
