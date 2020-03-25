@@ -85,11 +85,7 @@ public class JSONUtils {
     }
 
     public static boolean saveJSONToFile(File f, Object toSave, Object token) throws IOException {
-        try {
-            return saveJSONToFile(f, toSave, token, gson);
-        } catch (Throwable var4) {
-            throw var4;
-        }
+        return saveJSONToFile(f, toSave, token, gson);
     }
 
     private static Type getTypeFromObject(Object object) {
