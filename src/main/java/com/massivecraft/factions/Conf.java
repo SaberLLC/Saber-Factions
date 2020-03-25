@@ -22,7 +22,7 @@ public class Conf {
     public static final transient double DYNMAP_STYLE_FILL_OPACITY = 0.35D;
     public static final transient String DYNMAP_STYLE_HOME_MARKER = "greenflag";
     public static final transient boolean DYNMAP_STYLE_BOOST = false;
-    public static List<String> baseCommandAliases = new ArrayList<>();
+    public static List<String> baseCommandAliases = new ArrayList<>(Collections.singletonList("f"));
     public static boolean allowNoSlashCommand = true;
 
     // Colors
@@ -411,7 +411,6 @@ public class Conf {
     }
 
     static {
-        baseCommandAliases.add("f");
 
         blacklistedFactionNames.add("somenamehere");
 

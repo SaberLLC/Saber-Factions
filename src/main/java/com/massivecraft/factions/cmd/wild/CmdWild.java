@@ -34,7 +34,7 @@ public class CmdWild extends FCommand implements WaitedTask {
 
     public CmdWild() {
         super();
-        if (this.instance == null) instance = this;
+        if (instance == null) instance = this;
         this.aliases.addAll(Aliases.wild);
         this.requirements = new CommandRequirements.Builder(Permission.WILD)
                 .playerOnly()

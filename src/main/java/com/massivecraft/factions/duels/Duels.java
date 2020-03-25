@@ -60,8 +60,8 @@ public class Duels {
         return new Location(Bukkit.getWorld(locKeyArray[0]), Double.parseDouble(locKeyArray[1]), Double.parseDouble(locKeyArray[2]), Double.parseDouble(locKeyArray[3]));
     }
 
-    public void sendRequests() {
-        for (FPlayer fplayer : duel.getFaction1().getFPlayers()) {
+    public static void sendRequests(Faction faction) {
+        for (FPlayer fplayer : faction.getFPlayers()) {
             if (fplayer.isOnline()) {
                 fplayer.getPlayer().openInventory(RequestGUI.inv);
                 guiMap.put(fplayer, System.currentTimeMillis());

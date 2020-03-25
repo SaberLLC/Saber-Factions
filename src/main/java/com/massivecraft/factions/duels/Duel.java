@@ -99,6 +99,8 @@ public class Duel {
             Duels.duel = new Duel(fvf.getKey(), fvf.getValue());
             Duels.preparingDuel = true;
             Duels.acceptedDuel.clear();
+            Duels.sendRequests(faction1);
+            Duels.sendRequests(faction2);
         }
     }
 

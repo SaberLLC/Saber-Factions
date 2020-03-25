@@ -202,6 +202,7 @@ public class FactionsPlugin extends MPlugin {
             divider();
             return;
         }
+        //TODO fix this
         //Update their config if needed
         // Updater.updateIfNeeded(getConfig());
         RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
