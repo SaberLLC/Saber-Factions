@@ -403,6 +403,8 @@ public class FactionsPlayerListener implements Listener {
                 case YELLOW_SHULKER_BOX:
 
                 case FURNACE:
+                case BLAST_FURNACE:
+                case SMOKER:
                 case DROPPER:
                 case DISPENSER:
                 case ENCHANTING_TABLE:
@@ -442,6 +444,8 @@ public class FactionsPlayerListener implements Listener {
                 case ENCHANTING_TABLE:
                 case DROPPER:
                 case FURNACE:
+                case BLAST_FURNACE:
+                case SMOKER:
                 case HOPPER:
                 case ANVIL:
                 case CHIPPED_ANVIL:
