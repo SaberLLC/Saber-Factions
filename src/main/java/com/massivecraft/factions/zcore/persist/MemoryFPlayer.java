@@ -966,8 +966,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         if (!damage) {
             msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
-            if (!fly)
-                sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
+            if (!fly) sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
         } else {
             msg(TL.COMMAND_FLY_DAMAGE);
         }

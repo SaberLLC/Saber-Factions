@@ -296,6 +296,7 @@ public enum TL {
     COMMAND_CHECKPOINT_CLAIMED("&c&l[!]&7 Your current &cfaction checkpoint&7 is claimed, set a &cnew &7one!"),
     COMMAND_CHECKPOINT_DESCRIPTION("Set or go to your faction checkpoint!"),
 
+    COMMAND_CREATE_ALREADY_RESERVED("&c&l[!] &7This faction tag has already been reserved!"),
     COMMAND_CREATE_MUSTLEAVE("&c&l[!]&7 You must &cleave &7your &ccurrent faction &7first."),
     COMMAND_CREATE_INUSE("&c&l[!]&7 That tag is &calready &7in use."),
     COMMAND_CREATE_TOCREATE("to create a new faction"),

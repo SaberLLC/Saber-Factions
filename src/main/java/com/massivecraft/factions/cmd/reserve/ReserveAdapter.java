@@ -11,8 +11,7 @@ public class ReserveAdapter implements JsonSerializer<ReserveObject>, JsonDeseri
 
     public ReserveObject deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
         JsonObject object = jsonElement.getAsJsonObject();
-        ReserveObject faction = new ReserveObject(object.get("username").getAsString(), object.get("name").getAsString());
-        return faction;
+        return new ReserveObject(object.get("username").getAsString(), object.get("name").getAsString());
     }
 
     public JsonElement serialize(ReserveObject data, final Type type, final JsonSerializationContext jsonSerializationContext) {

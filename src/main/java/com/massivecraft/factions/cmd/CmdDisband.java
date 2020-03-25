@@ -21,8 +21,6 @@ public class CmdDisband extends FCommand {
      * @author FactionsUUID Team
      */
 
-    //TODO: Add Disband Confirmation GUI
-
     private static HashMap<String, String> disbandMap = new HashMap<>();
 
 
@@ -105,8 +103,11 @@ public class CmdDisband extends FCommand {
                         follower.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, amountString, faction.getTag(follower));
                     }
                 }
-                if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
+                if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")){
+                    faction.disband(context.player, PlayerDisbandReason.COMMAND);
                     context.fPlayer.setFFlying(false, false);
+                    return;
+                }
             } else {
                 context.player.sendMessage(String.valueOf(TL.COMMAND_DISBAND_PLAYER));
             }

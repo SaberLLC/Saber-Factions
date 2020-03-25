@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
@@ -52,6 +53,12 @@ public class CmdCreate extends FCommand {
             return;
         }
 
+        ReserveObject factionReserve = FactionsPlugin.getInstance().getFactionReserves().stream().filter(factionReserve1 -> factionReserve1.getFactionName().equalsIgnoreCase(tag)).findFirst().orElse(null);
+        if (factionReserve != null && !factionReserve.getName().equalsIgnoreCase(context.player.getName())) {
+            context.msg(TL.COMMAND_CREATE_ALREADY_RESERVED);
+            return;
+        }
+
         ArrayList<String> tagValidationErrors = MiscUtil.validateTag(tag);
         if (tagValidationErrors.size() > 0) {
             context.sendMessage(tagValidationErrors);
@@ -85,7 +92,9 @@ public class CmdCreate extends FCommand {
 
         // finish setting up the Faction
         faction.setTag(tag);
-
+        if (factionReserve != null) {
+            FactionsPlugin.getInstance().getFactionReserves().remove(factionReserve);
+        }
         // trigger the faction join event for the creator
         FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);

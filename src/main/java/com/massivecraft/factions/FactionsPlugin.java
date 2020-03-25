@@ -12,6 +12,7 @@ import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ListParameterizedType;
+import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.discord.DiscordListener;
@@ -418,6 +419,7 @@ public class FactionsPlugin extends MPlugin {
                 .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
                 .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
                 .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
+                .registerTypeAdapter(ReserveObject.class, new ReserveAdapter())
                 .registerTypeAdapter(Location.class, new LocationTypeAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
