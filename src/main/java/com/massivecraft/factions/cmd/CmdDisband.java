@@ -110,7 +110,6 @@ public class CmdDisband extends FCommand {
             } else {
                 context.player.sendMessage(String.valueOf(TL.COMMAND_DISBAND_PLAYER));
             }
-            Bukkit.broadcastMessage("Called");
             faction.disband(context.player, PlayerDisbandReason.COMMAND);
             if (!context.fPlayer.canFlyAtLocation() && FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
                 context.fPlayer.setFFlying(false, false);
