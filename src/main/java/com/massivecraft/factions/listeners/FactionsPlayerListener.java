@@ -451,6 +451,7 @@ public class FactionsPlayerListener implements Listener {
                 case CHIPPED_ANVIL:
                 case DAMAGED_ANVIL:
                 case BREWING_STAND:
+
                     return PermissableAction.CONTAINER;
                 default:
                     return null;

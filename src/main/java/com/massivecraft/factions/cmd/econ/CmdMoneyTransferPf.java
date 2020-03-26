@@ -32,6 +32,11 @@ public class CmdMoneyTransferPf extends FCommand {
     @Override
     public void perform(CommandContext context) {
         double amount = context.argAsDouble(0, 0d);
+
+        if(amount <= 0){
+            return;
+        }
+
         EconomyParticipator from = context.argAsBestFPlayerMatch(1);
         if (from == null) {
             return;

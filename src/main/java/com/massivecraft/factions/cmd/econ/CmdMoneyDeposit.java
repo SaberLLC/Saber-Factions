@@ -36,6 +36,11 @@ public class CmdMoneyDeposit extends FCommand {
     public void perform(CommandContext context) {
         double amount = context.argAsDouble(0, 0d);
         EconomyParticipator faction = context.argAsFaction(1, context.faction);
+
+        if(amount <= 0){
+            return;
+        }
+
         if (faction == null) {
             return;
         }
