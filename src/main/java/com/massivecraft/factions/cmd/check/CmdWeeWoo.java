@@ -13,7 +13,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 public class CmdWeeWoo extends FCommand {
 
     /**
-     * @author Driftay
+     * @author Vankka
      */
 
     public CmdWeeWoo() {

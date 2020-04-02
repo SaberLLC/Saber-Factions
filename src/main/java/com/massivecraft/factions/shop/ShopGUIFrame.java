@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -48,7 +49,7 @@ public class ShopGUIFrame {
         for (int a = 1; a <= items; a++) {
             String s = a + "";
             int slot = ShopConfig.getShop().getInt("items." + s + ".slot");
-            Material material = XMaterial.matchXMaterial(Objects.requireNonNull(ShopConfig.getShop().getString("items." + s + ".block"))).get().parseMaterial();
+            ItemStack material = XMaterial.matchXMaterial(Objects.requireNonNull(ShopConfig.getShop().getString("items." + s + ".block"))).get().parseItem();
             int cost = ShopConfig.getShop().getInt("items." + s + ".cost");
             String name = ShopConfig.getShop().getString("items." + s + ".name");
             boolean glowing = ShopConfig.getShop().getBoolean("items." + s + ".glowing");

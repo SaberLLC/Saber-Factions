@@ -17,6 +17,7 @@ public class CmdPoints extends FCommand {
     public CmdPointsRemove cmdPointsRemove = new CmdPointsRemove();
     public CmdPointsSet cmdPointsSet = new CmdPointsSet();
     public CmdPointsAdd cmdPointsAdd = new CmdPointsAdd();
+    public CmdPointsBalance cmdPointsBalance = new CmdPointsBalance();
 
     public CmdPoints() {
         super();
@@ -26,7 +27,7 @@ public class CmdPoints extends FCommand {
                 .playerOnly()
                 .build();
 
-
+        this.addSubCommand(this.cmdPointsBalance);
         this.addSubCommand(this.cmdPointsAdd);
         this.addSubCommand(this.cmdPointsRemove);
         this.addSubCommand(this.cmdPointsSet);
