@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class CmdSetGuild extends FCommand {
 
     /**
-     * @author Driftay
+     * @author Vankka
      */
 
     private EventWaiter eventWaiter;

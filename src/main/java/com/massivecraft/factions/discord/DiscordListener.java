@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class DiscordListener extends ListenerAdapter {
 
     /**
-     * @author Driftay
+     * @author Vankka
      */
 
     private static File file = new File(FactionsPlugin.getInstance().getDataFolder(), "discord_guilds.json");

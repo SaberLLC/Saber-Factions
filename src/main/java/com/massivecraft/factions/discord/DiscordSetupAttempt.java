@@ -1,5 +1,10 @@
 package com.massivecraft.factions.discord;
 
+
+/**
+ * @author SaberTeam
+ */
+
 public class DiscordSetupAttempt {
     private Boolean success;
     private String reason;

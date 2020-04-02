@@ -11,7 +11,7 @@ import net.dv8tion.jda.core.Permission;
 public class CmdInviteBot extends FCommand {
 
     /**
-     * @author Driftay
+     * @author Vankka
      */
 
     public CmdInviteBot() {

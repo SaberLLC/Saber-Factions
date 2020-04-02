@@ -8,6 +8,7 @@ import com.sk89q.worldguard.domains.Association;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.association.Associables;
 import com.sk89q.worldguard.protection.association.RegionAssociable;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
@@ -21,9 +22,7 @@ import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /*
  *  WorldGuard Permission Checking.
@@ -94,6 +93,42 @@ public class Worldguard {
         }
 
         return associable;
+    }
+
+    public static boolean isPvPDisabled(Location l) {
+        try {
+            ApplicableRegionSet regionSet = Objects.requireNonNull(instance.getRegionManager(l.getWorld())).getApplicableRegions(l);
+            if (regionSet.size() < 1) {
+                try {
+                    return Objects.requireNonNull(Objects.requireNonNull(instance.getRegionManager(l.getWorld())).getRegion("__global__")).getFlags().get(DefaultFlag.PVP) == StateFlag.State.DENY;
+                } catch (Exception e) {
+                    if (!(e instanceof NullPointerException)) {
+                        e.printStackTrace();
+                    }
+                    return false;
+                }
+            } else {
+                boolean return_flag = false;
+                int return_priority = -1;
+                for (ProtectedRegion region : regionSet) {
+                    if (region.getFlags().containsKey(DefaultFlag.PVP)) {
+                        StateFlag.State pvp_flag = (StateFlag.State) region.getFlags().get(DefaultFlag.PVP);
+                        int region_priority = region.getPriority();
+                        if (return_priority == -1) {
+                            return_flag = pvp_flag == StateFlag.State.DENY;
+                            return_priority = region_priority;
+                        } else if (region_priority > return_priority) {
+                            return_flag = pvp_flag == StateFlag.State.DENY;
+                            return_priority = region_priority;
+                        }
+                    }
+                }
+
+                return return_flag;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**

@@ -22,6 +22,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ * @author Vankka & SaberTeam
+ */
+
 public class FactionChatHandler extends ListenerAdapter {
 
     private FactionsPlugin plugin;

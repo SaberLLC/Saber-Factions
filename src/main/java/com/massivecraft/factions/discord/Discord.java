@@ -18,6 +18,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.logging.Level;
 
+/**
+ * @author SaberTeam
+ */
+
 public class Discord {
     //We dont want waitingLink to reset during reload so we are going to set it here
     public static HashMap<Integer, FPlayer> waitingLink;

@@ -21,6 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ShopGUIFrame {
@@ -47,7 +48,7 @@ public class ShopGUIFrame {
         for (int a = 1; a <= items; a++) {
             String s = a + "";
             int slot = ShopConfig.getShop().getInt("items." + s + ".slot");
-            Material material = XMaterial.matchXMaterial(ShopConfig.getShop().getString("items." + s + ".block")).get().parseMaterial();
+            Material material = XMaterial.matchXMaterial(Objects.requireNonNull(ShopConfig.getShop().getString("items." + s + ".block"))).get().parseMaterial();
             int cost = ShopConfig.getShop().getInt("items." + s + ".cost");
             String name = ShopConfig.getShop().getString("items." + s + ".name");
             boolean glowing = ShopConfig.getShop().getBoolean("items." + s + ".glowing");

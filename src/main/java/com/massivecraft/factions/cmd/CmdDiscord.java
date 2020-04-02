@@ -6,6 +6,10 @@ import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.Random;
 
+/**
+ * @author SaberTeam
+ */
+
 public class CmdDiscord extends FCommand {
     public CmdDiscord() {
         super();

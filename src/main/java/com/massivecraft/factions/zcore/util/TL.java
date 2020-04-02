@@ -674,6 +674,11 @@ public enum TL {
     COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
     COMMAND_PERM_LOCKED("&cThis permission has been locked by the server"),
 
+
+    COMMAND_POINTS_SHOW_DESCRIPTION("See the point balance of factions"),
+    COMMAND_POINTS_SHOW_WILDERNESS("&c&l[!] &7You may not check the point balance of wilderness!"),
+    COMMAND_POINTS_SHOW_OWN("&c&l[!] &7Your faction has &e%1$s &7points."),
+    COMMAND_POINTS_SHOW("&c&l[!] &e%1$s &7has a point balance of &b%2$s&7."),
     COMMAND_POINTS_FAILURE("&c&l[!] &c{faction} does not exist."),
     COMMAND_POINTS_SUCCESSFUL("&c&l[!] &7You have added &e%1$s &7points to &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
     COMMAND_POINTS_INSUFFICIENT("&c&l[!] &7You may not add/set/remove a negative number of points to a faction!"),
