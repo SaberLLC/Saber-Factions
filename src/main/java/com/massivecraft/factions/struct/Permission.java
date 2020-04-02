@@ -74,6 +74,7 @@ public enum Permission {
     MAP("map"),
     MAPHEIGHT("mapheight"),
     MOD("mod"),
+    NOTIFICATIONS("notifications"),
     COLEADER("coleader"),
     MOD_ANY("mod.any"),
     COLEADER_ANY("coleader.any"),

@@ -86,7 +86,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient long lastFrostwalkerMessage;
     protected transient boolean shouldTakeFallDamage = true;
     protected boolean isStealthEnabled = false;
-    protected boolean notificationsEnabled = true;
+    protected boolean notificationsEnabled;
     protected boolean titlesEnabled = true;
     protected boolean isAlt = false;
     boolean inspectMode = false;
@@ -112,6 +112,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.getDeaths();
         this.showScoreboard = FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-enabled", false);
         this.mapHeight = Conf.mapHeight;
+        this.notificationsEnabled = true;
 
         if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.getInstance().isValidFactionId(Conf.newPlayerStartingFactionID)) {
             this.factionId = Conf.newPlayerStartingFactionID;
@@ -141,6 +142,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.notificationsEnabled = other.notificationsEnabled;
         this.showScoreboard = FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-enabled", true);
         this.mapHeight = Conf.mapHeight;
+        this.notificationsEnabled = true;
     }
 
     public boolean isAlt() {
@@ -1255,8 +1257,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         Set<FPlayer> informTheseFPlayers = new HashSet<>();
         informTheseFPlayers.add(this);
         informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
-        for (FPlayer fp : informTheseFPlayers)
+        for (FPlayer fp : informTheseFPlayers) {
+            if (!fp.hasNotificationsEnabled()) continue;
             fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+        }
 
 
         Board.getInstance().setFactionAt(forFaction, flocation);
