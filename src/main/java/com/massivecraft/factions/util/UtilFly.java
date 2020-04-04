@@ -78,7 +78,7 @@ public class UtilFly {
                     || (factionTo.isWilderness() && !me.canflyinWilderness()) || (factionTo.isWarZone() && !me.canflyinWarzone())
                     || (factionTo.isSafeZone() && !me.canflyinSafezone()) || (relationTo == Relation.ENEMY && !me.canflyinEnemy())
                     || (relationTo == Relation.ALLY && !me.canflyinAlly()) || (relationTo == Relation.TRUCE && !me.canflyinTruce())
-                    || (relationTo == Relation.NEUTRAL && !me.canflyinNeutral())) {
+                    || (relationTo == Relation.NEUTRAL && !me.canflyinNeutral()) || !me.isVanished()) {
                 UtilFly.setFly(me, false, false, false);
             }
         }

@@ -572,7 +572,7 @@ public class FactionsPlayerListener implements Listener {
 
     public void checkCanFly(FPlayer me) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) return;
-        if (me.isFlying() && (!me.canFlyAtLocation() || me.checkIfNearbyEnemies())) {
+        if (me.isFlying() && !me.isVanished() && (!me.canFlyAtLocation() || me.checkIfNearbyEnemies())) {
             me.setFFlying(false, false);
             me.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(me.getLastStoodAt()).getTag());
             return;
