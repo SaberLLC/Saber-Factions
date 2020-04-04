@@ -13,11 +13,16 @@ import java.io.File;
 public class FileManager {
 
     private CustomFile shop = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/shop.yml"));
+    private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/permissions.yml"));
 
     public void setupFiles() {
         shop.setup(true, "");
+        permissions.setup(true, "");
     }
 
+    public CustomFile getPermissions() {
+        return permissions;
+    }
 
     public CustomFile getShop() {
         return shop;

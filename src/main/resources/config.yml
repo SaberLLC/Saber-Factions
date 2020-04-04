@@ -341,8 +341,6 @@ list:
 use-old-help: false
 
 help:
-
-
   # You can change the page name to whatever you like
   # We use '1' to preserve default functionality of /f help 1
   '1':
@@ -406,7 +404,9 @@ help:
     - '&c/f invsee &8- &7Check a faction members inventory.'
     - '&c/f stealth &8- &7Go into stealth mode to not disable enemies flight.'
     - '&c/f notifications &8- &7Disable or enable faction claim notifications.'
+    - '&c/f wild &8- &7Teleport to a random location is a specific radius.'
     - '&7&m--------------------&r &e/f help &7&m-----------------------'
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                  F Permission GUI                    | #
@@ -729,6 +729,7 @@ F-Shop:
 # |           Faction Command Cooldowns                  | #
 # +------------------------------------------------------+ #
 ############################################################
+#To-Do#
 fcooldowns:
   f-open: 5
   f-disband: 10
@@ -1355,6 +1356,11 @@ fbanners:
     Warzone: false
     Enemy: true
 
+############################################################
+# +------------------------------------------------------+ #
+# |                 Faction Titles                       | #
+# +------------------------------------------------------+ #
+############################################################
 #Title when moving between chunks
 Title:
   Show-Title: true
@@ -1367,12 +1373,23 @@ Title:
     Title: '{Faction}'
     Subtitle: '{Description}'
 
-
+############################################################
+# +------------------------------------------------------+ #
+# |                   F SeeChunk                         | #
+# +------------------------------------------------------+ #
+############################################################
 # /f seechunk options
 see-chunk:
   particles: true
   interval: 5
 
+############################################################
+# +------------------------------------------------------+ #
+# |               No Water Destruction                   | #
+# +------------------------------------------------------+ #
+############################################################
+#A list of blocks that cannot be broken by water ONLY
+#if unbreakable f upgrade is purchased
 no-water-destroy:
   Item-List:
     - 'REDSTONE_COMPARATOR'
@@ -1386,11 +1403,21 @@ no-water-destroy:
     - 'DIODE_BLOCK_ON'
     - 'REDSTONE'
 
+############################################################
+# +------------------------------------------------------+ #
+# |                 Faction Tntfill                      | #
+# +------------------------------------------------------+ #
+############################################################
 Tntfill:
   enabled: true
   max-radius: 32
   max-amount: 64
 
+############################################################
+# +------------------------------------------------------+ #
+# |                   Faction Wild                       | #
+# +------------------------------------------------------+ #
+############################################################
 Wild:
   Enabled: true
   # Time to wait in seconds #
@@ -1481,6 +1508,7 @@ Wild:
 #  - {player-kills} : # of kills the player has
 #  - {player-deaths}: # of deaths the player has
 #  - {total-online-visible}: # of players online from the perspective of the current player
+
 # Faction variables. Can be used in tooltips.list, scoreboards, or /f show
 #  - {header}    : Default factions header (ex. /f show)
 #  - {faction}   : Factions tag (if none, uses lang.yml for factionless name)
@@ -1506,12 +1534,19 @@ Wild:
 #  - {faction-deaths}: # of deaths the faction has
 #  - {faction-bancount} : # of bans the faction has
 #  - {faction-points} : # of points a faction has
+#  - {announcement} : Faction announcements
+#  - {raidable} : if a faction is raidable
+#  - {tnt-balance} : # of tnt a faction has in their tnt bank
+#  - {tnt-max-balance} : # of possible tnt a faction can have in their tnt bank
+#  - {faction-strikes} : # of strikes a faction has
+
 # Faction Permissions GUI variables. Can only be used in GUI
 # - {relation}            : Shows relation name (Can be used in action and relation)
 # - {relation-color}      : Relation color
 # - {action}              : Shows action name (Can only be used in action)
 # - {action-access}       : Shows the action's access with current relation
 # - {action-access-color} : Access color
+
 # General variables. Can be used anywhere.
 # - {total-online}  : Total # of players on the server
 # - {max-warps}     : Max # of warps a faction can set

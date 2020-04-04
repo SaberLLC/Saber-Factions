@@ -1,0 +1,159 @@
+#######################################################################################
+#######################################################################################
+#######################################################################################
+#####                                                                             #####
+#####                    SaberFactions Permissions File                           #####
+#####                   Created By Driftay/DroppingAnvil                          #####
+#####                                                                             #####
+#######################################################################################
+#######################################################################################
+#######################################################################################
+
+#<-------------------------------------->NOTES<-------------------------------------->#
+#All permissions are document properly, if you have any question please visit: http://discord.saber.pw/
+#<-------------------------------------->NOTES<-------------------------------------->#
+
+factions:
+  managesafezone: MANAGE_SAFE_ZONE #Manage All Safezone Claims
+  managewarzone: MANAGE_WAR_ZONE #Manage All Warzone Claims
+  ownershipbypass: OWNERSHIP_BYPASS #Bypass F Owner Claims
+  admin: #Ability to Give Leadership of a Faction
+    any: ADMIN_ANY #Ability to give admin of a faction to anyone in any faction
+  alts: ALTS #Access to F Alts
+  ahome: AHOME #Ability to teleport to any (player specific) faction home.
+  announce: ANNOUNCE #Ability to use F Announce
+  audit: AUDIT #Ability to use F Audit
+  autoclaim: AUTOCLAIM #Ability to use F AutoClaim
+  autoleavebypass: AUTO_LEAVE_BYPASS #Ability to bypass the AutoLeaveTask (Will not be kicked for being afk too long)
+  ban: BAN #Ability to use F Ban
+  bypass: BYPASS #Ability to use F Bypass
+  chat: CHAT #Ability to Cycle through Faction Based Chats
+  chatspy: CHATSPY #Ability to spy on other Faction Chats
+  check: CHECK #Ability to use F Check
+  claim: #Ability to Claim
+    line: CLAIM_LINE #Ability to Claim a Line of Claims
+    radius: CLAIM_RADIUS #Ability to claim multiple chunks with f claim
+  claimat: CLAIMAT #Ability to claim with F Map
+  claimfill: CLAIM_FILL #Ability to claim a claim outlined square of claims
+  config: CONFIG #Ability to modify config lines via in-game
+  create: CREATE #Ability to create factions
+  corner: CORNER #Ability to claim an entire buffer in a worldborder corner
+  debug: DEBUG #Ability to enable debug messages via Factions
+  defaultrank: DEFAULTRANK #Ability to set all default ranks when players join factions
+  deinvite: DEINVITE #Ability to deinvite players from factions
+  delhome: DELHOME #Ability to delete your faction home
+  description: DESCRIPTION #Ability to set the description of your faction
+  disband: #Ability to disband your faction
+    any: DISBAND_ANY #Ability to disband ANY Faction
+  discord: DISCORD #Ability to link minecraft account to discord.
+  drain: DRAIN #Ability to use F Drain
+  fly: #Ability to use F Fly
+    wilderness: FLY_WILDERNESS #Ability to fly in wilderness
+    safezone: FLY_SAFEZONE #Ability to fly in Safezone
+    warzone: FLY_WARZONE #Ability to fly in Warzone
+    enemy: FLY_ENEMY #Ability to fly in Enemy Territory
+    ally: FLY_ALLY #Ability to fly in Ally Territory
+    truce: FLY_TRUCE #Ability to fly in Truce Territory
+    neutral: FLY_NEUTRAL #Ability to fly in Neutral Territory
+  focus: FOCUS #Ability to use F Focus (Scoreboard Must Be Enabled For This To Work)
+  globalchat: GLOBALCHAT #Ability to toggle seeing global chat for specific players
+  grace: GRACE #Ability to toggle F Grace
+  help: HELP #Ability to use F Help
+  home: HOME #Ability to use F Home
+  invite: INVITE #Ability to use F Invite
+  invsee: INVSEE #Ability to use F Invsee (Only Your Own Faction Members)
+  join: #Ability to use F Join
+    any: JOIN_ANY #Ability to join ANY faction without an invite
+    others: JOIN_OTHERS #Ability to Force Join Other Factions
+  kick: #Ability to use F Kick
+    any: KICK_ANY #Ability to Kick Any Person Regardless of Rank in Faction
+  leave: LEAVE #Ability to use F Leave
+  list: LIST #Ability to use F List
+  lock: LOCK #Ability to Lock Factions
+  lockspawners: LOCKSPAWNERS #Ability to Disable Placement of Spawners
+  logout: LOGOUT #Ability to use F Logout
+  lookup: LOOKUP #Ability to use F Lookup
+  map: MAP #Ability to use F Map
+  mapheight: MAPHEIGHT #Ability to modify Map height
+  mod: #Ability to use F Mod
+    any: MOD_ANY #Ability to Mod Anyone Regardless of Rank
+  notifications: NOTIFICATIONS #Ability to use F Notifications
+  coleader: #Ability to use F Coleader
+    any: COLEADER_ANY #Ability to CoLeader anyone regardless of rank
+  missions: MISSIONS #Ability to use F Missions
+  modifypower: MODIFY_POWER #Ability to modify power of factions or players
+  money: #Ability to use F Money base command
+    balance: #Ability to use F Money Bal
+      any: MONEY_BALANCE_ANY #Ability to see any factions balance
+    deposit: MONEY_DEPOSIT #Ability to Deposit Money into Faction Bank
+    withdraw: #Ability to Withdraw money from Faction Bank
+      any: MONEY_WITHDRAW_ANY #Ability to withdraw money from ANY Faction Bank
+    f2f: MONEY_F2F #Ability to pay money to other factions
+    f2p: MONEY_F2P #Ability to pay money from factions to players
+    p2f: MONEY_P2F #Ability to pay money from players to factions
+  monitorlogins: MONITOR_LOGINS #Ability to use F Logins
+  near: NEAR #Ability to use F Near
+  noboom: NO_BOOM #Ability to make any faction peaceful
+  open: OPEN #Ability to use F Open
+  owner: OWNER #Ability to use F Owner
+  ownerlist: OWNERLIST #Ability to use F Ownerlist
+  reserve: RESERVE #Ability to Reserve Factions For Players
+  setguild: SET_GUILD #Ability to set guilds for your faction
+  setpeaceful: SET_PEACEFUL #Ability to set a faction to peaceful
+  setpermanent: SET_PERMANENT #Ability to set a faction to permanent
+  setpermanentpower: SET_PERMANENTPOWER #Ability to set a faction to never lose power
+  showinvites: SHOW_INVITES #Ability to use F ShowInvites
+  paypal: PAYPAL #Ability to use F Paypal
+  setpaypal: PAYPALSET #Ability to use F SetPaypal
+  permissions: PERMISSIONS #Ability to use F Perms
+  points: POINTS #Ability to use F Points
+  powerboost: POWERBOOST #Ability to boost the power of any player or faction.
+  power: #Ability to use F Power
+    any: POWER_ANY #Ability to see power of any faction
+  promote: PROMOTE #Ability to use F Promote
+  relation: RELATION #Ability to use F Enemy/Truce/Ally
+  reload: RELOAD #Ability to Reload Factions
+  save: SAVE #Ability to Save Factions
+  spam: SPAM #Ability to toggle Spam commands
+  setdiscord: SETDISCORD #Ability to use F SetDiscord
+  sethome: #Ability to use F Sethome
+    any: SETHOME_ANY #Ability to set home of ANY faction regardless of rank.
+  setstrikes: SETSTRIKES #Ability to give factions strikes for breaking rules
+  show: SHOW #Ability to use F Show
+  status: STATUS #Ability to use F Status
+  stealth: STEALTH #Ability to use F Stealth
+  stuck: STUCK #Ability to use F Stuck
+  tag: TAG #Ability to use F Tag/Rename
+  toggletitles: TOGGLE_TITLES #Ability to use F ToggleTitles
+  tnt: TNT #Ability to use F TNT
+  title: #Ability to use F Title
+    color: TITLE_COLOR #Ability to use F Title With Colors
+  togglealliancechat: TOGGLE_ALLIANCE_CHAT #Ability to use F ToggleAllianceChat (Player will not be able to see Ally Chat)
+  unclaim: UNCLAIM #Ability to use F Unclaim
+  unclaimall: UNCLAIM_ALL #Ability to use F Unclaimall
+  version: VERSION #Ability to use F Version
+  scoreboard: SCOREBOARD #Ability to use F Scoreboard
+  seechunk: SEECHUNK #Ability to use F Seechunk
+  setwarp: SETWARP #Ability to use F SetWarp
+  shop: SHOP #Ability to use F Shop
+  top: TOP #Ability to use F Top
+  viewchest: VIEWCHEST #Ability to use F ViewChest
+  addpoints: ADDPOINTS #Ability to add points to faction
+  removepoints: REMOVEPOINTS #Ability too remove points from a faction
+  setpoints: SETPOINTS #Ability to set a factions points
+  vault: VAULT #Ability to use F Vault
+  getvault: GETVAULT #Ability to use F GetVault
+  setmaxvaults: SETMAXVAULTS #Ability to set mx vaults via command
+  rules: RULES #Ability to use F Rules
+  checkpoint: CHECKPOINT #Ability to use F Checkpoint
+  upgrades: UPGRADES #Ability to use F Upgrades
+  banner: BANNER #Ability to use F Banner
+  tpbanner: TPBANNER #Ability to use F TpBanner
+  killholos: KILLHOLOS #Ability to kill all named entities
+  inspect: INSPECT #Ability to use F Inspect (CoreProtect Required)
+  tntfill: TNTFILL #Ability to use F TNTFILL
+  coords: COORD #Ability to use F Coords
+  showclaims: SHOWCLAIMS #Ability to use F Showclaims
+  warp: WARP #Ability to use F Warp
+  wild: WILD #Ability to use F Wild
+  chest: CHEST #Ability to use F Chest

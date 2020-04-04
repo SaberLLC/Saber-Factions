@@ -188,8 +188,6 @@ public class FactionsPlugin extends MPlugin {
 
         //Start wait task executor
         WaitExecutor.startTask();
-        //Attempt to generate a permission list
-        PermissionList.generateFile();
         // Load Conf from disk
         fileManager = new FileManager();
         getFileManager().setupFiles();
