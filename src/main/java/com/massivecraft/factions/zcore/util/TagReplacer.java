@@ -67,6 +67,7 @@ public enum TagReplacer {
     ALLIES_COUNT(TagType.FACTION, "{allies}"),
     ENEMIES_COUNT(TagType.FACTION, "{enemies}"),
     TRUCES_COUNT(TagType.FACTION, "{truces}"),
+    ALT_COUNT(TagType.FACTION, "{alt-count}"),
     ONLINE_COUNT(TagType.FACTION, "{online}"),
     OFFLINE_COUNT(TagType.FACTION, "{offline}"),
     FACTION_SIZE(TagType.FACTION, "{members}"),
@@ -76,11 +77,13 @@ public enum TagReplacer {
     FACTION_STRIKES(TagType.FACTION, "{strikes}"),
     FACTION_POINTS(TagType.FACTION, "{faction-points}"),
 
+
     /**
      * General variables, require no faction or player
      */
     MAX_WARPS(TagType.GENERAL, "{max-warps}"),
     MAX_ALLIES(TagType.GENERAL, "{max-allies}"),
+    MAX_ALTS(TagType.GENERAL, "{max-alts}"),
     MAX_ENEMIES(TagType.GENERAL, "{max-enemies}"),
     MAX_TRUCES(TagType.GENERAL, "{max-truces}"),
     FACTIONLESS(TagType.GENERAL, "{factionless}"),
@@ -128,6 +131,11 @@ public enum TagReplacer {
             case MAX_ALLIES:
                 if (FactionsPlugin.getInstance().getConfig().getBoolean("max-relations.enabled", true)) {
                     return String.valueOf(FactionsPlugin.getInstance().getConfig().getInt("max-relations.ally", 10));
+                }
+                return TL.GENERIC_INFINITY.toString();
+            case MAX_ALTS:
+                if(FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled")){
+                    return String.valueOf(Conf.factionAltMemberLimit);
                 }
                 return TL.GENERIC_INFINITY.toString();
             case MAX_ENEMIES:
@@ -241,6 +249,8 @@ public enum TagReplacer {
                 return String.valueOf(fac.getRelationCount(Relation.ENEMY));
             case TRUCES_COUNT:
                 return String.valueOf(fac.getRelationCount(Relation.TRUCE));
+            case ALT_COUNT:
+                return String.valueOf(fac.getAltPlayers().size());
             case ONLINE_COUNT:
                 if (fp != null && fp.isOnline()) {
                     return String.valueOf(fac.getFPlayersWhereOnline(true, fp).size());

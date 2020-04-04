@@ -35,18 +35,6 @@ public class FactionsEntityListener implements Listener {
 
     private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
 
-    @EventHandler
-    public void onCreeperGlitch(EntityDamageEvent e) {
-        if (!Conf.preventCreeperGlitch) {
-            return;
-        }
-        if (!e.getEntity().getType().equals(EntityType.CREEPER)) {
-            return;
-        }
-        if (e.getCause().equals(EntityDamageEvent.DamageCause.DROWNING) || e.getCause().equals(EntityDamageEvent.DamageCause.SUFFOCATION)) {
-            e.getEntity().remove();
-        }
-    }
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDeath(EntityDeathEvent event) {

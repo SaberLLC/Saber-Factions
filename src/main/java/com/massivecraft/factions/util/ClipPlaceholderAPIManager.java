@@ -128,6 +128,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return TL.sdf.format(faction.getFoundedDate());
             case "faction_joining":
                 return (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
+            case "faction_alt_count":
+                return String.valueOf(faction.getAltPlayers().size());
             case "faction_strikes":
                 return fPlayer.hasFaction() ? String.valueOf(faction.getStrikes()) : "0";
             case "faction_peaceful":
@@ -208,7 +210,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             case "faction_relation_color":
                 return fPlayer.getColorTo(faction).toString();
             case "faction_grace":
-                return String.valueOf(Conf.gracePeriod);
+                return Conf.gracePeriod ? "Enabled" : "Disabled";
             case "faction_name_at_location":
                 Faction factionAtLocation = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
                 return factionAtLocation != null ? factionAtLocation.getTag() : Factions.getInstance().getWilderness().getTag();
