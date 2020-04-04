@@ -4,7 +4,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
-import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -26,7 +25,7 @@ public class CmdReload extends FCommand {
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
         Conf.save();
-        ShopConfig.loadShop();
+        FactionsPlugin.getInstance().getFileManager().getShop().loadFile();
         FactionsPlugin.getInstance().reloadConfig();
         FactionsPlugin.getInstance().loadLang();
 

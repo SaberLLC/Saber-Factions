@@ -45,15 +45,15 @@ public class ShopGUIFrame {
         ItemStack dummy = buildDummyItem(fplayer.getFaction());
         for (int x = 0; x <= (gui.getRows() * 9) - 1; x++) GUIItems.add(new GuiItem(dummy, e -> e.setCancelled(true)));
 
-        int items = ShopConfig.getShop().getConfigurationSection("items").getKeys(false).size();
+        int items = FactionsPlugin.getInstance().getFileManager().getShop().getConfig().getConfigurationSection("items").getKeys(false).size();
         for (int a = 1; a <= items; a++) {
             String s = a + "";
-            int slot = ShopConfig.getShop().getInt("items." + s + ".slot");
-            ItemStack material = XMaterial.matchXMaterial(Objects.requireNonNull(ShopConfig.getShop().getString("items." + s + ".block"))).get().parseItem();
-            int cost = ShopConfig.getShop().getInt("items." + s + ".cost");
-            String name = ShopConfig.getShop().getString("items." + s + ".name");
-            boolean glowing = ShopConfig.getShop().getBoolean("items." + s + ".glowing");
-            List<String> lore = ShopConfig.getShop().getStringList("items." + s + ".lore");
+            int slot = FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("items." + s + ".slot");
+            ItemStack material = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("items." + s + ".block")).get().parseItem();
+            int cost = FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("items." + s + ".cost");
+            String name = FactionsPlugin.getInstance().getFileManager().getShop().fetchString("items." + s + ".name");
+            boolean glowing = FactionsPlugin.getInstance().getFileManager().getShop().fetchBoolean("items." + s + ".glowing");
+            List<String> lore = FactionsPlugin.getInstance().getFileManager().getShop().fetchStringList("items." + s + ".lore");
 
 
             ItemStack item = new ItemStack(material);
@@ -73,7 +73,7 @@ public class ShopGUIFrame {
                 FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
                 if (fplayer.getFaction().getPoints() >= cost) {
                     fplayer.getFaction().setPoints(fplayer.getFaction().getPoints() - cost);
-                    runCommands(ShopConfig.getShop().getStringList("items." + s + ".cmds"), fplayer.getPlayer());
+                    runCommands(FactionsPlugin.getInstance().getFileManager().getShop().fetchStringList("items." + s + ".cmds"), fplayer.getPlayer());
                     for (FPlayer fplayerBuy : fplayer.getFaction().getFPlayers()) {
                         fplayerBuy.getPlayer().sendMessage(TL.SHOP_BOUGHT_BROADCAST_FACTION.toString()
                                 .replace("{player}", fplayer.getPlayer().getName())

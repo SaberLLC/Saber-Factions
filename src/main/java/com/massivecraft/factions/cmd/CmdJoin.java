@@ -6,7 +6,7 @@ import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.zcore.fupgrades.UpgradeType;
+import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeType;
 import com.massivecraft.factions.zcore.util.TL;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.exceptions.HierarchyException;

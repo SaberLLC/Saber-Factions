@@ -1,5 +1,10 @@
-package com.massivecraft.factions.util.Particles;
+package com.massivecraft.factions.util;
 
+/**
+ * Factions - Developed by Driftay.
+ * All rights reserved 2020.
+ * Creation Date: 4/4/2020
+ */
 import org.bukkit.Bukkit;
 
 import java.lang.reflect.Constructor;

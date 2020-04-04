@@ -1,4 +1,4 @@
-package com.massivecraft.factions.util;
+package com.massivecraft.factions.zcore.frame;
 
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.InventoryHolder;

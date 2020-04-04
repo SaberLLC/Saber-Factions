@@ -1,4 +1,4 @@
-package com.massivecraft.factions.zcore.fupgrades;
+package com.massivecraft.factions.zcore.frame.fupgrades;
 
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;

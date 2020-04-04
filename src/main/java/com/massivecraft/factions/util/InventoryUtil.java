@@ -62,7 +62,7 @@ public class InventoryUtil {
             dataOutput.close();
             return Base64Coder.encodeLines(outputStream.toByteArray());
         } catch (Exception e) {
-            throw new IllegalStateException("Cannot into itemstacksz!", e);
+            throw new IllegalStateException("Cannot convert into itemstacks!", e);
         }
     }
 

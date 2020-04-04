@@ -4,7 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fdisband.FDisbandFrame;
+import com.massivecraft.factions.zcore.frame.fdisband.FDisbandFrame;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;

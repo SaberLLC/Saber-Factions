@@ -405,6 +405,7 @@ help:
     - '&c/f points &8- &7Check your factions points.'
     - '&c/f invsee &8- &7Check a faction members inventory.'
     - '&c/f stealth &8- &7Go into stealth mode to not disable enemies flight.'
+    - '&c/f notifications &8- &7Disable or enable faction claim notifications.'
     - '&7&m--------------------&r &e/f help &7&m-----------------------'
 ############################################################
 # +------------------------------------------------------+ #
@@ -625,7 +626,6 @@ f-check:
 #This option is to see if another faction member can see their faction members that have the invisible potion effect
 See-Invisible-Faction-Members: false #ONLY WHEN SCOREBOARD IS ENABLED
 
-
 ############################################################
 # +------------------------------------------------------+ #
 # |              Faction Inventory See                   | #
@@ -634,6 +634,7 @@ See-Invisible-Faction-Members: false #ONLY WHEN SCOREBOARD IS ENABLED
 #This option is the ability to see other faction members inventories
 f-inventory-see:
   Enabled: true
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                Faction Alt Accounts                  | #
@@ -745,7 +746,6 @@ fcooldowns:
 Falling-Block-Fix:
   enabled: true
 
-
 ############################################################
 # +------------------------------------------------------+ #
 # |                  Faction Disband                     | #
@@ -768,8 +768,6 @@ f-disband-gui:
     Type: BLACK_WOOL
     Name: ' '
     Lore:
-
-
 
 ############################################################
 # +------------------------------------------------------+ #

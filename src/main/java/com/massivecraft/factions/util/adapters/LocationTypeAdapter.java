@@ -1,4 +1,4 @@
-package com.massivecraft.factions.util;
+package com.massivecraft.factions.util.adapters;
 
 import com.google.gson.*;
 import com.massivecraft.factions.FactionsPlugin;

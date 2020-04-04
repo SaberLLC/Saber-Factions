@@ -19,7 +19,8 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.FactionGUI;
+import com.massivecraft.factions.util.wait.WaitExecutor;
+import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -937,11 +938,7 @@ public class FactionsPlayerListener implements Listener {
             handler.cancelLogout(e.getPlayer());
             e.getPlayer().sendMessage(String.valueOf(TL.COMMAND_LOGOUT_MOVED));
         }
-
-        if (CmdWild.waitingTeleport.containsKey(e.getPlayer())) {
-            CmdWild.waitingTeleport.remove(e.getPlayer());
-            FPlayers.getInstance().getByPlayer(e.getPlayer()).msg(TL.COMMAND_WILD_INTERUPTED);
-        }
+        WaitExecutor.handleAction(e.getPlayer());
     }
 
     @EventHandler
@@ -953,10 +950,7 @@ public class FactionsPlayerListener implements Listener {
                 handler.cancelLogout(player);
                 player.sendMessage(String.valueOf(TL.COMMAND_LOGOUT_DAMAGE_TAKEN));
             }
-            if (CmdWild.waitingTeleport.containsKey(player)) {
-                CmdWild.waitingTeleport.remove(player);
-                FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_WILD_INTERUPTED);
-            }
+            WaitExecutor.handleAction(player);
             if (CmdWild.teleporting.contains(player)) {
                 if (!FactionsPlugin.getInstance().getConfig().getBoolean("Wild.FallDamage") && e.getCause() == EntityDamageEvent.DamageCause.FALL) {
                     e.setCancelled(true);

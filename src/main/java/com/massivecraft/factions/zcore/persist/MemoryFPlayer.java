@@ -863,12 +863,14 @@ public abstract class MemoryFPlayer implements FPlayer {
             return true;
         } else if (currentFaction.getAccess(this, PermissableAction.TERRITORY) == Access.ALLOW) {
             return true;
+        } else if (currentFaction.isWilderness() && forFaction.getAccess(this, PermissableAction.TERRITORY) == Access.ALLOW) {
+            return true;
         } else if (myFaction != forFaction) {
             error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
         } else if (forFaction == currentFaction) {
             error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_ALREADYOWN.toString(), forFaction.describeTo(this, true));
-        } else if (this.getRole().value < Role.MODERATOR.value) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_MUSTBE.toString(), Role.MODERATOR.getTranslation());
+        } else if (forFaction.getAccess(this, PermissableAction.TERRITORY) != Access.ALLOW) {
+            error = TL.COMMAND_CLAIM_DENIED.toString();
         } else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
             error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_MEMBERS.toString(), Conf.claimsRequireMinFactionMembers);
         } else if (currentFaction.isSafeZone()) {

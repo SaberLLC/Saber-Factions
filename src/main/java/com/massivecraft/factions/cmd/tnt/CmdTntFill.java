@@ -165,14 +165,6 @@ public class CmdTntFill extends FCommand {
         }
     }
 
-    // Counts the item type available in the inventory.
-    private int inventoryItemCount(Inventory inventory, Material mat) {
-        int count = 0;
-        HashMap<Integer, ? extends ItemStack> items = inventory.all(mat);
-        for (int item : items.keySet())
-            count += inventory.getItem(item).getAmount();
-        return count;
-    }
 
     public int getAddable(Inventory inv, Material material) {
         int output = 0;

@@ -21,18 +21,19 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.missions.MissionHandler;
-import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
-import com.massivecraft.factions.util.Particles.ReflectionUtils;
+import com.massivecraft.factions.util.adapters.*;
+import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MPlugin;
+import com.massivecraft.factions.zcore.file.impl.FileManager;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.fupgrades.UpgradesListener;
+import com.massivecraft.factions.zcore.frame.fupgrades.UpgradesListener;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
@@ -55,7 +56,6 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -95,7 +95,11 @@ public class FactionsPlugin extends MPlugin {
     private Worldguard wg;
     private FLogManager fLogManager;
     private List<ReserveObject> reserveObjects;
+    private FileManager fileManager;
 
+    public FileManager getFileManager() {
+        return fileManager;
+    }
 
     public FactionsPlugin() {
         instance = this;
@@ -181,16 +185,21 @@ public class FactionsPlugin extends MPlugin {
             this.saveResource("config.yml", false);
             this.reloadConfig();
         }
+
+        //Start wait task executor
+        WaitExecutor.startTask();
         //Attempt to generate a permission list
         PermissionList.generateFile();
         // Load Conf from disk
+        fileManager = new FileManager();
+        getFileManager().setupFiles();
         Conf.load();
         fLogManager = new FLogManager();
         //Dependency checks
         if (Conf.dependencyCheck && (!Bukkit.getPluginManager().isPluginEnabled("Vault"))) {
             divider();
             System.out.println("You are missing dependencies!");
-            System.out.println("Please verify and Vault are installed!");
+            System.out.println("Please verify [Vault] is installed!");
             Conf.save();
             Bukkit.getPluginManager().disablePlugin(instance);
             divider();
@@ -264,7 +273,6 @@ public class FactionsPlugin extends MPlugin {
         //Setup Discord Bot
         new Discord(this);
 
-        ShopConfig.setup();
         fLogManager.loadLogs(this);
 
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);

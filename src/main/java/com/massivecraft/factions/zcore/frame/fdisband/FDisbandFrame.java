@@ -1,4 +1,4 @@
-package com.massivecraft.factions.zcore.fdisband;
+package com.massivecraft.factions.zcore.frame.fdisband;
 
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;

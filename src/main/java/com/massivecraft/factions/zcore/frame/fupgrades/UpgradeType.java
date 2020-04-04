@@ -1,4 +1,4 @@
-package com.massivecraft.factions.zcore.fupgrades;
+package com.massivecraft.factions.zcore.frame.fupgrades;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;

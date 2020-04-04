@@ -11,7 +11,7 @@ import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.fupgrades.UpgradeType;
+import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeType;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

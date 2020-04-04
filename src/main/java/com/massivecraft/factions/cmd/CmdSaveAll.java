@@ -1,7 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.shop.ShopConfig;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -30,7 +29,7 @@ public class CmdSaveAll extends FCommand {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ShopConfig.saveShop();
+        FactionsPlugin.getInstance().getFileManager().getShop().saveFile();
         context.msg(TL.COMMAND_SAVEALL_SUCCESS);
     }
 

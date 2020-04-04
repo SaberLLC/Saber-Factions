@@ -2,7 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.zcore.fupgrades.FUpgradeFrame;
+import com.massivecraft.factions.zcore.frame.fupgrades.FUpgradeFrame;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdUpgrades extends FCommand {

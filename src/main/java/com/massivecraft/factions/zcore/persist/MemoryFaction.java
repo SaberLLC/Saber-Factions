@@ -20,7 +20,7 @@ import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.fupgrades.UpgradeType;
+import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeType;
 import com.massivecraft.factions.zcore.util.TL;
 import net.dv8tion.jda.core.entities.Member;
 import org.bukkit.Bukkit;

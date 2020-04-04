@@ -1,0 +1,36 @@
+prefix: '&4&lFactionShop&8» &7Purchased &f%item% &7for &b%points% Points&7!'
+
+items:
+  '1':
+    slot: 1
+    block: STONE #Validated Through XMaterial Class Located At: https://github.com/SaberLLC/Saber-Factions/blob/1.6.x/src/main/java/com/massivecraft/factions/util/XMaterial.java
+    name: '&aShop Item 1' #Display name of the item wanted in shop.
+    lore:
+      - '&cFully Customizable Lore!'
+      - '&b&l{cost} &7Points'
+    cmds: #You can have more then 1 command in this as it is a list of commands!
+      - broadcast %player% bought Test Shop!
+    cost: 5 #The number of faction points it will cost to buy this item.
+    glowing: true #Do we want it to glow or not?
+  '2':
+    slot: 2
+    block: STONE #Validated Through XMaterial Class Located At: https://github.com/SaberLLC/Saber-Factions/blob/1.6.x/src/main/java/com/massivecraft/factions/util/XMaterial.java
+    name: '&aShop Item 2' #Display name of the item wanted in shop.
+    lore:
+      - '&cFully Customizable Lore!'
+      - '&b&l{cost} &7Points'
+    cmds: #You can have more then 1 command in this as it is a list of commands!
+      - broadcast %player% bought Test Shop!
+    cost: 5 #The number of faction points it will cost to buy this item.
+    glowing: true #Do we want it to glow or not?
+  '3':
+    slot: 3
+    block: STONE #Validated Through XMaterial Class Located At: https://github.com/SaberLLC/Saber-Factions/blob/1.6.x/src/main/java/com/massivecraft/factions/util/XMaterial.java
+    name: '&aShop Item 3' #Display name of the item wanted in shop.
+    lore:
+      - '&cFully Customizable Lore!'
+      - '&b&l{cost} &7Points'
+    cmds: #You can have more then 1 command in this as it is a list of commands!
+      - broadcast %player% bought Test Shop!
+    cost: 5 #The number of faction points it will cost to buy this item.
+    glowing: true #Do we want it to glow or not?
