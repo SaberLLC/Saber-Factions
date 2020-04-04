@@ -77,18 +77,18 @@ public class CmdFly extends FCommand {
                         continue;
                     }
                     FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-                    Faction myFaction = fPlayer.getFaction();
-                    if (!player.hasPermission("factions.fly.bypassnearbyenemycheck") && !fPlayer.isAdminBypassing()) {
-                        if (fPlayer.hasEnemiesNearby()) disableFlightSync(fPlayer);
+                    if (fPlayer.isAdminBypassing()) continue;
+                    if (!player.hasPermission("factions.fly.bypassnearbyenemycheck")) {
                         checkEnemiesSync(fPlayer);
-                        continue;
+                        if (fPlayer.hasEnemiesNearby()) {
+                            disableFlightSync(fPlayer);
+                            continue;
+                        }
                     }
                     FLocation myFloc = new FLocation(player.getLocation());
-                    if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
                         if (!checkFly(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
                             disableFlightSync(fPlayer);
                         }
-                    }
 
                 }
             }
@@ -97,6 +97,7 @@ public class CmdFly extends FCommand {
     }
 
     public static boolean checkFly(FPlayer fme, Player me, Faction toFac) {
+        System.out.print("Checking user " + me.getName());
         if (Conf.denyFlightIfInNoClaimingWorld && !Conf.worldsNoClaiming.isEmpty() && Conf.worldsNoClaiming.stream().anyMatch(me.getWorld().getName()::equalsIgnoreCase))
             return false;
         if (toFac.getAccess(fme, PermissableAction.FLY) == Access.ALLOW) return true;

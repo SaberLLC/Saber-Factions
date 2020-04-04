@@ -403,6 +403,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", false) && !fFlyEnabled) {
             this.addSubCommand(this.cmdFly);
             fFlyEnabled = true;
+            CmdFly.startFlyCheck();
+            CmdFly.startParticles();
         }
     }
 

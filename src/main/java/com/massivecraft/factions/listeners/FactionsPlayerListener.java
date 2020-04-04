@@ -571,13 +571,8 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public void checkCanFly(FPlayer me) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) return;
-        if (me.isFlying() && !me.isVanished() && (!me.canFlyAtLocation() || me.checkIfNearbyEnemies())) {
-            me.setFFlying(false, false);
-            me.msg(TL.COMMAND_FLY_NO_ACCESS, Board.getInstance().getFactionAt(me.getLastStoodAt()).getTag());
-            return;
-        }
-        if (me.isFlying() || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable")) return;
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight") || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable")) return;
+        if (me.isFlying()) return;
         me.setFFlying(true, false);
         CmdFly.flyMap.put(me.getName(), true);
         if (CmdFly.particleTask == null)
@@ -656,33 +651,6 @@ public class FactionsPlayerListener implements Listener {
                     }
                     refreshPosition(player, lastLocations.get(player.getUniqueId()), player.getLocation());
                     lastLocations.put(player.getUniqueId(), player.getLocation());
-                    if (CmdFly.flyMap.containsKey(player.getName())) {
-                        String name = player.getName();
-                        if (!player.isFlying()
-                                || player.getGameMode() == GameMode.CREATIVE
-                                || !FactionsPlugin.instance.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
-                            continue;
-                        }
-                        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-                        Faction myFaction = fPlayer.getFaction();
-                        if (myFaction.isWilderness()) {
-                            Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> fPlayer.setFlying(false));
-                            CmdFly.flyMap.remove(player.getName());
-                            continue;
-                        }
-                        Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> {
-                            if (!fPlayer.checkIfNearbyEnemies()) {
-                                FLocation myFloc = new FLocation(player.getLocation());
-                                if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-                                    if (!CmdFly.checkFly(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
-                                        fPlayer.setFFlying(false, false);
-                                        CmdFly.flyMap.remove(name);
-                                    }
-                                }
-                            }
-                        });
-                    }
-
                 }
             }
         }, 5L, 10L);
