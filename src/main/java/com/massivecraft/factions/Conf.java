@@ -282,7 +282,7 @@ public class Conf {
     public static boolean econEnabled = false;
     public static String econUniverseAccount = "";
     public static double econCostClaimWilderness = 30.0;
-    public static double econCostClaimFromFactionBonus = 30.0;
+    public static double econCostClaimFromFactionBonus = 0.0;
     public static double econOverclaimRewardMultiplier = 0.0;
     public static double econClaimAdditionalMultiplier = 0.5;
     public static double econClaimRefundMultiplier = 0.7;
