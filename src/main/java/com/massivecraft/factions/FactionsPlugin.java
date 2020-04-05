@@ -38,6 +38,7 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -177,6 +178,10 @@ public class FactionsPlugin extends MPlugin {
         }
         migrateFPlayerLeaders();
         log("==== End Setup ====");
+
+        int pluginId = 7013;
+        Metrics metrics = new Metrics(this, pluginId);
+
 
         if (!preEnable()) return;
         this.loadSuccessful = false;

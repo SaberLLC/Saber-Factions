@@ -42,6 +42,10 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.org.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>net.dv8tion</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.net.dv8tion</shadedPattern>
                         </relocation>
@@ -403,9 +407,19 @@
             <version>2.1</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>1.7</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.org/repository/maven-public</url>
+        </repository>
         <repository>
             <id>central</id>
             <name>bintray</name>
