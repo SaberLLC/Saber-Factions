@@ -158,6 +158,8 @@ permissions:
     description: auto-claim land as you walk around
   factions.bypass:
     description: enable admin bypass mode
+  factions.friendlyfire:
+    description: ability to toggle on friend fire per player
   factions.lookup:
     description: Lookup claim & home stats for faction
   factions.chat:

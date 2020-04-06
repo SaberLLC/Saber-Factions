@@ -99,6 +99,8 @@ public class Conf {
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
 
+    //FRIENDLY FIRE
+    public static boolean friendlyFireFPlayersCommand = false;
 
     //Claim Fill
     public static int maxFillClaimCount = 25;

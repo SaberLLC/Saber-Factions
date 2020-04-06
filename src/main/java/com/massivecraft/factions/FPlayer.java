@@ -288,6 +288,11 @@ public interface FPlayer extends EconomyParticipator {
 
     boolean hasMoney(int amt);
 
+    //Fplayer specific friendly fire.
+    boolean hasFriendlyFire();
+
+    void setFriendlyFire(boolean status);
+
     //inspect Stuff
 
     boolean isInspectMode();
@@ -386,6 +391,7 @@ public interface FPlayer extends EconomyParticipator {
     // -------------------------------
     // Actions
     // -------------------------------
+
 
     void leave(boolean makePay);
 

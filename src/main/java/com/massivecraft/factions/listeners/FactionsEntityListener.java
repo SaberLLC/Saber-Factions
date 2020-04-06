@@ -342,11 +342,25 @@ public class FactionsEntityListener implements Listener {
         if (!(damagee instanceof Player)) return true;
 
         FPlayer defender = FPlayers.getInstance().getByPlayer((Player) damagee);
+        FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
 
         if (defender == null || defender.getPlayer() == null) return true;
 
+        if (attacker.getFaction() == defender.getFaction()) {
+            if (attacker.hasFriendlyFire() && defender.hasFriendlyFire()) return true;
+            if (attacker.hasFriendlyFire() && !defender.hasFriendlyFire()) {
+                attacker.msg(TL.FRIENDLY_FIRE_OFF_ATTACKER, defender.getName());
+                return false;
+            } else if(!attacker.hasFriendlyFire() && defender.hasFriendlyFire()){
+                attacker.msg(TL.FRIENDLY_FIRE_YOU_MUST);
+                return false;
+            }
+        }
+
+
         Location defenderLoc = defender.getPlayer().getLocation();
         Faction defLocFaction = Board.getInstance().getFactionAt(new FLocation(defenderLoc));
+
 
         // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
         if (damager instanceof Projectile) {
@@ -361,7 +375,6 @@ public class FactionsEntityListener implements Listener {
         if (defLocFaction.noPvPInTerritory()) {
             if (damager instanceof Player) {
                 if (notify) {
-                    FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
                     attacker.msg(TL.PLAYER_CANTHURT, (defLocFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
                 }
                 return false;
@@ -371,7 +384,7 @@ public class FactionsEntityListener implements Listener {
 
         if (!(damager instanceof Player)) return true;
 
-        FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
+        attacker = FPlayers.getInstance().getByPlayer((Player) damager);
 
         if (attacker == null || attacker.getPlayer() == null) return true;
 

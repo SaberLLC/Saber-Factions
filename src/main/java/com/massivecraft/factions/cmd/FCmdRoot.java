@@ -171,6 +171,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdDelHome cmdDelHome = new CmdDelHome();
     public CmdClaimFill cmdClaimFill = new CmdClaimFill();
     public CmdNotifications cmdNotifications = new CmdNotifications();
+    public CmdFriendlyFire cmdFriendlyFire = new CmdFriendlyFire();
 
     //Variables to know if we already setup certain sub commands
     public Boolean discordEnabled = false;
@@ -306,6 +307,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdDrain);
         this.addSubCommand(this.cmdLookup);
         this.addSubCommand(this.cmdNotifications);
+        this.addSubCommand(this.cmdFriendlyFire);
         addVariableCommands();
         if (CommodoreProvider.isSupported()) brigadierManager.build();
     }

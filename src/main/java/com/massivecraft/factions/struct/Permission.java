@@ -54,6 +54,7 @@ public enum Permission {
     FLY_TRUCE("fly.truce"),
     FLY_NEUTRAL("fly.neutral"),
     FOCUS("focus"),
+    FRIENDLYFIRE("friendlyfire"),
     GLOBALCHAT("globalchat"),
     GRACE("grace"),
     HELP("help"),

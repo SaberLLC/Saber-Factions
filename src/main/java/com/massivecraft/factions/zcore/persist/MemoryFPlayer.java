@@ -90,6 +90,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean titlesEnabled = true;
     protected boolean isAlt = false;
     boolean inspectMode = false;
+    boolean friendlyFire = false;
 
     public MemoryFPlayer() {
     }
@@ -1200,6 +1201,15 @@ public abstract class MemoryFPlayer implements FPlayer {
     public Boolean canflyinNeutral() {
         return getPlayer().hasPermission(Permission.FLY_NEUTRAL.node);
 
+    }
+
+
+    public boolean hasFriendlyFire(){
+        return friendlyFire;
+    }
+
+    public void setFriendlyFire(boolean status){
+        friendlyFire = status;
     }
 
     @Override

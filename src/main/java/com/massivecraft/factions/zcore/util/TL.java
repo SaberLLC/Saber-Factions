@@ -416,6 +416,11 @@ public enum TL {
     COMMAND_FOCUS_NO_LONGER("&c&l[!] &7Your faction is no longer focusing &c%s"),
     COMMAND_FOCUS_DESCRIPTION("Focus a Specific Player"),
 
+    COMMAND_FRIENDLY_FIRE_DESCRIPTION("Toggle friendly fire for yourself."),
+    COMMAND_FRIENDLY_FIRE_TOGGLE_OFF("&c[!] &7You have toggled friendly fire &4off&7!"),
+    COMMAND_FRIENDLY_FIRE_TOGGLE_ON("&c[!] &7You have toggled friendly fire &aon&7!"),
+    FRIENDLY_FIRE_OFF_ATTACKER("&b%1$s &7has friendly fire toggle &4off&7!"),
+    FRIENDLY_FIRE_YOU_MUST("&c[!] &7You must have friendly fire active to attack faction members!"),
 
     COMMAND_FWARP_CLICKTOWARP("&c&l[!]&7 Click to &cwarp!"),
     COMMAND_FWARP_COMMANDFORMAT("&c&l[!]&7 /f warp <warpname> &c[password]"),
