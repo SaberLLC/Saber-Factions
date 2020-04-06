@@ -8,6 +8,7 @@ import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import net.dv8tion.jda.core.entities.Member;
@@ -70,6 +71,11 @@ public class CmdCreate extends FCommand {
             return;
         }
 
+        if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "createCooldwn")){
+            context.msg(TL.COMMAND_COOLDOWN);
+            return;
+        }
+
         // trigger the faction creation event (cancellable)
         FactionCreateEvent createEvent = new FactionCreateEvent(context.player, tag);
         Bukkit.getServer().getPluginManager().callEvent(createEvent);
@@ -105,6 +111,7 @@ public class CmdCreate extends FCommand {
         // That way we don't have to mess up deleting more stuff.
         // And prevent the user from being returned to NORMAL after deleting his old faction.
         context.fPlayer.setRole(Role.LEADER);
+        Cooldown.setCooldown(context.fPlayer.getPlayer(), "createCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-create"));
         if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-creation-broadcast", true)) {
             for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
                 follower.msg(TL.COMMAND_CREATE_CREATED, context.fPlayer.getName(), faction.getTag(follower));

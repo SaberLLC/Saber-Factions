@@ -611,6 +611,8 @@ public enum TL {
     COMMAND_MONEYWITHDRAW_DESCRIPTION("Withdraw money"),
     COMMAND_MONEYWITHDRAW_WITHDRAW("&c&l[!]&7 &c%1$s&7 withdrew&c %2$s &7from the faction bank:&c %3$s"),
 
+
+    COMMAND_COOLDOWN("&c&l[!] &7You are currently on cooldown for this command!"),
     COMMAND_OPEN_TOOPEN("to open or close the faction"),
     COMMAND_OPEN_FOROPEN("for opening or closing the faction"),
     COMMAND_OPEN_OPEN("open"),

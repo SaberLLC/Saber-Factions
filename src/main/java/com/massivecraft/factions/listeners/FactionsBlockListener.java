@@ -425,8 +425,7 @@ public class FactionsBlockListener implements Listener {
         if (!justCheck) fPlayer.setLastFrostwalkerMessage();
 
         // Check if they have build permissions here. If not, block this from happening.
-        if (!playerCanBuildDestroyBlock(player, location, PermissableAction.FROST_WALK.toString(), justCheck))
-            event.setCancelled(true);
+        if (!playerCanBuildDestroyBlock(player, location, PermissableAction.FROST_WALK.toString(), justCheck)) event.setCancelled(true);
     }
 
     @EventHandler
@@ -486,7 +485,6 @@ public class FactionsBlockListener implements Listener {
 
             Faction at = Board.getInstance().getFactionAt(new FLocation(block));
             boolean isSpawner = event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial());
-
             if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
                 event.setCancelled(true);
                 return;

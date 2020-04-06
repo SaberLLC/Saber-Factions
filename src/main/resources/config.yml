@@ -594,11 +594,12 @@ fwarp-gui:
       - ' '
 ############################################################
 # +------------------------------------------------------+ #
-# |         Faction Creation/Disband Broadcast           | #
+# |                  Faction Broadcasts                  | #
 # +------------------------------------------------------+ #
 ############################################################
 faction-creation-broadcast: true #Disabling this will not make faction creation broadcasts appear in chat.
 faction-disband-broadcast: true #Disabling this will not make faction disband broadcasts appear in chat.
+faction-open-broadcast: true #Disabling this will not make faction open broadcasts appear in chat.
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -729,7 +730,6 @@ F-Shop:
 # |           Faction Command Cooldowns                  | #
 # +------------------------------------------------------+ #
 ############################################################
-#To-Do#
 fcooldowns:
   f-open: 5
   f-disband: 10
