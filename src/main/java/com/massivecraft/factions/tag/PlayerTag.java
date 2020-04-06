@@ -1,7 +1,6 @@
 package com.massivecraft.factions.tag;
 
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;
@@ -16,13 +15,6 @@ public enum PlayerTag implements Tag {
     /**
      * @author FactionsUUID Team
      */
-    GROUP("{group}", (fp) -> {
-        if (fp.isOnline()) {
-            return FactionsPlugin.getInstance().getPrimaryGroup(fp.getPlayer());
-        } else {
-            return "";
-        }
-    }),
     LAST_SEEN("{lastSeen}", (fp) -> {
         String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fp.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
         return fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fp.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);

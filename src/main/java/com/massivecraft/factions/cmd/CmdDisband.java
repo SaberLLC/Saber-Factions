@@ -4,9 +4,9 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.frame.fdisband.FDisbandFrame;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.frame.fdisband.FDisbandFrame;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -103,7 +103,7 @@ public class CmdDisband extends FCommand {
                         follower.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, amountString, faction.getTag(follower));
                     }
                 }
-                if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")){
+                if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
                     faction.disband(context.player, PlayerDisbandReason.COMMAND);
                     context.fPlayer.setFFlying(false, false);
                     return;

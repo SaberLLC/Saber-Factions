@@ -25,16 +25,16 @@ public class WaitTask {
         return wait;
     }
 
+    public void setWait(Integer i) {
+        wait = i;
+    }
+
     public TL getMessage() {
         return msg;
     }
 
     public Player getPlayer() {
         return player;
-    }
-
-    public void setWait(Integer i) {
-        wait = i;
     }
 
     public void success() {

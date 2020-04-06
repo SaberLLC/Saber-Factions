@@ -20,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class CmdTntFill extends FCommand {

@@ -94,26 +94,23 @@ public class FactionsBlockListener implements Listener {
         boolean landOwned = (myFaction.doesLocationHaveOwnersSet(loc) && !myFaction.getOwnerList(loc).isEmpty());
         if ((landOwned && myFaction.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(myFaction.getId())))
             return true;
-        else {
-            String replace = TL.ACTIONS_NOPERMISSIONPAIN.toString().replace("{action}", action.toString());
-            if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
-                me.msg(TL.ACTIONS_OWNEDTERRITORYDENY.toString().replace("{owners}", myFaction.getOwnerListString(loc)));
-                if (shouldHurt) {
-                    player.damage(Conf.actionDeniedPainAmount);
-                    me.msg(replace.replace("{faction}", Board.getInstance().getFactionAt(loc).getTag(myFaction)));
-                }
-                return false;
-            } else if (!landOwned && access == Access.DENY) { // If land is not owned but access is set to DENY anyway
-                if (shouldHurt) {
-                    player.damage(Conf.actionDeniedPainAmount);
-                    if ((Board.getInstance().getFactionAt(loc).getTag(myFaction)) != null)
-                        me.msg(replace.replace("{faction}", Board.getInstance().getFactionAt(loc).getTag(myFaction)));
-                }
-                if (myFaction.getTag(me.getFaction()) != null && action != null)
-                    me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
-                return false;
-            } else if (access == Access.ALLOW) return true;
-        }
+        else if (landOwned && !myFaction.getOwnerListString(loc).contains(player.getName())) {
+            me.msg(TL.ACTIONS_OWNEDTERRITORYDENY.toString().replace("{owners}", myFaction.getOwnerListString(loc)));
+            if (shouldHurt) {
+                player.damage(Conf.actionDeniedPainAmount);
+                me.msg(TL.ACTIONS_NOPERMISSIONPAIN.toString().replace("{action}", action.toString()).replace("{faction}", Board.getInstance().getFactionAt(loc).getTag(myFaction)));
+            }
+            return false;
+        } else if (!landOwned && access == Access.DENY) { // If land is not owned but access is set to DENY anyway
+            if (shouldHurt) {
+                player.damage(Conf.actionDeniedPainAmount);
+                if ((Board.getInstance().getFactionAt(loc).getTag(myFaction)) != null)
+                    me.msg(TL.ACTIONS_NOPERMISSIONPAIN.toString().replace("{action}", action.toString()).replace("{faction}", Board.getInstance().getFactionAt(loc).getTag(myFaction)));
+            }
+            if (myFaction.getTag(me.getFaction()) != null && action != null)
+                me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
+            return false;
+        } else if (access == Access.ALLOW) return true;
         me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
         return false;
     }
@@ -416,9 +413,8 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onFrostWalker(EntityBlockFormEvent event) {
-        if (event.getEntity() == null || event.getEntity().getType() != EntityType.PLAYER || event.getBlock() == null) {
+        if (event.getEntity() == null || event.getEntity().getType() != EntityType.PLAYER || event.getBlock() == null)
             return;
-        }
 
         Player player = (Player) event.getEntity();
         Location location = event.getBlock().getLocation();
@@ -426,14 +422,11 @@ public class FactionsBlockListener implements Listener {
         // only notify every 10 seconds
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         boolean justCheck = fPlayer.getLastFrostwalkerMessage() + 10000 > System.currentTimeMillis();
-        if (!justCheck) {
-            fPlayer.setLastFrostwalkerMessage();
-        }
+        if (!justCheck) fPlayer.setLastFrostwalkerMessage();
 
         // Check if they have build permissions here. If not, block this from happening.
-        if (!playerCanBuildDestroyBlock(player, location, PermissableAction.FROST_WALK.toString(), justCheck)) {
+        if (!playerCanBuildDestroyBlock(player, location, PermissableAction.FROST_WALK.toString(), justCheck))
             event.setCancelled(true);
-        }
     }
 
     @EventHandler
@@ -538,6 +531,7 @@ public class FactionsBlockListener implements Listener {
                 Player p = (Player) event.getRemover();
                 if (!playerCanBuildDestroyBlock(p, event.getEntity().getLocation(), "destroy", true)) {
                     event.setCancelled(true);
+                    return;
                 }
             }
         }

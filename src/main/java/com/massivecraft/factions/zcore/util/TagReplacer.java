@@ -134,7 +134,7 @@ public enum TagReplacer {
                 }
                 return TL.GENERIC_INFINITY.toString();
             case MAX_ALTS:
-                if(FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled")){
+                if (FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled")) {
                     return String.valueOf(Conf.factionAltMemberLimit);
                 }
                 return TL.GENERIC_INFINITY.toString();

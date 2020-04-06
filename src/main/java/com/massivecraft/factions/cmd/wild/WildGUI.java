@@ -2,10 +2,10 @@ package com.massivecraft.factions.cmd.wild;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.util.wait.WaitTask;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
-import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -1110,6 +1110,7 @@ public enum TL {
     GENERIC_NOFACTION_FOUND("&cCouldn't find a faction with that name!"),
     GENERIC_YOUMUSTBE("&cYour must be atleast %1$s to do this!"),
     GENERIC_MEMBERONLY("&cYou must be in a faction to do this!"),
+    GENERIC_WORLDGUARD("&cThis area is worldguard protected."),
 
     // MISSION_CREATED_COOLDOWN("&c&l[!] &7Due to your immediate faction creation, you may not start missions for &b%1$s minutes&7!"),
     MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),

@@ -33,7 +33,7 @@ public class CmdMoneyTransferPf extends FCommand {
     public void perform(CommandContext context) {
         double amount = context.argAsDouble(0, 0d);
 
-        if(amount <= 0){
+        if (amount <= 0) {
             return;
         }
 

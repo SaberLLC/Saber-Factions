@@ -5,7 +5,7 @@ package com.massivecraft.factions.util;
  * All rights reserved 2020.
  * Creation Date: 4/4/2020
  */
-import com.massivecraft.factions.util.XMaterial;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;

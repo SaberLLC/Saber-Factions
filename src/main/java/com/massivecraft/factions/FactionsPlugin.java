@@ -98,16 +98,16 @@ public class FactionsPlugin extends MPlugin {
     private List<ReserveObject> reserveObjects;
     private FileManager fileManager;
 
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
     public FactionsPlugin() {
         instance = this;
     }
 
     public static FactionsPlugin getInstance() {
         return instance;
+    }
+
+    public FileManager getFileManager() {
+        return fileManager;
     }
 
     public boolean getLocked() {

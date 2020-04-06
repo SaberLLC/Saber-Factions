@@ -19,12 +19,12 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.wait.WaitExecutor;
-import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.util.XMaterial;
+import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
@@ -571,7 +571,8 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public void checkCanFly(FPlayer me) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight") || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable")) return;
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight") || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
+            return;
         if (me.isFlying()) return;
         me.setFFlying(true, false);
         CmdFly.flyMap.put(me.getName(), true);

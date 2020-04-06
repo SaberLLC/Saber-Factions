@@ -86,9 +86,9 @@ public class CmdFly extends FCommand {
                         checkEnemiesSync(fPlayer);
                     }
                     FLocation myFloc = new FLocation(player.getLocation());
-                        if (!checkFly(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
-                            disableFlightSync(fPlayer);
-                        }
+                    if (!checkFly(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
+                        disableFlightSync(fPlayer);
+                    }
 
                 }
             }

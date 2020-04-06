@@ -13,8 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Creation Date: 4/4/2020
  */
 public class WaitExecutor {
-    private static boolean enabled = false;
     public static ConcurrentHashMap<Player, WaitTask> taskMap = new ConcurrentHashMap<>();
+    private static boolean enabled = false;
 
     public static void startTask() {
         if (enabled) return;

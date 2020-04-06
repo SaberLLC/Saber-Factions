@@ -32,7 +32,7 @@ public class CmdPointsBalance extends FCommand {
 
         if (context.argIsSet(0)) {
             faction = context.argAsFaction(0);
-        } else if(context.faction.isNormal()){
+        } else if (context.faction.isNormal()) {
             context.msg(TL.COMMAND_POINTS_SHOW_OWN, context.faction.getPoints());
             return;
         } else {
