@@ -344,7 +344,7 @@ public class FactionsEntityListener implements Listener {
         FPlayer defender = FPlayers.getInstance().getByPlayer((Player) damagee);
 
 
-        if(damager instanceof Player) {
+        if (damager instanceof Player) {
             FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
             if (defender == null || defender.getPlayer() == null) return true;
             if (attacker.getFaction() == defender.getFaction()) {
@@ -377,6 +377,7 @@ public class FactionsEntityListener implements Listener {
         if (defLocFaction.noPvPInTerritory()) {
             if (damager instanceof Player) {
                 if (notify) {
+                    FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
                     attacker.msg(TL.PLAYER_CANTHURT, (defLocFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString()));
                 }
                 return false;
@@ -386,7 +387,7 @@ public class FactionsEntityListener implements Listener {
 
         if (!(damager instanceof Player)) return true;
 
-        attacker = FPlayers.getInstance().getByPlayer((Player) damager);
+        FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
 
         if (attacker == null || attacker.getPlayer() == null) return true;
 
