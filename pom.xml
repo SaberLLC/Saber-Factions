@@ -42,6 +42,10 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
+                            <pattern>com.github.stefvanschie.inventoryframework</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.stefvanschie.inventoryframework</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.org.bstats</shadedPattern>
                         </relocation>

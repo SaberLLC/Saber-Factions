@@ -22,18 +22,18 @@ public enum UpgradeType {
      * @author Illyria Team
      */
 
-    CHEST("Chest", 3),
-    SPAWNER("Spawners", 3),
-    EXP("EXP", 3),
-    CROP("Crops", 3),
-    POWER("Power", 3),
-    REDSTONE("Redstone", 1),
-    MEMBERS("Members", 3),
-    TNT("TNT", 3),
-    WARP("Warps", 3),
-    DAMAGEINCREASE("DamageIncrease", 3),
-    DAMAGEDECREASE("DamageReduct", 3),
-    REINFORCEDARMOR("Armor", 3);
+    CHEST("Chest", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Max-Level")),
+    SPAWNER("Spawners", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.Max-Level")),
+    EXP("EXP", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.Max-Level")),
+    CROP("Crops", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Max-Level")),
+    POWER("Power", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Max-Level")),
+    REDSTONE("Redstone", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.Max-Level")),
+    MEMBERS("Members", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.Max-Level")),
+    TNT("TNT", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.TNT.Max-Level")),
+    WARP("Warps", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.Max-Level")),
+    DAMAGEINCREASE("DamageIncrease", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageIncrease.Max-Level")),
+    DAMAGEDECREASE("DamageReduct", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageReduct.Max-Level")),
+    REINFORCEDARMOR("Armor", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.Max-Level"));
 
     private String id;
     private int maxLevel;
@@ -86,7 +86,6 @@ public enum UpgradeType {
     private ItemStack updateLevelStatus(ItemStack item, int level) {
         if (level >= 1) {
             item.setAmount(level);
-            enchant(item);
         }
         return item;
     }

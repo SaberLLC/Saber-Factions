@@ -28,42 +28,35 @@ public class FUpgradeFrame {
     public FUpgradeFrame(Faction f) {
         this.gui = new Gui(FactionsPlugin.getInstance(),
                 FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Rows", 5),
-                ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FactionsPlugin.getInstance().getConfig()
-                        .getString("fupgrades.MainMenu.Title")).replace("{faction}", f.getTag())));
+                ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getConfig()
+                        .getString("fupgrades.MainMenu.Title").replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(FPlayer fplayer) {
         PaginatedPane pane = new PaginatedPane(0, 0, 9, this.gui.getRows());
         List<GuiItem> GUIItems = new ArrayList<>();
         ItemStack dummy = buildDummyItem();
-        for (int x = 0; x <= this.gui.getRows() * 9 - 1; ++x)
-            GUIItems.add(new GuiItem(dummy, (e) -> e.setCancelled(true)));
-
+        for (int x = 0; x <= this.gui.getRows() * 9 - 1; ++x) GUIItems.add(new GuiItem(dummy, e -> e.setCancelled(true)));
         for (UpgradeType value : UpgradeType.values()) {
             if (value.getSlot() != -1) {
-                GUIItems.set(value.getSlot(), new GuiItem(value.buildAsset(fplayer.getFaction()), (e) -> {
+                GUIItems.set(value.getSlot(), new GuiItem(value.buildAsset(fplayer.getFaction()), e -> {
                     e.setCancelled(true);
                     FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
-                    if (fme.getFaction().getUpgrade(value) != value.getMaxLevel()) {
-                        int cost = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu." + value.toString() + ".Cost.level-" + (fme.getFaction().getUpgrade(value) + 1));
+                    if (fme.getFaction().getUpgrade(value) == value.getMaxLevel()) return;
+                    int cost = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu." + value.toString() + ".Cost.level-" + (fme.getFaction().getUpgrade(value) + 1));
                         if (fme.hasMoney(cost)) {
                             fme.takeMoney(cost);
-                            if (value == UpgradeType.CHEST)
-                                updateChests(fme.getFaction());
+                            if (value == UpgradeType.CHEST) updateChests(fme.getFaction());
 
-                            if (value == UpgradeType.POWER)
-                                updateFactionPowerBoost(fme.getFaction());
+                            if (value == UpgradeType.POWER) updateFactionPowerBoost(fme.getFaction());
 
-                            if (value == UpgradeType.TNT)
-                                updateTNT(fme.getFaction());
+                            if (value == UpgradeType.TNT) updateTNT(fme.getFaction());
 
-                            if (value == UpgradeType.WARP)
-                                updateWarps(fme.getFaction());
+                            if (value == UpgradeType.WARP) updateWarps(fme.getFaction());
 
                             fme.getFaction().setUpgrade(value, fme.getFaction().getUpgrade(value) + 1);
-                            this.buildGUI(fme);
+                            buildGUI(fme);
                         }
-                    }
                 }));
             }
         }
