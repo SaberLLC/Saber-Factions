@@ -20,6 +20,7 @@ public enum TagReplacer {
     /**
      * Fancy variables, used by f show
      */
+    NEUTRAL_LIST(TagType.FANCY, "{neutral-list}"),
     ALLIES_LIST(TagType.FANCY, "{allies-list}"),
     ONLINE_LIST(TagType.FANCY, "{online-list}"),
     ENEMIES_LIST(TagType.FANCY, "{enemies-list}"),

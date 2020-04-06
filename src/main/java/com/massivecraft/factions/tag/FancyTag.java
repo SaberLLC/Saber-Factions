@@ -18,6 +18,7 @@ public enum FancyTag implements Tag {
      * @author FactionsUUID Team
      */
 
+    NEUTRAL_LIST("{neutral-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.NEUTRAL)),
     ALLIES_LIST("{allies-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.ALLY)),
     ENEMIES_LIST("{enemies-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.ENEMY)),
     TRUCES_LIST("{truces-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.TRUCE)),
