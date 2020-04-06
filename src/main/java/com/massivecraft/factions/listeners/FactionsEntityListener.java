@@ -342,18 +342,20 @@ public class FactionsEntityListener implements Listener {
         if (!(damagee instanceof Player)) return true;
 
         FPlayer defender = FPlayers.getInstance().getByPlayer((Player) damagee);
-        FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
 
-        if (defender == null || defender.getPlayer() == null) return true;
 
-        if (attacker.getFaction() == defender.getFaction()) {
-            if (attacker.hasFriendlyFire() && defender.hasFriendlyFire()) return true;
-            if (attacker.hasFriendlyFire() && !defender.hasFriendlyFire()) {
-                attacker.msg(TL.FRIENDLY_FIRE_OFF_ATTACKER, defender.getName());
-                return false;
-            } else if(!attacker.hasFriendlyFire() && defender.hasFriendlyFire()){
-                attacker.msg(TL.FRIENDLY_FIRE_YOU_MUST);
-                return false;
+        if(damager instanceof Player) {
+            FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
+            if (defender == null || defender.getPlayer() == null) return true;
+            if (attacker.getFaction() == defender.getFaction()) {
+                if (attacker.hasFriendlyFire() && defender.hasFriendlyFire()) return true;
+                if (attacker.hasFriendlyFire() && !defender.hasFriendlyFire()) {
+                    attacker.msg(TL.FRIENDLY_FIRE_OFF_ATTACKER, defender.getName());
+                    return false;
+                } else if (!attacker.hasFriendlyFire() && defender.hasFriendlyFire()) {
+                    attacker.msg(TL.FRIENDLY_FIRE_YOU_MUST);
+                    return false;
+                }
             }
         }
 
