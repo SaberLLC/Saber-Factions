@@ -54,7 +54,7 @@ public class CmdTag extends FCommand {
             return;
         }
 
-        if(Cooldown.isOnCooldown(context.player, "tagCooldown")){
+        if(Cooldown.isOnCooldown(context.player, "tagCooldown") && !context.fPlayer.isAdminBypassing()){
             context.msg(TL.COMMAND_COOLDOWN);
             return;
         }

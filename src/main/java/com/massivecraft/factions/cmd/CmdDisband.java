@@ -85,7 +85,7 @@ public class CmdDisband extends FCommand {
             }
         }
 
-        if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "disbandCooldown")){
+        if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "disbandCooldown") && !context.fPlayer.isAdminBypassing()){
             context.msg(TL.COMMAND_COOLDOWN);
             return;
         }

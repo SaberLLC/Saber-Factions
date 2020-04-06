@@ -39,7 +39,7 @@ public class CmdOpen extends FCommand {
 
             String open = context.faction.getOpen() ? TL.COMMAND_OPEN_OPEN.toString() : TL.COMMAND_OPEN_CLOSED.toString();
 
-            if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "openCooldown")){
+            if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "openCooldown") && !context.fPlayer.isAdminBypassing()){
                 context.msg(TL.COMMAND_COOLDOWN);
                 return;
             }
