@@ -70,6 +70,11 @@ public class CmdDisband extends FCommand {
             return;
         }
 
+        if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "disbandCooldown") && !context.fPlayer.isAdminBypassing()){
+            context.msg(TL.COMMAND_COOLDOWN);
+            return;
+        }
+
 
         boolean access = false;
         if (context.fPlayer.getPlayer().hasMetadata("disband_confirm") && (time = context.fPlayer.getPlayer().getMetadata("disband_confirm").get(0).asLong()) != 0L && System.currentTimeMillis() - time <= TimeUnit.SECONDS.toMillis(3L)) {
@@ -83,11 +88,6 @@ public class CmdDisband extends FCommand {
                     return;
                 }
             }
-        }
-
-        if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "disbandCooldown") && !context.fPlayer.isAdminBypassing()){
-            context.msg(TL.COMMAND_COOLDOWN);
-            return;
         }
 
         // check for tnt before disbanding.

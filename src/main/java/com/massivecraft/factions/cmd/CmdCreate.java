@@ -54,6 +54,11 @@ public class CmdCreate extends FCommand {
             return;
         }
 
+        if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "createCooldown") && !context.fPlayer.isAdminBypassing()){
+            context.msg(TL.COMMAND_COOLDOWN);
+            return;
+        }
+
         ReserveObject factionReserve = FactionsPlugin.getInstance().getFactionReserves().stream().filter(factionReserve1 -> factionReserve1.getFactionName().equalsIgnoreCase(tag)).findFirst().orElse(null);
         if (factionReserve != null && !factionReserve.getName().equalsIgnoreCase(context.player.getName())) {
             context.msg(TL.COMMAND_CREATE_ALREADY_RESERVED);
@@ -68,11 +73,6 @@ public class CmdCreate extends FCommand {
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay
         if (!context.canAffordCommand(Conf.econCostCreate, TL.COMMAND_CREATE_TOCREATE.toString())) {
-            return;
-        }
-
-        if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "createCooldwn") && !context.fPlayer.isAdminBypassing()){
-            context.msg(TL.COMMAND_COOLDOWN);
             return;
         }
 
