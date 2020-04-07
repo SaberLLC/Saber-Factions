@@ -27,6 +27,7 @@ public class CmdFly extends FCommand {
     public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<>();
     public static BukkitTask particleTask = null;
     public static BukkitTask flyTask = null;
+    public static boolean autoenable = FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable");
 
 
     public CmdFly() {
@@ -97,7 +98,7 @@ public class CmdFly extends FCommand {
     }
 
     public static boolean checkFly(FPlayer fme, Player me, Faction toFac) {
-        if (Conf.denyFlightIfInNoClaimingWorld && !Conf.worldsNoClaiming.isEmpty() && Conf.worldsNoClaiming.stream().anyMatch(me.getWorld().getName()::equalsIgnoreCase))
+        if ((Conf.denyFlightIfInNoClaimingWorld && !Conf.worldsNoClaiming.isEmpty() && Conf.worldsNoClaiming.stream().anyMatch(me.getWorld().getName()::equalsIgnoreCase)) || me.hasPermission(Permission.FLY_FLY.node))
             return false;
         if (toFac.getAccess(fme, PermissableAction.FLY) == Access.ALLOW) return true;
         if (fme.getFaction().isWilderness()) return false;
