@@ -345,7 +345,7 @@ help:
   # We use '1' to preserve default functionality of /f help 1
   '1':
     - '&7&m----------------------------------------------------'
-    - '&6&lFactions Help &8- &f(1/2)               '
+    - '&6&lFactions Help &8- &f(1/3)               '
     - '&7&m----------------------------------------------------'
     - '&c/f create &f<name> &8- &7Create your own faction.'
     - '&c/f who &f<name> &8- &7Show faction information.'
@@ -730,7 +730,7 @@ F-Shop:
 # |           Faction Command Cooldowns                  | #
 # +------------------------------------------------------+ #
 ############################################################
-fcooldowns:
+fcooldowns: #All of These Cooldowns Are In Seconds
   f-open: 5
   f-disband: 10
   f-create: 10

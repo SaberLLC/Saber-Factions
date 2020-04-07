@@ -434,9 +434,12 @@ public enum TL {
     COMMAND_FWARP_PASSWORD_REQUIRED("&c&l[!]&c Warp Password:"),
     COMMAND_FWARP_PASSWORD_TIMEOUT("&c&l[!]&7 Warp password &ccanceled"),
 
+    COMMAND_GRACE_TIME_REMAINING("&c&lGracePeriod &8» &cTime Remaining: &b%1$s"),
+    COMMAND_GRACE_DISABLED_NO_FORMAT("&c[!] &7Grace is disabled! Explosions are allowed!"),
+    COMMAND_GRACE_ENABLED_FORMAT("&c&lGracePeriod &8» &7Grace Period Has Now &aStarted&7! &cTime Remaining: &b%1$s"),
+    COMMAND_GRACE_DISABLED_FORMAT("&c&lGracePeriod &8» &7Grace Period Has Now &cEnded&7! &cExplosions are now enabled!"),
     COMMAND_GRACE_DESCRIPTION("Toggles Grace Period on/off"),
-    COMMAND_GRACE_ENABLED("&cYou cannot place &e%s &cwhile grace period is active!"),
-    COMMAND_GRACE_TOGGLE("&8» &7Grace period is now &c%1$s"),
+    COMMAND_GRACE_ENABLED_PLACEMENT("&cYou cannot place &e%s &cwhile grace period is active!"),
 
     COMMAND_HINT_PERMISSION("&aYou can manage your factions permissions using &7/f perms"),
 

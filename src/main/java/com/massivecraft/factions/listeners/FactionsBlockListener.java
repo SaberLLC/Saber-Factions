@@ -440,29 +440,6 @@ public class FactionsBlockListener implements Listener {
         }
     }
 
-    //Grace
-    @EventHandler
-    public void onBreak(EntityExplodeEvent e) {
-        if (!Conf.gracePeriod) return;
-
-        e.setCancelled(true);
-    }
-
-
-    @EventHandler
-    public void onTNTPlace(BlockPlaceEvent e1) {
-        FPlayer fp = FPlayers.getInstance().getByPlayer(e1.getPlayer());
-        if (!Conf.gracePeriod) return;
-
-        if (!fp.isAdminBypassing()) {
-            if (e1.getBlock().getType().equals(Material.TNT)) {
-                e1.setCancelled(true);
-
-                fp.msg(TL.COMMAND_GRACE_ENABLED, e1.getBlockPlaced().getType().toString());
-            }
-        }
-    }
-
     private boolean canPistonMoveBlock(Faction pistonFaction, Location target) {
         Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(target));
 

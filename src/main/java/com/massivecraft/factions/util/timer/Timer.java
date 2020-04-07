@@ -1,0 +1,32 @@
+package com.massivecraft.factions.util.timer;
+
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Config;
+import com.massivecraft.factions.util.timer.type.GraceTimer;
+
+/**
+ * Factions - Developed by Driftay.
+ * All rights reserved 2020.
+ * Creation Date: 4/7/2020
+ */
+public abstract class Timer {
+    protected final String name;
+    public final long defaultCooldown;
+
+
+    public Timer(String name, long defaultCooldown) {
+        this.name = name;
+        this.defaultCooldown = defaultCooldown;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void load(Config config) {
+    }
+
+
+    public void save(Config config) {
+    }
+}

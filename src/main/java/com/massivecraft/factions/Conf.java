@@ -22,6 +22,7 @@ public class Conf {
     public static final transient String DYNMAP_STYLE_HOME_MARKER = "greenflag";
     public static final transient boolean DYNMAP_STYLE_BOOST = false;
     public static List<String> baseCommandAliases = new ArrayList<>();
+    public static String serverTimeZone = "EST";
     public static boolean allowNoSlashCommand = true;
 
     // Colors
@@ -54,8 +55,8 @@ public class Conf {
     public static boolean factionTagForceUpperCase = false;
     public static boolean newFactionsDefaultOpen = false;
     // when faction membership hits this limit, players will no longer be able to join using /f join; default is 0, no limit
-    public static int factionMemberLimit = 0;
-    public static int factionAltMemberLimit = 0;
+    public static int factionMemberLimit = 30;
+    public static int factionAltMemberLimit = 10;
     // what faction ID to start new players in when they first join the server; default is 0, "no faction"
     public static String newPlayerStartingFactionID = "0";
     public static boolean showMapFactionKey = true;
@@ -86,7 +87,9 @@ public class Conf {
     public static int factionBufferSize = 20;
     public static boolean useCheckSystem = true;
     public static boolean spawnerLock = false;
-    public static boolean gracePeriod = false;
+    public static boolean useGraceSystem = true;
+    public static boolean broadcastGraceToggles = true;
+    public static int gracePeriodTimeDays = 7;
     public static boolean noEnderpearlsInFly = false;
     public static boolean broadcastDescriptionChanges = false;
     public static boolean broadcastTagChanges = false;

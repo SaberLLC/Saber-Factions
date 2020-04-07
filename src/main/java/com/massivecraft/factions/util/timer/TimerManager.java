@@ -1,0 +1,86 @@
+package com.massivecraft.factions.util.timer;
+
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Config;
+import com.massivecraft.factions.util.timer.type.GraceTimer;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.bukkit.event.Listener;
+
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Factions - Developed by Driftay.
+ * All rights reserved 2020.
+ * Creation Date: 4/7/2020
+ */
+public class TimerManager implements Listener, Runnable {
+    private final Set<Timer> timers;
+    private final FactionsPlugin plugin;
+    private final List<TimerRunnable> timerRunnableList = new ArrayList<>();
+    private Config config;
+    public GraceTimer graceTimer;
+    private static final long MINUTE = TimeUnit.MINUTES.toMillis(1L);
+    private static final long HOUR = TimeUnit.HOURS.toMillis(1L);
+    private static final long MULTI_HOUR = TimeUnit.HOURS.toMillis(10);
+
+    public static String getRemaining(long millis, boolean milliseconds) {
+        return getRemaining(millis, milliseconds, true);
+    }
+
+    public static String getRemaining(long duration, boolean milliseconds, boolean trail) {
+        if ((milliseconds) && (duration < MINUTE)) {
+            return ( (trail ? DateTimeFormats.REMAINING_SECONDS_TRAILING : DateTimeFormats.REMAINING_SECONDS).get()).format(duration * 0.001D) + 's';
+        }
+        return DurationFormatUtils.formatDuration(duration, (duration >= HOUR ? (duration >= MULTI_HOUR ? "d" : "") + "d:" : "") + "HH:mm:ss");
+    }
+
+    public TimerManager(FactionsPlugin plugin) {
+        this.timers = new HashSet<>();
+        this.plugin = plugin;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        if(Conf.useGraceSystem) {
+            this.registerTimer(this.graceTimer = new GraceTimer());
+        }
+        plugin.getServer().getScheduler().runTaskTimer(plugin, this, 4, 4);
+    }
+
+    public Collection<Timer> getTimers() {
+        return this.timers;
+    }
+
+    public void registerTimer(Timer timer) {
+        this.timers.add(timer);
+        if (timer instanceof Listener) {
+            this.plugin.getServer().getPluginManager().registerEvents((Listener) timer, this.plugin);
+        }
+    }
+
+    public void unregisterTimer(Timer timer) {
+        this.timers.remove(timer);
+    }
+
+    public void reloadTimerData() {
+        this.config = new Config(this.plugin, "timers");
+        for (Timer timer : this.timers) {
+            timer.load(this.config);
+        }
+    }
+
+    public void saveTimerData() {
+        for (Timer timer : this.timers) {
+            timer.save(this.config);
+        }
+        this.config.save();
+    }
+
+    public void run() {
+        long now = System.currentTimeMillis();
+        timerRunnableList.removeIf(next -> next.check(now));
+    }
+
+    public List<TimerRunnable> getTimerRunnableList() {
+        return timerRunnableList;
+    }
+}

@@ -26,6 +26,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.adapters.*;
+import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MPlugin;
@@ -34,7 +35,6 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fupgrades.UpgradesListener;
-import com.massivecraft.factions.zcore.util.TextUtil;
 import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -97,6 +97,7 @@ public class FactionsPlugin extends MPlugin {
     private FLogManager fLogManager;
     private List<ReserveObject> reserveObjects;
     private FileManager fileManager;
+    private TimerManager timerManager;
 
     public FactionsPlugin() {
         instance = this;
@@ -278,6 +279,10 @@ public class FactionsPlugin extends MPlugin {
 
         fLogManager.loadLogs(this);
 
+        this.timerManager = new TimerManager(this);
+        this.timerManager.reloadTimerData();
+        System.out.println("[SABER-FACTIONS] - Loaded " + timerManager.getTimers().size() + " timers into list!");
+
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
         // Register Event Handlers
@@ -290,6 +295,7 @@ public class FactionsPlugin extends MPlugin {
                 new MissionHandler(this),
                 new FChestListener(),
                 new MenuListener(),
+                timerManager.graceTimer,
                 new AntiChestListener()
         };
 
@@ -318,6 +324,7 @@ public class FactionsPlugin extends MPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         if (getDescription().getFullName().contains("BETA")) {
             divider();
             System.out.println("You are using a BETA version of the plugin!");
@@ -443,6 +450,8 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onDisable() {
+        super.onDisable();
+        timerManager.saveTimerData();
         try {
             String path = Paths.get(getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
             File file = new File(path);
@@ -467,7 +476,6 @@ public class FactionsPlugin extends MPlugin {
         if (Discord.jda != null) {
             Discord.jda.shutdownNow();
         }
-        super.onDisable();
         try {
             fLogManager.saveLogs();
         } catch (Exception e) {
@@ -527,14 +535,6 @@ public class FactionsPlugin extends MPlugin {
         return sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender) || super.handleCommand(sender, commandString, testOnly);
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
-        if (split.length == 0) return handleCommand(sender, "/f help", false);
-
-        // otherwise, needs to be handled; presumably another plugin directly ran the command
-        String cmd = Conf.baseCommandAliases.isEmpty() ? "/f" : "/" + Conf.baseCommandAliases.get(0);
-        return handleCommand(sender, cmd + " " + TextUtil.implode(Arrays.asList(split), " "), false);
-    }
 
     // This method must stay for < 1.12 versions
     @Override
@@ -719,6 +719,10 @@ public class FactionsPlugin extends MPlugin {
 
     public String getPrimaryGroup(OfflinePlayer player) {
         return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
+    }
+
+    public TimerManager getTimerManager() {
+        return timerManager;
     }
 
     public void debug(Level level, String s) {

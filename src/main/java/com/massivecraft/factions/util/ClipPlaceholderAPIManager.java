@@ -5,6 +5,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.Tag;
+import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.util.TL;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.clip.placeholderapi.expansion.Relational;
@@ -209,8 +210,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(faction.getMaxVaults());
             case "faction_relation_color":
                 return fPlayer.getColorTo(faction).toString();
-            case "faction_grace":
-                return Conf.gracePeriod ? "Enabled" : "Disabled";
+            case "faction_grace_time":
+                return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
             case "faction_name_at_location":
                 Faction factionAtLocation = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
                 return factionAtLocation != null ? factionAtLocation.getTag() : Factions.getInstance().getWilderness().getTag();

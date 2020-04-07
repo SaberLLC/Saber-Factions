@@ -57,6 +57,7 @@ public enum Permission {
     FRIENDLYFIRE("friendlyfire"),
     GLOBALCHAT("globalchat"),
     GRACE("grace"),
+    GRACETOGGLE("gracetoggle"),
     HELP("help"),
     HOME("home"),
     INVITE("invite"),

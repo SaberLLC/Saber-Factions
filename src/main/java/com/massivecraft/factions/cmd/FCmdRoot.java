@@ -8,7 +8,6 @@ import com.massivecraft.factions.cmd.check.CmdCheck;
 import com.massivecraft.factions.cmd.check.CmdWeeWoo;
 import com.massivecraft.factions.cmd.chest.CmdChest;
 import com.massivecraft.factions.cmd.claim.*;
-import com.massivecraft.factions.cmd.configsf.CmdConvertConfig;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
 import com.massivecraft.factions.cmd.grace.CmdGrace;
 import com.massivecraft.factions.cmd.logout.CmdLogout;
@@ -156,7 +155,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdCheck cmdCheck = new CmdCheck();
     public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
     public CmdWild cmdWild = new CmdWild();
-    public CmdConvertConfig cmdConvertConfig = new CmdConvertConfig();
     public CmdSpawnerLock cmdSpawnerLock = new CmdSpawnerLock();
     public CmdSetDiscord cmdSetDiscord = new CmdSetDiscord();
     public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
@@ -302,7 +300,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdCorner);
         this.addSubCommand(this.cmdFGlobal);
         this.addSubCommand(this.cmdViewChest);
-        this.addSubCommand(this.cmdConvertConfig);
         this.addSubCommand(this.cmdSpawnerLock);
         this.addSubCommand(this.cmdDrain);
         this.addSubCommand(this.cmdLookup);
