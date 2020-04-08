@@ -1,6 +1,7 @@
 # SaberFactions
 
-![Downloads](https://img.shields.io/github/downloads/driftay/saber-factions/total.svg) [![CodeFactor](https://www.codefactor.io/repository/github/driftay/saber-factions/badge)](https://www.codefactor.io/repository/github/driftay/saber-factions) [![License](https://img.shields.io/badge/license-GNU%20General%20Public%20License%20v3.0-brightgreen)](https://github.com/SaberLLC/Saber-Factions/blob/1.6.x/LICENSE) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/SaberLLC/Saber-Factions)
+![Downloads](https://img.shields.io/github/downloads/driftay/saber-factions/total.svg) [![CodeFactor](https://www.codefactor.io/repository/github/driftay/saber-factions/badge)](https://www.codefactor.io/repository/github/driftay/saber-factions) [![License](https://img.shields.io/badge/license-GNU%20General%20Public%20License%20v3.0-brightgreen)](https://github.com/SaberLLC/Saber-Factions/blob/1.6.x/LICENSE) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/SaberLLC/Saber-Factions) [![](https://jitpack.io/v/SaberLLC/Saber-Factions.svg)](https://jitpack.io/#SaberLLC/Saber-Factions)
+
 
 SaberFactions is an exotic, performance optimized, and feature rich factions plugin that focuses on not only making the player experience as great as possibly but maintaining this aspect with the cost of NOTHING! We strive to continue development for SaberFactions as the factions community is strongly growing and seeking new players every day. 
 
@@ -32,7 +33,7 @@ Some of our features include the following
 	<dependency>
 	    <groupId>com.github.SaberLLC</groupId>
 	    <artifactId>Saber-Factions</artifactId>
-	    <version>2.2.7-STABLE</version>
+	    <version>2.3.3-STABLE</version>
 	</dependency>
 ```
 ## Moving Forward
