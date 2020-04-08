@@ -1560,6 +1560,7 @@ Wild:
 # - {action-access-color} : Access color
 
 # General variables. Can be used anywhere.
+# - {grace-time}  : Time of Grace Period
 # - {total-online}  : Total # of players on the server
 # - {max-warps}     : Max # of warps a faction can set
 # - {max-allies}    : Max # of allies a faction can have

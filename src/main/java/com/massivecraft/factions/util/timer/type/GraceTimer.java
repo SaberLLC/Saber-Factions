@@ -44,14 +44,14 @@ public class GraceTimer extends GlobalTimer implements Listener {
 
     @Override
     public void load(Config config) {
-        config.get(this.name, isPaused());
-        config.get(this.name, getRemaining());
+        setPaused(config.getBoolean(this.name + ".paused"));
+        setRemaining(config.getLong(this.name + ".time"), false);
     }
 
     @Override
     public void save(Config config) {
-        config.set(this.name, isPaused());
-        config.set(this.name, getRemaining());
+        config.set(this.name + ".paused", isPaused());
+        config.set(this.name + ".time", getRemaining());
     }
 
 }
