@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFGlobal;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
+import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
 import com.massivecraft.factions.cmd.wild.CmdWild;
@@ -569,15 +570,17 @@ public class FactionsPlayerListener implements Listener {
                 .replace("{leader}", faction.getFPlayerAdmin() + "");
         return string;
     }
-
+    @Deprecated
     public void checkCanFly(FPlayer me) {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight") || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
             return;
         if (me.isFlying()) return;
-        me.setFFlying(true, false);
-        CmdFly.flyMap.put(me.getName(), true);
-        if (CmdFly.particleTask == null)
-            CmdFly.startParticles();
+        if (me.getPlayer().hasPermission(Permission.FLY_FLY.node)) {
+            me.setFFlying(true, false);
+            CmdFly.flyMap.put(me.getName(), true);
+            if (CmdFly.particleTask == null)
+                CmdFly.startParticles();
+        }
     }
 
     //inspect
@@ -716,7 +719,13 @@ public class FactionsPlayerListener implements Listener {
                     }, 5);
                 }
             }
-            this.checkCanFly(me);
+            if (FCmdRoot.instance.fFlyEnabled && CmdFly.autoenable && CmdFly.checkFly(me, me.getPlayer(), factionTo)) {
+                me.setFFlying(true, false);
+                CmdFly.flyMap.put(me.getName(), true);
+                if (CmdFly.particleTask == null)
+                    CmdFly.startParticles();
+            }
+
 
             if (me.getAutoClaimFor() != null) {
                 me.attemptClaim(me.getAutoClaimFor(), newLocation, true);
