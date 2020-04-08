@@ -3,6 +3,7 @@ package com.massivecraft.factions.util.timer.type;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.util.Config;
 import com.massivecraft.factions.util.timer.GlobalTimer;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -40,4 +41,17 @@ public class GraceTimer extends GlobalTimer implements Listener {
             }
         }
     }
+
+    @Override
+    public void load(Config config) {
+        config.get(this.name, isPaused());
+        config.get(this.name, getRemaining());
+    }
+
+    @Override
+    public void save(Config config) {
+        config.set(this.name, isPaused());
+        config.set(this.name, getRemaining());
+    }
+
 }

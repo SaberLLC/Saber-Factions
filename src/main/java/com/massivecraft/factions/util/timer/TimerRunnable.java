@@ -1,7 +1,6 @@
 package com.massivecraft.factions.util.timer;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.Config;
 
 import java.util.UUID;
 

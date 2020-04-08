@@ -1,8 +1,6 @@
 package com.massivecraft.factions.util.timer;
 
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Config;
-import com.massivecraft.factions.util.timer.type.GraceTimer;
 
 /**
  * Factions - Developed by Driftay.
