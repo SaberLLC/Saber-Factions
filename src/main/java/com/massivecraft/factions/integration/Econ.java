@@ -140,7 +140,6 @@ public class Econ {
 
     public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount, boolean notify) {
         if (!shouldBeUsed()) {
-            invoker.msg(TL.ECON_OFF);
             return false;
         }
 

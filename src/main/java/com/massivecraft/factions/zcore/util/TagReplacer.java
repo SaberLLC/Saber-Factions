@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.util;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.util.timer.TimerManager;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -82,6 +83,7 @@ public enum TagReplacer {
     /**
      * General variables, require no faction or player
      */
+    GRACE_TIMER(TagType.GENERAL, "{grace-time}"),
     MAX_WARPS(TagType.GENERAL, "{max-warps}"),
     MAX_ALLIES(TagType.GENERAL, "{max-allies}"),
     MAX_ALTS(TagType.GENERAL, "{max-alts}"),
@@ -125,6 +127,8 @@ public enum TagReplacer {
      */
     protected String getValue() {
         switch (this) {
+            case GRACE_TIMER:
+                return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
             case TOTAL_ONLINE:
                 return String.valueOf(Bukkit.getOnlinePlayers().size());
             case FACTIONLESS:
