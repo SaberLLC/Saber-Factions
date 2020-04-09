@@ -295,12 +295,15 @@ public class FactionsPlugin extends MPlugin {
                 new MissionHandler(this),
                 new FChestListener(),
                 new MenuListener(),
-                timerManager.graceTimer,
                 new AntiChestListener()
         };
 
         for (Listener eventListener : eventsListener)
             getServer().getPluginManager().registerEvents(eventListener, this);
+
+        if(Conf.useGraceSystem){
+            getServer().getPluginManager().registerEvents(timerManager.graceTimer, this);
+        }
 
         this.getCommand(refCommand).setExecutor(cmdBase);
 
