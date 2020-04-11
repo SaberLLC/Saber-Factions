@@ -423,6 +423,8 @@ public class Conf {
     public static HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
     public static HashSet<PermissableAction> lockedPermissions = new HashSet<>();
 
+    public static boolean wildLoadChunkBeforeTeleport = true;
+
     private static transient Conf i = new Conf();
 
     static {

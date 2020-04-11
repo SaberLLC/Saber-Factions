@@ -1,10 +1,7 @@
 package com.massivecraft.factions.cmd.wild;
 
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -65,6 +62,7 @@ public class CmdWild extends FCommand implements WaitedTask {
                     p.sendMessage(TL.GENERIC_NOTENOUGHMONEY.toString());
                     return;
                 }
+                if (Conf.wildLoadChunkBeforeTeleport && !loc.getChunk().isLoaded()) loc.getChunk().load();
                 teleportPlayer(p, loc);
                 break;
             }
