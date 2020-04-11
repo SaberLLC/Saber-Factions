@@ -37,7 +37,7 @@ public class WildGUI implements FactionGUI {
         if (map.containsKey(slot)) {
             String zone = map.get(slot);
             if (fplayer.hasMoney(FactionsPlugin.getInstance().getConfig().getInt("Wild.Zones." + zone + ".Cost"))) {
-                WaitExecutor.taskMap.put(player, new WaitTask(FactionsPlugin.getInstance().getConfig().getInt("Wild.Wait"), TL.COMMAND_WILD_INPROGRESS, player, CmdWild.instance));
+                WaitExecutor.taskMap.put(player, new WaitTask(FactionsPlugin.getInstance().getConfig().getInt("Wild.Wait"), TL.COMMAND_WILD_WAIT, player, CmdWild.instance));
                 CmdWild.teleportRange.put(player, zone);
                 fplayer.msg(TL.COMMAND_WILD_WAIT, FactionsPlugin.getInstance().getConfig().getInt("Wild.Wait") + " Seconds");
                 player.closeInventory();
