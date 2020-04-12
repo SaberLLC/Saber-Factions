@@ -961,7 +961,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setFFlying(boolean fly, boolean damage) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
+        if (!FactionsPlugin.factionsFlight)
             return;
 
         Player player = getPlayer();

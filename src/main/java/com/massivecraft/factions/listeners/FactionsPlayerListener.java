@@ -572,7 +572,7 @@ public class FactionsPlayerListener implements Listener {
     }
     @Deprecated
     public void checkCanFly(FPlayer me) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight") || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
+        if (!FactionsPlugin.factionsFlight || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
             return;
         if (me.isFlying()) return;
         if (me.getPlayer().hasPermission(Permission.FLY_FLY.node)) {

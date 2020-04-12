@@ -15,7 +15,7 @@ public class UtilFly {
      */
     @Deprecated
     public static void run() {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
+        if (!FactionsPlugin.factionsFlight)
             return;
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
@@ -28,7 +28,7 @@ public class UtilFly {
 
     @Deprecated
     public static void setFly(FPlayer fp, boolean fly, boolean silent, boolean damage) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight"))
+        if (!FactionsPlugin.factionsFlight)
             return;
 
         fp.getPlayer().setAllowFlight(fly);

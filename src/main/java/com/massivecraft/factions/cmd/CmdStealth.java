@@ -20,7 +20,7 @@ public class CmdStealth extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!Conf.useSealthSystem) {
+        if (!Conf.useStealthSystem) {
             context.msg(TL.GENERIC_DISABLED, "Factions Stealth");
             return;
         }

@@ -101,14 +101,14 @@ public class CmdDisband extends FCommand {
                     String amountString = context.sender instanceof ConsoleCommandSender ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(follower);
                     if (follower.getFaction() == faction) {
                         follower.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, amountString);
-                        if (!follower.canFlyAtLocation() && FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
+                        if (!follower.canFlyAtLocation() && FactionsPlugin.factionsFlight) {
                             follower.setFFlying(false, false);
                         }
                     } else {
                         follower.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, amountString, faction.getTag(follower));
                     }
                 }
-                if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
+                if (FactionsPlugin.factionsFlight) {
                     faction.disband(context.player, PlayerDisbandReason.COMMAND);
                     context.fPlayer.setFFlying(false, false);
                     Cooldown.setCooldown(context.fPlayer.getPlayer(), "disbandCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-disband"));
@@ -119,7 +119,7 @@ public class CmdDisband extends FCommand {
             }
             faction.disband(context.player, PlayerDisbandReason.COMMAND);
             Cooldown.setCooldown(context.fPlayer.getPlayer(), "disbandCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-disband"));
-            if (!context.fPlayer.canFlyAtLocation() && FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
+            if (!context.fPlayer.canFlyAtLocation() && FactionsPlugin.factionsFlight) {
                 context.fPlayer.setFFlying(false, false);
             }
         }

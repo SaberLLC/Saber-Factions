@@ -122,7 +122,7 @@ public class Conf {
     public static boolean useDisbandGUI = true;
 
     //SEALTH
-    public static boolean useSealthSystem = true;
+    public static boolean useStealthSystem = true;
 
     //STRIKES
     public static boolean useStrikeSystem = true;
