@@ -86,24 +86,20 @@ public class CmdAdmin extends FCommand {
             FactionsPlugin.instance.getFlogManager().log(targetFaction, FLogType.RANK_EDIT, context.fPlayer.getName(), fyou.getName(), ChatColor.RED + "Admin");
 
             // Inform all players
-            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                fplayer.msg(TL.COMMAND_ADMIN_PROMOTED,
-                        context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true),
-                        fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
+            if(FactionsPlugin.instance.getConfig().getBoolean("faction-leader-broadcast")) {
+                for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+                    fplayer.msg(TL.COMMAND_ADMIN_PROMOTED, context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
+                }
             }
         });
     }
 
     private void setRole(FPlayer fp, Role r) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, () -> {
-            fp.setRole(r);
-        });
+        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, () -> fp.setRole(r));
     }
 
     private void promoteNewLeader(Faction f) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, () -> {
-            f.promoteNewLeader();
-        });
+        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, (Runnable) f::promoteNewLeader);
     }
 
     public TL getUsageTranslation() {
