@@ -753,6 +753,7 @@ Falling-Block-Fix:
 # +------------------------------------------------------+ #
 ############################################################
 f-disband-gui:
+  title: '&7Confirm Disband'
   confirm-item:
     Type: LIME_STAINED_GLASS_PANE
     Name: '&a&lConfirm'

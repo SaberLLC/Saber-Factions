@@ -972,7 +972,7 @@ public enum TL {
     COMMAND_UNBAN_NOTBANNED("&7%s &cisn't banned. Not doing anything."),
     COMMAND_UNBAN_TARGET_IN_OTHER_FACTION("&c%1$s is not in your faction!"),
     COMMAND_UNBAN_UNBANNED("&e%1$s &cunbanned &7%2$s"),
-    COMMAND_UNBAN_TARGET("&aYou were unbanned from &r%s"),
+    COMMAND_UNBAN_TARGETUNBANNED("&aYou were unbanned from &r%s"),
 
     COMMAND_UNCLAIM_SAFEZONE_SUCCESS("Safe zone was unclaimed."),
     COMMAND_UNCLAIM_SAFEZONE_NOPERM("This is a safe zone. You lack permissions to unclaim."),
@@ -1121,6 +1121,7 @@ public enum TL {
     GENERIC_YOUMUSTBE("&cYour must be atleast %1$s to do this!"),
     GENERIC_MEMBERONLY("&cYou must be in a faction to do this!"),
     GENERIC_WORLDGUARD("&cThis area is worldguard protected."),
+    GRACE_DISABLED_PLACEHOLDER("Disabled"),
 
     // MISSION_CREATED_COOLDOWN("&c&l[!] &7Due to your immediate faction creation, you may not start missions for &b%1$s minutes&7!"),
     MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),

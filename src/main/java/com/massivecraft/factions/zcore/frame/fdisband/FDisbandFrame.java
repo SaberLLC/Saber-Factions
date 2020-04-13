@@ -28,7 +28,7 @@ public class FDisbandFrame {
     private Gui gui;
 
     public FDisbandFrame(Faction faction) {
-        this.gui = new Gui(FactionsPlugin.getInstance(), 1, "Confirm Disband");
+        this.gui = new Gui(FactionsPlugin.getInstance(), 1, ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getString("f-disband-gui.title"))));
     }
 
     public void buildGUI(FPlayer fPlayer) {

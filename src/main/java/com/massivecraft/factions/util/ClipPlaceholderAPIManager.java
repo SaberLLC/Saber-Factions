@@ -210,8 +210,12 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(faction.getMaxVaults());
             case "faction_relation_color":
                 return fPlayer.getColorTo(faction).toString();
-            case "faction_grace_time":
-                return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
+            case "grace_time":
+                if(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() >= 0) {
+                    return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
+                } else {
+                    return TL.GRACE_DISABLED_PLACEHOLDER.toString();
+                }
             case "faction_name_at_location":
                 Faction factionAtLocation = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
                 return factionAtLocation != null ? factionAtLocation.getTag() : Factions.getInstance().getWilderness().getTag();
