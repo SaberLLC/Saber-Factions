@@ -385,6 +385,10 @@ public class FactionsPlayerListener implements Listener {
                 case CHEST_MINECART:
 
                 case BARREL:
+                case COMPOSTER:
+                case LOOM:
+                case CARTOGRAPHY_TABLE:
+                case GRINDSTONE:
 
                 case SHULKER_BOX:
                 case BLACK_SHULKER_BOX:
