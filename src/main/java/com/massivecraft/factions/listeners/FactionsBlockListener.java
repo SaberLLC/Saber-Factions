@@ -180,12 +180,18 @@ public class FactionsBlockListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
         if (!Conf.handleExploitLiquidFlow) return;
+
         if (event.getBlock().isLiquid()) {
             if (event.getToBlock().isEmpty()) {
                 Faction from = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
                 Faction to = Board.getInstance().getFactionAt(new FLocation(event.getToBlock()));
                 if (from == to) return;
                 // from faction != to faction
+                if(to.isSystemFaction()) {
+                    event.setCancelled(true);
+                    return;
+                }
+                
                 if (to.isNormal()) {
                     if (from.isNormal() && from.getRelationTo(to).isAlly()) {
                         return;
