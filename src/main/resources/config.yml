@@ -362,7 +362,9 @@ help:
     - '&c/f banlist &8- &7List banned players from your faction.'
     - '&c/f lowpower &8- &7List player with power under max from your faction.'
     - '&c/f coords &8- &7Broadcast your location to your faction.'
+    #THIS IS AFFILIATED WITH F PERMS PERMISSION (TERRITORY) LOL
     - '&c/f showclaims &8- &7List all claims from your faction.'
+    #THIS IS AFFILIATED WITH F PERMS PERMISSION (TERRITORY) LOL
     - '&7&m--------------------&r &e/f help 2 &7&m-----------------------'
   '2':
     - '&7&m----------------------------------------------------'
