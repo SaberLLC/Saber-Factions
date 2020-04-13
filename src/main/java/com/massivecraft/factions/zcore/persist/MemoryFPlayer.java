@@ -843,71 +843,72 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public boolean canClaimForFactionAtLocation(Faction forFaction, FLocation flocation, boolean notifyFailure) {
+        FactionsPlugin plugin = FactionsPlugin.getInstance();
         String error = null;
         Faction myFaction = getFaction();
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
         int ownedLand = forFaction.getLandRounded();
-        int factionBuffer = FactionsPlugin.getInstance().getConfig().getInt("hcf.buffer-zone", 0);
-        int worldBuffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0) - 1;
+        int factionBuffer = plugin.getConfig().getInt("hcf.buffer-zone", 0);
+        int worldBuffer = plugin.getConfig().getInt("world-border.buffer", 0) - 1;
 
-        if (Conf.worldGuardChecking && Worldguard.getInstance().checkForRegionsInChunk(flocation) && !this.isAdminBypassing()) {
+        if (Conf.worldGuardChecking &&  Worldguard.getInstance().checkForRegionsInChunk(flocation)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_PROTECTED.toString());
-        } else if (flocation.isOutsideWorldBorder(FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0) - 1)) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
+            error = plugin.txt.parse(TL.CLAIM_PROTECTED.toString());
+        } else if (flocation.isOutsideWorldBorder(plugin.getConfig().getInt("world-border.buffer", 0) - 1)) {
+            error = plugin.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_DISABLED.toString());
+            error = plugin.txt.parse(TL.CLAIM_DISABLED.toString());
         } else if (this.isAdminBypassing()) {
             return true;
         } else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
             return true;
         } else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
             return true;
-        } else if (currentFaction.getAccess(this, PermissableAction.TERRITORY) == Access.ALLOW) {
+        } else if (currentFaction.getAccess(this, PermissableAction.TERRITORY) == Access.ALLOW && forFaction != currentFaction ) {
             return true;
         } else if (myFaction != forFaction) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
+            error = plugin.txt.parse(TL.CLAIM_CANTCLAIM.toString(), forFaction.describeTo(this));
         } else if (forFaction == currentFaction) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_ALREADYOWN.toString(), forFaction.describeTo(this, true));
+            error = plugin.txt.parse(TL.CLAIM_ALREADYOWN.toString(), forFaction.describeTo(this, true));
         } else if (forFaction.getFPlayers().size() < Conf.claimsRequireMinFactionMembers) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_MEMBERS.toString(), Conf.claimsRequireMinFactionMembers);
+            error = plugin.txt.parse(TL.CLAIM_MEMBERS.toString(), Conf.claimsRequireMinFactionMembers);
         } else if (currentFaction.isSafeZone()) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_SAFEZONE.toString());
+            error = plugin.txt.parse(TL.CLAIM_SAFEZONE.toString());
         } else if (currentFaction.isWarZone()) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_WARZONE.toString());
-        } else if (FactionsPlugin.getInstance().getConfig().getBoolean("hcf.allow-overclaim", true) && ownedLand >= forFaction.getPowerRounded()) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_POWER.toString());
+            error = plugin.txt.parse(TL.CLAIM_WARZONE.toString());
+        } else if (plugin.getConfig().getBoolean("hcf.allow-overclaim", true) && ownedLand >= forFaction.getPowerRounded()) {
+            error = plugin.txt.parse(TL.CLAIM_POWER.toString());
         } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_LIMIT.toString());
+            error = plugin.txt.parse(TL.CLAIM_LIMIT.toString());
         } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_ALLY.toString());
+            error = plugin.txt.parse(TL.CLAIM_ALLY.toString());
         } else if (Conf.claimsMustBeConnected && !this.isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
             if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction) {
-                error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_CONTIGIOUS.toString());
+                error = plugin.txt.parse(TL.CLAIM_CONTIGIOUS.toString());
             } else {
-                error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
+                error = plugin.txt.parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
             }
         } else if (factionBuffer > 0 && Board.getInstance().hasFactionWithin(flocation, myFaction, factionBuffer)) {
-            error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
+            error = plugin.txt.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
         } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
             if (worldBuffer > 0) {
-                error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer));
+                error = plugin.txt.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer));
             } else {
-                error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
+                error = plugin.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
             }
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
-                error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
+                error = plugin.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
             } else if (currentFaction.isPeaceful()) {
-                error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
+                error = plugin.txt.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
             } else if (!currentFaction.hasLandInflation()) {
                 // TODO more messages WARN current faction most importantly
-                error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
-            } else if (currentFaction.hasLandInflation() && !FactionsPlugin.getInstance().getConfig().getBoolean("hcf.allow-overclaim", true)) {
+                error = plugin.txt.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
+            } else if (currentFaction.hasLandInflation() && !plugin.getConfig().getBoolean("hcf.allow-overclaim", true)) {
                 // deny over claim when it normally would be allowed.
-                error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
+                error = plugin.txt.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
             } else if (!Board.getInstance().isBorderLocation(flocation)) {
-                error = FactionsPlugin.getInstance().txt.parse(TL.CLAIM_BORDER.toString());
+                error = plugin.txt.parse(TL.CLAIM_BORDER.toString());
             }
         }
         // TODO: Add more else if statements.
