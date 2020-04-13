@@ -191,7 +191,7 @@ public class FactionsBlockListener implements Listener {
                     event.setCancelled(true);
                     return;
                 }
-                
+
                 if (to.isNormal()) {
                     if (from.isNormal() && from.getRelationTo(to).isAlly()) {
                         return;

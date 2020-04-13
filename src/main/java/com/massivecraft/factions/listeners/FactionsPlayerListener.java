@@ -47,9 +47,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.NumberConversions;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -455,7 +453,6 @@ public class FactionsPlayerListener implements Listener {
                 case CHIPPED_ANVIL:
                 case DAMAGED_ANVIL:
                 case BREWING_STAND:
-
                     return PermissableAction.CONTAINER;
                 default:
                     return null;
@@ -843,14 +840,11 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler
     public void onInventorySee(InventoryClickEvent e) {
-        if (e.getCurrentItem() == null)
-            return;
-
-        if (!e.getView().getTitle().endsWith("'s Inventory"))
-            return;
-
+        if (e.getCurrentItem() == null) return;
+        if (!e.getView().getTitle().endsWith("'s Inventory")) return;
         e.setCancelled(true);
     }
+
 
     @EventHandler
     public void onPlayerBoneMeal(PlayerInteractEvent event) {
@@ -971,7 +965,7 @@ public class FactionsPlayerListener implements Listener {
         if (badGuy == null) return;
 
         // if player was banned (not just kicked), get rid of their stored info
-        if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin.")) {
+        if (Conf.removePlayerDataWhenBanned && event.getReason().equals(Conf.removePlayerDataWhenBannedReason)) {
             if (badGuy.getRole() == Role.LEADER) badGuy.getFaction().promoteNewLeader();
 
 
