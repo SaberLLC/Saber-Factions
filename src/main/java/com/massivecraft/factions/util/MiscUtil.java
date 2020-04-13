@@ -85,6 +85,7 @@ public class MiscUtil {
         for (char c : str.toCharArray()) {
             if (!substanceChars.contains(String.valueOf(c))) {
                 errors.add(FactionsPlugin.getInstance().txt.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
+                break;
             }
         }
 
