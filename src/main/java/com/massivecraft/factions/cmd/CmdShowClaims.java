@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdShowClaims extends FCommand {
@@ -16,6 +17,7 @@ public class CmdShowClaims extends FCommand {
         this.aliases.addAll(Aliases.show_claims);
 
         this.requirements = new CommandRequirements.Builder(Permission.SHOWCLAIMS)
+                .withAction(PermissableAction.TERRITORY)
                 .playerOnly()
                 .memberOnly()
                 .build();

@@ -728,6 +728,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void sendFactionHereMessage(Faction from) {
         Faction toShow = Board.getInstance().getFactionAt(getLastStoodAt());
+
+        if(Conf.worldsNoClaiming.contains(getLastStoodAt().getWorldName())) return;
+
         if (showInfoBoard(toShow)) {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
         }
