@@ -36,6 +36,8 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Boat;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
