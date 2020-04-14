@@ -60,14 +60,11 @@ public class CmdInvite extends FCommand {
         // Send the invitation to the target player when online, otherwise just ignore
         if (target.isOnline()) {
             // Tooltips, colors, and commands only apply to the string immediately before it.
-            FancyMessage message = new FancyMessage(context.fPlayer.describeTo(target, true))
+            FancyMessage message = new FancyMessage(TL.COMMAND_INVITE_INVITEDYOU.toString()
+                        .replace("%1$s", context.fPlayer.describeTo(target, true))
+                        .replace("%2$s", context.faction.getTag())
+                        .replaceAll("&", "§"))
                     .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag())
-                    .then(TL.COMMAND_INVITE_INVITEDYOU.toString())
-                    .color(ChatColor.YELLOW)
-                    .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
-                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag())
-                    .then(context.faction.describeTo(target)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
                     .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag());
             message.send(target.getPlayer());
         }
