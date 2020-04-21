@@ -20,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author DroppingAnvil
+ */
 public class WildGUI implements FactionGUI {
     Player player;
     FPlayer fplayer;

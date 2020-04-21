@@ -11,6 +11,7 @@ import com.massivecraft.factions.util.wait.WaitedTask;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -21,10 +22,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 
+/**
+ * @author DroppingAnvil
+ */
 public class CmdWild extends FCommand implements WaitedTask {
     public static HashMap<Player, String> teleportRange;
     public static HashSet<Player> teleporting;
     public static CmdWild instance;
+    public static final String tpWorld = FactionsPlugin.getInstance().getConfig().getString("Wild.World", "World");
 
     public CmdWild() {
         super();
@@ -56,7 +61,7 @@ public class CmdWild extends FCommand implements WaitedTask {
             int z = new Random().nextInt((c.getInt("Range.MaxZ") - c.getInt("Range.MinZ")) + 1) + c.getInt("Range.MinZ");
             if (Board.getInstance().getFactionAt(new FLocation(p.getWorld().getName(), x, z)).isWilderness()) {
                 success = true;
-                FLocation loc = new FLocation(p.getWorld().getName(), x, z);
+                FLocation loc = new FLocation(tpWorld, x, z);
                 teleportRange.remove(p);
                 if (!FPlayers.getInstance().getByPlayer(p).takeMoney(c.getInt("Cost"))) {
                     p.sendMessage(TL.GENERIC_NOTENOUGHMONEY.toString());

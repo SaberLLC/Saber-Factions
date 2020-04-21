@@ -8,9 +8,7 @@ import org.bukkit.entity.Player;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Factions - Developed by Driftay.
- * All rights reserved 2020.
- * Creation Date: 4/4/2020
+ * @author DroppingAnvil
  */
 public class WaitExecutor {
     public static ConcurrentHashMap<Player, WaitTask> taskMap = new ConcurrentHashMap<>();

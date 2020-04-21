@@ -1434,6 +1434,8 @@ Wild:
   Enabled: true
   # Time to wait in seconds #
   Wait: 5
+  # World players will be teleported to #
+  World: 'World'
   # General GUI Settings #
   GUI:
     Name: 'Teleporter'
