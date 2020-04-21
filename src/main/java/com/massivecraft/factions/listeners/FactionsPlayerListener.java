@@ -36,6 +36,8 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Boat;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -385,6 +387,10 @@ public class FactionsPlayerListener implements Listener {
                 case CHEST_MINECART:
 
                 case BARREL:
+                case COMPOSTER:
+                case LOOM:
+                case CARTOGRAPHY_TABLE:
+                case GRINDSTONE:
 
                 case SHULKER_BOX:
                 case BLACK_SHULKER_BOX:
@@ -453,7 +459,6 @@ public class FactionsPlayerListener implements Listener {
                 case CHIPPED_ANVIL:
                 case DAMAGED_ANVIL:
                 case BREWING_STAND:
-
                     return PermissableAction.CONTAINER;
                 default:
                     return null;
@@ -572,7 +577,7 @@ public class FactionsPlayerListener implements Listener {
     }
     @Deprecated
     public void checkCanFly(FPlayer me) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight") || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
+        if (!FactionsPlugin.factionsFlight || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
             return;
         if (me.isFlying()) return;
         if (me.getPlayer().hasPermission(Permission.FLY_FLY.node)) {
@@ -841,14 +846,11 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler
     public void onInventorySee(InventoryClickEvent e) {
-        if (e.getCurrentItem() == null)
-            return;
-
-        if (!e.getView().getTitle().endsWith("'s Inventory"))
-            return;
-
+        if (e.getCurrentItem() == null) return;
+        if (!e.getView().getTitle().endsWith("'s Inventory")) return;
         e.setCancelled(true);
     }
+
 
     @EventHandler
     public void onPlayerBoneMeal(PlayerInteractEvent event) {
@@ -969,7 +971,7 @@ public class FactionsPlayerListener implements Listener {
         if (badGuy == null) return;
 
         // if player was banned (not just kicked), get rid of their stored info
-        if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin.")) {
+        if (Conf.removePlayerDataWhenBanned && event.getReason().equals(Conf.removePlayerDataWhenBannedReason)) {
             if (badGuy.getRole() == Role.LEADER) badGuy.getFaction().promoteNewLeader();
 
 

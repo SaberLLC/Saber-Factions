@@ -362,7 +362,9 @@ help:
     - '&c/f banlist &8- &7List banned players from your faction.'
     - '&c/f lowpower &8- &7List player with power under max from your faction.'
     - '&c/f coords &8- &7Broadcast your location to your faction.'
+    #THIS IS AFFILIATED WITH F PERMS PERMISSION (TERRITORY) LOL
     - '&c/f showclaims &8- &7List all claims from your faction.'
+    #THIS IS AFFILIATED WITH F PERMS PERMISSION (TERRITORY) LOL
     - '&7&m--------------------&r &e/f help 2 &7&m-----------------------'
   '2':
     - '&7&m----------------------------------------------------'
@@ -600,6 +602,7 @@ fwarp-gui:
 faction-creation-broadcast: true #Disabling this will not make faction creation broadcasts appear in chat.
 faction-disband-broadcast: true #Disabling this will not make faction disband broadcasts appear in chat.
 faction-open-broadcast: true #Disabling this will not make faction open broadcasts appear in chat.
+faction-leader-broadcast: true #Disabling this will not make leader changes appear in chat.
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -753,6 +756,7 @@ Falling-Block-Fix:
 # +------------------------------------------------------+ #
 ############################################################
 f-disband-gui:
+  title: '&7Confirm Disband'
   confirm-item:
     Type: LIME_STAINED_GLASS_PANE
     Name: '&a&lConfirm'

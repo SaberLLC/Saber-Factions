@@ -82,7 +82,7 @@ public class FactionsPlugin extends MPlugin {
     public boolean mc114 = false;
     public boolean mc115 = false;
     public boolean useNonPacketParticles = false;
-    public boolean factionsFlight = false;
+    public static boolean factionsFlight = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     SkriptAddon skriptAddon;
     private FactionsPlayerListener factionsPlayerListener;
@@ -453,37 +453,32 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onDisable() {
-        super.onDisable();
-        timerManager.saveTimerData();
-        try {
-            String path = Paths.get(getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
-            File file = new File(path);
-            if (!file.exists()) {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            }
-            Files.write(Paths.get(file.getPath()), getGsonBuilder().create().toJson(reserveObjects).getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         // only save data if plugin actually completely loaded successfully
-        if (this.loadSuccessful) Conf.saveSync();
-
-
-        if (AutoLeaveTask != null) {
-            this.getServer().getScheduler().cancelTask(AutoLeaveTask);
-            AutoLeaveTask = null;
+        if (this.loadSuccessful) {
+            Conf.load();
+            Conf.saveSync();
+            timerManager.saveTimerData();
+            DiscordListener.saveGuilds();
+            if (Discord.jda != null) Discord.jda.shutdownNow();
+            try {
+                fLogManager.saveLogs();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                String path = Paths.get(getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
+                File file = new File(path);
+                if (!file.exists()) {
+                    file.getParentFile().mkdirs();
+                    file.createNewFile();
+                }
+                Files.write(Paths.get(file.getPath()), getGsonBuilder().create().toJson(reserveObjects).getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        DiscordListener.saveGuilds();
-        if (Discord.jda != null) {
-            Discord.jda.shutdownNow();
-        }
-        try {
-            fLogManager.saveLogs();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.getServer().getScheduler().cancelTasks(this);
+        super.onDisable();
     }
 
     public void startAutoLeaveTask(boolean restartIfRunning) {

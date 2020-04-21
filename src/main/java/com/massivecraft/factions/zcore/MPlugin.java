@@ -178,7 +178,6 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public void onDisable() {
-        try {
             if (saveTask != null) {
                 this.getServer().getScheduler().cancelTask(saveTask);
                 saveTask = null;
@@ -190,8 +189,6 @@ public abstract class MPlugin extends JavaPlugin {
                 Board.getInstance().forceSave();
             }
             log("Disabled");
-        } catch (IllegalPluginAccessException e) {
-        }
     }
 
     // -------------------------------------------- //

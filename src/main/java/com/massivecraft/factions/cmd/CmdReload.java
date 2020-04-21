@@ -31,7 +31,7 @@ public class CmdReload extends FCommand {
 
 
         if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", false)) {
-            FactionsPlugin.getInstance().factionsFlight = true;
+            FactionsPlugin.factionsFlight = true;
         }
 
         if (!FactionsPlugin.getInstance().mc17) {

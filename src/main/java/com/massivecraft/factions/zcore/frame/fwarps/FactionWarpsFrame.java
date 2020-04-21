@@ -40,7 +40,8 @@ public class FactionWarpsFrame {
         int count = 0;
         for (int x = 0; x <= gui.getRows() * 9 - 1; ++x)
             GUIItems.add(new GuiItem(buildDummyItem(), e -> e.setCancelled(true)));
-        slots.forEach(slot -> GUIItems.set(slot, new GuiItem(XMaterial.AIR.parseItem())));
+        //We comment this out for now so it does not interfere with item placement when no warps are set
+        //slots.forEach(slot -> GUIItems.set(slot, new GuiItem(XMaterial.AIR.parseItem())));
         for (final Map.Entry<String, LazyLocation> warp : fplayer.getFaction().getWarps().entrySet()) {
             if (slots.size() < fplayer.getFaction().getWarps().entrySet().size()) {
                 slots.add(slots.get(slots.size() - 1) + 1);

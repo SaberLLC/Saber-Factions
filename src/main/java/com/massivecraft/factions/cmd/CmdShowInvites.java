@@ -33,6 +33,7 @@ public class CmdShowInvites extends FCommand {
             String name = fp != null ? fp.getName() : id;
             msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_SHOWINVITES_CLICKTOREVOKE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
         }
+        context.sendFancyMessage(msg);
     }
 
     @Override

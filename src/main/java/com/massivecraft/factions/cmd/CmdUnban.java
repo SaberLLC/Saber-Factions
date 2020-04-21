@@ -5,6 +5,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Material;
 
 public class CmdUnban extends FCommand {
 
@@ -48,7 +49,7 @@ public class CmdUnban extends FCommand {
         context.faction.unban(target);
 
         context.msg(TL.COMMAND_UNBAN_UNBANNED, context.fPlayer.getName(), target.getName());
-        target.msg(TL.COMMAND_UNBAN_TARGET, context.faction.getTag(target));
+        target.msg(TL.COMMAND_UNBAN_TARGETUNBANNED, context.faction.getTag(target));
     }
 
     @Override
