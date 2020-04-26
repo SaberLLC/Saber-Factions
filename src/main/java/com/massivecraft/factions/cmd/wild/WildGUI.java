@@ -60,7 +60,8 @@ public class WildGUI implements FactionGUI {
             inv.setItem(fill, fillItem);
         }
         for (String key : Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getConfigurationSection("Wild.Zones")).getKeys(false)) {
-            ItemStack zoneItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("Wild.Zones." + key + ".Material")).get().parseItem();
+            ItemStack zoneItem = XMaterial.matchXMaterial(Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getString("Wild.Zones." + key + ".Material"))).get().parseItem();
+            assert zoneItem != null;
             ItemMeta zoneMeta = zoneItem.getItemMeta();
             if (zoneMeta == null) return;
             List<String> lore = new ArrayList<>();
