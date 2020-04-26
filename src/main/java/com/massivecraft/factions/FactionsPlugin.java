@@ -184,8 +184,10 @@ public class FactionsPlugin extends MPlugin {
         Metrics metrics = new Metrics(this, pluginId);
 
 
-        if (!preEnable()) return;
-        this.loadSuccessful = false;
+        if (!preEnable()) {
+            this.loadSuccessful = false;
+            return;
+        }
 
         if (!new File(this.getDataFolder() + "/config.yml").exists()) {
             this.saveResource("config.yml", false);
