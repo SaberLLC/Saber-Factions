@@ -14,7 +14,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements Relational {
 
@@ -220,10 +223,35 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 Faction factionAtLocation = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
                 return factionAtLocation != null ? factionAtLocation.getTag() : Factions.getInstance().getWilderness().getTag();
         }
+        //If its not hardcoded lets try to grab it anyways
+        boolean targetFaction = false;
+        Object target = fPlayer;
+        String stripped = "";
+        if (placeholder.startsWith("faction_")) {
+            targetFaction = true;
+            target = faction;
+            stripped = placeholder.replace("faction_", "");
+        } else {
+            stripped = placeholder.replace("player_", "");
+        }
+        try {
+            Object pulled;
+            if (targetFaction) {
+                pulled = Faction.class.getDeclaredMethod(stripped).invoke(target);
+            } else {
+                pulled = FPlayer.class.getDeclaredMethod(stripped).invoke(target);
+            }
+            return String.valueOf(pulled);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            logInvalid(stripped);
+        }
 
-        return null;
+        return TL.PLACEHOLDERAPI_NULL.toString();
     }
 
+    private static void logInvalid(String placeholder) {
+        FactionsPlugin.getInstance().getLogger().log(Level.INFO, "Invalid request through PlaceholderAPI for placeholder '" + placeholder + "'");
+    }
 
     private int countOn(Faction f, Relation relation, Boolean status, FPlayer player) {
         int count = 0;

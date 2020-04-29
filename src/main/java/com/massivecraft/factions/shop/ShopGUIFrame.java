@@ -46,14 +46,14 @@ public class ShopGUIFrame {
         for (int a = 1; a <= items; a++) {
             String s = a + "";
             int slot = FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("items." + s + ".slot");
-            ItemStack material = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("items." + s + ".block")).get().parseItem();
+            ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("items." + s + ".block")).get().parseItem();
             int cost = FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("items." + s + ".cost");
             String name = FactionsPlugin.getInstance().getFileManager().getShop().fetchString("items." + s + ".name");
             boolean glowing = FactionsPlugin.getInstance().getFileManager().getShop().fetchBoolean("items." + s + ".glowing");
             List<String> lore = FactionsPlugin.getInstance().getFileManager().getShop().fetchStringList("items." + s + ".lore");
 
 
-            ItemStack item = new ItemStack(material);
+            assert item != null;
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName(FactionsPlugin.instance.color(name));
             meta.addItemFlags();
