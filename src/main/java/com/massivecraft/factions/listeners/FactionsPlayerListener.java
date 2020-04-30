@@ -577,7 +577,7 @@ public class FactionsPlayerListener implements Listener {
     }
     @Deprecated
     public void checkCanFly(FPlayer me) {
-        if (!FactionsPlugin.factionsFlight || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
+        if (!CmdFly.fly || !CmdFly.autoenable)
             return;
         if (me.isFlying()) return;
         if (me.getPlayer().hasPermission(Permission.FLY_FLY.node)) {
@@ -726,7 +726,6 @@ public class FactionsPlayerListener implements Listener {
             }
             if (FCmdRoot.instance.fFlyEnabled && CmdFly.autoenable && CmdFly.checkFly(me, me.getPlayer(), factionTo)) {
                 me.setFFlying(true, false);
-                CmdFly.flyMap.put(me, true);
                 if (CmdFly.particleTask == null)
                     CmdFly.startParticles();
             }

@@ -15,8 +15,6 @@ public class UtilFly {
      */
     @Deprecated
     public static void run() {
-        if (!FactionsPlugin.factionsFlight)
-            return;
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
             for (FPlayer fp : FPlayers.getInstance().getOnlinePlayers()) {
@@ -28,8 +26,6 @@ public class UtilFly {
 
     @Deprecated
     public static void setFly(FPlayer fp, boolean fly, boolean silent, boolean damage) {
-        if (!FactionsPlugin.factionsFlight)
-            return;
 
         fp.getPlayer().setAllowFlight(fly);
         fp.getPlayer().setFlying(fly);

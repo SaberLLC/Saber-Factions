@@ -82,7 +82,6 @@ public class FactionsPlugin extends MPlugin {
     public boolean mc114 = false;
     public boolean mc115 = false;
     public boolean useNonPacketParticles = false;
-    public static boolean factionsFlight = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     SkriptAddon skriptAddon;
     private FactionsPlayerListener factionsPlayerListener;
@@ -253,8 +252,6 @@ public class FactionsPlugin extends MPlugin {
             useNonPacketParticles = true;
             log("Minecraft Version 1.9 or higher found, using non packet based particle API");
         }
-
-        if (getConfig().getBoolean("enable-faction-flight")) factionsFlight = true;
 
         if (getServer().getPluginManager().getPlugin("Skript") != null) {
             log("Skript was found! Registering FactionsPlugin Addon...");

@@ -963,19 +963,19 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setFFlying(boolean fly, boolean damage) {
-        if (!FactionsPlugin.factionsFlight)
-            return;
-
         Player player = getPlayer();
-        if (player == null) return;
+        assert player != null;
 
         player.setAllowFlight(fly);
         player.setFlying(fly);
 
         if (!damage) {
             msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
-            if (!fly)
+            if (!fly) {
                 sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
+            } else {
+                CmdFly.flyMap.put(this, true);
+            }
         } else {
             msg(TL.COMMAND_FLY_DAMAGE);
         }
@@ -983,7 +983,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         // If leaving fly mode, don't let them take fall damage for x seconds.
         if (!fly) {
             int cooldown = FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3);
-            CmdFly.flyMap.remove(player.getName());
+            CmdFly.flyMap.remove(this);
 
             // If the value is 0 or lower, make them take fall damage.
             // Otherwise, start a timer and have this cancel after a few seconds.

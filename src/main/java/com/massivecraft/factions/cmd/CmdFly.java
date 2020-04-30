@@ -28,6 +28,7 @@ public class CmdFly extends FCommand {
     public static BukkitTask particleTask = null;
     public static BukkitTask flyTask = null;
     public static boolean autoenable = FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable");
+    public static final boolean fly = FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight");
 
 
     public CmdFly() {
@@ -46,7 +47,7 @@ public class CmdFly extends FCommand {
         particleTask = Bukkit.getScheduler().runTaskTimerAsynchronously(FactionsPlugin.instance, () -> {
             for (FPlayer fPlayer : flyMap.keySet()) {
                 Player player = fPlayer.getPlayer();
-                if (!player.isOnline() || !player.isFlying()) continue;
+                if (player == null || !player.isOnline() || !fPlayer.isFlying()) continue;
                 if (!FactionsPlugin.getInstance().mc17) {
                     if (player.getGameMode() == GameMode.SPECTATOR) continue;
                 }
@@ -66,7 +67,7 @@ public class CmdFly extends FCommand {
                 for (FPlayer fPlayer : flyMap.keySet()) {
                     Player player = fPlayer.getPlayer();
                     if (player == null
-                            || !player.isFlying()
+                            || !fPlayer.isFlying()
                             || player.getGameMode() == GameMode.CREATIVE
                             || !FactionsPlugin.getInstance().mc17 && player.getGameMode() == GameMode.SPECTATOR) {
                         continue;
@@ -113,12 +114,10 @@ public class CmdFly extends FCommand {
 
     public static void disableFlight(final FPlayer fme) {
         fme.setFlying(false);
-        flyMap.remove(fme);
     }
 
     private static void disableFlightSync(FPlayer fme) {
         Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> fme.setFFlying(false, false));
-        flyMap.remove(fme);
     }
 
     private static void checkEnemiesSync(FPlayer fp) {
@@ -164,7 +163,6 @@ public class CmdFly extends FCommand {
     private void toggleFlight(final boolean toggle, final FPlayer fme, CommandContext context) {
         if (toggle) {
             fme.setFlying(false);
-            flyMap.remove(fme);
             return;
         }
 
