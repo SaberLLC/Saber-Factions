@@ -230,6 +230,10 @@ public class FactionsPlugin extends MPlugin {
             else faction.addFPlayer(fPlayer);
         }
 
+        if (getConfig().getBoolean("enable-faction-flight", true)) {
+            UtilFly.run();
+        }
+
 
         Board.getInstance().load();
         Board.getInstance().clean();

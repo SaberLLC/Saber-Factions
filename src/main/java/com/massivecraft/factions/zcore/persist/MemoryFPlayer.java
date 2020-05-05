@@ -964,7 +964,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setFFlying(boolean fly, boolean damage) {
         Player player = getPlayer();
-        assert player != null;
+        if (player == null) return;
 
         player.setAllowFlight(fly);
         player.setFlying(fly);
@@ -973,9 +973,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
             if (!fly) {
                 sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
-            } else {
-                CmdFly.flyMap.put(this, true);
             }
+
         } else {
             msg(TL.COMMAND_FLY_DAMAGE);
         }
@@ -983,7 +982,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         // If leaving fly mode, don't let them take fall damage for x seconds.
         if (!fly) {
             int cooldown = FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3);
-            CmdFly.flyMap.remove(this);
+            CmdFly.flyMap.remove(player.getName());
 
             // If the value is 0 or lower, make them take fall damage.
             // Otherwise, start a timer and have this cancel after a few seconds.
@@ -993,6 +992,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                 Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> setTakeFallDamage(true), 20L * cooldown);
             }
         }
+
         isFlying = fly;
     }
 
@@ -1018,8 +1018,14 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
-        if ((faction == getFaction() && getRole() == Role.LEADER) || isAdminBypassing) return true;
-        if (faction.isSystemFaction()) return CmdFly.checkFly(this, getPlayer(), faction);
+        if ((faction == getFaction() && getRole() == Role.LEADER) || isAdminBypassing) {
+            return true;
+        }
+
+        if (faction.isSystemFaction()) {
+            return CmdFly.checkBypassPerms(this, getPlayer(), faction);
+        }
+
         Access access = faction.getAccess(this, PermissableAction.FLY);
         return access == null || access == Access.UNDEFINED || access == Access.ALLOW;
     }

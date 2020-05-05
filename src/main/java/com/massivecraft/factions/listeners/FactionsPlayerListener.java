@@ -575,17 +575,18 @@ public class FactionsPlayerListener implements Listener {
                 .replace("{leader}", faction.getFPlayerAdmin() + "");
         return string;
     }
-    @Deprecated
+
     public void checkCanFly(FPlayer me) {
-        if (!CmdFly.fly || !CmdFly.autoenable)
+        if (me.isFlying() && (!me.canFlyAtLocation() || me.checkIfNearbyEnemies())) {
+            me.setFFlying(false, false);
             return;
-        if (me.isFlying()) return;
-        if (me.getPlayer().hasPermission(Permission.FLY_FLY.node)) {
-            me.setFFlying(true, false);
-            CmdFly.flyMap.put(me, true);
-            if (CmdFly.particleTask == null)
-                CmdFly.startParticles();
         }
+        if (me.isFlying() || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
+            return;
+        me.setFFlying(true, false);
+        CmdFly.flyMap.put(me.getName(), true);
+        if (CmdFly.particleTask == null)
+            CmdFly.startParticles();
     }
 
     //inspect
@@ -660,6 +661,32 @@ public class FactionsPlayerListener implements Listener {
                     }
                     refreshPosition(player, lastLocations.get(player.getUniqueId()), player.getLocation());
                     lastLocations.put(player.getUniqueId(), player.getLocation());
+                    if (CmdFly.flyMap.containsKey(player.getName())) {
+                        String name = player.getName();
+                        if (!player.isFlying()
+                                || player.getGameMode() == GameMode.CREATIVE
+                                || !FactionsPlugin.instance.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
+                            continue;
+                        }
+                        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+                        Faction myFaction = fPlayer.getFaction();
+                        if (myFaction.isWilderness()) {
+                            Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> fPlayer.setFlying(false));
+                            CmdFly.flyMap.remove(player.getName());
+                            continue;
+                        }
+                        Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> {
+                            if (!fPlayer.checkIfNearbyEnemies()) {
+                                FLocation myFloc = new FLocation(player.getLocation());
+                                if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
+                                    if (!CmdFly.checkBypassPerms(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
+                                        fPlayer.setFFlying(false, false);
+                                        CmdFly.flyMap.remove(name);
+                                    }
+                                }
+                            }
+                        });
+                    }
                 }
             }
         }, 5L, 10L);
@@ -724,11 +751,8 @@ public class FactionsPlayerListener implements Listener {
                     }, 5);
                 }
             }
-            if (FCmdRoot.instance.fFlyEnabled && CmdFly.autoenable && CmdFly.checkFly(me, me.getPlayer(), factionTo)) {
-                me.setFFlying(true, false);
-                if (CmdFly.particleTask == null)
-                    CmdFly.startParticles();
-            }
+
+            checkCanFly(me);
 
             Faction at = Board.getInstance().getFactionAt(new FLocation(me.getPlayer().getLocation()));
             if (me.getAutoClaimFor() != null) {
