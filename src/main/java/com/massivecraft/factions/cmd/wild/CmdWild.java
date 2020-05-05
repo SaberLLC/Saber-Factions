@@ -46,8 +46,6 @@ public class CmdWild extends FCommand implements WaitedTask {
     public void perform(CommandContext context) {
         if (!teleportRange.containsKey(context.player)) {
             context.player.openInventory(new WildGUI(context.player, context.fPlayer).getInventory());
-        } else {
-            context.fPlayer.msg(TL.COMMAND_WILD_WAIT);
         }
     }
 
