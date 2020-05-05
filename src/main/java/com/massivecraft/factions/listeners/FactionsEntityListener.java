@@ -327,7 +327,6 @@ public class FactionsEntityListener implements Listener {
 
     public boolean isPlayerInSafeZone(Entity damagee) {
         if (!(damagee instanceof Player)) return false;
-
         return Board.getInstance().getFactionAt(new FLocation(damagee.getLocation())).isSafeZone();
     }
 
@@ -338,12 +337,8 @@ public class FactionsEntityListener implements Listener {
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify) {
         Entity damager = sub.getDamager();
         Entity damagee = sub.getEntity();
-
         if (!(damagee instanceof Player)) return true;
-
         FPlayer defender = FPlayers.getInstance().getByPlayer((Player) damagee);
-
-
         if (damager instanceof Player) {
             FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
             if (defender == null || defender.getPlayer() == null) return true;
@@ -358,12 +353,8 @@ public class FactionsEntityListener implements Listener {
                 }
             }
         }
-
-
         Location defenderLoc = defender.getPlayer().getLocation();
         Faction defLocFaction = Board.getInstance().getFactionAt(new FLocation(defenderLoc));
-
-
         // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
         if (damager instanceof Projectile) {
             Projectile projectile = (Projectile) damager;

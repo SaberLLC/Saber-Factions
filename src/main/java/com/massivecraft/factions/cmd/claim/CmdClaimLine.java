@@ -1,9 +1,6 @@
 package com.massivecraft.factions.cmd.claim;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -71,6 +68,7 @@ public class CmdClaimLine extends FCommand {
         }
 
         final Faction forFaction = context.argAsFaction(2, context.faction);
+        Faction at = Board.getInstance().getFactionAt(new FLocation(context.fPlayer.getPlayer().getLocation()));
 
         if (forFaction != context.fPlayer.getFaction()) {
             if (!context.fPlayer.isAdminBypassing()) {
@@ -84,11 +82,18 @@ public class CmdClaimLine extends FCommand {
         Location location = context.player.getLocation();
 
         // TODO: make this a task like claiming a radius?
+        int claims = 0;
         for (int i = 0; i < amount; i++) {
-            context.fPlayer.attemptClaim(forFaction, location, true);
+            if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true)) {
+                claims++;
+            } else {
+                context.fPlayer.attemptClaim(forFaction, location, true);
+            }
             location = location.add(blockFace.getModX() * 16, 0, blockFace.getModZ() * 16);
             FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", String.valueOf(i), new FLocation(context.player.getLocation()).formatXAndZ(","));
         }
+        int cachedClaims = claims;
+        context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(f, true), String.valueOf(cachedClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ()));
     }
 
     @Override

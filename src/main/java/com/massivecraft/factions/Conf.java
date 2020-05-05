@@ -103,6 +103,9 @@ public class Conf {
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
 
+    //RADIUS CLAIMING
+    public static boolean useRadiusClaimSystem = true;
+
     //FRIENDLY FIRE
     public static boolean friendlyFireFPlayersCommand = false;
 

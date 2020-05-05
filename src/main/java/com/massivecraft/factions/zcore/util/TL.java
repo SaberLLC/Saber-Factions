@@ -1067,6 +1067,7 @@ public enum TL {
     CLAIM_FORCLAIM("for claiming this land"),
     CLAIM_TOOVERCLAIM("to overclaim this land"),
     CLAIM_FOROVERCLAIM("for over claiming this land"),
+    CLAIM_RADIUS_CLAIM("%1$s &eclaimed %2$s chunks &astarting from &e(X: %3$s, Z: %4$s)"),
     CLAIM_CLAIMED("%s claimed land for %s from %s."),
     CLAIM_CLAIMEDLOG("%s claimed land at (%s) for the faction: %s"),
     CLAIM_OVERCLAIM_DISABLED("Over claiming is disabled on this server."),

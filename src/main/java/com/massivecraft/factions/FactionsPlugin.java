@@ -66,6 +66,7 @@ public class FactionsPlugin extends MPlugin {
     // Our single plugin instance.
     // Single 4 life.
     public static FactionsPlugin instance;
+    public static boolean cachedRadiusClaim;
     public static Permission perms = null;
     // This plugin sets the boolean true when fully enabled.
     // Plugins can check this boolean while hooking in have
@@ -247,6 +248,8 @@ public class FactionsPlugin extends MPlugin {
 
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
+
+        cachedRadiusClaim = Conf.useRadiusClaimSystem;
 
         if (version > 8) {
             useNonPacketParticles = true;
@@ -452,7 +455,7 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onDisable() {
-        // only save data if plugin actually completely loaded successfully
+        super.onDisable();
         if (this.loadSuccessful) {
             Conf.load();
             Conf.saveSync();
@@ -476,7 +479,6 @@ public class FactionsPlugin extends MPlugin {
                 e.printStackTrace();
             }
         }
-        this.getServer().getScheduler().cancelTasks(this);
         super.onDisable();
     }
 

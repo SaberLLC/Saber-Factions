@@ -1288,11 +1288,13 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 
         // announce success
-        Set<FPlayer> informTheseFPlayers = new HashSet<>();
-        informTheseFPlayers.add(this);
-        informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
-        for (FPlayer fp : informTheseFPlayers) {
-            fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+        if(!FactionsPlugin.cachedRadiusClaim) {
+            Set<FPlayer> informTheseFPlayers = new HashSet<>();
+            informTheseFPlayers.add(this);
+            informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
+            for (FPlayer fp : informTheseFPlayers) {
+                fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+            }
         }
 
         Board.getInstance().setFactionAt(forFaction, flocation);
