@@ -149,10 +149,7 @@ public enum FactionTag implements Tag {
         if (!this.foundInString(text)) {
             return text;
         }
-        String result = null;
-        if (this.biFunction != null) {
-            result = this.function == null ? this.biFunction.apply(faction, player) : this.function.apply(faction);
-        }
+        String result = this.function == null ? this.biFunction.apply(faction, player) : this.function.apply(faction);
         return result == null ? null : text.replace(this.tag, result);
     }
 
