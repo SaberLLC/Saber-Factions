@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.massivecraft.factions.zcore.util.TagReplacer.TagType;
 
@@ -106,8 +105,7 @@ public class TagUtil {
         if (FactionsPlugin.getInstance().isMVdWPlaceholderAPIHooked() && player.isOnline()) {
             line = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, line);
         }
-
-        return Objects.requireNonNull(line);
+        return line;
     }
 
     /**

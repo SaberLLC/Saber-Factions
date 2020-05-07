@@ -85,7 +85,7 @@ public class CmdClaimLine extends FCommand {
         int claims = 0;
 
         for (int i = 0; i < amount; i++) {
-            if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true)) {
+            if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false)) {
                 claims++;
             } else {
                 context.fPlayer.attemptClaim(forFaction, location, true);

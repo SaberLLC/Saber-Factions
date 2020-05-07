@@ -113,7 +113,10 @@ public class Econ {
     }
 
     public static boolean transferMoney(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount, boolean notify) {
-        if (!shouldBeUsed()) return false;
+        if (!shouldBeUsed()) {
+            invoker.msg(TL.ECON_DISABLED);
+            return false;
+        }
 
         // The amount must be positive.
         // If the amount is negative we must flip and multiply amount with -1.
