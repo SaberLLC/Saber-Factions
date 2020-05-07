@@ -69,9 +69,9 @@ public class CmdAutoClaim extends FCommand {
         context.msg(TL.COMMAND_AUTOCLAIM_ENABLED, forFaction.describeTo(context.fPlayer));
         if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true)) {
             context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_CLAIMED, context.fPlayer.describeTo(f, true), context.fPlayer.getFaction().describeTo(f), at.describeTo(f)));
-            return;
+        } else {
+            context.fPlayer.attemptClaim(forFaction, context.fPlayer.getPlayer().getLocation(), true);
         }
-        context.fPlayer.attemptClaim(forFaction, context.fPlayer.getPlayer().getLocation(), true);
     }
 
     @Override

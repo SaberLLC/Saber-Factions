@@ -832,7 +832,7 @@ Missions:
       - "&b&lMine &f&n10,000&r &2Sugar Cane"
     Mission:
       Type: "MINE"
-      Material: "SUGAR_CANE_BLOCK"
+      Material: "SUGAR_CANE"
       Amount: 10000
     Reward:
       Commands: ["f points add %faction% 100"]
@@ -1250,9 +1250,9 @@ fupgrades:
     Members:
       Max-Level: 3
       Members-Limit:
-        level-1: 30
-        level-2: 35
-        level-3: 40
+        level-1: 5 #The Number Of Members It Will Increase By 
+        level-2: 10
+        level-3: 15
       Cost:
         level-1: 1000000
         level-2: 2000000
@@ -1266,9 +1266,9 @@ fupgrades:
           - '&7&oYour current level is &e&l&o{level}'
           - ''
           - '&c&lFaction Member Limit'
-          - '&4&l* &cLevel 1: &f30'
-          - '&4&l* &cLevel 2: &f35'
-          - '&4&l* &cLevel 3: &f40'
+          - '&4&l* &cLevel 1: &f35'
+          - '&4&l* &cLevel 2: &f40'
+          - '&4&l* &cLevel 3: &f45'
           - '&f'
           - '&c&lCosts'
           - '&4&l* &cLevel 1: &f$1,000,000'

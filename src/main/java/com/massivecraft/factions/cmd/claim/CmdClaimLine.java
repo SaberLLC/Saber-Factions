@@ -83,11 +83,13 @@ public class CmdClaimLine extends FCommand {
 
         // TODO: make this a task like claiming a radius?
         int claims = 0;
+
         for (int i = 0; i < amount; i++) {
-            if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true)) {
+            if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false)) {
                 claims++;
             } else {
                 context.fPlayer.attemptClaim(forFaction, location, true);
+                claims++;
             }
             location = location.add(blockFace.getModX() * 16, 0, blockFace.getModZ() * 16);
             FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", String.valueOf(i), new FLocation(context.player.getLocation()).formatXAndZ(","));
