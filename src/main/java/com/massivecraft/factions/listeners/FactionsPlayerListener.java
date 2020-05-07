@@ -58,8 +58,6 @@ import java.util.logging.Level;
 public class FactionsPlayerListener implements Listener {
 
     public static Set<FLocation> corners;
-    public static BukkitTask positionTask = null;
-    public static Map<UUID, Location> lastLocations = new HashMap<>();
     /**
      * @author FactionsUUID Team
      */
@@ -479,6 +477,8 @@ public class FactionsPlayerListener implements Listener {
         // Update the lastLoginTime for this fplayer
         me.setLastLoginTime(System.currentTimeMillis());
 
+        lastLocations.put(player.getUniqueId(), player.getLocation());
+
         // Store player's current FLocation and notify them where they are
         me.setLastStoodAt(new FLocation(player.getLocation()));
 
@@ -535,6 +535,7 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerQuit(PlayerQuitEvent event) {
+        Player this_ = event.getPlayer();
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
 
         // Make sure player's power is up to date when they log off.
@@ -550,6 +551,8 @@ public class FactionsPlayerListener implements Listener {
             FactionsPlugin.instance.getStuckMap().remove(me.getPlayer().getUniqueId());
             FactionsPlugin.instance.getTimers().remove(me.getPlayer().getUniqueId());
         }
+
+        lastLocations.remove(this_.getUniqueId());
 
         Faction myFaction = me.getFaction();
         if (!myFaction.isWilderness()) myFaction.memberLoggedOff();
@@ -651,43 +654,16 @@ public class FactionsPlayerListener implements Listener {
         return (result.length() == 3 ? result + "0" : result) + "/hrs ago";
     }
 
+    public static BukkitTask positionTask = null;
+    public final static Map<UUID, Location> lastLocations = new HashMap<>();
+
     public void startPositionCheck() {
-        positionTask = Bukkit.getScheduler().runTaskTimer(FactionsPlugin.instance, () -> {
-            if (Bukkit.getOnlinePlayers().size() > 0) {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (!lastLocations.containsKey(player.getUniqueId())) {
-                        lastLocations.put(player.getUniqueId(), player.getLocation());
-                        continue;
-                    }
-                    refreshPosition(player, lastLocations.get(player.getUniqueId()), player.getLocation());
-                    lastLocations.put(player.getUniqueId(), player.getLocation());
-                    if (CmdFly.flyMap.containsKey(player.getName())) {
-                        String name = player.getName();
-                        if (!player.isFlying()
-                                || player.getGameMode() == GameMode.CREATIVE
-                                || !FactionsPlugin.instance.mc17 && player.getGameMode() == GameMode.SPECTATOR) {
-                            continue;
-                        }
-                        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-                        Faction myFaction = fPlayer.getFaction();
-                        if (myFaction.isWilderness()) {
-                            Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> fPlayer.setFlying(false));
-                            CmdFly.flyMap.remove(player.getName());
-                            continue;
-                        }
-                        Bukkit.getScheduler().runTask(FactionsPlugin.instance, () -> {
-                            if (!fPlayer.checkIfNearbyEnemies()) {
-                                FLocation myFloc = new FLocation(player.getLocation());
-                                if (Board.getInstance().getFactionAt(myFloc) != myFaction) {
-                                    if (!CmdFly.checkBypassPerms(fPlayer, player, Board.getInstance().getFactionAt(myFloc))) {
-                                        fPlayer.setFFlying(false, false);
-                                        CmdFly.flyMap.remove(name);
-                                    }
-                                }
-                            }
-                        });
-                    }
-                }
+        positionTask = Bukkit.getScheduler().runTaskTimer(FactionsPlugin.getInstance(), () -> {
+            if (lastLocations.isEmpty()) return;
+            for (Map.Entry<UUID, Location> check : lastLocations.entrySet()) {
+                Player player = Bukkit.getPlayer(check.getKey());
+                refreshPosition(player, check.getValue(), player.getLocation());
+                lastLocations.put(player.getUniqueId(), player.getLocation());
             }
         }, 5L, 10L);
     }

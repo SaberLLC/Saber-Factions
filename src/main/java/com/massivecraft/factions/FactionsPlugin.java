@@ -21,7 +21,6 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.missions.MissionHandler;
-import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
@@ -39,15 +38,15 @@ import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -129,27 +128,19 @@ public class FactionsPlugin extends MPlugin {
         this.setAutoSave(val);
     }
 
-    public void playSoundForAll(String sound) {
-        for (Player pl : Bukkit.getOnlinePlayers()) playSound(pl, sound);
-    }
-
-    public void playSoundForAll(List<String> sounds) {
-        for (Player pl : Bukkit.getOnlinePlayers()) playSound(pl, sounds);
-    }
-
-    public void playSound(Player p, List<String> sounds) {
-        for (String sound : sounds) playSound(p, sound);
-    }
-
-    public void playSound(Player p, String sound) {
-        float pitch = Float.parseFloat(sound.split(":")[1]);
-        sound = sound.split(":")[0];
-        p.playSound(p.getLocation(), Sound.valueOf(sound), pitch, 5.0F);
-    }
-
     @Override
     public void onEnable() {
         log("==== Setup ====");
+
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            divider();
+            System.out.println("You are missing dependencies!");
+            System.out.println("Please verify [Vault] is installed!");
+            Conf.save();
+            Bukkit.getPluginManager().disablePlugin(instance);
+            divider();
+            return;
+        }
 
         int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         switch (version) {
@@ -183,37 +174,22 @@ public class FactionsPlugin extends MPlugin {
         int pluginId = 7013;
         Metrics metrics = new Metrics(this, pluginId);
 
-
         if (!preEnable()) {
             this.loadSuccessful = false;
             return;
         }
 
-        if (!new File(this.getDataFolder() + "/config.yml").exists()) {
-            this.saveResource("config.yml", false);
-            this.reloadConfig();
-        }
-
+        saveDefaultConfig();
         //Start wait task executor
         WaitExecutor.startTask();
         // Load Conf from disk
-        fileManager = new FileManager();
-        getFileManager().setupFiles();
         Conf.load();
+
+        fileManager = new FileManager();
+        fileManager.setupFiles();
+
         fLogManager = new FLogManager();
-        //Dependency checks
-        if (Conf.dependencyCheck && (!Bukkit.getPluginManager().isPluginEnabled("Vault"))) {
-            divider();
-            System.out.println("You are missing dependencies!");
-            System.out.println("Please verify [Vault] is installed!");
-            Conf.save();
-            Bukkit.getPluginManager().disablePlugin(instance);
-            divider();
-            return;
-        }
-        //Update their config if needed
-        // Updater.updateIfNeeded(getConfig());
-        RegisteredServiceProvider<Economy> rsp = FactionsPlugin.this.getServer().getServicesManager().getRegistration(Economy.class);
+
         com.massivecraft.factions.integration.Essentials.setup();
         hookedPlayervaults = setupPlayervaults();
         FPlayers.getInstance().load();
@@ -229,6 +205,8 @@ public class FactionsPlugin extends MPlugin {
             if (fPlayer.isAlt()) faction.addAltPlayer(fPlayer);
             else faction.addFPlayer(fPlayer);
         }
+
+        Factions.getInstance().getAllFactions().forEach(Faction::refreshFPlayers);
 
         if (getConfig().getBoolean("enable-faction-flight", true)) {
             UtilFly.run();
@@ -261,7 +239,7 @@ public class FactionsPlugin extends MPlugin {
         }
 
         if (getServer().getPluginManager().getPlugin("Skript") != null) {
-            log("Skript was found! Registering FactionsPlugin Addon...");
+            log("Skript was found! Registering SaberFactions Addon...");
             skriptAddon = Skript.registerAddon(this);
             try {
                 skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
@@ -270,6 +248,7 @@ public class FactionsPlugin extends MPlugin {
             }
             log("Skript addon registered!");
         }
+
         if (Conf.useCheckSystem) {
             int minute = 1200;
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 3), 0L, minute * 3);
@@ -307,13 +286,14 @@ public class FactionsPlugin extends MPlugin {
         for (Listener eventListener : eventsListener)
             getServer().getPluginManager().registerEvents(eventListener, this);
 
-        if(Conf.useGraceSystem){
+        if (Conf.useGraceSystem) {
             getServer().getPluginManager().registerEvents(timerManager.graceTimer, this);
         }
 
         this.getCommand(refCommand).setExecutor(cmdBase);
 
         if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
+
         reserveObjects = new ArrayList<>();
         String path = Paths.get(this.getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
         File file = new File(path);
@@ -347,10 +327,6 @@ public class FactionsPlugin extends MPlugin {
         this.loadSuccessful = true;
         // Set startup finished to true. to give plugins hooking in a greenlight
         FactionsPlugin.startupFinished = true;
-    }
-
-    public SkriptAddon getSkriptAddon() {
-        return skriptAddon;
     }
 
 
@@ -459,30 +435,31 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onDisable() {
-        super.onDisable();
-        if (this.loadSuccessful) {
-            Conf.load();
-            Conf.saveSync();
-            timerManager.saveTimerData();
-            DiscordListener.saveGuilds();
-            if (Discord.jda != null) Discord.jda.shutdownNow();
-            try {
-                fLogManager.saveLogs();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                String path = Paths.get(getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
-                File file = new File(path);
-                if (!file.exists()) {
-                    file.getParentFile().mkdirs();
-                    file.createNewFile();
-                }
-                Files.write(Paths.get(file.getPath()), getGsonBuilder().create().toJson(reserveObjects).getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if (this.AutoLeaveTask != null) {
+            getServer().getScheduler().cancelTask(this.AutoLeaveTask);
+            this.AutoLeaveTask = null;
         }
+
+        Conf.saveSync();
+        timerManager.saveTimerData();
+        DiscordListener.saveGuilds();
+
+        if (Discord.jda != null) Discord.jda.shutdownNow();
+
+        fLogManager.saveLogs();
+
+        try {
+            String path = Paths.get(getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
+            File file = new File(path);
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+            Files.write(Paths.get(file.getPath()), getGsonBuilder().create().toJson(reserveObjects).getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         super.onDisable();
     }
 
@@ -504,26 +481,9 @@ public class FactionsPlugin extends MPlugin {
         Conf.save();
     }
 
-    public ItemStack createItem(Material material, int amount, short datavalue, String name, List<String> lore) {
-        ItemStack item = new ItemStack(XMaterial.matchXMaterial(material.toString()).get().parseMaterial(), amount, datavalue);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(color(name));
-        meta.setLore(colorList(lore));
-        item.setItemMeta(meta);
-        return item;
-    }
-
-    public ItemStack createLazyItem(Material material, int amount, short datavalue, String name, String lore) {
-        ItemStack item = new ItemStack(material, amount, datavalue);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(color(FactionsPlugin.instance.getConfig().getString(name)));
-        meta.setLore(colorList(FactionsPlugin.instance.getConfig().getStringList(lore)));
-        item.setItemMeta(meta);
-        return item;
-    }
 
     public Economy getEcon() {
-        RegisteredServiceProvider<Economy> rsp = FactionsPlugin.instance.getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         return rsp.getProvider();
     }
 
@@ -548,7 +508,6 @@ public class FactionsPlugin extends MPlugin {
         List<FCommand> commandsList = cmdBase.subCommands;
         FCommand commandsEx = cmdBase;
         List<String> completions = new ArrayList<>();
-
         // Check for "" first arg because spigot is mangled.
         if (context.args.get(0).equals("")) {
             for (FCommand subCommand : commandsEx.subCommands) {
@@ -596,69 +555,10 @@ public class FactionsPlugin extends MPlugin {
     // Functions for other plugins to hook into
     // -------------------------------------------- //
 
-    // This value will be updated whenever new hooks are added
-    public int hookSupportVersion() {
-        return 3;
-    }
-
     // If another plugin is handling insertion of chat tags, this should be used to notify Factions
     public void handleFactionTagExternally(boolean notByFactions) {
         Conf.chatTagHandledByAnotherPlugin = notByFactions;
     }
-
-    // Simply put, should this chat event be left for Factions to handle? For now, that means players with Faction Chat
-    // enabled or use of the Factions f command without a slash; combination of isPlayerFactionChatting() and isFactionsCommand()
-
-    public boolean shouldLetFactionsHandleThisChat(AsyncPlayerChatEvent event) {
-        return event != null && (isPlayerFactionChatting(event.getPlayer()) || isFactionsCommand(event.getMessage()));
-    }
-
-
-    // Does player have Faction Chat enabled? If so, chat plugins should preferably not do channels,
-    // local chat, or anything else which targets individual recipients, so Faction Chat can be done
-    public boolean isPlayerFactionChatting(Player player) {
-        if (player == null) return false;
-        FPlayer me = FPlayers.getInstance().getByPlayer(player);
-        return me != null && me.getChatMode().isAtLeast(ChatMode.ALLIANCE);
-    }
-
-    // Is this chat message actually a Factions command, and thus should be left alone by other plugins?
-
-    // TODO: GET THIS BACK AND WORKING
-
-    public boolean isFactionsCommand(String check) {
-        return !(check == null || check.isEmpty()) && this.handleCommand(null, check, true);
-    }
-
-    // Get a player's faction tag (faction name), mainly for usage by chat plugins for local/channel chat
-    public String getPlayerFactionTag(Player player) {
-        return getPlayerFactionTagRelation(player, null);
-    }
-
-    // Same as above, but with relation (enemy/neutral/ally) coloring potentially added to the tag
-    public String getPlayerFactionTagRelation(Player speaker, Player listener) {
-        String tag = "~";
-
-        if (speaker == null) return tag;
-
-
-        FPlayer me = FPlayers.getInstance().getByPlayer(speaker);
-        if (me == null) return tag;
-        // if listener isn't set, or config option is disabled, give back uncolored tag
-        if (listener == null || !Conf.chatTagRelationColored) {
-            tag = me.getChatTag().trim();
-        } else {
-            FPlayer you = FPlayers.getInstance().getByPlayer(listener);
-            if (you == null) {
-                tag = me.getChatTag().trim();
-            } else { // everything checks out, give the colored tag
-                tag = me.getChatTag(you).trim();
-            }
-        }
-        if (tag.isEmpty()) tag = "~";
-        return tag;
-    }
-
 
     public FLogManager getFlogManager() {
         return fLogManager;
@@ -666,14 +566,6 @@ public class FactionsPlugin extends MPlugin {
 
     public void logFactionEvent(Faction faction, FLogType type, String... arguments) {
         this.fLogManager.log(faction, type, arguments);
-    }
-
-    // Get a player's title within their faction, mainly for usage by chat plugins for local/channel chat
-    public String getPlayerTitle(Player player) {
-        if (player == null) return "";
-        FPlayer me = FPlayers.getInstance().getByPlayer(player);
-        if (me == null) return "";
-        return me.getTitle().trim();
     }
 
     public String color(String line) {
@@ -687,41 +579,13 @@ public class FactionsPlugin extends MPlugin {
         return lore;
     }
 
-    // Get a list of all faction tags (names)
-    public Set<String> getFactionTags() {
-        return Factions.getInstance().getFactionTags();
-    }
-
     public List<ReserveObject> getFactionReserves() {
         return this.reserveObjects;
     }
 
-    // Get a list of all players in the specified faction
-    public Set<String> getPlayersInFaction(String factionTag) {
-        Set<String> players = new HashSet<>();
-        Faction faction = Factions.getInstance().getByTag(factionTag);
-        if (faction != null) {
-            for (FPlayer fplayer : faction.getFPlayers()) players.add(fplayer.getName());
-        }
-        return players;
-    }
-
-    // Get a list of all online players in the specified faction
-    public Set<String> getOnlinePlayersInFaction(String factionTag) {
-        Set<String> players = new HashSet<>();
-        Faction faction = Factions.getInstance().getByTag(factionTag);
-        if (faction != null) {
-            for (FPlayer fplayer : faction.getFPlayersWhereOnline(true)) players.add(fplayer.getName());
-        }
-        return players;
-    }
-
-    public boolean isHookedPlayervaults() {
-        return hookedPlayervaults;
-    }
 
     public String getPrimaryGroup(OfflinePlayer player) {
-        return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
+        return (perms == null || !perms.hasGroupSupport()) ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
     }
 
     public TimerManager getTimerManager() {
@@ -740,7 +604,4 @@ public class FactionsPlugin extends MPlugin {
         debug(Level.INFO, s);
     }
 
-    public Worldguard getWg() {
-        return wg;
-    }
 }

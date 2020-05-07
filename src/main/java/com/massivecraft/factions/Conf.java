@@ -279,8 +279,7 @@ public class Conf {
     /// Useful for HCF features.
     /// </summary>
     public static Set<Material> territoryBypassProtectedMaterials = EnumSet.noneOf(Material.class);
-    // Dependency check
-    public static boolean dependencyCheck = true;
+
     public static boolean enableClickToClaim = true;
 
     public static Set<Material> territoryCancelAndAllowItemUseMaterial = new HashSet<>();
@@ -560,7 +559,6 @@ public class Conf {
         if (!FactionsPlugin.getInstance().mc17) {
             territoryDenyUsageMaterials.add(Material.ARMOR_STAND);
         }
-
 
         territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
 
