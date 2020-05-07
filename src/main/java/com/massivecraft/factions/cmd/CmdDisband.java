@@ -82,7 +82,7 @@ public class CmdDisband extends FCommand {
         }
 
         if (!access) {
-            if (Conf.useDisbandGUI && !context.fPlayer.isAdminBypassing() || !context.player.isOp()) {
+            if (Conf.useDisbandGUI && (!context.fPlayer.isAdminBypassing() || !context.player.isOp())) {
                 if (!disbandMap.containsKey(context.player.getUniqueId().toString())) {
                     new FDisbandFrame(context.faction).buildGUI(context.fPlayer);
                     return;
