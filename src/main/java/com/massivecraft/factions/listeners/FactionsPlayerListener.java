@@ -309,7 +309,7 @@ public class FactionsPlayerListener implements Listener {
             if ((landOwned && factionToCheck.getOwnerListString(loc).contains(player.getName())) || (me.getRole() == Role.LEADER && me.getFactionId().equals(factionToCheck.getId()))) {
                 return true;
             } else if (landOwned && !factionToCheck.getOwnerListString(loc).contains(player.getName())) {
-                me.msg(TL.ACTIONS_OWNEDTERRITORYDENY, factionToCheck.getOwnerListString(loc));
+                me.msg(TL.ACTIONS_OWNEDTERRITORYDENY.toString().replace("{owners}", factionToCheck.getOwnerListString(loc)));
                 if (doPain) player.damage(Conf.actionDeniedPainAmount);
                 return false;
             } else if (!landOwned && access == Access.ALLOW) {
