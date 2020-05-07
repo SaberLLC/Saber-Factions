@@ -585,7 +585,7 @@ public class FactionsPlugin extends MPlugin {
 
 
     public String getPrimaryGroup(OfflinePlayer player) {
-        return (perms == null || !perms.hasGroupSupport()) ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
+        return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
     }
 
     public TimerManager getTimerManager() {

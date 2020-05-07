@@ -78,34 +78,38 @@ public class CmdShow extends FCommand {
             return; // we only show header for non-normal factions
         }
 
-        for (String raw : show) {
-            String parsed = TagUtil.parsePlain(faction, context.fPlayer, raw); // use relations
-            if (parsed == null) {
-                continue; // Due to minimal f show.
-            }
-
-            if (context.fPlayer != null) {
-                parsed = TagUtil.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
-            }
-
-            if (TagUtil.hasFancy(parsed)) {
-                List<FancyMessage> fancy = TagUtil.parseFancy(faction, context.fPlayer, parsed);
-                if (fancy != null)
-                    context.sendFancyMessage(fancy);
-
-                continue;
-            }
-            if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
-                if (parsed.contains("{ig}")) {
-                    // replaces all variables with no home TL
-                    parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
+        List<String> finalShow = show;
+        Faction finalFaction = faction;
+        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
+            for (String raw : finalShow) {
+                String parsed = TagUtil.parsePlain(finalFaction, context.fPlayer, raw); // use relations
+                if (parsed == null) {
+                    continue; // Due to minimal f show.
                 }
-                if (parsed.contains("%")) {
-                    parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+
+                if (context.fPlayer != null) {
+                    parsed = TagUtil.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
                 }
-                context.msg(FactionsPlugin.getInstance().txt.parse(parsed));
+
+                if (TagUtil.hasFancy(parsed)) {
+                    List<FancyMessage> fancy = TagUtil.parseFancy(finalFaction, context.fPlayer, parsed);
+                    if (fancy != null)
+                        context.sendFancyMessage(fancy);
+
+                    continue;
+                }
+                if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
+                    if (parsed.contains("{ig}")) {
+                        // replaces all variables with no home TL
+                        parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
+                    }
+                    if (parsed.contains("%")) {
+                        parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+                    }
+                    context.msg(FactionsPlugin.getInstance().txt.parse(parsed));
+                }
             }
-        }
+        });
     }
 
     @Override
