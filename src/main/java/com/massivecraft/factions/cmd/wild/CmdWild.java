@@ -46,8 +46,6 @@ public class CmdWild extends FCommand implements WaitedTask {
     public void perform(CommandContext context) {
         if (!teleportRange.containsKey(context.player)) {
             context.player.openInventory(new WildGUI(context.player, context.fPlayer).getInventory());
-        } else {
-            context.fPlayer.msg(TL.COMMAND_WILD_WAIT);
         }
     }
 
@@ -75,6 +73,7 @@ public class CmdWild extends FCommand implements WaitedTask {
         }
         if (!success) {
             p.sendMessage(TL.COMMAND_WILD_FAILED.toString());
+            teleportRange.remove(p);
         }
     }
 
@@ -114,6 +113,7 @@ public class CmdWild extends FCommand implements WaitedTask {
     @Override
     public void handleFailure(Player player) {
         player.sendMessage(TL.COMMAND_WILD_INTERUPTED.toString());
+        teleportRange.remove(player);
     }
 
 }
