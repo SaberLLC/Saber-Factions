@@ -580,7 +580,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public void checkCanFly(FPlayer me) {
-        if (me.isFlying() && (!me.canFlyAtLocation() || me.checkIfNearbyEnemies())) {
+        if (!me.canFlyAtLocation() || me.checkIfNearbyEnemies()) {
             me.setFFlying(false, false);
             return;
         }
@@ -662,8 +662,10 @@ public class FactionsPlayerListener implements Listener {
             if (lastLocations.isEmpty()) return;
             for (Map.Entry<UUID, Location> check : lastLocations.entrySet()) {
                 Player player = Bukkit.getPlayer(check.getKey());
-                refreshPosition(player, check.getValue(), player.getLocation());
-                lastLocations.put(player.getUniqueId(), player.getLocation());
+                if (player != null) {
+                    refreshPosition(player, check.getValue(), player.getLocation());
+                    lastLocations.put(player.getUniqueId(), player.getLocation());
+                }
             }
         }, 5L, 10L);
     }
