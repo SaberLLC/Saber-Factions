@@ -115,8 +115,6 @@ public class CmdJoin extends FCommand {
             fplayer.msg(TL.COMMAND_JOIN_MOVED, context.fPlayer.describeTo(fplayer, true), faction.getTag(fplayer));
         }
 
-        faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
-
         fplayer.resetFactionData();
 
         if (faction.altInvited(fplayer)) {
@@ -143,6 +141,8 @@ public class CmdJoin extends FCommand {
         } catch (HierarchyException e) {
             System.out.print(e.getMessage());
         }
+
+        faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
 
         if (Conf.logFactionJoin) {
             if (samePlayer) {

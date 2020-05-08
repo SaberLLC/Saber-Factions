@@ -21,6 +21,7 @@ public enum PlayerTag implements Tag {
     }),
     PLAYER_BALANCE("{balance}", (fp) -> Econ.isSetup() ? Econ.getFriendlyBalance(fp) : (Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance"))),
     PLAYER_POWER("{player-power}", (fp) -> String.valueOf(fp.getPowerRounded())),
+    ROLE("{player-role}", FPlayer::getRolePrefix),
     PLAYER_MAXPOWER("{player-maxpower}", (fp) -> String.valueOf(fp.getPowerMaxRounded())),
     PLAYER_KILLS("{player-kills}", (fp) -> String.valueOf(fp.getKills())),
     PLAYER_DEATHS("{player-deaths}", (fp) -> String.valueOf(fp.getDeaths())),
