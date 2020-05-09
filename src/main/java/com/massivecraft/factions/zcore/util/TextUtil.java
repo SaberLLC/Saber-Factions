@@ -47,33 +47,41 @@ public class TextUtil {
         String text = "";
         FancyMessage message = new FancyMessage(text);
         ChatColor color = null;
+        ChatColor style = null;
         char[] chars = first.toCharArray();
 
         for (int i = 0; i < chars.length; i++) {
             // changed this so javadocs wont throw an error
             String compareChar = chars[i] + "";
             if (compareChar.equals("§")) {
-                if (color != null) {
-                    if (color.isColor()) {
-                        message.then(text).color(color);
-                    } else {
-                        message.then(text).style(color);
+                if (color != null || style != null) {
+                    message.then(text);
+                    if (color != null)
+                        message.color(color);
+                    if (style != null) {
+                        message.style(style);
+                        style = null;
                     }
                     text = "";
                 }
-                color = ChatColor.getByChar(chars[i + 1]);
+                ChatColor tempColor = ChatColor.getByChar(chars[i + 1]);
+                if (tempColor.isColor()) {
+                    color = tempColor;
+                } else {
+                    style = tempColor;
+                }
                 i++; // skip color char
             } else {
                 text += chars[i];
             }
         }
         if (text.length() > 0) {
-            if (color != null) {
-                if (color.isColor()) {
-                    message.then(text).color(color);
-                } else {
-                    message.then(text).style(color);
-                }
+            if (color != null || style != null) {
+                message.then(text);
+                if (color != null)
+                    message.color(color);
+                if (style != null)
+                    message.style(style);
             } else {
                 message.text(text);
             }

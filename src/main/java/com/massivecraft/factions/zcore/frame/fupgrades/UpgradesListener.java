@@ -25,22 +25,22 @@ public class UpgradesListener implements Listener {
 
     @EventHandler
     public static void onDamageReduction(EntityDamageByEntityEvent e) {
-        if (e.isCancelled()) {
-            return;
-        }
-        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) {
-            return;
-        }
+        if (e.isCancelled()) return;
+
+        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) return;
+        if(e.getEntity() == null) return;
+
         FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
         FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
-        if (fme == null || dame == null) {
-            return;
-        }
+
+        if (fme == null || dame == null) return;
         FLocation floc = new FLocation(fme.getPlayer().getLocation());
+
+        if(floc == null) return;
+
         if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
-            if (dame.getFaction() == fme.getFaction()) {
-                return;
-            }
+            if (dame.getFaction() == fme.getFaction()) return;
+
             double damage = e.getDamage();
             int level = fme.getFaction().getUpgrade(UpgradeType.DAMAGEDECREASE);
             double increase = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.DamageReduction.DamageReductionPercent.level-" + level);
@@ -50,20 +50,17 @@ public class UpgradesListener implements Listener {
 
     @EventHandler
     public static void onDamageIncrease(EntityDamageByEntityEvent e) {
-        if (e == null) {
-            return;
-        }
-        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) {
-            return;
-        }
+        if (e == null) return;
+
+        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) return;
+
 
         if (e.getDamager().hasMetadata("NPC") || e.getEntity().hasMetadata("NPC")) return;
 
         FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
         FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
-        if (fme == null || dame == null) {
-            return;
-        }
+        if (fme == null || dame == null) return;
+
 
         FLocation floc = new FLocation(fme.getPlayer().getLocation());
 
@@ -87,9 +84,8 @@ public class UpgradesListener implements Listener {
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
         Entity killer = e.getEntity().getKiller();
-        if (killer == null || !(killer instanceof Player)) {
-            return;
-        }
+        if (killer == null || !(killer instanceof Player)) return;
+
         FLocation floc = new FLocation(e.getEntity().getLocation());
         Faction faction = Board.getInstance().getFactionAt(floc);
         if (!faction.isWilderness()) {
@@ -112,9 +108,7 @@ public class UpgradesListener implements Listener {
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.SPAWNER);
-            if (level == 0) {
-                return;
-            }
+            if (level == 0) return;
             this.lowerSpawnerDelay(e, FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.Spawners.Spawner-Boost.level-" + level));
         }
     }
@@ -131,13 +125,10 @@ public class UpgradesListener implements Listener {
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.CROP);
             int chance = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-" + level);
-            if (level == 0 || chance == 0) {
-                return;
-            }
+            if (level == 0 || chance == 0) return;
+
             int randomNum = ThreadLocalRandom.current().nextInt(1, 101);
-            if (randomNum <= chance) {
-                this.growCrop(e);
-            }
+            if (randomNum <= chance) this.growCrop(e);
         }
     }
 
@@ -173,21 +164,16 @@ public class UpgradesListener implements Listener {
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.REDSTONE);
             if (level != 0) {
-                if (level == 1) {
-                    FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.Cost");
-                }
-                if (unbreakable.contains(block)) {
-                    e.setCancelled(true);
-                }
+                if (level == 1) FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.Cost");
+                if (unbreakable.contains(block)) e.setCancelled(true);
             }
         }
     }
 
     @EventHandler
     public void onArmorDamage(PlayerItemDamageEvent e) {
-        if (FPlayers.getInstance().getByPlayer(e.getPlayer()) == null) {
-            return;
-        }
+        if (FPlayers.getInstance().getByPlayer(e.getPlayer()) == null) return;
+
         if (e.getItem().getType().toString().contains("LEGGINGS") || e.getItem().getType().toString().contains("CHESTPLATE") || e.getItem().getType().toString().contains("HELMET") || e.getItem().getType().toString().contains("BOOTS")) {
             int lvl = FPlayers.getInstance().getByPlayer(e.getPlayer()).getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
             double drop = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);

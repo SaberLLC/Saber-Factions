@@ -974,7 +974,6 @@ public abstract class MemoryFPlayer implements FPlayer {
             if (!fly) {
                 sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
             }
-
         } else {
             msg(TL.COMMAND_FLY_DAMAGE);
         }
@@ -1023,7 +1022,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         if (faction.isSystemFaction()) {
-            return CmdFly.checkBypassPerms(this, getPlayer(), faction);
+            return CmdFly.checkBypassPerms(this, getPlayer(), faction, false);
         }
 
         Access access = faction.getAccess(this, PermissableAction.FLY);

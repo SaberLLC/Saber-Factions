@@ -105,7 +105,6 @@ public class TagUtil {
         if (FactionsPlugin.getInstance().isMVdWPlaceholderAPIHooked() && player.isOnline()) {
             line = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, line);
         }
-
         return line;
     }
 

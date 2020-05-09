@@ -8,9 +8,11 @@ import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import mkremins.fanciful.FancyMessage;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CmdShow extends FCommand {
 
@@ -24,17 +26,21 @@ public class CmdShow extends FCommand {
         this.aliases.addAll(Aliases.show_show);
 
         // add defaults to /f show in case config doesnt have it
-        defaults.add("{header}");
-        defaults.add("<a>Description: <i>{description}");
-        defaults.add("<a>Joining: <i>{joining}    {peaceful}");
-        defaults.add("<a>Land / Power / Maxpower: <i> {chunks} / {power} / {maxPower}");
-        defaults.add("<a>Founded: <i>{create-date}");
-        defaults.add("<a>This faction is permanent, remaining even with no members.");
-        defaults.add("<a>Land value: <i>{land-value} {land-refund}");
-        defaults.add("<a>Balance: <i>{faction-balance}");
-        defaults.add("<a>Allies(<i>{allies}<a>/<i>{max-allies}<a>): {allies-list}");
-        defaults.add("<a>Online: (<i>{online}<a>/<i>{members}<a>): {online-list}");
-        defaults.add("<a>Offline: (<i>{offline}<a>/<i>{members}<a>): {offline-list}");
+        defaults.add("&8&m--------------&7 &8<&e{faction}&8> &8&m--------------");
+        defaults.add("&4* &cOwner: &f{leader}");
+        defaults.add("&4* &cDescription: &f{description}");
+        defaults.add("&4* &cLand / Power / Max Power: &f{chunks} &8/ &f{power} &8/ &f{maxPower}");
+        defaults.add("&4* &cFaction Strikes: &f{strikes}");
+        defaults.add("&4* &cFaction Points: &f{faction-points}");
+        defaults.add("&4* &cFounded: &f{create-date}");
+        defaults.add("&4* &cBalance: &f{faction-balance}");
+        defaults.add("&4* &cAllies: &a{allies-list}");
+        defaults.add("&4* &cEnemies: &4{enemies-list}");
+        defaults.add("&4* &cOnline Members: &8[&f{online}/{members}&8] &a{online-list}");
+        defaults.add("&4* &cOffline Members: &8[&f{offline}/{members}&8] &a{offline-list}");
+        defaults.add("&4* &cAlts: &f{alts}");
+        defaults.add("&4* &cBans: &f{faction-bancount}");
+        defaults.add("&8&m----------------------------------------");
 
         // this.requiredArgs.add("");
         this.optionalArgs.put("faction tag", "yours");
@@ -45,6 +51,7 @@ public class CmdShow extends FCommand {
     @Override
     public void perform(CommandContext context) {
         Faction faction = context.faction;
+        FactionsPlugin instance = FactionsPlugin.getInstance();
         if (context.argIsSet(0))
             faction = context.argAsFaction(0);
 
@@ -52,7 +59,7 @@ public class CmdShow extends FCommand {
             return;
 
         if (context.fPlayer != null && !context.player.getPlayer().hasPermission("factions.show.bypassexempt")
-                && FactionsPlugin.getInstance().getConfig().getStringList("show-exempt").contains(faction.getTag())) {
+                && instance.getConfig().getStringList("show-exempt").contains(faction.getTag())) {
             context.msg(TL.COMMAND_SHOW_EXEMPT);
             return;
         }
@@ -62,7 +69,7 @@ public class CmdShow extends FCommand {
             return;
         }
 
-        List<String> show = FactionsPlugin.getInstance().getConfig().getStringList("show");
+        List<String> show = instance.getConfig().getStringList("show");
         if (show == null || show.isEmpty())
             show = defaults;
 
@@ -71,41 +78,49 @@ public class CmdShow extends FCommand {
             // send header and that's all
             String header = show.get(0);
             if (TagReplacer.HEADER.contains(header)) {
-                context.msg(FactionsPlugin.getInstance().txt.titleize(tag));
+                context.msg(instance.txt.titleize(tag));
             } else {
-                context.msg(FactionsPlugin.getInstance().txt.parse(TagReplacer.FACTION.replace(header, tag)));
+                context.msg(instance.txt.parse(TagReplacer.FACTION.replace(header, tag)));
             }
             return; // we only show header for non-normal factions
         }
 
-        for (String raw : show) {
-            String parsed = TagUtil.parsePlain(faction, context.fPlayer, raw); // use relations
-            if (parsed == null) {
-                continue; // Due to minimal f show.
-            }
-
-            if (context.fPlayer != null) {
-                parsed = TagUtil.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
-            }
-
-            if (TagUtil.hasFancy(parsed)) {
-                List<FancyMessage> fancy = TagUtil.parseFancy(faction, context.fPlayer, parsed);
-                if (fancy != null)
-                    context.sendFancyMessage(fancy);
-
-                continue;
-            }
-            if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
-                if (parsed.contains("{ig}")) {
-                    // replaces all variables with no home TL
-                    parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
+        List<String> finalShow = show;
+        Faction finalFaction = faction;
+        List<FancyMessage> fancy = new ArrayList<>();
+        instance.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
+            for (String raw : finalShow) {
+                String parsed = TagUtil.parsePlain(finalFaction, context.fPlayer, raw); // use relations
+                if (parsed == null) {
+                    continue; // Due to minimal f show.
                 }
-                if (parsed.contains("%")) {
-                    parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+
+                if (context.fPlayer != null) {
+                    parsed = TagUtil.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
                 }
-                context.msg(FactionsPlugin.getInstance().txt.parse(parsed));
+
+                if (TagUtil.hasFancy(parsed)) {
+                    List<FancyMessage> localFancy = TagUtil.parseFancy(finalFaction, context.fPlayer, parsed);
+                    if (localFancy != null)
+                        fancy.addAll(localFancy);
+
+                    continue;
+                }
+                if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
+                    if (parsed.contains("{ig}")) {
+                        // replaces all variables with no home TL
+                        parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
+                    }
+                    if (parsed.contains("%")) {
+                        parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+                    }
+                    parsed = FactionsPlugin.getInstance().txt.parse(parsed);
+                    FancyMessage localFancy = instance.txt.parseFancy(parsed);
+                    fancy.add(localFancy);
+                }
             }
-        }
+            instance.getServer().getScheduler().runTask(instance, () -> context.sendFancyMessage(fancy));
+        });
     }
 
     @Override
