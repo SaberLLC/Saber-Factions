@@ -713,6 +713,8 @@ public enum TL {
     COMMAND_PROMOTE_PROMOTED("promoted"),
     COMMAND_PROMOTE_DEMOTED("demoted"),
     COMMAND_PROMOTE_LOWEST_RANK("&c&l[!]&7 &c%1$s&7 already has the lowest rank in the faction."),
+    COMMAND_PROMOTE_HIGHEST_RANK("&c&l[!]&7 &c%1$s&7 already has the highest rank in the faction."),
+    COMMAND_PROMOTE_HIGHER_RANK("&c&l[!]&7 &c%1$s&7 has a higher rank than yours. You &4can not modify&7 his rank."),
     COMMAND_PROMOTE_COLEADER_ADMIN("&c&l[!]&7 &cColeaders cant promote players to Admin!"),
 
     COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle permanent faction power option"),
@@ -724,7 +726,6 @@ public enum TL {
     COMMAND_PROMOTE_DESCRIPTION("/f promote <name>"),
     COMMAND_PROMOTE_WRONGFACTION("&c&l[!]&7 &c%1$s&7 is &cnot&7 part of your faction."),
     COMMAND_NOACCESS("&c&l[!]&7 You don't have access to that."),
-    COMMAND_PROMOTE_NOTTHATPLAYER("&c&l[!]&7 That player &ccannot&7 be promoted."),
     COMMAND_PROMOTE_NOT_ALLOWED("&c&l[!]&7 You cannot promote to the same rank as yourself!"),
     COMMAND_PROMOTE_NOTSELF("&c&l[!]&7 You cannot manage your own rank."),
     COMMAND_PROMOTE_NOT_SAME("&c&l[!]&7 You cannot promote to the same rank as yourself!"),
