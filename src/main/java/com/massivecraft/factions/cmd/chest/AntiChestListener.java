@@ -27,9 +27,10 @@ public class AntiChestListener implements Listener {
         if (e.isCancelled()) return;
 
         Inventory clicked = e.getClickedInventory();
+        Inventory clicker = e.getWhoClicked().getInventory();
 
         if (e.getClick().isShiftClick()) {
-            if (clicked == e.getWhoClicked().getInventory()) {
+            if (clicked == clicker) {
                 ItemStack clickedOn = e.getCurrentItem();
                 if (clickedOn != null && FactionsPlugin.getInstance().itemList.contains(clickedOn.getType().toString())) {
                     fPlayer.msg(TL.CHEST_ITEM_DENIED_TRANSFER, clickedOn.getType().toString());
@@ -38,11 +39,17 @@ public class AntiChestListener implements Listener {
             }
         }
 
-        if (clicked != e.getWhoClicked().getInventory()) {
+        if (clicked != clicker) {
             ItemStack onCursor = e.getCursor();
             if (onCursor != null && FactionsPlugin.getInstance().itemList.contains(onCursor.getType().toString())) {
                 fPlayer.msg(TL.CHEST_ITEM_DENIED_TRANSFER, onCursor.getType().toString());
                 e.setCancelled(true);
+            } else if (e.getClick().isKeyboardClick()) {
+                ItemStack item = clicker.getItem(e.getHotbarButton());
+                if (item != null && FactionsPlugin.getInstance().itemList.contains(item.getType().toString())) {
+                    fPlayer.msg(TL.CHEST_ITEM_DENIED_TRANSFER, item.getType().toString());
+                    e.setCancelled(true);
+                }
             }
         }
     }
