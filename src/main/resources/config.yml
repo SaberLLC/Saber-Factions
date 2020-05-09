@@ -1250,7 +1250,7 @@ fupgrades:
     Members:
       Max-Level: 3
       Members-Limit:
-        level-1: 5 #The Number Of Members It Will Increase By 
+        level-1: 5 #The Number Of Members It Will Increase By
         level-2: 10
         level-3: 15
       Cost:

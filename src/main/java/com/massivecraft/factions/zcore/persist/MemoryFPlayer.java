@@ -663,25 +663,34 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void updatePower() {
         if (this.isOffline()) {
             losePowerFromBeingOffline();
-            if (!Conf.powerRegenOffline) return;
+            if (!Conf.powerRegenOffline) {
+                return;
+            }
         } else if (hasFaction() && getFaction().isPowerFrozen()) {
             return; // Don't let power regen if faction power is frozen.
         }
 
         long now = System.currentTimeMillis();
-        this.millisPassed = now - this.lastPowerUpdateTime;
+        long millisPassed = now - this.lastPowerUpdateTime;
         this.lastPowerUpdateTime = now;
 
         Player thisPlayer = this.getPlayer();
-        if (thisPlayer != null && thisPlayer.isDead())
+        if (thisPlayer != null && thisPlayer.isDead()) {
             return;  // don't let dead players regain power until they respawn
-        PowerRegenEvent powerRegenEvent = new PowerRegenEvent(getFaction(), this);
-        Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent));
+        }
 
-        if (!powerRegenEvent.isCancelled())
-            if (!powerRegenEvent.usingCustomPower())
-                this.alterPower(millisPassed * Conf.powerPerMinute / 60000); // millisPerMinute : 60 * 1000
-            else this.alterPower(+powerRegenEvent.getCustomPower());
+        double delta = millisPassed * Conf.powerPerMinute / 60000; // millisPerMinute : 60 * 1000
+        if (Bukkit.getPluginManager().getPlugin("FactionsPlugin") != null) {
+            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> {
+                PowerRegenEvent powerRegenEvent = new PowerRegenEvent(getFaction(), this, delta);
+                Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent);
+                if (!powerRegenEvent.isCancelled()) {
+                    this.alterPower(powerRegenEvent.getDelta());
+                }
+            });
+        } else {
+            this.alterPower(delta);
+        }
     }
 
     public void losePowerFromBeingOffline() {

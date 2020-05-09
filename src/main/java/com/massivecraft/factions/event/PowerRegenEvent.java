@@ -1,6 +1,5 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import org.bukkit.event.Cancellable;
@@ -10,51 +9,20 @@ import org.bukkit.event.Cancellable;
  */
 public class PowerRegenEvent extends FactionPlayerEvent implements Cancellable {
 
-    /**
-     * @author Illyria Team
-     */
-
     private boolean cancelled = false;
-    private double modified = 0;
+    private double delta;
 
-    public PowerRegenEvent(Faction f, FPlayer p) {
+    public PowerRegenEvent(Faction f, FPlayer p, double delta) {
         super(f, p);
+        this.delta = delta;
     }
 
-    /**
-     * Get the amount of power this player will regen by default
-     *
-     * @return power amount gained as a Double.
-     */
-    public double getDefaultPowerGained() {
-        return fPlayer.getMillisPassed() * Conf.powerPerMinute / 60000;
+    public double getDelta() {
+        return delta;
     }
 
-    /**
-     * Get the amount of custom power this player will gain. Ignored if less than or equal to 0.
-     *
-     * @return Custom power as a double
-     */
-    public double getCustomPower() {
-        return modified;
-    }
-
-    /**
-     * Set the custom power gain for this event.
-     *
-     * @param gain Amount of power to be added to player.
-     */
-    public void setCustomPower(Double gain) {
-        modified = gain;
-    }
-
-    /**
-     * Get if we will be using the custom power gain instead of default.
-     *
-     * @return If we will process the event custom returned as a Boolean.
-     */
-    public boolean usingCustomPower() {
-        return modified > 0;
+    public void setDelta(double delta) {
+        this.delta = delta;
     }
 
     @Override

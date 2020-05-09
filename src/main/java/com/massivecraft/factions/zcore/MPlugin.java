@@ -176,15 +176,13 @@ public abstract class MPlugin extends JavaPlugin {
             this.getServer().getScheduler().cancelTask(saveTask);
             saveTask = null;
         }
-
-        this.getServer().getScheduler().cancelTasks(this);
-
         // only save data if plugin actually loaded successfully
         if (loadSuccessful) {
             Factions.getInstance().forceSave();
             FPlayers.getInstance().forceSave();
             Board.getInstance().forceSave();
         }
+
         log("Disabled");
     }
 

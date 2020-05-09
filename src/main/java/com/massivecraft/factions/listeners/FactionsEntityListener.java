@@ -259,8 +259,6 @@ public class FactionsEntityListener implements Listener {
     private boolean checkExplosionForBlock(Entity boomer, Block block) {
         Faction faction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
 
-        if(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() > 0) return false;
-
         if (faction.noExplosionsInTerritory() || (faction.isPeaceful() && Conf.peacefulTerritoryDisableBoom))
             return false;
         // faction is peaceful and has explosions set to disabled
