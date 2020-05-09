@@ -581,7 +581,8 @@ public class FactionsPlayerListener implements Listener {
 
     public void checkCanFly(FPlayer me) {
         if (!me.canFlyAtLocation() || me.checkIfNearbyEnemies()) {
-            me.setFFlying(false, false);
+            if (me.isFlying())
+                me.setFFlying(false, false);
             return;
         }
         if (me.isFlying() || !FactionsPlugin.instance.getConfig().getBoolean("ffly.AutoEnable"))
