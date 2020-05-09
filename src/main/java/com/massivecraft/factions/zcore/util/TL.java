@@ -712,6 +712,7 @@ public enum TL {
     COMMAND_PROMOTE_SUCCESS("&c&l[!]&7 You successfully&c %1$s %2$s &cto&7 %3$s"),
     COMMAND_PROMOTE_PROMOTED("promoted"),
     COMMAND_PROMOTE_DEMOTED("demoted"),
+    COMMAND_PROMOTE_LOWEST_RANK("&c&l[!]&7 &c%1$s&7 already has the lowest rank in the faction."),
     COMMAND_PROMOTE_COLEADER_ADMIN("&c&l[!]&7 &cColeaders cant promote players to Admin!"),
 
     COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle permanent faction power option"),
@@ -731,7 +732,7 @@ public enum TL {
 
     COMMAND_POWER_TOSHOW("to show player power info"),
     COMMAND_POWER_FORSHOW("for showing player power info"),
-    COMMAND_POWER_POWER("&c&l[!]&7 &c%1$s » &cPower &7/ &cMaxpower&a » &c%2$d &7/&c%3$d %4$s"),
+    COMMAND_POWER_POWER("&c&l[!]&7 &c%1$s » &cPower &7/ &cMaxpower&a » &c%2$d &7/ &c%3$d %4$s"),
     COMMAND_POWER_BONUS(" (bonus: "),
     COMMAND_POWER_PENALTY(" (penalty: "),
     COMMAND_POWER_DESCRIPTION("&a&l» &7Show player &apower &7info"),

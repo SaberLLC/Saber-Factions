@@ -57,6 +57,11 @@ public class FPromoteCommand extends FCommand {
                 context.msg(TL.COMMAND_PROMOTE_NOT_SAME);
                 return;
             }
+            // Don't allow people to demote people who already have the lowest rank.
+            if (current.value == 0 && relative <= 0) {
+                context.msg(TL.COMMAND_PROMOTE_LOWEST_RANK, target.getName());
+                return;
+            }
             // Don't allow people to promote people to their same or higher rank.
             if (context.fPlayer.getRole().value <= promotion.value) {
                 context.msg(TL.COMMAND_PROMOTE_NOT_ALLOWED);
