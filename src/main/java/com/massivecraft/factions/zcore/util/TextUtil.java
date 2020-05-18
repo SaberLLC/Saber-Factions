@@ -65,10 +65,14 @@ public class TextUtil {
                     text = "";
                 }
                 ChatColor tempColor = ChatColor.getByChar(chars[i + 1]);
-                if (tempColor.isColor()) {
-                    color = tempColor;
-                } else {
-                    style = tempColor;
+                if (tempColor != null) {
+                    if (tempColor == ChatColor.RESET) {
+                        color = ChatColor.WHITE;
+                    } else if (tempColor.isColor()) {
+                        color = tempColor;
+                    } else {
+                        style = tempColor;
+                    }
                 }
                 i++; // skip color char
             } else {
