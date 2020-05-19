@@ -39,9 +39,9 @@ public abstract class FRelationCommand extends FCommand {
     @Override
     public void perform(CommandContext context) {
         Faction them = context.argAsFaction(0);
-        if (them == null) {
-            return;
-        }
+        if (them == null) return;
+
+        if(!context.faction.isNormal()) return;
 
         if (!them.isNormal()) {
             context.msg(TL.COMMAND_RELATIONS_ALLTHENOPE);
