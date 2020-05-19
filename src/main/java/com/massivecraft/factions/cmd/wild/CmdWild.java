@@ -20,6 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -29,7 +30,6 @@ public class CmdWild extends FCommand implements WaitedTask {
     public static HashMap<Player, String> teleportRange;
     public static HashSet<Player> teleporting;
     public static CmdWild instance;
-    public static final String tpWorld = FactionsPlugin.getInstance().getConfig().getString("Wild.World", "World");
 
     public CmdWild() {
         super();
@@ -55,11 +55,12 @@ public class CmdWild extends FCommand implements WaitedTask {
         int tries = 0;
         ConfigurationSection c = FactionsPlugin.getInstance().getConfig().getConfigurationSection("Wild.Zones." + teleportRange.get(p));
         while (tries < 5) {
+            assert c != null;
             int x = new Random().nextInt((c.getInt("Range.MaxX") - c.getInt("Range.MinX")) + 1) + c.getInt("Range.MinX");
             int z = new Random().nextInt((c.getInt("Range.MaxZ") - c.getInt("Range.MinZ")) + 1) + c.getInt("Range.MinZ");
             if (Board.getInstance().getFactionAt(new FLocation(p.getWorld().getName(), x, z)).isWilderness()) {
                 success = true;
-                FLocation loc = new FLocation(tpWorld, x, z);
+                FLocation loc = new FLocation(Objects.requireNonNull(c.getString("World", "World")), x, z);
                 teleportRange.remove(p);
                 if (!FPlayers.getInstance().getByPlayer(p).takeMoney(c.getInt("Cost"))) {
                     p.sendMessage(TL.GENERIC_NOTENOUGHMONEY.toString());
@@ -91,7 +92,7 @@ public class CmdWild extends FCommand implements WaitedTask {
 
     public void applyEffects(Player p) {
         for (String s : FactionsPlugin.getInstance().getConfig().getStringList("Wild.Arrival.Effects")) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.getByName(s), 40, 1));
+            p.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(s)), 40, 1));
         }
     }
 
