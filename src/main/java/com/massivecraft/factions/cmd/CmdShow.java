@@ -84,37 +84,41 @@ public class CmdShow extends FCommand {
         }
 
         List<FancyMessage> fancy = new ArrayList<>();
-        for (String raw : show) {
-            String parsed = TagUtil.parsePlain(faction, context.fPlayer, raw); // use relations
-            if (parsed == null) {
-                continue; // Due to minimal f show.
-            }
-
-            if (context.fPlayer != null) {
-                parsed = TagUtil.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
-            }
-
-            if (TagUtil.hasFancy(parsed)) {
-                List<FancyMessage> localFancy = TagUtil.parseFancy(faction, context.fPlayer, parsed);
-                if (localFancy != null)
-                    fancy.addAll(localFancy);
-
-                continue;
-            }
-            if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
-                if (parsed.contains("{ig}")) {
-                    // replaces all variables with no home TL
-                    parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
+        List<String> finalShow = show;
+        Faction finalFaction = faction;
+        instance.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
+            for (String raw : finalShow) {
+                String parsed = TagUtil.parsePlain(finalFaction, context.fPlayer, raw); // use relations
+                if (parsed == null) {
+                    continue; // Due to minimal f show.
                 }
-                if (parsed.contains("%")) {
-                    parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+
+                if (context.fPlayer != null) {
+                    parsed = TagUtil.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
                 }
-                parsed = FactionsPlugin.getInstance().txt.parse(parsed);
-                FancyMessage localFancy = instance.txt.parseFancy(parsed);
-                fancy.add(localFancy);
+
+                if (TagUtil.hasFancy(parsed)) {
+                    List<FancyMessage> localFancy = TagUtil.parseFancy(finalFaction, context.fPlayer, parsed);
+                    if (localFancy != null)
+                        fancy.addAll(localFancy);
+
+                    continue;
+                }
+                if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
+                    if (parsed.contains("{ig}")) {
+                        // replaces all variables with no home TL
+                        parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
+                    }
+                    if (parsed.contains("%")) {
+                        parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+                    }
+                    parsed = FactionsPlugin.getInstance().txt.parse(parsed);
+                    FancyMessage localFancy = instance.txt.parseFancy(parsed);
+                    fancy.add(localFancy);
+                }
             }
-        }
-        instance.getServer().getScheduler().runTask(instance, () -> context.sendFancyMessage(fancy));
+            instance.getServer().getScheduler().runTask(instance, () -> context.sendFancyMessage(fancy));
+        });
     }
 
     @Override
