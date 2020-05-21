@@ -55,6 +55,10 @@ public class CustomFile {
             e.printStackTrace();
         }
     }
+    
+    public boolean containsKey(String key) {
+    	return getCachedObjects().containsKey(key)|| getConfig().contains(key);
+    }
 
     public String fetchString(String key) {
         return (String) getObj(key, dataTypes.STRING);
