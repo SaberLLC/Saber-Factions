@@ -147,6 +147,7 @@ public class EngineDynmap
 
 			final Map<String, TempMarker> homes = createHomes();
 			final Map<String, TempAreaMarker> areas = createAreas();
+			final Map<String, TempPolyLineMarker> polys = createPolys(areas);
 			final Map<String, Set<String>> playerSets = createPlayersets();
 
 			if (!updateCore())
@@ -162,6 +163,7 @@ public class EngineDynmap
 
 			updateHomes(homes);
 			updateAreas(areas);
+			updatePolys(polys);
 			updatePlayersets(playerSets);
 		}, 100L, 100L);
 	}
@@ -305,6 +307,32 @@ public class EngineDynmap
 	// -------------------------------------------- //
 
 	// Thread Safe: YES
+
+	public Map<String, TempPolyLineMarker> createPolys(Map<String, TempAreaMarker> areas)
+	{
+		Map<String, TempPolyLineMarker> ret = new HashMap<String, TempPolyLineMarker>();
+		for (Entry<String, TempAreaMarker> entry : areas.entrySet())
+		{
+			String markerID = entry.getKey();
+			TempAreaMarker area = entry.getValue();
+
+			int counter = 0;
+			for (List<Point> points : area.getPolyLine())
+			{
+				markerID = markerID + "_poly_" + counter;
+				TempPolyLineMarker tempPoly = new TempPolyLineMarker();
+				tempPoly.polyLine = points;
+				tempPoly.lineColor = area.lineColor;
+				tempPoly.lineOpacity = area.lineOpacity;
+				tempPoly.lineWeight = area.lineWeight;
+				tempPoly.world = area.world;
+				ret.put(markerID, tempPoly);
+				counter++;
+			}
+		}
+		return ret;
+	}
+
 	public Map<String, TempAreaMarker> createAreas()
 	{
 		Map<String, Map<Faction, Set<FLocation>>> worldFactionChunks = createWorldFactionChunks();
@@ -409,13 +437,11 @@ public class EngineDynmap
 		// Loop through until we don't find more areas
 		while (allChunks != null)
 		{
-			
+
 			TileFlags ourChunkFlags = null;
 			LinkedList<FLocation> ourChunks = null;
 			LinkedList<FLocation> newChunks = null;
 
-			int minimumX = Integer.MAX_VALUE;
-			int minimumZ = Integer.MAX_VALUE;
 			for (FLocation chunk : allChunks)
 			{
 				int chunkX = (int) chunk.getX();
@@ -428,22 +454,11 @@ public class EngineDynmap
 					ourChunks = new LinkedList<>();
 					floodFillTarget(allChunkFlags, ourChunkFlags, chunkX, chunkZ); // Copy shape
 					ourChunks.add(chunk); // Add it to our chunk list
-					minimumX = chunkX;
-					minimumZ = chunkZ;
 				}
 				// If shape found, and we're in it, add to our node list
 				else if (ourChunkFlags != null && ourChunkFlags.getFlag(chunkX, chunkZ))
 				{
 					ourChunks.add(chunk);
-					if (chunkX < minimumX)
-					{
-						minimumX = chunkX;
-						minimumZ = chunkZ;
-					}
-					else if (chunkX == minimumX && chunkZ < minimumZ)
-					{
-						minimumZ = chunkZ;
-					}
 				}
 				// Else, keep it in the list for the next polygon
 				else
@@ -599,80 +614,6 @@ public class EngineDynmap
 			}
 			polyLine.add(polyPoints);
 
-			// // Trace outline of blocks - start from minx, minz going to x+
-			// int initialX = minimumX;
-			// int initialZ = minimumZ;
-			// int currentX = minimumX;
-			// int currentZ = minimumZ;
-			// Direction direction = Direction.XPLUS;
-			// ArrayList<int[]> linelist = new ArrayList<>();
-			// linelist.add(new int[]{initialX, initialZ}); // Add start point
-			// while ((currentX != initialX) || (currentZ != initialZ) || (direction != Direction.ZMINUS)) {
-			// switch (direction) {
-			// case XPLUS: // Segment in X+ direction
-			// if (!ourChunkFlags.getFlag(currentX + 1, currentZ)) { // Right turn?
-			// linelist.add(new int[]{currentX + 1, currentZ}); // Finish line
-			// direction = Direction.ZPLUS; // Change direction
-			// } else if (!ourChunkFlags.getFlag(currentX + 1, currentZ - 1)) { // Straight?
-			// currentX++;
-			// } else { // Left turn
-			// linelist.add(new int[]{currentX + 1, currentZ}); // Finish line
-			// direction = Direction.ZMINUS;
-			// currentX++;
-			// currentZ--;
-			// }
-			// break;
-			// case ZPLUS: // Segment in Z+ direction
-			// if (!ourChunkFlags.getFlag(currentX, currentZ + 1)) { // Right turn?
-			// linelist.add(new int[]{currentX + 1, currentZ + 1}); // Finish line
-			// direction = Direction.XMINUS; // Change direction
-			// } else if (!ourChunkFlags.getFlag(currentX + 1, currentZ + 1)) { // Straight?
-			// currentZ++;
-			// } else { // Left turn
-			// linelist.add(new int[]{currentX + 1, currentZ + 1}); // Finish line
-			// direction = Direction.XPLUS;
-			// currentX++;
-			// currentZ++;
-			// }
-			// break;
-			// case XMINUS: // Segment in X- direction
-			// if (!ourChunkFlags.getFlag(currentX - 1, currentZ)) { // Right turn?
-			// linelist.add(new int[]{currentX, currentZ + 1}); // Finish line
-			// direction = Direction.ZMINUS; // Change direction
-			// } else if (!ourChunkFlags.getFlag(currentX - 1, currentZ + 1)) { // Straight?
-			// currentX--;
-			// } else { // Left turn
-			// linelist.add(new int[]{currentX, currentZ + 1}); // Finish line
-			// direction = Direction.ZPLUS;
-			// currentX--;
-			// currentZ++;
-			// }
-			// break;
-			// case ZMINUS: // Segment in Z- direction
-			// if (!ourChunkFlags.getFlag(currentX, currentZ - 1)) { // Right turn?
-			// linelist.add(new int[]{currentX, currentZ}); // Finish line
-			// direction = Direction.XPLUS; // Change direction
-			// } else if (!ourChunkFlags.getFlag(currentX - 1, currentZ - 1)) { // Straight?
-			// currentZ--;
-			// } else { // Left turn
-			// linelist.add(new int[]{currentX, currentZ}); // Finish line
-			// direction = Direction.XMINUS;
-			// currentX--;
-			// currentZ--;
-			// }
-			// break;
-			// }
-			// }
-			//
-			// int sz = linelist.size();
-			// double[] x = new double[sz];
-			// double[] z = new double[sz];
-			// for (int i = 0; i < sz; i++) {
-			// int[] line = linelist.get(i);
-			// x[i] = (double) line[0] * (double) BLOCKS_PER_CHUNK;
-			// z[i] = (double) line[1] * (double) BLOCKS_PER_CHUNK;
-			// }
-
 			// Build information for specific area
 			double[] x = new double[outputPoints.size()];
 			double[] z = new double[outputPoints.size()];
@@ -799,6 +740,46 @@ public class EngineDynmap
 	// -------------------------------------------- //
 	// UTIL & SHARED
 	// -------------------------------------------- //
+
+	public void updatePolys(Map<String, TempPolyLineMarker> polys)
+	{
+		// Map Current
+		Map<String, PolyLineMarker> markers = new HashMap<>();
+		for (PolyLineMarker marker : this.markerset.getPolyLineMarkers())
+		{
+			markers.put(marker.getMarkerID(), marker);
+		}
+
+		// Loop New
+		for (Entry<String, TempPolyLineMarker> entry : polys.entrySet())
+		{
+			String markerId = entry.getKey();
+			TempPolyLineMarker temp = entry.getValue();
+
+			// Get Creative
+			// NOTE: I remove from the map created just in the beginning of this method.
+			// NOTE: That way what is left at the end will be outdated markers to remove.
+			PolyLineMarker marker = markers.remove(markerId);
+			if (marker == null)
+			{
+				marker = temp.create(this.markerset, markerId);
+				if (marker == null)
+				{
+					severe("Could not get/create the area marker " + markerId);
+				}
+			}
+			else
+			{
+				temp.update(marker);
+			}
+		}
+
+		// Only old/outdated should now be left. Delete them.
+		for (PolyLineMarker marker : markers.values())
+		{
+			marker.deleteMarker();
+		}
+	}
 
 	// Thread Safe: NO
 	public void updateAreas(Map<String, TempAreaMarker> areas)

@@ -6,9 +6,6 @@ import java.util.List;
 
 import org.dynmap.markers.AreaMarker;
 import org.dynmap.markers.MarkerSet;
-import org.dynmap.markers.PolyLineMarker;
-
-import com.massivecraft.factions.FactionsPlugin;
 
 public class TempAreaMarker
 {
@@ -77,6 +74,11 @@ public class TempAreaMarker
 		polyLine.addAll(points);
 	}
 
+	public List<List<Point>> getPolyLine()
+	{
+		return polyLine;
+	}
+
 	// -------------------------------------------- //
 	// UPDATE
 	// -------------------------------------------- //
@@ -91,27 +93,6 @@ public class TempAreaMarker
 		}
 
 		int counter = 0;
-		for (List<Point> polyPoints : polyLine)
-		{
-			counter++;
-			double[] polyX = new double[polyPoints.size()];
-			double[] polyY = new double[polyPoints.size()];
-			double[] polyZ = new double[polyPoints.size()];
-			for (int i = 0; i < polyPoints.size(); i++)
-			{
-				Point p = polyPoints.get(i);
-				polyX[i] = p.getX();
-				polyY[i] = 64;
-				polyZ[i] = p.getY();
-			}
-			PolyLineMarker poly = markerset.createPolyLineMarker("poly_" + counter + "_" + markerId, "", false, this.world, polyX, polyY, polyZ, false);
-			// Poly Line Style
-			if (poly != null)
-			{
-				poly.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
-			}
-
-		}
 
 		// Description
 		ret.setDescription(this.description);
@@ -127,7 +108,6 @@ public class TempAreaMarker
 
 		return ret;
 	}
-
 	// -------------------------------------------- //
 	// UTIL
 	// -------------------------------------------- //
@@ -155,53 +135,6 @@ public class TempAreaMarker
 		// {
 		// marker.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
 		// }
-
-		MarkerSet markerset = marker.getMarkerSet();
-		int counter = 0;
-		String markerId = marker.getMarkerID();
-		for (List<Point> polyPoints : polyLine)
-		{
-			counter++;
-			PolyLineMarker exists = markerset.findPolyLineMarker("poly_" + counter + "_" + markerId);
-			if (exists != null)
-			{
-				double[] polyX = new double[polyPoints.size()];
-				double[] polyY = new double[polyPoints.size()];
-				double[] polyZ = new double[polyPoints.size()];
-				for (int i = 0; i < polyPoints.size(); i++)
-				{
-					Point p = polyPoints.get(i);
-					polyX[i] = p.getX();
-					polyY[i] = 64;
-					polyZ[i] = p.getY();
-				}
-				exists.setCornerLocations(polyX, polyY, polyZ);
-
-				exists.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
-				// exists.deleteMarker();
-			}
-			else
-			{
-
-				double[] polyX = new double[polyPoints.size()];
-				double[] polyY = new double[polyPoints.size()];
-				double[] polyZ = new double[polyPoints.size()];
-				for (int i = 0; i < polyPoints.size(); i++)
-				{
-					Point p = polyPoints.get(i);
-					polyX[i] = p.getX();
-					polyY[i] = 64;
-					polyZ[i] = p.getY();
-				}
-				PolyLineMarker poly = markerset.createPolyLineMarker("poly_" + counter + "_" + markerId, "", false, this.world, polyX, polyY, polyZ, false);
-				// Poly Line Style
-				if (poly != null)
-				{
-					poly.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
-				}
-			}
-
-		}
 
 		// Fill Style
 		if ((marker.getFillOpacity() != this.fillOpacity) || (marker.getFillColor() != this.fillColor))
