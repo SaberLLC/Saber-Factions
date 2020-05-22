@@ -110,8 +110,6 @@ public class TempAreaMarker
 			{
 				poly.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
 			}
-			else
-				FactionsPlugin.getInstance().getLogger().info("null");
 
 		}
 
@@ -201,8 +199,6 @@ public class TempAreaMarker
 				{
 					poly.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
 				}
-				else
-					FactionsPlugin.getInstance().getLogger().info("null");
 			}
 
 		}
