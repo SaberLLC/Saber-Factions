@@ -81,9 +81,9 @@ public class CmdWild extends FCommand implements WaitedTask {
     public void teleportPlayer(Player p, FLocation loc) {
         Location finalLoc;
         if (FactionsPlugin.getInstance().getConfig().getBoolean("Wild.Arrival.SpawnAbove")) {
-            finalLoc = new Location(p.getWorld(), loc.getX(), p.getWorld().getHighestBlockYAt(Math.round(loc.getX()), Math.round(loc.getZ())) + FactionsPlugin.getInstance().getConfig().getInt("Wild.Arrival.SpawnAboveBlocks", 1), loc.getZ());
+            finalLoc = new Location(loc.getWorld(), loc.getX(), loc.getWorld().getHighestBlockYAt(Math.round(loc.getX()), Math.round(loc.getZ())) + FactionsPlugin.getInstance().getConfig().getInt("Wild.Arrival.SpawnAboveBlocks", 1), loc.getZ());
         } else {
-            finalLoc = new Location(p.getWorld(), loc.getX(), p.getWorld().getHighestBlockYAt(Math.round(loc.getX()), Math.round(loc.getZ())), loc.getZ());
+            finalLoc = new Location(loc.getWorld(), loc.getX(), loc.getWorld().getHighestBlockYAt(Math.round(loc.getX()), Math.round(loc.getZ())), loc.getZ());
         }
         p.teleport(finalLoc, PlayerTeleportEvent.TeleportCause.PLUGIN);
         setTeleporting(p);
