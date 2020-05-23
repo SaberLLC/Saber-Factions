@@ -8,11 +8,9 @@ import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class CmdShow extends FCommand {
 
@@ -85,9 +83,9 @@ public class CmdShow extends FCommand {
             return; // we only show header for non-normal factions
         }
 
+        List<FancyMessage> fancy = new ArrayList<>();
         List<String> finalShow = show;
         Faction finalFaction = faction;
-        List<FancyMessage> fancy = new ArrayList<>();
         instance.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
             for (String raw : finalShow) {
                 String parsed = TagUtil.parsePlain(finalFaction, context.fPlayer, raw); // use relations
