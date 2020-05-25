@@ -55,6 +55,10 @@ public class CmdColeader extends FCommand {
             return;
         }
 
+        if(you.isAlt()){
+            return;
+        }
+
         if (context.fPlayer != null && context.fPlayer.getRole() != Role.LEADER && !permAny) {
             context.msg(TL.COMMAND_COLEADER_NOTADMIN);
             return;

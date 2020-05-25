@@ -50,6 +50,10 @@ public class CmdMod extends FCommand {
             return;
         }
 
+        if(you.isAlt()){
+            return;
+        }
+
         if (context.fPlayer != null && context.fPlayer.getRole() != Role.LEADER && !permAny) {
             context.msg(TL.COMMAND_MOD_NOTADMIN);
             return;

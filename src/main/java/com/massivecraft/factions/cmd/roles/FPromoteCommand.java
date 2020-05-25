@@ -74,6 +74,10 @@ public class FPromoteCommand extends FCommand {
             }
         }
 
+        if(target.isAlt()){
+            return;
+        }
+
         // Don't allow people to demote people who already have the lowest rank.
         if (current.value == 0 && relative <= 0) {
             context.msg(TL.COMMAND_PROMOTE_LOWEST_RANK, target.getName());
