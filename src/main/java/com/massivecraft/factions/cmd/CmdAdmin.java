@@ -57,6 +57,10 @@ public class CmdAdmin extends FCommand {
                 return;
             }
 
+            if(fyou.isAlt()){
+                return;
+            }
+
             // only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
             if (fyou.getFaction() != targetFaction) {
                 FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);

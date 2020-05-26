@@ -115,5 +115,4 @@ public class CmdWild extends FCommand implements WaitedTask {
         player.sendMessage(TL.COMMAND_WILD_INTERUPTED.toString());
         teleportRange.remove(player);
     }
-
 }

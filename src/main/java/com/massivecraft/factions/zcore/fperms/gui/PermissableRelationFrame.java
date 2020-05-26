@@ -16,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PermissableRelationFrame {
 
@@ -27,9 +28,10 @@ public class PermissableRelationFrame {
 
     public PermissableRelationFrame(Faction f) {
         ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.relation");
+        assert section != null;
         gui = new Gui(FactionsPlugin.getInstance(),
-                section.getInt("rows", 3),
-                FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.name").replace("{faction}", f.getTag())));
+                section.getInt("rows", 4),
+                FactionsPlugin.getInstance().color(Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(FPlayer fplayer) {
@@ -37,8 +39,7 @@ public class PermissableRelationFrame {
         List<GuiItem> GUIItems = new ArrayList<>();
         ItemStack dumby = buildDummyItem();
         // Fill background of GUI with dumbyitem & replace GUI assets after
-        for (int x = 0; x <= (gui.getRows() * 9) - 1; x++)
-            GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
+        for (int x = 0; x <= (gui.getRows() * 9) - 1; x++) GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
         ConfigurationSection sec = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.relation");
         for (String key : sec.getConfigurationSection("slots").getKeys(false)) {
             if (key == null || sec.getInt("slots." + key) < 0) continue;
@@ -58,8 +59,10 @@ public class PermissableRelationFrame {
     private ItemStack buildAsset(String loc, String relation) {
         ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString(loc)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.Placeholder-Item.Name").replace("{relation}", relation)));
-        item.setItemMeta(meta);
+        if (meta != null) {
+            meta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.Placeholder-Item.Name").replace("{relation}", relation)));
+            item.setItemMeta(meta);
+        }
         return item;
     }
 
@@ -67,9 +70,12 @@ public class PermissableRelationFrame {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.dummy-item");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
-        meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
-        meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
-        item.setItemMeta(meta);
+        // So u can set it to air.
+        if (meta != null) {
+            meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
+            meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
+            item.setItemMeta(meta);
+        }
         return item;
     }
 

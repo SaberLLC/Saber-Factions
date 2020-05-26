@@ -16,10 +16,6 @@ import java.util.Objects;
 
 public class CmdJoin extends FCommand {
 
-    /**
-     * @author FactionsUUID Team
-     */
-
     public CmdJoin() {
         super();
         this.aliases.addAll(Aliases.join);
@@ -81,7 +77,7 @@ public class CmdJoin extends FCommand {
 
         int altLimit = Conf.factionAltMemberLimit;
 
-        if (altLimit > 0 && faction.getAltPlayers().size() >= altLimit && faction.altInvited(context.fPlayer)) {
+        if (altLimit > 0 && faction.getAltPlayers().size() >= altLimit && !faction.altInvited(context.fPlayer)) {
             context.msg(TL.COMMAND_JOIN_ATLIMIT, faction.getTag(context.fPlayer), altLimit, fplayer.describeTo(context.fPlayer, false));
             return;
         }
@@ -115,6 +111,8 @@ public class CmdJoin extends FCommand {
             fplayer.msg(TL.COMMAND_JOIN_MOVED, context.fPlayer.describeTo(fplayer, true), faction.getTag(fplayer));
         }
 
+        faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
+
         fplayer.resetFactionData();
 
         if (faction.altInvited(fplayer)) {
@@ -125,30 +123,13 @@ public class CmdJoin extends FCommand {
         }
 
         faction.deinvite(fplayer);
-
-        try {
-            context.fPlayer.setRole(faction.getDefaultRole());
-            FactionsPlugin.instance.logFactionEvent(faction, FLogType.INVITES, context.fPlayer.getName(), CC.Green + "joined", "the faction");
-            if (Discord.useDiscord && context.fPlayer.discordSetup() && Discord.isInMainGuild(context.fPlayer.discordUser()) && Discord.mainGuild != null) {
-                Member m = Discord.mainGuild.getMember(context.fPlayer.discordUser());
-                if (Conf.factionRoles) {
-                    Discord.mainGuild.getController().addSingleRoleToMember(m, Objects.requireNonNull(Discord.createFactionRole(faction.getTag()))).queue();
-                }
-                if (Conf.factionDiscordTags) {
-                    Discord.mainGuild.getController().setNickname(m, Discord.getNicknameString(context.fPlayer)).queue();
-                }
-            }
-        } catch (HierarchyException e) {
-            System.out.print(e.getMessage());
-        }
-
-        faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
+        context.fPlayer.setRole(faction.getDefaultRole());
 
         if (Conf.logFactionJoin) {
             if (samePlayer) {
-                FactionsPlugin.getInstance().log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
+                FactionsPlugin.instance.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
             } else {
-                FactionsPlugin.getInstance().log(TL.COMMAND_JOIN_MOVEDLOG.toString(), context.fPlayer.getName(), fplayer.getName(), faction.getTag());
+                FactionsPlugin.instance.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), context.fPlayer.getName(), fplayer.getName(), faction.getTag());
             }
         }
     }

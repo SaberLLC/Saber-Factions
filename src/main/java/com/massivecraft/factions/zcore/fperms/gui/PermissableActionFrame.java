@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PermissableActionFrame {
 
@@ -30,9 +31,10 @@ public class PermissableActionFrame {
 
     public PermissableActionFrame(Faction f) {
         ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.action");
+        assert section != null;
         gui = new Gui(FactionsPlugin.getInstance(),
-                section.getInt("rows", 3),
-                FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.action.name").replace("{faction}", f.getTag())));
+                section.getInt("rows", 4),
+                FactionsPlugin.getInstance().color(Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.action.name")).replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(FPlayer fplayer, Permissable perm) {
@@ -40,8 +42,7 @@ public class PermissableActionFrame {
         List<GuiItem> GUIItems = new ArrayList<>();
         ItemStack dumby = buildDummyItem();
         // Fill background of GUI with dumbyitem & replace GUI assets after
-        for (int x = 0; x <= (gui.getRows() * 9) - 1; x++)
-            GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
+        for (int x = 0; x <= (gui.getRows() * 9) - 1; x++) GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
         for (PermissableAction action : PermissableAction.values()) {
             if (action.getSlot() == -1) continue;
             GUIItems.set(action.getSlot(), new GuiItem(action.buildAsset(fplayer, perm), e -> {
@@ -53,17 +54,12 @@ public class PermissableActionFrame {
                         case LEFT:
                             access = Access.ALLOW;
                             success = fplayer.getFaction().setPermission(perm, action, access);
-                            FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), ChatColor.GREEN.toString() + ChatColor.BOLD + "ALLOWED", action.getName(), perm.name());
                             break;
                         case RIGHT:
                             access = Access.DENY;
                             success = fplayer.getFaction().setPermission(perm, action, access);
-                            FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), ChatColor.RED.toString() + ChatColor.BOLD + "DENIED", action.getName(), perm.name());
                             break;
                         case MIDDLE:
-                            access = Access.UNDEFINED;
-                            success = fplayer.getFaction().setPermission(perm, action, access);
-                            break;
                         default:
                             return;
                     }
@@ -93,9 +89,11 @@ public class PermissableActionFrame {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.dummy-item");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
-        meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
-        meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
-        item.setItemMeta(meta);
+        if (meta != null) {
+            meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
+            meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
+            item.setItemMeta(meta);
+        }
         return item;
     }
 
@@ -103,9 +101,11 @@ public class PermissableActionFrame {
         ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.back-item");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
-        meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
-        meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
-        item.setItemMeta(meta);
+        if (meta != null) {
+            meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
+            meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
+            item.setItemMeta(meta);
+        }
         return item;
     }
 }

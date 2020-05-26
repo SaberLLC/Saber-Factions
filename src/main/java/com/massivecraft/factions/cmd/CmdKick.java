@@ -1,9 +1,6 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
@@ -115,6 +112,7 @@ public class CmdKick extends FCommand {
         toKickFaction.msg(TL.COMMAND_KICK_FACTION, context.fPlayer.describeTo(toKickFaction, true), toKick.describeTo(toKickFaction, true));
 
         toKick.msg(TL.COMMAND_KICK_KICKED, context.fPlayer.describeTo(toKick, true), toKickFaction.describeTo(toKick));
+
         if (toKickFaction != context.faction) {
             context.fPlayer.msg(TL.COMMAND_KICK_KICKS, toKick.describeTo(context.fPlayer), toKickFaction.describeTo(context.fPlayer));
         }
@@ -127,6 +125,9 @@ public class CmdKick extends FCommand {
         FactionsPlugin.instance.logFactionEvent(toKickFaction, FLogType.INVITES, context.fPlayer.getName(), CC.Red + "kicked", toKick.getName());
         toKickFaction.deinvite(toKick);
         toKick.resetFactionData();
+        if(!CmdFly.checkBypassPerms(toKick, toKick.getPlayer(), toKickFaction, false)){
+            CmdFly.disableFlight(toKick);
+        }
     }
 
     @Override
