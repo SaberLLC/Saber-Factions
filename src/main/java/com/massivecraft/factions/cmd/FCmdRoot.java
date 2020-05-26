@@ -26,6 +26,7 @@ import com.massivecraft.factions.discord.CmdInviteBot;
 import com.massivecraft.factions.discord.CmdSetGuild;
 import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.shop.CmdShop;
+import com.massivecraft.factions.shop.ShopGUIFrame;
 import com.massivecraft.factions.zcore.util.TL;
 import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
@@ -377,6 +378,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         }
         if (FactionsPlugin.getInstance().getConfig().getBoolean("F-Shop.Enabled", false) && !fShopEnabled) {
             this.addSubCommand(this.cmdShop);
+            new ShopGUIFrame(null).checkShopConfig();
             fShopEnabled = true;
         }
         if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled", false) && !invSeeEnabled) {

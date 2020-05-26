@@ -1,121 +1,151 @@
 package com.massivecraft.factions.integration.dynmap;
 
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.dynmap.markers.AreaMarker;
 import org.dynmap.markers.MarkerSet;
 
-public class TempAreaMarker {
+public class TempAreaMarker
+{
 
-    /**
-     * @author FactionsUUID Team
-     */
+	/**
+	 * @author FactionsUUID Team
+	 */
 
-    // -------------------------------------------- //
-    // FIELDS
-    // -------------------------------------------- //
+	// -------------------------------------------- //
+	// FIELDS
+	// -------------------------------------------- //
 
-    public String label;
-    public String world;
-    public double[] x;
-    public double[] z;
-    public String description;
+	public String label;
+	public String world;
+	public double[] x;
+	public double[] z;
 
-    public int lineColor;
-    public double lineOpacity;
-    public int lineWeight;
+	private List<List<Point>> polyLine = new ArrayList<List<Point>>();
 
-    public int fillColor;
-    public double fillOpacity;
+	public String description;
 
-    public boolean boost;
+	public int lineColor;
+	public double lineOpacity;
+	public int lineWeight;
 
-    // -------------------------------------------- //
-    // CREATE
-    // -------------------------------------------- //
+	public int fillColor;
+	public double fillOpacity;
 
-    public static boolean equals(AreaMarker marker, double[] x, double[] z) {
-        int length = marker.getCornerCount();
+	public boolean boost;
 
-        if (x.length != length) {
-            return false;
-        }
-        if (z.length != length) {
-            return false;
-        }
+	// -------------------------------------------- //
+	// CREATE
+	// -------------------------------------------- //
 
-        for (int i = 0; i < length; i++) {
-            if (marker.getCornerX(i) != x[i]) {
-                return false;
-            }
-            if (marker.getCornerZ(i) != z[i]) {
-                return false;
-            }
-        }
+	public static boolean equals(AreaMarker marker, double[] x, double[] z)
+	{
+		int length = marker.getCornerCount();
 
-        return true;
-    }
+		if (x.length != length)
+		{
+			return false;
+		}
+		if (z.length != length)
+		{
+			return false;
+		}
 
-    // -------------------------------------------- //
-    // UPDATE
-    // -------------------------------------------- //
+		for (int i = 0; i < length; i++)
+		{
+			if (marker.getCornerX(i) != x[i])
+			{
+				return false;
+			}
+			if (marker.getCornerZ(i) != z[i])
+			{
+				return false;
+			}
+		}
 
-    public AreaMarker create(MarkerSet markerset, String markerId) {
-        AreaMarker ret = markerset.createAreaMarker(markerId, this.label, false, this.world, this.x, this.z, false // not persistent
-        );
+		return true;
+	}
 
-        if (ret == null) {
-            return null;
-        }
+	public void setPolyLine(List<List<Point>> points)
+	{
+		polyLine.clear();
+		polyLine.addAll(points);
+	}
 
-        // Description
-        ret.setDescription(this.description);
+	public List<List<Point>> getPolyLine()
+	{
+		return polyLine;
+	}
 
-        // Line Style
-        ret.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
+	// -------------------------------------------- //
+	// UPDATE
+	// -------------------------------------------- //
 
-        // Fill Style
-        ret.setFillStyle(this.fillOpacity, this.fillColor);
+	public AreaMarker create(MarkerSet markerset, String markerId)
+	{
+		AreaMarker ret = markerset.createAreaMarker(markerId, this.label, false, this.world, this.x, this.z, false // not persistent
+		);
+		if (ret == null)
+		{
+			return null;
+		}
 
-        // Boost Flag
-        ret.setBoostFlag(this.boost);
+		int counter = 0;
 
-        return ret;
-    }
+		// Description
+		ret.setDescription(this.description);
 
-    // -------------------------------------------- //
-    // UTIL
-    // -------------------------------------------- //
+		// Line Style
+		ret.setLineStyle(0, 0, 0);
 
-    public void update(AreaMarker marker) {
-        // Corner Locations
-        if (!equals(marker, this.x, this.z)) {
-            marker.setCornerLocations(this.x, this.z);
-        }
+		// Fill Style
+		ret.setFillStyle(this.fillOpacity, this.fillColor);
 
-        // Label
-        if (!marker.getLabel().equals(this.label)) {
-            marker.setLabel(this.label);
-        }
+		// Boost Flag
+		ret.setBoostFlag(this.boost);
 
-        // Description
-        if (!marker.getDescription().equals(this.description)) {
-            marker.setDescription(this.description);
-        }
+		return ret;
+	}
+	// -------------------------------------------- //
+	// UTIL
+	// -------------------------------------------- //
 
-        // Line Style
-        if (marker.getLineWeight() != this.lineWeight ||
-                marker.getLineOpacity() != this.lineOpacity ||
-                marker.getLineColor() != this.lineColor) {
-            marker.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
-        }
+	public void update(AreaMarker marker)
+	{
+		// Corner Locations
+		if (!equals(marker, this.x, this.z))
+		{
+			marker.setCornerLocations(this.x, this.z);
+		}
 
-        // Fill Style
-        if ((marker.getFillOpacity() != this.fillOpacity) || (marker.getFillColor() != this.fillColor)) {
-            marker.setFillStyle(this.fillOpacity, this.fillColor);
-        }
-        // Boost Flag
-        if (marker.getBoostFlag() != this.boost) {
-            marker.setBoostFlag(this.boost);
-        }
-    }
+		// Label
+		if (!marker.getLabel().equals(this.label))
+		{
+			marker.setLabel(this.label);
+		}
+		if (!marker.getDescription().equals(this.description))
+		{
+			marker.setDescription(this.description);
+		}
+
+		// // Line Style
+		// if (marker.getLineWeight() != this.lineWeight || marker.getLineOpacity() != this.lineOpacity || marker.getLineColor() != this.lineColor)
+		// {
+		// marker.setLineStyle(this.lineWeight, this.lineOpacity, this.lineColor);
+		// }
+
+		// Fill Style
+		if ((marker.getFillOpacity() != this.fillOpacity) || (marker.getFillColor() != this.fillColor))
+		{
+			marker.setFillStyle(this.fillOpacity, this.fillColor);
+		}
+		// Boost Flag
+		if (marker.getBoostFlag() != this.boost)
+		{
+			marker.setBoostFlag(this.boost);
+		}
+	}
 
 }

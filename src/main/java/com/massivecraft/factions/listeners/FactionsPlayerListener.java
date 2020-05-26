@@ -741,7 +741,8 @@ public class FactionsPlayerListener implements Listener {
                     me.attemptClaim(me.getAutoClaimFor(), newLocation, true);
                 }
                 FactionsPlugin.instance.logFactionEvent(me.getAutoClaimFor(), FLogType.CHUNK_CLAIMS, me.getName(), CC.GreenB + "CLAIMED", String.valueOf(1), (new FLocation(player.getLocation())).formatXAndZ(","));
-                if (Conf.disableFlightOnFactionClaimChange) CmdFly.disableFlight(me);
+                if (Conf.disableFlightOnFactionClaimChange && FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) CmdFly.disableFlight(me);
+
             } else if (me.isAutoSafeClaimEnabled()) {
                 if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
                     me.setIsAutoSafeClaimEnabled(false);
@@ -863,7 +864,7 @@ public class FactionsPlayerListener implements Listener {
         Block block = event.getClickedBlock();
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == XMaterial.GRASS_BLOCK.parseMaterial()
                 && event.hasItem() && event.getItem().getType() == XMaterial.BONE_MEAL.parseMaterial()) {
-            if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD.name(), true)) {
+            if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD, true)) {
                 FPlayer me = FPlayers.getInstance().getById(event.getPlayer().getUniqueId().toString());
                 Faction myFaction = me.getFaction();
 
