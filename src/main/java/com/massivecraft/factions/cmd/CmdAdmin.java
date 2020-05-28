@@ -57,7 +57,7 @@ public class CmdAdmin extends FCommand {
                 return;
             }
 
-            if(fyou.isAlt()){
+            if (fyou.isAlt()) {
                 return;
             }
 
@@ -90,7 +90,7 @@ public class CmdAdmin extends FCommand {
             FactionsPlugin.instance.getFlogManager().log(targetFaction, FLogType.RANK_EDIT, context.fPlayer.getName(), fyou.getName(), ChatColor.RED + "Admin");
 
             // Inform all players
-            if(FactionsPlugin.instance.getConfig().getBoolean("faction-leader-broadcast")) {
+            if (FactionsPlugin.instance.getConfig().getBoolean("faction-leader-broadcast")) {
                 for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
                     fplayer.msg(TL.COMMAND_ADMIN_PROMOTED, context.player == null ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(fplayer, true), fyou.describeTo(fplayer), targetFaction.describeTo(fplayer));
                 }

@@ -3,7 +3,6 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 
 import java.util.concurrent.TimeUnit;
 

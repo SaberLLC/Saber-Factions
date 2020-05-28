@@ -50,7 +50,7 @@ public class CmdMod extends FCommand {
             return;
         }
 
-        if(you.isAlt()){
+        if (you.isAlt()) {
             return;
         }
 

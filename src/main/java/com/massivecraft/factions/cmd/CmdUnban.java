@@ -5,7 +5,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Material;
 
 public class CmdUnban extends FCommand {
 

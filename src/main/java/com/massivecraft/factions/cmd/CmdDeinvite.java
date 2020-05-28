@@ -3,10 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
@@ -56,6 +53,7 @@ public class CmdDeinvite extends FCommand {
 
         context.faction.msg(TL.COMMAND_DEINVITE_REVOKES, context.fPlayer.describeTo(context.faction), you.describeTo(context.faction));
     }
+
     @Override
     public TL getUsageTranslation() {
         return TL.COMMAND_DEINVITE_DESCRIPTION;

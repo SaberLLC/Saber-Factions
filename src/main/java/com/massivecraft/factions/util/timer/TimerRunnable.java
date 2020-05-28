@@ -45,15 +45,13 @@ public class TimerRunnable {
         return getRemaining(false);
     }
 
-    public long getRemaining(long now) {
-        return getRemaining(false, now);
-    }
-
-
     public void setRemaining(long remaining) {
         setExpiryMillis(remaining);
     }
 
+    public long getRemaining(long now) {
+        return getRemaining(false, now);
+    }
 
     public long getRemaining(boolean ignorePaused) {
         if ((!ignorePaused) && (this.pauseMillis != 0L)) return this.pauseMillis;

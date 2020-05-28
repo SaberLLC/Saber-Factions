@@ -57,14 +57,8 @@ public class CmdUnclaimall extends FCommand {
         }
         if (Econ.shouldBeUsed()) {
             double refund = Econ.calculateTotalLandRefund(target.getLandRounded());
-            if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
-                if (!Econ.modifyMoney(target, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
-                    return;
-                }
-            } else {
-                if (!Econ.modifyMoney(target, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
-                    return;
-                }
+            if (!Econ.modifyMoney(target, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
+                return;
             }
         }
 

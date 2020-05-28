@@ -48,7 +48,8 @@ public class Econ {
         }
         econ = rsp.getProvider();
         FactionsPlugin.getInstance().log("Economy integration through Vault plugin successful.");
-        if (!Conf.econEnabled) FactionsPlugin.getInstance().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
+        if (!Conf.econEnabled)
+            FactionsPlugin.getInstance().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
         //FactionsPlugin.getInstance().cmdBase.cmdHelp.updateHelp();
     }
 

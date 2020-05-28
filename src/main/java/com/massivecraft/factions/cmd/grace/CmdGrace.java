@@ -37,7 +37,7 @@ public class CmdGrace extends FCommand {
             return;
         }
 
-        if(context.args.size() == 1) {
+        if (context.args.size() == 1) {
             if (context.sender.hasPermission(String.valueOf(Permission.GRACETOGGLE))) {
                 if (context.argAsString(0).equalsIgnoreCase("on") || context.argAsString(0).equalsIgnoreCase("start")) {
                     FactionsPlugin.getInstance().getTimerManager().graceTimer.setPaused(false);
@@ -61,7 +61,7 @@ public class CmdGrace extends FCommand {
             }
         }
 
-        if(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() <= 0L) {
+        if (FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() <= 0L) {
             context.fPlayer.msg(TL.COMMAND_GRACE_DISABLED_NO_FORMAT.toString());
         } else {
             context.fPlayer.msg(TL.COMMAND_GRACE_TIME_REMAINING, String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true)));

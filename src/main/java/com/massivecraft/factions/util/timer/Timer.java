@@ -8,8 +8,8 @@ import com.massivecraft.factions.util.Config;
  * Creation Date: 4/7/2020
  */
 public abstract class Timer {
-    protected final String name;
     public final long defaultCooldown;
+    protected final String name;
 
 
     public Timer(String name, long defaultCooldown) {

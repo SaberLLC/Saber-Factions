@@ -39,7 +39,7 @@ public class CmdOpen extends FCommand {
 
             String open = context.faction.getOpen() ? TL.COMMAND_OPEN_OPEN.toString() : TL.COMMAND_OPEN_CLOSED.toString();
 
-            if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "openCooldown") && !context.fPlayer.isAdminBypassing()){
+            if (Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "openCooldown") && !context.fPlayer.isAdminBypassing()) {
                 context.msg(TL.COMMAND_COOLDOWN);
                 return;
             }
@@ -51,7 +51,7 @@ public class CmdOpen extends FCommand {
                     Cooldown.setCooldown(fplayer.getPlayer(), "openCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-open"));
                     continue;
                 }
-                if(FactionsPlugin.getInstance().getConfig().getBoolean("faction-open-broadcast")) return;
+                if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-open-broadcast")) return;
                 fplayer.msg(TL.COMMAND_OPEN_CHANGED, context.faction.getTag(fplayer.getFaction()), open);
             }
         });

@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CmdFly extends FCommand {
 
+    public static final boolean fly = FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight");
     /**
      * @author FactionsUUID Team
      */
@@ -26,8 +27,6 @@ public class CmdFly extends FCommand {
 
     public static ConcurrentHashMap<String, Boolean> flyMap = new ConcurrentHashMap<>();
     public static BukkitTask particleTask = null;
-
-    public static final boolean fly = FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight");
 
 
     public CmdFly() {
@@ -65,25 +64,25 @@ public class CmdFly extends FCommand {
 
         if (toFac != fme.getFaction()) {
             if (!me.hasPermission(Permission.FLY_WILDERNESS.node) && toFac.isWilderness() || !me.hasPermission(Permission.FLY_SAFEZONE.node) && toFac.isSafeZone() || !me.hasPermission(Permission.FLY_WARZONE.node) && toFac.isWarZone()) {
-                if(sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                if (sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
             Access access = toFac.getAccess(fme, PermissableAction.FLY);
             if ((!(me.hasPermission(Permission.FLY_ENEMY.node) || access == Access.ALLOW)) && toFac.getRelationTo(fme.getFaction()) == Relation.ENEMY) {
-                if(sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                if (sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
             if (!(me.hasPermission(Permission.FLY_ALLY.node) || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.ALLY) {
-                if(sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                if (sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
             if (!(me.hasPermission(Permission.FLY_TRUCE.node) || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.TRUCE) {
-                if(sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                if (sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
 
             if (!(me.hasPermission(Permission.FLY_NEUTRAL.node) || access == Access.ALLOW) && toFac.getRelationTo(fme.getFaction()) == Relation.NEUTRAL && !toFac.isSystemFaction()) {
-                if(sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
+                if (sendMessage) fme.msg(TL.COMMAND_FLY_NO_ACCESS, toFac.getTag(fme));
                 return false;
             }
             return me.hasPermission(Permission.FLY_FLY.node) && (access != Access.DENY || toFac.isSystemFaction());

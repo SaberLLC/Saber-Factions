@@ -15,11 +15,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
 
 public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements Relational {
+
+    private static void logInvalid(String placeholder) {
+        FactionsPlugin.getInstance().getLogger().log(Level.INFO, "Invalid request through PlaceholderAPI for placeholder '" + placeholder + "'");
+    }
 
     // Identifier for this expansion
     @Override
@@ -214,7 +217,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             case "faction_relation_color":
                 return fPlayer.getColorTo(faction).toString();
             case "grace_time":
-                if(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() >= 0) {
+                if (FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() >= 0) {
                     return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
                 } else {
                     return TL.GRACE_DISABLED_PLACEHOLDER.toString();
@@ -247,10 +250,6 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
         }
 
         return TL.PLACEHOLDERAPI_NULL.toString();
-    }
-
-    private static void logInvalid(String placeholder) {
-        FactionsPlugin.getInstance().getLogger().log(Level.INFO, "Invalid request through PlaceholderAPI for placeholder '" + placeholder + "'");
     }
 
     private int countOn(Faction f, Relation relation, Boolean status, FPlayer player) {

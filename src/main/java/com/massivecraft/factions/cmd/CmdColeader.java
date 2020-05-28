@@ -55,7 +55,7 @@ public class CmdColeader extends FCommand {
             return;
         }
 
-        if(you.isAlt()){
+        if (you.isAlt()) {
             return;
         }
 

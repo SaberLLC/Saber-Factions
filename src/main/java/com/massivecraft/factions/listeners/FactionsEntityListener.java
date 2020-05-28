@@ -4,7 +4,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.timer.type.GraceTimer;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;

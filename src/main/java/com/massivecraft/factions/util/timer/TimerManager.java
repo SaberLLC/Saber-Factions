@@ -16,14 +16,24 @@ import java.util.concurrent.TimeUnit;
  * Creation Date: 4/7/2020
  */
 public class TimerManager implements Listener, Runnable {
-    private final Set<Timer> timers;
-    private final FactionsPlugin plugin;
-    private final List<TimerRunnable> timerRunnableList = new ArrayList<>();
-    private Config config;
-    public GraceTimer graceTimer;
     private static final long MINUTE = TimeUnit.MINUTES.toMillis(1L);
     private static final long HOUR = TimeUnit.HOURS.toMillis(1L);
     private static final long MULTI_HOUR = TimeUnit.HOURS.toMillis(10);
+    private final Set<Timer> timers;
+    private final FactionsPlugin plugin;
+    private final List<TimerRunnable> timerRunnableList = new ArrayList<>();
+    public GraceTimer graceTimer;
+    private Config config;
+
+    public TimerManager(FactionsPlugin plugin) {
+        this.timers = new HashSet<>();
+        this.plugin = plugin;
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        if (Conf.useGraceSystem) {
+            this.registerTimer(this.graceTimer = new GraceTimer());
+        }
+        plugin.getServer().getScheduler().runTaskTimer(plugin, this, 4, 4);
+    }
 
     public static String getRemaining(long millis, boolean milliseconds) {
         return getRemaining(millis, milliseconds, true);
@@ -31,19 +41,9 @@ public class TimerManager implements Listener, Runnable {
 
     public static String getRemaining(long duration, boolean milliseconds, boolean trail) {
         if ((milliseconds) && (duration < MINUTE)) {
-            return ( (trail ? DateTimeFormats.REMAINING_SECONDS_TRAILING : DateTimeFormats.REMAINING_SECONDS).get()).format(duration * 0.001D) + 's';
+            return ((trail ? DateTimeFormats.REMAINING_SECONDS_TRAILING : DateTimeFormats.REMAINING_SECONDS).get()).format(duration * 0.001D) + 's';
         }
         return DurationFormatUtils.formatDuration(duration, (duration >= HOUR ? (duration >= MULTI_HOUR ? "d" : "") + "d:" : "") + "HH:mm:ss");
-    }
-
-    public TimerManager(FactionsPlugin plugin) {
-        this.timers = new HashSet<>();
-        this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        if(Conf.useGraceSystem) {
-            this.registerTimer(this.graceTimer = new GraceTimer());
-        }
-        plugin.getServer().getScheduler().runTaskTimer(plugin, this, 4, 4);
     }
 
     public Collection<Timer> getTimers() {

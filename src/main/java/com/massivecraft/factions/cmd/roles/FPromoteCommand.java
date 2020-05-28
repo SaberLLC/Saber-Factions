@@ -74,7 +74,7 @@ public class FPromoteCommand extends FCommand {
             }
         }
 
-        if(target.isAlt()){
+        if (target.isAlt()) {
             return;
         }
 

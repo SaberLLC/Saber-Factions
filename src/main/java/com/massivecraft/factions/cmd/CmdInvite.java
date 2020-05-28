@@ -9,7 +9,6 @@ import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
 
 public class CmdInvite extends FCommand {
 
@@ -61,9 +60,9 @@ public class CmdInvite extends FCommand {
         if (target.isOnline()) {
             // Tooltips, colors, and commands only apply to the string immediately before it.
             FancyMessage message = new FancyMessage(TL.COMMAND_INVITE_INVITEDYOU.toString()
-                        .replace("%1$s", context.fPlayer.describeTo(target, true))
-                        .replace("%2$s", context.faction.getTag())
-                        .replaceAll("&", "§"))
+                    .replace("%1$s", context.fPlayer.describeTo(target, true))
+                    .replace("%2$s", context.faction.getTag())
+                    .replaceAll("&", "§"))
                     .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
                     .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag());
             message.send(target.getPlayer());

@@ -83,10 +83,13 @@ public class CmdUnclaim extends FCommand {
                         this.stop();
                         return false;
                     }
-
                     return true;
                 }
             };
+
+            boolean didUnClaim = unClaim(new FLocation(context.player), context);
+            if (didUnClaim && !context.fPlayer.canFlyAtLocation())
+                context.fPlayer.setFFlying(false, false);
         }
     }
 

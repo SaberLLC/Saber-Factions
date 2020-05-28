@@ -54,7 +54,7 @@ public class CmdCreate extends FCommand {
             return;
         }
 
-        if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "createCooldown") && !context.fPlayer.isAdminBypassing()){
+        if (Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "createCooldown") && !context.fPlayer.isAdminBypassing()) {
             context.msg(TL.COMMAND_COOLDOWN);
             return;
         }

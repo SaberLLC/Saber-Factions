@@ -54,7 +54,7 @@ public class CmdTag extends FCommand {
             return;
         }
 
-        if(Cooldown.isOnCooldown(context.player, "tagCooldown") && !context.fPlayer.isAdminBypassing()){
+        if (Cooldown.isOnCooldown(context.player, "tagCooldown") && !context.fPlayer.isAdminBypassing()) {
             context.msg(TL.COMMAND_COOLDOWN);
             return;
         }
@@ -70,7 +70,6 @@ public class CmdTag extends FCommand {
         if (!context.payForCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
             return;
         }
-
 
 
         String oldtag = context.faction.getTag();

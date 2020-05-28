@@ -11,7 +11,7 @@ import com.massivecraft.factions.zcore.util.TL;
  */
 public class CmdFriendlyFire extends FCommand {
 
-    public CmdFriendlyFire(){
+    public CmdFriendlyFire() {
         super();
         this.aliases.addAll(Aliases.friendlyFire);
 
@@ -23,12 +23,12 @@ public class CmdFriendlyFire extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if(!Conf.friendlyFireFPlayersCommand){
+        if (!Conf.friendlyFireFPlayersCommand) {
             context.msg(TL.GENERIC_DISABLED, "friendly fire");
             return;
         }
 
-        if(context.fPlayer.hasFriendlyFire()){
+        if (context.fPlayer.hasFriendlyFire()) {
             context.fPlayer.setFriendlyFire(false);
             context.msg(TL.COMMAND_FRIENDLY_FIRE_TOGGLE_OFF);
         } else {

@@ -28,7 +28,7 @@ public class UpgradesListener implements Listener {
         if (e.isCancelled()) return;
 
         if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) return;
-        if(e.getEntity() == null) return;
+        if (e.getEntity() == null) return;
 
         FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
         FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
@@ -36,7 +36,7 @@ public class UpgradesListener implements Listener {
         if (fme == null || dame == null) return;
         FLocation floc = new FLocation(fme.getPlayer().getLocation());
 
-        if(floc == null) return;
+        if (floc == null) return;
 
         if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
             if (dame.getFaction() == fme.getFaction()) return;
