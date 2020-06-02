@@ -430,7 +430,7 @@ public class FactionsBlockListener implements Listener {
         if (!justCheck) fPlayer.setLastFrostwalkerMessage();
 
         // Check if they have build permissions here. If not, block this from happening.
-        if (!playerCanBuildDestroyBlock(player, location, PermissableAction.FROST_WALK.toString(), justCheck))
+        if (!playerCanBuildDestroyBlock(player, location, "frostwalk", justCheck))
             event.setCancelled(true);
     }
 
@@ -521,7 +521,7 @@ public class FactionsBlockListener implements Listener {
     public void onFarmLandDamage(EntityChangeBlockEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (!playerCanBuildDestroyBlock(player, event.getBlock().getLocation(), PermissableAction.DESTROY.name(), true)) {
+            if (!playerCanBuildDestroyBlock(player, event.getBlock().getLocation(), "destroy", true)) {
                 FPlayer me = FPlayers.getInstance().getByPlayer(player);
                 Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation()));
                 me.msg(TL.ACTION_DENIED_OTHER, otherFaction.getTag(), "trample crops");
