@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.fperms.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
@@ -9,6 +8,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -16,17 +16,22 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PermissableRelationFrame {
 
+    /**
+     * @author Illyria Team
+     */
+
     private Gui gui;
-    private ConfigurationSection section;
 
     public PermissableRelationFrame(Faction f) {
-        section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.relation");
+        ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.relation");
+        assert section != null;
         gui = new Gui(FactionsPlugin.getInstance(),
-                section.getInt("rows", 3),
-                FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.name").replace("{faction}", f.getTag())));
+                section.getInt("rows", 4),
+                FactionsPlugin.getInstance().color(Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(FPlayer fplayer) {
@@ -84,4 +89,3 @@ public class PermissableRelationFrame {
         }
     }
 }
-

@@ -6,7 +6,6 @@ package com.massivecraft.factions.util;
  * Creation Date: 4/4/2020
  */
 
-import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;

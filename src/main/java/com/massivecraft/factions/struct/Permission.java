@@ -134,7 +134,6 @@ public enum Permission {
     SCOREBOARD("scoreboard"),
     SEECHUNK("seechunk"),
     SETWARP("setwarp"),
-    SHIELD("shield"),
     SHOP("shop"),
     TOP("top"),
     VIEWCHEST("viewchest"),

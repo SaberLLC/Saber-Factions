@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd.audit;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.Material;
 
 /**

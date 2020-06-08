@@ -1,7 +1,7 @@
 package com.massivecraft.factions.zcore.frame.fupgrades;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

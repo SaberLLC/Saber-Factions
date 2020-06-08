@@ -14,9 +14,6 @@ import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ListParameterizedType;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
-import com.massivecraft.factions.cmd.shields.struct.ShieldTCMP;
-import com.massivecraft.factions.cmd.shields.struct.frame.ShieldFrame;
-import com.massivecraft.factions.cmd.shields.struct.tasks.ShieldManagement;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.discord.DiscordListener;
 import com.massivecraft.factions.integration.Econ;
@@ -183,7 +180,7 @@ public class FactionsPlugin extends MPlugin {
         }
 
         saveDefaultConfig();
-        reloadConfig();
+        this.reloadConfig();
         //Start wait task executor
         WaitExecutor.startTask();
         // Load Conf from disk
@@ -196,7 +193,6 @@ public class FactionsPlugin extends MPlugin {
 
         com.massivecraft.factions.integration.Essentials.setup();
         hookedPlayervaults = setupPlayervaults();
-        new ShieldTCMP();
         FPlayers.getInstance().load();
         Factions.getInstance().load();
 
@@ -220,7 +216,6 @@ public class FactionsPlugin extends MPlugin {
 
         Board.getInstance().load();
         Board.getInstance().clean();
-        new ShieldManagement();
         //Load command aliases
         Aliases.load();
         // Add Base Commands
@@ -430,7 +425,6 @@ public class FactionsPlugin extends MPlugin {
                 .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
                 .registerTypeAdapter(ReserveObject.class, new ReserveAdapter())
                 .registerTypeAdapter(Location.class, new LocationTypeAdapter())
-                .registerTypeAdapter(ShieldFrame.class, new ShieldFrameAdapter())
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
@@ -487,6 +481,7 @@ public class FactionsPlugin extends MPlugin {
         //Board.getInstance().forceSave(); Not sure why this was there as it's called after the board is already saved.
         Conf.save();
     }
+
 
     public Economy getEcon() {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);

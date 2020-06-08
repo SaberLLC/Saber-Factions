@@ -34,7 +34,6 @@ public class DefaultPermissions {
     public boolean chest;
     public boolean check;
     public boolean drain;
-    public boolean shield;
     public boolean spawner;
 
     public DefaultPermissions() {
@@ -69,7 +68,6 @@ public class DefaultPermissions {
         this.chest = def;
         this.check = def;
         this.drain = def;
-        this.shield = def;
         this.spawner = def;
     }
 
@@ -101,7 +99,6 @@ public class DefaultPermissions {
                               boolean canChest,
                               boolean canCheck,
                               boolean canDrain,
-                              boolean canShield,
                               boolean canSpawners) {
         this.ban = canBan;
         this.build = canBuild;
@@ -131,7 +128,6 @@ public class DefaultPermissions {
         this.chest = canChest;
         this.check = canCheck;
         this.drain = canDrain;
-        this.shield = canShield;
         this.spawner = canSpawners;
     }
 
@@ -165,7 +161,6 @@ public class DefaultPermissions {
         else if (name == "chest") return this.chest;
         else if (name == "check") return this.check;
         else if (name == "drain") return this.drain;
-        else if (name == "shield") return this.shield;
         else if (name == "spawner") return this.spawner;
         else return false;
     }

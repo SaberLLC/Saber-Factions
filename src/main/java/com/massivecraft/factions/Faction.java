@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import com.massivecraft.factions.cmd.shields.struct.frame.ShieldFramePersistence;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
@@ -59,24 +58,6 @@ public interface Faction extends EconomyParticipator {
     String getDiscord();
 
     void setDiscord(String link);
-
-    boolean isProtected();
-
-    void setProtected();
-
-    void setUnprotected();
-
-    ShieldFramePersistence getShieldFrame();
-
-    void setupShieldChange(ShieldFramePersistence frame);
-
-    boolean pendingShieldChange();
-
-    long getShieldChangeTime();
-
-    ShieldFramePersistence getNewFrame();
-
-    void applyShield();
 
     void checkPerms();
 

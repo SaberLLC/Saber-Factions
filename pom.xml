@@ -42,10 +42,6 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
-                            <pattern>com.github.cryptomorin</pattern>
-                            <shadedPattern>com.massivecraft.factions.shade.github.cryptomorin</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>com.github.stefvanschie.inventoryframework</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.stefvanschie.inventoryframework</shadedPattern>
                         </relocation>
@@ -112,8 +108,7 @@
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
-            <version>0.5.8</version>
-            <scope>compile</scope>
+            <version>0.5.19</version>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -142,18 +137,6 @@
                     <groupId>com.google.code.gson</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cryptomorin</groupId>
-            <artifactId>XSeries</artifactId>
-            <version>5.3.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.10.6</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.ocpsoft.prettytime</groupId>
@@ -454,10 +437,10 @@
             <id>net.coreprotect</id>
             <url>http://maven.playpro.com/</url>
         </repository>
-        <repository>
-            <id>codemc-repo</id>
-            <url>https://repo.codemc.org/repository/maven-public/</url>
-        </repository>
+            <repository>
+                <id>codemc-repo</id>
+                <url>https://repo.codemc.org/repository/maven-public/</url>
+            </repository>
         <repository>
             <id>ess-repo</id>
             <url>http://ci.ender.zone/plugin/repository/everything/</url>

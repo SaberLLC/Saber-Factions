@@ -1,10 +1,10 @@
 package com.massivecraft.factions.cmd.check;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.Lists;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.DyeColor;

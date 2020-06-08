@@ -1,10 +1,9 @@
 package com.massivecraft.factions.zcore.fperms;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Placeholder;
-import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.util.XMaterial;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -47,7 +46,6 @@ public enum PermissableAction {
     WITHDRAW("withdraw"),
     CHEST("chest"),
     CHECK("check"),
-    SHIELD("shield"),
     SPAWNER("spawner");
 
     private String name;
@@ -68,7 +66,6 @@ public enum PermissableAction {
                 return permissableAction;
             }
         }
-
         return null;
     }
 
@@ -109,29 +106,16 @@ public enum PermissableAction {
         ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.action");
         ItemStack item = XMaterial.matchXMaterial(section.getString("Materials." + this.name)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(FactionsPlugin.getInstance().color(section.getString("placeholder-item.name").replace("{action}", this.name)));
-            List<String> lore = section.getStringList("placeholder-item.lore");
 
-            // Reset permissions since a section is null so it was old permission storage.
-            if (fme.getFaction().getPermissions().get(perm) == null) {
-                fme.getFaction().setDefaultPerms();
-                fme.getFaction().sendMessage(TL.SYSTEM_PERMISSIONS_RESET.toString());
-            }
+        meta.setDisplayName(FactionsPlugin.getInstance().color(section.getString("placeholder-item.name").replace("{action}", this.name)));
+        List<String> lore = section.getStringList("placeholder-item.lore");
 
-            // TEMP: This check is required for factions created before `Undefined` permission was removed
-            if (fme.getFaction().getPermissions().get(perm).get(this) == Access.UNDEFINED) {
-                fme.getFaction().getPermissions().get(perm).put(this, Access.DENY);
-            }
+        lore = FactionsPlugin.getInstance().replacePlaceholders(lore,
+                new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
+                new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
 
-            lore = FactionsPlugin.getInstance().replacePlaceholders(lore,
-                    new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
-                    new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
-
-            meta.setLore(FactionsPlugin.getInstance().colorList(lore));
-            item.setItemMeta(meta);
-        }
-
+        meta.setLore(FactionsPlugin.getInstance().colorList(lore));
+        item.setItemMeta(meta);
         return item;
     }
 
