@@ -4,8 +4,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.shields.struct.ShieldTCMP;
-import com.massivecraft.factions.cmd.shields.struct.tasks.ShieldManagement;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.timer.DateTimeFormats;
@@ -40,11 +38,11 @@ public enum FactionTag implements Tag {
     JOINING("{joining}", (fac) -> (fac.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString())),
     FACTION("{faction}", (Function<Faction, String>) Faction::getTag),
     FACTION_RELATION_COLOR("{faction-relation-color}", (fac, fp) -> fp == null ? "" : fp.getColorTo(fac).toString()),
-    SHIELD_STATUS("{shield-status}",(fac) -> {
-        if(fac.isProtected() && fac.getShieldFrame() != null) return String.valueOf(TL.SHIELD_CURRENTLY_ENABLE);
-        if(fac.getShieldFrame() == null) return String.valueOf(TL.SHIELD_NOT_SET);
-        return TL.SHIELD_CURRENTLY_NOT_ENABLED.toString();
-    }),
+    //SHIELD_STATUS("{shield-status}",(fac) -> {
+        //if(fac.isProtected() && fac.getShieldFrame() != null) return String.valueOf(TL.SHIELD_CURRENTLY_ENABLE);
+        //if(fac.getShieldFrame() == null) return String.valueOf(TL.SHIELD_NOT_SET);
+       // return TL.SHIELD_CURRENTLY_NOT_ENABLED.toString();
+    //}),
     HOME_WORLD("{world}", (fac) -> fac.hasHome() ? fac.getHome().getWorld().getName() : Tag.isMinimalShow() ? null : "{ig}"),
     RAIDABLE("{raidable}", (fac) -> {
         if (FactionsPlugin.getInstance().getConfig().getBoolean("hcf.raidable", false)) {
