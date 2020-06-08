@@ -72,16 +72,23 @@ public enum PermissableAction {
         return null;
     }
 
-    public int getSlot() {
-        return FactionsPlugin.getInstance().getConfig().getInt("fperm-gui.action.slots." + this.name.toLowerCase());
-    }
-
     public static Map<PermissableAction, Access> fromDefaults(DefaultPermissions defaultPermissions) {
         Map<PermissableAction, Access> defaultMap = new HashMap<>();
         for (PermissableAction permissableAction : PermissableAction.values()) {
             defaultMap.put(permissableAction, defaultPermissions.getbyName(permissableAction.name) ? Access.ALLOW : Access.DENY);
         }
         return defaultMap;
+    }
+
+    public static PermissableAction fromSlot(int slot) {
+        for (PermissableAction action : PermissableAction.values()) {
+            if (action.getSlot() == slot) return action;
+        }
+        return null;
+    }
+
+    public int getSlot() {
+        return FactionsPlugin.getInstance().getConfig().getInt("fperm-gui.action.slots." + this.name.toLowerCase());
     }
 
     /**
@@ -126,13 +133,6 @@ public enum PermissableAction {
         }
 
         return item;
-    }
-
-    public static PermissableAction fromSlot(int slot) {
-        for (PermissableAction action : PermissableAction.values()) {
-            if (action.getSlot() == slot) return action;
-        }
-        return null;
     }
 
 }

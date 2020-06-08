@@ -19,6 +19,7 @@ import com.massivecraft.factions.cmd.relational.CmdRelationTruce;
 import com.massivecraft.factions.cmd.reserve.CmdReserve;
 import com.massivecraft.factions.cmd.roles.CmdDemote;
 import com.massivecraft.factions.cmd.roles.CmdPromote;
+import com.massivecraft.factions.cmd.shields.CmdShield;
 import com.massivecraft.factions.cmd.tnt.CmdTnt;
 import com.massivecraft.factions.cmd.tnt.CmdTntFill;
 import com.massivecraft.factions.cmd.wild.CmdWild;
@@ -171,6 +172,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdClaimFill cmdClaimFill = new CmdClaimFill();
     public CmdNotifications cmdNotifications = new CmdNotifications();
     public CmdFriendlyFire cmdFriendlyFire = new CmdFriendlyFire();
+    public CmdShield cmdShield = new CmdShield();
 
     //Variables to know if we already setup certain sub commands
     public Boolean discordEnabled = false;
@@ -306,6 +308,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdLookup);
         this.addSubCommand(this.cmdNotifications);
         this.addSubCommand(this.cmdFriendlyFire);
+        this.addSubCommand(this.cmdShield);
         addVariableCommands();
         if (CommodoreProvider.isSupported()) brigadierManager.build();
     }
