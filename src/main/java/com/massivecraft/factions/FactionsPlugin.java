@@ -180,6 +180,7 @@ public class FactionsPlugin extends MPlugin {
         }
 
         saveDefaultConfig();
+        this.reloadConfig();
         //Start wait task executor
         WaitExecutor.startTask();
         // Load Conf from disk
