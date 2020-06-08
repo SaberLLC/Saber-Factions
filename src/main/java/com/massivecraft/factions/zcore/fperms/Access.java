@@ -3,14 +3,9 @@ package com.massivecraft.factions.zcore.fperms;
 import com.massivecraft.factions.FactionsPlugin;
 
 public enum Access {
-
-    /**
-     * @author Illyria Team
-     */
-
     ALLOW("Allow"),
-    DENY("Deny"),
-    UNDEFINED("Undefined");
+    UNDEFINED("Undefined"),
+    DENY("Deny");
 
     private final String name;
 
@@ -29,11 +24,6 @@ public enum Access {
             if (access.name().equalsIgnoreCase(check))
                 return access;
         return null;
-    }
-
-    public static Access booleanToAccess(boolean access) {
-        if (access) return Access.ALLOW;
-        else return Access.DENY;
     }
 
     public String getName() {

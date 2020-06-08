@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.shields.struct.frame.ShieldFramePersistence;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
@@ -95,7 +96,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private String weeWooFormat;
     private String guildId;
     private String memberRoleId;
-
+    private ShieldFramePersistence shieldFrame;
+    private boolean isProtected;
+    private long applyShieldUpdate;
+    private ShieldFramePersistence newFrame;
 
     // -------------------------------------------- //
     // Construct
@@ -183,6 +187,48 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
+    }
+
+    public boolean isProtected() {
+        return this.isProtected;
+    }
+
+    public long getShieldChangeTime() {
+        return this.applyShieldUpdate;
+    }
+
+    public ShieldFramePersistence getNewFrame() {
+        return this.newFrame;
+    }
+
+    public void setProtected() {
+        this.isProtected = true;
+    }
+
+    public void setUnprotected() {
+        this.isProtected = false;
+    }
+
+    public ShieldFramePersistence getShieldFrame() {
+        return this.shieldFrame;
+    }
+
+    public void applyShield() {
+        this.shieldFrame = this.newFrame;
+        this.applyShieldUpdate = 0L;
+    }
+
+    public void setupShieldChange(ShieldFramePersistence frame) {
+        if (this.shieldFrame == null) {
+            this.shieldFrame = frame;
+        } else {
+            this.newFrame = frame;
+            this.applyShieldUpdate = System.currentTimeMillis() + (3600000 * Conf.shieldFrameChangeCooldownHours);
+        }
+    }
+
+    public boolean pendingShieldChange() {
+        return (this.applyShieldUpdate != 0L);
     }
 
     public void addAnnouncement(FPlayer fPlayer, String msg) {

@@ -1,12 +1,12 @@
 package com.massivecraft.factions.cmd;
 
 
+import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.ParticleEffect;
 import com.massivecraft.factions.util.VisualizeUtil;
-import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.*;
 import org.bukkit.entity.Player;

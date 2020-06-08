@@ -1,8 +1,8 @@
 package com.massivecraft.factions;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
-import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import org.bukkit.ChatColor;
@@ -102,6 +102,11 @@ public class Conf {
     public static boolean autoLeaveDeleteFPlayerData = true; // Let them just remove player from Faction.
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
+
+    //SHIELDS
+    public static boolean useFShieldSystem = true;
+    public static int shieldTimeHours = 12;
+    public static int shieldFrameChangeCooldownHours = 24;
 
     //RADIUS CLAIMING
     public static boolean useRadiusClaimSystem = true;

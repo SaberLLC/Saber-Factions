@@ -972,38 +972,36 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setFFlying(boolean fly, boolean damage) {
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
-            Player player = getPlayer();
-            if (player == null) return;
+        Player player = getPlayer();
+        if (player == null) return;
 
-            player.setAllowFlight(fly);
-            player.setFlying(fly);
+        player.setAllowFlight(fly);
+        player.setFlying(fly);
 
-            if (!damage) {
-                msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
-                if (!fly) {
-                    sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
-                }
-            } else {
-                msg(TL.COMMAND_FLY_DAMAGE);
-            }
-
-            // If leaving fly mode, don't let them take fall damage for x seconds.
+        if (!damage) {
+            msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
             if (!fly) {
-                int cooldown = FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3);
-                CmdFly.flyMap.remove(player.getName());
-
-                // If the value is 0 or lower, make them take fall damage.
-                // Otherwise, start a timer and have this cancel after a few seconds.
-                // Short task so we're just doing it in method. Not clean but eh.
-                if (cooldown > 0) {
-                    setTakeFallDamage(false);
-                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> setTakeFallDamage(true), 20L * cooldown);
-                }
+                sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
             }
-
-            isFlying = fly;
+        } else {
+            msg(TL.COMMAND_FLY_DAMAGE);
         }
+
+        // If leaving fly mode, don't let them take fall damage for x seconds.
+        if (!fly) {
+            int cooldown = FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3);
+            CmdFly.flyMap.remove(player.getName());
+
+            // If the value is 0 or lower, make them take fall damage.
+            // Otherwise, start a timer and have this cancel after a few seconds.
+            // Short task so we're just doing it in method. Not clean but eh.
+            if (cooldown > 0) {
+                setTakeFallDamage(false);
+                Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> setTakeFallDamage(true), 20L * cooldown);
+            }
+        }
+
+        isFlying = fly;
     }
 
     public boolean isInFactionsChest() {

@@ -36,8 +36,8 @@ public class TempLine {
         if (line.p1.x == this.p1.x && line.p2.x == this.p2.x && line.p1.y == this.p1.y && line.p2.y == this.p2.y) {
             return true;
         }
-		return line.p1.x == this.p2.x && line.p2.x == this.p1.x && line.p1.y == this.p2.y && line.p2.y == this.p1.y;
-	}
+        return line.p1.x == this.p2.x && line.p2.x == this.p1.x && line.p1.y == this.p2.y && line.p2.y == this.p1.y;
+    }
 
     @Override
     public int hashCode() {
