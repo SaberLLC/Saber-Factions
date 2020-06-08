@@ -926,6 +926,9 @@ public enum TL {
     COMMAND_TAG_CHANGED("The faction %1$s changed their name to %2$s."),
     COMMAND_TAG_DESCRIPTION("Change the faction tag"),
 
+    COMMAND_SHIELD_DESCRIPTION("Modify/Enable Faction Shield Timings"),
+
+
     COMMAND_TITLE_TOCHANGE("to change a players title"),
     COMMAND_TITLE_FORCHANGE("for changing a players title"),
     COMMAND_TITLE_CHANGED("%1$s changed a title: %2$s"),
@@ -1289,6 +1292,9 @@ public enum TL {
     WARMUPS_NOTIFY_TELEPORT("&eYou will teleport to &d%1$s &ein &d%2$d &eseconds."),
     WARMUPS_ALREADY("&cYou are already warming up."),
     WARMUPS_CANCELLED("&cYou have cancelled your warmup."),
+
+    SYSTEM_PERMISSIONS_RESET("&cYour faction's permissions have been reset to default due to a transfer"),
+
 
     PLACEHOLDERAPI_NULL("");
 

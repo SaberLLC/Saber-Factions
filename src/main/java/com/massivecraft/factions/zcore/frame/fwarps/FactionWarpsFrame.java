@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.frame.fwarps;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
@@ -11,7 +12,6 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.Placeholder;
 import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
