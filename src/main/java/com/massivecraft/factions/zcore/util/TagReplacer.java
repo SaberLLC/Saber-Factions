@@ -1,9 +1,11 @@
 package com.massivecraft.factions.zcore.util;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.shields.struct.tasks.ShieldManagement;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.timer.TimerManager;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -78,6 +80,7 @@ public enum TagReplacer {
     FACTION_BANCOUNT(TagType.FACTION, "{faction-bancount}"),
     FACTION_STRIKES(TagType.FACTION, "{strikes}"),
     FACTION_POINTS(TagType.FACTION, "{faction-points}"),
+    SHIELD_STATUS(TagType.FACTION, "{shield-status}"),
 
 
     /**
@@ -239,6 +242,10 @@ public enum TagReplacer {
                 return fac.hasHome() ? String.valueOf(fac.getHome().getBlockY()) : minimal ? null : "{ig}";
             case HOME_Z:
                 return fac.hasHome() ? String.valueOf(fac.getHome().getBlockZ()) : minimal ? null : "{ig}";
+            case SHIELD_STATUS:
+                    if(fac.isProtected() && fac.getShieldFrame() != null) return String.valueOf(TL.SHIELD_CURRENTLY_ENABLE);
+                    if(fac.getShieldFrame() == null) return String.valueOf(TL.SHIELD_NOT_SET);
+                    return TL.SHIELD_CURRENTLY_NOT_ENABLED.toString();
             case LAND_VALUE:
                 return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLandRounded())) : minimal ? null : TL.ECON_OFF.format("value");
             case LAND_REFUND:

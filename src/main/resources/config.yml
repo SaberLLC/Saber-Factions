@@ -282,6 +282,7 @@ show:
   - '&4* &cDescription: &f{description}'
   - '&4* &cLand / Power / Max Power: &f{chunks} &8/ &f{power} &8/ &f{maxPower}'
   - '&4* &cFaction Strikes: &f{strikes}'
+  - '&4* &cShield Status: &f{shield-status}'
   - '&4* &cFaction Points: &f{faction-points}'
   - '&4* &cFounded: &f{create-date}'
   - '&4* &cBalance: &f{faction-balance}'
@@ -1666,6 +1667,7 @@ Wild:
 #  - {tnt-balance} : # of tnt a faction has in their tnt bank
 #  - {tnt-max-balance} : # of possible tnt a faction can have in their tnt bank
 #  - {faction-strikes} : # of strikes a faction has
+#  - {shield-status} : Status of the factions shield
 
 # Faction Permissions GUI variables. Can only be used in GUI
 # - {relation}            : Shows relation name (Can be used in action and relation)

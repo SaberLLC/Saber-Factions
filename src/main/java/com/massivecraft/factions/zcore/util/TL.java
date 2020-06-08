@@ -1254,6 +1254,10 @@ public enum TL {
     PLAYER_PVP_NEUTRALFAIL("You can't hurt %s in their own territory unless you declare them as an enemy."),
     PLAYER_PVP_TRIED("%s tried to hurt you."),
 
+    SHIELD_CURRENTLY_ENABLE("&a&lCurrently Protected"),
+    SHIELD_NOT_SET("&c&lNot Set"),
+    SHIELD_CURRENTLY_NOT_ENABLED("&c&lCurrently Unprotected"),
+
     /**
      * Strings lying around in other bits of the plugins
      */
