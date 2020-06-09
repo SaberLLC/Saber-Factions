@@ -60,7 +60,6 @@ public class CmdBanner extends FCommand {
     @Deprecated
     public void takeMoney(FPlayer fme, int amt) {
         if (this.hasMoney(fme, amt)) {
-            Economy econ = FactionsPlugin.getInstance().getEcon();
             fme.sendMessage(TL.COMMAND_BANNER_MONEYTAKE.toString().replace("{amount}", amt + ""));
         }
     }

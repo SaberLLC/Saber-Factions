@@ -39,7 +39,7 @@ public class CmdDescription extends FCommand {
 
             // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
             // And replace all the % because it messes with string formatting and this is easy way around that.
-            String desc = TextUtil.implode(context.args, " ").replaceAll("%", "").replaceAll("(&([a-f0-9klmnor]))", "& $2");
+            String desc = TextUtil.implode(context.args, " ").replace("%", "").replaceAll("(&([a-f0-9klmnor]))", "& $2");
             context.faction.setDescription(desc);
             Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.FDESC_EDIT, context.fPlayer.getName(), desc));
             if (!Conf.broadcastDescriptionChanges) {

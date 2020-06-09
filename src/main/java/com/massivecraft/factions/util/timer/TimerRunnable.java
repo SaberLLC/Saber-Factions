@@ -25,13 +25,6 @@ public class TimerRunnable {
     }
 
 
-    public TimerRunnable(UUID playerUUID, Timer timer, long duration) {
-        this.timer = timer;
-        setRemaining(duration);
-        FactionsPlugin plugin = FactionsPlugin.getInstance();
-        plugin.getTimerManager().getTimerRunnableList().add(this);
-    }
-
     public boolean isCancelled() {
         return cancelled;
     }

@@ -11,14 +11,7 @@ import net.dv8tion.jda.core.entities.TextChannel;
 
 public class WeeWooTask implements Runnable {
 
-    /**
-     * @author Driftay
-     */
-
-    private FactionsPlugin plugin;
-
     public WeeWooTask(FactionsPlugin plugin) {
-        this.plugin = plugin;
     }
 
     @Override

@@ -37,7 +37,7 @@ public class DiscordListener extends ListenerAdapter {
         this.decimalFormat = new DecimalFormat("$#,###.##");
         this.plugin = plugin;
         int minute = 3600;
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, DiscordListener::saveGuilds, minute * 15, minute * 15);
+        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, DiscordListener::saveGuilds, minute * 15L, minute * 15L);
     }
 
     private static JSONGuilds loadGuilds() {
@@ -64,6 +64,7 @@ public class DiscordListener extends ListenerAdapter {
         }
     }
 
+    @Override
     public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
         Integer i;
         if (e.getAuthor().isBot()) return;
@@ -85,6 +86,7 @@ public class DiscordListener extends ListenerAdapter {
         }
     }
 
+    @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
         try {
             if (event.getMessage().isWebhookMessage() || event.getAuthor().isBot()) return;

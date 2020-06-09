@@ -41,13 +41,9 @@ public class CmdClaim extends FCommand {
         int radius = context.argAsInt(0, 1); // Default to 1
         final Faction forFaction = context.argAsFaction(1, context.faction); // Default to own
 
-        if (!context.fPlayer.isAdminBypassing()) {
-            if (!(context.fPlayer.getFaction().equals(forFaction) && context.fPlayer.getRole() == Role.LEADER)) {
-                if (forFaction.getAccess(context.fPlayer, PermissableAction.TERRITORY) != Access.ALLOW) {
-                    context.msg(TL.COMMAND_CLAIM_DENIED);
-                    return;
-                }
-            }
+        if (!context.fPlayer.isAdminBypassing() && !(context.fPlayer.getFaction().equals(forFaction) && context.fPlayer.getRole() == Role.LEADER) && forFaction.getAccess(context.fPlayer, PermissableAction.TERRITORY) != Access.ALLOW) {
+            context.msg(TL.COMMAND_CLAIM_DENIED);
+            return;
         }
 
 
@@ -90,12 +86,11 @@ public class CmdClaim extends FCommand {
                     return true;
                 }
 
+                @Override
                 public void finish() {
-                    if (FactionsPlugin.cachedRadiusClaim) {
-                        if (successfulClaims > 0) {
-                            context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(f, true), String.valueOf(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ()));
-                            stop();
-                        }
+                    if (FactionsPlugin.cachedRadiusClaim && successfulClaims > 0) {
+                        context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(f, true), String.valueOf(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ()));
+                        stop();
                     }
                 }
             };

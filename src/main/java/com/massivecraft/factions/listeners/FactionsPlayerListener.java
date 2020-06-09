@@ -4,7 +4,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFGlobal;
 import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
-import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
 import com.massivecraft.factions.cmd.wild.CmdWild;
@@ -36,8 +35,6 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Boat;
-import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -191,7 +188,6 @@ public class FactionsPlayerListener implements Listener {
         FLocation loc = new FLocation(block);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
         Faction myFaction = me.getFaction();
-        Relation rel = myFaction.getRelationTo(otherFaction);
 
         // no door/chest/whatever protection in wilderness, war zones, or safe zones
         if (otherFaction.isSystemFaction()) return true;
@@ -522,13 +518,11 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerFall(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player) {
-            if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
-                Player player = (Player) e.getEntity();
-                if (fallMap.containsKey(player)) {
-                    e.setCancelled(true);
-                    fallMap.remove(player);
-                }
+        if (e.getEntity() instanceof Player && e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+            Player player = (Player) e.getEntity();
+            if (fallMap.containsKey(player)) {
+                e.setCancelled(true);
+                fallMap.remove(player);
             }
         }
     }
@@ -616,7 +610,7 @@ public class FactionsPlayerListener implements Listener {
                 fplayer.msg(TL.COMMAND_INSPECT_BYPASS);
             }
             List<String[]> info = CoreProtect.getInstance().getAPI().blockLookup(e.getClickedBlock(), 0);
-            if (info.size() == 0) {
+            if (info.isEmpty()) {
                 e.getPlayer().sendMessage(TL.COMMAND_INSPECT_NODATA.toString());
                 return;
             }
@@ -656,7 +650,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
     public static BukkitTask positionTask = null;
-    public final static Map<UUID, Location> lastLocations = new HashMap<>();
+    public final Map<UUID, Location> lastLocations = new HashMap<>();
 
     public void startPositionCheck() {
         positionTask = Bukkit.getScheduler().runTaskTimer(FactionsPlugin.getInstance(), () -> {
@@ -830,18 +824,14 @@ public class FactionsPlayerListener implements Listener {
         // Do type null checks so if XMaterial has a parsing issue and fills null as a value it will not bypass.
         // territoryCancelAndAllowItemUseMaterial bypass the protection system but only if they're not clicking on territoryDenySwitchMaterials
         // if they're clicking on territoryDenySwitchMaterials, let the protection system handle the permissions
-        if (type != null && !Conf.territoryDenySwitchMaterials.contains(block.getType())) {
-            if (Conf.territoryCancelAndAllowItemUseMaterial.contains(type)) {
-                return;
-            }
+        if (type != null && !Conf.territoryDenySwitchMaterials.contains(block.getType()) && Conf.territoryCancelAndAllowItemUseMaterial.contains(type)) {
+            return;
         }
 
-        if (GetPermissionFromUsableBlock(block.getType()) != null) {
-            if (!canPlayerUseBlock(player, block, false)) {
-                event.setCancelled(true);
-                event.setUseInteractedBlock(Event.Result.DENY);
-                return;
-            }
+        if (GetPermissionFromUsableBlock(block.getType()) != null && !canPlayerUseBlock(player, block, false)) {
+            event.setCancelled(true);
+            event.setUseInteractedBlock(Event.Result.DENY);
+            return;
         }
 
         if (type != null && !playerCanUseItemHere(player, block.getLocation(), event.getItem().getType(), false, PermissableAction.ITEM)) {
@@ -862,14 +852,13 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerBoneMeal(PlayerInteractEvent event) {
         Block block = event.getClickedBlock();
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK && block.getType() == XMaterial.GRASS_BLOCK.parseMaterial()
-                && event.hasItem() && event.getItem().getType() == XMaterial.BONE_MEAL.parseMaterial()) {
-            if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD.name(), true)) {
-                FPlayer me = FPlayers.getInstance().getById(event.getPlayer().getUniqueId().toString());
-                Faction myFaction = me.getFaction();
+                && event.hasItem() && event.getItem().getType() == XMaterial.BONE_MEAL.parseMaterial()
+                && !FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), block.getLocation(), PermissableAction.BUILD.name(), true)) {
+            FPlayer me = FPlayers.getInstance().getById(event.getPlayer().getUniqueId().toString());
+            Faction myFaction = me.getFaction();
 
-                me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", "use bone meal"));
-                event.setCancelled(true);
-            }
+            me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", "use bone meal"));
+            event.setCancelled(true);
         }
     }
 
@@ -937,10 +926,8 @@ public class FactionsPlayerListener implements Listener {
                 player.sendMessage(String.valueOf(TL.COMMAND_LOGOUT_DAMAGE_TAKEN));
             }
             WaitExecutor.handleAction(player);
-            if (CmdWild.teleporting.contains(player)) {
-                if (!FactionsPlugin.getInstance().getConfig().getBoolean("Wild.FallDamage") && e.getCause() == EntityDamageEvent.DamageCause.FALL) {
-                    e.setCancelled(true);
-                }
+            if (CmdWild.teleporting.contains(player) && !FactionsPlugin.getInstance().getConfig().getBoolean("Wild.FallDamage") && e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                e.setCancelled(true);
             }
         }
     }
@@ -949,7 +936,6 @@ public class FactionsPlayerListener implements Listener {
     public void onTeleport(PlayerTeleportEvent e) {
         Player player = e.getPlayer();
 
-        if (player == null) return;
         LogoutHandler handler = LogoutHandler.getByName(player.getName());
         if (handler.isLogoutActive(player)) {
             handler.cancelLogout(player);
@@ -987,7 +973,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    final public void onFactionJoin(FPlayerJoinEvent event) {
+    final void onFactionJoin(FPlayerJoinEvent event) {
         FTeamWrapper.applyUpdatesLater(event.getFaction());
     }
 
@@ -1001,7 +987,7 @@ public class FactionsPlayerListener implements Listener {
     }
 
     @EventHandler
-    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent e) {
+    public void asyncPlayerChatEvent(AsyncPlayerChatEvent e) {
         Player p = e.getPlayer();
 
         if (CmdFGlobal.toggled.contains(p.getUniqueId())) {
@@ -1027,10 +1013,8 @@ public class FactionsPlayerListener implements Listener {
 
         for (int i = l.size() - 1; i >= 0; i--) { // going backwards in the list to prevent a ConcurrentModificationException
             Player recipient = l.get(i);
-            if (recipient != null) {
-                if (CmdFGlobal.toggled.contains(recipient.getUniqueId())) {
-                    e.getRecipients().remove(recipient);
-                }
+            if (recipient != null && CmdFGlobal.toggled.contains(recipient.getUniqueId())) {
+                e.getRecipients().remove(recipient);
             }
         }
     }

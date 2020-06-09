@@ -159,7 +159,6 @@ public class Worldguard {
                     FactionsPlugin.getInstance().log("We failed to load Vector Classes from WorldGuard! Support will be removed!");
                     FactionsPlugin.getInstance().log("WorldGuard 7.0.0 support is currently in BETA. Please be careful!");
                     regionContainer = null;
-                    return;
                 }
             }
         }

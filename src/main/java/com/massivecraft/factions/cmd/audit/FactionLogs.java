@@ -65,11 +65,11 @@ public class FactionLogs {
                         }
                     }
                 }
-                if (logs.size() <= 0)
+                if (logs.isEmpty())
                     toRemove.add(logType);
             }
         });
-        toRemove.forEach((rem) -> mostRecentLogs.remove(rem));
+        toRemove.forEach(rem -> mostRecentLogs.remove(rem));
     }
 
     public Map<FLogType, LinkedList<FactionLog>> getMostRecentLogs() {

@@ -26,8 +26,8 @@ import java.util.Random;
  * @author DroppingAnvil
  */
 public class CmdWild extends FCommand implements WaitedTask {
-    public static HashMap<Player, String> teleportRange;
-    public static HashSet<Player> teleporting;
+    public static HashMap<Player, String> teleportRange = new HashMap<>();
+    public static HashSet<Player> teleporting = new HashSet<>();
     public static CmdWild instance;
 
     public CmdWild() {
@@ -37,9 +37,7 @@ public class CmdWild extends FCommand implements WaitedTask {
         this.requirements = new CommandRequirements.Builder(Permission.WILD)
                 .playerOnly()
                 .build();
-        teleporting = new HashSet<>();
-        teleportRange = new HashMap<>();
-    }
+      }
 
     @Override
     public void perform(CommandContext context) {

@@ -167,12 +167,14 @@ public class FactionsPlugin extends MPlugin {
                 FactionsPlugin.instance.log("Minecraft Version 1.15 found.");
                 mc115 = true;
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + version);
         }
         migrateFPlayerLeaders();
         log("==== End Setup ====");
 
         int pluginId = 7013;
-        Metrics metrics = new Metrics(this, pluginId);
+        new Metrics(this, pluginId);
 
         if (!preEnable()) {
             this.loadSuccessful = false;
@@ -394,14 +396,12 @@ public class FactionsPlugin extends MPlugin {
         return this.mvdwPlaceholderAPIManager;
     }
 
-    private boolean setupPermissions() {
+    private void setupPermissions() {
         try {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
             if (rsp != null) perms = rsp.getProvider();
-        } catch (NoClassDefFoundError ex) {
-            return false;
+        } catch (NoClassDefFoundError ignored) {
         }
-        return perms != null;
     }
 
     private boolean setupPlayervaults() {

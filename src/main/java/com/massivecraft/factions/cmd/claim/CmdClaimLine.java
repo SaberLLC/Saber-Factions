@@ -68,15 +68,10 @@ public class CmdClaimLine extends FCommand {
         }
 
         final Faction forFaction = context.argAsFaction(2, context.faction);
-        Faction at = Board.getInstance().getFactionAt(new FLocation(context.fPlayer.getPlayer().getLocation()));
 
-        if (forFaction != context.fPlayer.getFaction()) {
-            if (!context.fPlayer.isAdminBypassing()) {
-                if (forFaction.getAccess(context.fPlayer, PermissableAction.TERRITORY) != Access.ALLOW) {
+        if (forFaction != context.fPlayer.getFaction() && !context.fPlayer.isAdminBypassing() && forFaction.getAccess(context.fPlayer, PermissableAction.TERRITORY) != Access.ALLOW) {
                     context.msg(TL.COMMAND_CLAIM_DENIED);
                     return;
-                }
-            }
         }
 
         Location location = context.player.getLocation();
@@ -85,13 +80,11 @@ public class CmdClaimLine extends FCommand {
         int claims = 0;
 
         for (int i = 0; i < amount; i++) {
-            if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false)) {
-                claims++;
-            } else {
+            if (!FactionsPlugin.cachedRadiusClaim || !context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false)) {
                 context.fPlayer.attemptClaim(forFaction, location, true);
-                claims++;
             }
-            location = location.add(blockFace.getModX() * 16, 0, blockFace.getModZ() * 16);
+            claims++;
+            location = location.add(blockFace.getModX() * 16D, 0, blockFace.getModZ() * 16D);
             FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", String.valueOf(i), new FLocation(context.player.getLocation()).formatXAndZ(","));
         }
         int cachedClaims = claims;

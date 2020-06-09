@@ -16,8 +16,7 @@ public class VisualizeUtil {
     }
 
     public static Set<Location> getPlayerLocations(UUID uuid) {
-        Set<Location> ret = playerLocations.computeIfAbsent(uuid, k -> new HashSet<>());
-        return ret;
+        return playerLocations.computeIfAbsent(uuid, k -> new HashSet<>());
     }
 
     @SuppressWarnings("deprecation")

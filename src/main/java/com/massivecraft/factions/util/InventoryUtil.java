@@ -15,7 +15,7 @@ import java.io.IOException;
 public class InventoryUtil {
 
 
-    public static String InventoryToString(ItemStack[] items) throws IllegalStateException {
+    public static String InventoryToString(ItemStack[] items) {
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);

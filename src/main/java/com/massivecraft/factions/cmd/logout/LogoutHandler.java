@@ -15,10 +15,8 @@ public class LogoutHandler {
 
     public static Map<String, LogoutHandler> factionDatas = new HashMap<>();
     private Map<UUID, Long> logoutCooldown = new HashMap<>();
-    private String name;
 
     public LogoutHandler(String name) {
-        this.name = name;
         factionDatas.put(name, this);
     }
 

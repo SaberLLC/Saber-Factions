@@ -18,7 +18,6 @@ public class CmdChat extends FCommand {
         super();
         this.aliases.addAll(Aliases.chat);
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("mode", "next");
 
         this.requirements = new CommandRequirements.Builder(Permission.CHAT)
@@ -86,7 +85,7 @@ public class CmdChat extends FCommand {
         return TL.COMMAND_CHAT_DESCRIPTION;
     }
 
-    protected class ChatBrigadier implements BrigadierProvider {
+    protected static class ChatBrigadier implements BrigadierProvider {
         @Override
         public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
             return parent.then(LiteralArgumentBuilder.literal("public"))

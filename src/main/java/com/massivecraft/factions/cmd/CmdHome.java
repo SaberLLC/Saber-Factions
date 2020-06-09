@@ -88,11 +88,7 @@ public class CmdHome extends FCommand {
         final Location loc = context.player.getLocation().clone();
 
         // if player is not in a safe zone or their own faction territory, only allow teleport if no enemies are nearby
-        if (Conf.homesTeleportAllowedEnemyDistance > 0
-                && !faction.isSafeZone()
-                && (!context.fPlayer.isInOwnTerritory()
-                || (context.fPlayer.isInOwnTerritory()
-                && !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory))) {
+        if (Conf.homesTeleportAllowedEnemyDistance > 0 && !faction.isSafeZone() && (!context.fPlayer.isInOwnTerritory() || !Conf.homesTeleportIgnoreEnemiesIfInOwnTerritory)) {
 
             World w = loc.getWorld();
             double x = loc.getX();

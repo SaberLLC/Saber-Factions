@@ -37,31 +37,29 @@ public class CmdGrace extends FCommand {
             return;
         }
 
-        if(context.args.size() == 1) {
-            if (context.sender.hasPermission(String.valueOf(Permission.GRACETOGGLE))) {
-                if (context.argAsString(0).equalsIgnoreCase("on") || context.argAsString(0).equalsIgnoreCase("start")) {
-                    FactionsPlugin.getInstance().getTimerManager().graceTimer.setPaused(false);
-                    FactionsPlugin.getInstance().getTimerManager().graceTimer.setRemaining(TimeUnit.DAYS.toMillis(Conf.gracePeriodTimeDays), true);
-                    if (Conf.broadcastGraceToggles) {
-                        for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers())
-                            follower.msg(TL.COMMAND_GRACE_ENABLED_FORMAT, String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true)));
-                    }
-                    return;
+        if (context.args.size() == 1 && context.sender.hasPermission(String.valueOf(Permission.GRACETOGGLE))) {
+            if (context.argAsString(0).equalsIgnoreCase("on") || context.argAsString(0).equalsIgnoreCase("start")) {
+                FactionsPlugin.getInstance().getTimerManager().graceTimer.setPaused(false);
+                FactionsPlugin.getInstance().getTimerManager().graceTimer.setRemaining(TimeUnit.DAYS.toMillis(Conf.gracePeriodTimeDays), true);
+                if (Conf.broadcastGraceToggles) {
+                    for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers())
+                        follower.msg(TL.COMMAND_GRACE_ENABLED_FORMAT, String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true)));
                 }
+                return;
+            }
 
-                if (context.argAsString(0).equalsIgnoreCase("off") || context.argAsString(0).equalsIgnoreCase("stop")) {
-                    FactionsPlugin.getInstance().getTimerManager().graceTimer.setRemaining(TimeUnit.SECONDS.toMillis(0L), true);
-                    FactionsPlugin.getInstance().getTimerManager().graceTimer.setPaused(false);
-                    if (Conf.broadcastGraceToggles) {
-                        for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers())
-                            follower.msg(TL.COMMAND_GRACE_DISABLED_FORMAT);
-                    }
-                    return;
+            if (context.argAsString(0).equalsIgnoreCase("off") || context.argAsString(0).equalsIgnoreCase("stop")) {
+                FactionsPlugin.getInstance().getTimerManager().graceTimer.setRemaining(TimeUnit.SECONDS.toMillis(0L), true);
+                FactionsPlugin.getInstance().getTimerManager().graceTimer.setPaused(false);
+                if (Conf.broadcastGraceToggles) {
+                    for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers())
+                        follower.msg(TL.COMMAND_GRACE_DISABLED_FORMAT);
                 }
+                return;
             }
         }
 
-        if(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() <= 0L) {
+        if (FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() <= 0L) {
             context.fPlayer.msg(TL.COMMAND_GRACE_DISABLED_NO_FORMAT.toString());
         } else {
             context.fPlayer.msg(TL.COMMAND_GRACE_TIME_REMAINING, String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true)));

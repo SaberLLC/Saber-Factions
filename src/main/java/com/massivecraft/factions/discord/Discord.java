@@ -31,7 +31,7 @@ public class Discord {
     public static Boolean confUseDiscord;
     public static String botToken;
     public static String mainGuildID;
-    public static Boolean useDiscord;
+    public static boolean useDiscord;
     public static java.awt.Color roleColor;
     public static Guild mainGuild;
     public static Role leader;
@@ -53,13 +53,11 @@ public class Discord {
      * Called to reload variables and if needed start JDA
      */
     public static void setupDiscord() {
-        if (jda == null) {
-            if (startBot()) {
-                varSetup();
-                jda.addEventListener(new FactionChatHandler(plugin));
-                jda.addEventListener(new DiscordListener(plugin));
-                return;
-            }
+        if (jda == null && startBot()) {
+            varSetup();
+            jda.addEventListener(new FactionChatHandler(plugin));
+            jda.addEventListener(new DiscordListener(plugin));
+            return;
         }
         varSetup();
     }
@@ -84,6 +82,7 @@ public class Discord {
             confUseDiscord = Conf.useDiscordSystem;
             botToken = Conf.discordBotToken;
             if (jda != null && Conf.leaderRoles || Conf.factionDiscordTags) {
+                assert jda != null;
                 mainGuild = jda.getGuildById(Conf.mainGuildID);
             } else {
                 mainGuild = null;
@@ -151,12 +150,9 @@ public class Discord {
      * @param s String target Faction tag
      * @return
      */
-    public static Boolean doesFactionRoleExist(String s) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Conf.factionRolePrefix);
-        sb.append(s);
-        sb.append(Conf.factionRoleSuffix);
-        return getRoleFromName(sb.toString()) != null;
+    public static boolean doesFactionRoleExist(String s) {
+        String sb = Conf.factionRolePrefix + s + Conf.factionRoleSuffix;
+        return getRoleFromName(sb) != null;
     }
 
     public static Role getRoleFromName(String s) {
@@ -189,7 +185,8 @@ public class Discord {
         sb.append(Conf.factionRoleSuffix);
         if (!doesFactionRoleExist(sb.toString())) {
             try {
-                Role newRole = mainGuild.getController().createRole()
+                Role newRole;
+                newRole = mainGuild.getController().createRole()
                         .setName(sb.toString())
                         .setColor(roleColor)
                         .setPermissions(Permission.EMPTY_PERMISSIONS)
@@ -211,11 +208,7 @@ public class Discord {
      * @return Name of would be Role
      */
     public static String getFactionRoleName(String tag) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Conf.factionRolePrefix);
-        sb.append(tag);
-        sb.append(Conf.factionRoleSuffix);
-        return sb.toString();
+        return Conf.factionRolePrefix + tag + Conf.factionRoleSuffix;
     }
 
     /**
@@ -224,7 +217,7 @@ public class Discord {
      * @param u User
      * @return Boolean
      */
-    public static Boolean isInMainGuild(User u) {
+    public static boolean isInMainGuild(User u) {
         if (mainGuild == null) return false;
         return mainGuild.getMember(u) == null ? Boolean.FALSE : Boolean.TRUE;
     }
@@ -252,10 +245,12 @@ public class Discord {
             if (fp.discordSetup() && isInMainGuild(fp.discordUser())) {
                 try {
                     Member m = mainGuild.getMember(fp.discordUser());
-                    if (Conf.factionDiscordTags) {
+                    boolean discordTags = Conf.factionDiscordTags;
+                    boolean factionRoles = Conf.factionRoles;
+                    if (discordTags) {
                         mainGuild.getController().setNickname(m, Discord.getNicknameString(fp)).queue();
                     }
-                    if (Conf.factionRoles) {
+                    if (factionRoles) {
                         mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(getRoleFromName(oldTag))).queue();
                         mainGuild.getController().addSingleRoleToMember(m, Objects.requireNonNull(createFactionRole(f.getTag()))).queue();
                     }

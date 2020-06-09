@@ -15,7 +15,7 @@ public class TempMarkerSet {
     public boolean hideByDefault;
 
     public MarkerSet create(MarkerAPI markerApi, String id) {
-        MarkerSet ret = markerApi.createMarkerSet(id, this.label, null, false); // ("null, false" at the end means "all icons allowed, not perisistent")
+        MarkerSet ret = markerApi.createMarkerSet(id, this.label, null, false); // ("null, false" at the end means "all icons allowed, not persistent")
 
         if (ret == null) {
             return null;
@@ -41,10 +41,8 @@ public class TempMarkerSet {
             markerset.setMarkerSetLabel(this.label);
         }
 
-        if (this.minimumZoom > 0) {
-            if (markerset.getMinZoom() != this.minimumZoom) {
+        if (this.minimumZoom > 0 && markerset.getMinZoom() != this.minimumZoom) {
                 markerset.setMinZoom(this.minimumZoom);
-            }
         }
 
         if (markerset.getLayerPriority() != this.priority) {

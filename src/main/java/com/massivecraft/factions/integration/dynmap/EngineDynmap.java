@@ -26,20 +26,17 @@ public class EngineDynmap {
     // CONSTANTS
     // -------------------------------------------- //
 
-    public final static int BLOCKS_PER_CHUNK = 16;
+    public static final int BLOCKS_PER_CHUNK = 16;
 
-    public final static String DYNMAP_INTEGRATION = "\u00A7dDynmap Integration: \u00A7e";
+    public static final String DYNMAP_INTEGRATION = "\u00A7dDynmap Integration: \u00A7e";
 
-    public final static String FACTIONS = "factions";
-    public final static String FACTIONS_ = FACTIONS + "_";
-
-    public final static String FACTIONS_MARKERSET = FACTIONS_ + "markerset";
-
-    public final static String FACTIONS_HOME = FACTIONS_ + "home";
-    public final static String FACTIONS_HOME_ = FACTIONS_HOME + "_";
-
-    public final static String FACTIONS_PLAYERSET = FACTIONS_ + "playerset";
-    public final static String FACTIONS_PLAYERSET_ = FACTIONS_PLAYERSET + "_";
+    public static final String FACTIONS = "factions";
+    public static final String FACTIONS_ = FACTIONS + "_";
+    public static final String FACTIONS_MARKERSET = FACTIONS_ + "markerset";
+    public static final String FACTIONS_HOME = FACTIONS_ + "home";
+    public static final String FACTIONS_HOME_ = FACTIONS_HOME + "_";
+    public static final String FACTIONS_PLAYERSET = FACTIONS_ + "playerset";
+    public static final String FACTIONS_PLAYERSET_ = FACTIONS_PLAYERSET + "_";
 
     // -------------------------------------------- //
     // INSTANCE & CONSTRUCT
@@ -277,13 +274,13 @@ public class EngineDynmap {
             String world = entry.getKey().getWorldName();
             Faction chunkOwner = Factions.getInstance().getFactionById(entry.getValue());
 
-            Map<Faction, Set<FLocation>> factionChunks = worldFactionChunks.get(world);
+            Map<Faction, Set<FLocation>> factionChunks = worldFactionChunks.computeIfAbsent(world, s -> null);
             if (factionChunks == null) {
                 factionChunks = new HashMap<>();
                 worldFactionChunks.put(world, factionChunks);
             }
 
-            Set<FLocation> factionTerritory = factionChunks.get(chunkOwner);
+            Set<FLocation> factionTerritory = factionChunks.computeIfAbsent(chunkOwner, s -> null);
             if (factionTerritory == null) {
                 factionTerritory = new HashSet<>();
                 factionChunks.put(chunkOwner, factionTerritory);
@@ -735,8 +732,7 @@ public class EngineDynmap {
     }
 
     // Find all contiguous blocks, set in target and clear in source
-    private int floodFillTarget(TileFlags source, TileFlags destination, int x, int y) {
-        int cnt = 0;
+    private void floodFillTarget(TileFlags source, TileFlags destination, int x, int y) {
         ArrayDeque<int[]> stack = new ArrayDeque<>();
         stack.push(new int[]{x, y});
 
@@ -747,7 +743,6 @@ public class EngineDynmap {
             if (source.getFlag(x, y)) { // Set in src
                 source.setFlag(x, y, false); // Clear source
                 destination.setFlag(x, y, true); // Set in destination
-                cnt++;
                 if (source.getFlag(x + 1, y)) {
                     stack.push(new int[]{x + 1, y});
                 }
@@ -762,7 +757,6 @@ public class EngineDynmap {
                 }
             }
         }
-        return cnt;
     }
 
     enum Direction {

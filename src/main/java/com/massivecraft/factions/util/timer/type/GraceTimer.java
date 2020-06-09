@@ -26,21 +26,19 @@ public class GraceTimer extends GlobalTimer implements Listener {
 
     @EventHandler
     public void onBreak(EntityExplodeEvent e) {
-        if(getRemaining() > 0)
-        e.setCancelled(true);
+        if (getRemaining() > 0) {
+            e.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onTNTPlace(BlockPlaceEvent event) {
         FPlayer fp = FPlayers.getInstance().getByPlayer(event.getPlayer());
-        if(getRemaining() > 0) {
-            if (!fp.isAdminBypassing()) {
-                if (event.getBlock().getType().equals(Material.TNT)) {
-                    event.setCancelled(true);
-                }
-            }
+        if (getRemaining() > 0 && !fp.isAdminBypassing() && event.getBlock().getType().equals(Material.TNT)) {
+            event.setCancelled(true);
         }
     }
+
 
     @Override
     public void load(Config config) {

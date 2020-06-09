@@ -49,6 +49,7 @@ public class CmdInventorySee extends FCommand {
 
         FPlayer targetInv = context.argAsFPlayer(0);
         if (targetInv == null || !fplayers.contains(targetInv.getPlayer())) {
+            assert targetInv != null;
             context.msg(TL.PLAYER_NOT_FOUND, Objects.requireNonNull(targetInv.getName()));
             return;
         }

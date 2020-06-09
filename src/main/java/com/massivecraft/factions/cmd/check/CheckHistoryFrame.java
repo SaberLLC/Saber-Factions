@@ -13,24 +13,19 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CheckHistoryFrame implements FactionGUI {
 
-    /**
-     * @author Driftay
-     */
-
-    private FactionsPlugin plugin;
     private Faction faction;
     private Inventory inventory;
     private SimpleDateFormat simpleDateFormat;
 
     public CheckHistoryFrame(FactionsPlugin plugin, Faction faction) {
         this.simpleDateFormat = new SimpleDateFormat(Conf.dateFormat);
-        this.plugin = plugin;
         this.faction = faction;
         this.inventory = plugin.getServer().createInventory(this, 54, TL.CHECK_HISTORY_GUI_TITLE.toString());
     }
@@ -88,6 +83,7 @@ public class CheckHistoryFrame implements FactionGUI {
         }
     }
 
+    @NotNull
     public Inventory getInventory() {
         return inventory;
     }

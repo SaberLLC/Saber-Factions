@@ -60,17 +60,17 @@ public class CmdSetGuild extends FCommand {
 
                 if (guild == null) {
                     context.msg(TL.SET_GUILD_ID_INVALID_ID);
-                } else if (Factions.getInstance().getAllFactions().stream().anyMatch((f) -> guildId.equals(f.getGuildId()))) {
+                } else if (Factions.getInstance().getAllFactions().stream().anyMatch(f -> guildId.equals(f.getGuildId()))) {
                     context.msg(TL.SET_GUILD_ID_GUILD_ALREADY_LINKED);
                 } else {
                     context.msg(TL.SET_GUILD_ID_PMING_OWNER);
                     User user = guild.getOwner().getUser();
                     Guild finalGuild = guild;
                     Guild finalGuild1 = guild;
-                    user.openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage("Link guild **" + finalGuild1.getName() + "** to faction **" + ChatColor.stripColor(faction.getTag()) + "**?").queue((message) -> {
+                    user.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage("Link guild **" + finalGuild1.getName() + "** to faction **" + ChatColor.stripColor(faction.getTag()) + "**?").queue(message -> {
                         String checkMark = "✅";
                         message.addReaction(checkMark).queue();
-                        this.eventWaiter.waitForEvent(PrivateMessageReactionAddEvent.class, (event) -> event.getReactionEmote().getName().equals(checkMark) && event.getUser().getId().equals(user.getId()) && event.getMessageId().equals(message.getId()), (event) -> {
+                        this.eventWaiter.waitForEvent(PrivateMessageReactionAddEvent.class, event -> event.getReactionEmote().getName().equals(checkMark) && event.getUser().getId().equals(user.getId()) && event.getMessageId().equals(message.getId()), event -> {
                             faction.setGuildId(context.argAsString(0));
                             context.msg(TL.SET_GUILD_ID_SUCCESS);
                             privateChannel.sendMessage("Successfully linked **" + finalGuild.getName() + " & " + ChatColor.stripColor(faction.getTag()) + "**").queue();
@@ -78,9 +78,7 @@ public class CmdSetGuild extends FCommand {
                             privateChannel.sendMessage(TL.SET_GUILD_ID_TIMED_OUT_DISCORD.toString()).queue();
                             context.msg(TL.SET_GUILD_ID_TIMED_OUT_MINECRAFT);
                         });
-                    }, (t) -> {
-                        context.msg(TL.SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER);
-                    }), (t) -> context.msg(TL.SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER));
+                    }, t -> context.msg(TL.SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER)), t -> context.msg(TL.SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER));
                 }
             } else {
                 faction.setGuildId(null);

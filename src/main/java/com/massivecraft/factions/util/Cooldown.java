@@ -19,7 +19,7 @@ public class Cooldown {
     }
 
     public static boolean isOnCooldown(Player player, String name) {
-        if (!player.hasMetadata(name) || player.getMetadata(name).size() <= 0) return false;
+        if (!player.hasMetadata(name) || player.getMetadata(name).isEmpty()) return false;
         long time = player.getMetadata(name).get(0).asLong();
         return (time > System.currentTimeMillis());
     }

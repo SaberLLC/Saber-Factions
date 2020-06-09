@@ -35,11 +35,10 @@ public class CmdCheckpoint extends FCommand {
             if (myLocFaction == Factions.getInstance().getWilderness() || myLocFaction == context.faction) {
                 context.faction.setCheckpoint(context.player.getLocation());
                 context.msg(TL.COMMAND_CHECKPOINT_SET);
-                return;
             } else {
                 context.msg(TL.COMMAND_CHECKPOINT_INVALIDLOCATION);
-                return;
             }
+            return;
         }
         if (context.faction.getCheckpoint() == null) {
             context.msg(TL.COMMAND_CHECKPOINT_NOT_SET);

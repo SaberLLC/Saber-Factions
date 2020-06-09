@@ -20,8 +20,6 @@ public class RelationUtil {
         }
 
         Faction myFaction = getFaction(me);
-//		if (myFaction == null) return that.describeTo(null); // no relation, but can show basic name or tag
-
         if (that instanceof Faction) {
             if (me instanceof FPlayer && myFaction == thatFaction) {
                 ret = TL.GENERIC_YOURFACTION.toString();

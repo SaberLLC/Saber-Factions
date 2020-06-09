@@ -109,7 +109,7 @@ public class DiscordSetupAttempt {
         sb.append(inProcessTime);
         //Just a separator for looks
         sb.append(" ");
-        String s = "";
+        String s;
         switch (timeIndex) {
             case 0:
                 s = "MS";
@@ -129,6 +129,8 @@ public class DiscordSetupAttempt {
             case 5:
                 s = "Years";
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + timeIndex);
         }
         sb.append(s);
         sb.append(" ago");

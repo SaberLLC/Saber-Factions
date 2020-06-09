@@ -114,7 +114,7 @@ public class FAuditMenu extends GUIMenu {
                         }
                         lore.add("");
                         lore.add(CC.Gray + "Click to toggle timestamp");
-                        setItem(slot++, (new ClickableItemStack((new ItemBuilder(Material.PAPER)).name(CC.GreenB + "Log #" + page).lore(lore).build())).setClickCallback((e) -> {
+                        setItem(slot++, (new ClickableItemStack((new ItemBuilder(Material.PAPER)).name(CC.GreenB + "Log #" + page).lore(lore).build())).setClickCallback(e -> {
                             e.setCancelled(true);
                             timeStamp = !timeStamp;
                             drawItems();
@@ -122,7 +122,7 @@ public class FAuditMenu extends GUIMenu {
                     }
                 }
             }
-            setItem(getSize() - 1, (new ClickableItemStack((new ItemBuilder(Material.ARROW)).name(CC.Green + "Previous Page").lore("", CC.Gray + "Click to view previous page!").build())).setClickCallback((event) -> {
+            setItem(getSize() - 1, (new ClickableItemStack((new ItemBuilder(Material.ARROW)).name(CC.Green + "Previous Page").lore("", CC.Gray + "Click to view previous page!").build())).setClickCallback(event -> {
                 event.setCancelled(true);
                 Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> (new FAuditMenu(player, faction)).open(player));
             }));

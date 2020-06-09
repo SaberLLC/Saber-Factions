@@ -55,9 +55,9 @@ public enum Role implements Permissable {
                 return COLEADER;
             case 4:
                 return LEADER;
+            default:
+                throw new IllegalStateException("Unexpected value: " + value);
         }
-
-        return null;
     }
 
     public static Role fromString(String check) {
@@ -76,9 +76,9 @@ public enum Role implements Permissable {
             case "recruit":
             case "rec":
                 return RECRUIT;
+            default:
+                throw new IllegalStateException("Unexpected value: " + check.toLowerCase());
         }
-
-        return null;
     }
 
     public boolean isAtLeast(Role role) {

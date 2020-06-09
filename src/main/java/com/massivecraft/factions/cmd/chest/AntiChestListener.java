@@ -29,13 +29,11 @@ public class AntiChestListener implements Listener {
         Inventory clicked = e.getClickedInventory();
         Inventory clicker = e.getWhoClicked().getInventory();
 
-        if (e.getClick().isShiftClick()) {
-            if (clicked == clicker) {
-                ItemStack clickedOn = e.getCurrentItem();
-                if (clickedOn != null && FactionsPlugin.getInstance().itemList.contains(clickedOn.getType().toString())) {
-                    fPlayer.msg(TL.CHEST_ITEM_DENIED_TRANSFER, clickedOn.getType().toString());
-                    e.setCancelled(true);
-                }
+        if (e.getClick().isShiftClick() && clicked == clicker) {
+            ItemStack clickedOn = e.getCurrentItem();
+            if (clickedOn != null && FactionsPlugin.getInstance().itemList.contains(clickedOn.getType().toString())) {
+                fPlayer.msg(TL.CHEST_ITEM_DENIED_TRANSFER, clickedOn.getType().toString());
+                e.setCancelled(true);
             }
         }
 

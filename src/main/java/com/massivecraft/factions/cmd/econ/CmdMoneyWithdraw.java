@@ -8,7 +8,6 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.audit.FLogType;
-import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -44,23 +43,21 @@ public class CmdMoneyWithdraw extends FCommand {
             return;
         }
 
-        EconomyParticipator faction = context.argAsFaction(1, context.faction);
+        Faction faction = context.argAsFaction(1, context.faction);
         if (faction == null) {
             return;
         }
 
         Access access = context.faction.getAccess(context.fPlayer, PermissableAction.WITHDRAW);
-        if (context.fPlayer.getRole() != Role.LEADER) {
-            if (access == Access.DENY) {
-                context.msg(TL.GENERIC_NOPERMISSION, "withdraw", "withdraw money from the bank");
-                return;
-            }
+        if (context.fPlayer.getRole() != Role.LEADER && access == Access.DENY) {
+            context.msg(TL.GENERIC_NOPERMISSION, "withdraw", "withdraw money from the bank");
+            return;
         }
         boolean success = Econ.transferMoney(context.fPlayer, faction, context.fPlayer, amount);
 
         if (success && Conf.logMoneyTransactions) {
             FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
-            FactionsPlugin.instance.logFactionEvent((Faction) faction, FLogType.BANK_EDIT, context.fPlayer.getName(), CC.RedB + "WITHDREW", amount + "");
+            FactionsPlugin.instance.logFactionEvent(faction, FLogType.BANK_EDIT, context.fPlayer.getName(), CC.RedB + "WITHDREW", amount + "");
         }
     }
 

@@ -25,8 +25,6 @@ public class FLogManager {
     private Map<UUID, LogTimer> logTimers = new ConcurrentHashMap<>();
     private boolean saving = false;
 
-    public FLogManager() {
-    }
 
     public void log(Faction faction, FLogType type, String... arguments) {
         FactionLogs logs = factionLogMap.computeIfAbsent(faction.getId(), (n) -> new FactionLogs());
@@ -90,8 +88,7 @@ public class FLogManager {
         Faction faction = null;
 
         for (Map.Entry<UUID, LogTimer> uuidLogTimerEntry : getLogTimers().entrySet()) {
-            Map.Entry<UUID, LogTimer> timer = uuidLogTimerEntry;
-            LogTimer logTimer = timer.getValue();
+            LogTimer logTimer = uuidLogTimerEntry.getValue();
             if (faction == null) {
                 faction = Factions.getInstance().getFactionById(logTimer.getFactionId());
             }

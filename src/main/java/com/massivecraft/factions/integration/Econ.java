@@ -49,7 +49,6 @@ public class Econ {
         econ = rsp.getProvider();
         FactionsPlugin.getInstance().log("Economy integration through Vault plugin successful.");
         if (!Conf.econEnabled) FactionsPlugin.getInstance().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
-        //FactionsPlugin.getInstance().cmdBase.cmdHelp.updateHelp();
     }
 
     public static boolean shouldBeUsed() {
@@ -103,7 +102,6 @@ public class Econ {
         // Factions can be controlled by members that are moderators... or any member if any member can withdraw.
         if (you instanceof Faction && fI == fYou && (Conf.bankMembersCanWithdraw || (i instanceof FPlayer && ((FPlayer) i).getRole().value >= Role.MODERATOR.value)))
             return true;
-        // Otherwise you may not!;,,;
         i.msg(TL.ECON_CANTCONTROLMONEY, i.describeTo(i, true), you.describeTo(i));
         return false;
     }
@@ -237,7 +235,7 @@ public class Econ {
             acc = Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId()));
             if (acc.getName() == null) return false;
         } else acc = Bukkit.getOfflinePlayer(ep.getAccountId());
-        String You = ep.describeTo(ep, true);
+        String you = ep.describeTo(ep, true);
 
         if (delta == 0) return true;
         else if (delta > 0) {
@@ -247,12 +245,12 @@ public class Econ {
             if (er.transactionSuccess()) {
                 modifyUniverseMoney(-delta);
                 if (forDoingThis != null && !forDoingThis.isEmpty())
-                    ep.msg(TL.COMMAND_MONEY_GAINED, You, moneyString(delta), forDoingThis);
+                    ep.msg(TL.COMMAND_MONEY_GAINED, you, moneyString(delta), forDoingThis);
                 return true;
             } else {
                 // transfer to account failed
                 if (forDoingThis != null && !forDoingThis.isEmpty())
-                    ep.msg(TL.ECON_DEPOSITFAILED, You, moneyString(delta), forDoingThis);
+                    ep.msg(TL.ECON_DEPOSITFAILED, you, moneyString(delta), forDoingThis);
                 return false;
             }
         } else {
@@ -262,12 +260,12 @@ public class Econ {
                 // There is enough money to pay
                 modifyUniverseMoney(-delta);
                 if (forDoingThis != null && !forDoingThis.isEmpty())
-                    ep.msg(TL.ECON_MONEYLOST, You, moneyString(-delta), forDoingThis);
+                    ep.msg(TL.ECON_MONEYLOST, you, moneyString(-delta), forDoingThis);
                 return true;
             } else {
                 // There was not enough money to pay
                 if (toDoThis != null && !toDoThis.isEmpty())
-                    ep.msg(TL.ECON_CANTAFFORD, You, moneyString(-delta), toDoThis);
+                    ep.msg(TL.ECON_CANTAFFORD, you, moneyString(-delta), toDoThis);
                 return false;
             }
         }

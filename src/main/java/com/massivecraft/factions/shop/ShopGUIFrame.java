@@ -45,12 +45,13 @@ public class ShopGUIFrame {
         int items = FactionsPlugin.getInstance().getFileManager().getShop().getConfig().getConfigurationSection("items").getKeys(false).size();
         for (int a = 1; a <= items; a++) {
             String s = a + "";
-            int slot = FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("items." + s + ".slot");
-            ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("items." + s + ".block")).get().parseItem();
-            int cost = FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("items." + s + ".cost");
-            String name = FactionsPlugin.getInstance().getFileManager().getShop().fetchString("items." + s + ".name");
-            boolean glowing = FactionsPlugin.getInstance().getFileManager().getShop().fetchBoolean("items." + s + ".glowing");
-            List<String> lore = FactionsPlugin.getInstance().getFileManager().getShop().fetchStringList("items." + s + ".lore");
+            String varItems = "items.";
+            int slot = FactionsPlugin.getInstance().getFileManager().getShop().fetchInt(varItems + s + ".slot");
+            ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getFileManager().getShop().fetchString(varItems + s + ".block")).get().parseItem();
+            int cost = FactionsPlugin.getInstance().getFileManager().getShop().fetchInt(varItems + s + ".cost");
+            String name = FactionsPlugin.getInstance().getFileManager().getShop().fetchString(varItems + s + ".name");
+            boolean glowing = FactionsPlugin.getInstance().getFileManager().getShop().fetchBoolean(varItems + s + ".glowing");
+            List<String> lore = FactionsPlugin.getInstance().getFileManager().getShop().fetchStringList(varItems + s + ".lore");
 
 
             assert item != null;

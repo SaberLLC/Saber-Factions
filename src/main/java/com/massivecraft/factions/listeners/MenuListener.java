@@ -15,9 +15,6 @@ import org.bukkit.inventory.ItemStack;
  */
 public class MenuListener implements Listener {
 
-    public MenuListener() {
-    }
-
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getView().getTitle().equals("Faction Logs")) {

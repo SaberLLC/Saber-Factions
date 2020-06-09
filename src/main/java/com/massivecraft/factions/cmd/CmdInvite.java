@@ -63,7 +63,7 @@ public class CmdInvite extends FCommand {
             FancyMessage message = new FancyMessage(TL.COMMAND_INVITE_INVITEDYOU.toString()
                         .replace("%1$s", context.fPlayer.describeTo(target, true))
                         .replace("%2$s", context.faction.getTag())
-                        .replaceAll("&", "§"))
+                        .replace("&", "§"))
                     .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
                     .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag());
             message.send(target.getPlayer());

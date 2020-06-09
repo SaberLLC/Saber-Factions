@@ -70,13 +70,9 @@ public class CommandRequirements {
                     return false;
                 }
 
-                if (access != Access.ALLOW) {
-                    // They have undefined assert their role
-                    if (role != null && !context.fPlayer.getRole().isAtLeast(role)) {
-                        // They do not fullfill the role
-                        if (informIfNot) context.msg(TL.GENERIC_YOUMUSTBE, role.translation);
-                        return false;
-                    }
+                if (access != Access.ALLOW && role != null && !context.fPlayer.getRole().isAtLeast(role)) {
+                    if (informIfNot) context.msg(TL.GENERIC_YOUMUSTBE, role.translation);
+                    return false;
                 }
                 // They have been explicitly allowed
                 return true;

@@ -35,7 +35,7 @@ public class FactionChatHandler extends ListenerAdapter {
         this.plugin = plugin;
     }
 
-    public static void sendMessage(FactionsPlugin plugin, Faction faction, UUID uuid, String username, String message) {
+    public static void sendMessage(Faction faction, UUID uuid, String username, String message) {
         String factionsChatChannelId = faction.getFactionChatChannelId();
         String messageWithMentions = null;
         if (factionsChatChannelId == null || factionsChatChannelId.isEmpty()) return;

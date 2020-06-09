@@ -14,7 +14,6 @@ public class CmdBoom extends FCommand {
         super();
         this.aliases.addAll(Aliases.boom);
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("on/off", "flip");
 
         this.requirements = new CommandRequirements.Builder(Permission.NO_BOOM)

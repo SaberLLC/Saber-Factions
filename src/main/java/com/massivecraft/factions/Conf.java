@@ -268,7 +268,6 @@ public class Conf {
     public static boolean ownedMessageInsideTerritory = true;
     public static boolean ownedMessageByChunk = false;
     public static boolean pistonProtectionThroughDenyBuild = true;
-    public static Set<Material> loggableMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryProtectedMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryDenyUsageMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);

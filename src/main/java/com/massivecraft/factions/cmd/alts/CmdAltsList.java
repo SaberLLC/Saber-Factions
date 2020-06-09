@@ -44,7 +44,7 @@ public class CmdAltsList extends FCommand {
             return;
         }
 
-        if (faction.getAltPlayers().size() == 0) {
+        if (faction.getAltPlayers().isEmpty()) {
             context.msg(TL.COMMAND_ALTS_LIST_NOALTS, faction.getTag());
             return;
         }

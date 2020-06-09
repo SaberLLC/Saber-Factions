@@ -25,6 +25,8 @@ public class FTeamWrapper {
     private final String teamName;
     private final Faction faction;
     private final Set<OfflinePlayer> members = new HashSet<>();
+    private static final String defaultPrefixes = "scoreboard.default-prefixes";
+    private static final String invisFactionMembers = "See-Invisible-Faction-Members";
 
     private FTeamWrapper(Faction faction) {
         this.teamName = "faction_" + (factionTeamPtr++);
@@ -44,7 +46,7 @@ public class FTeamWrapper {
             return;
         }
 
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false) || FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members")) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean(defaultPrefixes, false) || FactionsPlugin.getInstance().getConfig().getBoolean(invisFactionMembers)) {
             return;
         }
 
@@ -66,7 +68,7 @@ public class FTeamWrapper {
             return;
         }
 
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false) || FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members")) {
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean(defaultPrefixes, false) || FactionsPlugin.getInstance().getConfig().getBoolean(invisFactionMembers)) {
             return;
         }
 
@@ -158,7 +160,7 @@ public class FTeamWrapper {
     }
 
     private void updatePrefixes() {
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean(defaultPrefixes, false)) {
             for (FScoreboard fboard : teams.keySet()) {
                 updatePrefix(fboard);
             }
@@ -166,19 +168,19 @@ public class FTeamWrapper {
     }
 
     private void updatePrefix(FScoreboard fboard) {
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean(defaultPrefixes, false)) {
             FPlayer fplayer = fboard.getFPlayer();
             Team team = teams.get(fboard);
             boolean focused = false;
 
-            if (FactionsPlugin.getInstance().getConfig().getBoolean("See-Invisible-Faction-Members", false)) {
+            if (FactionsPlugin.getInstance().getConfig().getBoolean(invisFactionMembers, false)) {
                 team.setCanSeeFriendlyInvisibles(true);
             }
 
             if ((FactionsPlugin.getInstance().getConfig().getBoolean("ffocus.Enabled")) && (fplayer.getFaction() != null) && (fplayer.getFaction().getFocused() != null)) {
                 for (FPlayer fp : faction.getFPlayersWhereOnline(true)) {
                     if (fplayer.getFaction().getFocused().equalsIgnoreCase(fp.getName())) {
-                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getConfig().getString("ffocus.Prefix", "&7»&b")));
+                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getString("ffocus.Prefix", "&7»&b"))));
                         focused = true;
                     }
                 }
@@ -191,7 +193,8 @@ public class FTeamWrapper {
                 prefix = prefix.replace("{relationcolor}", faction.getRelationTo(fplayer).getColor().toString());
                 prefix = prefix.replace("{faction}",
                         faction.getTag().substring(0, Math.min("{faction}".length() + 16 - prefix.length(), faction.getTag().length())));
-                if ((team.getPrefix() == null) || (!team.getPrefix().equals(prefix))) {
+                team.getPrefix();
+                if (!team.getPrefix().equals(prefix)) {
                     team.setPrefix(prefix);
                 }
             }

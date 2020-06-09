@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 
@@ -71,6 +72,7 @@ public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
         inventory.setItem(FactionsPlugin.getInstance().getConfig().getInt("f-check.history.slot"), historyStack);
     }
 
+    @NotNull
     public Inventory getInventory() {
         return this.inventory;
     }
@@ -91,9 +93,6 @@ public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
             }
             case 15: {
                 return 30;
-            }
-            case 30: {
-                return 0;
             }
             default: {
                 return 0;

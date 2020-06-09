@@ -41,7 +41,7 @@ public abstract class FRelationCommand extends FCommand {
         Faction them = context.argAsFaction(0);
         if (them == null) return;
 
-        if(!context.faction.isNormal()) return;
+        if (!context.faction.isNormal()) return;
 
         if (!them.isNormal()) {
             context.msg(TL.COMMAND_RELATIONS_ALLTHENOPE);
@@ -112,16 +112,14 @@ public abstract class FRelationCommand extends FCommand {
 
     private boolean hasMaxRelations(Faction us, Faction them, Relation targetRelation) {
         int max = FactionsPlugin.getInstance().getConfig().getInt("max-relations." + targetRelation.toString(), -1);
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("max-relations.enabled", false)) {
-            if (max != -1) {
-                if (us.getRelationCount(targetRelation) >= max) {
-                    us.msg(TL.COMMAND_RELATIONS_EXCEEDS_ME, max, targetRelation.getPluralTranslation());
-                    return true;
-                }
-                if (them.getRelationCount(targetRelation) >= max) {
-                    them.msg(TL.COMMAND_RELATIONS_EXCEEDS_THEY, max, targetRelation.getPluralTranslation());
-                    return true;
-                }
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("max-relations.enabled", false) && max != -1) {
+            if (us.getRelationCount(targetRelation) >= max) {
+                us.msg(TL.COMMAND_RELATIONS_EXCEEDS_ME, max, targetRelation.getPluralTranslation());
+                return true;
+            }
+            if (them.getRelationCount(targetRelation) >= max) {
+                them.msg(TL.COMMAND_RELATIONS_EXCEEDS_THEY, max, targetRelation.getPluralTranslation());
+                return true;
             }
         }
         return false;

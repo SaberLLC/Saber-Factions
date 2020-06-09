@@ -87,7 +87,7 @@ public class FactionsChatListener implements Listener {
                     fplayer.sendMessage("[FCspy] " + myFaction.getTag() + ": " + message);
                 }
             }
-            FactionChatHandler.sendMessage(FactionsPlugin.getInstance(), myFaction, me.getPlayer().getUniqueId(), me.getPlayer().getName(), event.getMessage());
+            FactionChatHandler.sendMessage(myFaction, me.getPlayer().getUniqueId(), me.getPlayer().getName(), event.getMessage());
             event.setCancelled(true);
         } else if (chat == ChatMode.ALLIANCE) {
             Faction myFaction = me.getFaction();

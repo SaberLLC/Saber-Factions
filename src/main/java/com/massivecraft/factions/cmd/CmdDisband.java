@@ -42,8 +42,8 @@ public class CmdDisband extends FCommand {
 
         boolean isMyFaction = context.fPlayer != null && faction == context.faction;
 
-        if (!isMyFaction) {
-            if (!Permission.DISBAND_ANY.has(context.sender, true)) return;
+        if (!isMyFaction && !Permission.DISBAND_ANY.has(context.sender, true)) {
+            return;
         }
 
 
@@ -70,7 +70,7 @@ public class CmdDisband extends FCommand {
             return;
         }
 
-        if(Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "disbandCooldown") && !context.fPlayer.isAdminBypassing()){
+        if (Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "disbandCooldown") && !context.fPlayer.isAdminBypassing()) {
             context.msg(TL.COMMAND_COOLDOWN);
             return;
         }
@@ -81,13 +81,9 @@ public class CmdDisband extends FCommand {
             access = true;
         }
 
-        if (!access) {
-            if (Conf.useDisbandGUI && (!context.fPlayer.isAdminBypassing() || !context.player.isOp())) {
-                if (!disbandMap.containsKey(context.player.getUniqueId().toString())) {
-                    new FDisbandFrame(context.faction).buildGUI(context.fPlayer);
-                    return;
-                }
-            }
+        if (!access && Conf.useDisbandGUI && (!context.fPlayer.isAdminBypassing() || !context.player.isOp()) && !disbandMap.containsKey(context.player.getUniqueId().toString())) {
+            new FDisbandFrame(context.faction).buildGUI(context.fPlayer);
+            return;
         }
 
         // check for tnt before disbanding.

@@ -26,7 +26,6 @@ public class CmdAutoClaim extends FCommand {
         super();
         this.aliases.addAll(Aliases.claim_auto);
 
-        //this.requiredArgs.add("");
         this.optionalArgs.put("faction", "your");
 
         this.requirements = new CommandRequirements.Builder(Permission.AUTOCLAIM)
@@ -39,13 +38,9 @@ public class CmdAutoClaim extends FCommand {
     public void perform(CommandContext context) {
         Faction forFaction = context.argAsFaction(0, context.faction);
 
-        if (forFaction != context.fPlayer.getFaction()) {
-            if (!context.fPlayer.isAdminBypassing()) {
-                if (forFaction.getAccess(context.fPlayer, PermissableAction.TERRITORY) != Access.ALLOW) {
-                    context.msg(TL.COMMAND_CLAIM_DENIED);
-                    return;
-                }
-            }
+        if (forFaction != context.fPlayer.getFaction() && !context.fPlayer.isAdminBypassing() && forFaction.getAccess(context.fPlayer, PermissableAction.TERRITORY) != Access.ALLOW) {
+            context.msg(TL.COMMAND_CLAIM_DENIED);
+            return;
         }
 
         if (forFaction == null || forFaction == context.fPlayer.getAutoClaimFor()) {

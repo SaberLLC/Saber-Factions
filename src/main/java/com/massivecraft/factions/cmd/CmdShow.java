@@ -110,7 +110,7 @@ public class CmdShow extends FCommand {
                         parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
                     }
                     if (parsed.contains("%")) {
-                        parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+                        parsed = parsed.replace("%", ""); // Just in case it got in there before we disallowed it.
                     }
                     parsed = FactionsPlugin.getInstance().txt.parse(parsed);
                     FancyMessage localFancy = instance.txt.parseFancy(parsed);
