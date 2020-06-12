@@ -1,0 +1,508 @@
+# Saber Factions 中文汉化语言包 @ Forbidden
+# Made with love <3
+
+
+
+root:
+  AUTHOR: Forbidden
+  RESPONSIBLE: Forbidden
+  LANGUAGE: Simplified Chinese
+  ENCODING: UTF-8
+  LOCALE: zh_CN
+  REQUIRESUNICODE: 'true'
+  DEFAULT: 'false'
+  STATE: complete
+  LOCAL:
+    AUTHOR: Forbidden
+    RESPONSIBLE: Forbidden
+    LANGUAGE: 简体中文
+    REGION: 中国大陆
+    STATE: 完全汉化
+COMMAND:
+  ADMIN:
+    NOTMEMBER: '%1$s<i> 不是您派系的一员。'
+    NOTADMIN: <b>您不是派系的管理员。
+    TARGETSELF: <b>目标玩家不可为您本人。
+    DEMOTES: <i>您降职了帮派管理员 %1$s<i>。
+    DEMOTED: <i>您被 %1$s<i> 降职了。
+    PROMOTES: <i>您被 %1$s<i> 升职到了派系管理员。
+    PROMOTED: '%1$s<i> 给予了 %2$s<i> %3$s<i> 的管理员。'
+  AUTOCLAIM:
+    ENABLED: <i>正在为 <h>%1$s<i> 自动宣称领土。
+    DISABLED: <i>已禁用自动宣称领土。
+    REQUIREDRANK: <b>您必须为 <h>%1$s<b> 才能宣称领土。
+    OTHERFACTION: <b>您不能为 <h>%1$s<b> 宣称领土。
+  AUTOHELP:
+    HELPFOR: 命令 " 的帮助：
+  BOOM:
+    PEACEFULONLY: <b>此指令仅限于和平状态下的帮派使用。
+    TOTOGGLE: 来启用爆炸
+    FORTOGGLE: 要开关爆炸
+    ENABLED: '%1$s<i> 已%2$s您领土的爆炸功能。'
+  BYPASS:
+    ENABLE: <i>您已启用管理员绕过模式。您可在任意地点建造或破坏。
+    ENABLELOG: ' 已启用管理员绕过模式。'
+    DISABLE: <i>您已禁用管理员绕过模式。
+    DISABLELOG: ' 已禁用管理员绕过模式。'
+  CHAT:
+    DISABLED: <b>此服务器禁止了内置聊天频道。
+    INVALIDMODE: <b>无法识别的聊天模式，<i>请键入 'a'、'f' 或 'plugin'
+    MODE:
+      PUBLIC: <i>公共聊天模式。
+      ALLIANCE: <i>盟友聊天模式。
+      FACTION: <i>派系聊天模式。
+  CHATSPY:
+    ENABLE: <i>您已启用顺风耳模式。
+    ENABLELOG: ' 已启用顺风耳模式'
+    DISABLE: <i>您已禁用顺风耳模式。
+    DISABLELOG: ' 已禁用顺风耳模式。'
+  CLAIM:
+    INVALIDRADIUS: <b>若您指定半径，则半径至少应为 1。
+    DENIED: <b>您没有指定半径宣称领土的权限。
+  CONFIG:
+    NOEXIST: <b>"<h>%1$s<b>" 的配置设置不存在。
+    SET:
+      'TRUE': '" 选项已设置为 true (已启用)。'
+      'FALSE': '" 选项已设置为 false (已禁用)。'
+      ADDED: '"%1$s" 设置：已添加 "%2$s"。'
+      REMOVED: '"%1$s" 设置：已移除 "%2$s"。'
+    OPTIONSET: '" 选项已设置为 '
+    COLOURSET: '" 颜色选项已设置为 "'
+    INTREQUIRED: '无法设置 "%1$s"：选项需要整数值。'
+    LONGREQUIRED: '无法设置 "%1$s"：选项需要长整数值。'
+    DOUBLEREQUIRED: '无法设置 "%1$s"：选项需要双精度值。'
+    FLOATREQUIRED: '无法设置 "%1$s"：选项需要浮点值。'
+    INVALID:
+      COLOUR: '无法设置 "%1$s"："%2$s" 不是有效颜色。'
+      COLLECTION: '"%1$s" 不是可用此命令修改的数据集类型。'
+      MATERIAL: '无法更改 "%1$s" 集："%2$s" 不是有效的材料。'
+      TYPESET: '"%1$s" 不是可用此命令修改的数据类型集类型。'
+    MATERIAL:
+      ADDED: '"%1$s" 设置：添加了材料 "%2$s"。'
+      REMOVED: '"%1$s" 设置：移除了材料 "%2$s"。'
+    LOG: ' (%1$s 运行了指令)'
+    ERROR:
+      SETTING: 设置配置选项 "%1$s" 至 "%2$s" 时发生错误。
+      MATCHING: 无法匹配配置选项 "%1$s"，请汇报此错误。
+      TYPE: '''%1$s'' 的类型为 ''%2$s''，其无法被此命令修改。'
+  CREATE:
+    MUSTLEAVE: <b>您必须先离开当前派系。
+    INUSE: <b>此标签已被使用。
+    TOCREATE: 来创建新派系
+    FORCREATE: 要创建新派系
+    ERROR: <b>创建派系时发生内部错误，请重试。
+    CREATED: '%1$s<i> 创建了新派系 %2$s'
+    YOUSHOULD: '<i>您现在应：%1$s'
+    CREATEDLOG: ' 创建了新派系：'
+  DEINVITE:
+    CANDEINVITE: '您可取消邀请的玩家：'
+    CLICKTODEINVITE: 点击取消 %1$s 的邀请
+    ALREADYMEMBER: '%1$s<i> 已是 %2$s 的成员'
+    MIGHTWANT: '<i>您可能想要：%1$s'
+    REVOKED: '%1$s<i> 撤回了您加入 <h>%2$s<i> 的邀请。'
+    REVOKES: '%1$s<i> 撤回了 %2$s <i>的邀请。'
+  DELFWARP:
+    DELETED: <i>已删除传送点 <a>%1$s
+    INVALID: <i>无法找到传送点 <a>%1$s
+    TODELETE: 来删除传送点
+    FORDELETE: 要删除传送点
+  DESCRIPTION:
+    CHANGES: '您更改了 <h>%1$s<i> 的描述至：'
+    CHANGED: '<i>帮派 %1$s<i> 更改了其描述至：'
+    TOCHANGE: 来更改帮派描述
+    FORCHANGE: 要更改帮派描述
+  DISBAND:
+    IMMUTABLE: <i>您不可解散荒地 (Wilderness)、安全区 (SafeZone) 或是战区 (WarZone)。
+    MARKEDPERMANENT: <i>此帮派已被标记为永久存在，您不可解散。
+    BROADCAST:
+      YOURS: <h>%1$s<i> 解散了您的帮派。
+      NOTYOURS: <h>%1$s<i> 解散了帮派 %2$s。
+    HOLDINGS: <i>您获得了解散帮派银行内的资产，共计 %1$s。
+  FWARP:
+    CLICKTOWARP: 点击传送！
+    COMMANDFORMAT: <i>/f warp <传送点名>
+    WARPED: <i>已传送至 <a>%1$s
+    INVALID: <i>无法找到传送点 <a>%1$s
+    TOWARP: 来传送
+    FORWARPING: 要传送
+    WARPS: '传送点：'
+  HELP:
+    '404': <b>此页面不存在
+    NEXTCREATE: <i>您可在下一页了解如何创建帮派。
+    HOME: '<i>另外，别忘记设置家：'
+    BANK:
+      '1': <i>您的帮派有着用于支付特定物品的银行。
+      '2': <i>因此，银行内应储蓄有钱款。
+      '3': <i>要了解更多，请使用 money 指令。
+    PLAYERTITLES: <i>玩家头衔只是为了好玩而已，没有任何钦点的意思。
+    OWNERSHIP:
+      '1': <i>已宣称且占有的土地已被保护。
+      '2': <i>故只有所有者、帮派管理员
+      '3': <i>才有完整权限。
+    RELATIONS:
+      '1': <i>设置您想与其他帮派达成的关系。
+      '2': <i>默认情况下，您与其他帮派的关系为中立。
+      '3': <i>若双方选择盟友 (ally) 则你们将成为盟友。
+      '4': <i>若单方选择敌人 (enemy) 则你们将互为对头。
+      '5': <i>您不可伤害帮派成员或盟友。
+      '6': <i>您不可在对方领土上伤害中立成员。
+      '7': <i>您可伤害敌人及未加入帮派的玩家。
+      '8': ''
+      '9': <i>在您领土上，来自敌人的伤害将减少。
+      '10': <i>在您死亡时，您将失去影响力。影响力将随时间恢复。
+      '11': <i>一个帮派的影响力为所有成员影响力的总和。
+      '12': <i>一个帮派的影响力决定了其可维持多少土地。
+      '13': <i>您可在影响力过少的帮派的领土上进行宣称。
+    PERMISSIONS:
+      '1': <i>仅有帮派成员可在其自己的领土上建造或摧毁。
+      '2': '<i>同时，下列物品的使用也将受限：'
+      '3': <i>门、箱子、熔炉、发射器及红石中继器。
+      '4': ''
+      '5': <i>请确保为您的访客在门前放置压力板。
+      '6': <i>否则他/她们将无法进入。
+      '7': <i>您也可以利用此方法来创建仅限成员进入的区域。
+      '8': <i>同时由于发射器受保护，您可制造陷阱而
+      '9': <i>不必担忧箭矢被偷。
+    ADMIN:
+      '1': <c>/f claim safezone <i>宣称土地为安全区
+      '2': <c>/f claim warzone <i>宣称土地为战区
+      '3': <c>/f autoclaim [safezone|warzone] <i>随机宣称区域
+    MOAR:
+      '1': '终于，管理员有命令可用了：'
+      '2': '<i>给管理员的更多命令：'
+      '3': '<i>给管理员的甚至更多命令：'
+  HOME:
+    DISABLED: <b>很抱歉，此服务器上禁用了帮派家功能。
+    TELEPORTDISABLED: <b>很抱歉，此服务器上禁用了传送至帮派家功能。
+    NOHOME: '<b>您的帮派没有家。'
+    INENEMY: <b>您无法在对立帮派的领土上传送至您的帮派家。
+    WRONGWORLD: <b>您无法在别的世界传送至您的帮派家。
+    ENEMYNEAR: <b>您无法在敌人距您 %s 方块时传送至您的帮派家。
+    TOTELEPORT: 来传送至您的帮派家
+    FORTELEPORT: 要传送至您的帮派家
+  INVITE:
+    TOINVITE: 来邀请某位玩家
+    FORINVITE: 要邀请某位玩家
+    CLICKTOJOIN: 点击加入！
+    INVITEDYOU: ' 邀请您加入 '
+    INVITED: '%1$s<i> 邀请了 %2$s<i> 至您的帮派。'
+    ALREADYMEMBER: '%1$s<i> 已经是 %2$s 的成员。'
+  JOIN:
+    CANNOTFORCE: <b>您没有移动玩家至其他帮派的权限。
+    SYSTEMFACTION: <b>玩家仅可加入普通帮派，而这是一个系统帮派。
+    ALREADYMEMBER: <b>%1$s %2$s 已经是 %3$s 的成员。
+    ATLIMIT: ' <b>!<white> 帮派 %1$s 已达到 %2$d 位成员的限制，故 %3$s 当前无法加入。'
+    INOTHERFACTION: <b>%1$s 必须先离开 %2$s 当前帮派。
+    NEGATIVEPOWER: <b>%1$s 无法加入影响力为负的帮派。
+    REQUIRESINVITATION: <i>此帮派需要邀请。
+    ATTEMPTEDJOIN: '%1$s<i> 尝试加入您的帮派。'
+    TOJOIN: 来加入帮派
+    FORJOIN: 要加入帮派
+    SUCCESS: <i>%1$s 已成功加入 %2$s.
+    MOVED: <i>%1$s 已移动您至帮派 %2$s。
+    JOINED: <i>%1$s 加入了您的帮派。
+    JOINEDLOG: '%1$s 加入了帮派 %2$s。'
+    MOVEDLOG: '%1$s 移动了玩家 %2$s 至帮派 %3$s。'
+  KICK:
+    CANDIDATES: '您可踢出的玩家：'
+    CLICKTOKICK: '点击踢出 '
+    SELF: <b>您无法踢出您自己。
+    NONE: 此玩家不在帮派里。.
+    NOTMEMBER: '%1$s<b> 不是 %2$s 的成员。'
+    INSUFFICIENTRANK: <b>您的等级不足以踢出此玩家。
+    NEGATIVEPOWER: <b>您无法踢出影响力为负的成员。
+    TOKICK: 来踢出帮派成员
+    FORKICK: 要踢出帮派成员
+    FACTION: '%1$s<i> 将 %2$s<i> 踢出了帮派！:O'
+    KICKS: <i>您将 %1$s<i> 踢出了帮派 %2$s<i>！
+    KICKED: '%1$s<i> 将您踢出了 %2$s<i>！:O'
+  LIST:
+    FACTIONLIST: '帮派列表 '
+    TOLIST: 来列出帮派列表
+    FORLIST: 要列出帮派列表
+    ONLINEFACTIONLESS: '在线的非帮派玩家：'
+  LOCK:
+    LOCKED: <i>帮派现已锁定
+    UNLOCKED: <i>帮派现已解锁
+  LOGINS:
+    TOGGLE: '<i>设置帮派成员登录 / 登出提示至：<a>%s'
+  MAP:
+    TOSHOW: 来展示地图
+    FORSHOW: 要展示地图
+    UPDATE:
+      ENABLED: <i>地图自动更新<green>已启用<i>。
+      DISABLED: <i>地图自动更新<red>已禁用<i>。
+  MOD:
+    CANDIDATES: '您可提拔的玩家列表：'
+    CLICKTOPROMOTE: '点击提拔 '
+    NOTMEMBER: '%1$s<b> 并不是您帮派的成员。'
+    NOTADMIN: <b>您不是帮派管理员。
+    SELF: <b>目标玩家不可为您自己。
+    TARGETISADMIN: <b>目标玩家为帮派管理员，请先降职他/她。
+    REVOKES: <i>您从 %1$s 移除了调停者状态<i>。
+    REVOKED: '%1$s<i> 不再是您帮派的调停者。'
+    PROMOTES: '%1$s<i> 晋升到了您帮派的调停者。'
+    PROMOTED: <i>您提拔了 %1$s<i> 至调停者。
+  MODIFYPOWER:
+    ADDED: '<i>添加了 <a>%1$f <i>影响力至 <a>%2$s。<i>四舍五入后的现影响力为：<a>%3$d'
+  MONEY:
+    SHORT: 帮派金钱命令
+    LONG: <i>帮派金钱指令。
+  MONEYBALANCE:
+    SHORT: 显示帮派余额
+  MONEYDEPOSIT:
+    SHORT: 储蓄钱款
+    DEPOSITED: '%1$s 储蓄了 %2$s 进帮派银行：%3$s'
+  MONEYTRANSFERFF:
+    SHORT: 转账帮派 -> 帮派
+    TRANSFER: '%1$s 从帮派 "%3$s" 转账了 %2$s 至帮派 "%4$s"'
+  MONEYTRANSFERFP:
+    SHORT: 转账帮派 -> 插件
+    TRANSFER: '%1$s 从帮派 "%3$s" 转账了 %2$s 至玩家 "%4$s"'
+  MONEYTRANSFERPF:
+    SHORT: 转账插件 -> 帮派
+    TRANSFER: '%1$s 从玩家 "%3$s" 转账了 %2$s 至帮派 "%4$s"'
+  MONEYWITHDRAW:
+    SHORT: 取出钱款
+    WITHDRAW: '%1$s 从帮派银行 %3$s 中取出了 %2$s'
+  OPEN:
+    TOOPEN: 来开放或关闭帮派
+    FOROPEN: 要开放或关闭帮派
+    OPEN: 开放
+    CLOSED: 关闭
+    CHANGES: '%1$s<i> 更改了帮派至<h>%2$s<i>.'
+    CHANGED: <i>帮派 %1$s<i> 现已%2$s
+  OWNER:
+    DISABLED: <b>很抱歉，但服务器禁用了占有区域。
+    LIMIT: <b>很抱歉，但您超过了服务器每个帮派<h>最多 %1$d <b>块占有区域的限制。
+    WRONGFACTION: <b>此地块尚未被您的帮派宣称，故您不可以设置它的主权。
+    NOTCLAIMED: <b>此地块尚未被任何帮派宣称，主权不可用。
+    NOTMEMBER: '%1$s<i> 不是此帮派的一员。'
+    CLEARED: <i>您已清除此宣称区域的主权。
+    REMOVED: <i>您已从 %1$s 清除此宣称地皮的主权<i>。
+    TOSET: 来设置宣称地皮的主权
+    FORSET: 要设置宣称地皮的主权
+    ADDED: <i>您已添加 %1$s<i> 至此宣称地皮的所有者列表。
+  OWNERLIST:
+    DISABLED: <b>很抱歉，但服务器禁用了占有区域。
+    WRONGFACTION: <b>此地块尚未被您的帮派宣称。
+    NOTCLAIMED: <i>此地块尚未被任何的帮派宣称，因此虚位以待。
+    NONE: <i>这里尚未设置所有者：帮派里的所有人均可访问。
+    OWNERS: '<i>当前此地块的所有者：%1$s'
+  POWER:
+    TOSHOW: 来显示玩家影响力信息
+    FORSHOW: 要显示玩家影响力信息
+    POWER: '%1$s<a> - 影响力 / 最大影响力：<i>%2$d / %3$d %4$s'
+    BONUS: ' (奖励：'
+    PENALTY: ' (惩罚：'
+  POWERBOOST:
+    HELP:
+      '1': <b>您必须指定插件 "plugin" 或玩家 "player" 来指定玩家或使用 "f" 或 "faction" 来指定帮派。
+      '2': <b>示例：/f powerboost plugin 玩家 0.5  -或-  /f powerboost f 帮派 -5
+    INVALIDNUM: <b>您必须为影响力奖惩值指定有效的数值。
+    PLAYER: 玩家 "%1$s"
+    FACTION: 帮派 "%1$s"
+    BOOST: <i>%1$s 的最低/最高影响力级别现有 %2$d 的奖惩。
+    BOOSTLOG: '%1$s 为 %2$s 设置影响力奖惩值至 %3$d。'
+  RELOAD:
+    TIME: <i>已从磁盘重载 <h>conf.json <i>，共花费 <h>%1$d ms<i>。
+  SAFEUNCLAIMALL:
+    SHORT: 取消宣称使用安全区地块
+    UNCLAIMED: <i>您已取消宣称使用安全区地块。
+    UNCLAIMEDLOG: '%1$s 已取消宣称使用安全区地块。'
+  SAVEALL: <i>帮派信息已保存至磁盘！
+  SETFWARP:
+    NOTCLAIMED: <i>您仅可在您的帮派区域里设置传送点。
+    LIMIT: <i>您的帮派已达到了最多传送点的数量限制 <a>(%1$d)。
+    SET: <i>已设置传送点 <a>%1$s <i>至您的位置。
+    TOSET: 来设置传送点
+    FORSET: 要设置传送点
+  SETHOME:
+    DISABLED: <b>很抱歉，此服务器上禁用了帮派家功能。
+    NOTCLAIMED: <b>很抱歉，帮派家仅能设置在您的宣称领土内。
+    TOSET: 来设置帮派家
+    FORSET: 要设置帮派家
+    SET: '%1$s<i> 为您的帮派设置了帮派家。您现在可使用：'
+    SETOTHER: <b>您已为帮派 %1$s<i> 设置了家。
+  SHOW:
+    NOFACTION:
+      SELF: 您不在帮派里。
+      OTHER: 这不是帮派。
+    TOSHOW: 来显示帮派信息
+    FORSHOW: 要显示帮派信息
+    DESCRIPTION: '<a>描述：<i>%1$s'
+    PEACEFUL: 此帮派处于和平状态
+    PERMANENT: <a>此帮派被标记为永久，即使无成员也依然存在。
+    JOINING: '<a>正在加入：<i>%1$s '
+    INVITATION: 需要邀请
+    UNINVITED: 无需邀请
+    POWER: '<a>地块 / 影响力 / 最大影响力：<i> %1$d/%2$d/%3$d %4$s'
+    BONUS: ' (奖励：'
+    PENALTY: ' (惩罚：'
+    DEPRECIATED: (%1$s 已弃用)
+    LANDVALUE: '<a>总地块价值：<i>%1$s %2$s'
+    BANKCONTAINS: '<a>银行内有：<i>%1$s'
+    ALLIES: '盟友：'
+    ENEMIES: '敌人：'
+    MEMBERSONLINE: '在线成员：'
+    MEMBERSOFFLINE: '离线成员：'
+  SHOWINVITES:
+    PENDING: '等待接受邀请的玩家：'
+    CLICKTOREVOKE: 点击撤回 %1$s 的邀请。
+  STATUS:
+    FORMAT: '%1$s 影响力：%2$s 上次在线：%3$s'
+    ONLINE: 在线
+    AGOSUFFIX: ' 前。'
+  TAG:
+    TAKEN: <b>此标签已被使用
+    TOCHANGE: 来更改帮派标签
+    FORCHANGE: 要更改帮派标签
+    FACTION: '%1$s<i> 更改了您帮派标签至 %2$s'
+    CHANGED: <i>帮派 %1$s<i> 更改了其名称至 %2$s。
+  TITLE:
+    TOCHANGE: 来更改玩家头衔
+    FORCHANGE: 要更改玩家头衔
+    CHANGED: '%1$s<i> 更改了头衔：%2$s'
+  UNCLAIM:
+    SAFEZONE:
+      SUCCESS: <i>已取消宣称安全区。
+      NOPERM: <b>这里是安全区，您缺少宣称权限。
+    WARZONE:
+      SUCCESS: <i>已取消宣称战区。
+      NOPERM: <b>这里是战区，您缺少宣称权限。
+    UNCLAIMED: '%1$s<i> 取消宣称了您的部分领土。'
+    UNCLAIMS: <i>您取消宣称了此领土。
+    LOG: '%1$s 从帮派 %3$s 取消宣称了在 (%2$s) 处的领土'
+    WRONGFACTION: <b>您未拥有此领土。
+    TOUNCLAIM: 来取消宣称此领土
+    FORUNCLAIM: 要取消宣称此领土
+    FACTIONUNCLAIMED: '%1$s<i> 取消宣称了部分领土。'
+  UNCLAIMALL:
+    TOUNCLAIM: 来取消宣称所有帮派领土
+    FORUNCLAIM: 要取消宣称所有帮派领土
+    UNCLAIMED: '%1$s<i> 取消宣称了您所有的帮派领土。'
+    LOG: '%1$s 为 %2$s 取消宣称了所有的帮派领土'
+  VERSION:
+    VERSION: <i>您正运行 %1$s
+  WARUNCLAIMALL:
+    SHORT: 取消宣称所有战区领土
+    SUCCESS: <i>您取消宣称了所有战区领土。
+    LOG: '%1$s 取消宣称了所有战区领土。'
+  RELATIONS:
+    ALLTHENOPE: <b>并不可以哦！
+    MORENOPE: <b>不行哦！您不可对您自己改变关系 :)
+    ALREADYINRELATIONSHIP: <b>您已为 %1$s 设置了相同的关系意愿。
+    TOMARRY: 来改变关系意愿
+    FORMARRY: 要改变关系意愿
+    MUTUAL: <i>您的帮派现已 %1$s<i> 至 %2$s
+    PEACEFUL: <i>在您帮派处于和平状态时，这将毫无作用。
+    PEACEFULOTHER: <i>在对方帮派处于和平状态时，这将毫无作用。
+    PROPOSAL:
+      '1': '%1$s<i> 想成为您的 %2$s'
+      '2': <i>键入 <c>/%1$s %2$s %3$s<i> 来同意。
+      SENT: '%1$s<i> 已悉知您想成为 %2$s 的意愿'
+command:
+  convert:
+    backend:
+      running: 已正在运行此后端。
+      invalid: 无效后端
+  help:
+    invitations: '<i>您可能想要关闭并使用邀请：'
+LEAVE:
+  PASSADMIN: <b>您必须现将管理员角色转给他人。
+  NEGATIVEPOWER: <b>您不可在影响力为正时离开帮派。
+  TOLEAVE: 来离开您的帮派
+  FORLEAVE: 要离开您的帮派
+  LEFT: '%s<i> 离开了帮派 %s<i>。'
+  DISBANDED: <i>%s<i> 被解散了。
+  DISBANDEDLOG: 由于帮派 %s (%s) 的最后一名玩家 (%s) 也已离开，其已被解散。
+CLAIM:
+  PROTECTED: <b>此地块已被保护
+  DISABLED: <b>很抱歉，此世界禁用了领土宣称功能。
+  CANTCLAIM: <b>您不能为 <h>%s<b> 宣称领土。
+  ALREADYOWN: '%s<i> 已拥有此地块。'
+  MUSTBE: <b>您必须为 <h>%s<b> 才能宣称领土。
+  MEMBERS: 帮派必须有至少 <h>%s<b> 名成员才能宣称领土。
+  SAFEZONE: <b>您不能宣称安全区。
+  WARZONE: <b>您不能宣称战区。
+  POWER: <b>您不能宣称更多领土！您需要更多影响力！
+  LIMIT: <b>已达到限制。您不可宣称更多领土！
+  ALLY: <b>您无法宣称您盟友的领土。
+  CONTIGIOUS: <b>您仅可宣称连到您首块宣称领土或被其他帮派控制的领土的地块！
+  FACTIONCONTIGUOUS: <b>您仅可宣称连到您首块宣称领土的地块！
+  PEACEFUL: '%s<i> 拥有此领土。您的帮派处于和平状态，故您不可以宣称来自其他帮派的领土。'
+  PEACEFULTARGET: '%s<i> 拥有此领土，且其处于和平状态，故您不可以宣称来自他们的领土。'
+  THISISSPARTA: '%s<i> 拥有此领土，且强大到足以保持此领地。'
+  BORDER: <b>您必须在领地边境才能开始宣称领土。
+  TOCLAIM: 来宣称此领土
+  FORCLAIM: 要宣称此领土
+  CLAIMED: <h>%s<i> 为 <h>%s<i> 宣称了来自 <h>%s<i> 的领土。
+  CLAIMEDLOG: '%s 在 (%s) 处为帮派 %s 宣称了领土'
+GENERIC:
+  NOPERMISSION: <b>您没有 %1$s 的权限。
+  DOTHAT: 进行此操作
+  NOPLAYERMATCH: <b>未找到匹配 "<plugin>%1$s<b>" 的玩家。
+  NOPLAYERFOUND: <b>无法找到玩家 "<plugin>%1$s<b>"。
+  ARGS:
+    TOOFEW: '<b>参数过少。<i>示例用法：'
+    TOOMANY: '<b>未知参数 "<plugin>%1$s<b>"。<i>示例用法：'
+  OWNERS: '所有者：%1$s'
+  PUBLICLAND: 公共帮派领土。
+  FACTIONLESS: 无帮派
+  SERVERADMIN: 服务器管理员
+  DISABLED: 已禁用
+  ENABLED: 已启用
+  CONSOLEONLY: 此命令无法作为玩家运行。
+  PLAYERONLY: <b>此命令只可被游戏内玩家运行。
+  ASKYOURLEADER: '<i> 询问您的领袖来：'
+  YOUSHOULD: '<i>您应：'
+  YOUMAYWANT: '<i>您可能想要：'
+  TRANSLATION:
+    VERSION: '翻译：%1$s(%2$s,%3$s) 状态：%4$s'
+    CONTRIBUTORS: '翻译贡献者：%1$s'
+    RESPONSIBLE: '翻译负责人：%1$s'
+  FACTIONTAG:
+    TOOSHORT: <i>帮派标签不可少于 <h>%1$s<i> 个字符。
+    TOOLONG: <i>帮派标签不可长于 <h>%s<i> 个字符。
+    ALPHANUMERIC: <i>帮派标签必须为英文字母，"<h>%s<i>" 不被允许。
+COMPASS:
+  SHORT:
+    NORTH: 北
+    EAST: 东
+    SOUTH: 南
+    WEST: 西
+ACTIONS:
+  NOPERMISSION: '<b>{faction} 不允许您 {action}</b>'
+  NOPERMISSIONPAINFUL: '<b>在 {faction} 的领土上尝试 {action} 是徒劳的</b>'
+  OWNEDTERRITORYDENY: <b>您不可在此领土进行此操作，其被 {owners} 所拥有</b>
+  OWNEDTERRITORYPAINDENY: <b>在 {owners} 的领土上尝试 {action} 是徒劳的</b>
+  MUSTBE: '<b>您</b><h>必须为 {role}</h><b>才能 {action}。</b>'
+  NOSAMEROLE: <b>{role} 无法控制相同等级的成员...</b>
+  NOFACTION: '您不是任何帮派的成员。'
+CHAT:
+  FACTION: 帮派聊天
+  ALLIANCE: 盟友聊天
+  PUBLIC: 公共聊天
+RELATION:
+  MEMBER: 成员
+  ALLY: 盟友
+  NEUTRAL: 中立
+  ENEMY: 敌人
+NOPAGES: <i>很抱歉，无页面可用。
+INVALIDPAGE: <i>无效页面，页面数必须介于 1 与 %1$d 之间。
+title: '&b帮派 &0|&r'
+wilderness: '&2荒野'
+wilderness-description: ''
+warzone: '&4战区'
+warzone-description: 估计不是最安全的地方。
+safezone: '&6安全区'
+safezone-description: 远离 PVP 及怪物。
+toggle-sb: 您已设置计分板至 {value}
+default-prefix: '{relationcolor}[{faction}] &r'
+faction-login: '&e%1$s &9已登录。'
+faction-logout: '&e%1$s &9已登出。'
+WARMUPS:
+  NOTIFY:
+    TELEPORT: '&e您将于 &d%2$d &e秒内传送至 &d%1$s &e。'
+  ALREADY: '&c您已在准备传送。'
+  CANCELLED: '&c您已取消了准备传送。'
