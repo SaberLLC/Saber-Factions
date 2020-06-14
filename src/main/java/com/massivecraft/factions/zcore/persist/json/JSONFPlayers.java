@@ -73,21 +73,22 @@ public class JSONFPlayers extends MemoryFPlayers {
         if (!this.file.exists()) return new HashMap<>();
         String content = DiscUtil.readCatch(this.file);
         if (content == null) return null;
-        Map<String, JSONFPlayer> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
-        }.getType());
-        Set<String> list = new HashSet<>();
-        Set<String> invalidList = new HashSet<>();
-        for (Entry<String, JSONFPlayer> entry : data.entrySet()) {
-            String key = entry.getKey();
-            entry.getValue().setId(key);
-            if (doesKeyNeedMigration(key)) {
-                if (!isKeyInvalid(key)) {
-                    list.add(key);
-                } else {
-                    invalidList.add(key);
+        try {
+            Map<String, JSONFPlayer> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
+            }.getType());
+            Set<String> list = new HashSet<>();
+            Set<String> invalidList = new HashSet<>();
+            for (Entry<String, JSONFPlayer> entry : data.entrySet()) {
+                String key = entry.getKey();
+                entry.getValue().setId(key);
+                if (doesKeyNeedMigration(key)) {
+                    if (!isKeyInvalid(key)) {
+                        list.add(key);
+                    } else {
+                        invalidList.add(key);
+                    }
                 }
             }
-        }
 
         if (list.size() > 0) {
             // We've got some converting to do!
@@ -150,6 +151,14 @@ public class JSONFPlayers extends MemoryFPlayers {
             Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
         }
         return data;
+        } catch (NullPointerException exception) {
+            exception.printStackTrace();
+            if (this.file.length() < 200) {
+                return new HashMap<>();
+            } else {
+                throw exception;
+            }
+        }
     }
 
     private boolean doesKeyNeedMigration(String key) {
