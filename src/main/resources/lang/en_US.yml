@@ -226,7 +226,7 @@ COMMAND:
     ONLINEFACTIONLESS: 'Online factionless: '
   LOCK:
     LOCKED: <i>Factions is now locked
-    UNLOCKED: <i>Factions in now unlocked
+    UNLOCKED: <i>Factions is now unlocked
   LOGINS:
     TOGGLE: '<i>Set login / logout notifications for Faction members to: <a>%s'
   MAP:
