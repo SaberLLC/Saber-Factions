@@ -88,7 +88,7 @@ public class CmdShow extends FCommand {
         Faction finalFaction = faction;
         instance.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
             for (String raw : finalShow) {
-                String parsed = TagUtil.parsePlain(finalFaction, context.fPlayer, raw); // use relations
+                String parsed = instance.getConfig().getBoolean("relational-show", true) ? TagUtil.parsePlain(finalFaction, context.fPlayer, raw) : TagUtil.parsePlain(finalFaction, raw); // use relations
                 if (parsed == null) {
                     continue; // Due to minimal f show.
                 }
