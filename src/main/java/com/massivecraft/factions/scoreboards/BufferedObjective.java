@@ -9,15 +9,27 @@ import org.bukkit.scoreboard.Team;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BufferedObjective {
-
-    /**
-     * @author FactionsUUID Team
-     */
-
     private static final Method addEntryMethod;
     private static final int MAX_LINE_LENGTH;
+    private static final Pattern PATTERN = Pattern.compile("(\u00A7[0-9a-fk-r])|(.)");
+
+    private final Scoreboard scoreboard;
+    private final String baseName;
+
+    private Objective current;
+    private List<Team> currentTeams = new ArrayList<>();
+    private String title;
+    private DisplaySlot displaySlot;
+
+    private int objPtr;
+    private int teamPtr;
+    private boolean requiresUpdate = false;
+
+    private final Map<Integer, String> contents = new HashMap<>();
 
     static {
         // Check for long line support.
@@ -38,17 +50,6 @@ public class BufferedObjective {
             MAX_LINE_LENGTH = 16;
         }
     }
-
-    private final Scoreboard scoreboard;
-    private final String baseName;
-    private final Map<Integer, String> contents = new HashMap<>();
-    private Objective current;
-    private List<Team> currentTeams = new ArrayList<>();
-    private String title;
-    private DisplaySlot displaySlot;
-    private int objPtr;
-    private int teamPtr;
-    private boolean requiresUpdate = false;
 
     public BufferedObjective(Scoreboard scoreboard) {
         this.scoreboard = scoreboard;
@@ -122,13 +123,74 @@ public class BufferedObjective {
                 Team team = scoreboard.registerNewTeam(getNextTeamName());
                 bufferTeams.add(team);
 
-                Iterator<String> split = Splitter.fixedLength(16).split(entry.getValue()).iterator();
+                String name, prefix = null, suffix = null;
 
-                team.setPrefix(split.next());
-                String name = split.next();
-                if (split.hasNext()) { // We only guarantee two splits
-                    team.setSuffix(split.next());
+                String value = entry.getValue();
+                if (value.length() > 16) {
+                    String[] arrImAPirate = new String[3];
+                    Matcher matcherrr = PATTERN.matcher(value);
+                    StringBuilder builderrr = new StringBuilder();
+                    int sCURvy = 0;
+                    char currrentColorrr = 'r';
+                    char currrentFormat = 'r';
+                    while (sCURvy < 3 && matcherrr.find()) {
+                        String tharSheBlows = matcherrr.group();
+                        boolean hoist = false;
+                        if (tharSheBlows.length() == 1) {
+                            builderrr.append(tharSheBlows);
+                            if (builderrr.length() == 16) {
+                                hoist = true;
+                            }
+                        } else {
+                            char c = tharSheBlows.charAt(1);
+                            if (c >= 'k' && c <= 'r') { // format!
+                                currrentFormat = c;
+                                if (c == 'r') {
+                                    currrentColorrr = 'r';
+                                }
+                            } else {
+                                currrentColorrr = c;
+                                currrentFormat = 'r';
+                            }
+                            if (builderrr.length() < 14) {
+                                builderrr.append(tharSheBlows);
+                            } else {
+                                hoist = true;
+                            }
+                        }
+                        if (hoist) {
+                            arrImAPirate[sCURvy++] = builderrr.toString();
+                            builderrr = new StringBuilder();
+                            if (currrentColorrr != 'r') {
+                                builderrr.append('\u00A7').append(currrentColorrr);
+                            }
+                            if (currrentFormat != 'r') {
+                                builderrr.append('\u00A7').append(currrentFormat);
+                            }
+                        }
+                    }
+                    if (sCURvy < 3 && builderrr.length() > 0) {
+                        arrImAPirate[sCURvy] = builderrr.toString();
+                    }
+                    if (arrImAPirate[2] == null) {
+                        name = arrImAPirate[0];
+                        suffix = arrImAPirate[1];
+                    } else {
+                        prefix = arrImAPirate[0];
+                        name = arrImAPirate[1];
+                        suffix = arrImAPirate[2];
+                    }
+                } else {
+                    name = value;
                 }
+
+                if (prefix != null) {
+                    team.setPrefix(prefix);
+                }
+                if (suffix != null) {
+                    team.setSuffix(suffix);
+                }
+
 
                 try {
                     addEntryMethod.invoke(team, name);
