@@ -489,7 +489,7 @@ public class FactionsPlayerListener implements Listener {
 
         if (FactionsPlugin.instance.getConfig().getBoolean("scoreboard.default-enabled", false)) {
             FScoreboard.init(me);
-            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), FactionsPlugin.instance.getConfig().getInt("scoreboard.default-update-interval", 20));
+            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar());
             FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
         }
 
@@ -564,7 +564,7 @@ public class FactionsPlayerListener implements Listener {
 
         CmdSeeChunk.seeChunkMap.remove(event.getPlayer().getName());
 
-        FScoreboard.remove(me);
+        FScoreboard.remove(me, event.getPlayer());
     }
 
     public String parseAllPlaceholders(String string, Faction faction, Player player) {
