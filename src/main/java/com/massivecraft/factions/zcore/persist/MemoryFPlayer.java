@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.*;
@@ -32,6 +31,7 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -75,6 +75,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
     protected boolean isFlying = false;
+    protected boolean isAutoFlying = false;
     protected boolean enteringPassword = false;
     protected String enteringPasswordWarp = "";
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
@@ -968,40 +969,40 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setFlying(boolean fly) {
-        setFFlying(fly, false);
+        setFlying(fly, false);
     }
 
-    public void setFFlying(boolean fly, boolean damage) {
+    public void setFlying(boolean fly, boolean damage) {
         if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
             Player player = getPlayer();
-            if (player == null) return;
-
-            player.setAllowFlight(fly);
-            player.setFlying(fly);
+            if (player != null) {
+                player.setAllowFlight(fly);
+                player.setFlying(fly);
+            }
 
             if (!damage) {
                 msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
-                if (!fly) {
-                    sendMessage(TL.COMMAND_FLY_COOLDOWN.toString().replace("{amount}", FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3) + ""));
-                }
             } else {
                 msg(TL.COMMAND_FLY_DAMAGE);
             }
 
             // If leaving fly mode, don't let them take fall damage for x seconds.
             if (!fly) {
-                int cooldown = FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown", 3);
-                CmdFly.flyMap.remove(player.getName());
+                int cooldown = FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown");
 
                 // If the value is 0 or lower, make them take fall damage.
                 // Otherwise, start a timer and have this cancel after a few seconds.
                 // Short task so we're just doing it in method. Not clean but eh.
                 if (cooldown > 0) {
                     setTakeFallDamage(false);
-                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> setTakeFallDamage(true), 20L * cooldown);
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            setTakeFallDamage(true);
+                        }
+                    }.runTaskLater(FactionsPlugin.getInstance(), 20L * cooldown);
                 }
             }
-
             isFlying = fly;
         }
     }
@@ -1028,16 +1029,37 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
-        if ((faction == getFaction() && getRole() == Role.LEADER) || isAdminBypassing) {
+        if (faction.isWilderness()) {
+            return Permission.FLY_WILDERNESS.has(getPlayer());
+        } else if (faction.isSafeZone()) {
+            return Permission.FLY_SAFEZONE.has(getPlayer());
+        } else if (faction.isWarZone()) {
+            return Permission.FLY_WARZONE.has(getPlayer());
+        } else if (faction.getRelationTo(getFaction()) == Relation.ENEMY) {
+            return Permission.FLY_ENEMY.has(getPlayer());
+        } else if (faction.getRelationTo(getFaction()) == Relation.ALLY) {
+            return Permission.FLY_ALLY.has(getPlayer());
+        } else if (faction.getRelationTo(getFaction()) == Relation.TRUCE) {
+            return Permission.FLY_TRUCE.has(getPlayer());
+        } else if (faction.getRelationTo(getFaction()) == Relation.NEUTRAL && !faction.isSystemFaction()) {
+            return Permission.FLY_NEUTRAL.has(getPlayer());
+        }
+
+        // admin bypass (ops) can fly.
+        if (isAdminBypassing) {
             return true;
         }
 
-        if (faction.isSystemFaction()) {
-            return CmdFly.checkBypassPerms(this, getPlayer(), faction, false);
-        }
+        return faction.getAccess(this, PermissableAction.FLY) == Access.ALLOW;
+    }
 
-        Access access = faction.getAccess(this, PermissableAction.FLY);
-        return access == null || access == Access.UNDEFINED || access == Access.ALLOW;
+    public boolean isAutoFlying() {
+        return isAutoFlying;
+    }
+
+    public void setAutoFlying(boolean autoFly) {
+        msg(TL.COMMAND_FLY_AUTO, autoFly ? "enabled" : "disabled");
+        this.isAutoFlying = autoFly;
     }
 
     public boolean shouldTakeFallDamage() {
@@ -1167,7 +1189,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
                 if (efplayer == null) continue;
                 if (efplayer.isVanished()) continue;
-                if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled()) {
+                if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled() && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight")) {
                     setFlying(false);
                     msg(TL.COMMAND_FLY_ENEMY_NEAR);
                     Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));

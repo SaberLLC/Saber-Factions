@@ -188,6 +188,9 @@ public class FactionsEntityListener implements Listener {
             Player player = (Player) entity;
             FPlayer me = FPlayers.getInstance().getByPlayer(player);
             cancelFStuckTeleport(player);
+            if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-generic-damage")) {
+                cancelFFly(player);
+            }
             if (me.isWarmingUp()) {
                 me.clearWarmup();
                 me.msg(TL.WARMUPS_CANCELLED);
@@ -197,9 +200,17 @@ public class FactionsEntityListener implements Listener {
 
 
     private void cancelFFly(Player player) {
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
+
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-        if (fPlayer.isFlying()) fPlayer.setFFlying(false, true);
+        if (fPlayer.isFlying()) {
+            fPlayer.setFlying(false, true);
+            if (fPlayer.isAutoFlying()) {
+                fPlayer.setAutoFlying(false);
+            }
+        }
     }
 
     public void cancelFStuckTeleport(Player player) {
@@ -610,7 +621,7 @@ public class FactionsEntityListener implements Listener {
                     }
                     if (fvictim.getRelationTo(fdamager) == Relation.ENEMY) {
                         if (fvictim.isFlying()) {
-                            fvictim.setFFlying(false, true);
+                            fvictim.setFlying(false, true);
                         }
                     }
                 }

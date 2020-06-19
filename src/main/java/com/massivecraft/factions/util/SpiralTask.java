@@ -25,10 +25,10 @@ import java.util.logging.Level;
 public abstract class SpiralTask implements Runnable {
 
     // general task-related reference data
-    private transient World world = null;
+    private final transient World world;
     private transient boolean readyToGo = false;
     private transient int taskID = -1;
-    private transient int limit = 0;
+    private final transient int limit;
 
     // values for the spiral pattern routine
     private transient int x = 0;

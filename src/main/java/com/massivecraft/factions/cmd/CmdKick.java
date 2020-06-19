@@ -128,9 +128,6 @@ public class CmdKick extends FCommand {
         FactionsPlugin.instance.logFactionEvent(toKickFaction, FLogType.INVITES, context.fPlayer.getName(), CC.Red + "kicked", toKick.getName());
         toKickFaction.deinvite(toKick);
         toKick.resetFactionData();
-        if (!CmdFly.checkBypassPerms(toKick, toKick.getPlayer(), toKickFaction, false)) {
-            CmdFly.disableFlight(toKick);
-        }
     }
 
     @Override

@@ -3,15 +3,19 @@ package com.massivecraft.factions.zcore.persist;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
+import com.sun.org.apache.bcel.internal.generic.FCMPG;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -53,6 +57,18 @@ public abstract class MemoryBoard extends Board {
     public void removeAt(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
         faction.getWarps().values().removeIf(lazyLocation -> flocation.isInChunk(lazyLocation.getLocation()));
+        for (Entity entity : flocation.getChunk().getEntities()) {
+            if (entity instanceof Player) {
+                FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
+                if (!fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
+                    fPlayer.setFlying(false);
+                }
+                if (fPlayer.isWarmingUp()) {
+                    fPlayer.clearWarmup();
+                    fPlayer.msg(TL.WARMUPS_CANCELLED);
+                }
+            }
+        }
         clearOwnershipAt(flocation);
         flocationIds.remove(flocation);
     }
@@ -380,12 +396,18 @@ public abstract class MemoryBoard extends Board {
         public void removeFaction(String factionId) {
             Collection<FLocation> fLocations = factionToLandMap.removeAll(factionId);
             for (FPlayer fPlayer : FPlayers.getInstance().getOnlinePlayers()) {
-                if (fLocations.contains(fPlayer.getLastStoodAt()) && !fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
-                    fPlayer.setFlying(false);
+                if (fLocations.contains(fPlayer.getLastStoodAt())) {
+                    if (FCmdRoot.instance.fFlyEnabled && !fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
+                        fPlayer.setFlying(false);
+                    }
+                    if (fPlayer.isWarmingUp()) {
+                        fPlayer.clearWarmup();
+                        fPlayer.msg(TL.WARMUPS_CANCELLED);
+                    }
                 }
-            }
-            for (FLocation floc : fLocations) {
-                super.remove(floc);
+                for (FLocation floc : fLocations) {
+                    super.remove(floc);
+                }
             }
         }
     }

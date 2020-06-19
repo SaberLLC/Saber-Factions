@@ -36,41 +36,19 @@ public class CmdUnclaim extends FCommand {
     }
 
     @Override
-    public void perform(CommandContext context) {
-        if (!context.fPlayer.isAdminBypassing() && !context.fPlayer.hasFaction()) {
-            context.fPlayer.msg(TL.GENERIC_MEMBERONLY);
-            return;
-        }
-
-        if (context.args.size() == 2) {
-            Faction target = context.argAsFaction(1);
-            // Dont have to say anything since the argsAsFaction method will tell the player for me.
-            if (target == null) return;
-            context.faction = target;
-            if (context.faction != context.fPlayer.getFaction() && !context.fPlayer.isAdminBypassing()) {
-                context.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
-                return;
-            }
-        }
-
+    public void perform(final CommandContext context) {
         // Read and validate input
         int radius = context.argAsInt(0, 1); // Default to 1
+        final Faction forFaction = context.argAsFaction(1, context.faction); // Default to own
 
         if (radius < 1) {
             context.msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
             return;
         }
 
-        if (radius == 1) {
+        if (radius < 2) {
             // single chunk
-            boolean didUnClaim = unClaim(new FLocation(context.player), context);
-            if (didUnClaim && !context.fPlayer.canFlyAtLocation())
-                context.fPlayer.setFFlying(false, false);
-
-            for(FPlayer fPlayer : context.faction.getFPlayersWhereOnline(true)){
-                if(!fPlayer.canFlyAtLocation())
-                    fPlayer.setFFlying(false, false);
-            }
+            unClaim(new FLocation(context.player), context, forFaction);
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(context.sender, false)) {
@@ -79,30 +57,33 @@ public class CmdUnclaim extends FCommand {
             }
 
             new SpiralTask(new FLocation(context.player), radius) {
-                private final int limit = Conf.radiusClaimFailureLimit - 1;
                 private int failCount = 0;
+                private final int limit = Conf.radiusClaimFailureLimit - 1;
 
                 @Override
                 public boolean work() {
-                    boolean success = unClaim(currentFLocation(), context);
+                    boolean success = unClaim(this.currentFLocation(), context, forFaction);
                     if (success) {
                         failCount = 0;
                     } else if (failCount++ >= limit) {
                         this.stop();
                         return false;
                     }
+
                     return true;
                 }
             };
-
-            boolean didUnClaim = unClaim(new FLocation(context.player), context);
-            if (didUnClaim && !context.fPlayer.canFlyAtLocation())
-                context.fPlayer.setFFlying(false, false);
         }
     }
 
-    private boolean unClaim(FLocation target, CommandContext context) {
+    private boolean unClaim(FLocation target, CommandContext context, Faction faction) {
         Faction targetFaction = Board.getInstance().getFactionAt(target);
+
+        if (context.faction != targetFaction) {
+            context.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
+            return false;
+        }
+
         if (targetFaction.isSafeZone()) {
             if (Permission.MANAGE_SAFE_ZONE.has(context.sender)) {
                 Board.getInstance().removeAt(target);
@@ -139,7 +120,6 @@ public class CmdUnclaim extends FCommand {
             }
 
             Board.getInstance().removeAt(target);
-            FactionsPlugin.instance.logFactionEvent(targetFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.RedB + "UNCLAIMED", "1", (new FLocation(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
 
             targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, context.fPlayer.describeTo(targetFaction, true));
             context.msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
@@ -151,8 +131,7 @@ public class CmdUnclaim extends FCommand {
             return true;
         }
 
-        if (targetFaction.getClaimOwnership().containsKey(target) && !targetFaction.isPlayerInOwnerList(context.fPlayer, target)) {
-            context.msg(TL.GENERIC_FPERM_OWNER_NOPERMISSION, "unclaim");
+        if (!context.assertHasFaction()) {
             return false;
         }
 
@@ -161,19 +140,13 @@ public class CmdUnclaim extends FCommand {
             return false;
         }
 
-        if (!context.assertHasFaction()) {
-            context.msg(TL.ACTIONS_NOFACTION);
-            return false;
-        }
-
         if (context.faction != targetFaction) {
             context.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
             return false;
         }
 
-
         LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, context.fPlayer);
-        Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(unclaimEvent));
+        Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
         if (unclaimEvent.isCancelled()) {
             return false;
         }

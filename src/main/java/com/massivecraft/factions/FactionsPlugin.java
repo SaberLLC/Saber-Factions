@@ -209,8 +209,8 @@ public class FactionsPlugin extends MPlugin {
 
         Factions.getInstance().getAllFactions().forEach(Faction::refreshFPlayers);
 
-        if (getConfig().getBoolean("enable-faction-flight", true)) {
-            UtilFly.run();
+        if (getConfig().getBoolean("enable-faction-flight", true) && getConfig().getBoolean("ffly.enemies-near-disable-flight")) {
+            FlightUtil.start();
         }
 
 

@@ -154,6 +154,12 @@ public class Econ {
             return false;
         }
 
+        // Check if the new balance is over Essential's money cap.
+        if (Essentials.isOverBalCap(to, econ.getBalance(toAcc) + amount)) {
+            invoker.msg(TL.ECON_OVER_BAL_CAP, amount);
+            return false;
+        }
+
         // Transfer money
         EconomyResponse erw = econ.withdrawPlayer(fromAcc, amount);
 

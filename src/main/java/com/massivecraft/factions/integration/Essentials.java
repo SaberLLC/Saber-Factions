@@ -1,16 +1,18 @@
 package com.massivecraft.factions.integration;
 
+import com.earth2me.essentials.IEssentials;
 import com.earth2me.essentials.Teleport;
 import com.earth2me.essentials.Trade;
 import com.earth2me.essentials.User;
 import com.massivecraft.factions.Conf;
-import net.ess3.api.IEssentials;
+import com.massivecraft.factions.iface.EconomyParticipator;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 import java.math.BigDecimal;
 
@@ -18,8 +20,14 @@ public class Essentials {
 
     private static IEssentials essentials;
 
-    public static void setup() {
-        essentials = (IEssentials) Bukkit.getPluginManager().getPlugin("Essentials");
+    public static IEssentials setup() {
+        Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
+        if (ess != null) {
+            essentials = (IEssentials) ess;
+            return essentials;
+        }
+
+        return null;
     }
 
     // return false if feature is disabled or Essentials isn't available
@@ -27,9 +35,9 @@ public class Essentials {
         if (!Conf.homesTeleportCommandEssentialsIntegration || essentials == null) return false;
 
         Teleport teleport = essentials.getUser(player).getTeleport();
-        Trade trade = new Trade(BigDecimal.valueOf(Conf.econCostHome), essentials);
+        Trade trade = new Trade(Conf.econCostHome, essentials);
         try {
-            teleport.teleport(loc, trade, TeleportCause.PLUGIN);
+            teleport.teleport(loc, trade);
         } catch (Exception e) {
             player.sendMessage(ChatColor.RED.toString() + e.getMessage());
         }
@@ -37,21 +45,18 @@ public class Essentials {
     }
 
     public static boolean isVanished(Player player) {
-        // Edge case handling.
-        if (player == null) return false;
-        boolean vanish = false;
-        if (essentials != null) {
-            User user = essentials.getUser(player);
-            if (user != null && user.isVanished()) return true;
+        return essentials != null && player != null && essentials.getUser(player).isVanished();
+    }
+
+    public static boolean isOverBalCap(EconomyParticipator participator, double amount) {
+        if (essentials == null) {
+            return false;
         }
-        if (player.hasMetadata("vanished"))
-            for (MetadataValue meta : player.getMetadata("vanished")) {
-                if (meta == null) continue;
-                if (meta.asBoolean()) {
-                    vanish = true;
-                    break;
-                }
-            }
-        return vanish;
+
+        return amount > essentials.getSettings().getMaxMoney().doubleValue();
+    }
+
+    public static Plugin getEssentials() {
+        return essentials;
     }
 }

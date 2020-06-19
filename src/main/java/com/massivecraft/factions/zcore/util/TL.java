@@ -410,6 +410,7 @@ public enum TL {
     COMMAND_FLY_ENEMY_NEAR("&c&l[!]&7 Flight has been&c disabled&7 an enemy is nearby."),
     COMMAND_FLY_CHECK_ENEMY("&c&l[!]&7 Cannot fly here, an enemy is &cnearby&7."),
     COMMAND_FLY_NO_EPEARL("&c&l[!] &7You &ccannot&7 throw enderpearls while flying!"),
+    COMMAND_FLY_AUTO("&eFaction auto flight &d%1$s"),
 
     COMMAND_FOCUS_SAMEFACTION("&c[!] You may not focus players in your faction!"),
     COMMAND_FOCUS_FOCUSING("&c&l[!] &7Your faction is now focusing &c%s"),
