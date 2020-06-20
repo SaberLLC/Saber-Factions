@@ -65,9 +65,9 @@ warp-cost:
 # Enable Faction Fly:
 enable-faction-flight: true
 ffly:
+  AutoEnable: true
   enemies-near-disable-flight: true #This means F Stealth Will Be Redundant
   disable-flight-on-generic-damage: false #Any Damage a Player Takes Their Flight Will Be Disabled
-  AutoEnable: true #If set to true, fly will automatically enable when walking into your own chunk.
 
 # If a player leaves fly (out of territory or took damage)
 # how long should they not take fall damage for?

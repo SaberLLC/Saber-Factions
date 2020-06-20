@@ -1,22 +1,14 @@
 package com.massivecraft.factions.cmd;
 
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.FlightUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
-import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class CmdFly extends FCommand {
 
@@ -41,22 +33,19 @@ public class CmdFly extends FCommand {
     public void perform(CommandContext context) {
         if (context.args.size() == 0) {
             toggleFlight(context, !context.fPlayer.isFlying(), true);
-        } else if (context.args.size() == 1) {
-            if (context.argAsString(0).equalsIgnoreCase("auto")) {
-                // Player Wants to AutoFly
-                if (Permission.FLY_FLY.has(context.player, true)) {
-                    context.fPlayer.setAutoFlying(!context.fPlayer.isAutoFlying());
-                    toggleFlight(context, context.fPlayer.isAutoFlying(), false);
-                }
-            } else {
-                toggleFlight(context, context.argAsBool(0), true);
-            }
+        } else {
+            toggleFlight(context, context.argAsBool(0), true);
         }
     }
+
 
     private void toggleFlight(final CommandContext context, final boolean toggle, boolean notify) {
         // If false do nothing besides set
         if (!toggle) {
+            if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")) {
+                context.fPlayer.setAutoFlying(false);
+                return;
+            }
             context.fPlayer.setFlying(false);
             return;
         }
@@ -67,6 +56,10 @@ public class CmdFly extends FCommand {
 
         context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
             if (flyTest(context, notify)) {
+                if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")) {
+                    context.fPlayer.setAutoFlying(true);
+                    return;
+                }
                 context.fPlayer.setFlying(true);
             }
         }, FactionsPlugin.getInstance().getConfig().getInt("warmups.f-fly"));
