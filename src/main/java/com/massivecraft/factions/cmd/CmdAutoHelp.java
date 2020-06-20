@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class CmdAutoHelp extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdAutoHelp() {

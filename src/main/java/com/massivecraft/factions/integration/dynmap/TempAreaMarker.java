@@ -10,7 +10,7 @@ import java.util.List;
 public class TempAreaMarker {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     // -------------------------------------------- //

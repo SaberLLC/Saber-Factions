@@ -29,7 +29,7 @@ import java.util.*;
 public class FactionsEntityListener implements Listener {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));

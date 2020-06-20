@@ -6,7 +6,7 @@ import com.massivecraft.factions.struct.Relation;
 public class CmdRelationAlly extends FRelationCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdRelationAlly() {

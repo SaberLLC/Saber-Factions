@@ -22,7 +22,7 @@ import org.bukkit.ChatColor;
 public class CmdMoneyWithdraw extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdMoneyWithdraw() {

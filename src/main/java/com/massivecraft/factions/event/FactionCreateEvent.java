@@ -13,7 +13,7 @@ import org.bukkit.event.HandlerList;
 public class FactionCreateEvent extends Event implements Cancellable {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private static final HandlerList handlers = new HandlerList();

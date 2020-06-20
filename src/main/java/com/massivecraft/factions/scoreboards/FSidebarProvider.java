@@ -13,7 +13,7 @@ import java.util.Objects;
 public abstract class FSidebarProvider {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public abstract String getTitle(FPlayer fplayer);

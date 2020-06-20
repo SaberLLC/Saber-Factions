@@ -14,7 +14,7 @@ import org.bukkit.ChatColor;
 public class CmdColeader extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdColeader() {

@@ -14,7 +14,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class FPromoteCommand extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public int relative = 0;

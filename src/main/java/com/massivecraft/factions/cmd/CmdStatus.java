@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class CmdStatus extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdStatus() {

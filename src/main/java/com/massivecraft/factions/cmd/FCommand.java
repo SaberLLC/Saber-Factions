@@ -18,7 +18,7 @@ import java.util.*;
 public abstract class FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());

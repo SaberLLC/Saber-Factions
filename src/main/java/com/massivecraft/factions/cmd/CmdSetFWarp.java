@@ -11,7 +11,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdSetFWarp extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdSetFWarp() {

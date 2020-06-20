@@ -15,7 +15,7 @@ import java.util.List;
 public class CmdList extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private String[] defaults = new String[3];

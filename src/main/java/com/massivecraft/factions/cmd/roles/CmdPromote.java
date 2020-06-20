@@ -5,7 +5,7 @@ import com.massivecraft.factions.cmd.Aliases;
 public class CmdPromote extends FPromoteCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdPromote() {

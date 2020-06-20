@@ -12,7 +12,7 @@ import org.bukkit.ChatColor;
 public class CmdDeinvite extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdDeinvite() {

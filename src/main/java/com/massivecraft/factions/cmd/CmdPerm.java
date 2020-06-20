@@ -18,7 +18,7 @@ import java.util.Set;
 public class CmdPerm extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdPerm() {

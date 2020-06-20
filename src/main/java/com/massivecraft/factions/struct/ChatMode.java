@@ -5,7 +5,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public enum ChatMode {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     MOD(4, TL.CHAT_MOD),

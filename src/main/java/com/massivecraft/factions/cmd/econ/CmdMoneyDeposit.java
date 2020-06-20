@@ -17,7 +17,7 @@ import org.bukkit.ChatColor;
 public class CmdMoneyDeposit extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdMoneyDeposit() {

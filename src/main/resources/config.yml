@@ -1398,7 +1398,10 @@ Title:
 # /f seechunk options
 see-chunk:
   particles: true
-  interval: 5
+  particle-type: "REDSTONE" #Type Of Particle To Be Used
+  #If the chosen particle is compatible with coloring we will color it based on the current chunk's faction
+  use-relational-color: true
+  interval: 0.75
 
 ############################################################
 # +------------------------------------------------------+ #

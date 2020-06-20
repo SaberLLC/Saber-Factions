@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 public class CmdAHome extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdAHome() {

@@ -14,7 +14,7 @@ import java.util.*;
 public class FTeamWrapper {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<>();

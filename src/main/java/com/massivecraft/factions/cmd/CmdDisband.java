@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class CmdDisband extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private static HashMap<String, String> disbandMap = new HashMap<>();

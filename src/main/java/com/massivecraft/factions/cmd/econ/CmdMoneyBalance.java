@@ -12,7 +12,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdMoneyBalance extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdMoneyBalance() {

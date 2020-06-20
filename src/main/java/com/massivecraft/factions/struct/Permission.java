@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 public enum Permission {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
 

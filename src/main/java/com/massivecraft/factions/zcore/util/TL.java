@@ -896,6 +896,9 @@ public enum TL {
     COMMAND_ALTS_LIST_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
     COMMAND_ALTS_DEINVITE_DESCRIPTION("Base command for revoking alt invitations"),
 
+    COMMAND_SEECHUNK_DESCRIPTION("Show chunk boundaries"),
+    COMMAND_SEECHUNK_TOGGLE("&eSeechunk &d%1$s"),
+
     COMMAND_STATUS_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
     COMMAND_STATUS_ONLINE("Online"),
     COMMAND_STATUS_AGOSUFFIX(" ago."),

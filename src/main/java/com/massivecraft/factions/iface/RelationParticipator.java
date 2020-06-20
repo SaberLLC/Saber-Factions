@@ -6,7 +6,7 @@ import org.bukkit.ChatColor;
 public interface RelationParticipator {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     String describeTo(RelationParticipator that);

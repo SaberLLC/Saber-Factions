@@ -19,7 +19,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdAutoClaim extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdAutoClaim() {

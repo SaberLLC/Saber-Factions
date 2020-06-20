@@ -21,7 +21,7 @@ import java.util.List;
 public class CmdHome extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdHome() {

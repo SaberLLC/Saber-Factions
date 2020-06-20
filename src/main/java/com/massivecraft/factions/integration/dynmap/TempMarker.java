@@ -9,7 +9,7 @@ import org.dynmap.markers.MarkerSet;
 public class TempMarker {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     // -------------------------------------------- //

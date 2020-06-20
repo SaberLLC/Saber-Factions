@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 public class CmdShowInvites extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdShowInvites() {

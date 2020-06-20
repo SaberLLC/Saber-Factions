@@ -23,7 +23,7 @@ public class CmdFly extends FCommand {
     public static final boolean fly = FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight");
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
 

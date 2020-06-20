@@ -8,7 +8,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdPermanentPower extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdPermanentPower() {

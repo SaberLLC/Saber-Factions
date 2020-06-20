@@ -10,7 +10,7 @@ import java.util.List;
 public class TempPolyLineMarker {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     // -------------------------------------------- //

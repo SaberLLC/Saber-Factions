@@ -7,7 +7,7 @@ import org.bukkit.event.Cancellable;
 public class FPlayerLeaveEvent extends FactionPlayerEvent implements Cancellable {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     boolean cancelled = false;

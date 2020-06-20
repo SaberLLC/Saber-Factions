@@ -92,6 +92,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean isAlt = false;
     boolean inspectMode = false;
     boolean friendlyFire = false;
+    protected boolean seeingChunk = false;
 
     public MemoryFPlayer() {
     }
@@ -1070,6 +1071,16 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.shouldTakeFallDamage = fallDamage;
     }
 
+    public boolean isSeeingChunk() {
+        return seeingChunk;
+    }
+
+    public void setSeeingChunk(boolean seeingChunk) {
+        this.seeingChunk = seeingChunk;
+        FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(getId()), seeingChunk);
+    }
+
+
     public boolean isEnteringPassword() {
         return enteringPassword;
     }
@@ -1274,12 +1285,11 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
-        boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone() && (Conf.econCostClaimWilderness != 0);
+        boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone() && (Conf.econCostClaimWilderness != 0.0);
         double cost = 0.0;
         EconomyParticipator payee = null;
         if (mustPay) {
             cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
-
 
             if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, forFaction)) {
                 cost += Conf.econClaimUnconnectedFee;

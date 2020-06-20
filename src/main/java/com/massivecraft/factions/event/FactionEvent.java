@@ -10,7 +10,7 @@ import org.bukkit.event.HandlerList;
 public class FactionEvent extends Event {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private static final HandlerList handlers = new HandlerList();

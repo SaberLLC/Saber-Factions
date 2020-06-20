@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public interface Tag {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     int ARBITRARY_LIMIT = 25000;

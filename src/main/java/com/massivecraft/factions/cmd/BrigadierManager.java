@@ -16,7 +16,7 @@ import java.util.Map;
 public class BrigadierManager {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public Commodore commodore;

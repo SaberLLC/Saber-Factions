@@ -11,7 +11,7 @@ import java.util.ListIterator;
 public class FDefaultSidebar extends FSidebarProvider {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     @Override

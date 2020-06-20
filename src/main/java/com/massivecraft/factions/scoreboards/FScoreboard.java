@@ -15,7 +15,7 @@ import java.util.Map;
 public class FScoreboard {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private static final Map<FPlayer, FScoreboard> fscoreboards = new HashMap<>();

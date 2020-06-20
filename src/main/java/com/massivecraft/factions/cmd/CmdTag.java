@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class CmdTag extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdTag() {

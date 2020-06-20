@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 public interface Permissable {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     ItemStack buildItem();

@@ -16,7 +16,7 @@ import java.util.logging.Level;
 public class CmdBan extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdBan() {

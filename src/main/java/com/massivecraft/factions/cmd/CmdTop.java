@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class CmdTop extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdTop() {

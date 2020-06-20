@@ -9,7 +9,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdSethome extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdSethome() {

@@ -8,7 +8,7 @@ import org.bukkit.event.Cancellable;
 public class FactionRelationWishEvent extends FactionPlayerEvent implements Cancellable {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private final Faction targetFaction;

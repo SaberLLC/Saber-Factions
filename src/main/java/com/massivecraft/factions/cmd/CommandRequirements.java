@@ -10,7 +10,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CommandRequirements {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     // Permission required to execute command

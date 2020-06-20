@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 public class CmdSetMaxVaults extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdSetMaxVaults() {

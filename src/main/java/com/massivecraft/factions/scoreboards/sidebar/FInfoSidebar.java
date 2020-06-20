@@ -11,7 +11,7 @@ import java.util.ListIterator;
 public class FInfoSidebar extends FSidebarProvider {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private final Faction faction;

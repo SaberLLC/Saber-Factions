@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class CmdAnnounce extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdAnnounce() {

@@ -6,7 +6,7 @@ import com.massivecraft.factions.struct.Relation;
 public class CmdRelationNeutral extends FRelationCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdRelationNeutral() {

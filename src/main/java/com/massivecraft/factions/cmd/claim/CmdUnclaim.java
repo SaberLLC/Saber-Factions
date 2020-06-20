@@ -20,7 +20,7 @@ import org.bukkit.Bukkit;
 public class CmdUnclaim extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdUnclaim() {

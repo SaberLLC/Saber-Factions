@@ -14,7 +14,7 @@ import java.util.List;
 public class CmdHelp extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public ArrayList<ArrayList<String>> helpPages;

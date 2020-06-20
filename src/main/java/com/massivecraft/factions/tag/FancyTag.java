@@ -15,7 +15,7 @@ import java.util.*;
 public enum FancyTag implements Tag {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     NEUTRAL_LIST("{neutral-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.NEUTRAL)),

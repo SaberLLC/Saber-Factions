@@ -6,7 +6,7 @@ import org.dynmap.markers.MarkerSet;
 public class TempMarkerSet {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public String label;

@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 public class EngineDynmap {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     // -------------------------------------------- //

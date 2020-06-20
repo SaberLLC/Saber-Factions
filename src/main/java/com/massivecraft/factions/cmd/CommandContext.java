@@ -20,7 +20,7 @@ import java.util.List;
 public class CommandContext {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CommandSender sender;

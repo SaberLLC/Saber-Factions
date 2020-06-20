@@ -16,7 +16,7 @@ import org.bukkit.World;
 public class CmdWarunclaimall extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdWarunclaimall() {

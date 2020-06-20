@@ -3,7 +3,7 @@ package com.massivecraft.factions.struct;
 public class BanInfo {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     // FPlayer IDs

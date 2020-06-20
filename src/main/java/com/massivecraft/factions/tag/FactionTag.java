@@ -16,7 +16,7 @@ import java.util.function.Function;
 public enum FactionTag implements Tag {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     HOME_X("{x}", (fac) -> fac.hasHome() ? String.valueOf(fac.getHome().getBlockX()) : Tag.isMinimalShow() ? null : "{ig}"),

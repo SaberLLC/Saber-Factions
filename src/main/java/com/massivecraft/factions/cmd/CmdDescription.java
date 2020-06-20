@@ -13,7 +13,7 @@ import org.bukkit.Bukkit;
 public class CmdDescription extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdDescription() {

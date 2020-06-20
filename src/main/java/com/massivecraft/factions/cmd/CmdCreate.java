@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class CmdCreate extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdCreate() {

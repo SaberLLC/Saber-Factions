@@ -21,7 +21,7 @@ import java.util.logging.Level;
 public class FactionsChatListener implements Listener {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     // this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first

@@ -10,7 +10,7 @@ import org.bukkit.command.ConsoleCommandSender;
 public class CmdConvert extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdConvert() {

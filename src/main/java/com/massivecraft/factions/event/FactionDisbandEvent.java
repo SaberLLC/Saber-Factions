@@ -12,7 +12,7 @@ import org.bukkit.event.Cancellable;
 public class FactionDisbandEvent extends FactionEvent implements Cancellable {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private final Player sender;

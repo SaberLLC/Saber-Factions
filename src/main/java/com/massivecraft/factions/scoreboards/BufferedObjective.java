@@ -1,6 +1,5 @@
 package com.massivecraft.factions.scoreboards;
 
-import com.google.common.base.Splitter;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -13,6 +12,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BufferedObjective {
+
+    /**
+     * @author FactionsUUID Team - Modified By CmdrKittens
+     */
+
     private static final Method addEntryMethod;
     private static final int MAX_LINE_LENGTH;
     private static final Pattern PATTERN = Pattern.compile("(\u00A7[0-9a-fk-r])|(.)");

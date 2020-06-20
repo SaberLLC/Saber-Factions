@@ -9,7 +9,7 @@ import com.massivecraft.factions.Faction;
 public class FactionPlayerEvent extends FactionEvent {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     protected final FPlayer fPlayer;

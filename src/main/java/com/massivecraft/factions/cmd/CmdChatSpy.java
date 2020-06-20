@@ -7,7 +7,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdChatSpy extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdChatSpy() {

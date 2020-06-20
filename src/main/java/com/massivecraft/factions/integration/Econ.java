@@ -25,7 +25,7 @@ import java.util.logging.Level;
 public class Econ {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());

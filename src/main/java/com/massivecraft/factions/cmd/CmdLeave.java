@@ -6,7 +6,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdLeave extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdLeave() {

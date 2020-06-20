@@ -5,7 +5,7 @@ import com.massivecraft.factions.Conf;
 public class DynmapStyle {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     // -------------------------------------------- //

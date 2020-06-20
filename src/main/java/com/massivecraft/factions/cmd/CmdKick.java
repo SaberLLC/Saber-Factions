@@ -19,7 +19,7 @@ import org.bukkit.command.ConsoleCommandSender;
 public class CmdKick extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdKick() {

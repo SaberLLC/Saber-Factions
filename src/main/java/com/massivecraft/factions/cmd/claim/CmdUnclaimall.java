@@ -17,7 +17,7 @@ import org.bukkit.Bukkit;
 public class CmdUnclaimall extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     //TODO: Add UnclaimAll Confirmation GUI

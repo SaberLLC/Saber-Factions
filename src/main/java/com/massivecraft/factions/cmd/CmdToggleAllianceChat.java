@@ -7,7 +7,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdToggleAllianceChat extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdToggleAllianceChat() {

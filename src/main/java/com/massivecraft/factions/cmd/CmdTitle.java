@@ -10,7 +10,7 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 public class CmdTitle extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdTitle() {

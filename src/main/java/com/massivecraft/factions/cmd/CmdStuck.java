@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 public class CmdStuck extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdStuck() {

@@ -13,7 +13,7 @@ import mkremins.fanciful.FancyMessage;
 public class CmdInvite extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdInvite() {

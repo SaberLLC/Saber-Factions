@@ -57,7 +57,7 @@ public class FactionsPlayerListener implements Listener {
 
     public static Set<FLocation> corners;
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     HashMap<Player, Boolean> fallMap = new HashMap<>();
@@ -515,6 +515,10 @@ public class FactionsPlayerListener implements Listener {
         if (FCmdRoot.instance.fFlyEnabled && me.isFlying()) {
             me.setFlying(false);
         }
+
+        if (FactionsPlugin.getInstance().getSeeChunkUtil() != null) {
+            FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), me.isSeeingChunk());
+        }
     }
 
     @EventHandler
@@ -556,7 +560,9 @@ public class FactionsPlayerListener implements Listener {
 
         }
 
-        CmdSeeChunk.seeChunkMap.remove(event.getPlayer().getName());
+        if (FactionsPlugin.getInstance().getSeeChunkUtil() != null) {
+            FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), false);
+        }
 
         FScoreboard.remove(me, event.getPlayer());
     }

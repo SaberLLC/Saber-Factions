@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class CmdNear extends FCommand {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
     public CmdNear() {

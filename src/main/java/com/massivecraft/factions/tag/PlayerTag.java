@@ -13,7 +13,7 @@ import java.util.function.Function;
 public enum PlayerTag implements Tag {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
     LAST_SEEN("{lastSeen}", (fp) -> {
         String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fp.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;

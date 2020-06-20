@@ -18,7 +18,7 @@ import java.util.List;
 public enum Relation implements Permissable {
 
     /**
-     * @author FactionsUUID Team
+     * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
 
