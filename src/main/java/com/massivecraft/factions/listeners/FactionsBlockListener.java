@@ -430,7 +430,7 @@ public class FactionsBlockListener implements Listener {
         if (!justCheck) fPlayer.setLastFrostwalkerMessage();
 
         // Check if they have build permissions here. If not, block this from happening.
-        if (!playerCanBuildDestroyBlock(player, location, "frostwalk", justCheck))
+        if (!playerCanBuildDestroyBlock(player, location, PermissableAction.FROST_WALK.name(), justCheck))
             event.setCancelled(true);
     }
 
