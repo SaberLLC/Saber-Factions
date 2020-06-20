@@ -614,7 +614,7 @@ public class FactionsPlayerListener implements Listener {
             if (FactionsPlugin.cachedRadiusClaim && me.attemptClaim(me.getFaction(), me.getPlayer().getLocation(), true)) {
                 me.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_CLAIMED, me.describeTo(f, true), me.getFaction().describeTo(f), at.describeTo(f)));
             } else {
-                me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
+                me.attemptClaim(me.getAutoClaimFor(), me.getPlayer().getLocation(), true);
             }
             FactionsPlugin.instance.logFactionEvent(me.getAutoClaimFor(), FLogType.CHUNK_CLAIMS, me.getName(), CC.GreenB + "CLAIMED", String.valueOf(1), (new FLocation(player.getLocation())).formatXAndZ(","));
         } else if (me.isAutoSafeClaimEnabled()) {
