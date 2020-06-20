@@ -33,19 +33,22 @@ public class CmdFly extends FCommand {
     public void perform(CommandContext context) {
         if (context.args.size() == 0) {
             toggleFlight(context, !context.fPlayer.isFlying(), true);
-        } else {
-            toggleFlight(context, context.argAsBool(0), true);
+        } else if (context.args.size() == 1) {
+            if (context.argAsString(0).equalsIgnoreCase("auto")) {
+                // Player Wants to AutoFly
+                if (Permission.FLY_FLY.has(context.player, true)) {
+                    context.fPlayer.setAutoFlying(!context.fPlayer.isAutoFlying());
+                    toggleFlight(context, context.fPlayer.isAutoFlying(), false);
+                }
+            } else {
+                toggleFlight(context, context.argAsBool(0), true);
+            }
         }
     }
-
 
     private void toggleFlight(final CommandContext context, final boolean toggle, boolean notify) {
         // If false do nothing besides set
         if (!toggle) {
-            if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")) {
-                context.fPlayer.setAutoFlying(false);
-                return;
-            }
             context.fPlayer.setFlying(false);
             return;
         }
@@ -56,10 +59,6 @@ public class CmdFly extends FCommand {
 
         context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
             if (flyTest(context, notify)) {
-                if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")) {
-                    context.fPlayer.setAutoFlying(true);
-                    return;
-                }
                 context.fPlayer.setFlying(true);
             }
         }, FactionsPlugin.getInstance().getConfig().getInt("warmups.f-fly"));
