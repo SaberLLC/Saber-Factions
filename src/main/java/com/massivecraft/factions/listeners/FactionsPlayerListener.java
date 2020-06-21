@@ -1,15 +1,13 @@
 package com.massivecraft.factions.listeners;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFGlobal;
-import com.massivecraft.factions.cmd.CmdFly;
-import com.massivecraft.factions.cmd.CmdSeeChunk;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
 import com.massivecraft.factions.cmd.wild.CmdWild;
 import com.massivecraft.factions.discord.Discord;
-import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
@@ -21,7 +19,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.VisualizeUtil;
-import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -47,7 +44,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -333,131 +329,36 @@ public class FactionsPlayerListener implements Listener {
     }
 
     private static PermissableAction GetPermissionFromUsableBlock(Material material) {
-        // Check for doors that might have diff material name in old version.
-        if (material.name().contains("DOOR") || material.name().contains("FENCE_GATE"))
-            return PermissableAction.DOOR;
-        if (material.name().toUpperCase().contains("BUTTON") || material.name().toUpperCase().contains("PRESSURE") || material.name().contains("DIODE") || material.name().contains("COMPARATOR"))
-            return PermissableAction.BUTTON;
-        if (FactionsPlugin.instance.mc113 || FactionsPlugin.instance.mc114 || FactionsPlugin.getInstance().mc115) {
-            switch (material) {
-                case LEVER:
-                    return PermissableAction.LEVER;
-                case ACACIA_BUTTON:
-                case BIRCH_BUTTON:
-                case DARK_OAK_BUTTON:
-                case JUNGLE_BUTTON:
-                case OAK_BUTTON:
-                case SPRUCE_BUTTON:
-                case STONE_BUTTON:
-                case COMPARATOR:
-                case REPEATER:
-                    return PermissableAction.BUTTON;
-
-                case ACACIA_DOOR:
-                case BIRCH_DOOR:
-                case IRON_DOOR:
-                case JUNGLE_DOOR:
-                case OAK_DOOR:
-                case SPRUCE_DOOR:
-                case DARK_OAK_DOOR:
-
-                case ACACIA_TRAPDOOR:
-                case BIRCH_TRAPDOOR:
-                case DARK_OAK_TRAPDOOR:
-                case IRON_TRAPDOOR:
-                case JUNGLE_TRAPDOOR:
-                case OAK_TRAPDOOR:
-                case SPRUCE_TRAPDOOR:
-
-                case ACACIA_FENCE_GATE:
-                case BIRCH_FENCE_GATE:
-                case DARK_OAK_FENCE_GATE:
-                case JUNGLE_FENCE_GATE:
-                case OAK_FENCE_GATE:
-                case SPRUCE_FENCE_GATE:
-                    return PermissableAction.DOOR;
-
-                case CHEST:
-                case TRAPPED_CHEST:
-                case CHEST_MINECART:
-
-                case BARREL:
-                case COMPOSTER:
-                case LOOM:
-                case CARTOGRAPHY_TABLE:
-                case GRINDSTONE:
-
-                case SHULKER_BOX:
-                case BLACK_SHULKER_BOX:
-                case BLUE_SHULKER_BOX:
-                case BROWN_SHULKER_BOX:
-                case CYAN_SHULKER_BOX:
-                case GRAY_SHULKER_BOX:
-                case GREEN_SHULKER_BOX:
-                case LIGHT_BLUE_SHULKER_BOX:
-                case LIGHT_GRAY_SHULKER_BOX:
-                case LIME_SHULKER_BOX:
-                case MAGENTA_SHULKER_BOX:
-                case ORANGE_SHULKER_BOX:
-                case PINK_SHULKER_BOX:
-                case PURPLE_SHULKER_BOX:
-                case RED_SHULKER_BOX:
-                case WHITE_SHULKER_BOX:
-                case YELLOW_SHULKER_BOX:
-
-                case FURNACE:
-                case BLAST_FURNACE:
-                case SMOKER:
-                case DROPPER:
-                case DISPENSER:
-                case ENCHANTING_TABLE:
-                case BREWING_STAND:
-                case CAULDRON:
-                case HOPPER:
-                case BEACON:
-                case JUKEBOX:
-                case ANVIL:
-                case CHIPPED_ANVIL:
-                case DAMAGED_ANVIL:
-                    return PermissableAction.CONTAINER;
-                default:
-                    return null;
-            }
-        } else {
-            switch (material) {
-                case LEVER:
-                    return PermissableAction.LEVER;
-                case DARK_OAK_DOOR:
-                case ACACIA_DOOR:
-                case BIRCH_DOOR:
-                case IRON_DOOR:
-                case JUNGLE_DOOR:
-                case SPRUCE_DOOR:
-                case ACACIA_FENCE_GATE:
-                case BIRCH_FENCE_GATE:
-                case OAK_FENCE_GATE:
-                case DARK_OAK_FENCE_GATE:
-                case JUNGLE_FENCE_GATE:
-                case SPRUCE_FENCE_GATE:
-                    return PermissableAction.DOOR;
-                case CHEST:
-                case ENDER_CHEST:
-                case TRAPPED_CHEST:
-                case DISPENSER:
-                case ENCHANTING_TABLE:
-                case DROPPER:
-                case FURNACE:
-                case BLAST_FURNACE:
-                case SMOKER:
-                case HOPPER:
-                case ANVIL:
-                case CHIPPED_ANVIL:
-                case DAMAGED_ANVIL:
-                case BREWING_STAND:
-                    return PermissableAction.CONTAINER;
-                default:
-                    return null;
-            }
+        if (material.name().contains("_BUTTON")
+                || material.name().contains("COMPARATOR")
+                || material.name().contains("PRESSURE")
+                || material.name().contains("REPEATER")
+                || material.name().contains("DIODE")) return PermissableAction.BUTTON;
+        if (material.name().contains("_DOOR")
+                || material.name().contains("_TRAPDOOR")
+                || material.name().contains("_FENCE_GATE")
+                || material.name().startsWith("FENCE_GATE")) return PermissableAction.DOOR;
+        if (material.name().contains("SHULKER_BOX")
+                || material.name().endsWith("ANVIL")
+                || material.name().startsWith("CHEST_MINECART")
+                || material.name().endsWith("CHEST")
+                || material.name().endsWith("JUKEBOX")
+                || material.name().endsWith("CAULDRON")
+                || material.name().endsWith("FURNACE")
+                || material.name().endsWith("HOPPER")
+                || material.name().endsWith("BEACON")
+                || material.name().startsWith("TRAPPED_CHEST")
+                || material.name().equalsIgnoreCase("ENCHANTING_TABLE")
+                || material.name().equalsIgnoreCase("ENCHANTMENT_TABLE")
+                || material.name().endsWith("BREWING_STAND")
+                || material.name().equalsIgnoreCase("BARREL")) return PermissableAction.CONTAINER;
+        if (material.name().endsWith("LEVER")) return PermissableAction.LEVER;
+        switch (material) {
+            case DISPENSER:
+            case DROPPER:
+                return PermissableAction.CONTAINER;
+            default:
+                return null;
         }
     }
 
@@ -760,8 +661,12 @@ public class FactionsPlayerListener implements Listener {
 
         Material type;
         if (event.getItem() != null) {
-            // Convert 1.8 Material Names -> 1.15
-            type = XMaterial.matchXMaterial(event.getItem().getType().toString()).get().parseMaterial();
+            // Convert 1.8 Material Names -> 1.14
+            try {
+                type = XMaterial.matchXMaterial(event.getItem().getType().toString()).get().parseMaterial();
+            } catch (NullPointerException npe) {
+                type = null;
+            }
         } else {
             type = null;
         }

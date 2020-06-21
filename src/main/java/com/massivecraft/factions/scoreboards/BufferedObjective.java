@@ -21,20 +21,6 @@ public class BufferedObjective {
     private static final int MAX_LINE_LENGTH;
     private static final Pattern PATTERN = Pattern.compile("(\u00A7[0-9a-fk-r])|(.)");
 
-    private final Scoreboard scoreboard;
-    private final String baseName;
-
-    private Objective current;
-    private List<Team> currentTeams = new ArrayList<>();
-    private String title;
-    private DisplaySlot displaySlot;
-
-    private int objPtr;
-    private int teamPtr;
-    private boolean requiresUpdate = false;
-
-    private final Map<Integer, String> contents = new HashMap<>();
-
     static {
         // Check for long line support.
         // We require use of Spigot's `addEntry(String)` method on
@@ -54,6 +40,17 @@ public class BufferedObjective {
             MAX_LINE_LENGTH = 16;
         }
     }
+
+    private final Scoreboard scoreboard;
+    private final String baseName;
+    private final Map<Integer, String> contents = new HashMap<>();
+    private Objective current;
+    private List<Team> currentTeams = new ArrayList<>();
+    private String title;
+    private DisplaySlot displaySlot;
+    private int objPtr;
+    private int teamPtr;
+    private boolean requiresUpdate = false;
 
     public BufferedObjective(Scoreboard scoreboard) {
         this.scoreboard = scoreboard;

@@ -19,9 +19,8 @@ public class FTeamWrapper {
 
     private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<>();
     private static final List<FScoreboard> tracking = new ArrayList<>();
-    private static int factionTeamPtr;
     private static final Set<Faction> updating = new HashSet<>();
-
+    private static int factionTeamPtr;
     private final Map<FScoreboard, Team> teams = new HashMap<>();
     private final String teamName;
     private final Faction faction;

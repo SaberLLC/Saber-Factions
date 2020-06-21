@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.frame.fupgrades;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
@@ -7,7 +8,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.XMaterial;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -46,7 +46,7 @@ public class FUpgradeFrame {
                     if (fme.getFaction().getUpgrade(value) == value.getMaxLevel()) return;
                     int cost = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu." + value.toString() + ".Cost.level-" + (fme.getFaction().getUpgrade(value) + 1));
                     if (FactionsPlugin.getInstance().getConfig().getBoolean("fupgrades.usePointsAsCurrency")) {
-                        if(fme.getFaction().getPoints() >= cost) {
+                        if (fme.getFaction().getPoints() >= cost) {
                             fme.getFaction().setPoints(fme.getFaction().getPoints() - cost);
                             fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, fme.getFaction().getPoints());
                             if (value == UpgradeType.CHEST) updateChests(fme.getFaction());

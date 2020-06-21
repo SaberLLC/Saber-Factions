@@ -6,9 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.util.timer.DateTimeFormats;
 import com.massivecraft.factions.zcore.util.TL;
-import org.apache.commons.lang.time.DurationFormatUtils;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -39,9 +37,9 @@ public enum FactionTag implements Tag {
     FACTION("{faction}", (Function<Faction, String>) Faction::getTag),
     FACTION_RELATION_COLOR("{faction-relation-color}", (fac, fp) -> fp == null ? "" : fp.getColorTo(fac).toString()),
     //SHIELD_STATUS("{shield-status}",(fac) -> {
-        //if(fac.isProtected() && fac.getShieldFrame() != null) return String.valueOf(TL.SHIELD_CURRENTLY_ENABLE);
-        //if(fac.getShieldFrame() == null) return String.valueOf(TL.SHIELD_NOT_SET);
-       // return TL.SHIELD_CURRENTLY_NOT_ENABLED.toString();
+    //if(fac.isProtected() && fac.getShieldFrame() != null) return String.valueOf(TL.SHIELD_CURRENTLY_ENABLE);
+    //if(fac.getShieldFrame() == null) return String.valueOf(TL.SHIELD_NOT_SET);
+    // return TL.SHIELD_CURRENTLY_NOT_ENABLED.toString();
     //}),
     HOME_WORLD("{world}", (fac) -> fac.hasHome() ? fac.getHome().getWorld().getName() : Tag.isMinimalShow() ? null : "{ig}"),
     RAIDABLE("{raidable}", (fac) -> {

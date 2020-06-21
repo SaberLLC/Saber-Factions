@@ -10,7 +10,6 @@ import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
-import com.sun.org.apache.bcel.internal.generic.FCMPG;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.World;

@@ -90,67 +90,67 @@ public class JSONFPlayers extends MemoryFPlayers {
                 }
             }
 
-        if (list.size() > 0) {
-            // We've got some converting to do!
-            Bukkit.getLogger().log(Level.INFO, "Factions is now updating players.json");
+            if (list.size() > 0) {
+                // We've got some converting to do!
+                Bukkit.getLogger().log(Level.INFO, "Factions is now updating players.json");
 
-            // First we'll make a backup, because god forbid anybody heed a
-            // warning
-            File file = new File(this.file.getParentFile(), "players.json.old");
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            saveCore(file, data, true);
-            Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + file.getAbsolutePath());
+                // First we'll make a backup, because god forbid anybody heed a
+                // warning
+                File file = new File(this.file.getParentFile(), "players.json.old");
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                saveCore(file, data, true);
+                Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + file.getAbsolutePath());
 
-            // Start fetching those UUIDs
-            Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
-            UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<>(list));
-            try {
-                Map<String, UUID> response = fetcher.call();
-                for (String s : list) {
-                    // Are we missing any responses?
-                    if (!response.containsKey(s)) {
-                        // They don't have a UUID so they should just be removed
-                        invalidList.add(s);
+                // Start fetching those UUIDs
+                Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
+                UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<>(list));
+                try {
+                    Map<String, UUID> response = fetcher.call();
+                    for (String s : list) {
+                        // Are we missing any responses?
+                        if (!response.containsKey(s)) {
+                            // They don't have a UUID so they should just be removed
+                            invalidList.add(s);
+                        }
                     }
-                }
-                for (String value : response.keySet()) {
-                    // For all the valid responses, let's replace their old
-                    // named entry with a UUID key
-                    String id = response.get(value).toString();
+                    for (String value : response.keySet()) {
+                        // For all the valid responses, let's replace their old
+                        // named entry with a UUID key
+                        String id = response.get(value).toString();
 
-                    JSONFPlayer player = data.get(value);
+                        JSONFPlayer player = data.get(value);
 
-                    if (player == null) {
-                        // The player never existed here, and shouldn't persist
-                        invalidList.add(value);
-                        continue;
+                        if (player == null) {
+                            // The player never existed here, and shouldn't persist
+                            invalidList.add(value);
+                            continue;
+                        }
+
+                        player.setId(id); // Update the object so it knows
+
+                        data.remove(value); // Out with the old...
+                        data.put(id, player); // And in with the new
                     }
-
-                    player.setId(id); // Update the object so it knows
-
-                    data.remove(value); // Out with the old...
-                    data.put(id, player); // And in with the new
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if (invalidList.size() > 0) {
-                for (String name : invalidList) {
-                    // Remove all the invalid names we collected
-                    data.remove(name);
+                if (invalidList.size() > 0) {
+                    for (String name : invalidList) {
+                        // Remove all the invalid names we collected
+                        data.remove(name);
+                    }
+                    Bukkit.getLogger().log(Level.INFO, "While converting we found names that either don't have a UUID or aren't players and removed them from storage.");
+                    Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + StringUtils.join(invalidList, ", "));
                 }
-                Bukkit.getLogger().log(Level.INFO, "While converting we found names that either don't have a UUID or aren't players and removed them from storage.");
-                Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + StringUtils.join(invalidList, ", "));
+                saveCore(this.file, data, true); // Update the
+                // flatfile
+                Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
             }
-            saveCore(this.file, data, true); // Update the
-            // flatfile
-            Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
-        }
-        return data;
+            return data;
         } catch (NullPointerException exception) {
             exception.printStackTrace();
             if (this.file.length() < 200) {

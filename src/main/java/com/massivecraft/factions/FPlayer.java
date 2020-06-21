@@ -359,11 +359,11 @@ public interface FPlayer extends EconomyParticipator {
 
     int getPowerRounded();
 
+    void setPowerRounded(int power);
+
     int getPowerMaxRounded();
 
     int getPowerMinRounded();
-
-    void setPowerRounded(int power);
 
     long getMillisPassed();
 

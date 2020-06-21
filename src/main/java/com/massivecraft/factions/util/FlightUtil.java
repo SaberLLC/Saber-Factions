@@ -25,7 +25,7 @@ public class FlightUtil {
     private FlightUtil() {
         double enemyCheck = Conf.stealthFlyCheckRadius * 20;
         if (enemyCheck > 0) {
-            if(FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight")) {
+            if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight")) {
                 enemiesTask = new EnemiesTask();
                 enemiesTask.runTaskTimer(FactionsPlugin.getInstance(), 0, (long) enemyCheck);
             }

@@ -1,5 +1,6 @@
 package com.massivecraft.factions.util;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.util.particle.ParticleColor;
 import org.bukkit.*;
@@ -26,27 +27,6 @@ public class SeeChunkUtil extends BukkitRunnable {
         this.useColor = FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.use-relational-color");
 
         FactionsPlugin.getInstance().getLogger().info(FactionsPlugin.getInstance().txt.parse("Using %s as the ParticleEffect for /f sc", FactionsPlugin.getInstance().getParticleProvider().effectName(effect)));
-    }
-
-    @Override
-    public void run() {
-        for (UUID playerId : playersSeeingChunks) {
-            Player player = Bukkit.getPlayer(playerId);
-            if (player == null) {
-                playersSeeingChunks.remove(playerId);
-                continue;
-            }
-            FPlayer fme = FPlayers.getInstance().getByPlayer(player);
-            showPillars(player, fme, this.effect, useColor);
-        }
-    }
-
-    public void updatePlayerInfo(UUID uuid, boolean toggle) {
-        if (toggle) {
-            playersSeeingChunks.add(uuid);
-        } else {
-            playersSeeingChunks.remove(uuid);
-        }
     }
 
     public static void showPillars(Player me, FPlayer fme, Object effect, boolean useColor) {
@@ -99,6 +79,27 @@ public class SeeChunkUtil extends BukkitRunnable {
                 Material mat = blockY % 5 == 0 ? XMaterial.REDSTONE_LAMP.parseMaterial() : XMaterial.GLASS_PANE.parseMaterial();
                 VisualizeUtil.addLocation(player, loc, mat);
             }
+        }
+    }
+
+    @Override
+    public void run() {
+        for (UUID playerId : playersSeeingChunks) {
+            Player player = Bukkit.getPlayer(playerId);
+            if (player == null) {
+                playersSeeingChunks.remove(playerId);
+                continue;
+            }
+            FPlayer fme = FPlayers.getInstance().getByPlayer(player);
+            showPillars(player, fme, this.effect, useColor);
+        }
+    }
+
+    public void updatePlayerInfo(UUID uuid, boolean toggle) {
+        if (toggle) {
+            playersSeeingChunks.add(uuid);
+        } else {
+            playersSeeingChunks.remove(uuid);
         }
     }
 }

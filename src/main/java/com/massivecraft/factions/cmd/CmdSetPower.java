@@ -30,12 +30,12 @@ public class CmdSetPower extends FCommand {
             return;
         }
 
-        if(targetPlayer == null){
+        if (targetPlayer == null) {
             context.sender.sendMessage(ChatColor.RED + "Player is not online!");
             return;
         }
 
-        if(value > targetPlayer.getPowerMaxRounded()){
+        if (value > targetPlayer.getPowerMaxRounded()) {
             context.sender.sendMessage(ChatColor.RED + "Number must be less than the players max-power.");
             return;
         }

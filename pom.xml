@@ -42,6 +42,10 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
+                            <pattern>com.github.cryptomorin</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.xseries</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>com.github.stefvanschie.inventoryframework</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.stefvanschie.inventoryframework</shadedPattern>
                         </relocation>
@@ -104,6 +108,11 @@
             <artifactId>brigadier</artifactId>
             <version>1.0.14</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cryptomorin</groupId>
+            <artifactId>XSeries</artifactId>
+            <version>5.3.1</version>
         </dependency>
         <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>

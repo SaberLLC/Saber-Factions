@@ -5,10 +5,8 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagUtil;
 
 import java.util.List;
-import java.util.Objects;
 
 public abstract class FSidebarProvider {
 

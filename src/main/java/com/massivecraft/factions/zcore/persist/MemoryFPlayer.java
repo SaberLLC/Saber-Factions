@@ -90,9 +90,9 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean notificationsEnabled;
     protected boolean titlesEnabled = true;
     protected boolean isAlt = false;
+    protected boolean seeingChunk = false;
     boolean inspectMode = false;
     boolean friendlyFire = false;
-    protected boolean seeingChunk = false;
 
     public MemoryFPlayer() {
     }
@@ -646,16 +646,16 @@ public abstract class MemoryFPlayer implements FPlayer {
         return (int) Math.round(this.getPower());
     }
 
+    public void setPowerRounded(int power) {
+        this.power = power;
+    }
+
     public int getPowerMaxRounded() {
         return (int) Math.round(this.getPowerMax());
     }
 
     public int getPowerMinRounded() {
         return (int) Math.round(this.getPowerMin());
-    }
-
-    public void setPowerRounded(int power){
-        this.power = power;
     }
 
     public long getMillisPassed() {
