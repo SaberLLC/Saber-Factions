@@ -33,7 +33,7 @@ Some of our features include the following
 	<dependency>
 	    <groupId>com.github.SaberLLC</groupId>
 	    <artifactId>Saber-Factions</artifactId>
-	    <version>2.3.3-STABLE</version>
+	    <version>2.4.0-RC</version>
 	</dependency>
 ```
 ## Moving Forward
