@@ -645,9 +645,9 @@ public class FactionsPlayerListener implements Listener {
         if (FCmdRoot.instance.fFlyEnabled && changedFaction && !me.isAdminBypassing()) {
             boolean canFly = me.canFlyAtLocation();
             if (me.isFlying() && !canFly) {
-                me.setFlying(false);
-            } else if (me.isAutoFlying() && !me.isFlying() && canFly) {
-                me.setFlying(true);
+                me.setFlying(false, false);
+            } else if ((me.isAutoFlying() || FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")) && !me.isFlying() && canFly) {
+                me.setFlying(true, false);
             }
         }
 

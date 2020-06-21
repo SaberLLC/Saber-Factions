@@ -117,6 +117,7 @@ public enum Permission {
     SETDISCORD("setdiscord"),
     SETHOME("sethome"),
     SETHOME_ANY("sethome.any"),
+    SETPOWER("setpower"),
     SETSTRIKES("setstrikes"),
     SHOW("show"),
     STATUS("status"),

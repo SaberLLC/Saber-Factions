@@ -654,6 +654,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         return (int) Math.round(this.getPowerMin());
     }
 
+    public void setPowerRounded(int power){
+        this.power = power;
+    }
+
     public long getMillisPassed() {
         return this.millisPassed;
     }
@@ -1059,7 +1063,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setAutoFlying(boolean autoFly) {
-        msg(TL.COMMAND_FLY_AUTO, autoFly ? "enabled" : "disabled");
         this.isAutoFlying = autoFly;
     }
 

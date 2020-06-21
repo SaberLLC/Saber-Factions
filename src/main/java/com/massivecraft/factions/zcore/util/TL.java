@@ -806,6 +806,9 @@ public enum TL {
     COMMAND_SETHOME_SETOTHER("&c&l[!]&7 You have set the home for the &c%1$s&7 faction."),
     COMMAND_SETHOME_DESCRIPTION("Set the faction home"),
 
+    COMMAND_SETPOWER_SUCCESS("&aSet power for &e%s &ato &b%d"),
+    COMMAND_SETPOWER_DESCRIPTION("set current playing power for player"),
+
     COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
     COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
     COMMAND_ONCOOOLDOWN("&c&l[!] &7You cannot use this command for another &b%1$s &7seconds."),

@@ -119,6 +119,7 @@ public class Aliases {
     public static ArrayList<String> rules = new ArrayList<>(Arrays.asList("r", "rule", "rules"));
     public static ArrayList<String> saveAll = new ArrayList<>(Arrays.asList("save", "saveall"));
     public static ArrayList<String> scoreboard = new ArrayList<>(Arrays.asList("sb", "scoreboard"));
+    public static ArrayList<String> setPower = new ArrayList<>(Arrays.asList("setpower", "sp"));
     public static ArrayList<String> seeChunk = new ArrayList<>(Arrays.asList("sc", "seechunk"));
     public static ArrayList<String> discord_see = new ArrayList<>(Collections.singletonList("seediscord"));
     public static ArrayList<String> discord_set = new ArrayList<>(Collections.singletonList("setdiscord"));
