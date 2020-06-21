@@ -639,6 +639,7 @@ See-Invisible-Faction-Members: false #ONLY WHEN SCOREBOARD IS ENABLED
 #This option is the ability to see other faction members inventories
 f-inventory-see:
   Enabled: true
+  see-armor-contents: true
 
 ############################################################
 # +------------------------------------------------------+ #

@@ -78,10 +78,12 @@ public class CmdInventorySee extends FCommand {
                 inventory.setItem(slot, XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
             }
         }
-        inventory.setItem(inventory.getSize() - 7, armor[3]);
-        inventory.setItem(inventory.getSize() - 6, armor[2]);
-        inventory.setItem(inventory.getSize() - 4, armor[1]);
-        inventory.setItem(inventory.getSize() - 3, armor[0]);
+        if(FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.see-armor-contents")) {
+            inventory.setItem(inventory.getSize() - 7, armor[3]);
+            inventory.setItem(inventory.getSize() - 6, armor[2]);
+            inventory.setItem(inventory.getSize() - 4, armor[1]);
+            inventory.setItem(inventory.getSize() - 3, armor[0]);
+        }
         return inventory;
     }
 
