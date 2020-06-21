@@ -8,6 +8,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.XMaterial;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -44,7 +45,25 @@ public class FUpgradeFrame {
                     FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
                     if (fme.getFaction().getUpgrade(value) == value.getMaxLevel()) return;
                     int cost = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu." + value.toString() + ".Cost.level-" + (fme.getFaction().getUpgrade(value) + 1));
-                    if (fme.hasMoney(cost)) {
+                    if (FactionsPlugin.getInstance().getConfig().getBoolean("fupgrades.usePointsAsCurrency")) {
+                        if(fme.getFaction().getPoints() >= cost) {
+                            fme.getFaction().setPoints(fme.getFaction().getPoints() - cost);
+                            fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, fme.getFaction().getPoints());
+                            if (value == UpgradeType.CHEST) updateChests(fme.getFaction());
+
+                            if (value == UpgradeType.POWER) updateFactionPowerBoost(fme.getFaction());
+
+                            if (value == UpgradeType.TNT) updateTNT(fme.getFaction());
+
+                            if (value == UpgradeType.WARP) updateWarps(fme.getFaction());
+
+                            fme.getFaction().setUpgrade(value, fme.getFaction().getUpgrade(value) + 1);
+                            buildGUI(fme);
+                        } else {
+                            fme.getPlayer().closeInventory();
+                            fme.msg(TL.COMMAND_UPGRADES_NOT_ENOUGH_POINTS);
+                        }
+                    } else if (fme.hasMoney(cost)) {
                         fme.takeMoney(cost);
                         if (value == UpgradeType.CHEST) updateChests(fme.getFaction());
 

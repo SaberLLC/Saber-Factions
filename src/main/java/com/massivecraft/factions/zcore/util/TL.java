@@ -126,6 +126,8 @@ public enum TL {
     COMMAND_CONTEXT_ADMINISTER_MOD_REQUIRED("&c[!] You must be a faction moderator to do that."),
 
     COMMAND_UPGRADES_DESCRIPTION("&cOpen the Upgrades Menu"),
+    COMMAND_UPGRADES_POINTS_TAKEN("&cFaction upgrade purchased for &e%1$s points! &cNew Point Balance: &e%2$s"),
+    COMMAND_UPGRADES_NOT_ENOUGH_POINTS("&cYour faction does not have enough points to purchase this upgrade!"),
     COMMAND_UPGRADES_DISABLED("&c[!] &7Faction Upgrades are &cdisabled&7."),
 
     COMMAND_CORNER_CANT_CLAIM("&c&l[!] &cYou may not claim this corner!"),

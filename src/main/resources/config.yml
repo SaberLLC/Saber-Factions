@@ -950,6 +950,7 @@ fchest:
 ############################################################
 fupgrades:
   Enabled: true
+  usePointsAsCurrency: false
   MainMenu:
     Rows: 5
     Title: '&8&l{faction}''s Upgrade Menu'
@@ -1181,9 +1182,9 @@ fupgrades:
           - '&4&l* &cLevel 3: &f2,000,000'
           - '&f'
           - '&c&lCosts'
-          - '&4&l* &cLevel 1: &f$1,000,000'
-          - '&4&l* &cLevel 2: &f$2,000,000'
-          - '&4&l* &cLevel 3: &f$3,000,000'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
           - ''
           - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         Slot: 21
