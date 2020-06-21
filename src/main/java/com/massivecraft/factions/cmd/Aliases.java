@@ -78,6 +78,7 @@ public class Aliases {
     public static ArrayList<String> deletefwarp = new ArrayList<>(Arrays.asList("delwarp", "dw", "deletewarp"));
     public static ArrayList<String> description = new ArrayList<>(Arrays.asList("desc", "description"));
     public static ArrayList<String> disband = new ArrayList<>(Collections.singletonList("disband"));
+    public static ArrayList<String> roster = new ArrayList<>(Collections.singletonList("roster"));
     public static ArrayList<String> discord_discord = new ArrayList<>(Collections.singletonList("discord"));
     public static ArrayList<String> drain = new ArrayList<>(Collections.singletonList("drain"));
     public static ArrayList<String> global = new ArrayList<>(Arrays.asList("gchat", "global", "globalchat"));

@@ -112,6 +112,7 @@ public enum Permission {
     PROMOTE("promote"),
     RELATION("relation"),
     RELOAD("reload"),
+    ROSTER("roster"),
     SAVE("save"),
     SPAM("spam"),
     SETDISCORD("setdiscord"),
