@@ -43,7 +43,7 @@ public class CmdTntFill extends FCommand {
             return;
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack loopItem = inventory.getItem(i);
-            if (loopItem == null || !item.isSimilar(loopItem))
+            if (loopItem == null || !item.isSimilar(loopItem) || loopItem.hasItemMeta() || loopItem.getItemMeta().hasDisplayName() || loopItem.getItemMeta().hasLore())
                 continue;
             if (toRemove <= 0)
                 return;
@@ -192,6 +192,7 @@ public class CmdTntFill extends FCommand {
         for (int length = (contents = pi.getContents()).length, i = 0; i < length; ++i) {
             ItemStack is = contents[i];
             if (is != null && is.getType() == Material.TNT) {
+                if (is.hasItemMeta() || is.getItemMeta().hasDisplayName() || is.getItemMeta().hasLore()) continue;
                 result += is.getAmount();
             }
         }

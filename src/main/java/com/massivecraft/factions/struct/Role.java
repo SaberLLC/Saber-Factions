@@ -77,7 +77,6 @@ public enum Role implements Permissable {
             case "rec":
                 return RECRUIT;
         }
-
         return null;
     }
 

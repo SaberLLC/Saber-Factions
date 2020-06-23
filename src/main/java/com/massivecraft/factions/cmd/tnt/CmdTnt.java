@@ -39,7 +39,7 @@ public class CmdTnt extends FCommand {
             return;
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack loopItem = inventory.getItem(i);
-            if (loopItem == null || !item.isSimilar(loopItem))
+            if (loopItem == null || !item.isSimilar(loopItem) || loopItem.hasItemMeta() || loopItem.getItemMeta().hasDisplayName() || loopItem.getItemMeta().hasLore())
                 continue;
             if (toRemove <= 0)
                 return;
@@ -79,6 +79,8 @@ public class CmdTnt extends FCommand {
                         continue;
                     }
                     if (inv.getItem(i).getType() == Material.TNT) {
+                        if (inv.getItem(i).hasItemMeta() || inv.getItem(i).getItemMeta().hasDisplayName() || inv.getItem(i).getItemMeta().hasLore())
+                            continue;
                         invTnt += inv.getItem(i).getAmount();
                     }
                 }
@@ -203,6 +205,7 @@ public class CmdTnt extends FCommand {
         ItemStack[] items = inventory.getContents();
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null && items[i].getType() == item.getType() && items[i].getDurability() == item.getDurability()) {
+                if(items[i].hasItemMeta() || items[i].getItemMeta().hasLore() || items[i].getItemMeta().hasDisplayName()) continue;
                 if (items[i].getAmount() > amt) {
                     items[i].setAmount(items[i].getAmount() - amt);
                     break;

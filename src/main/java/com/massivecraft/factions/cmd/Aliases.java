@@ -54,6 +54,7 @@ public class Aliases {
     public static ArrayList<String> roles_demote = new ArrayList<>(Collections.singletonList("demote"));
     public static ArrayList<String> roles_promote = new ArrayList<>(Collections.singletonList("promote"));
     public static ArrayList<String> tnt_tnt = new ArrayList<>(Collections.singletonList("tnt"));
+
     public static ArrayList<String> tnt_tntfill = new ArrayList<>(Collections.singletonList("tntfill"));
     public static ArrayList<String> wild = new ArrayList<>(Collections.singletonList("wild"));
     public static ArrayList<String> admin = new ArrayList<>(Arrays.asList("admin", "setadmin", "leader", "setleader"));
