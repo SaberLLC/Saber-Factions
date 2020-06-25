@@ -58,10 +58,13 @@ public class FScoreboard {
         FTeamWrapper.track(fboard);
     }
 
-    public static void remove(FPlayer fplayer) {
+    public static void remove(FPlayer fplayer, Player player) {
         FScoreboard fboard = fscoreboards.remove(fplayer);
 
         if (fboard != null) {
+            if (fboard.scoreboard == player.getScoreboard()) { // No equals method implemented, so may as well skip a nullcheck
+                player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+            }
             fboard.removed = true;
             FTeamWrapper.untrack(fboard);
         }
@@ -91,7 +94,7 @@ public class FScoreboard {
         bufferedObjective.setDisplaySlot(visible ? DisplaySlot.SIDEBAR : null);
     }
 
-    public void setDefaultSidebar(final FSidebarProvider provider, int updateInterval) {
+    public void setDefaultSidebar(final FSidebarProvider provider) {
         if (!isSupportedByServer()) {
             return;
         }
@@ -114,7 +117,7 @@ public class FScoreboard {
                     updateObjective();
                 }
             }
-        }.runTaskTimer(FactionsPlugin.getInstance(), updateInterval, updateInterval);
+        }.runTaskTimer(FactionsPlugin.getInstance(), 20, 20);
     }
 
     public void setTemporarySidebar(final FSidebarProvider provider) {
