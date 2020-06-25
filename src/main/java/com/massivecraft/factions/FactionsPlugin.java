@@ -81,6 +81,7 @@ public class FactionsPlugin extends MPlugin {
     public boolean mc113 = false;
     public boolean mc114 = false;
     public boolean mc115 = false;
+    public boolean mc116 = false;
     public boolean useNonPacketParticles = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     SkriptAddon skriptAddon;
@@ -166,6 +167,10 @@ public class FactionsPlugin extends MPlugin {
             case 15:
                 FactionsPlugin.instance.log("Minecraft Version 1.15 found.");
                 mc115 = true;
+                break;
+            case 16:
+                FactionsPlugin.instance.log("Minecraft Version 1.16 found.");
+                mc116 = true;
                 break;
         }
         migrateFPlayerLeaders();
