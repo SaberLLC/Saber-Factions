@@ -100,12 +100,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>brigadier</artifactId>
-            <version>1.0.14</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.github.stefvanschie.inventoryframework</groupId>
             <artifactId>IF</artifactId>
             <version>0.5.19</version>
@@ -137,11 +131,6 @@
                     <groupId>com.google.code.gson</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.ocpsoft.prettytime</groupId>
-            <artifactId>prettytime</artifactId>
-            <version>4.0.0.Final</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -297,8 +286,12 @@
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>gson</artifactId>
-                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>*</artifactId>
+                    <groupId>shaded</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>gson</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -351,12 +344,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.5</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.8.5</version>
@@ -398,6 +385,12 @@
             <artifactId>authlib</artifactId>
             <version>1.5.21</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>me.rayzr522</groupId>
