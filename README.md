@@ -25,6 +25,8 @@ Some of our features include the following
 * Faction Audit - A full based logging system (GUI designed) to see every aspect of what happens in your faction!
 * Factions Check System - An automated check system that alerts players when to check walls/buffers!
 * Faction Reserves - A system designed to reserve a specific faction name for a specific player!
+* Faction Invsee - Allow Faction Members to see each others inventories!
+* Factions Missions - Quest based system to allow players to do missions for in-game rewards!
 
 <left>
   <a href="https://www.spigotmc.org/resources/saberfactions-1-8-1-15-the-complete-factions-solution.69771/"><img src="https://i.imgur.com/cL8vejT.png"></a>
