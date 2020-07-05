@@ -1,5 +1,5 @@
 <center>
-  <a href="https://www.spigotmc.org/resources/saberfactions-1-8-1-15-the-complete-factions-solution.69771/"><img src="https://i.imgur.com/0Qf8N2V.png"></a>
+  <a href="https://www.spigotmc.org/resources/saberfactions-1-8-1-15-the-complete-factions-solution.69771/"><img src="https://i.imgur.com/HMgdPGP.png"></a>
 </center>
 
 ![Downloads](https://img.shields.io/github/downloads/driftay/saber-factions/total.svg) [![CodeFactor](https://www.codefactor.io/repository/github/driftay/saber-factions/badge)](https://www.codefactor.io/repository/github/driftay/saber-factions) [![License](https://img.shields.io/badge/license-GNU%20General%20Public%20License%20v3.0-brightgreen)](https://github.com/SaberLLC/Saber-Factions/blob/1.6.x/LICENSE) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/SaberLLC/Saber-Factions) [![](https://jitpack.io/v/SaberLLC/Saber-Factions.svg)](https://jitpack.io/#SaberLLC/Saber-Factions)
