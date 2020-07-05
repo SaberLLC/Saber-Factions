@@ -7,7 +7,9 @@
 
 SaberFactions is an exotic, performance optimized, and feature rich factions plugin that focuses on not only making the player experience as great as possibly but maintaining this aspect with the cost of NOTHING! We strive to continue development for SaberFactions as the factions community is strongly growing and seeking new players every day. 
 
-## Some Exciting Features
+<right>
+  <a href="https://www.spigotmc.org/resources/saberfactions-1-8-1-15-the-complete-factions-solution.69771/"><img src="https://i.imgur.com/KHX4SwR.png"></a>
+</right>
 Some of our features include the following 
 
 * Factions Grace Period - Deny Raiding Between Factions Temporarily
@@ -23,7 +25,9 @@ Some of our features include the following
 * Factions Check System - An automated check system that alerts players when to check walls/buffers!
 * Faction Reserves - A system designed to reserve a specific faction name for a specific player!
 
-## Dependency With Maven
+<right>
+  <a href="https://www.spigotmc.org/resources/saberfactions-1-8-1-15-the-complete-factions-solution.69771/"><img src="https://i.imgur.com/cL8vejT.png"></a>
+</right>
 ```	
 	<repositories>
 		<repository>
@@ -38,12 +42,15 @@ Some of our features include the following
 	    <version>2.3.3-STABLE</version>
 	</dependency>
 ```
-## Moving Forward
-
+<right>
+  <a href="https://www.spigotmc.org/resources/saberfactions-1-8-1-15-the-complete-factions-solution.69771/"><img src="https://i.imgur.com/Nye6EuK.png"></a>
+</right>
 Moving forward we plan to take all suggestions into consideration, as they come from our community. 
 We Plan on Releasing the latest and greatest factions/skyblock/prison plugins minecraft has to offer and wont settle for anything less
 
-## Support
+<right>
+  <a href="https://www.spigotmc.org/resources/saberfactions-1-8-1-15-the-complete-factions-solution.69771/"><img src="https://i.imgur.com/CyshdE9.png"></a>
+</right>
 Have a problem, question, or concer? We encourage our community to join and express any inquiry you may have
 https://discord.saber.pw
 
