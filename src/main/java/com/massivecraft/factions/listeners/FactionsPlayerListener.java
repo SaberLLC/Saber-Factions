@@ -683,7 +683,7 @@ public class FactionsPlayerListener implements Listener {
         // territoryCancelAndAllowItemUseMaterial bypass the protection system but only if they're not clicking on territoryDenySwitchMaterials
         // if they're clicking on territoryDenySwitchMaterials, let the protection system handle the permissions
         if (type != null && !Conf.territoryDenySwitchMaterials.contains(block.getType())) {
-            if (Conf.territoryCancelAndAllowItemUseMaterial.contains(type)) {
+            if (Conf.territoryCancelAndAllowItemUseMaterial.contains(event.getPlayer().getItemInHand().getType()) && !Conf.territoryDenySwitchMaterials.contains(block.getType())) {
                 return;
             }
         }
