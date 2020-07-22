@@ -8,6 +8,7 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
 import com.massivecraft.factions.cmd.wild.CmdWild;
 import com.massivecraft.factions.discord.Discord;
+import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
@@ -542,6 +543,30 @@ public class FactionsPlayerListener implements Listener {
         Faction factionFrom = Board.getInstance().getFactionAt(from);
         Faction factionTo = Board.getInstance().getFactionAt(to);
         boolean changedFaction = (factionFrom != factionTo);
+
+        if (changedFaction) {
+            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(new FPlayerEnteredFactionEvent(factionTo, factionFrom, me)));
+            if (FactionsPlugin.getInstance().getConfig().getBoolean("Title.Show-Title")) {
+                String title = FactionsPlugin.getInstance().getConfig().getString("Title.Format.Title");
+                title = title.replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
+                title = parseAllPlaceholders(title, factionTo, player);
+                String subTitle = FactionsPlugin.getInstance().getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
+                subTitle = parseAllPlaceholders(subTitle, factionTo, player);
+                final String finalTitle = title;
+                final String finalsubTitle = subTitle;
+                if (!FactionsPlugin.getInstance().mc17) {
+                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+                        if (!FactionsPlugin.getInstance().mc18) {
+                            me.getPlayer().sendTitle(FactionsPlugin.getInstance().color(finalTitle), FactionsPlugin.getInstance().color(finalsubTitle), FactionsPlugin.getInstance().getConfig().getInt("Title.Options.FadeInTime"),
+                                    FactionsPlugin.getInstance().getConfig().getInt("Title.Options.ShowTime"),
+                                    FactionsPlugin.getInstance().getConfig().getInt("Title.Options.FadeOutTime"));
+                        } else {
+                            me.getPlayer().sendTitle(FactionsPlugin.getInstance().color(finalTitle), FactionsPlugin.getInstance().color(finalsubTitle));
+                        }
+                    }, 5);
+                }
+            }
+        }
 
         if (FCmdRoot.instance.fFlyEnabled && changedFaction && !me.isAdminBypassing()) {
             boolean canFly = me.canFlyAtLocation();
