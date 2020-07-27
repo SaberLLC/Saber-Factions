@@ -76,6 +76,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected int mapHeight = 8; // default to old value
     protected boolean isFlying = false;
     protected boolean isAutoFlying = false;
+    protected boolean isAlt;
     protected boolean enteringPassword = false;
     protected String enteringPasswordWarp = "";
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
@@ -89,7 +90,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean isStealthEnabled = false;
     protected boolean notificationsEnabled;
     protected boolean titlesEnabled = true;
-    protected boolean isAlt = false;
     protected boolean seeingChunk = false;
     boolean inspectMode = false;
     boolean friendlyFire = false;
@@ -99,11 +99,11 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public MemoryFPlayer(String id) {
         this.id = id;
-        this.isAlt = false;
         this.resetFactionData(false);
         this.power = Conf.powerPlayerStarting;
         this.lastPowerUpdateTime = System.currentTimeMillis();
         this.lastLoginTime = System.currentTimeMillis();
+        this.isAlt = false;
         this.mapAutoUpdating = false;
         this.autoClaimFor = null;
         this.notificationsEnabled = true;
@@ -125,7 +125,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public MemoryFPlayer(MemoryFPlayer other) {
         this.factionId = other.factionId;
         this.id = other.id;
-        this.isAlt = other.isAlt;
         this.power = other.power;
         this.lastLoginTime = other.lastLoginTime;
         this.mapAutoUpdating = other.mapAutoUpdating;
@@ -136,6 +135,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.powerBoost = other.powerBoost;
         this.role = other.role;
         this.title = other.title;
+        this.isAlt = other.isAlt;
         this.chatMode = other.chatMode;
         this.spyingChat = other.spyingChat;
         this.lastStoodAt = other.lastStoodAt;
