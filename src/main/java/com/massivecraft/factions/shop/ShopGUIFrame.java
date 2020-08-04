@@ -71,8 +71,7 @@ public class ShopGUIFrame {
             List<String> replacedLore = lore.stream().map(t -> t.replace("{cost}", cost + "")).collect(Collectors.toList());
             meta.setLore(FactionsPlugin.instance.colorList(replacedLore));
             item.setItemMeta(meta);
-            GUIItems.set(slot, new GuiItem(item, e ->
-            {
+            GUIItems.set(slot, new GuiItem(item, e -> {
                 e.setCancelled(true);
                 FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
                 if (fplayer.getFaction().getPoints() >= cost) {
@@ -89,12 +88,14 @@ public class ShopGUIFrame {
                 } else {
                     fplayer.msg(TL.SHOP_NOT_ENOUGH_POINTS);
                 }
+
             }));
-            pane.populateWithGuiItems(GUIItems);
-            gui.addPane(pane);
-            gui.update();
-            gui.show(fplayer.getPlayer());
         }
+        pane.populateWithGuiItems(GUIItems);
+        gui.addPane(pane);
+        gui.update();
+        gui.show(fplayer.getPlayer());
+
     }
 
     private ItemStack buildDummyItem(Faction f) {
