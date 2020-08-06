@@ -102,7 +102,7 @@ public class FactionWarpsFrame {
                 player.teleport(fme.getFaction().getWarp(warp).getLocation());
                 fme.msg(TL.COMMAND_FWARP_WARPED, warp);
             }
-        }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 0));
+        }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 10));
     }
 
     private boolean transact(FPlayer player) {

@@ -207,7 +207,7 @@ public class FactionsChatListener implements Listener {
                 player.teleport(fme.getFaction().getWarp(warp).getLocation());
                 fme.msg(TL.COMMAND_FWARP_WARPED, warp);
             }
-        }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 0));
+        }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 10));
     }
 
 }

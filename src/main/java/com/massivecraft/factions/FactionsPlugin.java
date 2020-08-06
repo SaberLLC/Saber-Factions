@@ -85,6 +85,8 @@ public class FactionsPlugin extends MPlugin {
     public boolean mc113 = false;
     public boolean mc114 = false;
     public boolean mc115 = false;
+    public boolean mc116 = false;
+
     public boolean useNonPacketParticles = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     SkriptAddon skriptAddon;
@@ -173,17 +175,23 @@ public class FactionsPlugin extends MPlugin {
                 FactionsPlugin.instance.log("Minecraft Version 1.15 found.");
                 mc115 = true;
                 break;
+            case 16:
+                FactionsPlugin.instance.log("Minecraft Version 1.16 found.");
+                mc116 = true;
+                break;
         }
         migrateFPlayerLeaders();
         log("==== End Setup ====");
 
         int pluginId = 7013;
-        Metrics metrics = new Metrics(this, pluginId);
+        new Metrics(this, pluginId);
 
         if (!preEnable()) {
             this.loadSuccessful = false;
             return;
         }
+
+        FlightUtil.get().wipe();
 
         saveDefaultConfig();
         this.reloadConfig();
@@ -215,8 +223,8 @@ public class FactionsPlugin extends MPlugin {
 
         Factions.getInstance().getAllFactions().forEach(Faction::refreshFPlayers);
 
-        if (getConfig().getBoolean("enable-faction-flight", true) && getConfig().getBoolean("ffly.enemies-near-disable-flight")) {
-            FlightUtil.start();
+        if (getConfig().getBoolean("enable-faction-flight", true) && getConfig().getBoolean("ffly.enemies-near-disable-flight", true)) {
+            FlightUtil.get().start();
         }
 
 

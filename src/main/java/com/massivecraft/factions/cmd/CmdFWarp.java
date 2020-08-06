@@ -61,7 +61,7 @@ public class CmdFWarp extends FCommand {
                         player.teleport(fPlayer.getFaction().getWarp(warpName).getLocation());
                         fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
                     }
-                }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 0));
+                }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 10));
             } else {
                 context.msg(TL.COMMAND_FWARP_INVALID_WARP, warpName);
             }

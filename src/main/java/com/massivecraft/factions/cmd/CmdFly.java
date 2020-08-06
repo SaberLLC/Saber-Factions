@@ -61,7 +61,7 @@ public class CmdFly extends FCommand {
             if (flyTest(context, notify)) {
                 context.fPlayer.setFlying(true);
             }
-        }, FactionsPlugin.getInstance().getConfig().getInt("warmups.f-fly"));
+        }, FactionsPlugin.getInstance().getConfig().getInt("warmups.f-fly", 0));
     }
 
     private boolean flyTest(final CommandContext context, boolean notify) {
@@ -71,7 +71,7 @@ public class CmdFly extends FCommand {
                 context.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(context.fPlayer));
             }
             return false;
-        } else if (FlightUtil.instance().enemiesNearby(context.fPlayer, Conf.stealthFlyCheckRadius) && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight")) {
+        } else if (FlightUtil.instance().enemiesNearby(context.fPlayer, Conf.stealthFlyCheckRadius) && !FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight", true)) {
             if (notify) {
                 context.msg(TL.COMMAND_FLY_ENEMY_NEAR);
             }

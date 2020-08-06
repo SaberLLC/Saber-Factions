@@ -146,7 +146,7 @@ public class CmdHome extends FCommand {
                 SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
             }
             context.player.teleport(context.faction.getHome());
-        }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-home", 0));
+        }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-home", 15));
     }
 
     @Override

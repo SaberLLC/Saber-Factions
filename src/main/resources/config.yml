@@ -65,6 +65,7 @@ warp-cost:
 # Enable Faction Fly:
 enable-faction-flight: true
 ffly:
+  enemy-radius-check: 1 #How frequently to check enemy radius, in seconds. Set to 0 to disable checking.
   AutoEnable: true
   enemies-near-disable-flight: true #This means F Stealth Will Be Redundant
   disable-flight-on-generic-damage: false #Any Damage a Player Takes Their Flight Will Be Disabled
