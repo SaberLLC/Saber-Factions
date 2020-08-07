@@ -3,6 +3,7 @@ package com.massivecraft.factions.missions;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
@@ -102,7 +103,8 @@ public class MissionGUI implements FactionGUI {
         }
         ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).get().parseItem();
         ItemMeta fillmeta = fillItem.getItemMeta();
-        fillmeta.setDisplayName("");
+        fillmeta.setDisplayName(CC.translate(configurationSection.getString("FillItem.Name")));
+        fillmeta.setLore(FactionsPlugin.getInstance().colorList(configurationSection.getStringList("FillItem.Lore")));
         fillItem.setItemMeta(fillmeta);
         for (int fill = 0; fill < configurationSection.getInt("FillItem.Rows") * 9; ++fill) {
             //Why were we generating a new itemstack per slot?????

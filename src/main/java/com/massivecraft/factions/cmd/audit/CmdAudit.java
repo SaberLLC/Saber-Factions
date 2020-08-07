@@ -10,6 +10,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.entity.Player;
 
@@ -21,6 +22,7 @@ public class CmdAudit extends FCommand {
 
 
         this.requirements = new CommandRequirements.Builder(Permission.AUDIT)
+                .withAction(PermissableAction.AUDIT)
                 .playerOnly()
                 .memberOnly()
                 .noErrorOnManyArgs()

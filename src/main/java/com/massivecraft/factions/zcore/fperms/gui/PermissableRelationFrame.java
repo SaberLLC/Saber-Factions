@@ -10,6 +10,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Permissable;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -57,10 +58,12 @@ public class PermissableRelationFrame {
     }
 
     private ItemStack buildAsset(String loc, String relation) {
+        String s1 = relation.substring(0, 1).toUpperCase();
+        String nameCapitalized = s1 + relation.substring(1);
         ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString(loc)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.Placeholder-Item.Name").replace("{relation}", relation)));
+            meta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.Placeholder-Item.Name").replace("{relation}", nameCapitalized)));
             item.setItemMeta(meta);
         }
         return item;

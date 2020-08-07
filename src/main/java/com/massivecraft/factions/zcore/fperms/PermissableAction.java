@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.fperms;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Placeholder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -33,7 +34,6 @@ public enum PermissableAction {
     ITEM("items"), // generic for most items
     SETHOME("sethome"),
     TERRITORY("territory"),
-    ACCESS("access"),
     HOME("home"),
     DISBAND("disband"),
     PROMOTE("promote"),
@@ -45,6 +45,7 @@ public enum PermissableAction {
     TNTFILL("tntfill"),
     WITHDRAW("withdraw"),
     CHEST("chest"),
+    AUDIT("audit"),
     CHECK("check"),
     SPAWNER("spawner");
 
@@ -52,6 +53,10 @@ public enum PermissableAction {
 
     PermissableAction(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return CC.translate(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.action.Descriptions." + this.name.toLowerCase()));
     }
 
     /**
@@ -111,6 +116,7 @@ public enum PermissableAction {
         List<String> lore = section.getStringList("placeholder-item.lore");
 
         lore = FactionsPlugin.getInstance().replacePlaceholders(lore,
+                new Placeholder("{description}", this.getDescription()),
                 new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
                 new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
 

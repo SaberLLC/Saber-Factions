@@ -20,7 +20,6 @@ public class DefaultPermissions {
     public boolean items;
     public boolean sethome;
     public boolean territory;
-    public boolean access;
     public boolean home;
     public boolean disband;
     public boolean promote;
@@ -32,6 +31,7 @@ public class DefaultPermissions {
     public boolean tntfill;
     public boolean withdraw;
     public boolean chest;
+    public boolean audit;
     public boolean check;
     public boolean drain;
     public boolean spawner;
@@ -54,7 +54,6 @@ public class DefaultPermissions {
         this.items = def;
         this.sethome = def;
         this.territory = def;
-        this.access = def;
         this.home = def;
         this.disband = def;
         this.promote = def;
@@ -66,6 +65,7 @@ public class DefaultPermissions {
         this.tntfill = def;
         this.withdraw = def;
         this.chest = def;
+        this.audit = def;
         this.check = def;
         this.drain = def;
         this.spawner = def;
@@ -85,7 +85,7 @@ public class DefaultPermissions {
                               boolean canItems,
                               boolean canSethome,
                               boolean canTerritory,
-                              boolean canAccess,
+                              boolean canAudit,
                               boolean canHome,
                               boolean canDisband,
                               boolean canPromote,
@@ -114,7 +114,6 @@ public class DefaultPermissions {
         this.items = canItems;
         this.sethome = canSethome;
         this.territory = canTerritory;
-        this.access = canAccess;
         this.home = canHome;
         this.disband = canDisband;
         this.promote = canPromote;
@@ -126,6 +125,7 @@ public class DefaultPermissions {
         this.tntfill = canTntfill;
         this.withdraw = canWithdraw;
         this.chest = canChest;
+        this.audit = canAudit;
         this.check = canCheck;
         this.drain = canDrain;
         this.spawner = canSpawners;
@@ -148,7 +148,6 @@ public class DefaultPermissions {
         else if (name == "items") return this.items;
         else if (name == "sethome") return this.sethome;
         else if (name == "territory") return this.territory;
-        else if (name == "access") return this.access;
         else if (name == "disband") return this.disband;
         else if (name == "promote") return this.promote;
         else if (name == "setwarp") return this.setwarp;
@@ -159,6 +158,7 @@ public class DefaultPermissions {
         else if (name == "tntfill") return this.tntfill;
         else if (name == "withdraw") return this.withdraw;
         else if (name == "chest") return this.chest;
+        else if(name == "audit") return this.audit;
         else if (name == "check") return this.check;
         else if (name == "drain") return this.drain;
         else if (name == "spawner") return this.spawner;

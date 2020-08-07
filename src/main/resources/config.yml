@@ -464,7 +464,7 @@ fperm-gui:
       enemy: DIAMOND_AXE
       neutral: WOOD_AXE
     Placeholder-Item:
-      Name: '&c{relation}&f permissions!'
+      Name: '&c{relation}&f Permissions!' #{relation} placeholder now returns with the first letter being capital :D
   action:
     name: 'Faction Permissions'
     rows: 6
@@ -487,7 +487,7 @@ fperm-gui:
       sethome: HOPPER
       withdraw: SUNFLOWER
       territory: SIGN
-      access: EMERALD
+      audit: EMERALD
       promote: DIAMOND
       setwarp: COMPASS
       warp: ENDER_PEARL
@@ -502,6 +502,36 @@ fperm-gui:
       drain: BUCKET
       spawner: MOB_SPAWNER
       home: ENDER_EYE
+    Descriptions:
+      build: '&7Grants users access to build.'
+      destroy: '&7Grant users access to destroy.'
+      frostwalk: '&7Grant users to use FrostWalker enchantment.'
+      painbuild: '&7Users denied building damage themselves.'
+      door: '&7Grant users access to use doors.'
+      button: '&7Grant users access to use buttons.'
+      lever: '&7Grant users access to use levers.'
+      container: '&7Grant users access to use containers.'
+      invite: '&7Grant users access to use /f invite.'
+      kick: '&7Grant users access to use /f kick.'
+      items: '&7Grant users access to use most generic items.'
+      sethome: '&7Grant users access to use /f sethome.'
+      withdraw: '&7Grant users access to use /f withdraw.'
+      territory: '&7Grant users access to manage claims.'
+      audit: '&7Grant users access to use /f audit.'
+      promote: '&7Grant users access to use /f <promote/demote>.'
+      setwarp: '&7Grant users access to use /f setwarp.'
+      warp: '&7Grant users access to use /f warp.'
+      ban: '&7Grant users access to use /f ban.'
+      disband: '&7Grant users access to use /f disband.'
+      fly: '&7Grant users access to use /f fly.'
+      vault: '&7Grant users access to use /f vault.'
+      tntbank: '&7Grant users access to manage /f tnt virtual bank.'
+      tntfill: '&7Grant users access to use /f tntfill.'
+      chest: '&7Grant users access to use /f chest.'
+      check: '&7Grant users access to manage /f check system.'
+      drain: '&7Grant users access to use /f drain.'
+      spawner: '&7Grant users access to manage spawners.'
+      home: '&7Grant users access to use /f home.'
     slots:
       # Uses same format as above to inform the player of clicked relation
       relation: 4
@@ -522,7 +552,7 @@ fperm-gui:
       sethome: 23
       withdraw: 24
       territory: 25
-      access: 28
+      audit: 28
       promote: 29
       setwarp: 30
       warp: 31
@@ -545,6 +575,8 @@ fperm-gui:
       lore:
         - ''
         - '&4&l* &cStatus: &f{action-access-color}{action-access}'
+        - ''
+        - '&7&l* &eDescription: {description}'
         - ''
         - '&2&l* &aLeft click to &a&lAllow&a.'
         - '&4&l* &cRight click to &c&lDeny&c.'
@@ -826,6 +858,9 @@ DenyMissionsMoreThenOnce: true #this setting to true, means that if they complet
 Missions:
   FillItem:
     Material: BLACK_STAINED_GLASS_PANE
+    Name: ' '
+    Lore:
+      - ' '
     Rows: 4
   sugarcane:
     Slot: 11
@@ -1333,6 +1368,20 @@ faudit-gui:
     spawner_edit: 10
     rank_edit: 11
     f_tnt: 12
+  names:
+    invites: '&a&lRoster Edits'
+    bans: '&a&lPlayer Bans'
+    chunk_claims: '&a&lClaim Edits'
+    perm_edit_defaults: '&a&lDefault Perm Edits'
+    bank_edit: '&a&lMoney Edits'
+    fchest_edit: '&a&lChest Edits'
+    relation_change: '&a&lRelation Edits'
+    ftag_edit: '&a&lTag Edits'
+    fdesc_edit: '&a&lDesc Edits'
+    role_perm_edit: '&a&lPromotional Edits'
+    spawner_edit: '&a&lSpawner Edits'
+    rank_edit: '&a&lRank Edits'
+    f_tnt: '&a&lTnt Edits'
   materials:
     invites: WRITABLE_BOOK
     bans: ANVIL
@@ -1451,54 +1500,58 @@ Wild:
     Size: 9
     # Should the GUI fill empty spaces? #
     Fill: true
-    FillMaterial: BLACK_STAINED_GLASS_PANE
+    FillMaterial:
+      Type: BLACK_STAINED_GLASS_PANE
+      Name: ' '
+      Lore:
+        - ' '
   Zones:
     # You may create your own zones here please just follow the original format #
-   Close:
-     World: world
-     Range:
-       MinX: -200
-       MaxX: 200
-       MinZ: -200
-       MaxZ: 200
-     Cost: 5000
-     Material: IRON_INGOT
-     Lore:
-       - '&eTeleport to a random location close by'
-       - '&e X &b-200 &f- &b200 &eZ &b-200 &f- &b200'
-       - '&2&l&o$5000'
-     Name: '&cLow Range'
-     Slot: 1
-   Medium:
-     World: world
-     Range:
-       MinX: -400
-       MaxX: 400
-       MinZ: -400
-       MaxZ: 400
-     Cost: 10000
-     Material: GOLD_INGOT
-     Lore:
-       - '&eTeleport to a random location in a medium proximity'
-       - '&e X &b-400 &f- &b400 &eZ &b-400 &f- &b400'
-       - '&2&l&o$10000'
-     Name: '&cMedium Range'
-     Slot: 4
-   Far:
-     World: world
-     Range:
-       MinX: -800
-       MaxX: 800
-       MinZ: -800
-       MaxZ: 800
-     Cost: 15000
-     Material: DIAMOND
-     Lore:
-       - '&eTeleport to a random location far away'
-       - '&e X &b-800 &f- &b800 &eZ &b-800 &f- &b800'
-       - '&2&l&o$15000'
-     Name: '&cHigh Range'
-     Slot: 7
+    Close:
+      World: world
+      Range:
+        MinX: -200
+        MaxX: 200
+        MinZ: -200
+        MaxZ: 200
+      Cost: 5000
+      Material: IRON_INGOT
+      Lore:
+        - '&eTeleport to a random location close by'
+        - '&e X &b-200 &f- &b200 &eZ &b-200 &f- &b200'
+        - '&2&l&o$5000'
+      Name: '&cLow Range'
+      Slot: 1
+    Medium:
+      World: world
+      Range:
+        MinX: -400
+        MaxX: 400
+        MinZ: -400
+        MaxZ: 400
+      Cost: 10000
+      Material: GOLD_INGOT
+      Lore:
+        - '&eTeleport to a random location in a medium proximity'
+        - '&e X &b-400 &f- &b400 &eZ &b-400 &f- &b400'
+        - '&2&l&o$10000'
+      Name: '&cMedium Range'
+      Slot: 4
+    Far:
+      World: world
+      Range:
+        MinX: -800
+        MaxX: 800
+        MinZ: -800
+        MaxZ: 800
+      Cost: 15000
+      Material: DIAMOND
+      Lore:
+        - '&eTeleport to a random location far away'
+        - '&e X &b-800 &f- &b800 &eZ &b-800 &f- &b800'
+        - '&2&l&o$15000'
+      Name: '&cHigh Range'
+      Slot: 7
   # Settings that change how a player arrives to their random location #
   Arrival:
     # if FallDamage is false and the player is about to take fall damage while in the FallDamageWindow it will be denied #

@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.wild;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.util.wait.WaitTask;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
@@ -51,10 +52,11 @@ public class WildGUI implements FactionGUI {
     @Override
     public void build() {
         inv = Bukkit.createInventory(this, FactionsPlugin.getInstance().getConfig().getInt("Wild.GUI.Size"), FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("Wild.GUI.Name")));
-        ItemStack fillItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("Wild.GUI.FillMaterial")).get().parseItem();
+        ItemStack fillItem = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("Wild.GUI.FillMaterial.Type")).get().parseItem();
         ItemMeta meta = fillItem.getItemMeta();
         if (meta == null) return;
-        meta.setDisplayName("");
+        meta.setDisplayName(CC.translate(FactionsPlugin.getInstance().getConfig().getString("Wild.GUI.FillMaterial.Name")));
+        meta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("Wild.GUI.FillMaterial.Lore")));
         fillItem.setItemMeta(meta);
         for (int fill = 0; fill < FactionsPlugin.getInstance().getConfig().getInt("Wild.GUI.Size"); ++fill) {
             inv.setItem(fill, fillItem);
