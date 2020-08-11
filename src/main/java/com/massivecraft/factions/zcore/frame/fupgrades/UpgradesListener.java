@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
@@ -27,11 +28,13 @@ public class UpgradesListener implements Listener {
     public static void onDamageReduction(EntityDamageByEntityEvent e) {
         if (e.isCancelled()) return;
 
-        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) return;
-        if (e.getEntity() == null) return;
-
+        FPlayer dame;
+        if(e.getDamager() instanceof Player)
+            dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
+        else if(((e.getDamager() instanceof Projectile) && ((Projectile) e.getDamager()).getShooter() instanceof Player))
+            dame = FPlayers.getInstance().getByPlayer((Player) ((Projectile) e.getDamager()).getShooter());
+        else return;
         FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
-        FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
 
         if (fme == null || dame == null) return;
         FLocation floc = new FLocation(fme.getPlayer().getLocation());
@@ -47,6 +50,7 @@ public class UpgradesListener implements Listener {
             e.setDamage(damage - damage / 100.0 * increase);
         }
     }
+
 
     @EventHandler
     public static void onDamageIncrease(EntityDamageByEntityEvent e) {

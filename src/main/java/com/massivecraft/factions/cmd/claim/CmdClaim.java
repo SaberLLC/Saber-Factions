@@ -59,6 +59,10 @@ public class CmdClaim extends FCommand {
         Faction at = Board.getInstance().getFactionAt(new FLocation(context.fPlayer.getPlayer().getLocation()));
 
         if (radius < 2) {
+            if (forFaction.isSystemFaction() && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false) && FactionsPlugin.cachedRadiusClaim) {
+                context.fPlayer.msg(TL.CLAIM_CLAIMED, context.fPlayer.describeTo(context.fPlayer, true), forFaction.describeTo(context.fPlayer),at.describeTo(forFaction));
+                return;
+            }
             if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false)) {
                 context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_CLAIMED, context.fPlayer.describeTo(f, true), context.fPlayer.getFaction().describeTo(f), at.describeTo(f)));
                 FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (new FLocation(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
@@ -92,8 +96,12 @@ public class CmdClaim extends FCommand {
 
                 public void finish() {
                     if (FactionsPlugin.cachedRadiusClaim) {
-                        if (successfulClaims > 0) {
-                            context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(f, true), String.valueOf(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ()));
+                        if (successfulClaims > 0 ) {
+                            if (forFaction.isWarZone() || forFaction.isSafeZone()) {
+                                context.fPlayer.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(context.fPlayer, true), String.valueOf(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ());
+                            } else {
+                                context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(f, true), String.valueOf(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ()));
+                            }
                             stop();
                         }
                     }

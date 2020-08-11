@@ -57,8 +57,8 @@ public class CmdUnclaim extends FCommand {
             }
 
             new SpiralTask(new FLocation(context.player), radius) {
-                private final int limit = Conf.radiusClaimFailureLimit - 1;
                 private int failCount = 0;
+                private final int limit = Conf.radiusClaimFailureLimit - 1;
 
                 @Override
                 public boolean work() {
@@ -79,7 +79,7 @@ public class CmdUnclaim extends FCommand {
     private boolean unClaim(FLocation target, CommandContext context, Faction faction) {
         Faction targetFaction = Board.getInstance().getFactionAt(target);
 
-        if (context.faction != targetFaction) {
+        if (context.faction != targetFaction && !context.fPlayer.isAdminBypassing()) {
             context.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
             return false;
         }
@@ -140,7 +140,7 @@ public class CmdUnclaim extends FCommand {
             return false;
         }
 
-        if (context.faction != targetFaction) {
+        if (context.faction != targetFaction && !context.fPlayer.isAdminBypassing()) {
             context.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
             return false;
         }
@@ -167,7 +167,6 @@ public class CmdUnclaim extends FCommand {
 
         Board.getInstance().removeAt(target);
         context.faction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, context.fPlayer.describeTo(context.faction, true));
-        FactionsPlugin.instance.logFactionEvent(targetFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.RedB + "UNCLAIMED", "1", (new FLocation(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
 
         if (Conf.logLandUnclaims) {
             FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
