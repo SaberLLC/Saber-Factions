@@ -92,17 +92,20 @@ public class FactionsEntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
+        Entity damagee = event.getEntity();
+        boolean playerHurt = damagee instanceof Player;
+
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
             if (!this.canDamagerHurtDamagee(sub, true)) event.setCancelled(true);
 
             // event is not cancelled by factions
-            Entity damagee = sub.getEntity();
+            Entity damageee = sub.getEntity();
             Entity damager = sub.getDamager();
-            if (damagee instanceof Player) {
+            if (damageee instanceof Player) {
                 if (damager instanceof Player) {
                     FPlayer fdamager = FPlayers.getInstance().getByPlayer((Player) damager);
-                    FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damagee);
+                    FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damageee);
                     if ((fdamagee.getRelationTo(fdamager) == Relation.ALLY) ||
                             (fdamagee.getRelationTo(fdamager) == Relation.TRUCE) ||
                             (fdamagee.getFaction() == fdamager.getFaction())) {
@@ -110,13 +113,13 @@ public class FactionsEntityListener implements Listener {
                     }
                 } else {
 
-                    // this triggers if damagee is a player and damager is  mob ( so like if a skeleton hits u )
+                    // this triggers if damageee is a player and damager is  mob ( so like if a skeleton hits u )
                     if (damager instanceof Projectile) {
                         // this will trigger if the damager is a projectile
                         if (((Projectile) damager).getShooter() instanceof Player) {
                             Player damagerPlayer = (Player) ((Projectile) damager).getShooter();
                             FPlayer fdamager = FPlayers.getInstance().getByPlayer(damagerPlayer);
-                            FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damagee);
+                            FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damageee);
                             Relation relation = fdamager.getRelationTo(fdamagee);
                             if (relation == Relation.ALLY || relation == Relation.TRUCE ||
                                     fdamager.getFaction() == fdamagee.getFaction()) {
@@ -128,7 +131,7 @@ public class FactionsEntityListener implements Listener {
                 }
             } else {
                 // Protect armor stands/item frames from being damaged in protected territories
-                if (damagee.getType() == EntityType.ITEM_FRAME || damagee.getType() == EntityType.ARMOR_STAND) {
+                if (damageee.getType() == EntityType.ITEM_FRAME || damageee.getType() == EntityType.ARMOR_STAND) {
                     // Manage projectiles launched by players
                     if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
                         damager = (Entity) ((Projectile) damager).getShooter();
@@ -137,13 +140,13 @@ public class FactionsEntityListener implements Listener {
                     // Run the check for a player
                     if (damager instanceof Player) {
 
-                        if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damagee.getLocation(), "destroy", false))
+                        if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damageee.getLocation(), "destroy", false))
                             event.setCancelled(true);
 
                     } else {
                         // we don't want to let mobs/arrows destroy item frames/armor stands
                         // so we only have to run the check as if there had been an explosion at the damager location
-                        if (!this.checkExplosionForBlock(damager, damagee.getLocation().getBlock()))
+                        if (!this.checkExplosionForBlock(damager, damageee.getLocation().getBlock()))
                             event.setCancelled(true);
                     }
                     // we don't need to go after
@@ -153,10 +156,10 @@ public class FactionsEntityListener implements Listener {
                 //this one should trigger if something other than a player takes damage
                 if (damager instanceof Player) return;
             }
-            if (damagee != null && damagee instanceof Player) {
-                cancelFStuckTeleport((Player) damagee);
-                cancelFFly((Player) damagee);
-                FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damagee);
+            if (damageee != null && damageee instanceof Player && (playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-player-damage", true) || (!playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-mob-damage", true)))) {
+                cancelFStuckTeleport((Player) damageee);
+                cancelFFly((Player) damageee);
+                FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damageee);
                 if (fplayer.isInspectMode()) {
                     fplayer.setInspectMode(false);
                     fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
@@ -188,9 +191,6 @@ public class FactionsEntityListener implements Listener {
             Player player = (Player) entity;
             FPlayer me = FPlayers.getInstance().getByPlayer(player);
             cancelFStuckTeleport(player);
-            if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-generic-damage")) {
-                cancelFFly(player);
-            }
             if (me.isWarmingUp()) {
                 me.clearWarmup();
                 me.msg(TL.WARMUPS_CANCELLED);

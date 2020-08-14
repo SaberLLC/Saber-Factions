@@ -491,6 +491,7 @@ public enum TL {
     COMMAND_JOIN_SYSTEMFACTION("&c&l[!]&7 Players may only join &cnormal factions&7. This is a &c&lsystem faction&7."),
     COMMAND_JOIN_ALREADYMEMBER("&c&l[!]&7 &c%1$s %2$s already a member of&c %3$s"),
     COMMAND_JOIN_ATLIMIT(" &c&l[!]&7 The faction &c%1$s &7is at the limit of&c %2$d&7 members, so&c %3$s&7 cannot currently join."),
+    COMMAND_JOIN_ATLIMIT_ALTS(" &c&l[!]&7 The faction &c%1$s &7is at the limit of&c %2$d&7 alts, so&c %3$s&7 cannot currently join."),
     COMMAND_JOIN_INOTHERFACTION("&c&l[!]&7 &c%1$s &7must leave&c %2$s &7current faction first."),
     COMMAND_JOIN_NEGATIVEPOWER("&c&l[!]&7 &c%1$s &7cannot join a faction with a &cnegative power&7 level."),
     COMMAND_JOIN_REQUIRESINVITATION("&c&l[!]&7 This faction &crequires&7 an invitation."),
