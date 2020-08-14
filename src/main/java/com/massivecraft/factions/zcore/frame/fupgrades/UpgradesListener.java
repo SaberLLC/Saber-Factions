@@ -64,8 +64,6 @@ public class UpgradesListener implements Listener {
         FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
         FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
         if (fme == null || dame == null) return;
-
-
         FLocation floc = new FLocation(fme.getPlayer().getLocation());
 
         if (floc == null) return;
