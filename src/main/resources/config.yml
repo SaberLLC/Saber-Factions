@@ -69,7 +69,7 @@ ffly:
   AutoEnable: true
   enemies-near-disable-flight: true #This means F Stealth Will Be Redundant
   disable-flight-on-generic-damage: false #Any Damage a Player Takes Their Flight Will Be Disabled
-  disable-flight-on-mob-damage: true #Any Damage a Player Takes From A Mob Their Flight Will Be Disabled
+  disable-flight-on-mob-damage: false #Any Damage a Player Takes From A Mob Their Flight Will Be Disabled
   disable-flight-on-player-damage: true
 
 # If a player leaves fly (out of territory or took damage)

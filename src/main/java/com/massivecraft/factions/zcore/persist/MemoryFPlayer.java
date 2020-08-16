@@ -1203,10 +1203,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
                 if (efplayer == null) continue;
                 if (efplayer.isVanished()) continue;
-                if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled() && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight")) {
-                    setFlying(false);
-                    msg(TL.COMMAND_FLY_ENEMY_NEAR);
-                    Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));
+                if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled()) {
                     this.enemiesNearby = true;
                     return true;
                 }

@@ -34,6 +34,10 @@ public class UpgradesListener implements Listener {
         else if(((e.getDamager() instanceof Projectile) && ((Projectile) e.getDamager()).getShooter() instanceof Player))
             dame = FPlayers.getInstance().getByPlayer((Player) ((Projectile) e.getDamager()).getShooter());
         else return;
+
+        if(!(e.getEntity() instanceof Player)) return;
+
+
         FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
 
         if (fme == null || dame == null) return;
