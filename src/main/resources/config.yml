@@ -284,7 +284,6 @@ show:
   - '&4* &cDescription: &f{description}'
   - '&4* &cLand / Power / Max Power: &f{chunks} &8/ &f{power} &8/ &f{maxPower}'
   - '&4* &cFaction Strikes: &f{strikes}'
-  - '&4* &cShield Status: &f{shield-status}'
   - '&4* &cFaction Points: &f{faction-points}'
   - '&4* &cFounded: &f{create-date}'
   - '&4* &cBalance: &f{faction-balance}'
