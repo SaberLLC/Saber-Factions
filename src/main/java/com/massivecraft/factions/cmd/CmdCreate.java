@@ -7,6 +7,7 @@ import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.MiscUtil;
@@ -111,6 +112,9 @@ public class CmdCreate extends FCommand {
         // That way we don't have to mess up deleting more stuff.
         // And prevent the user from being returned to NORMAL after deleting his old faction.
         context.fPlayer.setRole(Role.LEADER);
+        for(Faction faction1 : Factions.getInstance().getAllFactions()){
+            faction1.setRelationWish(faction, Relation.valueOf(FactionsPlugin.getInstance().getConfig().getString("default-relation")));
+        }
         Cooldown.setCooldown(context.fPlayer.getPlayer(), "createCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-create"));
         if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-creation-broadcast", true)) {
             for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
