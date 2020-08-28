@@ -24,65 +24,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class UpgradesListener implements Listener {
 
-    @EventHandler
-    public static void onDamageReduction(EntityDamageByEntityEvent e) {
-        if (e.isCancelled()) return;
-
-        FPlayer dame;
-        if(e.getDamager() instanceof Player)
-            dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
-        else if(((e.getDamager() instanceof Projectile) && ((Projectile) e.getDamager()).getShooter() instanceof Player))
-            dame = FPlayers.getInstance().getByPlayer((Player) ((Projectile) e.getDamager()).getShooter());
-        else return;
-
-        if(!(e.getEntity() instanceof Player)) return;
-
-
-        FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
-
-        if (fme == null || dame == null) return;
-        FLocation floc = new FLocation(fme.getPlayer().getLocation());
-
-        if (floc == null) return;
-
-        if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
-            if (dame.getFaction() == fme.getFaction()) return;
-
-            double damage = e.getDamage();
-            int level = fme.getFaction().getUpgrade(UpgradeType.DAMAGEDECREASE);
-            double increase = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.DamageReduction.DamageReductionPercent.level-" + level);
-            e.setDamage(damage - damage / 100.0 * increase);
-        }
-    }
-
-
-    @EventHandler
-    public static void onDamageIncrease(EntityDamageByEntityEvent e) {
-        if (e == null) return;
-
-        if (!(e.getDamager() instanceof Player) || !(e.getEntity() instanceof Player)) return;
-
-
-        if (e.getDamager().hasMetadata("NPC") || e.getEntity().hasMetadata("NPC")) return;
-
-        FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getEntity());
-        FPlayer dame = FPlayers.getInstance().getByPlayer((Player) e.getDamager());
-        if (fme == null || dame == null) return;
-        FLocation floc = new FLocation(fme.getPlayer().getLocation());
-
-        if (floc == null) return;
-
-        if (Board.getInstance().getFactionAt(floc) == fme.getFaction()) {
-            if (dame.getFaction() == fme.getFaction()) {
-                return;
-            }
-            double damage = e.getDamage();
-            int level = fme.getFaction().getUpgrade(UpgradeType.DAMAGEINCREASE);
-            double increase = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.DamageIncrease.DamageIncreasePercent.level-" + level);
-            e.setDamage(damage + damage / 100.0 * increase);
-        }
-    }
-
     /**
      * @author Illyria Team
      */

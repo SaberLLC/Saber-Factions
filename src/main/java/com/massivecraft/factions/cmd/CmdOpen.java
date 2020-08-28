@@ -51,9 +51,15 @@ public class CmdOpen extends FCommand {
                     Cooldown.setCooldown(fplayer.getPlayer(), "openCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-open"));
                     continue;
                 }
-                if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-open-broadcast")) return;
+                if (!FactionsPlugin.getInstance().getConfig().getBoolean("faction-open-broadcast")) return;
                 fplayer.msg(TL.COMMAND_OPEN_CHANGED, context.faction.getTag(fplayer.getFaction()), open);
             }
+            if (!FactionsPlugin.getInstance().getConfig().getBoolean("faction-open-broadcast")) {
+                for (FPlayer fPlayer : context.faction.getFPlayersWhereOnline(true)) {
+                    fPlayer.msg(TL.COMMAND_OPEN_CHANGED, context.faction.getTag(fPlayer.getFaction()), open);
+                }
+            }
+
         });
     }
 
