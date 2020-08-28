@@ -112,9 +112,7 @@ public class CmdCreate extends FCommand {
         // That way we don't have to mess up deleting more stuff.
         // And prevent the user from being returned to NORMAL after deleting his old faction.
         context.fPlayer.setRole(Role.LEADER);
-        for(Faction faction1 : Factions.getInstance().getAllFactions()){
-            faction1.setRelationWish(faction, Relation.valueOf(FactionsPlugin.getInstance().getConfig().getString("default-relation")));
-        }
+        
         Cooldown.setCooldown(context.fPlayer.getPlayer(), "createCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-create"));
         if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-creation-broadcast", true)) {
             for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
