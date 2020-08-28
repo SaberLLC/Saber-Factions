@@ -158,7 +158,7 @@ public class DefaultPermissions {
         else if (name == "tntfill") return this.tntfill;
         else if (name == "withdraw") return this.withdraw;
         else if (name == "chest") return this.chest;
-        else if(name == "audit") return this.audit;
+        else if (name == "audit") return this.audit;
         else if (name == "check") return this.check;
         else if (name == "drain") return this.drain;
         else if (name == "spawner") return this.spawner;

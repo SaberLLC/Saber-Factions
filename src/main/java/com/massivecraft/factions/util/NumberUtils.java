@@ -19,7 +19,7 @@ public class NumberUtils {
      * <p><code>Null</code> and empty String will return
      * <code>false</code>.</p>
      *
-     * @param str  the <code>String</code> to check
+     * @param str the <code>String</code> to check
      * @return <code>true</code> if the string is a correctly formatted number
      */
     public static boolean isNumber(String str) {

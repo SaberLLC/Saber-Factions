@@ -205,7 +205,8 @@ public class CmdTnt extends FCommand {
         ItemStack[] items = inventory.getContents();
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null && items[i].getType() == item.getType() && items[i].getDurability() == item.getDurability()) {
-                if(items[i].hasItemMeta() || items[i].getItemMeta().hasLore() || items[i].getItemMeta().hasDisplayName()) continue;
+                if (items[i].hasItemMeta() || items[i].getItemMeta().hasLore() || items[i].getItemMeta().hasDisplayName())
+                    continue;
                 if (items[i].getAmount() > amt) {
                     items[i].setAmount(items[i].getAmount() - amt);
                     break;

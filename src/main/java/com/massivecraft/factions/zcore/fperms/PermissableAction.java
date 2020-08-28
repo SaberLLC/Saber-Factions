@@ -55,10 +55,6 @@ public enum PermissableAction {
         this.name = name;
     }
 
-    public String getDescription() {
-        return CC.translate(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.action.Descriptions." + this.name.toLowerCase()));
-    }
-
     /**
      * Case insensitive check for action.
      *
@@ -87,6 +83,10 @@ public enum PermissableAction {
             if (action.getSlot() == slot) return action;
         }
         return null;
+    }
+
+    public String getDescription() {
+        return CC.translate(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.action.Descriptions." + this.name.toLowerCase()));
     }
 
     public int getSlot() {

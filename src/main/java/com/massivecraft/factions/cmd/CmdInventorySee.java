@@ -9,7 +9,6 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -78,7 +77,7 @@ public class CmdInventorySee extends FCommand {
                 inventory.setItem(slot, XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
             }
         }
-        if(FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.see-armor-contents")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.see-armor-contents")) {
             inventory.setItem(inventory.getSize() - 7, armor[3]);
             inventory.setItem(inventory.getSize() - 6, armor[2]);
             inventory.setItem(inventory.getSize() - 4, armor[1]);

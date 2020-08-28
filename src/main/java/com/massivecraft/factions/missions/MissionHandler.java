@@ -1,6 +1,5 @@
 package com.massivecraft.factions.missions;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;

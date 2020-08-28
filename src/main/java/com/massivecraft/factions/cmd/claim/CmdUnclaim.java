@@ -5,12 +5,10 @@ import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -57,8 +55,8 @@ public class CmdUnclaim extends FCommand {
             }
 
             new SpiralTask(new FLocation(context.player), radius) {
-                private int failCount = 0;
                 private final int limit = Conf.radiusClaimFailureLimit - 1;
+                private int failCount = 0;
 
                 @Override
                 public boolean work() {

@@ -60,7 +60,7 @@ public class CmdClaim extends FCommand {
 
         if (radius < 2) {
             if (forFaction.isSystemFaction() && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false) && FactionsPlugin.cachedRadiusClaim) {
-                context.fPlayer.msg(TL.CLAIM_CLAIMED, context.fPlayer.describeTo(context.fPlayer, true), forFaction.describeTo(context.fPlayer),at.describeTo(forFaction));
+                context.fPlayer.msg(TL.CLAIM_CLAIMED, context.fPlayer.describeTo(context.fPlayer, true), forFaction.describeTo(context.fPlayer), at.describeTo(forFaction));
                 return;
             }
             if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false)) {
@@ -96,7 +96,7 @@ public class CmdClaim extends FCommand {
 
                 public void finish() {
                     if (FactionsPlugin.cachedRadiusClaim) {
-                        if (successfulClaims > 0 ) {
+                        if (successfulClaims > 0) {
                             if (forFaction.isWarZone() || forFaction.isSafeZone()) {
                                 context.fPlayer.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(context.fPlayer, true), String.valueOf(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ());
                             } else {

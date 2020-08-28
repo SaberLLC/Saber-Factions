@@ -11,13 +11,10 @@ import me.lucko.helper.bucket.Bucket;
 import me.lucko.helper.bucket.factory.BucketFactory;
 import me.lucko.helper.bucket.partitioning.PartitioningStrategies;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Collection;
 
 /**
  * Factions - Developed by FactionsUUID Team.
@@ -26,7 +23,8 @@ public final class FlightUtil implements Trackable<FPlayer> {
 
     private static FlightUtil instance;
 
-    private FlightUtil() { }
+    private FlightUtil() {
+    }
 
     public static FlightUtil get() {
         if (instance == null) {
@@ -39,15 +37,15 @@ public final class FlightUtil implements Trackable<FPlayer> {
         return instance;
     }
 
+    public static FlightUtil instance() {
+        return instance;
+    }
+
     public void start() {
         double enemyCheck = FactionsPlugin.getInstance().getConfig().getInt("ffly.enemy-radius-check", 1) * 20;
         if (enemyCheck > 0) {
             EnemiesTask.get().start();
         }
-    }
-
-    public static FlightUtil instance() {
-        return instance;
     }
 
     public boolean enemiesNearby(FPlayer target, int radius) {
@@ -71,10 +69,8 @@ public final class FlightUtil implements Trackable<FPlayer> {
     private static class EnemiesTask extends BukkitRunnable implements AutoCloseable {
 
         private static EnemiesTask instance;
-
-        private int task = -1;
-
         private final Bucket<FPlayer> players = BucketFactory.newHashSetBucket(20, PartitioningStrategies.lowestSize());
+        private int task = -1;
 
         public static EnemiesTask get() {
             if (instance == null) {
