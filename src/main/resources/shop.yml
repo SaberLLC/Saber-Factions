@@ -1,24 +1,23 @@
-#######################################################################################
-#######################################################################################
-#######################################################################################
-#####                                                                             #####
-#####                SaberFactions Shop Configuration File                         #####
-#####                        Created By Driftay                                   #####
-#####                                                                             #####
-#######################################################################################
-#######################################################################################
-#######################################################################################
-#<-------------------------------------->NOTES<-------------------------------------->#
-#All Color Codes Can Be Used!
-#Refer to: https://wiki.ess3.net/mc/
+#
+#   ____  _
+#  / ___|| |__   ___  _ __
+#  \___ \| '_ \ / _ \| '_ \
+#   ___) | | | | (_) | |_) |
+#  |____/|_| |_|\___/| .__/
+#                    |_|
+#
 
-#[Placeholders]
+
+# All Color Codes Can Be Used!
+# https://wiki.ess3.net/mc/
+
+# Placeholders
 # %points% - Only can be used in prefix - returns the cost of an item purchased
 # {cost} - returns the cost of an item
 # %player% - Only can be used in cmds - returns the players name value
-#<-------------------------------------->NOTES<-------------------------------------->#
 
-prefix: '&4&lFactionShop&8» &7Purchased &f%item% &7for &b%points% Points&7!'
+# Prefix for all shop purchasing messages
+prefix: '&4&lShop &8» &7Purchased &f%item% &7for &b%points% Points&7!'
 
 items:
   '1':
