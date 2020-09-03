@@ -16,7 +16,7 @@ import java.util.TreeMap;
 
 
 public class JSONBoard extends MemoryBoard {
-    private static transient File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/data", "board.json");
+    private static transient File file = new File(FactionsPlugin.getInstance().getDataFolder(), "board.json");
 
     // -------------------------------------------- //
     // Persistance

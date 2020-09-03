@@ -12,9 +12,9 @@ import java.io.File;
  */
 public class FileManager {
 
-    private CustomFile shop = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/configuration" + "/shop.yml"));
-    private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/configuration" + "/permissions.yml"));
-    private CustomFile discord = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/configuration" + "/discord.yml"));
+    private CustomFile shop = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/shop.yml"));
+    private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/permissions.yml"));
+    private CustomFile discord = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/discord.yml"));
 
     public void setupFiles() {
         shop.setup(true, "");

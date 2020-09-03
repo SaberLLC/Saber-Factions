@@ -25,7 +25,7 @@ public class JSONFactions extends MemoryFactions {
     private final File file;
 
     public JSONFactions() {
-        this.file = new File(FactionsPlugin.getInstance().getDataFolder() + "/data", "factions.json");
+        this.file = new File(FactionsPlugin.getInstance().getDataFolder(), "factions.json");
         this.gson = FactionsPlugin.getInstance().gson;
         this.nextId = 1;
     }

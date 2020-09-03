@@ -25,7 +25,7 @@ public class JSONFPlayers extends MemoryFPlayers {
     private File file;
 
     public JSONFPlayers() {
-        file = new File(FactionsPlugin.getInstance().getDataFolder() + "/data", "players.json");
+        file = new File(FactionsPlugin.getInstance().getDataFolder(), "players.json");
         gson = FactionsPlugin.getInstance().gson;
     }
 
