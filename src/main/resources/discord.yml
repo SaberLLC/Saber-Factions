@@ -1,0 +1,34 @@
+#  _____  _                       _   _____       _                       _   _
+# |  __ \(_)                     | | |_   _|     | |                     | | (_)
+# | |  | |_ ___  ___ ___  _ __ __| |   | |  _ __ | |_ ___  __ _ _ __ __ _| |_ _  ___  _ __
+# | |  | | / __|/ __/ _ \| '__/ _` |   | | | '_ \| __/ _ \/ _` | '__/ _` | __| |/ _ \| '_ \
+# | |__| | \__ \ (_| (_) | | | (_| |  _| |_| | | | ||  __/ (_| | | | (_| | |_| | (_) | | | |
+# |_____/|_|___/\___\___/|_|  \__,_| |_____|_| |_|\__\___|\__, |_|  \__,_|\__|_|\___/|_| |_|
+#                                                          __/ |
+#                                                         |___/
+
+#Welcome to the newly improved SaberFactions Discord Integration System
+
+Discord:
+  useDiscordSystem: false
+  Bot:
+    token: '<token here>'
+    discordToFactionChatPrefix: '&f[&dDiscord&f] ' #This Will Represent What The Players Will Be Able To See When Someone Types From Discord
+    avatarUrl: 'http://cravatar.eu/helmavatar/%uuid%.png' #Avatar for heads in the webhook
+    webhookName: 'SaberFactions Webhook' #The name of the webhook that will be created to represent all of the faction 2 discord chats
+  Guild:
+    mainGuildID: '<Discord Server ID here>' #To get a guild id please see https://poshbot.readthedocs.io/en/latest/guides/backends/setup-discord-backend/
+    positiveReaction: '<Server emote here>'
+    negativeReaction: '<Server emote here>'
+    restrictActionsWhenNotLinked: false #Setting this to true means they will not be able to create a faction etc..
+    leaderRoles: false #This will just set leader roles
+    leaderRoleID: '<Leader Role ID>'
+    factionDiscordTags: false #Show Discord Tags In MainGuild
+    factionTag: '(NAME) [FACTION]'
+    factionRoles: false #SetRoles To Factions
+    factionRolesColor:
+      - 25
+      - 162
+      - 203
+    factionRolePrefix: '✦' #Example: ✦ <Role> ✦
+    factionRoleSuffix: '✦' #Example: ✦ <Role> ✦

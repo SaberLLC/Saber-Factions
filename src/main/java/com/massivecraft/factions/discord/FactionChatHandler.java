@@ -46,12 +46,12 @@ public class FactionChatHandler extends ListenerAdapter {
             textChannel.sendMessage("Missing `Manage Webhooks` permission in this channel").queue();
             return;
         }
-        Webhook webhook = (textChannel.getWebhooks().complete()).stream().filter(w -> w.getName().equals(Conf.webhookName)).findAny().orElse(null);
+        Webhook webhook = (textChannel.getWebhooks().complete()).stream().filter(w -> w.getName().equals(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.webhookName"))).findAny().orElse(null);
         WebhookClient webhookClient;
         if (webhook != null) {
             webhookClient = webhook.newClient().build();
         } else {
-            webhookClient = textChannel.createWebhook(Conf.webhookName).complete().newClient().build();
+            webhookClient = textChannel.createWebhook(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.webhookName")).complete().newClient().build();
         }
         if (message.contains("@") && message.contains("#")) {
             List<String> x = new ArrayList<>(Arrays.asList(message.split(" ")));
@@ -96,12 +96,12 @@ public class FactionChatHandler extends ListenerAdapter {
             messageWithMentions = sB.toString();
         }
         if (messageWithMentions != null) {
-            WebhookMessage webhookMessage = new WebhookMessageBuilder().setUsername(ChatColor.stripColor(username)).setAvatarUrl(Conf.avatarUrl.replace("%uuid%", uuid.toString())).setContent(ChatColor.stripColor(messageWithMentions)).build();
+            WebhookMessage webhookMessage = new WebhookMessageBuilder().setUsername(ChatColor.stripColor(username)).setAvatarUrl(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.avatarUrl").replace("%uuid%", uuid.toString())).setContent(ChatColor.stripColor(messageWithMentions)).build();
             webhookClient.send(webhookMessage).join();
             webhookClient.close();
             return;
         }
-        WebhookMessage webhookMessage = new WebhookMessageBuilder().setUsername(ChatColor.stripColor(username)).setAvatarUrl(Conf.avatarUrl.replace("%uuid%", uuid.toString())).setContent(ChatColor.stripColor(message)).build();
+        WebhookMessage webhookMessage = new WebhookMessageBuilder().setUsername(ChatColor.stripColor(username)).setAvatarUrl(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.avatarUrl").replace("%uuid%", uuid.toString())).setContent(ChatColor.stripColor(message)).build();
         webhookClient.send(webhookMessage).join();
         webhookClient.close();
     }
@@ -115,7 +115,7 @@ public class FactionChatHandler extends ListenerAdapter {
         String content = event.getMessage().getContentDisplay();
         String message = (content.length() > 500) ? content.substring(0, 500) : content;
         FancyMessage fancyMessage = new FancyMessage();
-        fancyMessage.text(ChatColor.translateAlternateColorCodes('&', Conf.fromDiscordFactionChatPrefix + String.format(Conf.factionChatFormat, event.getAuthor().getAsTag(), message)));
+        fancyMessage.text(ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.discordToFactionChatPrefix") + String.format(Conf.factionChatFormat, event.getAuthor().getAsTag(), message)));
         List<FancyMessage> messages = new ArrayList<>();
         messages.add(fancyMessage);
         for (Message.Attachment attachment : event.getMessage().getAttachments()) {

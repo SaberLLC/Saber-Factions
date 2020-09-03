@@ -82,7 +82,7 @@ public class CheckTask implements Runnable {
             }
             faction.msg(TL.CHECK_WALLS_CHECK);
 
-            if (!Conf.useDiscordSystem) return;
+            if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem")) return;
 
 
             String channelId = faction.getWallNotifyChannelId();
@@ -131,7 +131,7 @@ public class CheckTask implements Runnable {
             }
             faction.msg(TL.CHECK_BUFFERS_CHECK);
 
-            if (!Conf.useDiscordSystem) return;
+            if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem")) return;
 
 
             String channelId = faction.getBufferNotifyChannelId();

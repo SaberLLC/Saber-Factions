@@ -294,14 +294,14 @@ public abstract class MemoryFPlayer implements FPlayer {
             try {
                 if (Discord.useDiscord && this.discordSetup() && Discord.isInMainGuild(this.discordUser()) && Discord.mainGuild != null) {
                     Member m = Discord.mainGuild.getMember(this.discordUser());
-                    if (Conf.leaderRoles && this.role == Role.LEADER && event.getTo() != Role.LEADER) {
-                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.mainGuild.getRoleById(Conf.leaderRole)).queue();
+                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && this.role == Role.LEADER && event.getTo() != Role.LEADER) {
+                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.mainGuild.getRoleById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.leaderRoleID"))).queue();
                     }
-                    if (Conf.leaderRoles && event.getTo() == Role.LEADER) {
-                        Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.mainGuild.getRoleById(Conf.leaderRole)).queue();
+                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && event.getTo() == Role.LEADER) {
+                        Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.mainGuild.getRoleById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.leaderRoleID"))).queue();
                     }
                     this.role = event.getTo();
-                    if (Conf.factionDiscordTags) {
+                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) {
                         Discord.mainGuild.getController().setNickname(m, Discord.getNicknameString(this)).queue();
                     }
                 } else {
@@ -425,11 +425,11 @@ public abstract class MemoryFPlayer implements FPlayer {
             try {
                 if (Discord.useDiscord && this.discordSetup() && Discord.isInMainGuild(this.discordUser()) && Discord.mainGuild != null) {
                     Member m = Discord.mainGuild.getMember(this.discordUser());
-                    if (Conf.leaderRoles && this.role == Role.LEADER && Discord.leader != null)
+                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && this.role == Role.LEADER && Discord.leader != null)
                         Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.leader).queue();
-                    if (Conf.factionRoles)
+                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles"))
                         Discord.mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getFaction().getTag()))).queue();
-                    if (Conf.factionDiscordTags) Discord.resetNick(this);
+                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) Discord.resetNick(this);
                 }
             } catch (HierarchyException e) {
                 System.out.print(e.getMessage());

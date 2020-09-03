@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.check;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
@@ -39,7 +40,7 @@ public class CmdWeeWoo extends FCommand {
             }
             context.faction.setWeeWoo(true);
             context.msg(TL.COMMAND_WEEWOO_STARTED, context.fPlayer.getNameAndTag());
-            if (!Conf.useDiscordSystem) return;
+            if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem")) return;
             String discordChannelId = context.faction.getWeeWooChannelId();
             if (discordChannelId != null && !discordChannelId.isEmpty()) {
                 TextChannel textChannel = Discord.jda.getTextChannelById(discordChannelId);
@@ -59,7 +60,7 @@ public class CmdWeeWoo extends FCommand {
             }
             context.faction.setWeeWoo(false);
             context.msg(TL.COMMAND_WEEWOO_STOPPED, context.fPlayer.getNameAndTag());
-            if (!Conf.useDiscordSystem) return;
+            if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem")) return;
             String discordChannelId = context.faction.getWeeWooChannelId();
             if (discordChannelId != null && !discordChannelId.isEmpty()) {
                 TextChannel textChannel = Discord.jda.getTextChannelById(discordChannelId);

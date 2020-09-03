@@ -131,28 +131,6 @@ public class Conf {
     //STRIKES
     public static boolean useStrikeSystem = true;
 
-    //DISCORD
-    public static boolean useDiscordSystem = false;
-    public static String discordBotToken = "<token here>";
-    public static String fromDiscordFactionChatPrefix = "&f[&dDiscord&f] ";
-    public static String avatarUrl = "http://cravatar.eu/helmavatar/%uuid%.png";
-    public static String webhookName = "SaberFactions Hook";
-    public static String mainGuildID = "<Discord Server ID here>";
-    public static String positiveReaction = "<Server emote here>";
-    public static String negativeReaction = "<Server emote here>";
-    public static Boolean restrictActionsWhenNotLinked = false;
-    public static Boolean leaderRoles = false;
-    public static String leaderRole = "<Leader Role ID>";
-    public static Boolean factionDiscordTags = false;
-    public static String factionTag = "(NAME) [FACTION]";
-    public static Boolean factionRoles = false;
-    public static List<Integer> factionRoleColor = new ArrayList<Integer>() {{
-        add(25);
-        add(162);
-        add(203);
-    }};
-    public static String factionRolePrefix = "✦";
-    public static String factionRoleSuffix = "✦";
     // server logging options
     public static boolean logFactionCreate = true;
     public static boolean logFactionDisband = true;

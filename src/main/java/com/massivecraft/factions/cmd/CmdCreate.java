@@ -39,7 +39,7 @@ public class CmdCreate extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (Conf.restrictActionsWhenNotLinked && !context.fPlayer.discordSetup()) {
+        if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.restrictActionsWhenNotLinked") && !context.fPlayer.discordSetup()) {
             context.player.sendMessage(ChatColor.translateAlternateColorCodes('&', TL.DISCORD_LINK_REQUIRED.toString()));
             return;
         }
@@ -123,13 +123,13 @@ public class CmdCreate extends FCommand {
         try {
             if (Discord.useDiscord && context.fPlayer.discordSetup() && Discord.isInMainGuild(context.fPlayer.discordUser()) && Discord.mainGuild != null) {
                 Member m = Discord.mainGuild.getMember(context.fPlayer.discordUser());
-                if (Conf.factionRoles) {
+                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles")) {
                     Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.createFactionRole(faction.getTag())).queue();
                 }
-                if (Conf.leaderRoles && Discord.leader != null) {
+                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && Discord.leader != null) {
                     Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.leader).queue();
                 }
-                if (Conf.factionDiscordTags) {
+                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) {
                     Discord.mainGuild.getController().setNickname(m, Discord.getNicknameString(context.fPlayer)).queue();
                 }
             }

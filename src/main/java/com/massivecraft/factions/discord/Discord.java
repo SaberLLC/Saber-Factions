@@ -15,6 +15,7 @@ import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import javax.security.auth.login.LoginException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
@@ -65,11 +66,11 @@ public class Discord {
     }
 
     private static Boolean startBot() {
-        if (!Conf.useDiscordSystem) {
+        if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem")) {
             return false;
         }
         try {
-            jda = new JDABuilder(AccountType.BOT).setToken(Conf.discordBotToken).buildBlocking();
+            jda = new JDABuilder(AccountType.BOT).setToken(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.token")).buildBlocking();
         } catch (LoginException | InterruptedException e) {
             FactionsPlugin.getInstance().getLogger().log(Level.WARNING, "Discord bot was unable to start! Please verify the bot token is correct.");
             setupLog.add(new DiscordSetupAttempt(e.getMessage(), System.currentTimeMillis()));
@@ -81,20 +82,21 @@ public class Discord {
 
     private static void varSetup() {
         try {
-            confUseDiscord = Conf.useDiscordSystem;
-            botToken = Conf.discordBotToken;
-            if (jda != null && Conf.leaderRoles || Conf.factionDiscordTags) {
-                mainGuild = jda.getGuildById(Conf.mainGuildID);
+            confUseDiscord = FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem");
+            botToken = FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.token");
+            if (jda != null && FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") || FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) {
+                mainGuild = jda.getGuildById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.mainGuildID"));
             } else {
                 mainGuild = null;
             }
-            mainGuildID = Conf.mainGuildID;
+            mainGuildID = FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.mainGuildID");
+            List<Integer> roleColorList = FactionsPlugin.getInstance().getFileManager().getDiscord().getConfig().getIntegerList("Discord.Guild.factionRolesColor");
             useDiscord = !botToken.equals("<token here>") && !mainGuildID.equals("<Discord Server ID here>") && confUseDiscord;
-            roleColor = new java.awt.Color(Conf.factionRoleColor.get(0), Conf.factionRoleColor.get(1), Conf.factionRoleColor.get(2));
+            roleColor = new java.awt.Color(roleColorList.get(0), roleColorList.get(1), roleColorList.get(2));
             if (jda != null) {
                 try {
-                    positive = jda.getEmoteById(Conf.positiveReaction);
-                    negative = jda.getEmoteById(Conf.negativeReaction);
+                    positive = jda.getEmoteById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.positiveReaction"));
+                    negative = jda.getEmoteById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.negativeReaction"));
                     if (positive == null | negative == null) {
                         useEmotes = false;
                     }
@@ -103,7 +105,7 @@ public class Discord {
                     useEmotes = false;
                 }
                 if (mainGuild != null) {
-                    leader = mainGuild.getRoleById(Conf.leaderRole);
+                    leader = mainGuild.getRoleById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.leaderRoleID"));
                 } else {
                     leader = null;
                 }
@@ -124,7 +126,7 @@ public class Discord {
      */
     public static String getNicknameString(FPlayer f) {
         if (useDiscord) {
-            String temp = Conf.factionTag;
+            String temp = FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.factionTag");
             if (temp.contains("NAME")) {
                 temp = temp.replace("NAME", f.getName());
             }
@@ -152,11 +154,10 @@ public class Discord {
      * @return
      */
     public static Boolean doesFactionRoleExist(String s) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Conf.factionRolePrefix);
-        sb.append(s);
-        sb.append(Conf.factionRoleSuffix);
-        return getRoleFromName(sb.toString()) != null;
+        String sb = FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.factionRolePrefix") +
+                s +
+                FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.factionRoleSuffix");
+        return getRoleFromName(sb) != null;
     }
 
     public static Role getRoleFromName(String s) {
@@ -184,17 +185,16 @@ public class Discord {
             return null;
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(Conf.factionRolePrefix);
+        sb.append(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.factionRolePrefix"));
         sb.append(s);
-        sb.append(Conf.factionRoleSuffix);
+        sb.append(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.factionRoleSuffix"));
         if (!doesFactionRoleExist(sb.toString())) {
             try {
-                Role newRole = mainGuild.getController().createRole()
+                return mainGuild.getController().createRole()
                         .setName(sb.toString())
                         .setColor(roleColor)
                         .setPermissions(Permission.EMPTY_PERMISSIONS)
                         .complete(true);
-                return newRole;
             } catch (RateLimitedException e) {
                 System.out.print(e.getMessage());
             }
@@ -211,11 +211,9 @@ public class Discord {
      * @return Name of would be Role
      */
     public static String getFactionRoleName(String tag) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Conf.factionRolePrefix);
-        sb.append(tag);
-        sb.append(Conf.factionRoleSuffix);
-        return sb.toString();
+        return FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.factionRolePrefix") +
+                tag +
+                FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.factionRoleSuffix");
     }
 
     /**
@@ -252,10 +250,10 @@ public class Discord {
             if (fp.discordSetup() && isInMainGuild(fp.discordUser())) {
                 try {
                     Member m = mainGuild.getMember(fp.discordUser());
-                    if (Conf.factionDiscordTags) {
+                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) {
                         mainGuild.getController().setNickname(m, Discord.getNicknameString(fp)).queue();
                     }
-                    if (Conf.factionRoles) {
+                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles")) {
                         mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(getRoleFromName(oldTag))).queue();
                         mainGuild.getController().addSingleRoleToMember(m, Objects.requireNonNull(createFactionRole(f.getTag()))).queue();
                     }

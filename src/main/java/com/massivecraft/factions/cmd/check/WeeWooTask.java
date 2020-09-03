@@ -29,7 +29,7 @@ public class WeeWooTask implements Runnable {
             }
             faction.msg(TL.WEE_WOO_MESSAGE);
 
-            if (!Conf.useDiscordSystem) return;
+            if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem")) return;
 
             String discordChannelId = faction.getWeeWooChannelId();
             if (discordChannelId == null || discordChannelId.isEmpty()) {

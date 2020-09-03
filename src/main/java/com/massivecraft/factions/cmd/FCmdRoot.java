@@ -317,7 +317,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
      */
     public void addVariableCommands() {
         //Discord
-        if (Conf.useDiscordSystem && !discordEnabled) {
+        if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem") && !discordEnabled) {
             this.addSubCommand(this.cmdInviteBot);
             this.addSubCommand(this.cmdSetGuild);
             this.addSubCommand(this.cmdSetDiscord);

@@ -88,7 +88,7 @@ public class CmdCheck extends FCommand {
                 }
                 context.faction.getChecks().put(currentTime, "U" + context.fPlayer.getNameAndTag());
                 context.msg(TL.CHECK_WALLS_MARKED_CHECKED);
-                if (!Conf.useDiscordSystem) return;
+                if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem")) return;
                 String channelId = context.faction.getWallNotifyChannelId();
                 if (channelId == null || channelId.isEmpty()) {
                     return;
@@ -120,7 +120,7 @@ public class CmdCheck extends FCommand {
                 }
                 context.faction.getChecks().put(System.currentTimeMillis(), "Y" + context.fPlayer.getNameAndTag());
                 context.msg(TL.CHECK_BUFFERS_MARKED_CHECKED);
-                if (!Conf.useDiscordSystem) return;
+                if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem")) return;
                 String channelId = context.faction.getBufferNotifyChannelId();
                 if (channelId == null || channelId.isEmpty()) {
                     return;
