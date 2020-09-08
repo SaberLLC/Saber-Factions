@@ -1,6 +1,5 @@
 package com.massivecraft.factions.discord;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;

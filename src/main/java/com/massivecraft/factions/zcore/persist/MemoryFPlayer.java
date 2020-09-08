@@ -429,7 +429,8 @@ public abstract class MemoryFPlayer implements FPlayer {
                         Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.leader).queue();
                     if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles"))
                         Discord.mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getFaction().getTag()))).queue();
-                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) Discord.resetNick(this);
+                    if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags"))
+                        Discord.resetNick(this);
                 }
             } catch (HierarchyException e) {
                 System.out.print(e.getMessage());
