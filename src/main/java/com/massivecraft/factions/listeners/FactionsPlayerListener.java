@@ -845,6 +845,8 @@ public class FactionsPlayerListener implements Listener {
                 me.setFlying(false, false);
             } else if (me.isAutoFlying() && !me.isFlying() && canFly) {
                 me.setFlying(true);
+            } else {
+                me.setFlying(false);
             }
         }
     }
