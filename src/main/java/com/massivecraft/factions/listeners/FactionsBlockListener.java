@@ -184,7 +184,7 @@ public class FactionsBlockListener implements Listener {
             if (event.getToBlock().isEmpty()) {
                 Faction from = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
                 Faction to = Board.getInstance().getFactionAt(new FLocation(event.getToBlock()));
-                if (from == to) return;
+                if (from == to || to.isWilderness()) return;
                 // from faction != to faction
                 if (to.isSystemFaction()) {
                     event.setCancelled(true);

@@ -453,7 +453,7 @@ public class FactionsEntityListener implements Listener {
         boolean ownTerritory = defender.isInOwnTerritory();
 
         // You can not hurt neutrals in their own territory.
-        if (ownTerritory && relation.isNeutral()) {
+        if (ownTerritory && relation.isNeutral() && Conf.disablePVPBetweenNeutralFactions) {
             if (notify) {
                 attacker.msg(TL.PLAYER_PVP_NEUTRALFAIL, defender.describeTo(attacker));
                 defender.msg(TL.PLAYER_PVP_TRIED, attacker.describeTo(defender, true));
