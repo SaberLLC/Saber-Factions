@@ -1035,6 +1035,11 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
+
+        if (getPlayer().getGameMode() == GameMode.CREATIVE || getPlayer().getGameMode() == GameMode.SPECTATOR) {
+            return true;
+        }
+
         if (faction.isWilderness()) {
             return Permission.FLY_WILDERNESS.has(getPlayer());
         } else if (faction.isSafeZone()) {
@@ -1203,7 +1208,8 @@ public abstract class MemoryFPlayer implements FPlayer {
                 if (eplayer == null) continue;
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
                 if (efplayer == null) continue;
-                if (efplayer.isVanished()) continue;
+                if (efplayer.isVanished() || efplayer.getPlayer().getGameMode() == GameMode.CREATIVE || efplayer.getPlayer().getGameMode() == GameMode.SPECTATOR)
+                    continue;
                 if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled()) {
                     this.enemiesNearby = true;
                     return true;

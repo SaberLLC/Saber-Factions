@@ -11,6 +11,7 @@ import me.lucko.helper.bucket.Bucket;
 import me.lucko.helper.bucket.factory.BucketFactory;
 import me.lucko.helper.bucket.partitioning.PartitioningStrategies;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -142,7 +143,7 @@ public final class FlightUtil implements Trackable<FPlayer> {
                 }
                 FPlayer playerNearby = FPlayers.getInstance().getByPlayer((Player) entity);
 
-                if (playerNearby.isAdminBypassing() || playerNearby.isVanished() || playerNearby.isStealthEnabled()) {
+                if (playerNearby.isAdminBypassing() || playerNearby.isVanished() || playerNearby.isStealthEnabled() || playerNearby.getPlayer().getGameMode() == GameMode.SPECTATOR || playerNearby.getPlayer().getGameMode() == GameMode.CREATIVE) {
                     continue;
                 }
                 if (playerNearby.getRelationTo(target) == Relation.ENEMY) {
