@@ -420,11 +420,27 @@ public class Conf {
         blacklistedFactionNames.add("somenamehere");
 
         territoryEnemyDenyCommands.add("home");
+        territoryEnemyDenyCommands.add("ehome");
+        territoryEnemyDenyCommands.add("homes");
         territoryEnemyDenyCommands.add("sethome");
+        territoryEnemyDenyCommands.add("esethome");
+        territoryEnemyDenyCommands.add("createhome");
+        territoryEnemyDenyCommands.add("ecreatehome");
         territoryEnemyDenyCommands.add("spawn");
+        territoryEnemyDenyCommands.add("espawn");
         territoryEnemyDenyCommands.add("tpahere");
+        territoryEnemyDenyCommands.add("etpahere");
         territoryEnemyDenyCommands.add("tpaccept");
+        territoryEnemyDenyCommands.add("etpaccept");
+        territoryEnemyDenyCommands.add("tpyes");
+        territoryEnemyDenyCommands.add("etpyes");
+        territoryEnemyDenyCommands.add("call");
+        territoryEnemyDenyCommands.add("ecall");
         territoryEnemyDenyCommands.add("tpa");
+        territoryEnemyDenyCommands.add("etpa");
+        territoryEnemyDenyCommands.add("etpask");
+
+
 
         territoryDenySwitchMaterials.add(XMaterial.ACACIA_FENCE_GATE.parseMaterial());
         territoryDenySwitchMaterials.add(XMaterial.BIRCH_FENCE_GATE.parseMaterial());
