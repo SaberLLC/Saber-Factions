@@ -90,6 +90,9 @@ public class FactionsEntityListener implements Listener {
      * Who can I hurt? I can never hurt members or allies. I can always hurt enemies. I can hurt neutrals as long as
      * they are outside their own territory.
      */
+
+    public static List<UUID> combatList = new ArrayList<>();
+
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         Entity damagee = event.getEntity();
@@ -158,6 +161,10 @@ public class FactionsEntityListener implements Listener {
             }
             if (damageee != null && damageee instanceof Player && (playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-player-damage", true) || (!playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-mob-damage", true)))) {
                 cancelFStuckTeleport((Player) damageee);
+                if(!combatList.contains(damageee.getUniqueId())){
+                    combatList.add(damagee.getUniqueId());
+                }
+                Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20 * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
                 cancelFFly((Player) damageee);
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damageee);
                 if (fplayer.isInspectMode()) {
@@ -167,6 +174,13 @@ public class FactionsEntityListener implements Listener {
             }
             if (damager instanceof Player) {
                 cancelFStuckTeleport((Player) damager);
+                if(!combatList.contains(damager.getUniqueId())){
+                    combatList.add(damager.getUniqueId());
+                }
+
+                Entity finalDamager = damager;
+                Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(finalDamager.getUniqueId()), 20 * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
+
                 cancelFFly((Player) damager);
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
                 if (fplayer.isInspectMode()) {

@@ -65,6 +65,7 @@ enable-faction-flight: true
 ffly:
   enemy-radius-check: 1 #How frequently to check enemy radius, in seconds. Set to 0 to disable checking.
   AutoEnable: true
+  CombatFlyCooldown: 10 #Cooldown in seconds for someone being in combat before their fly is automatically re-enabled
   enemies-near-disable-flight: true #This means F Stealth Will Be Redundant
   disable-flight-on-generic-damage: false #Any Damage a Player Takes Their Flight Will Be Disabled
   disable-flight-on-mob-damage: false #Any Damage a Player Takes From A Mob Their Flight Will Be Disabled
