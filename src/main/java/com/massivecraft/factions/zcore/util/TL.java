@@ -1145,6 +1145,7 @@ public enum TL {
     MISSION_MISSION_ALL_COMPLETED("&c&l[!] &7Your faction has completed all available missions."),
     MISSION_MISSION_FINISHED("&c&l[!] &7Your faction has successfully completed %1$s mission!"),
     COMMAND_MISSION_DESCRIPTION("Opens missions gui"),
+    MISSION_MISSION_CANCELLED("&c&l[!] &7You have cancelled your factions current mission!"),
     // F Global \\
 
 

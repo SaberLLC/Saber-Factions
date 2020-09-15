@@ -2,6 +2,7 @@ package com.massivecraft.factions.missions;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
@@ -63,6 +64,16 @@ public class MissionGUI implements FactionGUI {
         }
         if (configurationSection == null) return;
 
+        if(FactionsPlugin.getInstance().getConfig().getBoolean("Allow-Cancellation-Of-Missions") && fPlayer.getFaction().getMissions().containsKey(missionName)){
+            if (action == ClickType.RIGHT){
+                fPlayer.getFaction().getMissions().remove(missionName);
+                fPlayer.msg(TL.MISSION_MISSION_CANCELLED);
+                build();
+                fPlayer.getPlayer().openInventory(inventory);
+                return;
+            }
+        }
+
         int max = plugin.getConfig().getInt("MaximumMissionsAllowedAtOnce");
         if (fPlayer.getFaction().getMissions().size() >= max) {
             fPlayer.msg(TL.MISSION_MISSION_MAX_ALLOWED, max);
@@ -89,6 +100,7 @@ public class MissionGUI implements FactionGUI {
         if (missionSection == null) return;
 
         Mission mission = new Mission(missionName, missionSection.getString("Type"));
+
         fPlayer.getFaction().getMissions().put(missionName, mission);
         fPlayer.msg(TL.MISSION_MISSION_STARTED, fPlayer.describeTo(fPlayer.getFaction()), plugin.color(section.getString("Name")));
         build();
@@ -137,6 +149,7 @@ public class MissionGUI implements FactionGUI {
                 slots.put(slot, key);
             }
         }
+
         if (plugin.getConfig().getBoolean("Randomization.Enabled")) {
             ItemStack start;
             ItemMeta meta;
