@@ -372,7 +372,7 @@ public class FactionsPlayerListener implements Listener {
 
     private void initPlayer(Player player) {
         // Make sure that all online players do have a fplayer.
-        final FPlayer me = FPlayers.getInstance().getByPlayer(player);
+        FPlayer me = FPlayers.getInstance().getByPlayer(player);
         ((MemoryFPlayer) me).setName(player.getName());
 
         // Update the lastLoginTime for this fplayer
@@ -513,6 +513,8 @@ public class FactionsPlayerListener implements Listener {
             return;
         }
 
+
+
         // Yes we did change coord (:
 
         me.setLastStoodAt(to);
@@ -571,15 +573,6 @@ public class FactionsPlayerListener implements Listener {
                         }
                     }, 5);
                 }
-            }
-        }
-
-        if (FCmdRoot.instance.fFlyEnabled && changedFaction && !me.isAdminBypassing()) {
-            boolean canFly = me.canFlyAtLocation();
-            if (me.isFlying() && !canFly) {
-                me.setFlying(false, false);
-            } else if ((me.isAutoFlying() || FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")) && !me.isFlying() && canFly) {
-                me.setFlying(true, false);
             }
         }
 
@@ -831,11 +824,8 @@ public class FactionsPlayerListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onTeleportChange(PlayerTeleportEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-        if (me.isFlying()) {
-            me.setFlying(false);
-        }
 
-        FLocation to = new FLocation(event.getTo());
+        FLocation to = new FLocation(Objects.requireNonNull(event.getTo()));
         me.setLastStoodAt(to);
 
         // Check the location they're teleporting to and check if they can fly there.
@@ -845,8 +835,6 @@ public class FactionsPlayerListener implements Listener {
                 me.setFlying(false, false);
             } else if (me.isAutoFlying() && !me.isFlying() && canFly) {
                 me.setFlying(true);
-            } else {
-                me.setFlying(false);
             }
         }
     }

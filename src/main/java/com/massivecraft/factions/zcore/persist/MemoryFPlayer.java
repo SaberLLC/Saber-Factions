@@ -1036,7 +1036,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
 
-        if (getPlayer().getGameMode() == GameMode.CREATIVE || getPlayer().getGameMode() == GameMode.SPECTATOR) {
+        if (getPlayer() != null && getPlayer().getGameMode() == GameMode.CREATIVE || getPlayer().getGameMode() == GameMode.SPECTATOR) {
             return true;
         }
 
