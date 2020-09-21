@@ -37,6 +37,10 @@ public enum Access {
     }
 
     public String getName() {
+        return this.name;
+    }
+
+    public String getNameLowercase() {
         return this.name.toLowerCase();
     }
 

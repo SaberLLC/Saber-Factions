@@ -6,7 +6,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.FlightUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -71,7 +70,7 @@ public class CmdFly extends FCommand {
                 context.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(context.fPlayer));
             }
             return false;
-        } else if (FlightUtil.instance().enemiesNearby(context.fPlayer, Conf.stealthFlyCheckRadius) && !FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight", true)) {
+        } else if (context.fPlayer.checkIfNearbyEnemies() && !FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight", true)) {
             if (notify) {
                 context.msg(TL.COMMAND_FLY_ENEMY_NEAR);
             }

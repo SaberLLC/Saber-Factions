@@ -190,7 +190,7 @@ public class FactionsPlugin extends MPlugin {
             return;
         }
 
-        FlightUtil.get().wipe();
+        FlightEnhance.get().wipe();
 
         saveDefaultConfig();
         this.reloadConfig();
@@ -223,11 +223,7 @@ public class FactionsPlugin extends MPlugin {
         Factions.getInstance().getAllFactions().forEach(Faction::refreshFPlayers);
 
         if (getConfig().getBoolean("enable-faction-flight", true)) {
-            this.getServer().getScheduler().runTaskTimer(this, new FlightEnhance(), 1L, 1L);
-        }
-
-        if (getConfig().getBoolean("ffly.enemies-near-disable-flight", true)) {
-            FlightUtil.get().start();
+            FlightEnhance.get().start();
         }
 
 

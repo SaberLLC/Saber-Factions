@@ -19,7 +19,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.FlightUtil;
+import com.massivecraft.factions.util.FlightEnhance;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -424,7 +424,7 @@ public class FactionsPlayerListener implements Listener {
             FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), me.isSeeingChunk());
         }
 
-        FlightUtil.get().track(me);
+        FlightEnhance.get().track(me);
     }
 
     @EventHandler
@@ -448,7 +448,7 @@ public class FactionsPlayerListener implements Listener {
         me.setLastLoginTime(System.currentTimeMillis());
 
         me.logout(); // cache kills / deaths
-        FlightUtil.get().untrack(me);
+        FlightEnhance.get().untrack(me);
 
 
         // if player is waiting for fstuck teleport but leaves, remove
