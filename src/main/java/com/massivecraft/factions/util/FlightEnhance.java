@@ -111,9 +111,6 @@ public class FlightEnhance implements Trackable<FPlayer> {
             if (FPlayers.getInstance().getOnlinePlayers().size() == 1) {
                 return;
             }
-
-
-
             for (FPlayer player : this.players.asCycle().next()) {
 
                 if (player.isAdminBypassing()
@@ -123,19 +120,18 @@ public class FlightEnhance implements Trackable<FPlayer> {
 
                 FLocation fLocation = new FLocation(player.getPlayer().getLocation());
 
-                if(player.hasEnemiesNearby()) continue;
+                if (player.hasEnemiesNearby()) continue;
 
                 if (player.isFlying()) {
                     if (!player.canFlyAtLocation(fLocation)) {
                         player.setFlying(false, false);
                     }
-                } else if(player.canFlyAtLocation()
+                } else if (player.canFlyAtLocation()
                         && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")
-                        && !FactionsEntityListener.combatList.contains(player.getPlayer().getUniqueId())){
+                        && !FactionsEntityListener.combatList.contains(player.getPlayer().getUniqueId())) {
                     player.setFlying(true);
                 }
             }
         }
-
     }
 }
