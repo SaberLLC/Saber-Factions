@@ -463,7 +463,7 @@ public interface FPlayer extends EconomyParticipator {
 
     String getEnteringWarp();
 
-    boolean checkIfNearbyEnemies();
+    void checkIfNearbyEnemies();
 
     int getCooldown(String cmd);
 

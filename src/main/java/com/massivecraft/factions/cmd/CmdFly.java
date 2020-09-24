@@ -9,9 +9,14 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class CmdFly extends FCommand {
 
     public static final boolean fly = FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight");
+    public static List<UUID> falseList = new ArrayList<>();
 
     /**
      * @author FactionsUUID Team - Modified By CmdrKittens
@@ -49,6 +54,7 @@ public class CmdFly extends FCommand {
         // If false do nothing besides set
         if (!toggle) {
             context.fPlayer.setFlying(false);
+            falseList.add(context.fPlayer.getPlayer().getUniqueId());
             return;
         }
         // Do checks if true
@@ -59,6 +65,7 @@ public class CmdFly extends FCommand {
         context.doWarmUp(WarmUpUtil.Warmup.FLIGHT, TL.WARMUPS_NOTIFY_FLIGHT, "Fly", () -> {
             if (flyTest(context, notify)) {
                 context.fPlayer.setFlying(true);
+                falseList.remove(context.fPlayer.getPlayer().getUniqueId());
             }
         }, FactionsPlugin.getInstance().getConfig().getInt("warmups.f-fly", 0));
     }
@@ -70,10 +77,8 @@ public class CmdFly extends FCommand {
                 context.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(context.fPlayer));
             }
             return false;
-        } else if (context.fPlayer.checkIfNearbyEnemies() && !FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight", true)) {
-            if (notify) {
-                context.msg(TL.COMMAND_FLY_ENEMY_NEAR);
-            }
+        } else if (!FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight", true)) {
+            context.fPlayer.checkIfNearbyEnemies();
             return false;
         }
         return true;

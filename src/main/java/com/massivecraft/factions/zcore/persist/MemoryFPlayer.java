@@ -1192,10 +1192,11 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     @Override
-    public boolean checkIfNearbyEnemies() {
+    public void checkIfNearbyEnemies() {
         Player me = this.getPlayer();
 
-        if (me == null) return false;
+        if (me == null) return;
+        if (me.hasPermission("factions.fly.bypassnearbyenemycheck")) return;
         int radius = Conf.stealthFlyCheckRadius;
         for (Entity e : me.getNearbyEntities(radius, 255, radius)) {
             if (e == null) continue;
@@ -1204,16 +1205,18 @@ public abstract class MemoryFPlayer implements FPlayer {
                 if (eplayer == null) continue;
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
                 if (efplayer == null) continue;
-                if (efplayer.isVanished() || efplayer.getPlayer().getGameMode() == GameMode.CREATIVE || efplayer.getPlayer().getGameMode() == GameMode.SPECTATOR)
+                if (!me.canSee(eplayer) || efplayer.isVanished() || efplayer.getPlayer().getGameMode() == GameMode.CREATIVE || efplayer.getPlayer().getGameMode() == GameMode.SPECTATOR)
                     continue;
                 if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled()) {
+                    setFlying(false);
+                    msg(TL.COMMAND_FLY_ENEMY_NEAR);
+                    Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));
                     this.enemiesNearby = true;
-                    return true;
+                    return;
                 }
             }
         }
         this.enemiesNearby = false;
-        return false;
     }
 
     @Override

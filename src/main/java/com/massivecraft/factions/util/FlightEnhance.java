@@ -4,6 +4,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import me.lucko.helper.bucket.Bucket;
 import me.lucko.helper.bucket.factory.BucketFactory;
@@ -108,11 +109,7 @@ public class FlightEnhance implements Trackable<FPlayer> {
 
         @Override
         public void run() {
-            if (FPlayers.getInstance().getOnlinePlayers().size() == 1) {
-                return;
-            }
             for (FPlayer player : this.players.asCycle().next()) {
-
                 if (player.isAdminBypassing()
                         || player.getPlayer().isOp()
                         || player.getPlayer().getGameMode() == GameMode.CREATIVE
@@ -122,13 +119,16 @@ public class FlightEnhance implements Trackable<FPlayer> {
 
                 if (player.hasEnemiesNearby()) continue;
 
+                player.checkIfNearbyEnemies();
+
                 if (player.isFlying()) {
                     if (!player.canFlyAtLocation(fLocation)) {
                         player.setFlying(false, false);
                     }
                 } else if (player.canFlyAtLocation()
                         && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")
-                        && !FactionsEntityListener.combatList.contains(player.getPlayer().getUniqueId())) {
+                        && !FactionsEntityListener.combatList.contains(player.getPlayer().getUniqueId())
+                        && !CmdFly.falseList.contains(player.getPlayer().getUniqueId())) {
                     player.setFlying(true);
                 }
             }
