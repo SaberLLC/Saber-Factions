@@ -514,7 +514,6 @@ public class FactionsPlayerListener implements Listener {
         }
 
 
-
         // Yes we did change coord (:
 
         me.setLastStoodAt(to);
@@ -786,22 +785,6 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
-
-    @EventHandler
-    public void onLogoutMove(PlayerMoveEvent e) {
-        LogoutHandler handler = LogoutHandler.getByName(e.getPlayer().getName());
-
-        if (Objects.requireNonNull(e.getTo()).getBlockX() == e.getFrom().getBlockX() &&
-                e.getTo().getBlockY() == e.getFrom().getBlockY() &&
-                e.getTo().getBlockZ() == e.getFrom().getBlockZ())
-            return;
-
-        if (handler.isLogoutActive(e.getPlayer())) {
-            handler.cancelLogout(e.getPlayer());
-            e.getPlayer().sendMessage(String.valueOf(TL.COMMAND_LOGOUT_MOVED));
-        }
-        WaitExecutor.handleAction(e.getPlayer());
-    }
 
     @EventHandler
     public void onDamage(EntityDamageEvent e) {

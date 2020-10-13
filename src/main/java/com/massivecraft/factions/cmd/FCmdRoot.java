@@ -149,7 +149,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdFGlobal cmdFGlobal = new CmdFGlobal();
     public CmdViewChest cmdViewChest = new CmdViewChest();
     public CmdPoints cmdPoints = new CmdPoints();
-    public CmdLogout cmdLogout = new CmdLogout();
+    //public CmdLogout cmdLogout = new CmdLogout();
     public CmdShop cmdShop = new CmdShop();
     public CmdMissions cmdMissions = new CmdMissions();
     public CmdStrikes cmdStrikes = new CmdStrikes();
@@ -251,7 +251,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdStatus);
         this.addSubCommand(this.cmdStealth);
         this.addSubCommand(this.cmdStuck);
-        this.addSubCommand(this.cmdLogout);
+        //this.addSubCommand(this.cmdLogout);
         this.addSubCommand(this.cmdTag);
         this.addSubCommand(this.cmdTitle);
         this.addSubCommand(this.cmdPlayerTitleToggle);

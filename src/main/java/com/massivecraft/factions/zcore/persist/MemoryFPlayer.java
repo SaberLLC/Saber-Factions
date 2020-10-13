@@ -1203,6 +1203,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             if (e instanceof Player) {
                 Player eplayer = (((Player) e).getPlayer());
                 if (eplayer == null) continue;
+                if(eplayer.hasMetadata("NPC")) continue;
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
                 if (efplayer == null) continue;
                 if (!me.canSee(eplayer) || efplayer.isVanished() || efplayer.getPlayer().getGameMode() == GameMode.CREATIVE || efplayer.getPlayer().getGameMode() == GameMode.SPECTATOR)

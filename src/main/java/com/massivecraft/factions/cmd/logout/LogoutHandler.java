@@ -46,4 +46,8 @@ public class LogoutHandler {
             }
         }, Conf.logoutCooldown * 20L);
     }
+
+    public String getName() {
+        return name;
+    }
 }
