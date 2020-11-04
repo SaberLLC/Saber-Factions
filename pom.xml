@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-2.4.8-STABLE</version>
+    <version>1.6.9.5-2.5.0-STABLE</version>
     <packaging>jar</packaging>
 
     <name>SaberFactions</name>
