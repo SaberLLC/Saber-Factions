@@ -25,6 +25,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.adapters.*;
+import com.massivecraft.factions.util.flight.FlightEnhance;
 import com.massivecraft.factions.util.particle.BukkitParticleProvider;
 import com.massivecraft.factions.util.particle.PacketParticleProvider;
 import com.massivecraft.factions.util.particle.ParticleProvider;
@@ -190,8 +191,6 @@ public class FactionsPlugin extends MPlugin {
             return;
         }
 
-        FlightEnhance.get().wipe();
-
         saveDefaultConfig();
         this.reloadConfig();
         //Start wait task executor
@@ -223,7 +222,7 @@ public class FactionsPlugin extends MPlugin {
         Factions.getInstance().getAllFactions().forEach(Faction::refreshFPlayers);
 
         if (getConfig().getBoolean("enable-faction-flight", true)) {
-            FlightEnhance.get().start();
+            Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), new FlightEnhance(), 30L, 30L);
         }
 
 
