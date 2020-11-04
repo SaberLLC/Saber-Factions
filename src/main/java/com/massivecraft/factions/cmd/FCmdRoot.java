@@ -136,7 +136,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdBanner cmdBanner = new CmdBanner();
     public CmdTpBanner cmdTpBanner = new CmdTpBanner();
     public CmdKillHolograms cmdKillHolograms = new CmdKillHolograms();
-    public CmdInspect cmdInspect = new CmdInspect();
+    //public CmdInspect cmdInspect = new CmdInspect();
     public CmdCoords cmdCoords = new CmdCoords();
     public CmdShowClaims cmdShowClaims = new CmdShowClaims();
     public CmdLowPower cmdLowPower = new CmdLowPower();
@@ -343,13 +343,13 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             checkEnabled = true;
         }
         //CoreProtect
-        if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null && !coreProtectEnabled) {
-            FactionsPlugin.getInstance().log("Found CoreProtect, enabling Inspect");
-            this.addSubCommand(this.cmdInspect);
-            coreProtectEnabled = true;
-        } else {
-            FactionsPlugin.getInstance().log("CoreProtect not found, disabling Inspect");
-        }
+        //if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null && !coreProtectEnabled) {
+        //    FactionsPlugin.getInstance().log("Found CoreProtect, enabling Inspect");
+        //    this.addSubCommand(this.cmdInspect);
+        //    coreProtectEnabled = true;
+        //} else {
+        //    FactionsPlugin.getInstance().log("CoreProtect not found, disabling Inspect");
+        //}
         //FTOP
         if ((Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null) && !internalFTOPEnabled) {
             FactionsPlugin.getInstance().log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
