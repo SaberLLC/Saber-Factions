@@ -19,7 +19,6 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.flight.FlightEnhance;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.zcore.fperms.Access;

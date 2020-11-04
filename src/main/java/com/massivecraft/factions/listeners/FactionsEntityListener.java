@@ -33,7 +33,12 @@ public class FactionsEntityListener implements Listener {
      */
 
     private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
+    /**
+     * Who can I hurt? I can never hurt members or allies. I can always hurt enemies. I can hurt neutrals as long as
+     * they are outside their own territory.
+     */
 
+    public static List<UUID> combatList = new ArrayList<>();
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDeath(EntityDeathEvent event) {
@@ -85,13 +90,6 @@ public class FactionsEntityListener implements Listener {
             fplayer.msg(msg, fplayer.getPowerRounded(), fplayer.getPowerMaxRounded());
         }
     }
-
-    /**
-     * Who can I hurt? I can never hurt members or allies. I can always hurt enemies. I can hurt neutrals as long as
-     * they are outside their own territory.
-     */
-
-    public static List<UUID> combatList = new ArrayList<>();
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
@@ -161,7 +159,7 @@ public class FactionsEntityListener implements Listener {
             }
             if (damageee != null && damageee instanceof Player && (playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-player-damage", true) || (!playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-mob-damage", true)))) {
                 cancelFStuckTeleport((Player) damageee);
-                if(!combatList.contains(damageee.getUniqueId())){
+                if (!combatList.contains(damageee.getUniqueId())) {
                     combatList.add(damagee.getUniqueId());
                 }
                 Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20 * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
@@ -174,7 +172,7 @@ public class FactionsEntityListener implements Listener {
             }
             if (damager instanceof Player) {
                 cancelFStuckTeleport((Player) damager);
-                if(!combatList.contains(damager.getUniqueId())){
+                if (!combatList.contains(damager.getUniqueId())) {
                     combatList.add(damager.getUniqueId());
                 }
 
