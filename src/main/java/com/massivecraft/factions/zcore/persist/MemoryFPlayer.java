@@ -1199,19 +1199,19 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (me.hasPermission("factions.fly.bypassnearbyenemycheck")) return;
         int radius = Conf.stealthFlyCheckRadius;
         for (Entity e : me.getNearbyEntities(radius, 255, radius)) {
-            if (e == null) continue;
             if (e instanceof Player) {
                 Player eplayer = (((Player) e).getPlayer());
                 if (eplayer == null) continue;
-                if(eplayer.hasMetadata("NPC")) continue;
+                if (eplayer.hasMetadata("NPC")) continue;
                 FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
                 if (efplayer == null) continue;
-                if (!me.canSee(eplayer) || efplayer.isVanished() || efplayer.getPlayer().getGameMode() == GameMode.CREATIVE || efplayer.getPlayer().getGameMode() == GameMode.SPECTATOR)
-                    continue;
+                if (!me.canSee(eplayer) || efplayer.isVanished()) continue;
                 if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled()) {
-                    setFlying(false);
-                    msg(TL.COMMAND_FLY_ENEMY_NEAR);
-                    Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));
+                    if(me.isFlying()) {
+                        setFlying(false);
+                        msg(TL.COMMAND_FLY_ENEMY_NEAR);
+                        Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));
+                    }
                     this.enemiesNearby = true;
                     return;
                 }
