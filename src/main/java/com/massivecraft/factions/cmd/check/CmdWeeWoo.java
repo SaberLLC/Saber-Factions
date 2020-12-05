@@ -8,7 +8,7 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 public class CmdWeeWoo extends FCommand {
 
@@ -47,8 +47,8 @@ public class CmdWeeWoo extends FCommand {
                 if (textChannel == null) {
                     return;
                 }
-                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.core.Permission.MESSAGE_READ, net.dv8tion.jda.core.Permission.MESSAGE_WRITE)) {
-                    textChannel.getGuild().getOwner().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
+                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.api.Permission.MESSAGE_READ, net.dv8tion.jda.api.Permission.MESSAGE_WRITE)) {
+                    textChannel.getGuild().retrieveOwner().complete().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
                     return;
                 }
                 textChannel.sendMessage(TL.WEEWOO_STARTED_DISCORD.format(context.fPlayer.getNameAndTag())).queue();
@@ -68,8 +68,8 @@ public class CmdWeeWoo extends FCommand {
                 if (textChannel == null) {
                     return;
                 }
-                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.core.Permission.MESSAGE_READ, net.dv8tion.jda.core.Permission.MESSAGE_WRITE)) {
-                    textChannel.getGuild().getOwner().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
+                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.api.Permission.MESSAGE_READ, net.dv8tion.jda.api.Permission.MESSAGE_WRITE)) {
+                    textChannel.getGuild().retrieveOwner().complete().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
                     return;
                 }
                 textChannel.sendMessage(TL.WEEWOO_STOPPED_DISCORD.format(context.fPlayer.getNameAndTag())).queue();

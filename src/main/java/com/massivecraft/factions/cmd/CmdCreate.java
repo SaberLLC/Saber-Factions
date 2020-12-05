@@ -11,8 +11,8 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.exceptions.HierarchyException;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -121,15 +121,15 @@ public class CmdCreate extends FCommand {
         //Discord
         try {
             if (Discord.useDiscord && context.fPlayer.discordSetup() && Discord.isInMainGuild(context.fPlayer.discordUser()) && Discord.mainGuild != null) {
-                Member m = Discord.mainGuild.getMember(context.fPlayer.discordUser());
+                Member m = Discord.mainGuild.retrieveMember(context.fPlayer.discordUser()).complete();
                 if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles")) {
-                    Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.createFactionRole(faction.getTag())).queue();
+                    Discord.mainGuild.addRoleToMember(m, Discord.createFactionRole(faction.getTag())).queue();
                 }
                 if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && Discord.leader != null) {
-                    Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.leader).queue();
+                    Discord.mainGuild.addRoleToMember(m, Discord.leader).queue();
                 }
                 if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) {
-                    Discord.mainGuild.getController().setNickname(m, Discord.getNicknameString(context.fPlayer)).queue();
+                    Discord.mainGuild.modifyNickname(m, Discord.getNicknameString(context.fPlayer)).queue();
                 }
             }
         } catch (HierarchyException e) {

@@ -1,20 +1,21 @@
 package com.massivecraft.factions.discord;
 
+import club.minnced.discord.webhook.WebhookClient;
+import club.minnced.discord.webhook.WebhookClientBuilder;
+import club.minnced.discord.webhook.send.WebhookMessage;
+import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import mkremins.fanciful.FancyMessage;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.Webhook;
-import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.webhook.WebhookClient;
-import net.dv8tion.jda.webhook.WebhookMessage;
-import net.dv8tion.jda.webhook.WebhookMessageBuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.Webhook;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -46,13 +47,17 @@ public class FactionChatHandler extends ListenerAdapter {
             textChannel.sendMessage("Missing `Manage Webhooks` permission in this channel").queue();
             return;
         }
-        Webhook webhook = (textChannel.getWebhooks().complete()).stream().filter(w -> w.getName().equals(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.webhookName"))).findAny().orElse(null);
-        WebhookClient webhookClient;
-        if (webhook != null) {
-            webhookClient = webhook.newClient().build();
-        } else {
-            webhookClient = textChannel.createWebhook(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.webhookName")).complete().newClient().build();
-        }
+
+        Webhook webhook = textChannel.createWebhook(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.webhookName")).complete();
+        WebhookClientBuilder builder = new WebhookClientBuilder(webhook.getUrl()); // or id, token
+        builder.setThreadFactory((job) -> {
+            Thread thread = new Thread(job);
+            thread.setName("WebHook Parse Thread");
+            thread.setDaemon(true);
+            return thread;
+        });
+        builder.setWait(true);
+        WebhookClient client = builder.build();
         if (message.contains("@") && message.contains("#")) {
             List<String> x = new ArrayList<>(Arrays.asList(message.split(" ")));
             for (String y : x) {
@@ -97,13 +102,13 @@ public class FactionChatHandler extends ListenerAdapter {
         }
         if (messageWithMentions != null) {
             WebhookMessage webhookMessage = new WebhookMessageBuilder().setUsername(ChatColor.stripColor(username)).setAvatarUrl(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.avatarUrl").replace("%uuid%", uuid.toString())).setContent(ChatColor.stripColor(messageWithMentions)).build();
-            webhookClient.send(webhookMessage).join();
-            webhookClient.close();
+            client.send(webhookMessage).join();
+            client.close();
             return;
         }
         WebhookMessage webhookMessage = new WebhookMessageBuilder().setUsername(ChatColor.stripColor(username)).setAvatarUrl(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.avatarUrl").replace("%uuid%", uuid.toString())).setContent(ChatColor.stripColor(message)).build();
-        webhookClient.send(webhookMessage).join();
-        webhookClient.close();
+        client.send(webhookMessage).join();
+        client.close();
     }
 
     @Override

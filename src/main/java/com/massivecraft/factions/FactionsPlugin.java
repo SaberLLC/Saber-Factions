@@ -96,7 +96,6 @@ public class FactionsPlugin extends MPlugin {
     private Integer AutoLeaveTask = null;
     private boolean hookedPlayervaults;
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
-    private SeeChunkUtil seeChunkUtil;
     private ParticleProvider particleProvider;
     private boolean mvdwPlaceholderAPIManager = false;
     private Listener[] eventsListener;
@@ -248,13 +247,6 @@ public class FactionsPlugin extends MPlugin {
             particleProvider = new BukkitParticleProvider();
         }
         getLogger().info(txt.parse("Using %1s as a particle provider", particleProvider.name()));
-
-        if (getConfig().getBoolean("see-chunk.particles")) {
-            double delay = Math.floor(getConfig().getDouble("see-chunk.interval") * 20);
-            seeChunkUtil = new SeeChunkUtil();
-            seeChunkUtil.runTaskTimer(this, 0, (long) delay);
-        }
-
 
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
@@ -618,10 +610,6 @@ public class FactionsPlugin extends MPlugin {
 
     public ParticleProvider getParticleProvider() {
         return particleProvider;
-    }
-
-    public SeeChunkUtil getSeeChunkUtil() {
-        return seeChunkUtil;
     }
 
     public TimerManager getTimerManager() {

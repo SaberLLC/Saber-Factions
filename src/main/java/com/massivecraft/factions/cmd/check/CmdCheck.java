@@ -11,9 +11,10 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.TextChannel;
+
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.OfflinePlayer;
 
 import java.awt.*;
@@ -98,8 +99,8 @@ public class CmdCheck extends FCommand {
                 if (textChannel == null) {
                     return;
                 }
-                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.core.Permission.MESSAGE_READ, net.dv8tion.jda.core.Permission.MESSAGE_WRITE)) {
-                    textChannel.getGuild().getOwner().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
+                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.api.Permission.MESSAGE_READ, net.dv8tion.jda.api.Permission.MESSAGE_WRITE)) {
+                    textChannel.getGuild().retrieveOwner().complete().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
                     return;
                 }
                 MessageEmbed embed = new EmbedBuilder().setColor(Color.MAGENTA).setTitle("Walls checked by " + context.fPlayer.getNameAndTag()).setFooter(simpleDateFormat.format(new Date(currentTime)), null).build();
@@ -131,8 +132,8 @@ public class CmdCheck extends FCommand {
                 if (textChannel == null) {
                     return;
                 }
-                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.core.Permission.MESSAGE_READ, net.dv8tion.jda.core.Permission.MESSAGE_WRITE)) {
-                    textChannel.getGuild().getOwner().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
+                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.api.Permission.MESSAGE_READ, net.dv8tion.jda.api.Permission.MESSAGE_WRITE)) {
+                    textChannel.getGuild().retrieveOwner().complete().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
                     return;
                 }
                 MessageEmbed embed = new EmbedBuilder().setColor(Color.MAGENTA).setTitle("Buffers checked by " + context.fPlayer.getNameAndTag()).setFooter(simpleDateFormat.format(new Date(currentTime)), null).build();

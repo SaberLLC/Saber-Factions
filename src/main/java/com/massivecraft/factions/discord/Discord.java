@@ -3,13 +3,12 @@ package com.massivecraft.factions.discord;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import net.dv8tion.jda.core.AccountType;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.exceptions.HierarchyException;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
+import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import javax.security.auth.login.LoginException;
 import java.util.HashMap;
@@ -69,8 +68,8 @@ public class Discord {
             return false;
         }
         try {
-            jda = new JDABuilder(AccountType.BOT).setToken(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.token")).buildBlocking();
-        } catch (LoginException | InterruptedException e) {
+            jda = JDABuilder.createDefault(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.token")).build();
+        } catch (LoginException e) {
             FactionsPlugin.getInstance().getLogger().log(Level.WARNING, "Discord bot was unable to start! Please verify the bot token is correct.");
             setupLog.add(new DiscordSetupAttempt(e.getMessage(), System.currentTimeMillis()));
             return false;
@@ -189,7 +188,7 @@ public class Discord {
         sb.append(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.factionRoleSuffix"));
         if (!doesFactionRoleExist(sb.toString())) {
             try {
-                return mainGuild.getController().createRole()
+                return mainGuild.createRole()
                         .setName(sb.toString())
                         .setColor(roleColor)
                         .setPermissions(Permission.EMPTY_PERMISSIONS)
@@ -238,7 +237,7 @@ public class Discord {
         if (mainGuild.getMember(f.discordUser()) == null) {
             return;
         }
-        mainGuild.getController().setNickname(mainGuild.getMember(f.discordUser()), f.discordUser().getName()).queue();
+        mainGuild.modifyNickname(mainGuild.retrieveMember(f.discordUser()).complete(), f.discordUser().getName()).queue();
     }
 
     public static void changeFactionTag(Faction f, String oldTag) {
@@ -248,13 +247,13 @@ public class Discord {
         for (FPlayer fp : f.getFPlayers()) {
             if (fp.discordSetup() && isInMainGuild(fp.discordUser())) {
                 try {
-                    Member m = mainGuild.getMember(fp.discordUser());
+                    Member m = mainGuild.retrieveMember(fp.discordUser()).complete();
                     if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) {
-                        mainGuild.getController().setNickname(m, Discord.getNicknameString(fp)).queue();
+                        mainGuild.modifyNickname(m, Discord.getNicknameString(fp)).queue();
                     }
                     if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles")) {
-                        mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(getRoleFromName(oldTag))).queue();
-                        mainGuild.getController().addSingleRoleToMember(m, Objects.requireNonNull(createFactionRole(f.getTag()))).queue();
+                        mainGuild.removeRoleFromMember(m, Objects.requireNonNull(getRoleFromName(oldTag))).queue();
+                        mainGuild.addRoleToMember(m, Objects.requireNonNull(createFactionRole(f.getTag()))).queue();
                     }
                 } catch (HierarchyException e) {
                     System.out.print(e.getMessage());

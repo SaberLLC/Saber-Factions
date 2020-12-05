@@ -23,9 +23,9 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.exceptions.HierarchyException;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -293,16 +293,16 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (!event.isCancelled()) {
             try {
                 if (Discord.useDiscord && this.discordSetup() && Discord.isInMainGuild(this.discordUser()) && Discord.mainGuild != null) {
-                    Member m = Discord.mainGuild.getMember(this.discordUser());
+                    Member m = Discord.mainGuild.retrieveMember(this.discordUser()).complete();
                     if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && this.role == Role.LEADER && event.getTo() != Role.LEADER) {
-                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.mainGuild.getRoleById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.leaderRoleID"))).queue();
+                        Discord.mainGuild.removeRoleFromMember(m, Discord.mainGuild.getRoleById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.leaderRoleID"))).queue();
                     }
                     if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && event.getTo() == Role.LEADER) {
-                        Discord.mainGuild.getController().addSingleRoleToMember(m, Discord.mainGuild.getRoleById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.leaderRoleID"))).queue();
+                        Discord.mainGuild.addRoleToMember(m, Discord.mainGuild.getRoleById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.leaderRoleID"))).queue();
                     }
                     this.role = event.getTo();
                     if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) {
-                        Discord.mainGuild.getController().setNickname(m, Discord.getNicknameString(this)).queue();
+                        Discord.mainGuild.modifyNickname(m, Discord.getNicknameString(this)).queue();
                     }
                 } else {
                     this.role = event.getTo();
@@ -424,11 +424,11 @@ public abstract class MemoryFPlayer implements FPlayer {
             //Discord
             try {
                 if (Discord.useDiscord && this.discordSetup() && Discord.isInMainGuild(this.discordUser()) && Discord.mainGuild != null) {
-                    Member m = Discord.mainGuild.getMember(this.discordUser());
+                    Member m = Discord.mainGuild.retrieveMember(this.discordUser()).complete();
                     if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && this.role == Role.LEADER && Discord.leader != null)
-                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Discord.leader).queue();
+                        Discord.mainGuild.removeRoleFromMember(m, Discord.leader).queue();
                     if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles"))
-                        Discord.mainGuild.getController().removeSingleRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getFaction().getTag()))).queue();
+                        Discord.mainGuild.removeRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getFaction().getTag()))).queue();
                     if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags"))
                         Discord.resetNick(this);
                 }
@@ -1082,7 +1082,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setSeeingChunk(boolean seeingChunk) {
         this.seeingChunk = seeingChunk;
-        FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(getId()), seeingChunk);
     }
 
 

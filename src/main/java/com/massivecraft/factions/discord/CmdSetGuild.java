@@ -8,10 +8,10 @@ import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.events.message.priv.react.PrivateMessageReactionAddEvent;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.message.priv.react.PrivateMessageReactionAddEvent;
 import org.bukkit.ChatColor;
 
 import java.util.concurrent.TimeUnit;
@@ -64,7 +64,7 @@ public class CmdSetGuild extends FCommand {
                     context.msg(TL.SET_GUILD_ID_GUILD_ALREADY_LINKED);
                 } else {
                     context.msg(TL.SET_GUILD_ID_PMING_OWNER);
-                    User user = guild.getOwner().getUser();
+                    User user = guild.retrieveOwner().complete().getUser();
                     Guild finalGuild = guild;
                     Guild finalGuild1 = guild;
                     user.openPrivateChannel().queue((privateChannel) -> privateChannel.sendMessage("Link guild **" + finalGuild1.getName() + "** to faction **" + ChatColor.stripColor(faction.getTag()) + "**?").queue((message) -> {

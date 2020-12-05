@@ -30,8 +30,8 @@ import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -419,9 +419,6 @@ public class FactionsPlayerListener implements Listener {
             me.setFlying(false);
         }
 
-        if (FactionsPlugin.getInstance().getSeeChunkUtil() != null) {
-            FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), me.isSeeingChunk());
-        }
     }
 
     @EventHandler
@@ -461,10 +458,6 @@ public class FactionsPlayerListener implements Listener {
             for (FPlayer player : myFaction.getFPlayersWhereOnline(true))
                 if (player != me && player.isMonitoringJoins()) player.msg(TL.FACTION_LOGOUT, me.getName());
 
-        }
-
-        if (FactionsPlugin.getInstance().getSeeChunkUtil() != null) {
-            FactionsPlugin.getInstance().getSeeChunkUtil().updatePlayerInfo(UUID.fromString(me.getId()), false);
         }
 
         FScoreboard.remove(me, event.getPlayer());
@@ -943,13 +936,17 @@ public class FactionsPlayerListener implements Listener {
         String target = msg[msg.length - 1].replace("@", "");
         List<String> targets = new ArrayList<>();
         if (target.equals("")) {
-            for (Member m : t.getMembers()) {
-                targets.add("@" + m.getUser().getName() + "#" + m.getUser().getDiscriminator());
+            if (t != null) {
+                for (Member m : t.getMembers()) {
+                    targets.add("@" + m.getUser().getName() + "#" + m.getUser().getDiscriminator());
+                }
             }
         } else {
-            for (Member m : t.getMembers()) {
-                if (m.getEffectiveName().contains(target) | m.getUser().getName().contains(target)) {
-                    targets.add("@" + m.getUser().getName() + "#" + m.getUser().getDiscriminator());
+            if (t != null) {
+                for (Member m : t.getMembers()) {
+                    if (m.getEffectiveName().contains(target) | m.getUser().getName().contains(target)) {
+                        targets.add("@" + m.getUser().getName() + "#" + m.getUser().getDiscriminator());
+                    }
                 }
             }
         }
