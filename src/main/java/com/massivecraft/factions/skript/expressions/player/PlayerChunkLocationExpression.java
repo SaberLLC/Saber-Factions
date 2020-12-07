@@ -9,7 +9,6 @@ import ch.njol.util.Kleenean;
 import com.massivecraft.factions.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.block.BlockBreakEvent;
 
 public class PlayerChunkLocationExpression extends SimpleExpression<String> {
 

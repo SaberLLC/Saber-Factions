@@ -10,7 +10,6 @@ import com.massivecraft.factions.cmd.chest.CmdChest;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
 import com.massivecraft.factions.cmd.grace.CmdGrace;
-import com.massivecraft.factions.cmd.logout.CmdLogout;
 import com.massivecraft.factions.cmd.points.CmdPoints;
 import com.massivecraft.factions.cmd.relational.CmdRelationAlly;
 import com.massivecraft.factions.cmd.relational.CmdRelationEnemy;

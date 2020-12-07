@@ -2,7 +2,6 @@ package com.massivecraft.factions.missions;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
@@ -64,8 +63,8 @@ public class MissionGUI implements FactionGUI {
         }
         if (configurationSection == null) return;
 
-        if(FactionsPlugin.getInstance().getConfig().getBoolean("Allow-Cancellation-Of-Missions") && fPlayer.getFaction().getMissions().containsKey(missionName)){
-            if (action == ClickType.RIGHT){
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("Allow-Cancellation-Of-Missions") && fPlayer.getFaction().getMissions().containsKey(missionName)) {
+            if (action == ClickType.RIGHT) {
                 fPlayer.getFaction().getMissions().remove(missionName);
                 fPlayer.msg(TL.MISSION_MISSION_CANCELLED);
                 build();

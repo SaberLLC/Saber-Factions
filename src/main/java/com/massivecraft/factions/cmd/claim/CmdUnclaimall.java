@@ -13,7 +13,6 @@ import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
-import org.bukkit.metadata.FixedMetadataValue;
 
 public class CmdUnclaimall extends FCommand {
 

@@ -623,7 +623,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     // Power
     //----------------------------------------------//
     public double getPower() {
-        if(this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")){
+        if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
             return 0.0;
         }
 
@@ -672,7 +672,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void updatePower() {
-        if(this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")){
+        if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
             return;
         }
 
@@ -1214,7 +1214,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                 if (efplayer == null) continue;
                 if (!me.canSee(eplayer) || efplayer.isVanished()) continue;
                 if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled()) {
-                    if(me.isFlying()) {
+                    if (me.isFlying()) {
                         setFlying(false);
                         msg(TL.COMMAND_FLY_ENEMY_NEAR);
                         Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));

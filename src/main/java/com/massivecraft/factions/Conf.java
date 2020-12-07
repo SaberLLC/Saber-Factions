@@ -570,7 +570,7 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
         safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
         safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE);
-        if(FactionsPlugin.getInstance().mc116){
+        if (FactionsPlugin.getInstance().mc116) {
             safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
         } else {
             safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
