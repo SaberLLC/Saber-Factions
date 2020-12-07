@@ -473,7 +473,7 @@ public enum TL {
     COMMAND_INVITE_TOINVITE("to invite someone"),
     COMMAND_INVITE_FORINVITE("for inviting someone"),
     COMMAND_INVITE_CLICKTOJOIN("Click to join!"),
-    COMMAND_INVITE_INVITEDYOU("&l[!]&7 &c%1$s&7 has invited you to join &c%2$s&7"),
+    COMMAND_INVITE_INVITEDYOU("&c&l[!]&7 &c%1$s&7 has invited you to join &c%2$s&7"),
     COMMAND_INVITE_INVITED("&c&l[!]&7 &c%1$s&7 invited &c%2$s&7 to your faction."),
     COMMAND_ALTINVITE_INVITED_ALT("&c&l[!]&7 &c%1$s&7 invited &c%2$s&7 to your faction as an alt."),
 
