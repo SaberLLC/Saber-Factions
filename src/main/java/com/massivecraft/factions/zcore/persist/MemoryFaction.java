@@ -1072,7 +1072,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (this.hasPermanentPower()) return this.getPermanentPower();
         double ret = 0;
         for (FPlayer fplayer : fplayers) ret += fplayer.getPower();
-        for (FPlayer fplayer : alts) ret += fplayer.getPower();
+        if(FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
+            for (FPlayer fplayer : alts) {
+                ret += fplayer.getPower();
+            }
+        }
         if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
             ret = Conf.powerFactionMax;
         }

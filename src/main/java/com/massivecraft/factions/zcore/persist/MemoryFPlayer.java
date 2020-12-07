@@ -623,6 +623,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     // Power
     //----------------------------------------------//
     public double getPower() {
+        if(this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")){
+            return 0.0;
+        }
+
         this.updatePower();
         return this.power;
     }
@@ -668,6 +672,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void updatePower() {
+        if(this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")){
+            return;
+        }
+
         if (this.isOffline()) {
             losePowerFromBeingOffline();
             if (!Conf.powerRegenOffline) {

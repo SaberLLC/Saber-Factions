@@ -682,6 +682,7 @@ f-inventory-see:
 #Faction Alts for extra power, sand printing, afking spawners
 f-alts:
   Enabled: true
+  Have-Power: true
 
 ############################################################
 # +------------------------------------------------------+ #

@@ -45,6 +45,7 @@ public class CmdKickAlt extends FCommand {
         }
 
         FPlayer toKick = context.argIsSet(0) ? context.argAsBestFPlayerMatch(0) : null;
+
         if (toKick == null) {
             context.msg(TL.COMMAND_ALTKICK_NOTMEMBER);
             return;
