@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-2.6.0-STABLE</version>
+    <version>1.6.9.5-2.6.1-STABLE</version>
     <packaging>jar</packaging>
 
     <name>SaberFactions</name>
@@ -175,11 +175,6 @@
                     <groupId>com.google.code.gson</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.ocpsoft.prettytime</groupId>
-            <artifactId>prettytime</artifactId>
-            <version>4.0.0.Final</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -491,10 +486,6 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>org.ocpsoft.prettytime</id>
-            <url>https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime</url>
         </repository>
         <repository>
             <id>rayzr-repo</id>
