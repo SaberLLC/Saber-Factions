@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
@@ -37,6 +38,11 @@ public class CmdSetPower extends FCommand {
 
         if (value > targetPlayer.getPowerMaxRounded()) {
             context.sender.sendMessage(ChatColor.RED + "Number must be less than the players max-power.");
+            return;
+        }
+
+        if(targetPlayer.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
+            context.sender.sendMessage(ChatColor.RED + "The target cannot be an alt account.");
             return;
         }
 

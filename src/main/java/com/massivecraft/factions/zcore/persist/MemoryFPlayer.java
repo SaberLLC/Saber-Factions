@@ -640,14 +640,23 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public double getPowerMax() {
+        if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
+            return 0.0;
+        }
         return Conf.powerPlayerMax + this.powerBoost;
     }
 
     public double getPowerMin() {
+        if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
+            return 0.0;
+        }
         return Conf.powerPlayerMin + this.powerBoost;
     }
 
     public int getPowerRounded() {
+        if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
+            return 0;
+        }
         return (int) Math.round(this.getPower());
     }
 
@@ -656,10 +665,16 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public int getPowerMaxRounded() {
+        if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
+            return 0;
+        }
         return (int) Math.round(this.getPowerMax());
     }
 
     public int getPowerMinRounded() {
+        if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
+            return 0;
+        }
         return (int) Math.round(this.getPowerMin());
     }
 
