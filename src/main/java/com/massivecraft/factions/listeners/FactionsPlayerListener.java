@@ -590,49 +590,49 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
-    //inspect
-    @EventHandler
-    public void onInspect(PlayerInteractEvent e) {
-        if (e.getAction().name().contains("BLOCK")) {
-            FPlayer fplayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
-            if (!fplayer.isInspectMode()) {
-                return;
-            }
-            e.setCancelled(true);
-            if (!fplayer.isAdminBypassing()) {
-                if (!fplayer.hasFaction()) {
-                    fplayer.setInspectMode(false);
-                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED_NOFAC);
-                    return;
-                }
-                if (fplayer.getFaction() != Board.getInstance().getFactionAt(new FLocation(e.getPlayer().getLocation()))) {
-                    fplayer.msg(TL.COMMAND_INSPECT_NOTINCLAIM);
-                    return;
-                }
-            } else {
-                fplayer.msg(TL.COMMAND_INSPECT_BYPASS);
-            }
-            List<String[]> info = CoreProtect.getInstance().getAPI().blockLookup(e.getClickedBlock(), 0);
-            if (info.size() == 0) {
-                e.getPlayer().sendMessage(TL.COMMAND_INSPECT_NODATA.toString());
-                return;
-            }
-            Player player = e.getPlayer();
-            CoreProtectAPI coAPI = CoreProtect.getInstance().getAPI();
-            player.sendMessage(TL.COMMAND_INSPECT_HEADER.toString().replace("{x}", e.getClickedBlock().getX() + "")
-                    .replace("{y}", e.getClickedBlock().getY() + "")
-                    .replace("{z}", e.getClickedBlock().getZ() + ""));
-            String rowFormat = TL.COMMAND_INSPECT_ROW.toString();
-            for (String[] strings : info) {
-                CoreProtectAPI.ParseResult row = coAPI.parseResult(strings);
-                player.sendMessage(rowFormat
-                        .replace("{time}", convertTime(row.getTime()))
-                        .replace("{action}", row.getActionString())
-                        .replace("{player}", row.getPlayer())
-                        .replace("{block-type}", row.getType().toString().toLowerCase()));
-            }
-        }
-    }
+    ////inspect
+    //@EventHandler
+    //public void onInspect(PlayerInteractEvent e) {
+    //    if (e.getAction().name().contains("BLOCK")) {
+    //        FPlayer fplayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
+    //        if (!fplayer.isInspectMode()) {
+    //            return;
+    //        }
+    //        e.setCancelled(true);
+    //        if (!fplayer.isAdminBypassing()) {
+    //            if (!fplayer.hasFaction()) {
+    //                fplayer.setInspectMode(false);
+    //                fplayer.msg(TL.COMMAND_INSPECT_DISABLED_NOFAC);
+    //                return;
+    //            }
+    //            if (fplayer.getFaction() != Board.getInstance().getFactionAt(new FLocation(e.getPlayer().getLocation()))) {
+    //                fplayer.msg(TL.COMMAND_INSPECT_NOTINCLAIM);
+    //                return;
+    //            }
+    //        } else {
+    //            fplayer.msg(TL.COMMAND_INSPECT_BYPASS);
+    //        }
+    //        List<String[]> info = CoreProtect.getInstance().getAPI().blockLookup(e.getClickedBlock(), 0);
+    //        if (info.size() == 0) {
+    //            e.getPlayer().sendMessage(TL.COMMAND_INSPECT_NODATA.toString());
+    //            return;
+    //        }
+    //        Player player = e.getPlayer();
+    //        CoreProtectAPI coAPI = CoreProtect.getInstance().getAPI();
+    //        player.sendMessage(TL.COMMAND_INSPECT_HEADER.toString().replace("{x}", e.getClickedBlock().getX() + "")
+    //                .replace("{y}", e.getClickedBlock().getY() + "")
+    //                .replace("{z}", e.getClickedBlock().getZ() + ""));
+    //        String rowFormat = TL.COMMAND_INSPECT_ROW.toString();
+    //        for (String[] strings : info) {
+    //            CoreProtectAPI.ParseResult row = coAPI.parseResult(strings);
+    //            player.sendMessage(rowFormat
+    //                    .replace("{time}", convertTime(row.getTime()))
+    //                    .replace("{action}", row.getActionString())
+    //                    .replace("{player}", row.getPlayer())
+    //                    .replace("{block-type}", row.getType().toString().toLowerCase()));
+    //        }
+    //    }
+    //}
 
     //For disabling enderpearl throws
     @EventHandler
@@ -693,11 +693,11 @@ public class FactionsPlayerListener implements Listener {
         // Do type null checks so if XMaterial has a parsing issue and fills null as a value it will not bypass.
         // territoryCancelAndAllowItemUseMaterial bypass the protection system but only if they're not clicking on territoryDenySwitchMaterials
         // if they're clicking on territoryDenySwitchMaterials, let the protection system handle the permissions
-        if (type != null && !Conf.territoryDenySwitchMaterials.contains(block.getType())) {
-            if (Conf.territoryCancelAndAllowItemUseMaterial.contains(event.getPlayer().getItemInHand().getType()) && !Conf.territoryDenySwitchMaterials.contains(block.getType())) {
-                return;
-            }
-        }
+        //if (type != null && !Conf.territoryDenySwitchMaterials.contains(block.getType())) {
+        //    if (Conf.territoryCancelAndAllowItemUseMaterial.contains(event.getPlayer().getItemInHand().getType()) && !Conf.territoryDenySwitchMaterials.contains(block.getType())) {
+        //        return;
+        //    }
+        //}
 
         if (GetPermissionFromUsableBlock(block.getType()) != null) {
             if (!canPlayerUseBlock(player, block, false)) {
