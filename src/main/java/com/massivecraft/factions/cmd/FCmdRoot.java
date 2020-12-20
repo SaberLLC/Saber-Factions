@@ -379,7 +379,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         }
         if (FactionsPlugin.getInstance().getConfig().getBoolean("F-Shop.Enabled", false) && !fShopEnabled) {
             this.addSubCommand(this.cmdShop);
-            new ShopGUIFrame(null).checkShopConfig();
             fShopEnabled = true;
         }
         if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled", false) && !invSeeEnabled) {

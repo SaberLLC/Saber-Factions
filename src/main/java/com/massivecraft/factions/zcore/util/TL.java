@@ -183,6 +183,8 @@ public enum TL {
     COMMAND_HOME_OTHER_NOTSET("&c&l[!] &7%s does not have their faction home set!"),
     COMMAND_HOME_TELEPORT_OTHER("&c&l[!] &7You have teleported to %s's faction home!"),
     COMMAND_SHOP_DESCRIPTION("opens shop gui"),
+    COMMAND_SHOP_NO_FACTION("&c&l[!] &7You must be in a faction to perform this command!"),
+
 
     COMMAND_BAN_DESCRIPTION("Ban players from joining your Faction."),
     COMMAND_BAN_TARGET("&c&l[!] &7You were &cbanned &7from &c%1$s"), // banned player perspective

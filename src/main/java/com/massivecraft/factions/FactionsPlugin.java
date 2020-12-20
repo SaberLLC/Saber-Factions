@@ -269,6 +269,8 @@ public class FactionsPlugin extends MPlugin {
             log("Skript addon registered!");
         }
 
+        getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
+
         if (Conf.useCheckSystem) {
             int minute = 1200;
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 3), 0L, minute * 3);
