@@ -10,6 +10,11 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
+
+/**
+ * Created by Lax on 6/6/2017.
+ */
+
 public class BaseUtils {
 
     public static String toBase64(Inventory inventory, int size) {
