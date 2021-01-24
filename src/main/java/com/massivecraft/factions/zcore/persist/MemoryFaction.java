@@ -375,22 +375,18 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         if (Econ.shouldBeUsed() && !disbanderIsConsole) {
             // Should we prevent to withdraw money if the faction was just created
-            if (Conf.econFactionStartingBalance != 0 && (System.currentTimeMillis() - this.foundedDate) <= (Conf.econDenyWithdrawWhenMinutesAgeLessThan * 6000)) {
-                msg(TL.COMMAND_DISBAND_TOO_YOUNG);
-            } else {
-                //Give all the faction's money to the disbander
-                double amount = Econ.getBalance(this.getAccountId());
-                Econ.transferMoney(fdisbander, this, fdisbander, amount, false);
+            //Give all the faction's money to the disbander
+            double amount = this.getFactionBalance();
 
-                if (amount > 0.0) {
-                    String amountString = Econ.moneyString(amount);
-                    msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
-                    //TODO: Format this correctly and translate
-                    FactionsPlugin.getInstance().log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
-                }
+            Econ.transferMoney(fdisbander, this, fdisbander, amount, false);
+
+            if (amount > 0.0) {
+                String amountString = Econ.moneyString(amount);
+                msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
+                //TODO: Format this correctly and translate
+                FactionsPlugin.getInstance().log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
             }
         }
-
         Factions.getInstance().removeFaction(this.getId());
         FTeamWrapper.applyUpdates(this);
     }
@@ -804,14 +800,17 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public String getAccountId() {
-        String aid = "faction-" + this.getId();
-
         // We need to override the default money given to players.
-        if (!Econ.hasAccount(aid)) {
-            Econ.setBalance(aid, 0);
-        }
 
-        return aid;
+        return "faction-" + this.getId();
+    }
+
+    public double getFactionBalance() {
+        return this.money;
+    }
+
+    public void setFactionBalance(double money) {
+        this.money = money;
     }
 
     public Integer getPermanentPower() {

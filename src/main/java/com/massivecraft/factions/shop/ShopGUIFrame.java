@@ -8,6 +8,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -68,18 +69,26 @@ public class ShopGUIFrame extends SaberGUI {
             ItemMeta meta = x.getItemMeta();
             List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
             lore.add("");
-            lore.add(CC.translate("&b&lCost: &d" + cost));
+            if(facPoints < cost) {
+                lore.add(CC.translate(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("item-affordable-lore").replace("{cost}", cost + "")));
+                lore.add(CC.translate(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("item-not-affordable-lore")));
+            } else {
+                lore.add(CC.translate(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("item-affordable-lore").replace("{cost}", cost + "")));
+            }
             meta.setLore(lore);
             x.setItemMeta(meta);
             this.setItem(i++, new InventoryItem(x).click(ClickType.LEFT, () -> {
                 if (facPoints >= cost) {
+                    if(FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("purchase-cooldown") != -1) {
+                        Cooldown.setCooldown(faction, "factionShop", FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("purchase-cooldown"));
+                    }
                     faction.setPoints(facPoints - cost);
                     this.player.sendMessage(CC.translate(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("prefix")
                             .replace("%item%", meta.getDisplayName())
                             .replace("%points%", cost + "")
                             .replace("%amount%", amount + "")));
-                    this.player.getInventory().addItem(ItemUtils.getItem(l));
-                    this.redraw();
+                    fPlayer.getPlayer().getInventory().addItem(ItemUtils.getItem(l));
+                    this.close();
                 } else {
                     fPlayer.msg(TL.SHOP_NOT_ENOUGH_POINTS);
                     this.closeWithDelay();

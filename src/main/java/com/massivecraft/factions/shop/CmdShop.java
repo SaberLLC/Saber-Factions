@@ -8,6 +8,7 @@ import com.massivecraft.factions.shop.utils.BaseUtils;
 import com.massivecraft.factions.shop.utils.ItemUtils;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -110,7 +111,9 @@ public class CmdShop extends FCommand {
         }
 
         if (context.fPlayer.getFaction().isNormal()) {
-            new ShopGUIFrame(context.player).openGUI(FactionsPlugin.getInstance());
+            if(!Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "factionShop")) {
+                new ShopGUIFrame(context.player).openGUI(FactionsPlugin.getInstance());
+            }
         } else {
             context.fPlayer.msg(TL.COMMAND_SHOP_NO_FACTION);
         }

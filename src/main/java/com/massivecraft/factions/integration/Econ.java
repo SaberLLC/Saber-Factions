@@ -1,9 +1,6 @@
 package com.massivecraft.factions.integration;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -13,7 +10,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.text.DecimalFormat;
@@ -25,7 +21,7 @@ import java.util.logging.Level;
 public class Econ {
 
     /**
-     * @author FactionsUUID Team - Modified By CmdrKittens
+     * @author FactionsUUID Team
      */
 
     private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
@@ -33,7 +29,6 @@ public class Econ {
 
     public static void setup() {
         if (isSetup()) return;
-
 
         String integrationFail = "Economy integration is " + (Conf.econEnabled ? "enabled, but" : "disabled, and") + " the plugin \"Vault\" ";
 
@@ -51,6 +46,7 @@ public class Econ {
         if (!Conf.econEnabled)
             FactionsPlugin.getInstance().log("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true");
         //FactionsPlugin.getInstance().cmdBase.cmdHelp.updateHelp();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), Econ::oldMoneyDoTransfer, 20L);
     }
 
     public static boolean shouldBeUsed() {
@@ -69,6 +65,31 @@ public class Econ {
         modifyBalance(Conf.econUniverseAccount, delta);
     }
 
+
+    public static void oldMoneyDoTransfer() {
+        if (!shouldBeUsed())
+            return;
+        for (Faction faction : Factions.getInstance().getAllFactions()) {
+            if (faction.getFactionBalance() <= 0.0D) {
+                String accountID = faction.getAccountId();
+                double foundBalance = econ.getBalance(accountID);
+                if (foundBalance > 0.0D) {
+                    EconomyResponse response = econ.withdrawPlayer(accountID, foundBalance);
+                    if (response.transactionSuccess()) {
+                        Bukkit.getLogger().info("[Factions] Converted $" + foundBalance + " for " + faction.getTag() + " id: " + faction.getId() + " accountID: " + accountID);
+                        faction.setFactionBalance(foundBalance);
+                        continue;
+                    }
+                    Bukkit.getLogger().info("[Factions] Unable to convert balance of " + faction.getAccountId() + " tag: " + faction.getTag());
+                    continue;
+                }
+                Bukkit.getLogger().info("[Factions] Balance for " + faction.getTag() + " had money: " + faction.getFactionBalance() + " found: " + foundBalance + " acc: " + accountID);
+                continue;
+            }
+            Bukkit.getLogger().info("[Factions] Balance for " + faction.getTag() + " had money: " + faction.getFactionBalance());
+        }
+    }
+
     public static void sendBalanceInfo(FPlayer to, EconomyParticipator about) {
         if (!shouldBeUsed()) {
             FactionsPlugin.instance.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
@@ -77,12 +98,25 @@ public class Econ {
         to.msg(TL.ECON_PLAYERBALANCE, about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));
     }
 
-    public static void sendBalanceInfo(CommandSender to, Faction about) {
+    private static DecimalFormat commaFormat = new DecimalFormat("#,##0");
+
+    public static void sendBalanceInfo(FPlayer to, Faction about) {
         if (!shouldBeUsed()) {
             FactionsPlugin.instance.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
             return;
         }
-        to.sendMessage(String.format(TL.ECON_PLAYERBALANCE.toString(), about.getTag(), Econ.moneyString(econ.getBalance(about.getAccountId()))));
+
+        String name = (about instanceof Faction) ? about.getTag() : about.describeTo(to, true);
+
+        to.sendMessage(String.format(TL.ECON_PLAYERBALANCE.toString(), about.getTag(),insertCommas(getFactionBalance(about)), name));
+    }
+
+    public static double getFactionBalance(Faction faction) {
+        return faction.getFactionBalance();
+    }
+
+    public static String insertCommas(double amount) {
+        return commaFormat.format(amount);
     }
 
     public static boolean canIControllYou(EconomyParticipator i, EconomyParticipator you) {
@@ -121,8 +155,8 @@ public class Econ {
 
         // The amount must be positive.
         // If the amount is negative we must flip and multiply amount with -1.
-        if (amount < 0) {
-            amount *= -1;
+        if (amount < 0.0D) {
+            amount *= -1.0D;
             EconomyParticipator temp = from;
             from = to;
             to = temp;
@@ -131,22 +165,12 @@ public class Econ {
         // Check the rights
         if (!canIControllYou(invoker, from)) return false;
 
-        OfflinePlayer fromAcc;
-        OfflinePlayer toAcc;
+        OfflinePlayer fromAcc = (from instanceof Faction) ? null : getPlayerFromUUIDOrName(from.getAccountId());
 
-        if (isUUID(from.getAccountId())) {
-            fromAcc = Bukkit.getOfflinePlayer(UUID.fromString(from.getAccountId()));
-            if (fromAcc.getName() == null) return false;
-        } else fromAcc = Bukkit.getOfflinePlayer(from.getAccountId());
-
-
-        if (isUUID(to.getAccountId())) {
-            toAcc = Bukkit.getOfflinePlayer(UUID.fromString(to.getAccountId()));
-            if (toAcc.getName() == null) return false;
-        } else toAcc = Bukkit.getOfflinePlayer(to.getAccountId());
+        OfflinePlayer toAcc = (to instanceof Faction) ? null : getPlayerFromUUIDOrName(to.getAccountId());
 
         // Is there enough money for the transaction to happen?
-        if (!econ.has(fromAcc, amount)) {
+        if (!hasAtLeast(from, amount, null)) {
             // There was not enough money to pay
             if (invoker != null && notify) {
                 invoker.msg(TL.COMMAND_MONEYTRANSFERFF_TRANSFERCANTAFFORD, from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
@@ -154,22 +178,21 @@ public class Econ {
             return false;
         }
 
-        // Check if the new balance is over Essential's money cap.
-        if (Essentials.isOverBalCap(to, econ.getBalance(toAcc) + amount)) {
-            invoker.msg(TL.ECON_OVER_BAL_CAP, amount);
-            return false;
-        }
-
         // Transfer money
-        EconomyResponse erw = econ.withdrawPlayer(fromAcc, amount);
+        boolean success = (from instanceof Faction) ? withdrawFactionBalance((Faction) from, amount) : econ.withdrawPlayer(fromAcc, amount).transactionSuccess();
 
-        if (erw.transactionSuccess()) {
-            EconomyResponse erd = econ.depositPlayer(toAcc, amount);
-            if (erd.transactionSuccess()) {
-                if (notify) sendTransferInfo(invoker, from, to, amount);
+        if (success) {
+            boolean deposited = (to instanceof Faction) ? depositFactionBalance((Faction) to, amount) : econ.depositPlayer(toAcc, amount).transactionSuccess();
+            if (deposited) {
+                if (notify)
+                    sendTransferInfo(invoker, from, to, amount);
                 return true;
-            } else econ.depositPlayer(fromAcc, amount);
-
+            }
+            if (from instanceof Faction) {
+                depositFactionBalance((Faction) from, amount);
+            } else {
+                econ.depositPlayer(fromAcc, amount);
+            }
         }
 
         // if we get here something with the transaction failed
@@ -219,13 +242,13 @@ public class Econ {
         // going the hard way round as econ.has refuses to work.
         boolean affordable = false;
         double currentBalance;
-
-        if (isUUID(ep.getAccountId())) {
-            OfflinePlayer offline = Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId()));
-            if (offline.getName() != null)
-                currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId())));
-            else currentBalance = 0;
-        } else currentBalance = econ.getBalance(ep.getAccountId());
+        if (ep instanceof Faction) {
+            currentBalance = ((Faction) ep).getFactionBalance();
+        } else if (isUUID(ep.getAccountId())) {
+            currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId())));
+        } else {
+            currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(ep.getAccountId()));
+        }
         if (currentBalance >= delta) affordable = true;
 
         if (!affordable) {
@@ -236,22 +259,52 @@ public class Econ {
         return true;
     }
 
-    public static boolean modifyMoney(EconomyParticipator ep, double delta, String toDoThis, String forDoingThis) {
-        if (!shouldBeUsed()) return false;
-        OfflinePlayer acc;
+    private static OfflinePlayer getPlayerFromUUIDOrName(String name) {
+        if (isUUID(name))
+            return Bukkit.getOfflinePlayer(UUID.fromString(name));
+        return Bukkit.getOfflinePlayer(name);
+    }
 
-        if (isUUID(ep.getAccountId())) {
-            acc = Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId()));
-            if (acc.getName() == null) return false;
-        } else acc = Bukkit.getOfflinePlayer(ep.getAccountId());
+    public static boolean withdrawFactionBalance(Faction faction, double amount) {
+        double balance = faction.getFactionBalance();
+        if (amount > faction.getFactionBalance()) {
+            return false;
+        }
+
+        faction.setFactionBalance(balance - amount);
+        return true;
+    }
+
+    public static boolean depositFactionBalance(Faction faction, double amount) {
+        double balance = faction.getFactionBalance();
+
+        if (amount < 0.0D)
+            return withdrawFactionBalance(faction, Math.abs(amount));
+        if (faction.getFactionBalance() + amount < 0.0D) {
+            Bukkit.getLogger().info("Unable to deposit money into " + faction.getTag() + " because their balance: " + faction.getFactionBalance() + " + " + amount + " is < 0!");
+            return false;
+        }
+        faction.setFactionBalance(balance + amount);
+        return true;
+    }
+
+    public static boolean modifyMoney(EconomyParticipator ep, double delta, String toDoThis, String forDoingThis) {
+        // code goes here.
+        if (!shouldBeUsed()) return false;
+
+        OfflinePlayer acc = (ep instanceof Faction) ? null : getPlayerFromUUIDOrName(ep.getAccountId());
+
         String You = ep.describeTo(ep, true);
 
-        if (delta == 0) return true;
-        else if (delta > 0) {
+        if (delta == 0.0D)
+            return true;
+
+        if (delta > 0.0D) {
             // The player should gain money
             // The account might not have enough space
-            EconomyResponse er = econ.depositPlayer(acc, delta);
-            if (er.transactionSuccess()) {
+            boolean deposited = (ep instanceof Faction) ? depositFactionBalance((Faction) ep, delta) : econ.depositPlayer(acc, delta).transactionSuccess();
+
+            if (deposited) {
                 modifyUniverseMoney(-delta);
                 if (forDoingThis != null && !forDoingThis.isEmpty())
                     ep.msg(TL.COMMAND_MONEY_GAINED, You, moneyString(delta), forDoingThis);
@@ -265,6 +318,19 @@ public class Econ {
         } else {
             // The player should loose money
             // The player might not have enough.
+            if (ep instanceof Faction) {
+                if (hasAtLeast(ep, -delta, null)) {
+                    withdrawFactionBalance((Faction) ep, -delta);
+                    if (forDoingThis != null && !forDoingThis.isEmpty())
+                        ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(-delta), forDoingThis);
+                    return true;
+                }
+                if (toDoThis != null && !toDoThis.isEmpty())
+                    ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", You, moneyString(-delta), toDoThis);
+                return false;
+            }
+
+
             if (econ.has(acc, -delta) && econ.withdrawPlayer(acc, -delta).transactionSuccess()) {
                 // There is enough money to pay
                 modifyUniverseMoney(-delta);

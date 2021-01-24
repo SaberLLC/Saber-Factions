@@ -26,6 +26,13 @@ public class CmdPoints extends FCommand {
         this.requirements = new CommandRequirements.Builder(Permission.POINTS)
                 .playerOnly()
                 .build();
+
+
+        this.addSubCommand(this.cmdPointsBalance);
+        this.addSubCommand(this.cmdPointsAdd);
+        this.addSubCommand(this.cmdPointsRemove);
+        this.addSubCommand(this.cmdPointsSet);
+        this.addSubCommand(this.cmdPointsBalance);
     }
 
 
@@ -37,15 +44,11 @@ public class CmdPoints extends FCommand {
         }
 
         if(context.fPlayer.isAdminBypassing() || context.player.isOp()){
-            this.addSubCommand(this.cmdPointsBalance);
-            this.addSubCommand(this.cmdPointsAdd);
-            this.addSubCommand(this.cmdPointsRemove);
-            this.addSubCommand(this.cmdPointsSet);
+            context.commandChain.add(this);
         } else {
-            this.addSubCommand(this.cmdPointsBalance);
+            context.commandChain.add(this.cmdPointsBalance);
         }
 
-        context.commandChain.add(this);
         FactionsPlugin.getInstance().cmdAutoHelp.execute(context);
     }
 

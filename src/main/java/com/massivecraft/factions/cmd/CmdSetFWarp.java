@@ -27,6 +27,7 @@ public class CmdSetFWarp extends FCommand {
             context.msg(TL.COMMAND_SETFWARP_NOTCLAIMED);
             return;
         }
+
         String warp = context.argAsString(0);
         boolean warpExists = context.faction.isWarp(warp);
         int maxWarps = context.faction.getWarpsLimit();

@@ -21,5 +21,8 @@
 #<-------------------------------------->NOTES<-------------------------------------->#
 
 prefix: '&f&l[&4&lFactionShop&f&l] &8» &aPurchased &e%amount%x %item% &afor &e%points% &apoints!'
+item-affordable-lore: '&b&lCost: &d{cost}'
+item-not-affordable-lore: '&c&lCANNOT AFFORD!'
+purchase-cooldown: 3 #This is the time that it will cooldown every member in the fac from buying an item from f shop set to -1 to disable.
 
 items:

@@ -837,7 +837,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (myFaction.getFPlayers().size() == 1) {
             // Transfer all money
             if (Econ.shouldBeUsed())
-                Econ.transferMoney(this, myFaction, this, Econ.getBalance(myFaction.getAccountId()));
+                Econ.transferMoney(this, myFaction, this, myFaction.getFactionBalance());
 
         }
 

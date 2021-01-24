@@ -175,7 +175,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             case "faction_land_refund":
                 return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(faction.getLandRounded())) : TL.ECON_OFF.format("refund");
             case "faction_bank_balance":
-                return Econ.shouldBeUsed() ? Econ.moneyString(Econ.getBalance(faction.getAccountId())) : TL.ECON_OFF.format("balance");
+                return Econ.shouldBeUsed() ? Econ.insertCommas(faction.getFactionBalance()) : TL.ECON_OFF.format("balance");
             case "faction_allies":
                 return String.valueOf(faction.getRelationCount(Relation.ALLY));
             case "faction_allies_players":
