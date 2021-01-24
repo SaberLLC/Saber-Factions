@@ -41,7 +41,7 @@ public class CmdSetPower extends FCommand {
             return;
         }
 
-        if(targetPlayer.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
+        if (targetPlayer.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
             context.sender.sendMessage(ChatColor.RED + "The target cannot be an alt account.");
             return;
         }

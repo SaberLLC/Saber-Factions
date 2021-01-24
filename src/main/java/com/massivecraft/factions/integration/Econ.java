@@ -26,6 +26,7 @@ public class Econ {
 
     private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
     private static Economy econ = null;
+    private static DecimalFormat commaFormat = new DecimalFormat("#,##0");
 
     public static void setup() {
         if (isSetup()) return;
@@ -65,7 +66,6 @@ public class Econ {
         modifyBalance(Conf.econUniverseAccount, delta);
     }
 
-
     public static void oldMoneyDoTransfer() {
         if (!shouldBeUsed())
             return;
@@ -98,8 +98,6 @@ public class Econ {
         to.msg(TL.ECON_PLAYERBALANCE, about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));
     }
 
-    private static DecimalFormat commaFormat = new DecimalFormat("#,##0");
-
     public static void sendBalanceInfo(FPlayer to, Faction about) {
         if (!shouldBeUsed()) {
             FactionsPlugin.instance.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
@@ -108,7 +106,7 @@ public class Econ {
 
         String name = (about instanceof Faction) ? about.getTag() : about.describeTo(to, true);
 
-        to.sendMessage(String.format(TL.ECON_PLAYERBALANCE.toString(), about.getTag(),insertCommas(getFactionBalance(about)), name));
+        to.sendMessage(String.format(TL.ECON_PLAYERBALANCE.toString(), about.getTag(), insertCommas(getFactionBalance(about)), name));
     }
 
     public static double getFactionBalance(Faction faction) {

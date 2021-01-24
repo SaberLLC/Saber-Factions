@@ -1,12 +1,9 @@
 package com.massivecraft.factions.shop.utils;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FactionsPlugin;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 

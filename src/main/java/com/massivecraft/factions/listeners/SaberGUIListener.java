@@ -14,7 +14,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 
 public class SaberGUIListener implements Listener {
 
-    @EventHandler(priority= EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClick(InventoryClickEvent event) {
         SaberGUI active = SaberGUI.getActiveGUI(event.getWhoClicked().getUniqueId());
         if (active != null) {
@@ -58,8 +58,7 @@ public class SaberGUIListener implements Listener {
             Bukkit.getLogger().info("Closing GUI due to " + event.getPlugin().getName() + " disabling!");
             try {
                 active.close();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

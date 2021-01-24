@@ -25,7 +25,6 @@ import com.massivecraft.factions.discord.CmdInviteBot;
 import com.massivecraft.factions.discord.CmdSetGuild;
 import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.shop.CmdShop;
-import com.massivecraft.factions.shop.ShopGUIFrame;
 import com.massivecraft.factions.zcore.util.TL;
 import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;

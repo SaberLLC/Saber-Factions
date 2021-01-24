@@ -20,8 +20,8 @@ public class Cooldown {
     }
 
     public static void setCooldown(Faction fac, String name, int seconds) {
-        for(FPlayer fPlayer : fac.getFPlayersWhereOnline(true)){
-            if(fPlayer == null) continue;
+        for (FPlayer fPlayer : fac.getFPlayersWhereOnline(true)) {
+            if (fPlayer == null) continue;
             fPlayer.getPlayer().setMetadata(name, new FixedMetadataValue(FactionsPlugin.getInstance(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(seconds)));
         }
     }

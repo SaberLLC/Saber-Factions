@@ -15,7 +15,6 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
 
 public class CmdInviteAlt extends FCommand {
 

@@ -40,9 +40,12 @@ public abstract class SaberGUI {
         allGUINames.add(this.title);
     }
 
-    public SaberGUI setParentGUI(SaberGUI parent) {
-        this.parentGUI = parent;
-        return this;
+    public static SaberGUI getActiveGUI(UUID uuid) {
+        return activeGUIs.get(uuid);
+    }
+
+    public static void removeGUI(UUID uuid) {
+        activeGUIs.remove(uuid);
     }
 
     public void onUnknownItemClick(InventoryClickEvent event) {
@@ -121,16 +124,13 @@ public abstract class SaberGUI {
         return this.inventory.equals(inventory);
     }
 
-    public static SaberGUI getActiveGUI(UUID uuid) {
-        return activeGUIs.get(uuid);
-    }
-
-    public static void removeGUI(UUID uuid) {
-        activeGUIs.remove(uuid);
-    }
-
     public SaberGUI getParentGUI() {
         return this.parentGUI;
+    }
+
+    public SaberGUI setParentGUI(SaberGUI parent) {
+        this.parentGUI = parent;
+        return this;
     }
 
     public Map<Integer, InventoryItem> getInventoryItems() {

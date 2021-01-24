@@ -43,7 +43,7 @@ public class CmdPoints extends FCommand {
             return;
         }
 
-        if(context.fPlayer.isAdminBypassing() || context.player.isOp()){
+        if (context.fPlayer.isAdminBypassing() || context.player.isOp()) {
             context.commandChain.add(this);
         } else {
             context.commandChain.add(this.cmdPointsBalance);
