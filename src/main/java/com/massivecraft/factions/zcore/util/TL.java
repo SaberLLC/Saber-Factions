@@ -977,7 +977,7 @@ public enum TL {
 
     COMMAND_TNTFILL_HEADER("&c&l[!] &7Filling tnt in dispensers..."),
     COMMAND_TNTFILL_SUCCESS("&c&l[!] &7Filled &c{amount}&7 Tnt in &c{dispensers} &7dispensers"),
-    COMMAND_TNTFILL_NOTENOUGH("&c&l[!] &7Not enough tnt in inventory."),
+    COMMAND_TNTFILL_NOTENOUGH("&c&l[!] &7You do not have enough tnt in your tnt bank to fill that amount."),
     COMMAND_TNTFILL_RADIUSMAX("&c&l[!] &7The max radius is {max}"),
     COMMAND_TNTFILL_AMOUNTMAX("&c&l[!] &7The max amount is {max}"),
     COMMAND_TNTFILL_MOD("&c&l[!] &7Tnt will be used from the faction bank because you dont have the specified amount in your inventory and you are a {role}"),

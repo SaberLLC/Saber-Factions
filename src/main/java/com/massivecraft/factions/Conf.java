@@ -369,6 +369,8 @@ public class Conf {
 
     public static boolean useWorldConfigurationsAsWhitelist = false;
     public static Set<String> worldsNoClaiming = new LinkedHashSet<>();
+    public static Set<String> worldsNoFactionsPlugin = new LinkedHashSet<>();
+
     public static Set<String> worldsNoPowerLoss = new LinkedHashSet<>();
     public static Set<String> worldsIgnorePvP = new LinkedHashSet<>();
     public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<>();
@@ -418,6 +420,8 @@ public class Conf {
         baseCommandAliases.add("f");
 
         blacklistedFactionNames.add("somenamehere");
+
+        worldsNoFactionsPlugin.add("someworldnamehere");
 
         territoryEnemyDenyCommands.add("home");
         territoryEnemyDenyCommands.add("ehome");

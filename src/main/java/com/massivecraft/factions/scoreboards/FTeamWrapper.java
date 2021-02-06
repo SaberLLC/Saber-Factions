@@ -113,7 +113,11 @@ public class FTeamWrapper {
     protected static void untrack(FScoreboard fboard) {
         if (!FScoreboard.isSupportedByServer()) return;
         tracking.remove(fboard);
-        for (FTeamWrapper wrapper : wrappers.values()) wrapper.remove(fboard);
+        for (FTeamWrapper wrapper : wrappers.values()) {
+            if(wrapper != null) {
+                wrapper.remove(fboard);
+            }
+        }
     }
 
     private void add(FScoreboard fboard) {

@@ -12,7 +12,7 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdMoneyBalance extends FCommand {
 
     /**
-     * @author FactionsUUID Team - Modified By CmdrKittens
+     * @author FactionsUUID Team
      */
 
     public CmdMoneyBalance() {
@@ -41,11 +41,7 @@ public class CmdMoneyBalance extends FCommand {
             return;
         }
 
-        if (context.fPlayer != null) {
-            Econ.sendBalanceInfo(context.sender, faction);
-        } else {
-            Econ.sendBalanceInfo(context.sender, faction);
-        }
+        Econ.sendBalanceInfo(context.fPlayer, faction);
     }
 
     @Override

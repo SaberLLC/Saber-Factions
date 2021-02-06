@@ -191,6 +191,8 @@ public interface Faction extends EconomyParticipator {
 
     void setCheckpoint(Location location);
 
+    void setTnt(int amount);
+
     void addTnt(int amt);
 
     void takeTnt(int amt);

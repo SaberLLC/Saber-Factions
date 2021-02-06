@@ -433,6 +433,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         tnt -= amt;
     }
 
+
+    public void setTnt(int amt){
+        tnt = amt;
+    }
+
     public int getTnt() {
         return tnt;
     }
