@@ -21,8 +21,6 @@ public class SpawnerChunkListener implements Listener {
             FLocation fLoc = new FLocation(location);
             Faction fac = Board.getInstance().getFactionAt(fLoc);
             FastChunk fc = new FastChunk(location.getWorld().getName(), location.getChunk().getX(), location.getChunk().getZ());
-            System.out.println("This FC: " + fc);
-            System.out.println("Faction FastChunk: " + fac.getSpawnerChunks());
             if (!Conf.allowSpawnersPlacedInWilderness) {
                 if (fac.isNormal()) {
                     if (!fac.getSpawnerChunks().contains(fc)) {
