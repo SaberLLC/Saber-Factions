@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-2.6.2-STABLE</version>
+    <version>1.6.9.5-2.6.4-BETA</version>
     <packaging>jar</packaging>
 
     <name>SaberFactions</name>
@@ -151,7 +151,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
