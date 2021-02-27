@@ -121,6 +121,7 @@ public enum Permission {
     SETPOWER("setpower"),
     SETSTRIKES("setstrikes"),
     SHOW("show"),
+    SPAWNER_CHUNKS("spawnerchunks"),
     STATUS("status"),
     STEALTH("stealth"),
     STUCK("stuck"),

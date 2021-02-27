@@ -4,10 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -57,6 +54,12 @@ public class FUpgradeFrame {
 
                             if (value == UpgradeType.WARP) updateWarps(fme.getFaction());
 
+                            if (value == UpgradeType.SPAWNERCHUNKS) {
+                                if(Conf.allowSpawnerChunksUpgrade) {
+                                    updateSpawnerChunks(fme.getFaction());
+                                }
+                            }
+
                             fme.getFaction().setUpgrade(value, fme.getFaction().getUpgrade(value) + 1);
                             buildGUI(fme);
                         } else {
@@ -72,6 +75,12 @@ public class FUpgradeFrame {
                         if (value == UpgradeType.TNT) updateTNT(fme.getFaction());
 
                         if (value == UpgradeType.WARP) updateWarps(fme.getFaction());
+
+                        if (value == UpgradeType.SPAWNERCHUNKS) {
+                            if(Conf.allowSpawnerChunksUpgrade) {
+                                updateSpawnerChunks(fme.getFaction());
+                            }
+                        }
 
                         fme.getFaction().setUpgrade(value, fme.getFaction().getUpgrade(value) + 1);
                         buildGUI(fme);
@@ -89,6 +98,12 @@ public class FUpgradeFrame {
         int level = faction.getUpgrade(UpgradeType.WARP);
         int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.warp-limit.level-" + (level + 1));
         faction.setWarpsLimit(size);
+    }
+
+    private void updateSpawnerChunks(Faction faction) {
+        int level = faction.getUpgrade(UpgradeType.SPAWNERCHUNKS);
+        int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.SpawnerChunks.chunk-limit.level-" + (level + 1));
+        faction.setAllowedSpawnerChunks(size);
     }
 
     private void updateTNT(Faction faction) {

@@ -7,6 +7,7 @@ import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -100,6 +101,18 @@ public interface Faction extends EconomyParticipator {
     Map<String, Mission> getMissions();
 
     List<String> getCompletedMissions();
+
+    Set<FastChunk> getSpawnerChunks();
+
+    int getSpawnerChunkCount();
+
+    int getAllowedSpawnerChunks();
+
+    void setAllowedSpawnerChunks(int chunks);
+
+    boolean isProtected();
+
+    void setProtected(boolean b);
 
     void deinviteAlt(FPlayer alt);
 

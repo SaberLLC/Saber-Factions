@@ -1029,6 +1029,36 @@ fupgrades:
           - ''
           - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         Slot: 31
+    SpawnerChunks:
+      Max-Level: 3
+      chunk-limit:
+        level-1: 2
+        level-2: 3
+        level-3: 4
+      Cost:
+        level-1: 2000000
+        level-2: 4000000
+        level-3: 6000000
+      DisplayItem:
+        Name: '&e&lSpawner Chunk Limit'
+        Type: END_PORTAL_FRAME #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&7&oIncreased Spawner &e&oChunk&7&o claims&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lIncrements'
+          - '&4&l* &cLevel 1: &f2'
+          - '&4&l* &cLevel 2: &f3'
+          - '&4&l* &cLevel 3: &f4'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 13
     EXP:
       Max-Level: 3
       EXP-Boost:

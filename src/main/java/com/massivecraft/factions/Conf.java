@@ -131,6 +131,15 @@ public class Conf {
     //STRIKES
     public static boolean useStrikeSystem = true;
 
+    //SpawnerChunks
+    public static boolean userSpawnerChunkSystem = true;
+    public static int allowedSpawnerChunks = 2;
+    public static boolean allowSpawnerChunksUpgrade = true;
+    public static boolean allowSpawnersPlacedInWilderness = false;
+    public static boolean allowUnclaimSpawnerChunksWithSpawnersInChunk = true;
+    public static ChatColor spawnerChunkColor = ChatColor.BLUE;
+    public static String spawnerChunkString = "Spawner Chunk";
+
     // server logging options
     public static boolean logFactionCreate = true;
     public static boolean logFactionDisband = true;

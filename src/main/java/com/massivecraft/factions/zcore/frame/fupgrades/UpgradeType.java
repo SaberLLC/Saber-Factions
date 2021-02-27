@@ -33,6 +33,7 @@ public enum UpgradeType {
     WARP("Warps", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.Max-Level")),
     DAMAGEINCREASE("DamageIncrease", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageIncrease.Max-Level")),
     DAMAGEDECREASE("DamageReduct", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageReduct.Max-Level")),
+    SPAWNERCHUNKS("SpawnerChunks", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.SpawnerChunks.Max-Level")),
     REINFORCEDARMOR("Armor", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.Max-Level"));
 
     private String id;

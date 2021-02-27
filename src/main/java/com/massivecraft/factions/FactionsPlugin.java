@@ -292,6 +292,10 @@ public class FactionsPlugin extends MPlugin {
 
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
+        if(Conf.userSpawnerChunkSystem) {
+            this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
+        }
+
         // Register Event Handlers
         eventsListener = new Listener[]{
                 new FactionsChatListener(),

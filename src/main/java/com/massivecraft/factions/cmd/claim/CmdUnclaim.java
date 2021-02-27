@@ -9,6 +9,8 @@ import com.massivecraft.factions.event.LandUnclaimEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.ChunkReference;
+import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -163,7 +165,20 @@ public class CmdUnclaim extends FCommand {
             }
         }
 
+        FastChunk fc = new FastChunk(target.getWorldName(), target.getChunk().getX(), target.getChunk().getZ());
+        if(faction.getSpawnerChunks().contains(fc)) {
+            if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
+                context.faction.getSpawnerChunks().remove(fc);
+            } else {
+                if (ChunkReference.getSpawnerCount(target.getChunk()) > 0) {
+                    context.fPlayer.msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(target.getChunk()));
+                }
+                return false;
+            }
+        }
+
         Board.getInstance().removeAt(target);
+
         context.faction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, context.fPlayer.describeTo(context.faction, true));
 
         if (Conf.logLandUnclaims) {

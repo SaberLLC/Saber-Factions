@@ -448,6 +448,10 @@ public enum TL {
 
     COMMAND_HINT_PERMISSION("&aYou can manage your factions permissions using &7/f perms"),
 
+    COMMAND_SPAWNERCHUNK_CLAIM_SUCCESSFUL("&a[!] &7You have successfully claimed a &espawner chunk &7for your faction."),
+    COMMAND_SPAWNERCHUNK_ALREADY_CHUNK("&c&l[!] &7This chunk is already a spawnerchunk!"),
+    COMMAND_SPAWNERCHUNK_DESCRIPTION("Claim a spawnerchunk"),
+
     COMMAND_HOME_DISABLED("&c&l[!]&7 Sorry, Faction homes are &cdisabled on this server."),
     COMMAND_HOME_TELEPORTDISABLED("&c&l[!]&7 Sorry, the ability to &cteleport &7to Faction homes is &cdisabled &7on this server."),
     COMMAND_HOME_NOHOME("&c&l[!]&7 Your faction does &cnot &7have a home. "),
@@ -1001,6 +1005,7 @@ public enum TL {
     COMMAND_UNCLAIM_FORUNCLAIM("for unclaiming this land"),
     COMMAND_UNCLAIM_FACTIONUNCLAIMED("%1$s unclaimed some land."),
     COMMAND_UNCLAIM_DESCRIPTION("Unclaim the land where you are standing"),
+    COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS("&c&l[!] &7You may not unclaim a spawnerchunk whilst there are still spawners in it! &eSpawner Count: %1$s"),
 
     COMMAND_UNCLAIMALL_TOUNCLAIM("to unclaim all faction land"),
     COMMAND_UNCLAIMALL_FORUNCLAIM("for unclaiming all faction land"),
@@ -1154,6 +1159,9 @@ public enum TL {
     PLAYER_NOT_FOUND("&c&l[!] &b%1$s &7is either not online or not in your faction!"),
     PLACEHOLDER_ROLE_NAME("None"),
     PLACEHOLDER_CUSTOM_FACTION("{faction} "),
+
+    SPAWNER_CHUNK_PLACE_DENIED_WILDERNESS("&c&l[!] &7You may not place spawners in wilderness!"),
+    SPAWNER_CHUNK_PLACE_DENIED_NOT_SPAWNERCHUNK("&c&l[!] &7You may not place spawners in this chunk. Only Spawner Chunks!"),
 
 
     WARBANNER_NOFACTION("&cYou need a faction to use a warbanner!"),

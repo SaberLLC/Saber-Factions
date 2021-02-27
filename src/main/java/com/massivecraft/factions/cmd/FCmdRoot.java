@@ -153,7 +153,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdStrikes cmdStrikes = new CmdStrikes();
     public CmdCheck cmdCheck = new CmdCheck();
     public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
-    public CmdWild cmdWild = new CmdWild();
+    //public CmdWild cmdWild = new CmdWild();
     public CmdSpawnerLock cmdSpawnerLock = new CmdSpawnerLock();
     public CmdSetDiscord cmdSetDiscord = new CmdSetDiscord();
     public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
@@ -170,6 +170,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdNotifications cmdNotifications = new CmdNotifications();
     public CmdFriendlyFire cmdFriendlyFire = new CmdFriendlyFire();
     public CmdSetPower cmdSetPower = new CmdSetPower();
+    public CmdSpawnerChunk cmdSpawnerChunk = new CmdSpawnerChunk();
 
     //Variables to know if we already setup certain sub commands
     public Boolean discordEnabled = false;
@@ -369,9 +370,14 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
         //Other
         if (FactionsPlugin.getInstance().getConfig().getBoolean("Wild.Enabled", false) && !fWildEnabled) {
-            this.addSubCommand(this.cmdWild);
+            //this.addSubCommand(this.cmdWild);
             fWildEnabled = true;
         }
+
+        if(Conf.userSpawnerChunkSystem) {
+            this.addSubCommand(this.cmdSpawnerChunk);
+        }
+
         if (FactionsPlugin.getInstance().getConfig().getBoolean("Missions-Enabled", false) && !missionsEnabled) {
             this.addSubCommand(this.cmdMissions);
             missionsEnabled = true;

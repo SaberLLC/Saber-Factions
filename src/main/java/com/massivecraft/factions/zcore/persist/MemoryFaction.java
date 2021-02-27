@@ -14,6 +14,7 @@ import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.RelationUtil;
@@ -95,6 +96,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private String weeWooFormat;
     private String guildId;
     private String memberRoleId;
+    private int allowedSpawnerChunks;
+    private Set<FastChunk> spawnerChunks;
+    private boolean protectedfac = true;
 
 
     // -------------------------------------------- //
@@ -130,6 +134,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.notifyFormat = "@everyone, check %type%";
         this.weeWooFormat = "@everyone, we're being raided! Get online!";
         this.memberRoleId = null;
+        allowedSpawnerChunks = Conf.allowedSpawnerChunks;
+        spawnerChunks = new HashSet<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -160,9 +166,35 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.bufferCheckMinutes = 0;
         this.weeWoo = false;
         this.checks = new ConcurrentHashMap<>();
+        allowedSpawnerChunks = Conf.allowedSpawnerChunks;
+        spawnerChunks = new HashSet<>();
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
         resetPerms(); // Reset on new Faction so it has default values.
+    }
+
+    public boolean isProtected() {
+        return this.protectedfac;
+    }
+
+    public void setProtected(boolean protectedfac) {
+        this.protectedfac = protectedfac;
+    }
+
+    public int getSpawnerChunkCount() {
+        return this.spawnerChunks.size();
+    }
+
+    public void setAllowedSpawnerChunks(int chunks) {
+        this.allowedSpawnerChunks = chunks;
+    }
+
+    public int getAllowedSpawnerChunks() {
+        return this.allowedSpawnerChunks;
+    }
+
+    public Set<FastChunk> getSpawnerChunks() {
+        return this.spawnerChunks;
     }
 
     public int getPoints() {
