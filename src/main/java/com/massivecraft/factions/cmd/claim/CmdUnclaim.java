@@ -166,14 +166,16 @@ public class CmdUnclaim extends FCommand {
         }
 
         FastChunk fc = new FastChunk(target.getWorldName(), target.getChunk().getX(), target.getChunk().getZ());
-        if(faction.getSpawnerChunks().contains(fc)) {
-            if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
-                context.faction.getSpawnerChunks().remove(fc);
-            } else {
-                if (ChunkReference.getSpawnerCount(target.getChunk()) > 0) {
-                    context.fPlayer.msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(target.getChunk()));
+        if(Conf.userSpawnerChunkSystem) {
+            if (faction.getSpawnerChunks().contains(fc)) {
+                if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
+                    context.faction.getSpawnerChunks().remove(fc);
+                } else {
+                    if (ChunkReference.getSpawnerCount(target.getChunk()) > 0) {
+                        context.fPlayer.msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(target.getChunk()));
+                    }
+                    return false;
                 }
-                return false;
             }
         }
 
