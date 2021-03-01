@@ -7,7 +7,6 @@ import com.massivecraft.factions.cmd.CmdSeeChunk;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
-import com.massivecraft.factions.cmd.wild.CmdWild;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
@@ -21,7 +20,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.VisualizeUtil;
-import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
@@ -783,12 +781,6 @@ public class FactionsPlayerListener implements Listener {
             if (handler.isLogoutActive(player)) {
                 handler.cancelLogout(player);
                 player.sendMessage(String.valueOf(TL.COMMAND_LOGOUT_DAMAGE_TAKEN));
-            }
-            WaitExecutor.handleAction(player);
-            if (CmdWild.teleporting.contains(player)) {
-                if (!FactionsPlugin.getInstance().getConfig().getBoolean("Wild.FallDamage") && e.getCause() == EntityDamageEvent.DamageCause.FALL) {
-                    e.setCancelled(true);
-                }
             }
         }
     }
