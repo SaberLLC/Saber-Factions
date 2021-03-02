@@ -271,9 +271,12 @@ public abstract class MemoryBoard extends Board {
                             fList.put(factionHere.getTag(), Conf.mapKeyChrs[Math.min(chrIdx++, Conf.mapKeyChrs.length - 1)]);
                         }
                         char tag = fList.get(factionHere.getTag());
-
-                        if(factionHere.getSpawnerChunks().contains(fastChunk)) {
-                            row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
+                        if(Conf.userSpawnerChunkSystem) {
+                            if(factionHere.isNormal()) {
+                                if (factionHere.getSpawnerChunks().contains(fastChunk)) {
+                                    row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
+                                }
+                            }
                         }
 
                         //row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));

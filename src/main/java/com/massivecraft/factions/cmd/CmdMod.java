@@ -54,7 +54,7 @@ public class CmdMod extends FCommand {
             return;
         }
 
-        if (context.fPlayer != null && context.fPlayer.getRole() != Role.LEADER && !permAny) {
+        if (context.fPlayer != null && !context.fPlayer.getRole().isAtLeast(Role.COLEADER) && !permAny) {
             context.msg(TL.COMMAND_MOD_NOTADMIN);
             return;
         }
