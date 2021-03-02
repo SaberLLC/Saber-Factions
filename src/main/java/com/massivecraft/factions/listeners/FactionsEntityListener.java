@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.*;
+import java.util.logging.Level;
 
 
 public class FactionsEntityListener implements Listener {
@@ -93,120 +94,129 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
-        Entity damagee = event.getEntity();
-        boolean playerHurt = damagee instanceof Player;
+        try {
+            Entity damagee = event.getEntity();
+            boolean playerHurt = damagee instanceof Player;
 
-        if (event instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
-            if (!this.canDamagerHurtDamagee(sub, true)) event.setCancelled(true);
+            if (event instanceof EntityDamageByEntityEvent) {
+                EntityDamageByEntityEvent sub = (EntityDamageByEntityEvent) event;
+                if (!this.canDamagerHurtDamagee(sub, true)) event.setCancelled(true);
 
-            // event is not cancelled by factions
-            Entity damageee = sub.getEntity();
-            Entity damager = sub.getDamager();
-            if (damageee instanceof Player) {
-                if (damager instanceof Player) {
-                    FPlayer fdamager = FPlayers.getInstance().getByPlayer((Player) damager);
-                    FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damageee);
-                    if ((fdamagee.getRelationTo(fdamager) == Relation.ALLY) ||
-                            (fdamagee.getRelationTo(fdamager) == Relation.TRUCE) ||
-                            (fdamagee.getFaction() == fdamager.getFaction())) {
-                        return;
-                    }
-                } else {
+                // event is not cancelled by factions
+                Entity damageee = sub.getEntity();
+                Entity damager = sub.getDamager();
 
-                    // this triggers if damageee is a player and damager is  mob ( so like if a skeleton hits u )
-                    if (damager instanceof Projectile) {
-                        // this will trigger if the damager is a projectile
-                        if (((Projectile) damager).getShooter() instanceof Player) {
-                            Player damagerPlayer = (Player) ((Projectile) damager).getShooter();
-                            FPlayer fdamager = FPlayers.getInstance().getByPlayer(damagerPlayer);
-                            FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damageee);
-                            Relation relation = fdamager.getRelationTo(fdamagee);
-                            if (relation == Relation.ALLY || relation == Relation.TRUCE ||
-                                    fdamager.getFaction() == fdamagee.getFaction()) {
-                                // this should disable the fly so
-                                return;
-                            }
-                        } else return; // this should trigger if the attacker shootin the arrow is a mob
-                    }
-                }
-            } else {
-                // Protect armor stands/item frames from being damaged in protected territories
-                if (damageee.getType() == EntityType.ITEM_FRAME || damageee.getType() == EntityType.ARMOR_STAND) {
-                    // Manage projectiles launched by players
-                    if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
-                        damager = (Entity) ((Projectile) damager).getShooter();
-                    }
-
-                    // Run the check for a player
-                    if (damager instanceof Player) {
-
-                        if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damageee.getLocation(), "destroy", false))
-                            event.setCancelled(true);
-
-                    } else {
-                        // we don't want to let mobs/arrows destroy item frames/armor stands
-                        // so we only have to run the check as if there had been an explosion at the damager location
-                        if (!this.checkExplosionForBlock(damager, damageee.getLocation().getBlock()))
-                            event.setCancelled(true);
-                    }
-                    // we don't need to go after
+                if (damageee == null || damager == null) {
                     return;
                 }
 
-                //this one should trigger if something other than a player takes damage
-                if (damager instanceof Player) return;
-            }
-            if (damageee != null && damageee instanceof Player && (playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-player-damage", true) || (!playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-mob-damage", true)))) {
-                cancelFStuckTeleport((Player) damageee);
-                if (!combatList.contains(damageee.getUniqueId())) {
-                    combatList.add(damagee.getUniqueId());
-                }
-                Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20 * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
-                cancelFFly((Player) damageee);
-                FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damageee);
-                if (fplayer.isInspectMode()) {
-                    fplayer.setInspectMode(false);
-                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
-                }
-            }
-            if (damager instanceof Player) {
-                cancelFStuckTeleport((Player) damager);
-                if (!combatList.contains(damager.getUniqueId())) {
-                    combatList.add(damager.getUniqueId());
-                }
+                if (damageee instanceof Player) {
+                    if (damager instanceof Player) {
+                        FPlayer fdamager = FPlayers.getInstance().getByPlayer((Player) damager);
+                        FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damageee);
+                        if ((fdamagee.getRelationTo(fdamager) == Relation.ALLY) ||
+                                (fdamagee.getRelationTo(fdamager) == Relation.TRUCE) ||
+                                (fdamagee.getFaction() == fdamager.getFaction())) {
+                            return;
+                        }
+                    } else {
 
-                Entity finalDamager = damager;
-                Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(finalDamager.getUniqueId()), 20 * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
+                        // this triggers if damageee is a player and damager is  mob ( so like if a skeleton hits u )
+                        if (damager instanceof Projectile) {
+                            // this will trigger if the damager is a projectile
+                            if (((Projectile) damager).getShooter() instanceof Player) {
+                                Player damagerPlayer = (Player) ((Projectile) damager).getShooter();
+                                FPlayer fdamager = FPlayers.getInstance().getByPlayer(damagerPlayer);
+                                FPlayer fdamagee = FPlayers.getInstance().getByPlayer((Player) damageee);
+                                Relation relation = fdamager.getRelationTo(fdamagee);
+                                if (relation == Relation.ALLY || relation == Relation.TRUCE ||
+                                        fdamager.getFaction() == fdamagee.getFaction()) {
+                                    // this should disable the fly so
+                                    return;
+                                }
+                            } else return; // this should trigger if the attacker shootin the arrow is a mob
+                        }
+                    }
+                } else {
+                    // Protect armor stands/item frames from being damaged in protected territories
+                    if (damageee.getType() == EntityType.ITEM_FRAME || damageee.getType() == EntityType.ARMOR_STAND) {
+                        // Manage projectiles launched by players
+                        if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
+                            damager = (Entity) ((Projectile) damager).getShooter();
+                        }
 
-                cancelFFly((Player) damager);
-                FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
-                if (fplayer.isInspectMode()) {
-                    fplayer.setInspectMode(false);
-                    fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
+                        // Run the check for a player
+                        if (damager instanceof Player) {
+
+                            if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damageee.getLocation(), "destroy", false))
+                                event.setCancelled(true);
+
+                        } else {
+                            // we don't want to let mobs/arrows destroy item frames/armor stands
+                            // so we only have to run the check as if there had been an explosion at the damager location
+                            if (!this.checkExplosionForBlock(damager, damageee.getLocation().getBlock()))
+                                event.setCancelled(true);
+                        }
+                        // we don't need to go after
+                        return;
+                    }
+
+                    //this one should trigger if something other than a player takes damage
+                    if (damager instanceof Player) return;
+                }
+                if (damageee != null && damageee instanceof Player && (playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-player-damage", true) || (!playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-mob-damage", true)))) {
+                    cancelFStuckTeleport((Player) damageee);
+                    if (!combatList.contains(damageee.getUniqueId())) {
+                        combatList.add(damagee.getUniqueId());
+                    }
+                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20 * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
+                    cancelFFly((Player) damageee);
+                    FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damageee);
+                    if (fplayer.isInspectMode()) {
+                        fplayer.setInspectMode(false);
+                        fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
+                    }
+                }
+                if (damager instanceof Player) {
+                    cancelFStuckTeleport((Player) damager);
+                    if (!combatList.contains(damager.getUniqueId())) {
+                        combatList.add(damager.getUniqueId());
+                    }
+
+                    Entity finalDamager = damager;
+                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(finalDamager.getUniqueId()), 20 * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
+
+                    cancelFFly((Player) damager);
+                    FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
+                    if (fplayer.isInspectMode()) {
+                        fplayer.setInspectMode(false);
+                        fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
+                    }
+                }
+            } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
+                // Players can not take any damage in a Safe Zone
+                event.setCancelled(true);
+            } else if (event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof Player) {
+                Player player = (Player) event.getEntity();
+                FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+                if (fPlayer != null && !fPlayer.shouldTakeFallDamage()) {
+                    event.setCancelled(true); // Falling after /f fly
                 }
             }
-        } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
-            // Players can not take any damage in a Safe Zone
-            event.setCancelled(true);
-        } else if (event.getCause() == EntityDamageEvent.DamageCause.FALL && event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-            if (fPlayer != null && !fPlayer.shouldTakeFallDamage()) {
-                event.setCancelled(true); // Falling after /f fly
-            }
-        }
 
-        // entity took generic damage?
-        Entity entity = event.getEntity();
-        if (entity instanceof Player) {
-            Player player = (Player) entity;
-            FPlayer me = FPlayers.getInstance().getByPlayer(player);
-            cancelFStuckTeleport(player);
-            if (me.isWarmingUp()) {
-                me.clearWarmup();
-                me.msg(TL.WARMUPS_CANCELLED);
+            // entity took generic damage?
+            Entity entity = event.getEntity();
+            if (entity instanceof Player) {
+                Player player = (Player) entity;
+                FPlayer me = FPlayers.getInstance().getByPlayer(player);
+                cancelFStuckTeleport(player);
+                if (me.isWarmingUp()) {
+                    me.clearWarmup();
+                    me.msg(TL.WARMUPS_CANCELLED);
+                }
             }
+        } catch (NullPointerException e) {
+            FactionsPlugin.getInstance().log(Level.SEVERE, "[SaberFactions] NPE Detected - v1000");
         }
     }
 

@@ -31,7 +31,6 @@ import com.massivecraft.factions.util.particle.PacketParticleProvider;
 import com.massivecraft.factions.util.particle.ParticleProvider;
 import com.massivecraft.factions.util.particle.darkblade12.ReflectionUtils;
 import com.massivecraft.factions.util.timer.TimerManager;
-import com.massivecraft.factions.util.wait.WaitExecutor;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
@@ -192,8 +191,7 @@ public class FactionsPlugin extends MPlugin {
 
         saveDefaultConfig();
         this.reloadConfig();
-        //Start wait task executor
-        WaitExecutor.startTask();
+
         // Load Conf from disk
         Conf.load();
 
