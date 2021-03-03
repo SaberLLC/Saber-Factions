@@ -197,6 +197,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.spawnerChunks;
     }
 
+    public void setSpawnerChunks(Set<FastChunk> spawnerChunks) {
+        this.spawnerChunks = spawnerChunks;
+    }
+
     public int getPoints() {
         return points;
     }

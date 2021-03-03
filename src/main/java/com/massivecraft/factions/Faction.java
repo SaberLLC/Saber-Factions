@@ -104,6 +104,8 @@ public interface Faction extends EconomyParticipator {
 
     Set<FastChunk> getSpawnerChunks();
 
+    void setSpawnerChunks(Set<FastChunk> fastChunks);
+
     int getSpawnerChunkCount();
 
     int getAllowedSpawnerChunks();
