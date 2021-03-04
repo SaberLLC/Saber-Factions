@@ -71,10 +71,6 @@ public class CmdUnclaimall extends FCommand {
         }
         int unclaimed = target.getAllClaims().size();
         Board.getInstance().unclaimAll(target.getId());
-        if(Conf.userSpawnerChunkSystem) {
-            target.getSpawnerChunks().clear();
-            target.setSpawnerChunks(new HashSet<>());
-        }
         context.faction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, context.fPlayer.describeTo(context.faction, true));
         FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.RedB + "UNCLAIMED", String.valueOf(unclaimed), new FLocation(context.fPlayer.getPlayer().getLocation()).formatXAndZ(","));
 

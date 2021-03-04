@@ -189,6 +189,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.allowedSpawnerChunks = chunks;
     }
 
+    public void clearSpawnerChunks() {
+        this.spawnerChunks.clear();
+    }
+
     public int getAllowedSpawnerChunks() {
         return this.allowedSpawnerChunks;
     }

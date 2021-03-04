@@ -101,6 +101,7 @@ public abstract class MemoryBoard extends Board {
         if (faction != null && faction.isNormal()) {
             faction.clearAllClaimOwnership();
             faction.clearWarps();
+            faction.clearSpawnerChunks();
         }
         clean(factionId);
     }
@@ -273,8 +274,11 @@ public abstract class MemoryBoard extends Board {
                         char tag = fList.get(factionHere.getTag());
                         if(Conf.userSpawnerChunkSystem) {
                             if(factionHere.isNormal()) {
-                                if (factionHere.getSpawnerChunks().contains(fastChunk)) {
-                                    row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
+                                if (fastChunk != null && factionHere.getSpawnerChunks() != null) {
+                                    if (factionHere.getSpawnerChunks().contains(fastChunk)) {
+                                        row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
+                                        continue;
+                                    }
                                 }
                             }
                         }
