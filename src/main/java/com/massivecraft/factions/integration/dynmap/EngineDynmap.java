@@ -651,7 +651,7 @@ public class EngineDynmap {
 
         String money = "unavailable";
         if (Conf.bankEnabled && Conf.dynmapDescriptionMoney)
-            money = String.format("%.2f", Econ.getBalance(faction.getAccountId()));
+            money = String.format("%.2f", faction.getFactionBalance());
         ret = ret.replace("%money%", money);
 
         // Players
