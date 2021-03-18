@@ -25,15 +25,15 @@ Some of our features include the following
 ```	
 	<repositories>
 		<repository>
-		    <id>jitpack.io</id>
-		    <url>https://jitpack.io</url>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
 
 	<dependency>
-	    <groupId>com.github.SaberLLC</groupId>
-	    <artifactId>Saber-Factions</artifactId>
-	    <version>2.4.0-RC</version>
+		<groupId>com.github.SaberLLC</groupId>
+		<artifactId>Saber-Factions</artifactId>
+		<version>2.4.0-RC</version>
 	</dependency>
 ```
 ## Moving Forward
