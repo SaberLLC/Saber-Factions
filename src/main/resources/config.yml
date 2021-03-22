@@ -987,6 +987,9 @@ fchest:
 # |                  Faction Upgrades                    | #
 # +------------------------------------------------------+ #
 ############################################################
+
+#NOTE: IF YOU WANT TO REMOVE AN UPGRADE SET THE SLOT TO -1
+
 fupgrades:
   Enabled: true
   usePointsAsCurrency: false
