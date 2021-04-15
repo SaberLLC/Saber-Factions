@@ -11,6 +11,7 @@ public class FastChunk {
 
     private String worldName;
     private int x,z;
+    private long timeClaimed;
 
 
     public FastChunk(String worldName, int x, int z) {
@@ -29,6 +30,11 @@ public class FastChunk {
         this.worldName = floc.getWorldName();
         this.x = floc.getChunk().getX();
         this.z = floc.getChunk().getZ();
+    }
+
+    public FastChunk(FLocation fLoc, Long timeClaimed) {
+        this.worldName = fLoc.getWorldName();
+        this.timeClaimed = timeClaimed;
     }
 
     @Override
@@ -60,6 +66,10 @@ public class FastChunk {
 
     public int getZ() {
         return z;
+    }
+
+    public long getTimeClaimed() {
+        return timeClaimed;
     }
 
     public Chunk getChunk() {
