@@ -7,6 +7,7 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.shop.utils.BaseUtils;
 import com.massivecraft.factions.shop.utils.ItemUtils;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.zcore.util.TL;
@@ -29,6 +30,7 @@ public class CmdShop extends FCommand {
         this.optionalArgs.put("cost", "points");
         this.requirements = new CommandRequirements.Builder(Permission.SHOP)
                 .playerOnly()
+                .withRole(Role.MODERATOR)
                 .build();
     }
 
