@@ -28,8 +28,7 @@ public class CmdSeeChunk extends FCommand {
 
     public CmdSeeChunk() {
         super();
-        aliases.add("seechunk");
-        aliases.add("sc");
+        aliases.addAll(Aliases.seeChunk);
 
         this.useParticles = FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.particles", true);
         interval = FactionsPlugin.getInstance().getConfig().getLong("see-chunk.interval", 10L);

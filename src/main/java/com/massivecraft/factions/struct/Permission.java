@@ -97,6 +97,7 @@ public enum Permission {
     OWNER("owner"),
     OWNERLIST("ownerlist"),
     RESERVE("reserve"),
+    SET_TNT("settnt"),
     SET_GUILD("setguild"),
     SET_PEACEFUL("setpeaceful"),
     SET_PERMANENT("setpermanent"),

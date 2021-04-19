@@ -815,6 +815,10 @@ public enum TL {
     COMMAND_SETHOME_SETOTHER("&c&l[!]&7 You have set the home for the &c%1$s&7 faction."),
     COMMAND_SETHOME_DESCRIPTION("Set the faction home"),
 
+    COMMAND_SETTNT_SUCCESS("&aSet tnt for faction &e%s &ato &b%d"),
+    COMMAND_SETTNT_DESCRIPTION("set the amount of tnt for a faction"),
+
+
     COMMAND_SETPOWER_SUCCESS("&aSet power for &e%s &ato &b%d"),
     COMMAND_SETPOWER_DESCRIPTION("set current playing power for player"),
 
