@@ -415,6 +415,17 @@ public class FactionsEntityListener implements Listener {
 
         if (attacker == null || attacker.getPlayer() == null) return true;
 
+        if (attacker.getFaction() == defender.getFaction()) {
+            if (attacker.hasFriendlyFire() && defender.hasFriendlyFire()) return true;
+            if (attacker.hasFriendlyFire() && !defender.hasFriendlyFire()) {
+                attacker.msg(TL.FRIENDLY_FIRE_OFF_ATTACKER, defender.getName());
+                return false;
+            } else if (!attacker.hasFriendlyFire() && defender.hasFriendlyFire()) {
+                attacker.msg(TL.FRIENDLY_FIRE_YOU_MUST);
+                return false;
+            }
+        }
+
         if (Conf.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
         if (attacker.hasLoginPvpDisabled()) {
