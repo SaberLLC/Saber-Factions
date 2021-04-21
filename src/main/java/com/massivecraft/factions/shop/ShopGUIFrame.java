@@ -62,11 +62,10 @@ public class ShopGUIFrame extends SaberGUI {
                             .replace("%points%", cost + "")
                             .replace("%amount%", amount + "")));
                     fPlayer.getPlayer().getInventory().addItem(ItemUtils.getItem(l));
-                    this.close();
                 } else {
                     fPlayer.msg(TL.SHOP_NOT_ENOUGH_POINTS);
-                    this.closeWithDelay();
                 }
+                this.close();
             }));
         }
     }

@@ -1147,6 +1147,7 @@ public enum TL {
     GENERIC_MEMBERONLY("&cYou must be in a faction to do this!"),
     GENERIC_WORLDGUARD("&cThis area is worldguard protected."),
     GRACE_DISABLED_PLACEHOLDER("Disabled"),
+    MACRO_DETECTED("&c&l[!] &cNo sir!"),
 
     // MISSION_CREATED_COOLDOWN("&c&l[!] &7Due to your immediate faction creation, you may not start missions for &b%1$s minutes&7!"),
     MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),
