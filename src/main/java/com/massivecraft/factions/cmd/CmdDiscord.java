@@ -29,7 +29,7 @@ public class CmdDiscord extends FCommand {
                 return;
             }
             Integer random = new Random().nextInt(9999);
-            while (Discord.waitingLink.containsValue(random)) {
+            while (Discord.waitingLinkk.containsValue(random)) {
                 random = new Random().nextInt(9999);
             }
             Discord.waitingLink.put(random, context.fPlayer);
