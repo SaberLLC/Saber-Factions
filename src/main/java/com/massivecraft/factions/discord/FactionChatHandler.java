@@ -47,9 +47,14 @@ public class FactionChatHandler extends ListenerAdapter {
             textChannel.sendMessage("Missing `Manage Webhooks` permission in this channel").queue();
             return;
         }
+        Webhook webhook = (textChannel.retrieveWebhooks().complete()).stream().filter(w -> w.getName().equals(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.webhookName"))).findAny().orElse(null);
+        WebhookClientBuilder builder;
 
-        Webhook webhook = textChannel.createWebhook(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.webhookName")).complete();
-        WebhookClientBuilder builder = new WebhookClientBuilder(webhook.getUrl()); // or id, token
+        if (webhook == null) {
+            webhook = textChannel.createWebhook(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Bot.webhookName")).complete();
+        }
+
+        builder = new WebhookClientBuilder(webhook.getUrl()); // or id, token
         builder.setThreadFactory((job) -> {
             Thread thread = new Thread(job);
             thread.setName("WebHook Parse Thread");
