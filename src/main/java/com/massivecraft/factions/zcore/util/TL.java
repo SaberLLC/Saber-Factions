@@ -450,6 +450,8 @@ public enum TL {
 
     COMMAND_SPAWNERCHUNK_CLAIM_SUCCESSFUL("&a[!] &7You have successfully claimed a &espawner chunk &7for your faction."),
     COMMAND_SPAWNERCHUNK_ALREADY_CHUNK("&c&l[!] &7This chunk is already a spawnerchunk!"),
+    COMMAND_SPAWNERCHUNK_PAST_LIMIT("&c&l[!] &cYou have exceeded your max spawnerchunk limit! &7Limit: &f%1$s"),
+    SPAWNER_CHUNK_UNCLAIMED("&aYou have unclaimed a spawnerchunk!"),
     COMMAND_SPAWNERCHUNK_DESCRIPTION("Claim a spawnerchunk"),
 
     COMMAND_HOME_DISABLED("&c&l[!]&7 Sorry, Faction homes are &cdisabled on this server."),

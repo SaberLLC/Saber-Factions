@@ -9,6 +9,8 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
 
+import java.util.Objects;
+
 public class CmdSpawnerChunk extends FCommand {
 
     public CmdSpawnerChunk() {
@@ -27,7 +29,7 @@ public class CmdSpawnerChunk extends FCommand {
     public void perform(CommandContext context) {
         Faction fac = context.faction;
         Location location = context.player.getLocation();
-        FastChunk fastChunk = new FastChunk(location.getWorld().getName(), location.getChunk().getX(), location.getChunk().getZ());
+        FastChunk fastChunk = new FastChunk(Objects.requireNonNull(location.getWorld()).getName(), location.getChunk().getX(), location.getChunk().getZ());
         if(fac.getSpawnerChunkCount() < fac.getAllowedSpawnerChunks()) {
             if(context.fPlayer.attemptClaim(fac, new FLocation(context.player.getLocation()), true)) {
                 if(!fac.getSpawnerChunks().contains(fastChunk)) {
@@ -37,6 +39,8 @@ public class CmdSpawnerChunk extends FCommand {
                     context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_ALREADY_CHUNK);
                 }
             }
+        } else {
+            context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_PAST_LIMIT, fac.getAllowedSpawnerChunks());
         }
     }
 

@@ -150,6 +150,7 @@ public class CmdUnclaim extends FCommand {
             if (faction.getSpawnerChunks().contains(fc) && faction.getSpawnerChunks() != null) {
                 if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
                     context.faction.getSpawnerChunks().remove(fc);
+                    context.fPlayer.msg(TL.SPAWNER_CHUNK_UNCLAIMED);
                 } else {
                     if (ChunkReference.getSpawnerCount(target.getChunk()) > 0) {
                         context.fPlayer.msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(target.getChunk()));
