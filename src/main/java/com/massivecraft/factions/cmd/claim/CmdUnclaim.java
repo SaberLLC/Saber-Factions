@@ -145,6 +145,20 @@ public class CmdUnclaim extends FCommand {
             return false;
         }
 
+        FastChunk fc = new FastChunk(target.getWorldName(), target.getChunk().getX(), target.getChunk().getZ());
+        if(Conf.userSpawnerChunkSystem) {
+            if (faction.getSpawnerChunks().contains(fc) && faction.getSpawnerChunks() != null) {
+                if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
+                    context.faction.getSpawnerChunks().remove(fc);
+                } else {
+                    if (ChunkReference.getSpawnerCount(target.getChunk()) > 0) {
+                        context.fPlayer.msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(target.getChunk()));
+                    }
+                    return false;
+                }
+            }
+        }
+
         LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, context.fPlayer);
         Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
         if (unclaimEvent.isCancelled()) {
@@ -160,20 +174,6 @@ public class CmdUnclaim extends FCommand {
                 }
             } else {
                 if (!Econ.modifyMoney(context.fPlayer, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
-                    return false;
-                }
-            }
-        }
-
-        FastChunk fc = new FastChunk(target.getWorldName(), target.getChunk().getX(), target.getChunk().getZ());
-        if(Conf.userSpawnerChunkSystem) {
-            if (faction.getSpawnerChunks().contains(fc) && faction.getSpawnerChunks() != null) {
-                if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
-                    context.faction.getSpawnerChunks().remove(fc);
-                } else {
-                    if (ChunkReference.getSpawnerCount(target.getChunk()) > 0) {
-                        context.fPlayer.msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(target.getChunk()));
-                    }
                     return false;
                 }
             }
