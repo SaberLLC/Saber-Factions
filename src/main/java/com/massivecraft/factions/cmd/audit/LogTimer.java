@@ -44,7 +44,7 @@ public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer
                             currentCounts.forEach((data, ints) -> {
                                 EntityType types = EntityType.fromId(data.getData());
                                 if (types == null) {
-                                    Bukkit.getLogger().info("Unable to find EntityType for " + data.getData() + " for " + subTimer + " for fac " + factionId + "!");
+                                    //Bukkit.getLogger().info("Unable to find EntityType for " + data.getData() + " for " + subTimer + " for fac " + factionId + "!");
                                 } else {
                                     entityCounts.computeIfAbsent(types, (e) -> new AtomicInteger(0)).addAndGet(ints.get());
                                 }
