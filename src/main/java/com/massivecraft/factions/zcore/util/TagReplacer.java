@@ -250,7 +250,7 @@ public enum TagReplacer {
                 return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(fac.getLandRounded())) : minimal ? null : TL.ECON_OFF.format("refund");
             case BANK_BALANCE:
                 if (Econ.shouldBeUsed()) {
-                    return Conf.bankEnabled ? Econ.moneyString(Econ.getBalance(fac.getAccountId())) : minimal ? null : TL.ECON_OFF.format("balance");
+                    return Conf.bankEnabled ? Econ.insertCommas(Econ.getFactionBalance(fac)) : minimal ? null : TL.ECON_OFF.format("balance");
                 }
                 return minimal ? null : TL.ECON_OFF.format("balance");
             case ALLIES_COUNT:

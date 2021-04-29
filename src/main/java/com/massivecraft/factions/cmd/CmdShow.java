@@ -107,7 +107,7 @@ public class CmdShow extends FCommand {
                 if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
                     if (parsed.contains("{ig}")) {
                         // replaces all variables with no home TL
-                        parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
+                        parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME;
                     }
                     if (parsed.contains("%")) {
                         parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
