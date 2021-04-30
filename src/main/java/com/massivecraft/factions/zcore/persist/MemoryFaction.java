@@ -99,6 +99,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private int allowedSpawnerChunks;
     private Set<FastChunk> spawnerChunks;
     private boolean protectedfac = true;
+    private boolean cloaked;
 
 
     // -------------------------------------------- //
@@ -136,6 +137,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.memberRoleId = null;
         allowedSpawnerChunks = Conf.allowedSpawnerChunks;
         spawnerChunks = new HashSet<>();
+        cloaked = false;
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -165,12 +167,22 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.wallCheckMinutes = 0;
         this.bufferCheckMinutes = 0;
         this.weeWoo = false;
+        this.cloaked = false;
         this.checks = new ConcurrentHashMap<>();
         allowedSpawnerChunks = Conf.allowedSpawnerChunks;
         spawnerChunks = new HashSet<>();
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
         resetPerms(); // Reset on new Faction so it has default values.
+    }
+
+
+    public boolean isFactionCloaked() {
+        return cloaked;
+    }
+
+    public void setIsFactionCloaked(boolean cloaked) {
+        this.cloaked = cloaked;
     }
 
     public boolean isProtected() {

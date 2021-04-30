@@ -14,9 +14,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class MiscUtil {
+
+    public static String formatDifference(long time) {
+        if (time == 0L) {
+            return "Never";
+        }
+        long day = TimeUnit.SECONDS.toDays(time);
+        long hours = TimeUnit.SECONDS.toHours(time) - day * 24L;
+        long minutes = TimeUnit.SECONDS.toMinutes(time) - TimeUnit.SECONDS.toHours(time) * 60L;
+        long seconds = TimeUnit.SECONDS.toSeconds(time) - TimeUnit.SECONDS.toMinutes(time) * 60L;
+        StringBuilder sb = new StringBuilder();
+        if (day > 0L) {
+            sb.append(day).append((day == 1L) ? "day" : "days").append(" ");
+        }
+        if (hours > 0L) {
+            sb.append(hours).append((hours == 1L) ? "h" : "h").append(" ");
+        }
+        if (minutes > 0L) {
+            sb.append(minutes).append((minutes == 1L) ? "m" : "m").append(" ");
+        }
+        if (seconds > 0L) {
+            sb.append(seconds).append((seconds == 1L) ? "s" : "s");
+        }
+        String diff = sb.toString().trim();
+        return diff.isEmpty() ? "Now" : diff;
+    }
 
     /// TODO create tag whitelist!!
     public static HashSet<String> substanceChars =
