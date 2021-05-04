@@ -493,9 +493,11 @@ public class FactionsPlugin extends MPlugin {
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
         }
 
-        if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0) {
-            long ticks = (long) (20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
-            AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
+        if(Conf.useAutoLeaveAndDisbandSystem) {
+            if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0) {
+                long ticks = (long) (20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
+                AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
+            }
         }
     }
 

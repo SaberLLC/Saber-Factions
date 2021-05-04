@@ -94,6 +94,7 @@ public class Conf {
     public static boolean broadcastDescriptionChanges = false;
     public static boolean broadcastTagChanges = false;
     public static double saveToFileEveryXMinutes = 30.0;
+    public static boolean useAutoLeaveAndDisbandSystem = true; //whether we enable or disable the AutoLeaveTask
     public static double autoLeaveAfterDaysOfInactivity = 10.0;
     public static double autoLeaveRoutineRunsEveryXMinutes = 5.0;
     public static int autoLeaveRoutineMaxMillisecondsPerTick = 5;  // 1 server tick is roughly 50ms, so default max 10% of a tick
