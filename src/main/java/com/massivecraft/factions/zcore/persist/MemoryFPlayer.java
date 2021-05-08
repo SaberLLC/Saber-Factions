@@ -1059,20 +1059,22 @@ public abstract class MemoryFPlayer implements FPlayer {
     public boolean canFlyAtLocation(FLocation location) {
         Faction faction = Board.getInstance().getFactionAt(location);
 
+        boolean access = faction.getAccess(this, PermissableAction.FLY) == Access.ALLOW;
+
         if (faction.isWilderness()) {
             return Permission.FLY_WILDERNESS.has(getPlayer());
         } else if (faction.isSafeZone()) {
             return Permission.FLY_SAFEZONE.has(getPlayer());
         } else if (faction.isWarZone()) {
             return Permission.FLY_WARZONE.has(getPlayer());
-        } else if (faction.getRelationTo(getFaction()) == Relation.ENEMY) {
-            return Permission.FLY_ENEMY.has(getPlayer());
-        } else if (faction.getRelationTo(getFaction()) == Relation.ALLY) {
-            return Permission.FLY_ALLY.has(getPlayer());
-        } else if (faction.getRelationTo(getFaction()) == Relation.TRUCE) {
-            return Permission.FLY_TRUCE.has(getPlayer());
-        } else if (faction.getRelationTo(getFaction()) == Relation.NEUTRAL && !faction.isSystemFaction()) {
-            return Permission.FLY_NEUTRAL.has(getPlayer());
+        } else if (faction.getRelationTo(getFaction()) == Relation.ENEMY && Permission.FLY_ENEMY.has(getPlayer())) {
+            return true;
+        } else if (faction.getRelationTo(getFaction()) == Relation.ALLY && Permission.FLY_ALLY.has(getPlayer())) {
+            return true;
+        } else if (faction.getRelationTo(getFaction()) == Relation.TRUCE && Permission.FLY_TRUCE.has(getPlayer())) {
+            return true;
+        } else if (faction.getRelationTo(getFaction()) == Relation.NEUTRAL && !faction.isSystemFaction() && Permission.FLY_NEUTRAL.has(getPlayer())) {
+            return true;
         }
 
         // admin bypass (ops) can fly.
@@ -1080,7 +1082,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return true;
         }
 
-        return faction.getAccess(this, PermissableAction.FLY) == Access.ALLOW;
+        return access;
     }
 
     public boolean isAutoFlying() {

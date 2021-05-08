@@ -8,14 +8,12 @@ import static com.massivecraft.factions.util.MiscUtil.formatDifference;
 public class CurrentCloaks {
 
     String whoApplied;
-    double multiplier;
     long timeApplied;
     int secondsElapsed;
     int maxSeconds;
 
-    public CurrentCloaks(String whoApplied, double multiplier, long timeApplied, int secondsElapsed, int maxSeconds) {
+    public CurrentCloaks(String whoApplied, long timeApplied, int secondsElapsed, int maxSeconds) {
         this.whoApplied = whoApplied;
-        this.multiplier = multiplier;
         this.timeApplied = timeApplied;
         this.secondsElapsed = secondsElapsed;
         this.maxSeconds = maxSeconds;
@@ -27,20 +25,13 @@ public class CurrentCloaks {
 
     @Override
     public String toString() {
-        return this.getSecondsElapsed() + ":" + this.getWhoApplied() + ":" + this.getMultiplier() + ":" + this.getTimeApplied() + ":" + this.getMaxSeconds();
+        return this.getSecondsElapsed() + ":" + this.getWhoApplied() + ":" + this.getTimeApplied() + ":" + this.getMaxSeconds();
     }
 
     public String getWhoApplied() {
         return this.whoApplied;
     }
 
-    public double getMultiplier() {
-        return this.multiplier;
-    }
-
-    public void setMultiplier(double multiplier) {
-        this.multiplier = multiplier;
-    }
 
     public long getTimeApplied() {
         return this.timeApplied;
