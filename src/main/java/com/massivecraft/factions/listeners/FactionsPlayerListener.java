@@ -109,7 +109,7 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        if (me.getFaction() == otherFaction) return true;
+        //if (me.getFaction() == otherFaction) return true;
 
         if (FactionsPlugin.getInstance().getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() > otherFaction.getPowerRounded()) {
             return true;

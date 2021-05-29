@@ -133,7 +133,7 @@ public class Conf {
     public static boolean useStrikeSystem = true;
 
     //SpawnerChunks
-    public static boolean userSpawnerChunkSystem = true;
+    public static boolean userSpawnerChunkSystem = false;
     public static int allowedSpawnerChunks = 2;
     public static boolean allowSpawnerChunksUpgrade = true;
     public static boolean allowSpawnersPlacedInWilderness = false;
