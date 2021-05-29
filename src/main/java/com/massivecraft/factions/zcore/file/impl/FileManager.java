@@ -15,11 +15,17 @@ public class FileManager {
     private CustomFile shop = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/shop.yml"));
     private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/permissions.yml"));
     private CustomFile discord = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/discord.yml"));
+    private CustomFile corex = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/corex.yml"));
 
     public void setupFiles() {
         shop.setup(true, "");
         permissions.setup(true, "");
         discord.setup(true, "");
+        corex.setup(true, "");
+    }
+
+    public CustomFile getCorex() {
+        return corex;
     }
 
     public CustomFile getPermissions() {
