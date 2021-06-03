@@ -303,9 +303,16 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>dev.rosewood</groupId>
+            <artifactId>rosestacker</artifactId>
+            <version>1.2.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.bgsoftware</groupId>
             <artifactId>WildStackerAPI</artifactId>
             <version>latest</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.ess3</groupId>
@@ -463,6 +470,10 @@
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>rosewood-repo</id>
+            <url>https://repo.rosewooddev.io/repository/public/</url>
+        </repository>
         <repository>
             <id>bg-repo</id>
             <url>https://repo.bg-software.com/repository/api/</url>
