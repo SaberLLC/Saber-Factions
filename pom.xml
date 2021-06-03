@@ -303,6 +303,11 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.bgsoftware</groupId>
+            <artifactId>WildStackerAPI</artifactId>
+            <version>latest</version>
+        </dependency>
+        <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>EssentialsX</artifactId>
             <version>2.16.0</version>
@@ -458,6 +463,10 @@
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>bg-repo</id>
+            <url>https://repo.bg-software.com/repository/api/</url>
+        </repository>
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>

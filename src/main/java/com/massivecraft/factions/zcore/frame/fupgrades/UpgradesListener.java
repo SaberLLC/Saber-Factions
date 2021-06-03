@@ -1,7 +1,9 @@
 package com.massivecraft.factions.zcore.frame.fupgrades;
 
+import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
+import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -60,7 +62,12 @@ public class UpgradesListener implements Listener {
 
     private void lowerSpawnerDelay(SpawnerSpawnEvent e, double multiplier) {
         int lowerby = (int) Math.round(e.getSpawner().getDelay() * multiplier);
-        e.getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
+
+        if(Bukkit.getPluginManager().getPlugin("WildStacker") != null) {
+            WildStackerAPI.getStackedSpawner(e.getSpawner()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
+        } else {
+            e.getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
+        }
     }
 
     @EventHandler
