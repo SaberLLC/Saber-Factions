@@ -22,7 +22,6 @@ import java.util.*;
 import java.util.Map.Entry;
 
 
-
 public abstract class MemoryBoard extends Board {
 
     public MemoryBoardMap flocationIds = new MemoryBoardMap();
@@ -273,7 +272,7 @@ public abstract class MemoryBoard extends Board {
                         }
                         char tag = fList.get(factionHere.getTag());
 
-                        if(SpawnerChunkUtil.isSpawnerChunk(flocationHere)) {
+                        if (SpawnerChunkUtil.isSpawnerChunk(flocationHere)) {
                             row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
                             continue;
                         }

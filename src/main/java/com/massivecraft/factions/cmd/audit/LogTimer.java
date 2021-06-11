@@ -7,7 +7,6 @@ package com.massivecraft.factions.cmd.audit;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.MaterialData;
 

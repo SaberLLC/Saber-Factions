@@ -14,7 +14,7 @@ public class ChunkReference {
         Map<EntityType, Integer> spawners = new EnumMap<>(EntityType.class);
         for (BlockState state : chunk.getTileEntities()) {
             if (state instanceof CreatureSpawner) {
-                CreatureSpawner spawner = (CreatureSpawner)state;
+                CreatureSpawner spawner = (CreatureSpawner) state;
                 spawners.put(spawner.getSpawnedType(), spawners.getOrDefault(spawner.getSpawnedType(), 0) + 1);
             }
         }

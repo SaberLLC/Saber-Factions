@@ -16,8 +16,8 @@ public enum CloakType {
     }
 
     public static CloakType fromItemName(String name) {
-        for(CloakType type : values()) {
-            if(type.getItemName().equals(name)) {
+        for (CloakType type : values()) {
+            if (type.getItemName().equals(name)) {
                 return type;
             }
         }
@@ -25,8 +25,8 @@ public enum CloakType {
     }
 
     public static CloakType fromName(String name) {
-        for(CloakType type : values()){
-            if(type.getName().equals(name)) {
+        for (CloakType type : values()) {
+            if (type.getName().equals(name)) {
                 return type;
             }
         }

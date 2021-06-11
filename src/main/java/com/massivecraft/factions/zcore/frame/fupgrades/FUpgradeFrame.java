@@ -55,7 +55,7 @@ public class FUpgradeFrame {
                             if (value == UpgradeType.WARP) updateWarps(fme.getFaction());
 
                             if (value == UpgradeType.SPAWNERCHUNKS) {
-                                if(Conf.allowSpawnerChunksUpgrade) {
+                                if (Conf.allowSpawnerChunksUpgrade) {
                                     updateSpawnerChunks(fme.getFaction());
                                 }
                             }
@@ -77,7 +77,7 @@ public class FUpgradeFrame {
                         if (value == UpgradeType.WARP) updateWarps(fme.getFaction());
 
                         if (value == UpgradeType.SPAWNERCHUNKS) {
-                            if(Conf.allowSpawnerChunksUpgrade) {
+                            if (Conf.allowSpawnerChunksUpgrade) {
                                 updateSpawnerChunks(fme.getFaction());
                             }
                         }

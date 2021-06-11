@@ -14,8 +14,6 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
-import java.util.HashSet;
-
 public class CmdUnclaimall extends FCommand {
 
     /**

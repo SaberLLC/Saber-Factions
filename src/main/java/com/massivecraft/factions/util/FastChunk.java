@@ -10,7 +10,7 @@ import java.util.Objects;
 public class FastChunk {
 
     private String worldName;
-    private int x,z;
+    private int x, z;
     private long timeClaimed;
 
 

@@ -29,17 +29,17 @@ public class CmdSetTnt extends FCommand {
             return;
         }
 
-        if(targetFac == null) {
+        if (targetFac == null) {
             context.sender.sendMessage(ChatColor.RED + "Faction does not exist!");
             return;
         }
 
-        if(targetFac.isSystemFaction()) {
+        if (targetFac.isSystemFaction()) {
             context.sender.sendMessage(ChatColor.RED + "You cannot set the tnt of System Factions!");
             return;
         }
 
-        if(value > targetFac.getTntBankLimit()) {
+        if (value > targetFac.getTntBankLimit()) {
             context.sender.sendMessage(ChatColor.RED + "Number must be less than the factions tnt bank limit.");
             return;
         }

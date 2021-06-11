@@ -38,7 +38,7 @@ public class CloakManager {
             new File("plugins/Factions/data").mkdir();
         }
         this.cloakFile = new File("plugins/Factions/data/cloaks.yml");
-        if(!this.cloakFile.exists()) {
+        if (!this.cloakFile.exists()) {
             try {
                 this.cloakFile.createNewFile();
             } catch (IOException e) {
@@ -46,7 +46,7 @@ public class CloakManager {
             }
         }
         this.config = YamlConfiguration.loadConfiguration(this.cloakFile);
-        for(String cloakString : this.config.getStringList("active-cloaks")){
+        for (String cloakString : this.config.getStringList("active-cloaks")) {
             String[] args = cloakString.split(":");
             String factionId = args[0];
             int secondsLeft = Integer.parseInt(args[1]);
@@ -56,7 +56,7 @@ public class CloakManager {
             CloakType type = CloakType.valueOf(args[5]);
             CurrentCloaks cloak = new CurrentCloaks(who, timeApplied, secondsLeft, maxSeconds);
             FactionCloak factionCloak = this.factionCloaks.containsKey(factionId) ? this.factionCloaks.get(factionId) : new FactionCloak();
-            if(!this.factionCloaks.containsKey(factionId)) {
+            if (!this.factionCloaks.containsKey(factionId)) {
                 this.factionCloaks.put(factionId, factionCloak);
             }
             factionCloak.put(type, cloak);
@@ -82,7 +82,6 @@ public class CloakManager {
         NBTItem nbtItem = new NBTItem(itemStack);
         return nbtItem.hasKey("CloakType");
     }
-
 
 
     public ConcurrentHashMap<String, FactionCloak> getFactionCloaks() {

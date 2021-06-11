@@ -52,6 +52,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import pw.saber.corex.CoreX;
 
 import java.io.*;
 import java.lang.reflect.Modifier;
@@ -269,6 +270,8 @@ public class FactionsPlugin extends MPlugin {
 
         getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
 
+        CoreX.init();
+
         if (Conf.useCheckSystem) {
             int minute = 1200;
             this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 3), 0L, minute * 3);
@@ -290,7 +293,7 @@ public class FactionsPlugin extends MPlugin {
 
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
-        if(Conf.userSpawnerChunkSystem) {
+        if (Conf.userSpawnerChunkSystem) {
             this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
         }
 
@@ -493,7 +496,7 @@ public class FactionsPlugin extends MPlugin {
             this.getServer().getScheduler().cancelTask(AutoLeaveTask);
         }
 
-        if(Conf.useAutoLeaveAndDisbandSystem) {
+        if (Conf.useAutoLeaveAndDisbandSystem) {
             if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0) {
                 long ticks = (long) (20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
                 AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);

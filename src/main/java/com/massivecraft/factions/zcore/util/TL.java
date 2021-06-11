@@ -165,6 +165,8 @@ public enum TL {
     COMMAND_FREECAM_DISABLED("Freecam is now disabled"),
     COMMAND_FREECAM_DESCRIPTION("Go into spectator mode"),
 
+    ANTI_SPAWNER_MINE_PLAYERS_NEAR("&c&l[!] &7You may not break spawners while enemies are near!"),
+
 
     COMMAND_AUTOCLAIM_ENABLED("&c&l[!] &7Now &cauto-claiming&7 land for %1$s."),
     COMMAND_AUTOCLAIM_DISABLED("&c&l[!] Auto-claiming&7 of land is now &cdisabled."),

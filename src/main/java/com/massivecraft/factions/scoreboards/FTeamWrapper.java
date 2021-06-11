@@ -114,7 +114,7 @@ public class FTeamWrapper {
         if (!FScoreboard.isSupportedByServer()) return;
         tracking.remove(fboard);
         for (FTeamWrapper wrapper : wrappers.values()) {
-            if(wrapper != null) {
+            if (wrapper != null) {
                 wrapper.remove(fboard);
             }
         }

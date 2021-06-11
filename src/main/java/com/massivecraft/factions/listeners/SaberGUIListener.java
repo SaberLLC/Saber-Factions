@@ -16,7 +16,7 @@ import org.bukkit.event.server.PluginDisableEvent;
 
 public class SaberGUIListener implements Listener {
 
-    @EventHandler(priority= EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onCommandWhilstInventoryIsOpen(PlayerCommandPreprocessEvent event) {
         SaberGUI active = SaberGUI.getActiveGUI(event.getPlayer().getUniqueId());
         if (active != null) {

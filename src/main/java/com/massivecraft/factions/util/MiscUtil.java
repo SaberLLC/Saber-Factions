@@ -19,6 +19,10 @@ import java.util.logging.Level;
 
 public class MiscUtil {
 
+    /// TODO create tag whitelist!!
+    public static HashSet<String> substanceChars =
+            new HashSet<>(Arrays.asList("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("")));
+
     public static String formatDifference(long time) {
         if (time == 0L) {
             return "Never";
@@ -43,10 +47,6 @@ public class MiscUtil {
         String diff = sb.toString().trim();
         return diff.isEmpty() ? "Now" : diff;
     }
-
-    /// TODO create tag whitelist!!
-    public static HashSet<String> substanceChars =
-            new HashSet<>(Arrays.asList("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("")));
 
     public static EntityType creatureTypeFromEntity(Entity entity) {
         if (!(entity instanceof Creature)) {

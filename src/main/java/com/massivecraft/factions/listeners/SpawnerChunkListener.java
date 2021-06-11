@@ -20,7 +20,7 @@ public class SpawnerChunkListener implements Listener {
             FastChunk fc = new FastChunk(location.getWorld().getName(), location.getChunk().getX(), location.getChunk().getZ());
             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
 
-            if(fPlayer.isAdminBypassing()) {
+            if (fPlayer.isAdminBypassing()) {
                 return;
             }
 

@@ -197,16 +197,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return this.spawnerChunks.size();
     }
 
-    public void setAllowedSpawnerChunks(int chunks) {
-        this.allowedSpawnerChunks = chunks;
-    }
-
     public void clearSpawnerChunks() {
         this.spawnerChunks.clear();
     }
 
     public int getAllowedSpawnerChunks() {
         return this.allowedSpawnerChunks;
+    }
+
+    public void setAllowedSpawnerChunks(int chunks) {
+        this.allowedSpawnerChunks = chunks;
     }
 
     public Set<FastChunk> getSpawnerChunks() {
@@ -485,15 +485,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         tnt -= amt;
     }
 
-
-    public void setTnt(int amt){
-        tnt = amt;
-    }
-
     public int getTnt() {
         return tnt;
     }
 
+    public void setTnt(int amt) {
+        tnt = amt;
+    }
 
     public Location getVault() {
         if (vault == null) {

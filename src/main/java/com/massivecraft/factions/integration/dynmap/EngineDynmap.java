@@ -1,7 +1,6 @@
 package com.massivecraft.factions.integration.dynmap;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
 import org.bukkit.Bukkit;

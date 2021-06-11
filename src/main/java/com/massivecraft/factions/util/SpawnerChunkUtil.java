@@ -11,10 +11,10 @@ import com.massivecraft.factions.Faction;
 public class SpawnerChunkUtil {
 
     public static boolean isSpawnerChunk(FLocation fLocation) {
-        if(Conf.userSpawnerChunkSystem) {
+        if (Conf.userSpawnerChunkSystem) {
             FastChunk fastChunk = new FastChunk(fLocation);
             Faction faction = Board.getInstance().getFactionAt(fLocation);
-            if(faction.getSpawnerChunks() != null) {
+            if (faction.getSpawnerChunks() != null) {
                 return faction.getSpawnerChunks().contains(fastChunk);
             }
         }

@@ -11,7 +11,6 @@ import com.massivecraft.factions.cmd.tnt.tntprovider.TNTProvider;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

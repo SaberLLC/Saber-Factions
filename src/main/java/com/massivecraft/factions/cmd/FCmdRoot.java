@@ -374,7 +374,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             fWildEnabled = true;
         }
 
-        if(Conf.userSpawnerChunkSystem) {
+        if (Conf.userSpawnerChunkSystem) {
             this.addSubCommand(this.cmdSpawnerChunk);
         }
 

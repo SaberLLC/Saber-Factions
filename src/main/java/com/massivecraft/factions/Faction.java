@@ -108,9 +108,9 @@ public interface Faction extends EconomyParticipator {
 
     Set<FastChunk> getSpawnerChunks();
 
-    void clearSpawnerChunks();
-
     void setSpawnerChunks(Set<FastChunk> fastChunks);
+
+    void clearSpawnerChunks();
 
     int getSpawnerChunkCount();
 
@@ -212,8 +212,6 @@ public interface Faction extends EconomyParticipator {
 
     void setCheckpoint(Location location);
 
-    void setTnt(int amount);
-
     void addTnt(int amt);
 
     void takeTnt(int amt);
@@ -231,6 +229,8 @@ public interface Faction extends EconomyParticipator {
     ItemStack getBanner();
 
     int getTnt();
+
+    void setTnt(int amount);
 
     String getRule(int index);
 

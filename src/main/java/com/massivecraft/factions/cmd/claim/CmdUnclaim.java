@@ -146,7 +146,7 @@ public class CmdUnclaim extends FCommand {
         }
 
         FastChunk fc = new FastChunk(target.getWorldName(), target.getChunk().getX(), target.getChunk().getZ());
-        if(Conf.userSpawnerChunkSystem) {
+        if (Conf.userSpawnerChunkSystem) {
             if (faction.getSpawnerChunks().contains(fc) && faction.getSpawnerChunks() != null) {
                 if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
                     context.faction.getSpawnerChunks().remove(fc);
