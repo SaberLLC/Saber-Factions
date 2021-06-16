@@ -1032,6 +1032,21 @@ fupgrades:
           - ''
           - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         Slot: 31
+    Fall-Damage:
+      Cost:
+        level-1: 2000000
+      DisplayItem:
+        Name: '&c&lFall Damage'
+        Type: FEATHER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&7&oDeny &c&ofall-damage&7&o in ALL &c&oclaims.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - '&f'
+          - '&4&l* &cCost: &f$2,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 14
     SpawnerChunks:
       Max-Level: 3
       chunk-limit:
@@ -1061,7 +1076,7 @@ fupgrades:
           - '&4&l* &cLevel 3: &f$6,000,000'
           - ''
           - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
-        Slot: 13
+        Slot: 12
     EXP:
       Max-Level: 3
       EXP-Boost:
@@ -1137,7 +1152,7 @@ fupgrades:
           - ''
           - '&4&l* &cCost: &f$1,000,000'
           - ''
-          - '&7&o(( Tip: &f&oLeft-click&7&o to &c&oupgrade&7&o ))'
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         Slot: 23
     Spawners:
       Max-Level: 3

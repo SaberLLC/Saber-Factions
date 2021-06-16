@@ -15,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockGrowEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
@@ -119,8 +120,23 @@ public class UpgradesListener implements Listener {
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.REDSTONE);
             if (level != 0) {
-                if (level == 1) FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.Cost");
-                if (unbreakable.contains(block)) e.setCancelled(true);
+                if (level == 1)
+                    if (unbreakable.contains(block)) e.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerFallUpgrade(EntityDamageEvent e) {
+        if (e.getEntity() instanceof Player) {
+            if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                Player player = (Player) e.getEntity();
+                FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+                int level = fPlayer.getFaction().getUpgrade(UpgradeType.FALL_DAMAGE);
+
+                if (level > 0) {
+                    e.setCancelled(true);
+                }
             }
         }
     }

@@ -587,9 +587,13 @@ public class Conf {
         try {
             safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
         } catch (IllegalArgumentException ex) {
-            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
-            safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
-            safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
+            if (FactionsPlugin.getInstance().mc117) {
+                safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
+                safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
+                safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+            } else {
+                safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+            }
         }
         safeZoneNerfedCreatureTypes.add(EntityType.SILVERFISH);
         safeZoneNerfedCreatureTypes.add(EntityType.SKELETON);

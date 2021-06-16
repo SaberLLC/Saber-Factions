@@ -23,6 +23,7 @@ public enum UpgradeType {
      */
 
     CHEST("Chest", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Max-Level")),
+    FALL_DAMAGE("Fall-Damage", 1),
     SPAWNER("Spawners", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.Max-Level")),
     EXP("EXP", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.Max-Level")),
     CROP("Crops", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Max-Level")),
