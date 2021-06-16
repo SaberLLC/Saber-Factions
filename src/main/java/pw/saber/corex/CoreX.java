@@ -5,7 +5,6 @@ import com.massivecraft.factions.zcore.file.CustomFile;
 import pw.saber.corex.listeners.*;
 import pw.saber.corex.listeners.mob.*;
 
-import javax.swing.border.Border;
 import java.util.logging.Level;
 
 public class CoreX {

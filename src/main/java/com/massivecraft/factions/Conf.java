@@ -584,13 +584,13 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
         safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
         safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE);
-        EntityType type;
         try {
-            type = EntityType.valueOf("PIG_ZOMBIE");
+            safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
         } catch (IllegalArgumentException ex) {
-            type = EntityType.ZOMBIFIED_PIGLIN;
+            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+            safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
+            safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
         }
-        safeZoneNerfedCreatureTypes.add(type);
         safeZoneNerfedCreatureTypes.add(EntityType.SILVERFISH);
         safeZoneNerfedCreatureTypes.add(EntityType.SKELETON);
         safeZoneNerfedCreatureTypes.add(EntityType.SPIDER);
