@@ -94,5 +94,13 @@ public class CoreX {
         if (getConfig().fetchBoolean("Features.Anti-Natural-Mobs")) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new NaturalMobSpawning(), FactionsPlugin.getInstance());
         }
+
+        if(getConfig().fetchBoolean("Features.Anti-Block-Placement")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBlockPlace(), FactionsPlugin.getInstance());
+        }
+
+        if(getConfig().fetchBoolean("Features.Blocked-Enchantments")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new BlockedEnchantments(), FactionsPlugin.getInstance());
+        }
     }
 }

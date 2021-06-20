@@ -10,6 +10,8 @@
 #<-------------------------------------->NOTES<-------------------------------------->#
 
 Features:
+  Blocked-Enchantments: false #Denies Specific Enchantments Whilst Being In Enchantment Table
+  Anti-Block-Placement: true #Configurable List Below For Specific Blocks You Do NOT want your players placing
   Anti-Baby-Zombies: true #Denies Baby Zombies and Pig Zombies from Spawning
   Anti-Mob-Movement: false #Configurable List Provided Below of which mobs you DO NOT want to move
   Anti-Mob-Targeting: false #Denies Mob Targeting
@@ -35,6 +37,14 @@ AntiSpawnerMine:
   Radius: 20.0 # Radius that the player will be denied mining spawners when an enemy is near.
 
 ironGolemHealth: 50.0 #50.0 = 25 hearts
+
+# https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
+# eg. DURABILITY:1
+BlockedEnchants:
+  - example
+
+Denied-Blocks: #List Here A Bunch OF Blocks You Do NOT Want Players To Place
+  - 'BEDROCK'
 
 Anti-Mob-Movement:
   Mob-List:
