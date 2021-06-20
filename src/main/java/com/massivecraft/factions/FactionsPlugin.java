@@ -149,9 +149,8 @@ public class FactionsPlugin extends MPlugin {
 
         StartupParameter.initData(this);
 
-        Version.initNonPacketParticles();
-        Version.initParticleProvider();
-        Version.versionInfo();
+        VersionProtocol.doBigThingsWithParticlesOMEGALUL();
+        VersionProtocol.printVerionInfo();
 
         // Add Base Commands
         this.cmdBase = new FCmdRoot();

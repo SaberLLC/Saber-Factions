@@ -6,9 +6,9 @@ import com.massivecraft.factions.util.particle.PacketParticleProvider;
 import com.massivecraft.factions.util.particle.darkblade12.ReflectionUtils;
 import org.bukkit.Bukkit;
 
-public class Version {
+public class VersionProtocol {
 
-    public static void versionInfo() {
+    public static void printVerionInfo() {
         short version = Short.parseShort(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         switch (version) {
             case 7:
@@ -35,19 +35,18 @@ public class Version {
         }
     }
 
-    public static void initParticleProvider() {
+    public static void doBigThingsWithParticlesOMEGALUL() {
         if (FactionsPlugin.instance.version <= 13) {
             FactionsPlugin.instance.particleProvider = new PacketParticleProvider();
         } else {
             FactionsPlugin.instance.particleProvider = new BukkitParticleProvider();
         }
-        Bukkit.getLogger().info(FactionsPlugin.instance.txt.parse("Using %1s as a particle provider", FactionsPlugin.instance.particleProvider.name()));
-    }
 
-    public static void initNonPacketParticles() {
         if (FactionsPlugin.instance.version > 8) {
             FactionsPlugin.instance.useNonPacketParticles = true;
             FactionsPlugin.instance.log("Minecraft com.massivecraft.factions.Version 1.9 or higher found, using non packet based particle API");
         }
+
+        Bukkit.getLogger().info(FactionsPlugin.instance.txt.parse("Using %1s as a particle provider", FactionsPlugin.instance.particleProvider.name()));
     }
 }
