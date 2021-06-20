@@ -1,25 +1,25 @@
 package com.massivecraft.factions;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.cmd.*;
+import com.massivecraft.factions.boosters.listener.RedemptionListener;
+import com.massivecraft.factions.boosters.listener.types.ExperienceListener;
+import com.massivecraft.factions.boosters.listener.types.MobDropListener;
+import com.massivecraft.factions.boosters.listener.types.mcMMOListener;
+import com.massivecraft.factions.boosters.struct.BoosterManager;
+import com.massivecraft.factions.boosters.task.BoosterTask;
+import com.massivecraft.factions.cmd.CmdAutoHelp;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.audit.FChestListener;
 import com.massivecraft.factions.cmd.audit.FLogManager;
 import com.massivecraft.factions.cmd.audit.FLogType;
-import com.massivecraft.factions.cmd.check.CheckTask;
-import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
-import com.massivecraft.factions.cmd.reserve.ListParameterizedType;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
-import com.massivecraft.factions.discord.Discord;
-import com.massivecraft.factions.discord.DiscordListener;
-import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.Worldguard;
-import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.missions.MissionHandler;
 import com.massivecraft.factions.struct.Relation;
@@ -53,13 +53,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import pw.saber.corex.CoreX;
 
-import java.io.*;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -77,6 +73,7 @@ public class FactionsPlugin extends MPlugin {
     // a green light to use the api.
     public static boolean startupFinished = false;
     public boolean PlaceholderApi;
+    public BoosterManager boosterManager;
     // Commands
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
@@ -177,6 +174,19 @@ public class FactionsPlugin extends MPlugin {
             this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
         }
 
+        if (Conf.useBoosterSystem) {
+            (this.boosterManager = new BoosterManager()).loadActiveBoosters();
+            this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BoosterTask(), 20L, 20L);
+            getServer().getPluginManager().registerEvents(new RedemptionListener(boosterManager), this);
+            getServer().getPluginManager().registerEvents(new ExperienceListener(), this);
+
+            if (Bukkit.getPluginManager().getPlugin("mcMMO") != null) {
+                getServer().getPluginManager().registerEvents(new mcMMOListener(), this);
+            }
+
+            getServer().getPluginManager().registerEvents(new MobDropListener(), this);
+        }
+
         // Register Event Handlers
         eventsListener = new Listener[]{
                 new FactionsChatListener(),
@@ -255,6 +265,10 @@ public class FactionsPlugin extends MPlugin {
             if (rsp != null) perms = rsp.getProvider();
         } catch (NoClassDefFoundError ex) {
         }
+    }
+
+    public BoosterManager getBoosterManager() {
+        return boosterManager;
     }
 
 

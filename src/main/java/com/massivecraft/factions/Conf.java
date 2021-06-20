@@ -135,6 +135,9 @@ public class Conf {
     //Denies User Join BEFORE Faction Data is Fully Loaded!
     public static boolean usePreStartupKickSystem = true;
 
+    //Showing these clowns how to make a booster system
+    public static boolean useBoosterSystem = true;
+
     //SpawnerChunks
     public static boolean userSpawnerChunkSystem = false;
     public static int allowedSpawnerChunks = 2;
@@ -155,7 +158,7 @@ public class Conf {
     public static boolean logMoneyTransactions = true;
     public static boolean logPlayerCommands = true;
     // prevent some potential exploits
-    public static boolean denyFlightIfInNoClaimingWorld = false;
+
     public static boolean handleExploitObsidianGenerators = true;
     public static boolean handleExploitEnderPearlClipping = true;
     public static boolean handleExploitInteractionSpam = true;
@@ -259,7 +262,6 @@ public class Conf {
     public static boolean ownedMessageInsideTerritory = true;
     public static boolean ownedMessageByChunk = false;
     public static boolean pistonProtectionThroughDenyBuild = true;
-    public static Set<Material> loggableMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryProtectedMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryDenyUsageMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
@@ -391,7 +393,6 @@ public class Conf {
     // faction-<factionId>
     public static int defaultMaxVaults = 0;
     public static boolean disableFlightOnFactionClaimChange = true;
-    public static boolean sendFactionChangeMessage = true;
 
     public static Backend backEnd = Backend.JSON;
 
@@ -418,10 +419,6 @@ public class Conf {
     public static boolean usePermissionHints = false;
     public static HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
     public static HashSet<PermissableAction> lockedPermissions = new HashSet<>();
-
-    public static boolean useComplexFly = true;
-
-    public static boolean wildLoadChunkBeforeTeleport = true;
 
     private static transient Conf i = new Conf();
 

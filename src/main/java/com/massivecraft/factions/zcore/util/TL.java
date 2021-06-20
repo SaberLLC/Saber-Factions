@@ -209,6 +209,24 @@ public enum TL {
     COMMAND_BOOM_ENABLED("&c&l[!] &c%1$s&7 has&c %2$s&7 explosions in your faction's territory."),
     COMMAND_BOOM_DESCRIPTION("Toggle explosions (peaceful factions only)"),
 
+    COMMAND_GIVEBOOSTER_INVALID_DURATION("&c&l[!] &b%1$s &7is not a valid duration!"),
+    COMMAND_GIVEBOOSTER_INVALID_BOOSTER("&c&l[!] &b%1$s &7is not a valid booster! &ePlease use: EXP, MOB, MCMMO."),
+    COMMAND_GIVEBOOSTER_INVALID_MULTIPLIER("&c&l[!] &b%1$s &7is not a valid multiplier!"),
+    COMMAND_GIVEBOOSTER_BOOSTER_GIVEN("&a&l[!] &7You have given a booster to &b%1$s&7."),
+    COMMAND_GIVEBOOSTER_DESCRIPTION("Give a Player a Faction Booster"),
+
+    COMMAND_BOOSTER_NONE_ACTIVE("&c&l[!] &7Your faction does not have any boosters active!"),
+    COMMAND_BOOSTER_DESCRIPTION("View All Active Factions Boosters"),
+
+    BOOSTER_CANNOT_USE_WILDERNESS("&c&l[!] &7You may not use a faction booster whilst in wilderness!"),
+    BOOSTER_OVER_CAP_LIMIT("&c&l[!] &7You may not use boosters with over a 10x multiplier!"),
+    BOOSTER_MULTIPLE_RUNNING("&c&l[!] &7You can only apply the same {multiplier}x while your booster is active."),
+    BOOSTER_ALREADY_ACTIVE("&c&l[!] Your faction already has this booster activated by {player} for another {time-left}!"),
+    BOOSTER_TITLE_COMMAND("&e&lCurrent Active Faction Boosters&e:"),
+    BOOSTER_ACTIVE_PHRASE("&6&l* &e&l{multiplier}x {boosterType} &6started by &e&l{player} &6expires in &e&l{time-left}&6!"),
+    BOOSTER_EXPIRED("&c&l[!] &e&l{multiplier}x {boosterType} &ffrom &e&l{player} &fhas &c&lEXPIRED&7!"),
+    BOOSTER_REMINDER_EXP("&a&l+ {multiplier}x EXP &a({player}''s Faction Booster &7[{time-left}]&a)"),
+    BOOSTER_REMINDER_MCMMO("&a&l+ {multiplier}x mcMMO &a({player}''s Faction Booster &7[{time-left}]&a)"),
 
     COMMAND_BYPASS_ENABLE("&e&l[!] &eYou have enabled admin bypass mode. You will be able to build or destroy anywhere."),
     COMMAND_BYPASS_ENABLELOG(" has ENABLED admin bypass mode."),

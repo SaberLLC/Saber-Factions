@@ -1400,6 +1400,35 @@ fupgrades:
 
 ############################################################
 # +------------------------------------------------------+ #
+# |                 Faction Boosters                     | #
+# +------------------------------------------------------+ #
+############################################################
+Boosters:
+  maxBoosterMultiplierRedeemable: 10.0 #If a user tried to redeem a booster higher then 10x it will not allow them
+  useSoundOnUse: true
+  soundType: LEVEL_UP
+  Booster-Types:
+    Remind:
+      Exp: 10 #After 10 kills they will be notified of any active EXP booster
+      mcMMO: 30
+      Mob-Drops:
+        Types: #These Mobs Will Provide More Drops When Mob Drop booster is active.
+          - CREEPER
+          - BLAZE
+          - ENDERMAN
+  BoosterItem:
+    Type: EMERALD
+    Name: '&6&lFaction &e{boosterType} &6&lBooster'
+    Lore:
+      - ' '
+      - '&f&lInformation'
+      - ' &e&l* &6&lDuration: &e&l{duration}'
+      - ' &e&l* &6&lMultiplier: &e&l{multiplier}x'
+      - ''
+      - '&7&o((&a&oRight-Click &7&oto redeem this &a&ofaction booster&7&o))'
+
+############################################################
+# +------------------------------------------------------+ #
 # |                   Faction Audit                      | #
 # +------------------------------------------------------+ #
 ############################################################

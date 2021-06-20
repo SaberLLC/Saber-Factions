@@ -2,6 +2,8 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.boosters.commands.CmdBoosters;
+import com.massivecraft.factions.boosters.commands.CmdGiveBooster;
 import com.massivecraft.factions.cmd.alts.CmdAlts;
 import com.massivecraft.factions.cmd.audit.CmdAudit;
 import com.massivecraft.factions.cmd.check.CmdCheck;
@@ -171,6 +173,9 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSetPower cmdSetPower = new CmdSetPower();
     public CmdSpawnerChunk cmdSpawnerChunk = new CmdSpawnerChunk();
     public CmdSetTnt cmdSetTnt = new CmdSetTnt();
+    public CmdGiveBooster cmdGiveBooster = new CmdGiveBooster();
+    public CmdBoosters cmdBoosters = new CmdBoosters();
+
 
     //Variables to know if we already setup certain sub commands
     public Boolean discordEnabled = false;
@@ -316,6 +321,12 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
      * Add sub commands to the root if they are enabled
      */
     public void addVariableCommands() {
+        //Boosters
+        if (Conf.useBoosterSystem) {
+            this.addSubCommand(this.cmdGiveBooster);
+            this.addSubCommand(this.cmdBoosters);
+        }
+
         //Discord
         if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem") && !discordEnabled) {
             this.addSubCommand(this.cmdInviteBot);
