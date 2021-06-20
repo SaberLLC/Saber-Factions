@@ -102,5 +102,13 @@ public class CoreX {
         if(getConfig().fetchBoolean("Features.Blocked-Enchantments")) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new BlockedEnchantments(), FactionsPlugin.getInstance());
         }
+
+        if(getConfig().fetchBoolean("Features.Armor-Swap")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ArmorSwap(), FactionsPlugin.getInstance());
+        }
+
+        if(getConfig().fetchBoolean("Features.No-Cursor-Drop")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new NoCursorDrop(), FactionsPlugin.getInstance());
+        }
     }
 }

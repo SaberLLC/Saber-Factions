@@ -10,6 +10,8 @@
 #<-------------------------------------->NOTES<-------------------------------------->#
 
 Features:
+  No-Cursor-Drop: true #When a player closes their inventory whilst a item is on their cursor it does not drop on the ground it goes back into their inventory
+  Armor-Swap: true #Allows PLayers To Right Click Armor and Rotate Their Equipped Armor Into Their Hotbar just by right clicking
   Blocked-Enchantments: false #Denies Specific Enchantments Whilst Being In Enchantment Table
   Anti-Block-Placement: true #Configurable List Below For Specific Blocks You Do NOT want your players placing
   Anti-Baby-Zombies: true #Denies Baby Zombies and Pig Zombies from Spawning
@@ -42,6 +44,8 @@ ironGolemHealth: 50.0 #50.0 = 25 hearts
 # eg. DURABILITY:1
 BlockedEnchants:
   - example
+
+Armor-Swap-Cooldown: 500 #This is in Milliseconds - 500 = .5 seconds
 
 Denied-Blocks: #List Here A Bunch OF Blocks You Do NOT Want Players To Place
   - 'BEDROCK'
