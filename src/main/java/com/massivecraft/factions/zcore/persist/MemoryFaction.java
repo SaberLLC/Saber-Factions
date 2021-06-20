@@ -965,24 +965,26 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void resetPerms() {
-        FactionsPlugin.instance.log(Level.WARNING, "Resetting permissions for Faction: " + this.tag);
+        if (!this.isSystemFaction()) {
+            FactionsPlugin.instance.log(Level.WARNING, "Resetting permissions for Faction: " + this.tag);
 
-        permissions.clear();
+            permissions.clear();
 
-        // First populate a map with undefined as the permission for each action.
-        Map<PermissableAction, Access> freshMap = new HashMap<>();
-        for (PermissableAction action : PermissableAction.values()) freshMap.put(action, Access.DENY);
+            // First populate a map with undefined as the permission for each action.
+            Map<PermissableAction, Access> freshMap = new HashMap<>();
+            for (PermissableAction action : PermissableAction.values()) freshMap.put(action, Access.DENY);
 
-        // Put the map in there for each relation.
-        for (Relation relation : Relation.values()) {
-            if (relation == Relation.MEMBER) continue;
-            permissions.put(relation, new HashMap<>(freshMap));
-        }
+            // Put the map in there for each relation.
+            for (Relation relation : Relation.values()) {
+                if (relation == Relation.MEMBER) continue;
+                permissions.put(relation, new HashMap<>(freshMap));
+            }
 
-        // And each role.
-        for (Role role : Role.values()) {
-            if (role == Role.LEADER) continue;
-            permissions.put(role, new HashMap<>(freshMap));
+            // And each role.
+            for (Role role : Role.values()) {
+                if (role == Role.LEADER) continue;
+                permissions.put(role, new HashMap<>(freshMap));
+            }
         }
     }
 
