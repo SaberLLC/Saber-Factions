@@ -26,6 +26,7 @@ public class CmdReload extends FCommand {
         Conf.load();
         Conf.save();
         FactionsPlugin.getInstance().getFileManager().getShop().loadFile();
+        FactionsPlugin.getInstance().getFileManager().getCoreX().loadFile();
         FactionsPlugin.getInstance().reloadConfig();
         FactionsPlugin.getInstance().loadLang();
 

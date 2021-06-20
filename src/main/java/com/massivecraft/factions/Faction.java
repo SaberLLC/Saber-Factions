@@ -24,10 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
 
-    void setIsFactionCloaked(boolean factionCloaked);
-
-    boolean isFactionCloaked();
-
     double getFactionBalance();
 
     void setFactionBalance(double money);
