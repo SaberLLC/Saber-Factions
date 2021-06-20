@@ -13,13 +13,13 @@ import java.io.File;
 public class FileManager {
 
     private CustomFile shop = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/shop.yml"));
-    private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/permissions.yml"));
+    private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "permissions.yml"));
     private CustomFile discord = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/discord.yml"));
     private CustomFile corex = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "corex" + File.separator + "corex.yml"));
 
     public void setupFiles() {
         shop.setup(true, "");
-        permissions.setup(true, "");
+        permissions.setup(true, "data");
         discord.setup(true, "");
         corex.setup(true, "corex");
     }

@@ -16,7 +16,6 @@ public class CmdDebug extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().divider();
         System.out.print("----------Debug Info----------");
         System.out.print("-------Main-------");
         System.out.print("Server Version: " + FactionsPlugin.getInstance().getServer().getVersion());
@@ -58,7 +57,6 @@ public class CmdDebug extends FCommand {
         System.out.print("End Attempt Log");
         System.out.print("----End Discord----");
         System.out.print("--------End Debug Info--------");
-        FactionsPlugin.getInstance().divider();
         context.fPlayer.msg(TL.COMMAND_DEBUG_PRINTED);
     }
 

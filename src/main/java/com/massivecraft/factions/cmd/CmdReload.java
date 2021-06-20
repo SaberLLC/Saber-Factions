@@ -30,7 +30,7 @@ public class CmdReload extends FCommand {
         FactionsPlugin.getInstance().loadLang();
 
 
-        if (!FactionsPlugin.getInstance().mc17) {
+        if (FactionsPlugin.getInstance().version != 7) {
             FactionsPlayerListener.loadCorners();
         }
 

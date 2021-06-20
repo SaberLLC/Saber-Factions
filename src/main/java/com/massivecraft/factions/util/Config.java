@@ -34,7 +34,7 @@ public class Config extends YamlConfiguration {
     }
 
     private void createFile() {
-        File folder = this.plugin.getDataFolder();
+        File folder = new File(this.plugin.getDataFolder() + File.separator + "data" + File.separator);
         try {
             File ex = new File(folder, this.fileName);
             if (!ex.exists()) {
@@ -53,7 +53,7 @@ public class Config extends YamlConfiguration {
     }
 
     public void save() {
-        File folder = this.plugin.getDataFolder();
+        File folder = new File(this.plugin.getDataFolder() + File.separator + "data" + File.separator);
         try {
             this.save(new File(folder, this.fileName));
         } catch (Exception e) {

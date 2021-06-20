@@ -322,7 +322,7 @@ public class FactionsBlockListener implements Listener {
     @EventHandler
     public void onBannerBreak(BlockBreakEvent e) {
         FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
-        if (FactionsPlugin.getInstance().mc17) {
+        if (FactionsPlugin.getInstance().version == 7) {
             return;
         }
 
@@ -336,7 +336,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onBannerPlace(BlockPlaceEvent e) {
-        if (FactionsPlugin.getInstance().mc17) return;
+        if (FactionsPlugin.getInstance().version == 7) return;
 
         if (e.getItemInHand().getType().name().contains("BANNER")) {
             ItemStack bannerInHand = e.getItemInHand();

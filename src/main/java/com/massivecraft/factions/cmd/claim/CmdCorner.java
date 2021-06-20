@@ -34,7 +34,7 @@ public class CmdCorner extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (FactionsPlugin.getInstance().mc17) {
+        if (FactionsPlugin.getInstance().version == 7) {
             context.msg(TL.GENERIC_DISABLED, "Faction Corners");
             return;
         }

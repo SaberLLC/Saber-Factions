@@ -186,7 +186,7 @@ public abstract class MPlugin extends JavaPlugin {
             Board.getInstance().forceSave();
         }
 
-        log("Disabled");
+        log("Shutdown Successful!");
     }
 
     // -------------------------------------------- //

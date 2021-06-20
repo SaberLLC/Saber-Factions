@@ -111,6 +111,8 @@ public enum TL {
     COMMAND_HELP_MOAR_3("Even more commands for server admins:"),
     COMMAND_HELP_DESCRIPTION("\n  &a&l» &7Display a &ahelp &7page"),
 
+    PRE_JOIN_KICK_MESSAGE("&c&lYour faction data is being loaded, please try again!"),
+
     COMMAND_NEAR_DESCRIPTION("Get nearby faction players in a radius."),
     COMMAND_NEAR_DISABLED_MSG("&cThis command is disabled!"),
     COMMAND_NEAR_FORMAT("{playername} &c({distance}m)"),

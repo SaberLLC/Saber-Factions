@@ -141,7 +141,7 @@ public enum Role implements Permissable {
 
         itemMeta.setDisplayName(displayName);
         itemMeta.setLore(lore);
-        if (!FactionsPlugin.getInstance().mc17) {
+        if (FactionsPlugin.getInstance().version != 7) {
             itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         }
 

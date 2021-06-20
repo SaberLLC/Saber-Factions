@@ -77,7 +77,7 @@ public class CmdInventorySee extends FCommand {
                 inventory.setItem(slot, XMaterial.GRAY_STAINED_GLASS_PANE.parseItem());
             }
         }
-        if (FactionsPlugin.getInstance().mc18) {
+        if (FactionsPlugin.getInstance().version == 8) {
             inventory.setItem(inventory.getSize() - 7, armor[3]);
             inventory.setItem(inventory.getSize() - 6, armor[2]);
             inventory.setItem(inventory.getSize() - 4, armor[1]);

@@ -354,7 +354,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         if ((Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null) && !internalFTOPEnabled) {
             FactionsPlugin.getInstance().log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
         } else {
-            FactionsPlugin.getInstance().log(Level.INFO, "Enabling FactionsTop command, this is a very basic /f top please get a dedicated /f top resource if you want land calculation etc.");
+            FactionsPlugin.getInstance().log(Level.INFO, "Internal Factions Top Being Used. NOTE: Very Basic");
             this.addSubCommand(this.cmdTop);
             internalFTOPEnabled = true;
         }

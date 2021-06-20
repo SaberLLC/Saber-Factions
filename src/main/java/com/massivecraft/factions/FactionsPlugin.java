@@ -17,6 +17,7 @@ import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.discord.DiscordListener;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.*;
@@ -26,8 +27,6 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.adapters.*;
 import com.massivecraft.factions.util.flight.FlightEnhance;
-import com.massivecraft.factions.util.particle.BukkitParticleProvider;
-import com.massivecraft.factions.util.particle.PacketParticleProvider;
 import com.massivecraft.factions.util.particle.ParticleProvider;
 import com.massivecraft.factions.util.particle.darkblade12.ReflectionUtils;
 import com.massivecraft.factions.util.timer.TimerManager;
@@ -38,6 +37,8 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fupgrades.UpgradesListener;
+import com.massivecraft.factions.zcore.util.ShutdownParameter;
+import com.massivecraft.factions.zcore.util.StartupParameter;
 import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -79,32 +80,25 @@ public class FactionsPlugin extends MPlugin {
     // Commands
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
-    public boolean mc17 = false;
-    public boolean mc18 = false;
-    public boolean mc112 = false;
-    public boolean mc113 = false;
-    public boolean mc114 = false;
-    public boolean mc115 = false;
-    public boolean mc116 = false;
-    public boolean mc117 = false;
+
+    public short version;
 
     public boolean useNonPacketParticles = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
-    SkriptAddon skriptAddon;
+    public SkriptAddon skriptAddon;
     private FactionsPlayerListener factionsPlayerListener;
     private boolean locked = false;
-    private boolean spam = false;
     private Integer AutoLeaveTask = null;
-    private boolean hookedPlayervaults;
+    public boolean hookedPlayervaults;
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
-    private ParticleProvider particleProvider;
+    public ParticleProvider particleProvider;
     private boolean mvdwPlaceholderAPIManager = false;
     private Listener[] eventsListener;
     private Worldguard wg;
-    private FLogManager fLogManager;
-    private List<ReserveObject> reserveObjects;
-    private FileManager fileManager;
-    private TimerManager timerManager;
+    public FLogManager fLogManager;
+    public List<ReserveObject> reserveObjects;
+    public FileManager fileManager;
+    public TimerManager timerManager;
 
     public FactionsPlugin() {
         instance = this;
@@ -127,68 +121,19 @@ public class FactionsPlugin extends MPlugin {
         this.setAutoSave(val);
     }
 
-    public boolean getSpam() {
-        return this.spam;
-    }
-
-    public void setSpam(boolean val) {
-        this.spam = val;
-        this.setAutoSave(val);
-    }
 
     @Override
     public void onEnable() {
-        log("==== Setup ====");
 
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            divider();
             System.out.println("You are missing dependencies!");
             System.out.println("Please verify [Vault] is installed!");
             Conf.save();
             Bukkit.getPluginManager().disablePlugin(instance);
-            divider();
             return;
         }
 
-        int version = Integer.parseInt(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
-        switch (version) {
-            case 7:
-                FactionsPlugin.instance.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, corners, and Titles.");
-                mc17 = true;
-                break;
-            case 8:
-                FactionsPlugin.instance.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
-                mc18 = true;
-                break;
-            case 12:
-                mc112 = true;
-                break;
-            case 13:
-                FactionsPlugin.instance.log("Minecraft Version 1.13 found, New Items will be used.");
-                mc113 = true;
-                break;
-            case 14:
-                FactionsPlugin.instance.log("Minecraft Version 1.14 found.");
-                mc114 = true;
-                break;
-            case 15:
-                FactionsPlugin.instance.log("Minecraft Version 1.15 found.");
-                mc115 = true;
-                break;
-            case 16:
-                FactionsPlugin.instance.log("Minecraft Version 1.16 found.");
-                mc116 = true;
-                break;
-            case 17:
-                FactionsPlugin.instance.log("Minecraft Version 1.17 found.");
-                mc117 = true;
-                break;
-        }
-        migrateFPlayerLeaders();
-        log("==== End Setup ====");
-
-        int pluginId = 7013;
-        new Metrics(this, pluginId);
+        this.version = Short.parseShort(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 
         if (!preEnable()) {
             this.loadSuccessful = false;
@@ -201,101 +146,31 @@ public class FactionsPlugin extends MPlugin {
         // Load Conf from disk
         Conf.load();
 
-        fileManager = new FileManager();
-        fileManager.setupFiles();
-
-        fLogManager = new FLogManager();
-
-        com.massivecraft.factions.integration.Essentials.setup();
-        hookedPlayervaults = setupPlayervaults();
-        FPlayers.getInstance().load();
-        Factions.getInstance().load();
-
-        for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
-            Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
-            if (faction == null) {
-                log("Invalid faction id on " + fPlayer.getName() + ":" + fPlayer.getFactionId());
-                fPlayer.resetFactionData(false);
-                continue;
-            }
-            if (fPlayer.isAlt()) faction.addAltPlayer(fPlayer);
-            else faction.addFPlayer(fPlayer);
-        }
-
-        Factions.getInstance().getAllFactions().forEach(Faction::refreshFPlayers);
-
         if (getConfig().getBoolean("enable-faction-flight", true)) {
             Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), new FlightEnhance(), 30L, 30L);
         }
 
+        StartupParameter.initData(this);
 
-        Board.getInstance().load();
-        Board.getInstance().clean();
-        //Load command aliases
-        Aliases.load();
+        Version.initNonPacketParticles();
+        Version.initParticleProvider();
+        Version.versionInfo();
+
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
         this.cmdAutoHelp = new CmdAutoHelp();
 
-        Econ.setup();
         setupPermissions();
 
         if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) wg = new Worldguard();
 
-        EngineDynmap.getInstance().init();
-
-        // Run before initializing listeners to handle reloads properly.
-        if (mc113 || mc112 || mc18 || mc17) { // Before 1.13
-            particleProvider = new PacketParticleProvider();
-        } else {
-            particleProvider = new BukkitParticleProvider();
-        }
-        getLogger().info(txt.parse("Using %1s as a particle provider", particleProvider.name()));
-
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
 
-        cachedRadiusClaim = Conf.useRadiusClaimSystem;
-
-        if (version > 8) {
-            useNonPacketParticles = true;
-            log("Minecraft Version 1.9 or higher found, using non packet based particle API");
+        if(Conf.usePreStartupKickSystem) {
+            getServer().getPluginManager().registerEvents(new LoginRegistry(), this);
         }
-
-        if (getServer().getPluginManager().getPlugin("Skript") != null) {
-            log("Skript was found! Registering SaberFactions Addon...");
-            skriptAddon = Skript.registerAddon(this);
-            try {
-                skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            log("Skript addon registered!");
-        }
-
         getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
-
-        CoreX.init();
-
-        if (Conf.useCheckSystem) {
-            int minute = 1200;
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 3), 0L, minute * 3);
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 5), 0L, minute * 5);
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 10), 0L, minute * 10);
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 15), 0L, minute * 15);
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new CheckTask(this, 30), 0L, minute * 30);
-            this.getServer().getScheduler().runTaskTimer(this, CheckTask::cleanupTask, 0L, 1200L);
-            this.getServer().getScheduler().runTaskTimerAsynchronously(this, new WeeWooTask(this), 600L, 600L);
-        }
-        //Setup Discord Bot
-        new Discord(this);
-
-        fLogManager.loadLogs(this);
-
-        this.timerManager = new TimerManager(this);
-        this.timerManager.reloadTimerData();
-        System.out.println("[SABER-FACTIONS] - Loaded " + timerManager.getTimers().size() + " timers into list!");
-
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
         if (Conf.userSpawnerChunkSystem) {
@@ -326,34 +201,6 @@ public class FactionsPlugin extends MPlugin {
 
         if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 
-        reserveObjects = new ArrayList<>();
-        String path = Paths.get(this.getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
-        File file = new File(path);
-        try {
-            String json;
-            if (!file.exists()) {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            }
-            json = String.join("", Files.readAllLines(Paths.get(file.getPath()))).replace("\n", "").replace("\r", "");
-            if (json.equalsIgnoreCase("")) {
-                Files.write(Paths.get(path), "[]".getBytes());
-                json = "[]";
-            }
-            reserveObjects = this.getGsonBuilder().create().fromJson(json, new ListParameterizedType(ReserveObject.class));
-            if (reserveObjects == null) reserveObjects = new ArrayList<>();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (getDescription().getFullName().contains("BETA")) {
-            divider();
-            System.out.println("You are using a BETA version of the plugin!");
-            System.out.println("This comes with risks of small bugs in newer features!");
-            System.out.println("For support head to: https://github.com/Driftay/Saber-Factions/issues");
-            divider();
-        }
-
         this.setupPlaceholderAPI();
         this.postEnable();
         this.loadSuccessful = true;
@@ -361,6 +208,9 @@ public class FactionsPlugin extends MPlugin {
         FactionsPlugin.startupFinished = true;
     }
 
+    public static boolean canPlayersJoin() {
+        return startupFinished;
+    }
 
     private void setupPlaceholderAPI() {
         Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
@@ -391,33 +241,6 @@ public class FactionsPlugin extends MPlugin {
         return lore;
     }
 
-    private void migrateFPlayerLeaders() {
-        List<String> lines = new ArrayList<>();
-        File fplayerFile = new File("plugins" + File.pathSeparator + "Factions" + File.pathSeparator + "players.json");
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(fplayerFile));
-            System.out.println("Migrating old players.json file.");
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.contains("\"role\": \"ADMIN\"")) {
-                    line = line.replace("\"role\": \"ADMIN\"", "\"role\": " + "\"LEADER\"");
-                }
-                lines.add(line);
-            }
-            br.close();
-            BufferedWriter bw = new BufferedWriter(new FileWriter(fplayerFile));
-            for (String newLine : lines) {
-                bw.write(newLine + "\n");
-            }
-            bw.flush();
-            bw.close();
-        } catch (IOException ex) {
-            System.out.println("File was not found for players.json, assuming"
-                    + " there is no need to migrate old players.json file.");
-        }
-    }
-
     public boolean isClipPlaceholderAPIHooked() {
         return this.clipPlaceholderAPIManager != null;
     }
@@ -426,20 +249,14 @@ public class FactionsPlugin extends MPlugin {
         return this.mvdwPlaceholderAPIManager;
     }
 
-    private boolean setupPermissions() {
+    private void setupPermissions() {
         try {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
             if (rsp != null) perms = rsp.getProvider();
         } catch (NoClassDefFoundError ex) {
-            return false;
         }
-        return perms != null;
     }
 
-    private boolean setupPlayervaults() {
-        Plugin plugin = getServer().getPluginManager().getPlugin("PlayerVaults");
-        return plugin != null && plugin.isEnabled();
-    }
 
     @Override
     public GsonBuilder getGsonBuilder() {
@@ -459,11 +276,6 @@ public class FactionsPlugin extends MPlugin {
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
-    public void divider() {
-        System.out.println("  .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-.   .-.-");
-        System.out.println(" / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\ \\ / / \\");
-        System.out.println("`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'   `-`-'");
-    }
 
     @Override
     public void onDisable() {
@@ -472,25 +284,7 @@ public class FactionsPlugin extends MPlugin {
             this.AutoLeaveTask = null;
         }
 
-        Conf.saveSync();
-        timerManager.saveTimerData();
-        DiscordListener.saveGuilds();
-
-        if (Discord.jda != null) Discord.jda.shutdownNow();
-
-        fLogManager.saveLogs();
-
-        try {
-            String path = Paths.get(getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "reserves.json";
-            File file = new File(path);
-            if (!file.exists()) {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-            }
-            Files.write(Paths.get(file.getPath()), getGsonBuilder().create().toJson(reserveObjects).getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ShutdownParameter.initShutdown(this);
 
         super.onDisable();
     }
@@ -620,10 +414,6 @@ public class FactionsPlugin extends MPlugin {
 
     public String getPrimaryGroup(OfflinePlayer player) {
         return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
-    }
-
-    public ParticleProvider getParticleProvider() {
-        return particleProvider;
     }
 
     public TimerManager getTimerManager() {

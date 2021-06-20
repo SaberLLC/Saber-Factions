@@ -35,7 +35,7 @@ public class FLogManager {
 
     public void loadLogs(FactionsPlugin plugin) {
         try {
-            logFile = new File(plugin.getDataFolder(), "factionLogs.json");
+            logFile = new File(plugin.getDataFolder() + File.separator + "data", "factionLogs.json");
             if (!logFile.exists()) {
                 logFile.createNewFile();
             }

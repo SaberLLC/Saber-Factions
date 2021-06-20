@@ -132,6 +132,9 @@ public class Conf {
     //STRIKES
     public static boolean useStrikeSystem = true;
 
+    //Denies User Join BEFORE Faction Data is Fully Loaded!
+    public static boolean usePreStartupKickSystem = true;
+
     //SpawnerChunks
     public static boolean userSpawnerChunkSystem = false;
     public static int allowedSpawnerChunks = 2;
@@ -563,7 +566,7 @@ public class Conf {
         territoryDenyUsageMaterials.add(Material.BUCKET);
         territoryDenyUsageMaterials.add(Material.WATER_BUCKET);
         territoryDenyUsageMaterials.add(Material.LAVA_BUCKET);
-        if (!FactionsPlugin.getInstance().mc17) {
+        if (FactionsPlugin.getInstance().version != 7) {
             territoryDenyUsageMaterials.add(Material.ARMOR_STAND);
         }
 
@@ -574,7 +577,7 @@ public class Conf {
         territoryDenyUsageMaterialsWhenOffline.add(Material.BUCKET);
         territoryDenyUsageMaterialsWhenOffline.add(Material.WATER_BUCKET);
         territoryDenyUsageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
-        if (!FactionsPlugin.getInstance().mc17) {
+        if (FactionsPlugin.getInstance().version != 7) {
             territoryDenyUsageMaterialsWhenOffline.add(Material.ARMOR_STAND);
         }
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
@@ -584,17 +587,26 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
         safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
         safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE);
-        try {
+        if (FactionsPlugin.getInstance().version == 17) {
+            safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
+            safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
+            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+        } else if (FactionsPlugin.getInstance().version == 16) {
+            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+        } else {
             safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
-        } catch (IllegalArgumentException ex) {
-            if (FactionsPlugin.getInstance().mc117) {
-                safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
-                safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
-                safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
-            } else {
-                safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
-            }
         }
+        //try {
+        //    safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
+        //} catch (IllegalArgumentException ex) {
+        //    if (FactionsPlugin.getInstance().mc117) {
+        //        safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
+        //        safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
+        //        safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+        //    } else {
+        //        safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+        //    }
+        //}
         safeZoneNerfedCreatureTypes.add(EntityType.SILVERFISH);
         safeZoneNerfedCreatureTypes.add(EntityType.SKELETON);
         safeZoneNerfedCreatureTypes.add(EntityType.SPIDER);

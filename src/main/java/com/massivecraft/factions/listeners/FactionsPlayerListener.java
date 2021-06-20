@@ -60,7 +60,7 @@ public class FactionsPlayerListener implements Listener {
 
     public FactionsPlayerListener() {
         for (Player player : FactionsPlugin.getInstance().getServer().getOnlinePlayers()) initPlayer(player);
-        if (!FactionsPlugin.getInstance().mc17) loadCorners();
+        if (FactionsPlugin.getInstance().version != 7) loadCorners();
     }
 
     public static void loadCorners() {
@@ -548,9 +548,9 @@ public class FactionsPlayerListener implements Listener {
                 subTitle = parseAllPlaceholders(subTitle, factionTo, player);
                 final String finalTitle = title;
                 final String finalsubTitle = subTitle;
-                if (!FactionsPlugin.getInstance().mc17) {
+                if (FactionsPlugin.getInstance().version != 7) {
                     Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-                        if (!FactionsPlugin.getInstance().mc18) {
+                        if (FactionsPlugin.getInstance().version != 8) {
                             me.getPlayer().sendTitle(FactionsPlugin.getInstance().color(finalTitle), FactionsPlugin.getInstance().color(finalsubTitle), FactionsPlugin.getInstance().getConfig().getInt("Title.Options.FadeInTime"),
                                     FactionsPlugin.getInstance().getConfig().getInt("Title.Options.ShowTime"),
                                     FactionsPlugin.getInstance().getConfig().getInt("Title.Options.FadeOutTime"));
