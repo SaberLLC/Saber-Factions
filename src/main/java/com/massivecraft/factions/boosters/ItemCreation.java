@@ -4,7 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.TimeUtil;
-import com.massivecraft.factions.zcore.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
