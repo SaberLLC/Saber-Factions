@@ -23,14 +23,14 @@ COMMAND:
   ADMIN:
     NOTMEMBER: '%1$s<i> n''est pas un membre de votre faction.'
     NOTADMIN: <b>Vous n'êtes pas l'administrateur de la faction.
-    TARGETSELF: <b>Le joueur en questio ne peut pas être vous..
+    TARGETSELF: <b>Le joueur en question ne peut pas être vous..
     DEMOTES: <i>Vous avez dépromu %1$s<i> du rang admin de votre faction.
     DEMOTED: <i>Vous avez été dépromu de votre rang admin de la faction par %1$s<i>.
     PROMOTES: <i>Vous avez promu %1$s<i> au rang admin de la faction.
     PROMOTED: '%1$s<i> a donné %2$s<i> le grade de chef de %3$s<i>.'
   AUTOCLAIM:
     ENABLED: <i>Auto-protection de zone pour <h>%1$s<i>.
-    DISABLED: <i>Auto-protection de zone désactivé.
+    DISABLED: <i>Auto-protection de zone désactivée.
     REQUIREDRANK: <b>Vous devez être <h>%1$s<b> pour protéger une zone.
     OTHERFACTION: <b>Vous ne pouvez pas protéger une zone pour <h>%1$s<b>.
   AUTOHELP:
@@ -210,7 +210,7 @@ COMMAND:
     CLICKTOKICK: 'Cliquez pour éjecter '
     SELF: <b>Vous ne pouvez pas vous éjecter vous-même..
     NONE: Le joueur n'est pas dans une faction.
-    NOTMEMBER: '%1$s<b> n''est pas membre de %2$s'
+    NOTMEMBER: '%1$s<b> n''est pas membre de la faction %2$s'
     INSUFFICIENTRANK: <b>Votre rang est trop bas pour éjecter un joueur.
     NEGATIVEPOWER: <b>Vous ne povuez pas éjecter les membres jusqu'à que leur puissance soit positive.
     TOKICK: afin d'éjecter quelqu'un de la faction
@@ -377,7 +377,7 @@ COMMAND:
     LOG: '%1$s a déprotégé la zone à (%2$s) de la faction: %3$s'
     WRONGFACTION: <b>Vous ne possédez pas cette zone.
     TOUNCLAIM: afin de déprotéger cette zone
-    FORUNCLAIM: pour déprogéer cette zone
+    FORUNCLAIM: pour déprotéger cette zone
     FACTIONUNCLAIMED: '%1$s<i> a déprotégé quelques zones.'
   UNCLAIMALL:
     TOUNCLAIM: afin de déprotéger toutes les zones de faction
@@ -387,7 +387,7 @@ COMMAND:
   VERSION:
     VERSION: <i>Vous tournez %1$s
   WARUNCLAIMALL:
-    SHORT: Déprogéer toutes les zones de warzone
+    SHORT: Déprotéger toutes les zones de warzone
     SUCCESS: <i>Vous avez déprotégé TOUTES les zones de war zone.
     LOG: '%1$s a déprotégé toutes les war zones.'
   RELATIONS:
