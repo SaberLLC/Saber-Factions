@@ -110,5 +110,13 @@ public class CoreX {
         if(getConfig().fetchBoolean("Features.No-Cursor-Drop")) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new NoCursorDrop(), FactionsPlugin.getInstance());
         }
+
+        if(getConfig().fetchBoolean("Features.Anti-Nether-Portal")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiNetherPortal(), FactionsPlugin.getInstance());
+        }
+
+        if(getConfig().fetchBoolean("Features.Anti-End-Portal")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiEndPortal(), FactionsPlugin.getInstance());
+        }
     }
 }

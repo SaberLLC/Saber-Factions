@@ -10,6 +10,8 @@
 #<-------------------------------------->NOTES<-------------------------------------->#
 
 Features:
+  Anti-Nether-Portal: false #Denies players teleporting from nether portals
+  Anti-End-Portal: false #Denies players teleporting from end portals
   No-Cursor-Drop: true #When a player closes their inventory whilst a item is on their cursor it does not drop on the ground it goes back into their inventory
   Armor-Swap: true #Allows PLayers To Right Click Armor and Rotate Their Equipped Armor Into Their Hotbar just by right clicking
   Blocked-Enchantments: false #Denies Specific Enchantments Whilst Being In Enchantment Table
