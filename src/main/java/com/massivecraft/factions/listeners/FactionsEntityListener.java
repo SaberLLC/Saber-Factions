@@ -7,6 +7,7 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.ExplosiveMinecart;
@@ -139,7 +140,7 @@ public class FactionsEntityListener implements Listener {
                     }
                 } else {
                     // Protect armor stands/item frames from being damaged in protected territories
-                    if (damageee.getType().getName().contains("ITEM_FRAME") || damageee.getType() == EntityType.ARMOR_STAND) {
+                    if (damageee.getType().name().contains("ITEM_FRAME") || damageee.getType() == EntityType.ARMOR_STAND) {
                         // Manage projectiles launched by players
                         if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
                             damager = (Entity) ((Projectile) damager).getShooter();
@@ -550,7 +551,7 @@ public class FactionsEntityListener implements Listener {
         if (!(e.getRemover() instanceof Player)) return;
         Player p = (Player) e.getRemover();
 
-        if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().getName().contains("ITEM_FRAME")) {
+        if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().name().contains("ITEM_FRAME")) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(p, e.getEntity().getLocation(), "destroy", false)) {
                 e.setCancelled(true);
             }
@@ -561,7 +562,7 @@ public class FactionsEntityListener implements Listener {
     public void onPaintingPlace(HangingPlaceEvent e) {
         if (e.getPlayer() == null) return;
 
-        if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().getName().contains("ITEM_FRAME")) {
+        if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().name().contains("ITEM_FRAME")) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(e.getPlayer(), e.getBlock().getLocation(), "build", false)) {
                 e.setCancelled(true);
                 e.getPlayer().updateInventory();
@@ -667,7 +668,8 @@ public class FactionsEntityListener implements Listener {
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         // only need to check for item frames
         if (event.getRightClicked() == null) return;
-        if (!event.getRightClicked().getType().getName().contains("ITEM_FRAME")) return;
+
+        if (!event.getRightClicked().getType().name().contains("ITEM_FRAME")) return;
 
         if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getRightClicked().getLocation(), "build", false)) {
             event.setCancelled(true);
