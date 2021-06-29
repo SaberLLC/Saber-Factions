@@ -73,6 +73,10 @@
                             <pattern>com.darkblade12</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.com.darkblade12</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>de.tr7zw</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.nbtapi</shadedPattern>
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>
