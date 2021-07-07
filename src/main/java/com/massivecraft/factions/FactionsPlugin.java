@@ -83,19 +83,19 @@ public class FactionsPlugin extends MPlugin {
     public boolean useNonPacketParticles = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     public SkriptAddon skriptAddon;
-    private FactionsPlayerListener factionsPlayerListener;
-    private boolean locked = false;
-    private Integer AutoLeaveTask = null;
     public boolean hookedPlayervaults;
-    private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     public ParticleProvider particleProvider;
-    private boolean mvdwPlaceholderAPIManager = false;
-    private Listener[] eventsListener;
-    private Worldguard wg;
     public FLogManager fLogManager;
     public List<ReserveObject> reserveObjects;
     public FileManager fileManager;
     public TimerManager timerManager;
+    private FactionsPlayerListener factionsPlayerListener;
+    private boolean locked = false;
+    private Integer AutoLeaveTask = null;
+    private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
+    private boolean mvdwPlaceholderAPIManager = false;
+    private Listener[] eventsListener;
+    private Worldguard wg;
 
     public FactionsPlugin() {
         instance = this;
@@ -103,6 +103,10 @@ public class FactionsPlugin extends MPlugin {
 
     public static FactionsPlugin getInstance() {
         return instance;
+    }
+
+    public static boolean canPlayersJoin() {
+        return startupFinished;
     }
 
     public FileManager getFileManager() {
@@ -117,7 +121,6 @@ public class FactionsPlugin extends MPlugin {
         this.locked = val;
         this.setAutoSave(val);
     }
-
 
     @Override
     public void onEnable() {
@@ -163,7 +166,7 @@ public class FactionsPlugin extends MPlugin {
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
 
-        if(Conf.usePreStartupKickSystem) {
+        if (Conf.usePreStartupKickSystem) {
             getServer().getPluginManager().registerEvents(new LoginRegistry(), this);
         }
         getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
@@ -215,10 +218,6 @@ public class FactionsPlugin extends MPlugin {
         this.loadSuccessful = true;
         // Set startup finished to true. to give plugins hooking in a greenlight
         FactionsPlugin.startupFinished = true;
-    }
-
-    public static boolean canPlayersJoin() {
-        return startupFinished;
     }
 
     private void setupPlaceholderAPI() {

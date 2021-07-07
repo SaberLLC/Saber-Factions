@@ -159,7 +159,6 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
-
         if (!event.canBuild()) return;
         if (event.getBlockPlaced().getType() == Material.FIRE) return;
         boolean isSpawner = event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial());
@@ -210,6 +209,8 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+
+
         if (!Conf.pistonProtectionThroughDenyBuild) return;
         Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
 
@@ -224,6 +225,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onVaultPlace(BlockPlaceEvent e) {
+
         if (e.getItemInHand().getType() == Material.CHEST) {
 
             ItemStack vault = new ItemBuilder(Material.CHEST)
@@ -271,6 +273,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onHopperPlace(BlockPlaceEvent e) {
+
         if (e.getItemInHand().getType() != Material.HOPPER && !FactionsPlugin.instance.getConfig().getBoolean("fvault.No-Hoppers-near-vault"))
             return;
         Faction factionAt = Board.getInstance().getFactionAt(new FLocation(e.getBlockPlaced().getLocation()));
@@ -301,6 +304,8 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+
+
         // if not a sticky piston, retraction should be fine
         if (!event.isSticky() || !Conf.pistonProtectionThroughDenyBuild) return;
 
@@ -321,6 +326,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onBannerBreak(BlockBreakEvent e) {
+
         FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
         if (FactionsPlugin.getInstance().version == 7) {
             return;
@@ -336,6 +342,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onBannerPlace(BlockPlaceEvent e) {
+
         if (FactionsPlugin.getInstance().version == 7) return;
 
         if (e.getItemInHand().getType().name().contains("BANNER")) {
@@ -418,6 +425,8 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onFrostWalker(EntityBlockFormEvent event) {
+
+
         if (event.getEntity() == null || event.getEntity().getType() != EntityType.PLAYER || event.getBlock() == null)
             return;
 
@@ -436,6 +445,8 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onFallingBlock(EntityChangeBlockEvent event) {
+
+
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("Falling-Block-Fix.Enabled"))
             return;
 
@@ -462,6 +473,8 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+
+
         //If there is an error its much safer to not allow the block to be broken
         try {
             Block block = event.getBlock();
@@ -506,6 +519,7 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void FrameRemove(HangingBreakByEntityEvent event) {
+
         if (event.getRemover() == null) return;
         if ((event.getRemover() instanceof Player)) {
             if (event.getEntity().getType().name().contains("ITEM_FRAME")) {
@@ -519,6 +533,8 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onFarmLandDamage(EntityChangeBlockEvent event) {
+
+
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             if (!playerCanBuildDestroyBlock(player, event.getBlock().getLocation(), "destroy", true)) {

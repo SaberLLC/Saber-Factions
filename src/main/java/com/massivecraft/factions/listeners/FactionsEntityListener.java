@@ -7,7 +7,6 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.ExplosiveMinecart;
@@ -95,6 +94,7 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
+
         try {
             Entity damagee = event.getEntity();
             boolean playerHurt = damagee instanceof Player;
@@ -247,6 +247,7 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
+
         Entity boomer = event.getEntity();
 
         // Before we need to check the location where the block is placed
@@ -329,6 +330,7 @@ public class FactionsEntityListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPotionSplashEvent(PotionSplashEvent event) {
         // see if the potion has a harmful effect
+
         boolean badjuju = false;
         for (PotionEffect effect : event.getPotion().getEffects()) {
             if (badPotionEffects.contains(effect.getType())) {
@@ -511,6 +513,7 @@ public class FactionsEntityListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         // if there is a target
+
         Entity target = event.getTarget();
         if (target == null) return;
 
@@ -525,6 +528,7 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPaintingBreak(HangingBreakEvent event) {
+
         if (event.getCause() == RemoveCause.EXPLOSION) {
             Location loc = event.getEntity().getLocation();
             Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
@@ -551,6 +555,7 @@ public class FactionsEntityListener implements Listener {
         if (!(e.getRemover() instanceof Player)) return;
         Player p = (Player) e.getRemover();
 
+
         if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().name().contains("ITEM_FRAME")) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(p, e.getEntity().getLocation(), "destroy", false)) {
                 e.setCancelled(true);
@@ -562,6 +567,7 @@ public class FactionsEntityListener implements Listener {
     public void onPaintingPlace(HangingPlaceEvent e) {
         if (e.getPlayer() == null) return;
 
+
         if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().name().contains("ITEM_FRAME")) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(e.getPlayer(), e.getBlock().getLocation(), "build", false)) {
                 e.setCancelled(true);
@@ -572,6 +578,8 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent e) {
+
+
         Entity entity = e.getEntity();
         Location loc = e.getBlock().getLocation();
 
@@ -623,6 +631,7 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent e) {
+
         if (e.getDamager() instanceof Player) {
             if (e.getEntity() instanceof Player) {
                 Player victim = (Player) e.getEntity();
@@ -639,6 +648,7 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler
     public void onBowHit(EntityDamageByEntityEvent e) {
+
         if (e.getDamager() instanceof Projectile) {
             if (e.getEntity() instanceof Player) {
                 Projectile arrow = ((Projectile) e.getDamager());
@@ -666,6 +676,7 @@ public class FactionsEntityListener implements Listener {
     // For disabling interactions with item frames in another faction's territory
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+
         // only need to check for item frames
         if (event.getRightClicked() == null) return;
 

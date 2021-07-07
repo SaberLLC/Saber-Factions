@@ -10,8 +10,8 @@ public class LoginRegistry implements Listener {
 
     @EventHandler
     public void onJoinPreStart(PlayerJoinEvent e) {
-       if(!FactionsPlugin.canPlayersJoin()) {
-           e.getPlayer().kickPlayer(FactionsPlugin.getInstance().color(TL.PRE_JOIN_KICK_MESSAGE.toString()));
-       }
+        if (!FactionsPlugin.canPlayersJoin()) {
+            e.getPlayer().kickPlayer(FactionsPlugin.getInstance().color(TL.PRE_JOIN_KICK_MESSAGE.toString()));
+        }
     }
 }

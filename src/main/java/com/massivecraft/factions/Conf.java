@@ -558,15 +558,6 @@ public class Conf {
         territoryBypassProtectedMaterials.add(Material.TRAPPED_CHEST);
 
 
-        territoryDenyUsageMaterials.add(XMaterial.FIRE_CHARGE.parseMaterial());
-        territoryDenyUsageMaterials.add(Material.FLINT_AND_STEEL);
-        territoryDenyUsageMaterials.add(Material.BUCKET);
-        territoryDenyUsageMaterials.add(Material.WATER_BUCKET);
-        territoryDenyUsageMaterials.add(Material.LAVA_BUCKET);
-        if (FactionsPlugin.getInstance().version != 7) {
-            territoryDenyUsageMaterials.add(Material.ARMOR_STAND);
-        }
-
         territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
 
         territoryDenyUsageMaterialsWhenOffline.add(XMaterial.FIRE_CHARGE.parseMaterial());
@@ -584,15 +575,6 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
         safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
         safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE);
-        if (FactionsPlugin.getInstance().version == 17) {
-            safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
-            safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
-            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
-        } else if (FactionsPlugin.getInstance().version == 16) {
-            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
-        } else {
-            safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
-        }
         //try {
         //    safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
         //} catch (IllegalArgumentException ex) {

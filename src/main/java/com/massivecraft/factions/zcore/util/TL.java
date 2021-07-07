@@ -110,6 +110,8 @@ public enum TL {
     COMMAND_HELP_MOAR_2("More commands for server admins:"),
     COMMAND_HELP_MOAR_3("Even more commands for server admins:"),
     COMMAND_HELP_DESCRIPTION("\n  &a&l» &7Display a &ahelp &7page"),
+    WORLD_DISABLED_COMMAND_DENIED("&cFactions is disabled in this world!"),
+
 
     PRE_JOIN_KICK_MESSAGE("&c&lYour faction data is being loaded, please try again!"),
 

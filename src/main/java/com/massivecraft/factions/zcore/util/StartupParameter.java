@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.util;
 
 import ch.njol.skript.Skript;
+import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.audit.FLogManager;
@@ -12,9 +13,12 @@ import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
+import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.util.Metrics;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
+import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 import pw.saber.corex.CoreX;
 
@@ -23,6 +27,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import static com.massivecraft.factions.Conf.safeZoneNerfedCreatureTypes;
+import static com.massivecraft.factions.Conf.territoryDenyUsageMaterials;
 
 public class StartupParameter {
 
@@ -94,6 +101,8 @@ public class StartupParameter {
 
         new Discord(plugin);
 
+        populateConfSets();
+
         FactionsPlugin.getInstance().fLogManager.loadLogs(plugin);
 
         FactionsPlugin.getInstance().timerManager = new TimerManager(plugin);
@@ -101,6 +110,42 @@ public class StartupParameter {
         System.out.println("[SABER-FACTIONS] - Loaded " + FactionsPlugin.getInstance().timerManager.getTimers().size() + " timers into list!");
 
     }
+
+    public static void populateConfSets() {
+        if (FactionsPlugin.getInstance().version == 17) {
+            safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
+            safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
+            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+        } else if (FactionsPlugin.getInstance().version == 16) {
+            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+        } else {
+            safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
+        }
+
+        territoryDenyUsageMaterials.add(Material.FIRE_CHARGE);
+        territoryDenyUsageMaterials.add(Material.FLINT_AND_STEEL);
+        territoryDenyUsageMaterials.add(Material.BUCKET);
+        territoryDenyUsageMaterials.add(Material.WATER_BUCKET);
+        territoryDenyUsageMaterials.add(Material.LAVA_BUCKET);
+        if (FactionsPlugin.getInstance().version != 7) {
+            territoryDenyUsageMaterials.add(Material.ARMOR_STAND);
+        }
+
+        if(FactionsPlugin.getInstance().version >= 13) {
+            territoryDenyUsageMaterials.add(Material.COD_BUCKET);
+            territoryDenyUsageMaterials.add(Material.PUFFERFISH_BUCKET);
+            territoryDenyUsageMaterials.add(Material.SALMON_BUCKET);
+            territoryDenyUsageMaterials.add(Material.TROPICAL_FISH_BUCKET);
+        }
+
+        if(FactionsPlugin.getInstance().version == 17) {
+            territoryDenyUsageMaterials.add(Material.AXOLOTL_BUCKET);
+            territoryDenyUsageMaterials.add(Material.POWDER_SNOW_BUCKET);
+        }
+
+        Conf.save();
+    }
+
 
 
     public static void initReserves() {

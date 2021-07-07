@@ -31,6 +31,7 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
         ChatMode chat = me.getChatMode();
+
         // Is the player entering a password for a warp?
         if (me.isEnteringPassword()) {
             event.setCancelled(true);
@@ -137,6 +138,7 @@ public class FactionsChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         // Are we to insert the Faction tag into the format?
         // If we are not to insert it - we are done.
+
         if (!Conf.chatTagEnabled || Conf.chatTagHandledByAnotherPlugin) {
             return;
         }
