@@ -756,8 +756,8 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
         Block block = event.getBlockClicked();
         Player player = event.getPlayer();
-        Bukkit.broadcastMessage(event.getBucket().toString());
-        if (!playerCanUseItemHere(player, block.getRelative(event.getBlockFace()).getLocation(), event.getBucket(), false, PermissableAction.BUILD)) {
+        
+        if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false, PermissableAction.BUILD)) {
             event.setCancelled(true);
         }
     }

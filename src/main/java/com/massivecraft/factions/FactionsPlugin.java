@@ -24,6 +24,8 @@ import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.missions.MissionHandler;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.struct.nms.NMSManager;
+import com.massivecraft.factions.struct.nms.impl.*;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.adapters.*;
 import com.massivecraft.factions.util.flight.FlightEnhance;
@@ -79,6 +81,7 @@ public class FactionsPlugin extends MPlugin {
     public CmdAutoHelp cmdAutoHelp;
 
     public short version;
+    private NMSManager nmsManager;
 
     public boolean useNonPacketParticles = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
@@ -154,6 +157,8 @@ public class FactionsPlugin extends MPlugin {
 
         VersionProtocol.doBigThingsWithParticlesOMEGALUL();
         VersionProtocol.printVerionInfo();
+
+        this.nmsManager = setupNMS();
 
         // Add Base Commands
         this.cmdBase = new FCmdRoot();
@@ -247,6 +252,24 @@ public class FactionsPlugin extends MPlugin {
                 lore.set(x, lore.get(x).replace(placeholder.getTag(), placeholder.getReplace()));
         }
         return lore;
+    }
+
+    public NMSManager getNmsManager() {
+        return nmsManager;
+    }
+
+    public NMSManager setupNMS() {
+        switch (getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]) {
+            case "v1_8_R3": return new Version_1_8_R3();
+            case "v1_11_R1": return new Version_1_11_R1();
+            case "v1_12_R1": return new Version_1_12_R1();
+            case "v1_13_R1": return new Version_1_13_R1();
+            case "v1_13_R2": return new Version_1_13_R2();
+            case "v1_14_R1": return new Version_1_14_R1();
+            case "v1_15_R1": return new Version_1_15_R1();
+            case "v1_16_R3": return new Version_1_16_R3();
+            default: return new UnknownVersion();
+        }
     }
 
     public boolean isClipPlaceholderAPIHooked() {
