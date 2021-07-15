@@ -161,6 +161,7 @@ public enum Permission {
     SHOWCLAIMS("showclaims"),
     WARP("warp"),
     WILD("wild"),
+    CHUNKBUSTER_GIVE("corex.chunkbuster"),
     CHEST("chest");
 
     public final String node;

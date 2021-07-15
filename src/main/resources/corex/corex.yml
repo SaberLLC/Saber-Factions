@@ -10,6 +10,7 @@
 #<-------------------------------------->NOTES<-------------------------------------->#
 
 Features:
+  Use-Chunkbusters: true #Allows For Chunkbuster Placement on the server!
   Anti-Nether-Portal: false #Denies players teleporting from nether portals
   Anti-End-Portal: false #Denies players teleporting from end portals
   No-Cursor-Drop: true #When a player closes their inventory whilst a item is on their cursor it does not drop on the ground it goes back into their inventory
@@ -22,7 +23,6 @@ Features:
   Iron-Golem-Health: true #Configurable Amount of Health an Iron Golem can spawn in with
   Water-Proof-Blazes: true #Denies Water Damage To Blazes (Useful for most Factions Servers)
   Anti-Book-Quill-Crash: true #Denies Players to be able to do book and quill crashes
-  Anti-Cobble-Monster: false #Denies Lava and Water Flowing into each other
   Anti-Death-Clip: true #Denies Death Clipping EX: Killing each other at the same time
   Anti-Dupe: true #Multiple general dupe patches, more to be added soon
   Anti-Nether-Roof: true #Denies Pistons breaching the nether roof.
@@ -39,6 +39,23 @@ Features:
 
 AntiSpawnerMine:
   Radius: 20.0 # Radius that the player will be denied mining spawners when an enemy is near.
+
+
+Chunkbuster:
+  Run-Async: true
+  Countdown: 10
+  Item:
+    Type: END_PORTAL_FRAME
+    Display-Name: '&c&lChunkbuster &7&o(Place)'
+    Lore:
+      - ''
+      - '&7Place on the ground to remove chunk!'
+  denyBustedItems:
+    - 'CHEST'
+    - 'TRAPPED_CHEST'
+    - 'SPAWNER'
+    - 'AIR'
+    - 'END_PORTAL_FRAME'
 
 ironGolemHealth: 50.0 #50.0 = 25 hearts
 

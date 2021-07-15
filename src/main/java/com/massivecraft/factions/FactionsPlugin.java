@@ -177,6 +177,7 @@ public class FactionsPlugin extends MPlugin {
         getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
+
         if (Conf.userSpawnerChunkSystem) {
             this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
         }

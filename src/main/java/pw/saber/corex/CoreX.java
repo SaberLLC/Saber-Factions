@@ -2,6 +2,8 @@ package pw.saber.corex;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.file.CustomFile;
+import pw.saber.corex.cmds.chunkbusters.CommandChunkbuster;
+import pw.saber.corex.cmds.chunkbusters.listener.ChunkBusterListener;
 import pw.saber.corex.listeners.*;
 import pw.saber.corex.listeners.mob.*;
 
@@ -37,10 +39,6 @@ public class CoreX {
 
         if (getConfig().fetchBoolean("Features.Anti-Book-Quill-Crash")) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBookQuillCrash(), FactionsPlugin.getInstance());
-        }
-
-        if (getConfig().fetchBoolean("Features.Anti-Cobble-Monster")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiCobbleMonster(), FactionsPlugin.getInstance());
         }
 
         if (getConfig().fetchBoolean("Features.Anti-Death-Clip")) {
@@ -118,5 +116,10 @@ public class CoreX {
         if(getConfig().fetchBoolean("Features.Anti-End-Portal")) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiEndPortal(), FactionsPlugin.getInstance());
         }
+
+        //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {
+        //    FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ChunkBusterListener(), FactionsPlugin.getInstance());
+        //    FactionsPlugin.getInstance().getCommand("chunkbuster").setExecutor(new CommandChunkbuster());
+        //}
     }
 }

@@ -142,6 +142,11 @@ public enum TL {
     COMMAND_CORNER_DESCRIPTION("claim a corner at world border"),
     COMMAND_CORNERLIST_DESCRIPTION("list of all corners"),
 
+    COMMAND_CHUNKBUSTER_USAGE("&c&l[!] &7Try /chunkbuster give <player> <amount>"),
+    CHUNKBUSTER_RECEIEVED("&a&l[!] &7You have received a &cChunkbuster&7!"),
+    CHUNKBUSTER_ALREADY_BEING_BUSTED("&c&l[!] &7This chunk is already being busted."),
+    CHUNKBUSTER_USE_MESSAGE("&c&l[!] &7A ChunkBuster has been placed, you have &c10 seconds &7 to leave this chunk!"),
+
     COMMAND_ADMIN_NOTMEMBER("&c&l[!] &7%1$s &cis not a member in your faction."),
     COMMAND_ADMIN_NOTADMIN("&c&l[!] &cYou are not the faction admin."),
     COMMAND_ADMIN_TARGETSELF("'&c&l[!] &cThe target player musn''t be yourself."),
@@ -1188,6 +1193,7 @@ public enum TL {
 
 
     PLAYER_NOT_FOUND("&c&l[!] &b%1$s &7is either not online or not in your faction!"),
+    INVALID_PLAYER("&c&l[!] &b{player} &7is not online!"),
     PLACEHOLDER_ROLE_NAME("None"),
     PLACEHOLDER_CUSTOM_FACTION("{faction} "),
 

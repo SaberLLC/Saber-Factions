@@ -18,13 +18,14 @@ public class Version_1_8_R3 implements NMSManager {
         BlockPosition bp = new BlockPosition(x, y, z);
 
         IBlockData ibd = net.minecraft.server.v1_8_R3.Block.getByCombinedId(id + (data << 12));
+
         ChunkSection chunksection = chunk.getSections()[bp.getY() >> 4];
 
-        if (chunksection == null) chunksection = chunk.getSections()[bp.getY() >> 4] = new ChunkSection(bp.getY() >> 4 << 4, !chunk.getWorld().worldProvider.o());
+        if (chunksection == null)
+            chunksection = chunk.getSections()[bp.getY() >> 4] = new ChunkSection(bp.getY() >> 4 << 4, !chunk.getWorld().worldProvider.o());
 
         chunksection.setType(bp.getX() & 15, bp.getY() & 15, bp.getZ() & 15, ibd);
 
         w.notify(bp);
-
     }
 }

@@ -396,22 +396,36 @@ public class Econ {
     }
 
     public static boolean setBalance(String account, double amount) {
-        double current = econ.getBalance(account);
-        if (current > amount) return econ.withdrawPlayer(account, current - amount).transactionSuccess();
-        else return econ.depositPlayer(account, amount - current).transactionSuccess();
+        if (account.startsWith("faction-"))
+            return true;
+
+        double current = econ.getBalance(Bukkit.getOfflinePlayer(account));
+
+        if (current > amount)
+            return econ.withdrawPlayer(Bukkit.getOfflinePlayer(account), current - amount).transactionSuccess();
+        return econ.depositPlayer(Bukkit.getOfflinePlayer(account), amount - current).transactionSuccess();
     }
 
     public static boolean modifyBalance(String account, double amount) {
-        if (amount < 0) return econ.withdrawPlayer(account, -amount).transactionSuccess();
-        else return econ.depositPlayer(account, amount).transactionSuccess();
+        if (account.startsWith("faction-"))
+            return true;
+        if (amount < 0.0D)
+            return econ.withdrawPlayer(Bukkit.getOfflinePlayer(account), -amount).transactionSuccess();
+        return econ.depositPlayer(Bukkit.getOfflinePlayer(account), amount).transactionSuccess();
     }
 
+    @Deprecated
     public static boolean deposit(String account, double amount) {
-        return econ.depositPlayer(account, amount).transactionSuccess();
+        if (account.startsWith("faction-"))
+            return true;
+        return econ.depositPlayer(Bukkit.getOfflinePlayer(account), amount).transactionSuccess();
     }
 
+    @Deprecated
     public static boolean withdraw(String account, double amount) {
-        return econ.withdrawPlayer(account, amount).transactionSuccess();
+        if (account.startsWith("faction-"))
+            return true;
+        return econ.withdrawPlayer(Bukkit.getOfflinePlayer(account), amount).transactionSuccess();
     }
 
     // ---------------------------------------
