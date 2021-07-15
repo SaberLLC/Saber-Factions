@@ -95,9 +95,9 @@ public abstract class MPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(this.mPluginSecretPlayerListener, this);
 
         // Register recurring tasks
-        if (saveTask == null && Conf.saveToFileEveryXMinutes > 0.0) {
-            long saveTicks = (long) (20 * 60 * Conf.saveToFileEveryXMinutes); // Approximately every 30 min by default
-            saveTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new SaveTask(this), saveTicks, saveTicks);
+        if (this.saveTask == null && Conf.saveToFileEveryXMinutes > 0.0) {
+            long saveTicks = (long) (1200.0 * Conf.saveToFileEveryXMinutes);
+            this.saveTask = Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, new SaveTask(this), saveTicks, saveTicks).getTaskId();
         }
         loadLang();
         loadSuccessful = true;

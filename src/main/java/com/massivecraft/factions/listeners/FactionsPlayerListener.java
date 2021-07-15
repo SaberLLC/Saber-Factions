@@ -20,7 +20,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.VisualizeUtil;
-import com.massivecraft.factions.util.WorldUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
@@ -756,7 +755,7 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
         Block block = event.getBlockClicked();
         Player player = event.getPlayer();
-        
+
         if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false, PermissableAction.BUILD)) {
             event.setCancelled(true);
         }

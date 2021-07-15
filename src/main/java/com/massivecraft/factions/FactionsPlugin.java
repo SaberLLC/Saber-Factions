@@ -81,8 +81,6 @@ public class FactionsPlugin extends MPlugin {
     public CmdAutoHelp cmdAutoHelp;
 
     public short version;
-    private NMSManager nmsManager;
-
     public boolean useNonPacketParticles = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     public SkriptAddon skriptAddon;
@@ -92,6 +90,7 @@ public class FactionsPlugin extends MPlugin {
     public List<ReserveObject> reserveObjects;
     public FileManager fileManager;
     public TimerManager timerManager;
+    private NMSManager nmsManager;
     private FactionsPlayerListener factionsPlayerListener;
     private boolean locked = false;
     private Integer AutoLeaveTask = null;
@@ -261,15 +260,24 @@ public class FactionsPlugin extends MPlugin {
 
     public NMSManager setupNMS() {
         switch (getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]) {
-            case "v1_8_R3": return new Version_1_8_R3();
-            case "v1_11_R1": return new Version_1_11_R1();
-            case "v1_12_R1": return new Version_1_12_R1();
-            case "v1_13_R1": return new Version_1_13_R1();
-            case "v1_13_R2": return new Version_1_13_R2();
-            case "v1_14_R1": return new Version_1_14_R1();
-            case "v1_15_R1": return new Version_1_15_R1();
-            case "v1_16_R3": return new Version_1_16_R3();
-            default: return new UnknownVersion();
+            case "v1_8_R3":
+                return new Version_1_8_R3();
+            case "v1_11_R1":
+                return new Version_1_11_R1();
+            case "v1_12_R1":
+                return new Version_1_12_R1();
+            case "v1_13_R1":
+                return new Version_1_13_R1();
+            case "v1_13_R2":
+                return new Version_1_13_R2();
+            case "v1_14_R1":
+                return new Version_1_14_R1();
+            case "v1_15_R1":
+                return new Version_1_15_R1();
+            case "v1_16_R3":
+                return new Version_1_16_R3();
+            default:
+                return new UnknownVersion();
         }
     }
 

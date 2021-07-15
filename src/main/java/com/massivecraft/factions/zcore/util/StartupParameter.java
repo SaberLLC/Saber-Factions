@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
 import ch.njol.skript.Skript;
-import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.audit.FLogManager;
@@ -13,7 +12,6 @@ import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
-import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.util.Metrics;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
@@ -131,21 +129,20 @@ public class StartupParameter {
             territoryDenyUsageMaterials.add(Material.ARMOR_STAND);
         }
 
-        if(FactionsPlugin.getInstance().version >= 13) {
+        if (FactionsPlugin.getInstance().version >= 13) {
             territoryDenyUsageMaterials.add(Material.COD_BUCKET);
             territoryDenyUsageMaterials.add(Material.PUFFERFISH_BUCKET);
             territoryDenyUsageMaterials.add(Material.SALMON_BUCKET);
             territoryDenyUsageMaterials.add(Material.TROPICAL_FISH_BUCKET);
         }
 
-        if(FactionsPlugin.getInstance().version == 17) {
+        if (FactionsPlugin.getInstance().version == 17) {
             territoryDenyUsageMaterials.add(Material.AXOLOTL_BUCKET);
             territoryDenyUsageMaterials.add(Material.POWDER_SNOW_BUCKET);
         }
 
         Conf.save();
     }
-
 
 
     public static void initReserves() {

@@ -29,26 +29,30 @@ public class CmdSafeunclaimall extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        String worldName = context.argAsString(0);
-        World world = null;
+        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
 
-        if (worldName != null) {
-            world = Bukkit.getWorld(worldName);
-        }
 
-        String id = Factions.getInstance().getSafeZone().getId();
+            String worldName = context.argAsString(0);
+            World world = null;
 
-        if (world == null) {
-            Board.getInstance().unclaimAll(id);
-        } else {
-            Board.getInstance().unclaimAllInWorld(id, world);
-        }
+            if (worldName != null) {
+                world = Bukkit.getWorld(worldName);
+            }
 
-        context.msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
+            String id = Factions.getInstance().getSafeZone().getId();
 
-        if (Conf.logLandUnclaims) {
-            FactionsPlugin.getInstance().log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(context.sender.getName()));
-        }
+            if (world == null) {
+                Board.getInstance().unclaimAll(id);
+            } else {
+                Board.getInstance().unclaimAllInWorld(id, world);
+            }
+
+            context.msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
+
+            if (Conf.logLandUnclaims) {
+                FactionsPlugin.getInstance().log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(context.sender.getName()));
+            }
+        });
     }
 
     @Override
