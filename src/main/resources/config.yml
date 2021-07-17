@@ -81,6 +81,14 @@ fly-falldamage-cooldown: 10
 # http://i.gyazo.com/6a1a31222e58a5d60ff341c13f6a8404.gif
 disable-pistons-in-territory: false
 
+# Raids
+# Should we disable starting (vanilla) raids in Faction territory?
+disable-raids-in-territory: true
+
+# Chorus Teleporting
+# Should we disallow players to teleport into claimed land with chorus fruit?
+disable-chorus-teleport-in-territory: true
+
 # ToolTips
 # This section is to configure tooltips for things like /f list
 tooltips:
