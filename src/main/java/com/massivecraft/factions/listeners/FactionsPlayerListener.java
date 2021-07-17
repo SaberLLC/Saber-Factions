@@ -337,6 +337,8 @@ public class FactionsPlayerListener implements Listener {
                 || material.name().contains("_FENCE_GATE")
                 || material.name().startsWith("FENCE_GATE")) return PermissableAction.DOOR;
         if (material.name().contains("SHULKER_BOX")
+                || material.name().equals("FLOWER_POT")
+                || material.name().startsWith("POTTED_")
                 || material.name().endsWith("ANVIL")
                 || material.name().startsWith("CHEST_MINECART")
                 || material.name().endsWith("CHEST")
@@ -733,6 +735,7 @@ public class FactionsPlayerListener implements Listener {
             }
         }
     }
+
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerRespawn(PlayerRespawnEvent event) {

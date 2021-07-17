@@ -160,6 +160,21 @@ public class FactionsEntityListener implements Listener {
                         }
                         // we don't need to go after
                         return;
+                    }else if(damagee.getType() == EntityType.VILLAGER || damagee instanceof Animals){
+                        if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
+                            damager = (Entity) ((Projectile) damager).getShooter();
+                        }
+
+                        // Run the check for a player
+                        if (damager instanceof Player) {
+                            //I don't understand the plugin enough to make this less hacky. ~avixk
+                            if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damagee.getLocation(), "destroy", false)) {
+                                event.setCancelled(true);
+                            }
+                        } else {
+                            if (!this.checkExplosionForBlock(damager, damagee.getLocation().getBlock()))
+                                event.setCancelled(true);
+                        }
                     }
 
                     //this one should trigger if something other than a player takes damage
@@ -552,12 +567,16 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler
     public void onHangerBreak(HangingBreakByEntityEvent e) {
-        if (!(e.getRemover() instanceof Player)) return;
-        Player p = (Player) e.getRemover();
 
+        Entity remover = e.getRemover();
+        if(remover instanceof Projectile){
+            remover = (Entity) ((Projectile) remover).getShooter();
+        }
+        if (!(remover instanceof Player)) return;
+        Player p = (Player) remover;
 
         if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().name().contains("ITEM_FRAME")) {
-            if (!FactionsBlockListener.playerCanBuildDestroyBlock(p, e.getEntity().getLocation(), "destroy", false)) {
+            if (!FactionsBlockListener.playerCanBuildDestroyBlock(p, remover.getLocation(), "destroy", false)) {
                 e.setCancelled(true);
             }
         }

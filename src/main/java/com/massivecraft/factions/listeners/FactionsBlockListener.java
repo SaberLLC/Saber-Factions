@@ -28,6 +28,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
+import org.bukkit.event.player.PlayerTakeLecternBookEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
@@ -173,6 +174,14 @@ public class FactionsBlockListener implements Listener {
                 event.getPlayer().sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
             }
         }
+    }
+
+    @EventHandler
+    public void onTakeBook(PlayerTakeLecternBookEvent e){
+        FLocation loc = new FLocation(e.getLectern().getLocation());
+        FPlayer pl = FPlayers.getInstance().getByPlayer(e.getPlayer());
+        Faction fac = Board.getInstance().getFactionAt(new FLocation(e.getLectern().getLocation()));
+        if(!CheckActionState(fac,loc,pl,PermissableAction.CONTAINER,false))e.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
