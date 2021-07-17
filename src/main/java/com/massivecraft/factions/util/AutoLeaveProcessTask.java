@@ -53,8 +53,7 @@ public class AutoLeaveProcessTask extends BukkitRunnable {
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> FactionsPlugin.getInstance().debug(Level.INFO, fplayer.getName() + " was going to be auto-removed but was set not to."));
                 continue;
             }
-
-            if (fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis) {
+            if (fplayer.hasFaction() && fplayer.isOffline() && now - fplayer.getLastLoginTime() > toleranceMillis) {
                 if (Conf.logFactionLeave || Conf.logFactionKick) {
                     FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> FactionsPlugin.getInstance().log("Player " + fplayer.getName() + " was auto-removed due to inactivity."));
                 }
