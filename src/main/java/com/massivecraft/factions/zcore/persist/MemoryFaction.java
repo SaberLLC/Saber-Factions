@@ -1338,8 +1338,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 FactionsPlugin.getInstance().log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left" + (autoLeave ? " and by inactivity" : "") + ".");
 
             if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-disband-broadcast")) {
+                String message = TL.COMMAND_DISBAND_BROADCAST_GENERIC.toString()
+                        .replace("{claims}",this.getAllClaims().size()+"");
                 for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers())
-                    fplayer.msg(TL.COMMAND_DISBAND_BROADCAST_GENERIC, this.getTag(fplayer));
+                    fplayer.msg(message, this.getTag(fplayer));
             }
 
 
