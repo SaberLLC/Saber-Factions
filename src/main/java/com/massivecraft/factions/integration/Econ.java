@@ -352,7 +352,7 @@ public class Econ {
     public static double calculateClaimCost(int ownedLand, boolean takingFromAnotherFaction) {
         if (!shouldBeUsed()) return 0d;
         // basic claim cost, plus land inflation cost, minus the potential bonus given for claiming from another faction
-        return Conf.econCostClaimWilderness + (Conf.econCostClaimWilderness * Conf.econClaimAdditionalMultiplier * ownedLand) - (takingFromAnotherFaction ? Conf.econCostClaimFromFactionBonus : 0);
+        return Conf.econCostClaimWilderness + (Conf.econCostClaimWilderness * Conf.econClaimAdditionalMultiplier * ownedLand) - (takingFromAnotherFaction ? Conf.econCostClaimFromFactionBonus : 0.0);
     }
 
     // calculate refund amount for unclaiming land
