@@ -89,45 +89,51 @@ public class CmdJoin extends FCommand {
                 return;
             }
 
-            // trigger the join event (cancellable)
-            FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
-            Bukkit.getServer().getPluginManager().callEvent(joinEvent);
-            if (joinEvent.isCancelled()) {
-                return;
-            }
+            // Cannot asynchronously call events
+            FactionsPlugin.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), new Runnable() {
+                @Override
+                public void run() {
+                    // trigger the join event (cancellable)
+                    FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
+                    Bukkit.getServer().getPluginManager().callEvent(joinEvent);
+                    if (joinEvent.isCancelled()) {
+                        return;
+                    }
 
-            // then make 'em pay (if applicable)
-            if (samePlayer && !context.payForCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString(), TL.COMMAND_JOIN_FORJOIN.toString())) {
-                return;
-            }
+                    // then make 'em pay (if applicable)
+                    if (samePlayer && !context.payForCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString(), TL.COMMAND_JOIN_FORJOIN.toString())) {
+                        return;
+                    }
 
-            context.msg(TL.COMMAND_JOIN_SUCCESS, fplayer.describeTo(context.fPlayer, true), faction.getTag(context.fPlayer));
+                    context.msg(TL.COMMAND_JOIN_SUCCESS, fplayer.describeTo(context.fPlayer, true), faction.getTag(context.fPlayer));
 
-            if (!samePlayer) {
-                fplayer.msg(TL.COMMAND_JOIN_MOVED, context.fPlayer.describeTo(fplayer, true), faction.getTag(fplayer));
-            }
+                    if (!samePlayer) {
+                        fplayer.msg(TL.COMMAND_JOIN_MOVED, context.fPlayer.describeTo(fplayer, true), faction.getTag(fplayer));
+                    }
 
-            faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
+                    faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
 
-            fplayer.resetFactionData();
+                    fplayer.resetFactionData();
 
-            if (faction.altInvited(fplayer)) {
-                fplayer.setAlt(true);
-                fplayer.setFaction(faction, true);
-            } else {
-                fplayer.setFaction(faction, false);
-            }
+                    if (faction.altInvited(fplayer)) {
+                        fplayer.setAlt(true);
+                        fplayer.setFaction(faction, true);
+                    } else {
+                        fplayer.setFaction(faction, false);
+                    }
 
-            faction.deinvite(fplayer);
-            context.fPlayer.setRole(faction.getDefaultRole());
+                    faction.deinvite(fplayer);
+                    context.fPlayer.setRole(faction.getDefaultRole());
 
-            if (Conf.logFactionJoin) {
-                if (samePlayer) {
-                    FactionsPlugin.instance.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
-                } else {
-                    FactionsPlugin.instance.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), context.fPlayer.getName(), fplayer.getName(), faction.getTag());
+                    if (Conf.logFactionJoin) {
+                        if (samePlayer) {
+                            FactionsPlugin.instance.log(TL.COMMAND_JOIN_JOINEDLOG.toString(), fplayer.getName(), faction.getTag());
+                        } else {
+                            FactionsPlugin.instance.log(TL.COMMAND_JOIN_MOVEDLOG.toString(), context.fPlayer.getName(), fplayer.getName(), faction.getTag());
+                        }
+                    }
                 }
-            }
+            });
         });
     }
 

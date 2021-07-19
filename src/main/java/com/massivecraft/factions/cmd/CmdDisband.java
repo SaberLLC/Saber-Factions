@@ -97,12 +97,18 @@ public class CmdDisband extends FCommand {
             Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> disbandMap.remove(context.player.getUniqueId().toString()), 200L);
         } else if (faction.getId().equals(disbandMap.get(context.player.getUniqueId().toString())) || faction.getTnt() == 0) {
             if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-disband-broadcast", true)) {
+
+                String yours_message = TL.COMMAND_DISBAND_BROADCAST_YOURS.toString()
+                        .replace("{claims}",faction.getAllClaims().size()+"");
+                String notyours_message = TL.COMMAND_DISBAND_BROADCAST_NOTYOURS.toString()
+                        .replace("{claims}",faction.getAllClaims().size()+"");
+
                 for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
                     String amountString = context.sender instanceof ConsoleCommandSender ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(follower);
                     if (follower.getFaction() == faction) {
-                        follower.msg(TL.COMMAND_DISBAND_BROADCAST_YOURS, amountString);
+                        follower.msg(yours_message, amountString);
                     } else {
-                        follower.msg(TL.COMMAND_DISBAND_BROADCAST_NOTYOURS, amountString, faction.getTag(follower));
+                        follower.msg(notyours_message, amountString, faction.getTag(follower));
                     }
                 }
             } else {
