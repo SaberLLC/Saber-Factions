@@ -20,7 +20,6 @@ import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
-import org.bukkit.event.raid.RaidTriggerEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -574,16 +573,6 @@ public class FactionsEntityListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onRaidStart(RaidTriggerEvent e){
-        if(!FactionsPlugin.instance.getConfig().getBoolean("disable-raids-in-territory", true))
-            return;
-        FPlayer fp = FPlayers.getInstance().getByPlayer(e.getPlayer());
-        Faction fac = Board.getInstance().getFactionAt(new FLocation(e.getRaid().getLocation()));
-        if(!fac.isWilderness() && !(fp.hasFaction() && fp.getFaction().equals(fac))){
-            e.setCancelled(true);
-        }
-    }
 
     @EventHandler
     public void onHangerBreak(HangingBreakByEntityEvent e) {

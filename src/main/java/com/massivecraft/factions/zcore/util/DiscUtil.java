@@ -26,12 +26,12 @@ public class DiscUtil {
     public static byte[] readBytes(File file) throws IOException {
         int length = (int) file.length();
         byte[] output = new byte[length];
-        InputStream in = new FileInputStream(file);
-        int offset = 0;
-        while (offset < length) {
-            offset += in.read(output, offset, (length - offset));
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
+            int offset = 0;
+            while (offset < length) {
+                offset += in.read(output, offset, (length - offset));
+            }
         }
-        in.close();
         return output;
     }
 
@@ -40,9 +40,13 @@ public class DiscUtil {
     // -------------------------------------------- //
 
     public static void writeBytes(File file, byte[] bytes) throws IOException {
-        FileOutputStream out = new FileOutputStream(file);
-        out.write(bytes);
-        out.close();
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
+            out.write(bytes);
+        }
     }
 
     public static void write(File file, String content) throws IOException {

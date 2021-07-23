@@ -1,5 +1,9 @@
 package com.massivecraft.factions.util;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import it.unimi.dsi.fastutil.objects.ObjectSet;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,15 +13,18 @@ import java.util.*;
 
 public class VisualizeUtil {
 
-    protected static Map<UUID, Set<Location>> playerLocations = new HashMap<>();
+    protected static Object2ObjectMap<UUID, ObjectSet<Location>> playerLocations = new Object2ObjectOpenHashMap<>();
 
     public static Set<Location> getPlayerLocations(Player player) {
         return getPlayerLocations(player.getUniqueId());
     }
 
     public static Set<Location> getPlayerLocations(UUID uuid) {
-        Set<Location> ret = playerLocations.computeIfAbsent(uuid, k -> new HashSet<>());
-        return ret;
+        return playerLocations.computeIfAbsent(uuid, k -> new ObjectOpenHashSet<>());
+    }
+
+    public static Set<Location> getPlayerLocationsRaw(UUID uuid) {
+        return playerLocations.get(uuid);
     }
 
     @SuppressWarnings("deprecation")
@@ -54,7 +61,7 @@ public class VisualizeUtil {
 
     @SuppressWarnings("deprecation")
     public static void clear(Player player) {
-        Set<Location> locations = getPlayerLocations(player);
+        Set<Location> locations = getPlayerLocationsRaw(player.getUniqueId());
         if (locations == null) {
             return;
         }

@@ -3,6 +3,7 @@ package com.massivecraft.factions.scoreboards.sidebar;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.scoreboards.FSidebarProvider;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +34,10 @@ public class FDefaultSidebar extends FSidebarProvider {
         List<String> lines = FactionsPlugin.getInstance().getConfig().getStringList(list);
 
         if (lines == null || lines.isEmpty()) {
-            return new ArrayList<>();
+            return new ObjectArrayList<>(0);
         }
+
+        lines = new ObjectArrayList<>(lines);
 
         ListIterator<String> it = lines.listIterator();
         while (it.hasNext()) {

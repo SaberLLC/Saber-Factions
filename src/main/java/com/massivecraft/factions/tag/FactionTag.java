@@ -122,18 +122,21 @@ public enum FactionTag implements Tag {
     }
 
     public static String parse(String text, Faction faction, FPlayer player) {
-        for (FactionTag tag : FactionTag.values()) {
+        for (FactionTag tag : VALUES) {
             text = tag.replace(text, faction, player);
         }
         return text;
     }
 
     public static String parse(String text, Faction faction) {
-        for (FactionTag tag : FactionTag.values()) {
+        for (FactionTag tag : VALUES) {
             text = tag.replace(text, faction);
         }
         return text;
     }
+
+    public static final FactionTag[] VALUES = FactionTag.values();
+
 
     @Override
     public String getTag() {
