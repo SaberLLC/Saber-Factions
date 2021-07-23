@@ -859,8 +859,12 @@ public abstract class MemoryFPlayer implements FPlayer {
             // Remove this faction
 
             if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-disband-broadcast")) {
+
+                String message = TL.LEAVE_DISBANDED.toString()
+                        .replace("{claims}",myFaction.getAllClaims().size()+"");
+
                 for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers())
-                    fplayer.msg(TL.LEAVE_DISBANDED, myFaction.describeTo(fplayer, true));
+                    fplayer.msg(message, myFaction.describeTo(fplayer, true));
             }
 
 
@@ -869,7 +873,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
             Factions.getInstance().removeFaction(myFaction.getId());
             if (Conf.logFactionDisband)
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> FactionsPlugin.getInstance().log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName())));
+                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance,
+                        () -> FactionsPlugin.getInstance().log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(),
+                                this.getName()).replace("{claims}",myFaction.getAllClaims().size()+"")));
         }
     }
 
