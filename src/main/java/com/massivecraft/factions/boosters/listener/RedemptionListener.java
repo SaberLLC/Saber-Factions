@@ -1,5 +1,6 @@
 package com.massivecraft.factions.boosters.listener;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
@@ -35,7 +36,7 @@ public class RedemptionListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.hasItem()) {
             ItemStack item = event.getItem();
-            if (item == null) return;
+            if (item == null || item.getType() == XMaterial.AIR.parseMaterial()) return;
             Player player = event.getPlayer();
             if (this.manager.isBoosterItem(item)) {
 
