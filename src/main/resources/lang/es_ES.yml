@@ -1,0 +1,1591 @@
+# Vers. 0.3 29/07/2021 11:06am CEST +02
+# Utilice & para los códigos de color.
+# Hecho con cariño <3
+root:
+  AUTHOR: "@https://github.com/MirrorX-dev"
+  RESPONSIBLE: "@https://github.com/MirrorX-dev"
+  LANGUAGE: "Castillian Spanish from Spain, Europe Union"
+  ENCODING: UTF-8
+  LOCALE: es_ES
+  REQUIRESUNICODE: 'false'
+  DEFAULT: 'true'
+  STATE: 'Complete BUT under grammar correction, Completo pero, bajo revisión ortográfica 80%'
+  LOCAL:
+    AUTHOR: "@https://github.com/MirrorX-dev"
+    RESPONSIBLE: "@https://github.com/MirrorX-dev"
+    LANGUAGE: Español
+    REGION: "Spain Europe Union"
+    STATE: complete
+ACTIONS:
+  NOPERMISSION: '{faction} no te permite usar {action}'
+  NOPERMISSIONPAIN: 'Es dañino usar {action} en el territorio de {faction}'
+  OWNEDTERRITORYDENY: 'No puedes hacer esto en este territorio, es de {owners}'
+  OWNEDTERRITORYPAINDENY: 'Es dañino usar {action} en este territorio, es de {owners}'
+  MUSTBE: 'Debes ser {role} para realizar {action}.'
+  NOSAMEROLE: '{role} No podeís controlaros el uno al otro...'
+  NOFACTION: 'No perteneces a ninguna Facción.'
+ACTION:
+  DENIED:
+    SAFEZONE: 'No puedes usar %1$s en la Zona Segura!'
+    WARZONE: 'No puedes usar %1$s en la Zona de guerra!'
+    WILDERNESS: '¡No se puede usar %1$s en la Zona Salvaje!'
+    OTHER: '%1$s no te permite usar %2$s aquí!'
+COMMAND:
+  USEAGE:
+    TEMPLATE:
+      COLOR: '&c'
+  HELP:
+    NEXTCREATE: 'Aprende a crear una facción en la siguiente página.'
+    HOME: 'Y no te olvides de poner tu casa /f home:'
+    '404': '&c&l» &7Esta página &cno existe'
+    BANK:
+      '1': 'Su facción tiene un banco que se utiliza para pagar ciertas'
+      '2': 'cosas, por lo que necesitará que le depositen dinero.'
+      '3': 'Para saber más, utiliza el comando &lmoney.'
+    PLAYERTITLES: 'Los títulos de los jugadores son sólo por diversión. No hay reglas relacionadas con ellos.'
+    OWNERSHIP:
+      '1': 'La tierra reclamada con la propiedad fijada está más protegida así'
+      '2': 'que sólo el propietario o propietarios, el administrador de la facción y posiblemente el'
+      '3': 'los moderadores de las facciones tienen acceso total.'
+    RELATIONS:
+      '1': 'Establece la relación que DESEA tener con otra facción.'
+      '2': 'Tu relación por defecto con otras facciones será neutral.'
+      '3': 'Si AMBAS facciones eligen "aliado" serán aliados.'
+      '4': 'Si una de las facciones elige "enemigo", serán enemigos.'
+      '5': 'Nunca puedes dañar a los miembros o a los aliados.'
+      '6': 'No puedes dañar a los neutrales en su propio territorio.'
+      '7': 'Siempre puedes herir a los enemigos y a los jugadores sin facción.'
+      '8': ''
+      '9': 'El daño de los enemigos se reduce en tu propio territorio.'
+      '10': 'Cuando mueres pierdes poder. Se recupera con el tiempo.'
+      '11': 'El poder de una facción es la suma del poder de todos los miembros.'
+      '12': 'El poder de una facción determina la cantidad de terreno que puede poseer.'
+      '13': 'Puedes reclamar tierras de facciones con muy poco poder.'
+    PERMISSIONS:
+      '1': 'Sólo los miembros de la facción pueden construir y destruir en su'
+      '2': 'territorio. El uso de los siguientes elementos también está restringido:'
+      '3': 'Puerta, Cofre, Horno, Dispensador, Diodo.'
+      '4': ''
+      '5': 'Asegúrese de poner placas de presión delante de las puertas para su'
+      '6': 'visitantes invitados. Si no, no podrán pasar. Puede'
+      '7': 'también se utiliza para crear áreas sólo para miembros.'
+      '8': 'Como los dispensadores están protegidos, se pueden crear trampas sin'
+      '9': 'preocuparse por el robo de esas flechas.'
+    ADMIN:
+      '1': "&a&l» &a/f claim safezone \n &7reclamar terreno para la zona segura"
+      '2': "&a&l» &a/f claim warzone \n &7reclamar tierra para la zona de guerra"
+      '3': "&a&l» &a/f autoclaim [safezone|warzone] \n &7reclamar automaticamente"
+    MOAR:
+      '1': 'Finalmente algunos comandos para los administradores del servidor:'
+      '2': 'Más comandos para administradores de servidores:'
+      '3': 'Más comandos para los administradores de servidores:'
+    DESCRIPTION: |2-
+
+        &a&l» &7Mostrar una página de &aayuda
+  NEAR:
+    DESCRIPTION: 'Consigue info de jugadores de la facción cercana en un radio.'
+    DISABLED:
+      MSG: '&c¡Este comando está desactivado!'
+    FORMAT: '{playername} &c({distance}m)'
+    USE:
+      MSG: '&cMiembros de la Facción que están cercanos'
+  CONTEXT:
+    ADMINISTER:
+      DIF:
+        FACTION: '&c[!] %1$s no está en la misma facción que tú.'
+      ADMIN:
+        REQUIRED: '&c[!] Sólo el administrador de la facción puede hacerlo'
+      SAME:
+        RANK:
+          CONTROL: '&c[!] Los moderadores no pueden controlarse entre sí...'
+      MOD:
+        REQUIRED: '&c[!] Debes ser un moderador de la facción para hacerlo'
+  UPGRADES:
+    DESCRIPTION: '&cAbrir el menú de actualizaciones'
+    POINTS:
+      TAKEN: '&cActualización de la acción comprada por &e%1$s puntos! &cNuevo saldo de puntos:
+        &e%2$s'
+    NOT:
+      ENOUGH:
+        POINTS: '¡Su facción no tiene suficientes puntos para comprar esta mejora!'
+    DISABLED: '&c[!] &7Las actualizaciones de acción están &cdesactivadas&7.'
+  CORNER:
+    CANT:
+      CLAIM: '&c&l[!] &c¡No puedes reclamar esta esquina!'
+    CLAIMED: |2
+
+      &2&l[!] &aHas reclamado el rincón con éxito, sumando en &b%1$d &achunks!
+    ATTEMPTING:
+      CLAIM: '&c&l[!] &7Intentar reclamar la esquina...'
+    FAIL:
+      WITH:
+        FEEDBACK: '&c&l[!] &c¡Una o más reclamaciones en este rincón no han podido ser reclamadas!
+          Total de trozos reclamados:&b '
+    NOT:
+      CORNER: '&c&l[!] &7¡Debes estar en una esquina para usar este comando!'
+    DESCRIPTION: 'reclamar un rincón en la frontera mundial'
+  CORNERLIST:
+    DESCRIPTION: 'lista de todos los rincones'
+  ADMIN:
+    NOTMEMBER: '&c&l[!] &7%1$s &cis no un miembro en su facción.'
+    NOTADMIN: '&c&l[!] &cNo eres el administrador de la facción.'
+    TARGETSELF: 'El jugador objetivo no debe ser tú mismo.'
+    DEMOTES: '&c&l[!] &cHas degradado a &7%1$s &cde la posición de administrador de la facción.'
+    DEMOTED: '&c&l[!] &cHas sido degradado del puesto de administrador de la facción por
+      &7%1$s&c'
+    PROMOTES: '&c&l[!] &7Has ascendido a &c%1$s &7al puesto de administrador de la facción.'
+    PROMOTED: '&c&l[!] &c%1$s &7dar&c%2$s &7el liderazgo de &c%3$s&7.'
+    DESCRIPTION: 'Entrega tus derechos de administrador'
+    NOMEMBERS: '&e&l[!] &cNo hay nadie más para promocionar, por favor disuelve la facción'
+  AHOME:
+    DESCRIPTION: 'Envía a un jugador a su /f home sin importar el por qué'
+    NOHOME: '%1$s no tiene un /f home.'
+    SUCCESS: '%1%s fue enviado a su /f home.'
+    OFFLINE: '%1$s está desconectado'
+    TARGET: 'Te enviaron a tu casa /f home.'
+  ANNOUNCE:
+    DESCRIPTION: 'Anuncia un mensaje a los jugadores de la facción'
+  ALTS:
+    DESCRIPTION: 'Comandos de Facción de Cuentas Alternativas'
+    LIST:
+      DESCRIPTION: 'Lista de todos las Cuentas Alternativas de tu facción'
+      NOALTS: '&c&l[!] &7%s no tiene Cuentas Alternativas en su facción!'
+      FORMAT: '%1$s Potencia: %2$s Visto por última vez: %3$s'
+    DEINVITE:
+      DESCRIPTION: 'Comando base para revocar las invitaciones de alt.'
+  FREECAM:
+    ENEMYINRADIUS: 'Freecam desactivada, ¡un enemigo está cerca!'
+    OUTSIDEFLIGHT: '¡Por favor, no abandone el radio de vuelo!'
+    ENABLED: '¡La Freecam ya está habilitada!'
+    DISABLED: 'La Freecam está desactivada'
+    DESCRIPTION: 'Entra en modo espectador'
+  AUTOCLAIM:
+    ENABLED: '&c&l[!] &7Ahora &cauto-reclamando&7 terrenos para %1$s.'
+    DISABLED: '&c&l[!] La auto-reclamación&7 de terrenos está ahora &cdesactivada'
+    REQUIREDRANK: '&c&l[!] &7Debes ser &c1$s&7 para reclamar tierras.'
+    OTHERFACTION: '&c&l[!]&7 No se puede &c7reclamar tierras para &c%1$s&7'
+    DESCRIPTION: 'Reclama automáticamente el terreno mientras caminas'
+  ALTINVITE:
+    DESCRIPTION: 'Invita a las Cuentas Alternativas a tu facción.'
+    INVITED:
+      ALT: '&c&l[!]&7 &c%1$s&7 invitó a &c%2$s&7 a su facción como alt.'
+  ALTKICK:
+    DESCRIPTION: 'Expulsa a las Cuentas Alternativas de tu facción'
+    NOTALT: '&c&l[!] &7El jugador no es un alt.'
+    NOTMEMBER: '&c&l[!] &7Este jugador no es miembro de tu facción'
+  AUTOHELP:
+    HELPFOR: 'Ayuda para el comando'
+  HOME:
+    OTHER:
+      NOTSET: '&c&l[!] &7%s no tiene su hogar de facción establecido!'
+    TELEPORT:
+      OTHER: '&c&l[!] &7¡Te has teletransportado a la casa de la facción de %s!'
+    DISABLED: '&c&l[!]&7 Lo sentimos, las casas de las facciones están &chabilitadas en este servidor.'
+    TELEPORTDISABLED: '&c&l[!]&7 Lo siento, la capacidad de &cteleportar &7a las casas de la Facción
+      está &cdesactivado &7en este servidor.'
+    NOHOME: '&c&l[!]&7 Tu facción no &ctiene un hogar. '
+    UNSET: '&c&l[!]&7 Lo sentimos, su hogar de facción ha sido &cun-set &7ya que no es
+      más tiempo en su territorio.'
+    INENEMY: '&c&l[!]&7 No puedes teletransportarte &7a tu &cfacción de origen&7 mientras estés en
+      el territorio de una &facción enemiga&7'
+    WRONGWORLD: '&c&l[!]&7 No puedes &7teleportar a tu &cfaction home&7 mientras
+      en un mundo diferente'
+    ENEMYNEAR: '&c&l[!]&7 No puedes teletransportarte&7 a tu casa de facción mientras un enemigo
+      está a menos de &c%s&7 manzanas de ti'
+    TOTELEPORT: para teletransportarte a tu casa de la facción
+    FORTELEPORT: para teletransportarte a tu casa de la facción
+    DESCRIPTION: Teletransporte a la casa de la facción
+    BLOCKED: '&c&l[!] No puedes teletransportarte a una casa reclamada por &b%1$s'
+  SHOP:
+    DESCRIPTION: abre la guía de la tienda
+    'NO':
+      FACTION: '&c&l[!] &7¡Debes estar en una facción para realizar este comando!'
+  BAN:
+    DESCRIPTION: Prohíbe a los jugadores unirse a tu Facción.
+    TARGET: '&c&l[!] &7Has sido &cbaneado &7de &c%1$s'
+    BANNED: '&c&l[!] &7%1$s &cbaneado &7%2$s'
+    SELF: '&c&l[!] &7No puedes &cbanearte &ctu mismo&7.'
+    INSUFFICIENTRANK: '&c&l[!] &7Su &crank &7es demasiado bajo para&c prohibir &7%1$s'
+    ALREADYBANNED: '&c&l[!] &7¡Este jugador ya está &baneado&7!'
+  BANLIST:
+    DESCRIPTION: Ver la lista de baneados de una Facción
+    HEADER: '&c&l[!] &7Hay &c%d&7 baneados por &c%s'
+    ENTRY: '&7%d. &c%s &r&7// &c%s &r&7// &c%s'
+    NOFACTION: '&c&l[!] &7No estás &cnot &7en una Facción'
+    INVALID: '&c&l[!] &7La facción &c%s &7no existe'
+  BOOM:
+    PEACEFULONLY: '&c&l[!] &7Este comando es &7utilizable únicamente por las facciones que están
+      &cspecíficamente &7designada como &cpacífica&7.'
+    TOTOGGLE: para activar las explosiones
+    FORTOGGLE: para alternar las explosiones
+    ENABLED: '&c&l[!] &c%1$s&7 tiene&c %2$s&7 explosiones en el territorio de tu facción'
+    DESCRIPTION: Alternar explosiones (sólo facciones pacíficas)
+  GIVEBOOSTER:
+    INVALID:
+      DURATION: '&c&l[!] &b%1$s &7no es una tiempo de duración válido!'
+      BOOSTER: '&c&l[!] &b%1$s &7no es un potenciador válido! &ePor favor, utilice: EXP, MOB, MCMMO.'
+      MULTIPLIER: '&c&l[!] &b%1$s &7no es un multiplicador válido!'
+    BOOSTER:
+      GIVEN: '&a&l[!] &7Has dado un refuerzo a &b%1$s&7.'
+    DESCRIPTION: Regala a un jugador un potenciador de facción
+  BOOSTER:
+    NONE:
+      ACTIVE: '&c&l[!] &7¡Tu facción no tiene ningún potenciador activo!'
+    DESCRIPTION: Ver todos los potenciadores de facciones activos
+  BYPASS:
+    ENABLE: '&e&l[!] &eHa habilitado el modo de derivación de administrador. Podrá construir
+      o destruir en cualquier lugar.'
+    ENABLELOG: ' ha Habilitado el modo de derivación del administrador.'
+    DISABLE: '&c&l[!] &cHa desactivado el modo de derivación del administrador.'
+    DISABLELOG: ' ha DESACTIVADO el modo de derivación del administrador.'
+    DESCRIPTION: Habilitar el modo de bypass administrativo
+  BANNER:
+    DESCRIPTION: Convierte un estandarte sostenido en un estandarte de guerra
+    NOBANNER: '&c&l[!] &cPor favor, establezca un banner usando /f setbanner'
+    NOTENOUGHMONEY: '&c&l[!] &7No&c tienes suficiente dinero'
+    MONEYTAKE: '&c&l[!] $&c{amount} &7ha sido tomada de su cuenta.'
+    SUCCESS: '&c&l[!] &7¡Has creado un &c&lWarBanner!'
+    DISABLED: '&c&l[!] &7Comprar&c banderas de guerra&7 está &cdesactivado!'
+  TPBANNER:
+    NOTSET: '&c&l[!] &7Tu facción &cno &7tiene un &c&lBanner de Guerra &7colocado!'
+    SUCCESS: '&c&l[!] &cTeleporting &7a sus facciones''s &c&lWarBanner'
+    DESCRIPTION: Teletransporte al estandarte de tu facción
+  CHAT:
+    DISABLED: '&c&l[!] &7Los canales de chat incorporados están &cdesactivados &7en este servidor.'
+    INVALIDMODE: '&c&l[!] &cModo de chat no reconocido. Por favor, introduzca "&da&7", "&af&7", "&6m&7
+      o ''&fp&7'''
+    DESCRIPTION: 'Cambiar el modo de chat'
+    MODE:
+      PUBLIC: '&c&l[!] &7Modo de chat &fPúblico.'
+      ALLIANCE: '&c&l[!] &7Modo de chat &dAliados.'
+      TRUCE: '&c&l[!] &7Modo de chat &5Tregua.'
+      FACTION: '&c&l[!] &7Modo de chat &aFacción.'
+      MOD: '&c&l[!] &7Modo de chat &dModeradores.'
+    MOD:
+      ONLY: '&c&l[!] &7Solo los Moderadores pueden hablar a través de este modo de chat.'
+  CHATSPY:
+    ENABLE: '&c&l[!] &7Has &7activado el modo de espionaje del chat.'
+    ENABLELOG: ' ha Habilitado el modo de espionaje del chat.'
+    DISABLE: '&c&l[!] &7Has &cdesactivado &7el modo de espionaje del chat.'
+    DISABLELOG: ' ha DESACTIVADO el modo de espionaje del chat.'
+    DESCRIPTION: Habilitar el modo de espionaje del chat del administrador
+  CLAIM:
+    INVALIDRADIUS: '&c&l[!]&7 Si especifica un &cradio&7, debe ser al menos &c1&7.'
+    DENIED: '&c&l[!]&7 Usted &c no &ctiene &cpermiso&7 para &crear&7 en un radio.'
+    DESCRIPTION: Reclama la tierra desde donde estás parado
+  CLAIMFILL:
+    DESCRIPTION: Reclamación de tierras para rellenar un hueco en las reclamaciones
+    ABOVEMAX: '&cEl límite máximo de llenado de reclamaciones es %s.'
+    ALREADYCLAIMED: '¡No se puede reclamar un relleno utilizando un terreno ya reclamado!'
+    TOOFAR: '&cEste relleno superaría la distancia máxima de %.2f'
+    PASTLIMIT: '&c¡Esta reclamación superaría el límite!'
+    NOTENOUGHLANDLEFT: '%s &cno tiene suficientes tierras para hacer %d reclamaciones'
+    TOOMUCHFAIL: '&cAbortando claim fill después de %d fallos'
+  CLAIMLINE:
+    INVALIDRADIUS: '&c&l[!]&7 Si se &cspecifica&7 una distancia, debe ser al menos &c1&7.'
+    DENIED: '&c&l[!]&7 No &ctiene&c permiso&7 para reclamar en una línea.'
+    DESCRIPTION: Reclama la tierra en línea recta.
+    ABOVEMAX: '&c&l[!]&7 El límite &cmáximo&7 de la línea de reclamación es &c%s&7.'
+    NOTVALID: '&c&l[!]&7 &c%s&7 no es una dirección &cardinal&7. Puedes usar &cnorte&7,
+      &este&7, &sur&7 o &coeste&7..'
+  CONFIG:
+    NOEXIST: '&c&l[!]&7 No existe ningún ajuste de configuración "&c%1$s&7".'
+    SET:
+      'TRUE': '" opción establecida como verdadera (habilitada).'
+      'FALSE': '" opción establecida en falso (desactivada).'
+      ADDED: '"%1$s" fijado: "%2$s" añadido.'
+      REMOVED: '"%1$s" fijado: "%2$s" eliminado.'
+    OPTIONSET: '" opción ajustada a '
+    COLOURSET: '" opción de color establecida en "'
+    INTREQUIRED: 'No se puede establecer "%1$s": Se requiere un valor entero (número entero).'
+    LONGREQUIRED: 'No se puede establecer "%1$s": Se requiere un valor entero largo (número entero).'
+    DOUBLEREQUIRED: 'No se puede establecer "%1$s": Se requiere un valor doble (numérico).'
+    FLOATREQUIRED: 'No se puede establecer "%1$s": Se requiere un valor flotante (numérico).'
+    INVALID:
+      COLOUR: 'No se puede establecer "%1$s": "%2$s" no es un color válido.'
+      COLLECTION: '"%1$s" no es un tipo de colección de datos que se pueda modificar con
+        esta orden.'
+      MATERIAL: 'No se puede cambiar el conjunto "%1$s": "%2$s" no es un material válido.'
+      TYPESET: '"%1$s" no es un conjunto de tipos de datos que pueda modificarse con este comando.'
+    MATERIAL:
+      ADDED: '"%1$s" fijado: Material "%2$s" añadido.'
+      REMOVED: '"%1$s" fijado: Material "%2$s" eliminado.'
+    LOG: ' (El comando fue ejecutado por %1$s.)'
+    ERROR:
+      SETTING: Error al establecer la configuración "%1$s" a "%2$s".
+      MATCHING: 'El ajuste de configuración "%1$s" no coincide, aunque debería hacerlo... 
+        por favor, informe de este error.'
+      TYPE: '%1$s es del tipo ''%2$s'', que no puede ser modificado con este comando'
+    DESCRIPTION: 'Cambia una configuración conf.json'
+  CONVERT:
+    BACKEND:
+      RUNNING: '&c&l[!]&7 Ya se está ejecutando ese backend'
+      INVALID: '&c&l[!]&7 Backend inválido'
+    DESCRIPTION: Convertir el backend del plugin
+  COORDS:
+    MESSAGE: '&c&l[!] las coordenadas de &7{player}&7 son &c{x}&7,&c{y}&7,&c{z}&7 en el mundo &c{world}'
+    DESCRIPTION: transmite tus coordenadas a tu facción
+  CHECKPOINT:
+    DISABLED: '&c&l[!]&7 ¡No puedes&7 utilizar el punto de control mientras esté&c desactivado&7!'
+    SET: '&c&l[!]&7 Has &cestablecido&7 un &cpunto de control de la facción&7 en tu &clocalización&7.'
+    GO: '&c&l[!]&7 &cTeletransportando&7 a &cpunto de control de la facción'
+    INVALIDLOCATION: '&c&l[!]&7 &c¡Localización inválida!&7 Puedes &cestablecer&7 puntos de control
+      en &sus zonas reclamadas&7 ó &2zonas salvajes&7.'
+    NOT:
+      SET: '&c&l[!]&7 Debes &cfijar &7el &cpunto de control de la facción&7 primero.'
+    CLAIMED: '&c&l[!]&7 Su actual &cpunto de control de la facción&7 ha sido reclamado, establezca un &cnuevo
+      &7one!'
+    DESCRIPTION: ¡Ponga o vaya a su punto de control de la facción!
+  CREATE:
+    ALREADY:
+      RESERVED: '&c&l[!] &7¡Esta etiqueta de facción ya ha sido reservada!'
+    MUSTLEAVE: '&c&l[!]&7 Debe &abandonar &tu &cfacción actual &7primero'
+    INUSE: '&c&l[!]&7 Esa etiqueta está &calready &7in use.'
+    TOCREATE: para crear una nueva facción
+    FORCREATE: para crear una nueva facción
+    ERROR: '&c&l[!]&7 Se ha producido un &cerror interno&7 al intentar crear su
+      facción. &cPor favor, inténtelo de nuevo&7.'
+    CREATED: '&c&l[!]&7 &c%1$s &7creó una nueva facción llamada &c&l%2$s&7.'
+    YOUSHOULD: '&c&l[!]&7 Ahora deberías: &c1$s'
+    CREATEDLOG: ' ha creado una nueva facción: '
+    DESCRIPTION: Crear una nueva facción
+  DELHOME:
+    SUCCESS: '%1$s ha borrado su casa de la facción'
+    DESCRIPTION: elimina el hogar de su facción
+  CHECK:
+    DESCRIPTION: ¡Gestiona tu sistema de control de facciones!
+  WEEWOO:
+    STARTED: '&c&lFacción WeeWoo(Alarma)&7 » &aWeewoo(Alarma) iniciada por %1$s'
+    STOPPED: '&c&lFacción WeeWoo(Alarma)&7 » &aWeewoo(Alarma) detenido por %1$s'
+    ALREADY:
+      STARTED: '&cWeewoo(Alarma) ya comenzó'
+      STOPPED: '&cWeewoo(Alarma) ya se ha detenido'
+    DESCRIPTION: notifica a todos los miembros de la facción que estás siendo asaltado
+  DISCORD:
+    DESCRIPTION: Enlaza tu cuenta de Discord
+    NOTSET: '&c&l[!] &7¡Tu facción no tiene establecido un servidor de discord!'
+  DEBUG:
+    DESCRIPTION: Imprime información de depuración en la consola
+    PRINTED: '&c&l[!]&7 La información de depuración se ha impreso en la consola'
+  DEINVITE:
+    CANDEINVITE: '&c&l[!]&7 Jugadores que puedes proceder a &csuspender su invitación: '
+    CLICKTODEINVITE: '&c&l[!]&7 Haga clic para &csuspender&7 la invitación de &c%1$s'
+    ALREADYMEMBER: '&c&l[!]&7 &c%1$s&7 ya es miembro de &c%2$s'
+    MIGHTWANT: '&c&l[!]&7 Puede que quieras: &c%1$s'
+    REVOKED: '&c&l[!]&7 &7%1$s &cExpiró&7 su invitación a &c%2$s&7.'
+    REVOKES: '&c&l[!]&7 %1$s&c Expiró la invitación de &7%2$s'
+    DESCRIPTION: Eliminar una invitación pendiente
+  DELFWARP:
+    DELETED: '&c&l[!]&7 Se ha borrado el warp &c%1$s'
+    INVALID: '&c&l[!]&7 No se ha podido econtrar&7el warp &c%1$s'
+    TODELETE: para borrar el warp
+    FORDELETE: para borrar el warp
+    DESCRIPTION: Borrar un warp de facción
+  DESCRIPTION:
+    CHANGES: '&c&l[!]&7 Has &cambiado&7 la &cdescripción&7 de &c%1$s&7 a:'
+    CHANGED: '&c&l[!]&7 La facción&c %1$s&7 cambió su &cdescripción &7a:'
+    TOCHANGE: para cambiar la descripción de la facción
+    FORCHANGE: para cambiar la descripción de la facción
+    DESCRIPTION: Cambiar la descripción de la facción
+  DISBAND:
+    IMMUTABLE: '&c&l[!]&7 &7No puedes&7 disolver la facción en una &2Zona Salvaje&7,&e Zona Segura&7, ó
+      &4en una Zona de Guerra.'
+    TOO:
+      YOUNG: '&c&l[!] &7¡Tu Facción es demasiado joven para sacar dinero así!'
+    MARKEDPERMANENT: '&c&l[!]&7 Esta facción está designada como&c permanente&7, por lo que
+      no puede disolverla.'
+    BROADCAST:
+      YOURS: '&c&l[!]&7 &c%1$s&7 disolvió su &cfacción'
+      GENERIC: '&c&l[!]&7 La Facción &c%1$s&7 fue disuelta'
+      NOTYOURS: '&c&l[!]&7 &c%1$s &7disolvió la facción &c%2$s&7.'
+    HOLDINGS: '&c&l[!]&7 &7Se le ha entregado el banco de la disuelta &cfacción&7,
+      totalizando &c%1$s.'
+    PLAYER: '&c&l[!] &7Has disuelto tu &cfacción'
+    CONFIRM: '&c&l[!]&7 Su Facción tiene&c {tnt} &7tnt en el banco, será
+      &clost&7 si la facción está &cdisuelta&7. Escribe&c /f disband &7de nuevo dentro de &c10&7
+      segundos para&c disolverla de nuevo&7.'
+    DESCRIPTION: Disolver una facción
+  FLY:
+    DISABLED: '&c&l[!]&7 Lo sentimos, el vuelo de facción está &cdesactivado &7en este servidor.'
+    DESCRIPTION: Entrar o salir del modo de vuelo de la Facción
+    CHANGE: '&c&l[!]&7 El vuelo de la facción ha sido &c%1$s&7.'
+    COOLDOWN: '&c&l[!]&7 No recibirás &7 daño por caída durante &c{amount}&7 segundos'
+    DAMAGE: '&c&l[!]&7 Vuelo de facción &cdesactivado&7 debido a la entrada en combate.'
+    'NO':
+      ACCESS: '&c&l[!]&7 &cNo puede volar &7en el territorio de %1$s'
+      EPEARL: '&c&l[!] &7No puedes&7 lanzar enderpearls mientras vuelas!'
+    ENEMY:
+      NEAR: '&c&l[!]&7 El vuelo ha sido&c desactivado&7 un enemigo está cerca'
+    CHECK:
+      ENEMY: '&c&l[!]&7 No se puede volar aquí, un enemigo está &ccerca&7.'
+    AUTO: '&eModo de vuelo automático &d%1$s'
+  FOCUS:
+    SAMEFACTION: '&c[!] ¡No puedes concentrar jugadores en tu facción!'
+    FOCUSING: '&c&l[!] &7Tu facción se está centrando ahora &c%s'
+    'NO':
+      LONGER: '&c&l[!] &7Su facción ya no se centra &c%s'
+    DESCRIPTION: Centrarse en un jugador específico
+  FRIENDLY:
+    FIRE:
+      DESCRIPTION: Activa el fuego amigo para ti.
+      TOGGLE:
+        'OFF': '&c[!] &7¡Has desactivado el fuego amigo &4off&7!'
+        'ON': '&c[!] &7¡Has activado el fuego amigo &aon&7!'
+  FWARP:
+    CLICKTOWARP: '&c&l[!]&7 Click para teleportarse al &cwarp!'
+    COMMANDFORMAT: '&c&l[!]&7 /f warp <nombre_warp> &c[contraseña]'
+    WARPED: '&c&l[!]&7 Teletransportado al Warp de &c%1$s'
+    INVALID:
+      WARP: '&c&l[!]&7 No se ha podido encontrar el warp &c%1$s'
+      PASSWORD: '&c&l[!]&7 &c¡Contraseña no válida!'
+    TOWARP: a un warp
+    FORWARPING: para el warp
+    WARPS: 'Warps: '
+    DESCRIPTION: Teletransportarse a un warp de la facción
+    PASSWORD:
+      REQUIRED: '&c&l[!]&c Contraseña del Warp de la Facción:'
+      TIMEOUT: '&c&l[!]&7 Contraseña del Warp de la Facción &cha superado el limite de tiempo'
+  GRACE:
+    TIME:
+      REMAINING: '&c&lPeriodo de gracia &8» &cTiempo restante: &b%1$s'
+    DISABLED:
+      'NO':
+        FORMAT: '&c[!] &7¡El periodo de gracia está desactivado! Las explosiones están permitidas!'
+      FORMAT: '&c&lGracePeriod &8» &7El periodo de gracia ya ha &cFinalizado&7! &cExplosiones
+        ya están habilitados.'
+    ENABLED:
+      FORMAT: '&c&lPeríodo de gracia &8» &7El período de gracia ya ha &aComenzado&7! &cTiempo restante:
+        &b%1$s'
+      PLACEMENT: '&cNo puede colocar &e%s &cmientras el periodo de gracia está activo!'
+    DESCRIPTION: Activa/desactiva el periodo de gracia
+  HINT:
+    PERMISSION: '&aPuedes gestionar los permisos de tus facciones usando &7/f perms'
+  SPAWNERCHUNK:
+    CLAIM:
+      SUCCESSFUL: '&a[!] &7Ha reclamado con éxito un trozo de &espawner &7 para su
+        facción.'
+    ALREADY:
+      CHUNK: '&c&l[!] &7¡Este chunk ya es un spawnerchunk!'
+    PAST:
+      LIMIT: '&c&l[!] &c¡Ha superado su límite máximo de desove! &7Límite: &f%1$s'
+    DESCRIPTION: Reclamar un spawnerchunk
+  INVENTORYSEE:
+    DESCRIPTION: Ver el inventario de los miembros de una facción
+  INSPECT:
+    DISABLED:
+      MSG: '&c&l[!]&7 El modo de inspección está ahora &cdesactivado.'
+      NOFAC: '&c&l[!]&7 El modo de inspección está ahora &cdesactivado,&7 porque usted &cno pertenece
+        a una facción.'
+    ENABLED: '&c&l[!]&7 El modo de inspección está ahora &ahabilitado.'
+    HEADER: '&c&m---&7Inspeccionar Datos&c&m---&c//&7x:{x},y:{y},z:{z}'
+    ROW: '&c{time} &7// &c{action} &7// &c{player} &7// &c{block-type}'
+    NODATA: '&c&l[!]&7 &7¡No se han encontrado datos!'
+    NOTINCLAIM: '&c&l[!]&7 &7Puedes &csolo&7 inspeccionar en &ctus &7tierras reclamadas!'
+    BYPASS: '&c&l[!]&7 Inspeccionando en modo &cpasivo&7'
+    DESCRIPTION: ¡Inspeccione los bloques!
+  INVITE:
+    TOINVITE: invitar a alguien
+    FORINVITE: para invitar a alguien
+    CLICKTOJOIN: ¡Haga clic para unirse!
+    INVITEDYOU: '&c&l[!]&7 &c%1$s&7 le ha invitado a unirse a &c%2$s&7'
+    INVITED: '&c&l[!]&7 &c%1$s&7 invitó a &c%2$s&7 a su facción.'
+    ALREADYMEMBER: '&c&l[!]&7 &c%1$s&7 ya es miembro de&c %2$s'
+    ALREADYINVITED: '&c&l[!]&7 &c%1$s&7 ya ha sido invitado'
+    DESCRIPTION: Invita a un jugador a tu facción
+    BANNED: '&c&l[!]&7 &7%1$s está prohibido &7en su Facción. &cNo &7envía un
+      invitar.'
+  JOIN:
+    CANNOTFORCE: '&c&l[!]&7 Usted&c no&7 tiene permiso para &cmover a otros jugadores&7
+      en una facción.'
+    SYSTEMFACTION: '&c&l[!]&7 Los jugadores sólo pueden unirse a &cfacciones normales&7. Esta es una
+      &c&lsystem faction&7.'
+    ALREADYMEMBER: '&c&l[!]&7 &c%1$s %2$s ya es miembro de&c %3$s'
+    ATLIMIT:
+      MEMBERS: ' &c&l[!]&7 La facción &c%1$s &7está al límite de&c %2$d&7 miembros,
+        así que&c %3$s&7 no puede unirse actualmente".'
+      ALTS: ' &c&l[!]&7 La facción &c{faction} &7está al límite de&c {limit}&7 Cuentas Alternativas,
+        así que&c {at}&7 no puede unirse actualmente".'
+    INOTHERFACTION: '&c&l[!]&7 &c%1$s &7debe dejar&c %2$s &7la facción actual primero.'
+    NEGATIVEPOWER: '&c&l[!]&7 &c%1$s &7no pueden unirse a una facción con un &cpoder negativo&7
+      nivel.'
+    REQUIRESINVITATION: '&c&l[!]&7 Esta facción &requiere&7 una invitación.'
+    ATTEMPTEDJOIN: '&c&l[!]&7 &c%1$s&7 intentó unirse a tu facción.'
+    TOJOIN: unirse a una facción
+    FORJOIN: para unirse a una facción
+    SUCCESS: '&c&l[!]&7 &c%1$s &7se unió con éxito &c%2$s.'
+    MOVED: '&c&l[!]&7 &c%1$s &7te ha movido a la facción&c %2$s.'
+    JOINED: '&c&l[!]&7 &c%1$s &7se unió a tu facción.'
+    JOINEDLOG: '&c&l[!]&7 &c%1$s&7 se unió a la facción&c %2$s.'
+    MOVEDLOG: '&c&l[!]&7 &c%1$s &7movió al jugador&c %2$s &7a la facción&c %3$s&7.'
+    DESCRIPTION: '&a&l» &7Únete a una facción'
+    BANNED: '&c&l[!]&7 Estás &cbaneado &7de &c%1$s.'
+  KICK:
+    CANDIDATES: '&c&l[!]&7 Jugadores que puedes expulsar: '
+    CLICKTOKICK: 'Haz clic para expulsar '
+    SELF: '&c&l[!]&7 No puedes &7expulsarte&c a ti mismo&7.'
+    NONE: '&c&l[!]&7 Ese jugador&c no está&7 en una facción.'
+    NOTMEMBER: '&c&l[!]&7 &c%1$s no es miembro de %2$s'
+    INSUFFICIENTRANK: '&c&l[!]&7 Tu rango es &cdemasiado bajo &7para expulsar a este jugador.'
+    NEGATIVEPOWER: '&c&l[!]&7 No puedes &7expulsar a ese miembro hasta que su poder sea
+      &apositivo&7.'
+    TOKICK: echar a alguien de la facción
+    FORKICK: por echar a alguien de la facción
+    FACTION: '&c&l[!]&7 %1$s&7 echó a %2$s&c de la facción!'
+    KICKS: '&c&l[!]&7 ¡Has echado a &c%1$s&7 de la facción&c %2$s&7!'
+    KICKED: '&c&l[!]&7 &c%1$s &7Te ha expulsado de&c %2$s&7!'
+    DESCRIPTION: Expulsar a un jugador de la facción
+  LIST:
+    FACTIONLIST: '&c&l[!]&7 Lista de Facción '
+    TOLIST: para enumerar las facciones
+    FORLIST: para listar las facciones
+    ONLINEFACTIONLESS: 'Online sin facción asignada: '
+    DESCRIPTION: '&a&l» &7Ver lista de las facciones'
+  SPAM:
+    ENABLED: '&c&l[!]&7 Sistema Anti-Spam de la facción ha sido&a habilitado'
+    DISABLED: '&c&l[!]&7 Sistema Anti-Spam de la facción ha sido&c deshabilitado'
+    DESCRIPTION: activar el sistema antispam
+  LOCK:
+    LOCKED: '&c&l[!]&7 Facciones está ahora&c bloqueado'
+    UNLOCKED: '&c&l[!]&7 Las Facciones están ahora&a desbloqueada'
+    DESCRIPTION: Bloquea todas las cosas que se escriben. Aparentemente.
+  LOGINS:
+    TOGGLE: '&c&l[!]&7 Establecer las notificaciones de inicio de sesión / cierre de sesión para los miembros de la Facción a: &c%s'
+    DESCRIPTION: 'Alternar (?) las notificaciones de inicio de sesión / cierre de sesión para los miembros de la Facción'
+  LOWPOWER:
+    HEADER: '&8&m--------&8<Jugadores con potencia inferior a {maxpower}&8>&8&m---------'
+    FORMAT: '&c{player} &8(&c{player_power}&8/&c{maxpower}&8)'
+    DESCRIPTION: Muestra una lista de jugadores de tu facción con niveles de poder más bajos
+  LOOKUP:
+    INVALID: '&c&l[!] &c¡Facción no valida encontrada!'
+    FACTION:
+      HOME: '&c&l[!] &cHome de la Facción: &f%1$dx %2$sy %3$sz'
+    CLAIM:
+      COUNT: '&c&l[!] &cHas encontrado &c&n%1$s &cChunks reclamado(s) para &f%2$s'
+      LIST: '&f%1$s &7(%2$sx, %2$sz)'
+    ONLY:
+      NORMAL: '&cSólo puedes entrar en facciones normales'
+    DESCRIPTION: Consulta de las estadísticas de la facción
+  MAP:
+    TOSHOW: para mostrar el mapa
+    FORSHOW: para mostrar el mapa
+    UPDATE:
+      ENABLED: '&c&l[!]&7 Actualización automática del mapa &aHABILITADA.'
+      DISABLED: '&c&l[!]&7 Actualización automática del mapa &cDESHABILITADA.'
+    DESCRIPTION: Muestra el mapa del territorio, y establece la actualización automática opcional
+  MAPHEIGHT:
+    DESCRIPTION: '&eActualiza las líneas que envía /f map'
+    SET: '&c&l[!]&7 Establece las líneas del mapa /f en &c&a%1$d'
+    CURRENT: '&c&l[!]&7 Ancho del mapa &cactualmente: &a%1$d'
+  MOD:
+    CANDIDATES: '&c&l[!]&7 Jugadores que puedes ascender: '
+    CLICKTOPROMOTE: 'Haz clic para ascender '
+    NOTMEMBER: '&c&l[!]&7 &c%1$s7 no es un miembro en su facción.'
+    NOTADMIN: '&c&l[!]&7 No te importa&7 el administrador de la facción.'
+    SELF: '&c&l[!]&7 El jugador objetivo&c no debes&7 ser tú mismo'
+    TARGETISADMIN: '&c&l[!]&7 El jugador objetivo es un &cAdministrador de la Facción.&7 Descenderlo
+      primero.'
+    REVOKES: '&c&l[!]&7 &7Has &creado&7 la condición de moderador de &c%1$s.'
+    REVOKED: '&c&l[!]&7 &c%1$s&7 ya no es &c1$7 moderador en su facción.'
+    PROMOTES: '&c&l[!]&7 &c%1$s&7 fue &cascendido&7 a moderador en su facción.'
+    PROMOTED: '&c&l[!]&7 Has ascendido&c %1$s&7 a moderador.'
+    DESCRIPTION: Dar o revocar los derechos de moderador
+  COLEADER:
+    CANDIDATES: '&c&l[!]&7 Jugadores que puedes ascender: '
+    CLICKTOPROMOTE: 'Haz clic para ascender '
+    NOTMEMBER: '&c&l[!]&7 &c%1$s&7 no es &cun miembrp&7 de tu facción.'
+    NOTADMIN: '&c&l[!]&7 No eres&c el administrador de la facción.'
+    SELF: '&c&l[!]&7 El jugador objetivo&c no debes&7 ser tú mismo'
+    TARGETISADMIN: '&c&l[!]&7 El jugador objetivo es un &cAdministrador de la Facción&7. Degradarlo
+      primero.'
+    REVOKES: '&c&l[!]&7 Has eliminado el estado de &cco-líder &7de&c %1$s&7.'
+    REVOKED: '&c&l[!]&7 &c%1$s&7 ya no es&c co-líder &7en su facción.'
+    PROMOTES: '&c&l[!]&7 &c%1$s&7 fue promovido a &cco-líder &7en su facción.'
+    PROMOTED: '&c&l[!]&7 Has &cpromovido a &7%1$s a &cco-líder.'
+    DESCRIPTION: Dar o revocar los derechos de co-líderes
+  CONVERTCONFIG:
+    DESCRIPTION: Convierte tu configuración de SavageFactions a SaberFactions
+    SUCCESS: '&cConfiguración convertida con éxito'
+    FAIL: '¡Conversión de configuración fallida!'
+    FAILCONFIGMISSING: '&cAsegúrese de haber colocado los archivos de SavageFactions en un
+      carpeta llamada SavageFactions'
+  MODIFYPOWER:
+    ADDED: '&c&l[!]&7 Añadida &c%1$f &7potencia a &c%2$s. &7Nueva potencia total redondeada: &c%3$d'
+    DESCRIPTION: Modifica el poder de una facción/jugador
+  MONEY:
+    LONG: '&c&l[!]&7 El dinero de la facción manda'
+    DESCRIPTION: Comandos de dinero de la facción
+    CANTAFFORD: '&c&l[!]&7 &c%1$s&7 no puede permitirse &c%2$s&7 %3$s'
+    GAINED: '&c&l[!]&7 &c%1$s&7 ganó &c%2$s %2%6'
+  MONEYBALANCE:
+    SHORT: mostrar el equilibrio de las facciones
+    DESCRIPTION: Muestra el balance de dinero actual de tu facción
+  MONEYDEPOSIT:
+    DESCRIPTION: Depositar dinero
+    DEPOSITED: '&c&l[!]&7 &c%1$s &7depositado&c %2$s&7 en el banco de la facción:&c %3$s'
+  MONEYTRANSFERFF:
+    DESCRIPTION: Transferencia f -> f
+    TRANSFER: '&c&l[!]&7 &c%1$s&7 transferido&c %2$s &7de la facción &c"%3$s"&7
+      a la facción&c "%4$s"&7'
+    TRANSFERCANTAFFORD: '&c&l[!]&7 &c%1$s&7 no puede permitirse el lujo de transferir &c%2$s &7a
+      %3$s'
+  MONEYTRANSFERFP:
+    DESCRIPTION: Transferencia f -> plugin
+    TRANSFER: '&c&l[!]&7 &c%1$s &7transferido&c %2$s &7de la facción&c "%3$s" &7a
+      el jugador &c"%4$s"'
+  MONEYTRANSFERPF:
+    DESCRIPTION: Plugin de transferencia -> f
+    TRANSFER: '&c&l[!]&7 &c%1$s&7 transferido &c%2$s&7 del jugador &c"%3$s" &7a
+      la facción&c "%4$s"'
+  MONEYWITHDRAW:
+    DESCRIPTION: Retirar dinero
+    WITHDRAW: '&c&l[!]&7 &c%1$s&7 retiró&c %2$s &7del banco de la facción:&c %3$s'
+  COOLDOWN: '&c&l[!] &7¡Actualmente estás en cooldown para este comando!'
+  OPEN:
+    TOOPEN: para abrir o cerrar la facción
+    FOROPEN: para abrir o cerrar la facción
+    OPEN: abierto
+    CLOSED: cerrado
+    CHANGES: '&c&l[!]&7 &c%1$s&7 cambió la facción a &c%2$s&7.'
+    CHANGED: '&c&l[!]&7 La facción &c%1$s&7 es ahora &c%2$s&7.'
+    DESCRIPTION: Cambia si se requiere invitación para unirse
+  OWNER:
+    DISABLED: '&c&l[!]&7 Lo siento, pero la &capropiación de zonas &7 está &cdeshabilitada &7 en este servidor.'
+    LIMIT: '&c&l[!]&7 Lo sentimos, pero ha alcanzado el &climit&7 del servidor de &c%1$d&7
+      zonas de propiedad por facción".'
+    WRONGFACTION: '&c&l[!]&7 Esta tierra no es reclamada por su facción, así que usted...
+      No se puede establecer&7 la propiedad de la misma.'
+    NOTCLAIMED: '&c&l[!]&7 Esta tierra&c no está &7reclamada por una facción. La adueñación de esta propiedad &c
+      no es &7posible.'
+    NOTMEMBER: '&c&l[!]&7 &c%1$s&7 no es &cun miembro &7de esta facción.'
+    CLEARED: '&c&l[!]&7 Has &cdeshecho la &7apropiación para esta tierra reclamada.'
+    REMOVED: '&c&l[!]&7 Usted ha&c retirado la propiedad &7 de este &ctierra reclamada&7 de
+      &c%1$s&7.'
+    TOSET: para fijar la propiedad de los terrenos reclamados
+    FORSET: para fijar la propiedad de los terrenos reclamados
+    ADDED: '&c&l[!]&7 Has añadido a &c%1$s&7 a la lista de &cpropietarios&7 de esta reclamación
+      tierra".'
+    DESCRIPTION: Establecer la propiedad de la tierra reclamada
+  KILLHOLOGRAMS:
+    DESCRIPTION: Mata a los hologramas en un radio, comando admin
+  OWNERLIST:
+    DISABLED: '&c&l[!]&cLo siento, &7pero las áreas de propiedad están &cdeshabilitadas&7 en este servidor.'
+    WRONGFACTION: '&c&l[!]&7 Esta tierra &cis no&7 reclamada por su facción.'
+    NOTCLAIMED: '&c&l[!]&7 Esta tierra no es reclamada por ninguna facción, por lo tanto no hay propietarios.'
+    NONE: '&c&l[!]&7 Aquí no se establecen propietarios; todos los de la facción tienen acceso'
+    OWNERS: '&c&l[!]&7 Propietario(s) actual(es) de este terreno: %1$s'
+    DESCRIPTION: Enumere el/los propietario/s de esta tierra reclamada
+  DISCORDSET:
+    ADMIN:
+      SUCCESSFUL: '&c&l[!] &7Has establecido el  &7discord de &b%1$s a &b%2$s&7.'
+      FAILED: '&c&l[!] &b%1$s &7no es un enlace de discord!'
+    NOTEMAIL: '&c&l[!] &b%1$s &7no es un enlace de discord!'
+    DESCRIPTION: '&c&l[!] &7Configura el enlace de la discord de tu facción'
+    SUCCESSFUL: '&c&l[!] &7Ha establecido con éxito el enlace de discord de su facción - &b%1$s&7.'
+  DISCORDSEE:
+    FACTION:
+      NOTSET: '&c&l[!] &b%1$s''s &7discord aún no se ha establecido!'
+      DISCORD: '&c&l[!] &b%1$s''s &7faction tiene su enlace de discord establecido en &b%2$s&7.'
+    DESCRIPTION: '&c&l[!] &7Ver un enlace de discord de una facción específica con &b/f discord
+      <facción>&b.'
+  PAYPAL:
+    NOTSET: '&c&l[!] &7¡Tu facción no tiene su paypal configurado!'
+  PAYPALSET:
+    ADMIN:
+      SUCCESSFUL: '&c&l[!] &7Ha establecido el &7paypal de &b%1$s a &b%2$s&7.'
+      FAILED: '&c&l[!] &b%1$s &7no es un correo electrónico!'
+    NOTEMAIL: '&c&l[!] &b%1$s &7no es un email!'
+    DESCRIPTION: '&c&l[!] &7Establece el correo electrónico de tu facción para reclamar recompensas'
+    CREATED: '&c&l[!] &7Asegúrese de escribir &b/f <paypal/setpaypal> <email>&7!'
+    SUCCESSFUL: '&c&l[!] &7Configuración con éxito su correo electrónico de la Facción - &b%1$s&7.'
+  PAYPALSEE:
+    DESCRIPTION: '&c&l[!] &7Ver el correo electrónico de paypal de una facción específica con &b/f <seepaypal/getpaypal>
+      <facción>&b.'
+    FACTION:
+      PAYPAL: '&c&l[!] &b%1$s''s &7faction tiene su paypal configurado a &b%2$s&7.'
+      NOTSET: '&c&l[!] &b%1$s''s &7paypal aún no se ha establecido!'
+      NOFACTION: '&c&l[!] &b%1$s &7no tiene facción!'
+  PEACEFUL:
+    DESCRIPTION: '&c&l[!]&7Configurar una facción como pacífica'
+    YOURS: '&c&l[!]&7%1$s tiene %2$s su facción'
+    OTHER: '&c&l[!]&7%s tiene %s la facción ''%s'''
+    GRANT: '&c&l[!]&7 concedió la condición de pacífico a'
+    REVOKE: eliminado el estado de paz de
+  PERM:
+    DESCRIPTION: '&c&l[!]&7&6Edita o lista los permisos de tu Facción'
+    INVALID:
+      RELATION: '&c&l[!]&7Relación no válida definida. Pruebe algo como&c ''aliado'''
+      ACCESS: '&c&l[!]&7 Acceso inválido definido. Pruebe algo como &c''allow'''
+      ACTION: '&c&l[!]&7 Acción no válida definida. Intente algo como &c''construir'''
+    SET: '&c&l[!]&7 Establecer permiso&c %1$s &7a &c%2$s &7para relación&c %3$s'
+    TOP: RCT MEM OFF ALIADO TREGUA NEUT ENEMIGO
+    LOCKED: '&cEste permiso ha sido bloqueado por el servidor'
+  POINTS:
+    SHOW:
+      DESCRIPTION: Ver el balance de puntos de las facciones
+      WILDERNESS: '&c&l[!] &7¡No se puede comprobar el balance de puntos de la naturaleza!'
+      OWN: '&c&l[!] &7Tu facción tiene &e%1$s &7puntos.'
+      OTHER: '&c&l[!] &e{faction} &7tiene un saldo de puntos de &b{points}&7.'
+    FAILURE: '&c&l[!] &c{faction} no existe'
+    SUCCESSFUL: '&c&l[!] &7Has añadido &e%1$s &7puntos a &b%2$s&7. &b%2$s''s &7Nuevo
+      Saldo de puntos: &e%3$s'
+    INSUFFICIENT: '&c&l[!] &7No puede añadir/fijar/quitar un número negativo de puntos
+      a una facción.'
+    DESCRIPTION: 'Mando general para los puntos de la facción'
+  ADDPOINTS:
+    DESCRIPTION: 'Añadir puntos a la Facción'
+  REMOVEPOINTS:
+    SUCCESSFUL: '&c&l[!] &7Has tomado &e%1$s &7puntos de &b%2$s&7. &b%2$s''s
+      &7Nuevo balance de puntos: &e%3$s'
+    DESCRIPTION: Eliminar puntos de una Facción
+  SETPOINTS:
+    SUCCESSFUL: '&c&l[!] &7Ha establecido &e%1$s &7puntos a &b%2$s&7. &b%2$s''s &7Nuevo
+      Saldo de puntos: &e%3$s'
+    DESCRIPTION: 'Conjunto de puntos de una Facción'
+  PERMANENT:
+    DESCRIPTION: 'Activa una opción de facción permanente'
+    GRANT: '&c&l[!]&7 añadió estado permanente a'
+    REVOKE: '&c&l[!]&7 eliminó el estado permanente de'
+    YOURS: '&c&l[!]&7 &c%1$s&7 tiene &c%2$s&7 su facción'
+    OTHER: '&c&l[!]&7 &c%s &7tiene &c%s &7la facción ''&c%s&7'''
+  PROMOTE:
+    TARGET: '&c&l[!]&7 Has sido &c%1$s&7 a &c%2$s&7.'
+    SUCCESS: '&c&l[!]&7 Has conseguido &c%1$s %2$s &ca&7 %3$s&7.'
+    PROMOTED: ascendido
+    DEMOTED: degradado
+    LOWEST:
+      RANK: '&c&l[!]&7 &c%1$s&7 ya tiene el rango más bajo de la facción.'
+    HIGHEST:
+      RANK: '&c&l[!]&7 &c%1$s&7 ya tiene el rango más alto de la facción.'
+    HIGHER:
+      RANK: '&c&l[!]&7 &c%1$s&7 tiene un rango superior al tuyo. Usted &4no puede modificar&7
+        su rango".'
+    COLEADER:
+      ADMIN: '&c&l[!]&7 &cLos líderes no pueden ascender a los jugadores a Admin!'
+    DESCRIPTION: /f promote <nombre>
+    WRONGFACTION: '&c&l[!]&7 &c%1$s&7 &cno pertenece&7a la parte de su facción.'
+    NOT:
+      ALLOWED: '&c&l[!]&7 ¡No puedes ascender al mismo rango que tú!'
+      SAME: '&c&l[!]&7 ¡No puedes ascender al mismo rango que tú!'
+    NOTSELF: '&c&l[!]&7 No puedes manejar tu propio rango'
+  PERMANENTPOWER:
+    DESCRIPTION: Alternar la opción de poder de facción permanente
+    GRANT: ha añadido la condición de poder permanente a
+    REVOKE: ha eliminado el estado de poder permanente de
+    SUCCESS: '&c&l[!]&7 Has&c %s &7%s.'
+    FACTION: '&c&l[!]&7 &c%s %s &7su facción'
+  NOACCESS: '&c&l[!]&7 No tienes acceso a eso'
+  POWER:
+    TOSHOW: para mostrar la información sobre el poder del jugador
+    FORSHOW: para mostrar la información sobre el poder del jugador
+    POWER: '&c&l[!]&7 &c%1$s » &cPoder &7/ &cMax-poder&a » &c%2$d &7/ &c%3$d %4$s'
+    BONUS: ' (bonus: '
+    PENALTY: ' (infracción: '
+    DESCRIPTION: '&a&l» &7Mostrar el poder de un jugador &7info'
+  POWERBOOST:
+    HELP:
+      '1': '&c&l[!]&7 Debe especificar "plugin" o "player" para apuntar a un jugador o
+        "f" o "facción" para apuntar a una facción.'
+      '2': '&c&l[!]&7 ex. /f powerboost plugin SomePlayer 0.5 -o- /f powerboost
+        f AlgunaFacción -5'
+    INVALIDNUM: Debe especificar un valor numérico válido para la bonificación/penalización de potencia
+      cantidad.
+    PLAYER: Jugador "%1$s"
+    FACTION: Facción "%1$s"
+    BOOST: '%1$s tiene ahora una bonificación/penalización de poder de %2$d a los niveles de poder mínimo y máximo'
+    BOOSTLOG: '%1$s ha fijado la bonificación/penalización de potencia para %2$s en %3$d.'
+    DESCRIPTION: Aplica una bonificación/penalización de poder permanente a un jugador o facción específica
+  RELATIONS:
+    ALLTHENOPE: '&c&l[!]&7 &cLo siento, no puedes'
+    MORENOPE: '&c&l[!]&7 &cNope!&7No puedes declarar una relación a &cyourself'
+    ALREADYINRELATIONSHIP: '&c&l[!]&7 Ya tiene ese deseo de relación establecido
+      con&c %1$s.'
+    TOMARRY: cambiar un deseo de relación
+    FORMARRY: para modificar un deseo de relación
+    MUTUAL: '&c&l[!]&7 Tu facción es ahora %1$s&7 a &c%2$s&7.'
+    PEACEFUL: '&c&l[!]&7 Esto no tendrá efecto mientras tu facción sea pacífica'
+    PEACEFULOTHER: '&c&l[!]&7 Esto no tendrá &cno efecto&7 mientras su facción esté
+      pacífica".'
+    DESCRIPTION: Establecer el deseo de relación con otra facción
+    EXCEEDS:
+      ME: '&c&l[!]&7 Fallo al establecer el deseo de relación. Sólo puede tener %1$s %2$s.'
+      THEY: '&c&l[!]&7 Fallo al establecer el deseo de relación. Sólo pueden tener %1$s %2$s.'
+    PROPOSAL:
+      '1': '&c&l[!]&7 &c%1$s &7desea ser tu &c%2$s&7.'
+      '2': '&c&l[!]&7 Escriba &c/%1$s %2$s %3$s&7 para aceptar.'
+      SENT: '&c&l[!]&7 &c1$s&7 fueron informados de que desean ser &c2$s&7.'
+  RELOAD:
+    TIME: '&c&l[!]&7 La recarga de los archivos de &7la configuración del disco, ha tardado &c%1$d ms.'
+    DESCRIPTION: Recarga de archivos de datos desde el disco
+  RESERVE:
+    DESCRIPTION: Reserva cualquier nombre de facción para cualquier jugador
+    SUCCESS: '&a&l[!] &7Has reservado la facción &a%1$s &7para el jugador &a%2$s'
+    ALREADYRESERVED: '&c&l[!] &7¡La facción &b%1$s &7ya ha sido reservada!'
+  SAFEUNCLAIMALL:
+    DESCRIPTION: des-reclamando a todos los terrenos de la zona segura
+    UNCLAIMED: '&c&l[!]&7 Ha des-reclamado&c TODOS&7 los terrenos de la zona segura.'
+    UNCLAIMEDLOG: '&c&l[!]&7 &c%1$s&7 no reclamado todas las zonas seguras.'
+  SAVEALL:
+    SUCCESS: '&c&l[!]&7 &c¡Facciones guardadas en el disco!'
+    DESCRIPTION: Guardar todos los datos en el disco
+  SCOREBOARD:
+    DESCRIPTION: Cosas de la puntuación
+  SETBANNER:
+    SUCCESS: '&c&l[!] &7¡Patrón de banderolas establecido!'
+    NOTBANNER: '&c&l[!] &7El artículo no es &cnot&7 un banner!'
+    DESCRIPTION: establece un patrón de estandarte para tu facción
+  SETDEFAULTROLE:
+    DESCRIPTION: /f defaultrole <role> - establece el rol por defecto de tu Facción.
+    NOTTHATROLE: '&c&l[!]&7 No puede establecer el valor por defecto de admin.'
+    SUCCESS: Establece el rol por defecto de tu facción a %1$s
+    INVALIDROLE: No se ha podido encontrar un rol que coincida con %1$s
+  SETFWARP:
+    NOTCLAIMED: '&c&l[!]&7 Puedes &conly&7 establecer urdimbres en el territorio de tu facción.'
+    LIMIT: '&c&l[!]&7 Tu Facción ya tiene la &ccantidad máxima&7 de urdimbres establecidas &c(%1$d).'
+    SET: '&c&l[!]&7 Establece el warp &c%1$s&7 y la contraseña &c''%2$s'' &7a su ubicación.'
+    TOSET: para fijar el warp
+    FORSET: para ajustar el warp
+    DESCRIPTION: Establece un warp de facción
+  SETHOME:
+    DISABLED: '&c&l[!]&cLo siento&7, las casas de las facciones están deshabilitadas en este servidor'
+    NOTCLAIMED: '&c&l[!]&c Lo siento&7, tu casa de facción sólo puede ser puesta dentro de tu
+      &cpropio &7territorio reclamado.'
+    TOSET: para fijar el hogar de la facción
+    FORSET: para establecer el hogar de la facción
+    SET: '&c&l[!]&c %1$s&7 establece el hogar de tu facción. Ahora puedes usar:'
+    SETOTHER: '&c&l[!]&7 Has puesto el hogar para la facción &c1$s&7.'
+    DESCRIPTION: Establece el hogar de la facción
+  SETTNT:
+    SUCCESS: '&aAsignar la TNT de una Facción &e%s &apara &b%d'
+    DESCRIPTION: establece la cantidad de tnt para una facción
+  SETPOWER:
+    SUCCESS: '&aAsignar la energía para &e%s &aa &b%d'
+    DESCRIPTION: establece la potencia de juego actual del jugador
+  SETMAXVAULTS:
+    DESCRIPTION: Establecer los Vaults máximas para una Facción.
+    SUCCESS: '&aEstablecer los Vaults maximas para &e%s &aa &b%d'
+  ONCOOOLDOWN: '&c&l[!] &7No puede utilizar este comando durante &b%1$s &7segundos.'
+  SPAWNER:
+    LOCK:
+      TOGGLED: '&c&l[!] &7Has establecido la colocación de los spawners en %1$s'
+      DESCRIPTION: activar/desactivar la colocación de los spawners
+      CANNOT:
+        PLACE: '&c&l[!] &7¡Se ha desactivado temporalmente la colocación de reproductores!'
+  STRIKES:
+    CHANGED: '&c&l[!] &7Has puesto los &c%1$s a &c%2$s'
+    INFO: '&c&l[!] &7%1$s tiene %2$s huelgas'
+    TARGET:
+      INVALID: '&c&l[!] &7La facción %1$s no es válida'
+    STRUCK: '&c&l[!] &7¡Tus golpes de facción han cambiado por &c%1$s &7golpes! Su
+      la facción tiene ahora &c%2$s/%3$s'
+    DESCRIPTION: 'Establece ataques a las facciones para advertirlas'
+  STRIKESGIVE:
+    DESCRIPTION: 'Da un golpe a una facción'
+  STRIKETAKE:
+    DESCRIPTION: 'Recibe un golpe de una facción'
+  STRIKESET:
+    DESCRIPTION: 'Establece las huelgas de una facción explícitamente.'
+  STRIKESINFO:
+    DESCRIPTION: 'Consigue los golpes de una facción'
+  VIEWCHEST:
+    DESCRIPTION: 'ver un cofre/pv de las facciones'
+  VAULT:
+    DESCRIPTION: '¡Abre la bóveda de tu facción!'
+    INVALID: '&c&l[!]&7 Su bóveda fue&c reclamada&7, &crompida&7, o no ha&c
+      ya ha sido&7 colocado.'
+    OPENING: '&c&l[!]&7 Abriendo la bóveda de la facción.'
+    'NO':
+      HOPPER: '&c&l[!] &7¡No puedes colocar una tolva cerca de una bóveda!'
+  GETVAULT:
+    ALREADYSET: '&c&l[!]&7 ¡La bóveda ya ha sido fijada!'
+    ALREADYHAVE: '&c&l[!]&7 ¡Ya tienes una cámara acorazada en tu inventario!'
+    CHESTNEAR: '&c&l[!]&7 &7Hay un cofre o tolva &ccerca'
+    SUCCESS: '&cSe estableció exitosamente la bóveda'
+    INVALIDLOCATION: '&c¡La bóveda sólo puede colocarse en terreno de la facción!'
+    DESCRIPTION: ¡Consigue el objeto de la bóveda de la facción!
+    RECEIVE: '&c¡Has recibido una bóveda de facción!'
+    NOMONEY: '&cNo tienes suficiente dinero'
+    MONEYTAKE: '&c{amount} ha sido tomado de su cuenta'
+  LOGOUT:
+    KICK:
+      MESSAGE: '&2¡Has cerrado la sesión de forma segura!'
+    ACTIVE: '&c&l[!] &7¡Ya estás cerrando la sesión!'
+    LOGGING: '&c&l[!] &7Está cerrando la sesión. Por favor, espere &b%1$s &7segundos'
+    DESCRIPTION: cierre de sesión de forma segura del servidor
+    MOVED: '&c&l[!] &7¡Se ha cancelado tu cierre de sesión porque te has movido!'
+    DAMAGE:
+      TAKEN: '&c&l[!] &7¡Su cierre de sesión fue cancelado porque estaba dañado!'
+    TELEPORTED: '&c&l[!] &7¡Su cierre de sesión fue cancelado porque se teletransportó!'
+  NOTIFICATIONS:
+    TOGGLED:
+      'ON': '&c&l[!] &7Ahora verás &7notificaciones de terrenos reclamados!'
+      'OFF': '&c&l[!] &7Ya no verás &cnotificaciones de terrenos reclamados!'
+    DESCRIPTION: 'Alternar las notificaciones para la reclamación de tierras'
+  SHOW:
+    NOFACTION:
+      SELF: 'No estás en una facción'
+      OTHER: 'Eso no es una facción'
+    TOSHOW: 'para mostrar la información de la facción'
+    FORSHOW: 'para mostrar la información de la facción'
+    DESCRIPTION: 'Descripción: %1$s'
+    PEACEFUL: 'Esta facción es pacífica'
+    PERMANENT: 'Esta facción es permanente, permaneciendo incluso sin miembros'
+    JOINING: 'Uniendo: %1$s '
+    INVITATION: 'se requiere invitación'
+    UNINVITED: 'no se necesita invitación'
+    NOHOME: 'n/a'
+    POWER: 'Tierra / Poder / Max-Poder: %1$d/%2$d/%3$d %4$s.'
+    BONUS: ' (bonus: '
+    PENALTY: ' (penalidad: '
+    DEPRECIATED: (%1$s amortizados)
+    LANDVALUE: 'Valor total del terreno: %1$s %2$s'
+    BANKCONTAINS: 'El banco contiene: %1$s'
+    ALLIES: 'Aliados: '
+    ENEMIES: 'Enemigos: '
+    MEMBERSONLINE: 'Miembros en línea: '
+    MEMBERSOFFLINE: 'Miembros desconectados: '
+    COMMANDDESCRIPTION: 'Mostrar información de la facción'
+    DEATHS:
+      TIL:
+        RAIDABLE: 'DTR: %1$d'
+    EXEMPT: Esta facción está exenta y no puede ser vista.
+    NEEDFACTION: '&c¡Tienes que unirte a una facción para ver la tuya!'
+  SHOWCLAIMS:
+    HEADER: '&8&m-------------&8<{faction}''s Terrenos Reclamados&8>&8&m-------------'
+    FORMAT: '&8[{world}]:'
+    CHUNKSFORMAT: '&8(&c{x}&8,&c{z}&8)'
+    DESCRIPTION: ¡Muestra las tierras reclamadas de tus facciones!
+  SHOWINVITES:
+    PENDING: 'Jugadores con invitaciones pendientes: '
+    CLICKTOREVOKE: Haga clic para revocar la invitación para %1$s
+    DESCRIPTION: Mostrar las invitaciones pendientes de la facción
+  SEECHUNK:
+    DESCRIPTION: Mostrar los límites de los Chunks
+    TOGGLE: '&eSeechunk &d%1$s'
+    ENABLED: '&cSeechunk habilitado!'
+    DISABLED: '&cSeechunk deshabilitado!'
+  STATUS:
+    FORMAT: '%1$s Potencia: %2$s Visto por última vez: %3$s'
+    ONLINE: 'En línea'
+    AGOSUFFIX: ' hace.'
+    DESCRIPTION: Muestra el estado de un jugador
+  STEALTH:
+    DESCRIPTION: Activar y desactivar el modo oculto
+    ENABLE: '&cStealth &7» &7Ya no desactivarás a los jugadores cercanos en /f fly.'
+    DISABLE: '&cStealth &8» &7Ahora desactivarás a otros jugadores cercanos en /f fly.'
+    MUSTBEMEMBER: '&cStealth &8» &4Debes estar en una facción para usar este comando'
+  STUCK:
+    TIMEFORMAT: m 'minutos', s 'segundos'
+    CANCELLED: Teletransporte cancelado porque has sido dañado
+    OUTSIDE: Teletransporte cancelado porque has salido de un radio de bloque de %1$d
+    EXISTS: Ya te estás teletransportando, debes esperar %1$s
+    START: 'El teletransporte comenzará en %s. No recibas ni hagas daño. '
+    TELEPORT: Teletransportado con seguridad a %1$d, %2$d, %3$d.
+    TOSTUCK: para teletransportar de forma segura a %1$s
+    FORSTUCK: para %1$s iniciando un teletransporte seguro
+    DESCRIPTION: Te teletransporta de forma segura fuera de la facción enemiga
+  TAG:
+    TAKEN: 'Esa etiqueta ya está ocupada'
+    TOCHANGE: para cambiar la etiqueta de la facción
+    FORCHANGE: para cambiar la etiqueta de la facción
+    FACTION: '%1$s cambió su etiqueta de facción a %2$s'
+    CHANGED: La facción %1$s ha cambiado su nombre a %2$s.
+    DESCRIPTION: Cambiar la etiqueta de la facción
+  TITLE:
+    TOCHANGE: para cambiar el título de un jugador
+    FORCHANGE: para cambiar el título de un jugador
+    CHANGED: '%1$s cambió un título: %2$s'
+    DESCRIPTION: Establecer o eliminar el título de un jugador
+  TITLETOGGLE:
+    TOGGLED: Has cambiado la configuración del título a &c%1$s
+    DESCRIPTION: Alterne los títulos que se le servirán
+  TOGGLEALLIANCECHAT:
+    DESCRIPTION: Permite ver o no el chat de la alianza
+    IGNORE: El chat de la alianza es ahora ignorado
+    UNIGNORE: El chat de la alianza ya no se ignora
+  TOGGLESB:
+    DISABLED: No puedes alternar los marcadores mientras estén desactivados.
+  TOP:
+    DESCRIPTION: Ordena las facciones para ver la parte superior de algunos criterios.
+    TOP: Top Facciones por %s. Página %d/%d
+    LINE: '%d. &6%s: &c%s'
+    INVALID: No se ha podido ordenar por %s. Pruebe con el equilibrio, en línea, los miembros, el poder o la tierra.
+  TNT:
+    DISABLED:
+      MSG: '&c¡Este comando está desactivado!'
+    INVALID:
+      NUM: ¡La cantidad tiene que ser un número!
+    WIDTHDRAW:
+      NOTENOUGH:
+        TNT: '&cNo hay suficiente TNT en el banco'
+        SPACE: '&cNo hay suficiente espacio en tu inventario'
+      SUCCESS: '&cRetiro exitoso de tnt.'
+    DEPOSIT:
+      SUCCESS: '&cDepósito exitoso de tnt.'
+      NOTENOUGH: '&cNo hay suficientes tnt en el inventario de tnt.'
+    EXCEEDLIMIT: '&c¡Esto excede el límite del banco!'
+    AMOUNT: '&cTu facción tiene {amount}/{maxAmount} tnt en el banco de tnt.'
+    POSITIVE: '&c¡Por favor, utilice números positivos!'
+    DESCRIPTION: añadir/retirar del banco de tnt de la facción
+    ADD:
+      DESCRIPTION: '&b/f tnt add&3 <cantidad>'
+    TAKE:
+      DESCRIPTION: '&b/f tnt take&3 <cantidad>'
+  TNTFILL:
+    NODISPENSERS: '&c&l[!] &7No se han encontrado dispensadores en un radio de {radius} manzanas.'
+    HEADER: '&c&l[!] &7Llenando tnt en los dispensadores...'
+    SUCCESS: '&c&l[!] &7Ha llenado &c{amount}&7 Tnt en &c{dispensers} &7dispensadoras'
+    NOTENOUGH: '&c&l[!] &7No tienes suficientes tnt en tu banco de tnt para llenar esa
+      cantidad de bloques.'
+    RADIUSMAX: '&c&l[!] &7El radio máximo es {max}'
+    AMOUNTMAX: '&c&l[!] &7El importe máximo es {max}'
+    MOD: '&c&l[!] &7Tnt se utilizará del banco de facciones porque no tienes la
+      cantidad especificada en tu inventario y eres un {role}'
+    DESCRIPTION: Rellena tnt en los dispensadores a su alrededor
+  UNBAN:
+    DESCRIPTION: Des-banear a alguien de tu Facción
+    NOTBANNED: '&7%s &cNo está baneado. No está haciendo nada".'
+    TARGET:
+      IN:
+        OTHER:
+          FACTION: '&c%1$s no está en tu facción'
+    UNBANNED: '&e%1$s &cdes-baneado &7%2$s'
+    TARGETUNBANNED: '&aTe han desbaneado de &r%s'
+  UNCLAIM:
+    SAFEZONE:
+      SUCCESS: La zona segura no ha sido reclamada.
+      NOPERM: Esta es una zona segura. Careces de permisos para deshacerse del reclamo de esta tierra.
+    WARZONE:
+      SUCCESS: La zona de guerra no fue reclamada.
+      NOPERM: Esta es una zona de guerra. Careces de permisos para deshacerse del reclamo de esta tierra.
+    UNCLAIMED: '%1$s unclaimed some of your land'
+    UNCLAIMS: Deshacer el reclamo de esta tierra.
+    LOG: '%1$s terreno no reclamado en (%2$s) de la facción: %3$s'
+    WRONGFACTION: No eres dueño de esta tierra.
+    TOUNCLAIM: para deshacerse del reclamo de esta tierra.
+    FORUNCLAIM: para deshacerse del reclamo de esta tierra.
+    FACTIONUNCLAIMED: '%1$s Se ha deshecho de alguna zona reclamada.'
+    DESCRIPTION: Desaprovecha la tierra en la que te encuentras
+    SPAWNERCHUNK:
+      SPAWNERS: 'No se puede retirar un spawnerchunk mientras haya
+        &eContador de Spawner: %1$s'
+    CLICKTOUNCLAIM: Haga clic para desreclamar &2(%1$d, %2$d)
+  UNCLAIMALL:
+    TOUNCLAIM: para deshacerse de todas las tierras de la facción
+    FORUNCLAIM: para desreclamar todos los terrenos de la facción
+    UNCLAIMED: '%1$s Ha des-reclamado todas las tierrras de tu facción .'
+    LOG: '%1$s des-reclamando todas las tierras para la facción: %2$s'
+    DESCRIPTION: Deshazte de todas las tierras de tu facción
+  VERSION:
+    NAME: '&c&l[!]&7 &c&k||| &r&4SaberFactions&7 &c&k||&r &c» &7By Driftay'
+    VERSION: '&7Versión &c» &7%1$s'
+    DESCRIPTION: Muestra la información de la versión del plugin y de la traducción
+  WARUNCLAIMALL:
+    DESCRIPTION: des-reclamando todos los terrenos de la zona de guerra
+    SUCCESS: Has des-reclamado todo el terreno de la zona de guerra.
+    LOG: '%1$s Ha des-reclamado todas las zonas de guerra.'
+  DRAIN:
+    DESCRIPTION: La capacidad de obtener todo el dinero en los saldos de los miembros de la facción.
+    'NO':
+      PLAYERS: '&c&l[!] &cNo puedes drenar una facción sin otros miembros!'
+    RECIEVED:
+      AMOUNT: '&c&l[!] &f Has agotado a todos los miembros de tu facción por &b%1$s.'
+    INVALID:
+      AMOUNT: 'No se puede drenar una facción sin valor.'
+  WILD:
+    DESCRIPTION: Teletransportando a un lugar aleatorio
+    WAIT: '&c&l[!] &7Teletransportando en %1$s'
+    SUCCESS: '&c&l[!] &7Teletransportando...'
+    INTERUPTED: '&c&l[!] &7¡Teletransporte cancelado!'
+    FAILED: '&c&l[!] &7¡No se pudo encontrar una ubicación a la que teletransportarte!'
+    INPROGRESS: '&c&l[!] &7¡Ya te estás teletransportando a algún sitio!'
+  RULES:
+    DISABLED:
+      MSG: '&c¡Este comando está desactivado!'
+    DESCRIPTION: ¡establece/elimina/añade reglas!
+    ADD:
+      INVALIDARGS: ¡Por favor, incluya una regla!
+      SUCCESS: '&c¡Regla añadida con éxito!'
+    SET:
+      INVALIDARGS: Por favor, incluya el número de línea y la regla.
+      SUCCESS: '&c¡Regla establecida con éxito!'
+    REMOVE:
+      INVALIDARGS: Por favor, incluya un número de línea.
+      SUCCESS: '&c¡Regla eliminada con éxito!'
+    CLEAR:
+      SUCCESS: '&c¡Regla borrada con éxito!'
+  F:
+    GLOBAL:
+      TOGGLE: '&c&l[!] &7Tienes &b%1$s &7Chat global'
+      DESCRIPTION: Alternar al modo de chat global y permitir sólo los chats basados en las facciones
+  MISSION:
+    DESCRIPTION: Abre la guía de misiones
+command:
+  help:
+    invitations: 'Puede que quieras cerrarlo y usar invitaciones:'
+PRE:
+  JOIN:
+    KICK:
+      MESSAGE: '&c&lSe están cargando los datos de tu facción, ¡inténtalo de nuevo!'
+ANTI:
+  SPAWNER:
+    MINE:
+      PLAYERS:
+        NEAR: '&c&l[!] &7¡No puedes romper los punto de reaparición mientras haya enemigos cerca!'
+BOOSTER:
+  CANNOT:
+    USE:
+      WILDERNESS: 'Ya no puedes usar un potenciador de facción mientras estás en la zona salvaje'
+  OVER:
+    CAP:
+      LIMIT: '&c&l[!] &7¡No puedes usar potenciadores con un multiplicador superior a 10x!'
+  MULTIPLE:
+    RUNNING: '&c&l[!] &7Sólo puedes aplicar el mismo {multiplier}x mientras tu potenciador
+      está activo'
+  ALREADY:
+    ACTIVE: '&c&l[!] Tu facción ya tiene este potenciador activado por {player} para
+      otro {tiempo-left}!'
+  TITLE:
+    COMMAND: '&e&lPotenciadores activos en la facción&e:'
+  ACTIVE:
+    PHRASE: '&6&l* &e&l{multiplier}x {boosterType} &6iniciado por &e&l{player} &6expira
+      en &e&l{time-left}&6!'
+  EXPIRED: '&c&l[!] &e&l{multiplier}x {boosterType} &fde &e&l{player} &fha &c&lEXPIRADO&7!'
+  REMINDER:
+    EXP: '&a&l+ {multiplier}x EXP &a({player} Potenciador de Facción &7[{time-left}]&a)'
+    MCMMO: '&a&l+ {multiplier}x mcMMO &a({player} Potenciador de Facción &7[{time-left}]&a)'
+BANNER:
+  CANNOT:
+    BREAK: '&c&l[!] &7¡No puedes romper un estandarte de facción!'
+CHEST:
+  ITEM:
+    DENIED:
+      TRANSFER: '&c&l[!] &7¡No puedes transferir &b%1$s &7al cofre de tu facción!'
+CHECK:
+  BUFFERS:
+    CHECK: "\n &c&lMuros de Acción de la Facción&7 » &b¡Comprueba tus buffers! \n"
+    MARKED:
+      CHECKED: '&c&lMuros de Acción de la Facción &7 » &aMarcados buffers como comprobados'
+    CHECKED:
+      GUI:
+        ICON: '&aBuffers comprobados'
+    UNCHECKED:
+      GUI:
+        ICON: '&aBuffers sin marcar'
+  WALLS:
+    CHECK: "\n &c&lMuros de Acción de facción&7 » &b¡Comprueba tus paredes! \n"
+    MARKED:
+      CHECKED: '&c&lMuros de Acción de facción&7 » &aParedes marcadas como comprobadas'
+    CHECKED:
+      GUI:
+        ICON: '&aMuros de Acción, revisados'
+    UNCHECKED:
+      GUI:
+        ICON: '&cMuros de Acción, no revisados'
+  ALREADY:
+    CHECKED: '&c&lConfiguración de la acción&7 » &bLos muros ya ha sido comprobados'
+  'NO':
+    CHECKS: '&c&lMuros de acción&7 » &b¡Nada que comprobar!'
+  HISTORY:
+    GUI:
+      TITLE: '&aComprobar Historial'
+      ICON: '&bComprobar historial'
+  SETTINGS:
+    GUI:
+      TITLE: '&a&lGestión de la configuración de los cheques'
+  WALL:
+    CHECK:
+      GUI:
+        ICON: '&a&lConfiguración de la comprobación de la pared'
+  BUFFER:
+    CHECK:
+      GUI:
+        ICON: '&a&lConfiguración de la comprobación del buffer'
+  CHECK:
+    LORE:
+      LINE: '&bCheck: &a%1$s'
+  TIME:
+    LORE:
+      LINE: '&bTiempo: &f%1$s'
+  PLAYER:
+    LORE:
+      LINE: '&bJugador: &f%1$s'
+  MUST:
+    BE:
+      ATLEAST:
+        COLEADER: '&cDebes ser al menos &dCo Líder &para acceder a &fcheck settings'
+  LEADERBOARD:
+    HEADER: '&8---- Comprueba la tabla de clasificación ----'
+    LINE: '&f%1$s. &d%2$s: &f%3$s (%4$s Buffer, %5$s Paredes)'
+    'NO':
+      DATA: '&8Sin datos'
+WEE:
+  WOO:
+    MESSAGE: '&c&lFacción WeeWoo(Alarma)&7 » ¡Nos están asaltando!'
+WEEWOO:
+  ALREADY:
+    STARTED:
+      DISCORD: Weewoo(Alarma) ya ha empezado
+      INGAME: '&cWeewoo(Alarma) ya comenzó'
+    STOPPED:
+      DISCORD: Weewoo(Alarma) ya se ha detenido
+  STARTED:
+    DISCORD: Weewoo(Alarma) iniciado por %1$s
+  STOPPED:
+    DISCORD: Weewoo(Alarma) detenido por %1$s
+INVITE:
+  BOT:
+    USAGE: Obtén la invitación para el bot de Discord
+SET:
+  GUILD:
+    ID:
+      USAGE: Establece la identificación del gremio para la facción
+      SUCCESS: '&aÉxito al establecer el id del gremio'
+      INVALID:
+        ID: '&cIdentificación de gremio no válida (¿el bot está en el gremio?)'
+      UNABLE:
+        TO:
+          MESSAGE:
+            GUILD:
+              OWNER: '&cNo se ha podido enviar un mensaje al propietario del gremio'
+      TIMED:
+        OUT:
+          MINECRAFT: '&cDesconectado'
+          DISCORD: Tiempo de espera superado
+      GUILD:
+        ALREADY:
+          LINKED: '&cEse gremio ya está vinculado a una facción'
+      RESET:
+        ID: '&cID del gremio eliminado'
+      PMING:
+        OWNER: '&aSe ha enviado un mensaje directo(DM) al propietario del servidor de Discord para que apruebe el enlace,
+          se agota en 15 segundos'
+CANT:
+  FORCE:
+    SET:
+      GUILD:
+        ID: '&cNo puedes establecer forzosamente los ID de los gremios para otros gremios.'
+DISCORD:
+  LINK:
+    REQUIRED: '&c&l[!] ¡No puedes hacer esto mientras tu discord no esté vinculado! Enlaza tu
+      cuenta utilizando /f discord <enlace>'
+    SUCCESS: ¡Su cuenta ha sido vinculada!
+  CODE:
+    SENT: '&c&l[!]&7 Tu código es &f%1$s &7por favor envía esto al bot de SaberFactions
+      en Discord'
+    INVALID:
+      KEY: 'Ese código no es válido, verifique que el código sea correcto.'
+      FORMAT: 'Si está enviando un código, por favor, escriba sólo el código. Ejemplo de mensaje:
+        0000'
+  ALREADY:
+    LINKED: '&c&l[!]&7 Su cuenta ya está vinculada a &f%1$s'
+  PLAYER:
+    DISCORD: '&c&l[!] &7El enlace de discord de tu facción es: &b%1$s&7.'
+FRIENDLY:
+  FIRE:
+    'OFF':
+      ATTACKER: '&b%1$s &7tiene el fuego amigo activo&4off&7!'
+    YOU:
+      MUST: '&c[!] &7¡Debes tener fuego amigo activado para atacar a los miembros de tu propia facción!'
+SPAWNER:
+  CHUNK:
+    UNCLAIMED: '&aTienes un spawnerchunk sin reclamar'
+    PLACE:
+      DENIED:
+        WILDERNESS: '&c&l[!] &7¡No puedes colocar spawners en la zona salvaje!'
+        NOT:
+          SPAWNERCHUNK: '&c&l[!] &7No puedes colocar spawners en este chunk. Sólo
+            ¡Spawner Chunks!'
+BANKNOTE:
+  WITHDRAW:
+    NOT:
+      ENOUGH: '&c&l[!] &7¡No tienes suficiente dinero!'
+    'NO':
+      ARGS: '&c&l[!] &7Intenta /withdraw <cantidad>'
+XPBOTTLE:
+  NOT:
+    ENOUGH: '&c&l[!] &7¡No tienes suficiente experiencia!'
+  WITHDRAW:
+    'NO':
+      ARGS: '&c&l[!] &7Prueba /bottle <cantidad>'
+PAYPALSEE:
+  PLAYER:
+    PAYPAL: '&c&l[!] &7Paypal de la facción: &b%1$s&7.'
+SHOP:
+  NOT:
+    ENOUGH:
+      POINTS: '&c&l[!] &7¡Tu facción no tiene suficientes puntos para comprar esto!'
+  ERROR:
+    DURING:
+      PURCHASE: '&c&l[!] &7Ha habido un error al intentar dar objetos, por favor compruebe
+        tu inventario! La compra no se ha completado'
+  BOUGHT:
+    BROADCAST:
+      FACTION: |2
+
+        &c&l[!] &e&lFactionShop » &b{player} &7bought &b{item}&7 for &b{cost} &7points!
+LEAVE:
+  PASSADMIN: '&c&l[!] &7Debes dar el rol de administrador a otra persona primero.'
+  NEGATIVEPOWER: '&c&l[!] &7No puedes salir hasta que tu poder sea positivo'
+  TOLEAVE: dejar su facción.
+  FORLEAVE: por dejar su facción.
+  LEFT: '&c&l[!] &c%s&7 abandonó la facción &c%s&7.'
+  DISBANDED: '&c&l[!] &c%s&7 se disolvió'
+  DISBANDEDLOG: La facción %s (%s) se ha disuelto debido a la salida del último jugador (%s).
+  DESCRIPTION: \N - &a&l» &7Abandonó tu facción
+AUTOLEAVE:
+  ADMIN:
+    PROMOTED: '&e&l[!] &7El Administrador de la Facción &c%s&7 ha sido eliminado. &c%s&7 ha sido promovido
+      como el nuevo administrador de la facción'
+CLAIM:
+  PROTECTED: 'Esta tierra está protegida'
+  DISABLED: 'Lo siento, este mundo tiene la reivindicación de la tierra desactivada.'
+  CANTCLAIM: 'No puedes reclamar tierras para %s.'
+  ALREADYOWN: '%s ya son dueños de este terreno'
+  MUSTBE: 'Debes ser %s para reclamar la tierra.'
+  MEMBERS: 'Las facciones deben tener al menos %s miembros para reclamar tierras.'
+  SAFEZONE: 'No se puede reclamar una Zona Segura.'
+  WARZONE: 'No se puede reclamar una Zona de Guerra.'
+  POWER: '¡No puedes reclamar más tierra! Necesitas más poder!'
+  LIMIT: 'Límite alcanzado. No puedes reclamar más terreno!'
+  ALLY: 'No puedes reclamar la tierra de tus aliados.'
+  CONTIGIOUS: 'Sólo puede reclamar terrenos adicionales que estén conectados a su primer
+    reclamado o controlado por otra facción!'
+  FACTIONCONTIGUOUS: 'Sólo puede reclamar terrenos adicionales que estén conectados a su
+    primer reclamo!'
+  PEACEFUL: '%s es dueño de esta tierra. Su facción es pacífica, por lo que no puede reclamar la tierra
+    de otras facciones'
+  PEACEFULTARGET: '%s posee esta tierra, y es una facción pacífica. No puede reclamar
+    tierra de ellos'
+  THISISSPARTA: '%s es dueño de esta tierra y es lo suficientemente fuerte como para mantenerla'
+  BORDER: 'Debes comenzar a reclamar tierras en la frontera del territorio.'
+  TOCLAIM: 'para reclamar esta tierra'
+  FORCLAIM: 'por reclamar esta tierra'
+  TOOVERCLAIM: 'reclamar en exceso esta tierra'
+  FOROVERCLAIM: 'por reclamar en exceso esta tierra'
+  RADIUS:
+    CLAIM: '%1$s &reclamados %2$s chunks &a partir de &e(X: %3$s, Z: %4$s)'
+  CLAIMED: '%s reclamó tierras para %s de %s.'
+  CLAIMEDLOG: '%s reclamó tierras en (%s) para la facción: %s'
+  OVERCLAIM:
+    DISABLED: La sobredemanda de terreno está deshabilitada en este servidor.
+  TOOCLOSETOOTHERFACTION: Tu reclamación está demasiado cerca de otra Facción. Se requiere un buffer
+    es %d
+  OUTSIDEWORLDBORDER: Su reclamación está fuera del muundo.
+  OUTSIDEBORDERBUFFER: Su reclamación está fuera del mundo. %d chunks fuera de la frontera del mundo
+    necesario.
+  CLICK:
+    TO:
+      CLAIM: Haga clic para intentar reclamar &2(%1$d, %2$d)
+  MAP:
+    OUTSIDEBORDER: '¡Esta reclamación está fuera del borde del mundo!'
+  YOUAREHERE: Usted está aquí'
+  'NO':
+    TERRITORY:
+      PERM: ¡No tienes permiso del líder de tu facción para hacer esto!
+GENERIC:
+  YOU: tú
+  YOURFACTION: su facción
+  NOPERMISSION: No tienes permiso para %1$s.
+  ACTION:
+    NOPERMISSION: No tiene permiso para usar %1$s
+  FPERM:
+    NOPERMISSION: '&7El líder de la facción no te permite &c%1$s.'
+    OWNER:
+      NOPERMISSION: '&7Este terreno está reclamado por el propietario, necesita ser propietario para %1$s
+        de la misma.'
+  DOTHAT: hacer eso
+  NOPLAYERMATCH: No se ha encontrado ninguna coincidencia del jugadpr para "<plugin>%1$s".
+  NOPLAYERFOUND: No se ha podido encontrar al jugador "<plugin>%1$s".
+  ARGS:
+    TOOFEW: 'Demasiados pocos argumentos. Usar así:'
+    TOOMANY: 'Argumento extraño "<plugin>%1$s". Utilice el comando así:'
+  DEFAULTDESCRIPTION: Descripción de la facción por defecto :(
+  OWNERS: 'Propietario(s): %1$s'
+  PUBLICLAND: Terreno público de la facción.
+  FACTIONLESS: sin facción
+  SERVERADMIN: Un administrador del servidor
+  SERVER: Servidor
+  DISABLED: '&c&l[!] &7La función &b%1$s &7está actualmente desactivada.'
+  ENABLED: activado
+  INFINITY: âˆž
+  NULLPLAYER: jugador nulo
+  CONSOLEONLY: Este comando no puede ser ejecutado como jugador.
+  PLAYERONLY: Este comando sólo puede ser utilizado por jugadores dentro del juego.
+  ASKYOURLEADER: ' Pídele a tu líder que:'
+  YOUSHOULD: 'Debe:'
+  YOUMAYWANT: 'Puede que quieras: '
+  TRANSLATION:
+    VERSION: 'Traducción: %1$s(%2$s,%3$s) Estado: %4$s'
+    CONTRIBUTORS: 'Colaboradores de la traducción: %1$s'
+    RESPONSIBLE: 'Responsable de la traducción: %1$s'
+  FACTIONTAG:
+    BLACKLIST: '&cEsa etiqueta de facción está en la lista negra.'
+    TOOSHORT: La etiqueta de facción no puede ser más corta que %1$s caracteres.
+    TOOLONG: La etiqueta de la facción no puede tener más de %s caracteres.
+    ALPHANUMERIC: La etiqueta de la facción debe ser alfanumérica. "%s" no está permitido.
+  PLACEHOLDER: <Este es un marcador de posición para un mensaje que no debe ver>
+  NOTENOUGHMONEY: '¡No tienes suficiente dinero!'
+  MONEYTAKE: '&c{amount} ha sido tomada de tu cuenta.'
+  NOFACTION:
+    FOUND: 'No pude encontrar una facción con ese nombre.'
+  YOUMUSTBE: '&c¡Debe ser al menos %1$s para hacer esto!'
+  MEMBERONLY: '¡Debes estar en una facción para hacer esto!'
+  WORLDGUARD: '&cEsta zona está protegida por Worldguard'
+GRACE:
+  DISABLED:
+    PLACEHOLDER: Disabled
+MACRO:
+  DETECTED: '&c&l[!] &cNo señor!'
+MISSION:
+  MISSION:
+    STARTED: '&f%1$s &destinó la %2$s &fmisión'
+    ACTIVE: '&c&l[!] &7¡Esta misión está actualmente activa!'
+    MAX:
+      ALLOWED: '&c&l[!] &7No puedes tener más de &b%1$s &7misiones activas a la vez.'
+    ALL:
+      COMPLETED: '&c&l[!] &7Tu facción ha completado todas las misiones disponibles.'
+    FINISHED: '&c&l[!] &7¡Tu facción ha completado con éxito la misión %1$s!'
+    CANCELLED: '&c&l[!] &7¡Has cancelado la misión actual de tu facción!'
+  ALREAD:
+    COMPLETED: '&c&l[!] &7No puedes reiniciar una misión que ya has completado'
+PLAYER:
+  NOT:
+    FOUND: '&c&l[!] &b%1$s &7no está en línea o no está en su facción!'
+  CANTHURT: No puedes dañar a otros jugadores en %s
+  SAFEAUTO: Esta tierra es ahora una zona segura.
+  WARAUTO: Esta tierra es ahora una zona de guerra.
+  OUCH: Madre, eso está empezando a doler. Deberías darle un descanso.
+  USE:
+    WILDERNESS: No se puede usar %s en el desierto.
+    SAFEZONE: No puedes usar %s en una zona segura.
+    WARZONE: No puedes usar %s en una zona de guerra.
+    TERRITORY: No se puede %s en el territorio de %s.
+    OWNED: 'No puedes usar %s en este territorio, es propiedad de: %s.'
+  COMMAND:
+    WARZONE: No puedes usar el comando '%s' en la zona de guerra.
+    NEUTRAL: No puedes usar el comando '%s' en territorio neutral.
+    ENEMY: No puedes usar el comando '%s' en territorio enemigo.
+    PERMANENT: No puedes usar el comando '%s' porque estás en una facción permanente.
+    ALLY: No puedes usar el comando '%s' en el territorio de una facción aliada.
+    WILDERNESS: No se puede utilizar el comando '%s' en la zona salvaje.
+  POWER:
+    NOLOSS:
+      PEACEFUL: No has perdido ningún poder ya que estás en una facción pacífica.
+      WORLD: No has perdido ningún poder debido al mundo en el que has muerto.
+      WILDERNESS: No perdiste ningún poder desde que estabas en el desierto.
+      WARZONE: No perdiste nada de energía ya que estabas en una zona de guerra.
+    LOSS:
+      WARZONE: |-
+        El mundo en el que te encuentras tiene la pérdida de energía normalmente desactivada, pero aún así perdiste la energía ya que estabas en una zona de guerra.
+        Tu potencia es ahora %d / %d
+    NOW: Tu poder es ahora %d / %d
+  PVP:
+    LOGIN: No puedes dañar a otros jugadores durante %d segundos después de iniciar la sesión.
+    REQUIREFACTION: No puedes hacer daño a otros jugadores hasta que te unas a una facción.
+    FACTIONLESS: No puedes dañar a los jugadores que no están actualmente en una facción.
+    PEACEFUL: Los jugadores pacíficos no pueden participar en el combate.
+    NEUTRAL: No puedes hacer daño a las facciones neutrales. Decláralos como enemigos.
+    CANTHURT: No puedes hacer daño a %s.
+    NEUTRALFAIL: No puedes dañar a los %s en su propio territorio a menos que los declares
+      como un enemigo.
+    TRIED: '%s intentó hacerte daño'
+PLACEHOLDER:
+  ROLE:
+    NAME: Ninguno
+  CUSTOM:
+    FACTION: '{faction} '
+WARBANNER:
+  NOFACTION: '¡Necesitas una facción para usar un estandarte de guerra!'
+  COOLDOWN: '&c¡El estandarte de guerra está todavia recargándose para tu facción!'
+  INVALIDLOC: '&cSólo puedes usar estandartes de guerra en terreno enemigo o en la zona de guerra'
+COMPASS:
+  SHORT:
+    NORTH: N
+    EAST: E
+    SOUTH: S
+    WEST: O
+CHAT:
+  MOD: chat de moderadores
+  FACTION: chat de facción
+  ALLIANCE: chat de la alianza
+  TRUCE: chat de tregua
+  PUBLIC: chat público
+ECON:
+  'OFF': no %s
+  FORMAT: '###,###.###'
+  MONEYTRASFERREDFROM: '%1$s fue transferido de %2$s a %3$s.'
+  PERSONGAVEMONEYTO: '%1$s dio %2$s a %3$s.'
+  PERSONTOOKMONEYFROM: '%1$s tomó %2$s de %3$s.'
+  DISABLED: La economía de las facciones está desactivada.
+  OVER:
+    BAL:
+      CAP: '&4El importe &e%s &4supera el tope de saldo de Essentials'
+  MONEYLOST: '&c&l[!] %s &7perdió &c%s &7%s.'
+  CANTAFFORD: '&c%s &7no pueden permitirse &c%s&7 %s.'
+  UNABLETOTRANSFER: '&7Imposible transferir &c%s&7 a &c%s&7 desde &c%s&7.'
+  PLAYERBALANCE: El saldo de '&c%s&7' es &c%s&7.'
+  DEPOSITFAILED: '&c%s&7 habría ganado &c%s&7 %s, pero el depósito falló'
+  CANTCONTROLMONEY: '&c%s&7 carece de permiso para controlar el dinero de &c%s&7'
+  MONEYTRASFERREDFROMPERSONTOPERSON: '%1$s transfirió %2$s de %3$s a %4$s.'
+RELATION:
+  MEMBER:
+    SINGULAR: miembro
+    PLURAL: miembros
+  ALLY:
+    SINGULAR: aliado
+    PLURAL: aliados
+  TRUCE:
+    SINGULAR: tregua
+    PLURAL: treguas
+  NEUTRAL:
+    SINGULAR: neutral
+    PLURAL: neutrales
+  ENEMY:
+    SINGULAR: enemigo
+    PLURAL: enemigos
+ROLE:
+  LEADER: líder
+  COLEADER: co-líder
+  MODERATOR: moderador
+  NORMAL: miembro normal
+  RECRUIT: recluta
+REGION:
+  SAFEZONE: zona segura
+  WARZONE: zona de guerra
+  WILDERNESS: zona salvaje
+  PEACEFUL: territorio pacífico
+SHIELD:
+  CURRENTLY:
+    ENABLE: '&a&lActualmente Protegido'
+    NOT:
+      ENABLED: '&c&lActualmente desprotegido'
+  NOT:
+    SET: '&c&lNo establecido'
+NOPAGES: Lo sentimos. No hay páginas disponibles.
+INVALIDPAGE: Página no válida. Debes estar entre 1 y %1$d
+title: '&bFacciones &0|&r'
+wilderness: '&2Zona Salvaje'
+wilderness-description: ''
+warzone: '&4Zona de Guerra'
+warzone-description: No es el lugar más seguro para estar.
+safezone: '&6Zona segura'
+safezone-description: Libre de pvp y monstruos.
+toggle-sb: Ahora tienes los marcadores establecidos en {value}
+faction-leave: 'Saliendo de %1$s&r, entrando en %2$s&r'
+faction-announcement-top: '&d--Anuncios de facción no leídos--'
+faction-announcement-bottom: '&d--Anuncios de facción no leídos--'
+default-prefix: '{relationcolor}[{faction}]'
+faction-login: '&e%1$s &9Conectado.'
+faction-logout: '&e%1$s &9Desconectando..'
+nofactions-prefix: '&6[&ano-faction&6]&r'
+date-format: MM/d/aa h:ma
+raidable-true: 'true'
+raidable-false: 'false'
+WARMUPS:
+  NOTIFY:
+    FLIGHT: '&eEl modo de Vuelo se activará en &d%2$d &esegundos.'
+    TELEPORT: '&eSe teletransportará a &d%1$s &een &d%2$d &esegundos'
+  ALREADY: '&cYa estás calentando'
+  CANCELLED: '&cHas cancelado tu calentamiento'
+PLACEHOLDERAPI:
+  'NULL': ''
