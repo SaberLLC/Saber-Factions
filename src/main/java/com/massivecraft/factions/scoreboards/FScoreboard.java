@@ -3,8 +3,6 @@ package com.massivecraft.factions.scoreboards;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,7 +18,7 @@ public class FScoreboard {
      * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
-    private static final Object2ObjectMap<FPlayer, FScoreboard> fscoreboards = new Object2ObjectOpenHashMap<>();
+    private static final Map<FPlayer, FScoreboard> fscoreboards = new HashMap<>();
 
     private final Scoreboard scoreboard;
     private final FPlayer fplayer;

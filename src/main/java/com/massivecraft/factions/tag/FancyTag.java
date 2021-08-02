@@ -7,8 +7,6 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.QuadFunction;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
 import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
@@ -75,7 +73,7 @@ public enum FancyTag implements Tag {
     }
 
     private static List<FancyMessage> processRelation(String prefix, Faction faction, FPlayer fPlayer, Relation relation) {
-        ObjectList<FancyMessage> fancyMessages = new ObjectArrayList<>();
+        List<FancyMessage> fancyMessages = new ArrayList<>();
         FancyMessage message = FactionsPlugin.getInstance().txt.parseFancy(prefix);
         boolean first = true;
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
@@ -126,7 +124,7 @@ public enum FancyTag implements Tag {
      * @return list of tooltips for a fancy message
      */
     private static List<String> tipFaction(Faction faction, FPlayer player) {
-        ObjectList<String> lines = new ObjectArrayList<>();
+        List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
             String string = Tag.parsePlain(faction, player, line);
             if (string == null) {
@@ -144,7 +142,7 @@ public enum FancyTag implements Tag {
      * @return list of tooltips for a fancy message
      */
     private static List<String> tipPlayer(FPlayer fplayer, Map<UUID, String> groupMap) {
-        ObjectList<String> lines = new ObjectArrayList<>();
+        List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
             String newLine = line;
             everythingOnYourWayOut:

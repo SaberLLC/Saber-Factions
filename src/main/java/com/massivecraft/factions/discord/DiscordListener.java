@@ -28,7 +28,7 @@ public class DiscordListener extends ListenerAdapter {
      * @author Vankka
      */
 
-    private static File file = new File(FactionsPlugin.getInstance().getDataFolder(), "discord_guilds.json");
+    private static File file = new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "discord_guilds.json");
     public static JSONGuilds guilds = loadGuilds();
     private final DecimalFormat decimalFormat;
     private FactionsPlugin plugin;

@@ -1,9 +1,6 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.util.MiscUtil;
-import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -102,8 +99,8 @@ public class FLocation implements Serializable {
         return regionVal << 5;   // "<< 5" == "* 32"
     }
 
-    public static Set<FLocation> getArea(FLocation from, FLocation to) {
-        ObjectSet<FLocation> ret = new ObjectOpenHashSet<>();
+    public static HashSet<FLocation> getArea(FLocation from, FLocation to) {
+        HashSet<FLocation> ret = new HashSet<>();
 
         for (long x : MiscUtil.range(from.getX(), to.getX())) {
             for (long z : MiscUtil.range(from.getZ(), to.getZ())) {
@@ -229,7 +226,7 @@ public class FLocation implements Serializable {
         }
 
         int total = (int) Math.ceil(radius * 2);
-        ObjectSet<FLocation> ret = new ObjectLinkedOpenHashSet<>((total * total) + 1);
+        Set<FLocation> ret = new LinkedHashSet<>((total * total) + 1);
 
         int xfrom = (int) Math.floor(this.x - radius);
         int xto = (int) Math.ceil(this.x + radius);

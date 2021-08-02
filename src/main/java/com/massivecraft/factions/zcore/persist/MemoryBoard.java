@@ -217,7 +217,7 @@ public abstract class MemoryBoard extends Board {
 
 
         // Get the compass
-        ArrayList<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.DARK_GREEN, FactionsPlugin.getInstance().txt.parse("<gray>"));
+        List<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.DARK_GREEN, FactionsPlugin.getInstance().txt.parse("<gray>"));
 
         int halfWidth = Conf.mapWidth / 2;
         // Use player's value for height

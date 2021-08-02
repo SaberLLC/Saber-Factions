@@ -1,6 +1,6 @@
 package com.massivecraft.factions.util.timer;
 
-import com.massivecraft.factions.util.Config;
+import com.massivecraft.factions.zcore.file.CustomFile;
 
 /**
  * Factions - Developed by Driftay.
@@ -21,10 +21,10 @@ public abstract class Timer {
         return this.name;
     }
 
-    public void load(Config config) {
+    public void load(CustomFile config) {
     }
 
 
-    public void save(Config config) {
+    public void save(CustomFile config) {
     }
 }

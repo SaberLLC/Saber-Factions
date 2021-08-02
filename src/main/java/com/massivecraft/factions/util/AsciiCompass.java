@@ -1,8 +1,6 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.zcore.util.TL;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import it.unimi.dsi.fastutil.objects.ObjectList;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -39,11 +37,8 @@ public class AsciiCompass {
         }
     }
 
-    public static List<String> getAsciiCompass(Point point, ChatColor colorActive, String colorDefault) {
-        if (point == null) {
-            return new ObjectArrayList<>(0);
-        }
-        ObjectList<String> ret = new ObjectArrayList<>(3);
+    public static ArrayList<String> getAsciiCompass(Point point, ChatColor colorActive, String colorDefault) {
+        ArrayList<String> ret = new ArrayList<>();
 
         StringBuilder builder = new StringBuilder();
 

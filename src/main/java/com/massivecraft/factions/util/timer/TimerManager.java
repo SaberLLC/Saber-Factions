@@ -2,8 +2,8 @@ package com.massivecraft.factions.util.timer;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.Config;
 import com.massivecraft.factions.util.timer.type.GraceTimer;
+import com.massivecraft.factions.zcore.file.CustomFile;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.event.Listener;
 
@@ -23,7 +23,7 @@ public class TimerManager implements Listener, Runnable {
     private final FactionsPlugin plugin;
     private final List<TimerRunnable> timerRunnableList = new ArrayList<>();
     public GraceTimer graceTimer;
-    private Config config;
+    private CustomFile config;
 
     public TimerManager(FactionsPlugin plugin) {
         this.timers = new HashSet<>();
@@ -62,7 +62,7 @@ public class TimerManager implements Listener, Runnable {
     }
 
     public void reloadTimerData() {
-        this.config = new Config(this.plugin, "timers");
+        this.config = FactionsPlugin.getInstance().getFileManager().getTimers();
         for (Timer timer : this.timers) {
             timer.load(this.config);
         }
@@ -72,7 +72,7 @@ public class TimerManager implements Listener, Runnable {
         for (Timer timer : this.timers) {
             timer.save(this.config);
         }
-        this.config.save();
+        this.config.saveFile();
     }
 
     public void run() {

@@ -290,7 +290,7 @@ public class Econ {
         // code goes here.
         if (!shouldBeUsed()) return false;
 
-        OfflinePlayer acc = (ep instanceof Faction) ? null : getPlayerFromUUIDOrName(ep.getAccountId());
+        OfflinePlayer acc = getPlayerFromUUIDOrName(ep.getAccountId());
 
         String You = ep.describeTo(ep, true);
 

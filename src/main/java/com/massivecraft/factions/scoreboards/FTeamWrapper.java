@@ -2,7 +2,6 @@ package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.zcore.util.TL;
-import it.unimi.dsi.fastutil.objects.*;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,14 +17,14 @@ public class FTeamWrapper {
      * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
-    private static final Object2ObjectMap<Faction, FTeamWrapper> wrappers = new Object2ObjectOpenHashMap<>();
-    private static final ObjectList<FScoreboard> tracking = new ObjectArrayList<>();
-    private static final ObjectSet<Faction> updating = new ObjectOpenHashSet<>();
+    private static final Map<Faction, FTeamWrapper> wrappers = new HashMap<>();
+    private static final List<FScoreboard> tracking = new ArrayList<>();
+    private static final Set<Faction> updating = new HashSet<>();
     private static int factionTeamPtr;
-    private final Object2ObjectMap<FScoreboard, Team> teams = new Object2ObjectOpenHashMap<>();
+    private final Map<FScoreboard, Team> teams = new HashMap<>();
     private final String teamName;
     private final Faction faction;
-    private final ObjectSet<OfflinePlayer> members = new ObjectOpenHashSet<>();
+    private final Set<OfflinePlayer> members = new HashSet<>();
 
     private FTeamWrapper(Faction faction) {
         this.teamName = "faction_" + (factionTeamPtr++);
@@ -190,7 +189,7 @@ public class FTeamWrapper {
     }
 
     private Set<OfflinePlayer> getPlayers() {
-        return new ObjectOpenHashSet<>(this.members);
+        return new HashSet<>(this.members);
     }
 
     private void unregister() {

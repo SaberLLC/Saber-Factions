@@ -2,8 +2,10 @@ package com.massivecraft.factions.boosters.struct;
 
 import com.google.common.collect.Lists;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.boosters.BoosterTypes;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.zcore.file.CustomFile;
 import com.massivecraft.factions.zcore.util.TL;
 import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,8 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 public class BoosterManager {
-    private File boosterFile;
-    private FileConfiguration config;
+    private CustomFile boosterFile;
     private ConcurrentHashMap<String, FactionBoosters> factionBoosters = new ConcurrentHashMap<>();
 
     public BoosterManager() {
@@ -30,19 +31,9 @@ public class BoosterManager {
     }
 
     public void loadActiveBoosters() {
-        if (!new File("plugins/Factions/data").exists()) {
-            new File("plugins/Factions/data").mkdir();
-        }
-        this.boosterFile = new File("plugins/Factions/data/booster.yml");
-        if (!this.boosterFile.exists()) {
-            try {
-                this.boosterFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        this.config = YamlConfiguration.loadConfiguration(this.boosterFile);
-        for (String boosterString : this.config.getStringList("active-boosters")) {
+        this.boosterFile = FactionsPlugin.getInstance().getFileManager().getBoosters();
+
+        for (String boosterString : boosterFile.getConfig().getStringList("active-boosters")) {
             String[] args = boosterString.split(":");
             String factionId = args[0];
             int secondsLeft = Integer.parseInt(args[1]);
@@ -66,14 +57,8 @@ public class BoosterManager {
             String string = factionId + ":" + activeBooster.toString();
             entries.add(string);
         }));
-        this.config.set("active-boosters", entries);
-
-        try {
-            this.config.save(this.boosterFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        boosterFile.getConfig().set("active-boosters", entries);
+        boosterFile.saveFile();
     }
 
 

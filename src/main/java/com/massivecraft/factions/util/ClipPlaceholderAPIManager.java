@@ -73,7 +73,6 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 ChatColor color = fp1.getColorTo(fp2);
                 return color != null ? color.toString() : "";
         }
-
         return null;
     }
 

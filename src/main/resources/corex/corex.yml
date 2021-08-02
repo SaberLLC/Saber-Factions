@@ -35,7 +35,7 @@ Features:
   Anti-Dragon-Egg-TP: true #Denies Dragon Egg Teleport
   Enemy-Spawner-Mine: false #Denies Players to Mine spawners if they are in {x} radius of an enemy
   Insta-Sponge-Break: true #Instantly Break Sponges
-  Anti-Natural-Mobs: true #Denies all natural mob spawns
+  Anti-Natural-Mobs: false #Denies all natural mob spawns
 
 AntiSpawnerMine:
   Radius: 20.0 # Radius that the player will be denied mining spawners when an enemy is near.
