@@ -53,7 +53,7 @@ public class CmdHome extends FCommand {
             Faction target = context.argAsFaction(0);
             if (target == null) return;
             context.faction = target;
-            if (target.getAccess(context.fPlayer, PermissableAction.HOME) != Access.ALLOW) {
+            if (target.getAccess(context.fPlayer, PermissableAction.HOME) != Access.ALLOW && !context.fPlayer.isAdminBypassing()) {
                 context.fPlayer.msg(TL.GENERIC_FPERM_NOPERMISSION, "teleport home");
                 return;
             }
