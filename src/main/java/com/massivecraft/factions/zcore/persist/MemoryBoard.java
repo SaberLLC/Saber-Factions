@@ -219,9 +219,13 @@ public abstract class MemoryBoard extends Board {
         // Get the compass
         List<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.DARK_GREEN, FactionsPlugin.getInstance().txt.parse("<gray>"));
 
+        //Still use the player defined mapHeight, but if a server owner decides /f map command needs a nerf,
+        //Use the smaller config value to allow for mapHeight updating without rewriting the entire players.json file
+        int mapHeight = fplayer.getMapHeight();
+        if (mapHeight > Conf.mapHeight) mapHeight = Conf.mapHeight;
+
         int halfWidth = Conf.mapWidth / 2;
-        // Use player's value for height
-        int halfHeight = fplayer.getMapHeight() / 2;
+        int halfHeight = mapHeight / 2;
         FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
         int width = halfWidth * 2 + 1;
         int height = halfHeight * 2 + 1;
