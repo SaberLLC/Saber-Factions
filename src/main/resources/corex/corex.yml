@@ -10,7 +10,8 @@
 #<-------------------------------------->NOTES<-------------------------------------->#
 
 Features:
-  Use-Chunkbusters: true #Allows For Chunkbuster Placement on the server!
+  Anti-Vehicle-Teleport: true #Denies Block Phasing Through Exiting Vehicles!
+  EnderPearl-Cooldown: false #Places a Cooldown on Ender Pearls!
   Anti-Nether-Portal: false #Denies players teleporting from nether portals
   Anti-End-Portal: false #Denies players teleporting from end portals
   No-Cursor-Drop: true #When a player closes their inventory whilst a item is on their cursor it does not drop on the ground it goes back into their inventory
@@ -40,6 +41,8 @@ Features:
 AntiSpawnerMine:
   Radius: 20.0 # Radius that the player will be denied mining spawners when an enemy is near.
 
+Cooldowns:
+  EnderPearl: 15
 
 Chunkbuster:
   Run-Async: true

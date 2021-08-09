@@ -26,6 +26,16 @@ public class Cooldown {
         }
     }
 
+    public static String sendCooldownLeft(Player player, String name) {
+        if (player.hasMetadata(name) || player.getMetadata(name).size() > 0) {
+            long remaining = player.getMetadata(name).get(0).asLong() - System.currentTimeMillis();
+            int remainSec = (int) (remaining / 1000L);
+            return TimeUtil.formatSeconds(remainSec);
+        }
+        return "";
+    }
+
+
     public static boolean isOnCooldown(Player player, String name) {
         if (!player.hasMetadata(name) || player.getMetadata(name).size() <= 0) return false;
         long time = player.getMetadata(name).get(0).asLong();

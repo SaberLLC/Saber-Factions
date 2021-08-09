@@ -402,6 +402,9 @@ public enum TL {
     DISCORD_CODE_INVALID_KEY("That code is invalid, verify the code is correct."),
     DISCORD_CODE_INVALID_FORMAT("If you are submitting a code please only type the code. Example message: 0000"),
 
+    ENDER_PEARL_COOLDOWN("&c&l[!] &cYou may enderpearl again in &b{seconds} seconds&c!"),
+    VEHICLE_TELEPORT_BLOCK("&c&l[!] You cannot teleport while you are inside a vehicle"),
+
 
     COMMAND_DEINVITE_CANDEINVITE("&c&l[!]&7 Players you can &cdeinvite: "),
     COMMAND_DEINVITE_CLICKTODEINVITE("&c&l[!]&7 Click to &crevoke&7 invite for &c%1$s"),

@@ -10,6 +10,25 @@ public class TimeUtil {
 
     public static Calendar calender = getCalenderTimeZone();
 
+
+    public static String formatSeconds(int timeInSeconds) {
+        int hours = timeInSeconds / 3600;
+        int secondsLeft = timeInSeconds - hours * 3600;
+        int minutes = secondsLeft / 60;
+        int seconds = secondsLeft - minutes * 60;
+        String formattedTime = "";
+        if (hours < 10)
+            formattedTime = formattedTime + "0";
+        formattedTime = formattedTime + hours + ":";
+        if (minutes < 10)
+            formattedTime = formattedTime + "0";
+        formattedTime = formattedTime + minutes + ":";
+        if (seconds < 10)
+            formattedTime = formattedTime + "0";
+        formattedTime = formattedTime + seconds;
+        return formattedTime;
+    }
+
     public static String formatDifference(long time) {
         if (time == 0L) {
             return "Never";
