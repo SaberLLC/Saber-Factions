@@ -17,6 +17,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -308,7 +309,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                     this.role = event.getTo();
                 }
             } catch (HierarchyException e) {
-                System.out.print(e.getMessage());
+                Logger.print(e.getMessage(), Logger.PrefixType.FAILED);
             }
         }
     }
@@ -327,7 +328,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setAutoLeave(boolean willLeave) {
         this.willAutoLeave = willLeave;
-        FactionsPlugin.getInstance().debug(name + " set autoLeave to " + willLeave);
+        Logger.print(name + " set autoLeave to " + willLeave, Logger.PrefixType.DEFAULT);
     }
 
     public long getLastFrostwalkerMessage() {
@@ -433,7 +434,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                         Discord.resetNick(this);
                 }
             } catch (HierarchyException e) {
-                System.out.print(e.getMessage());
+                Logger.print(e.getMessage(), Logger.PrefixType.FAILED);
             }
             //End Discord
             currentFaction.removeFPlayer(this);
@@ -845,7 +846,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true))
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> fplayer.msg(TL.LEAVE_LEFT, this.describeTo(fplayer, true), myFaction.describeTo(fplayer)));
             if (Conf.logFactionLeave)
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> FactionsPlugin.getInstance().log(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag())));
+                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> Logger.print(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()), Logger.PrefixType.DEFAULT));
         }
         myFaction.removeAnnouncements(this);
         if (this.isAlt()) {
@@ -874,8 +875,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             Factions.getInstance().removeFaction(myFaction.getId());
             if (Conf.logFactionDisband)
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance,
-                        () -> FactionsPlugin.getInstance().log(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(),
-                                this.getName()).replace("{claims}",myFaction.getAllClaims().size()+"")));
+                        () -> Logger.print(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(),
+                                this.getName()).replace("{claims}",myFaction.getAllClaims().size()+""), Logger.PrefixType.DEFAULT));
         }
     }
 
@@ -1385,7 +1386,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         Board.getInstance().setFactionAt(forFaction, flocation);
 
         if (Conf.logLandClaims) {
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> FactionsPlugin.getInstance().log(TL.CLAIM_CLAIMEDLOG.toString(), this.getName(), flocation.getCoordString(), forFaction.getTag()));
+            FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> Logger.printArgs(TL.CLAIM_CLAIMEDLOG.toString(), Logger.PrefixType.DEFAULT, this.getName(), flocation.getCoordString(), forFaction.getTag()));
         }
 
         return true;

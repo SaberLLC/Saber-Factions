@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -225,10 +226,10 @@ public class CmdConfig extends FCommand {
         if (!success.isEmpty()) {
             if (context.sender instanceof Player) {
                 context.sendMessage(success);
-                FactionsPlugin.getInstance().log(success + TL.COMMAND_CONFIG_LOG.format(context.sender));
+                Logger.print(success + TL.COMMAND_CONFIG_LOG.format(context.sender), Logger.PrefixType.DEFAULT);
             } else  // using FactionsPlugin.getInstance().log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
             {
-                FactionsPlugin.getInstance().log(success);
+                Logger.print(success, Logger.PrefixType.DEFAULT);
             }
         }
         // save change to disk

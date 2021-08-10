@@ -3,6 +3,7 @@ package com.massivecraft.factions.util.adapters;
 import com.google.gson.*;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Logger;
 
 import java.lang.reflect.Type;
 import java.util.HashSet;
@@ -50,7 +51,7 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLoca
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            FactionsPlugin.getInstance().log(Level.WARNING, "Error encountered while deserializing a Map of FLocations to String Sets.");
+            Logger.print( "Error encountered while deserializing a Map of FLocations to String Sets.", Logger.PrefixType.WARNING);
             return null;
         }
     }
@@ -95,7 +96,7 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLoca
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            FactionsPlugin.getInstance().log(Level.WARNING, "Error encountered while serializing a Map of FLocations to String Sets.");
+            Logger.print( "Error encountered while serializing a Map of FLocations to String Sets.", Logger.PrefixType.WARNING);
             return obj;
         }
     }

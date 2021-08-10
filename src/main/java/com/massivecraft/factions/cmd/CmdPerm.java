@@ -4,6 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -98,7 +99,7 @@ public class CmdPerm extends FCommand {
         }
 
         context.msg(TL.COMMAND_PERM_SET, context.argAsString(1), access.name(), context.argAsString(0));
-        FactionsPlugin.getInstance().log(String.format(TL.COMMAND_PERM_SET.toString(), context.argAsString(1), access.name(), context.argAsString(0)) + " for faction " + context.fPlayer.getTag());
+        Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), context.argAsString(1), access.name(), context.argAsString(0)) + " for faction " + context.fPlayer.getTag(), Logger.PrefixType.DEFAULT);
     }
 
     private Permissable getPermissable(String name) {

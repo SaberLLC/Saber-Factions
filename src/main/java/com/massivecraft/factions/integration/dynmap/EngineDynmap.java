@@ -2,6 +2,7 @@ package com.massivecraft.factions.integration.dynmap;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -93,7 +94,7 @@ public class EngineDynmap {
 
     // Thread Safe / Asynchronous: Yes
     public static void info(String msg) {
-        System.out.println(DYNMAP_INTEGRATION + msg);
+        Logger.print(DYNMAP_INTEGRATION + msg, Logger.PrefixType.DEFAULT);
     }
 
     // -------------------------------------------- //
@@ -102,7 +103,7 @@ public class EngineDynmap {
 
     // Thread Safe / Asynchronous: Yes
     public static void severe(String msg) {
-        System.out.println(DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg);
+        Logger.print(DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg, Logger.PrefixType.FAILED);
     }
 
     public void init() {

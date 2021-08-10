@@ -9,6 +9,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -61,7 +62,7 @@ public abstract class GUIMenu {
                 pl.closeInventory();
                 pl.openInventory(this.menu);
                 menus.put(pl.getUniqueId(), this);
-                Bukkit.getLogger().info("Reopening Menu for " + pl.getName() + " due to menu changing size from " + oldSize + " -> " + size);
+                Logger.print("Reopening Menu for " + pl.getName() + " due to menu changing size from " + oldSize + " -> " + size, Logger.PrefixType.DEFAULT);
             });
         }
     }

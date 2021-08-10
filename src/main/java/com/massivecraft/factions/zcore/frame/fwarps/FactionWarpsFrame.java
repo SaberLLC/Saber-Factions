@@ -10,6 +10,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.LazyLocation;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.Placeholder;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
@@ -45,7 +46,7 @@ public class FactionWarpsFrame {
         for (final Map.Entry<String, LazyLocation> warp : fplayer.getFaction().getWarps().entrySet()) {
             if (slots.size() < fplayer.getFaction().getWarps().entrySet().size()) {
                 slots.add(slots.get(slots.size() - 1) + 1);
-                FactionsPlugin.instance.log("Automatically setting F WARP GUI slot since slot not specified. Head config.yml and add more entries in warp-slots section.");
+                Logger.print("Automatically setting F WARP GUI slot since slot not specified. Head config.yml and add more entries in warp-slots section.", Logger.PrefixType.DEFAULT);
             }
 
             GUIItems.set(slots.get(count), new GuiItem(buildWarpAsset(warp, fplayer.getFaction()), e -> {

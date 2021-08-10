@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.command.ConsoleCommandSender;
 
@@ -75,7 +76,7 @@ public class CmdPowerBoost extends FCommand {
         int roundedPower = (int) Math.round(targetPower);
         context.msg(TL.COMMAND_POWERBOOST_BOOST, target, roundedPower);
         if (!(context.sender instanceof ConsoleCommandSender)) {
-            FactionsPlugin.getInstance().log(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), context.fPlayer.getName(), target, roundedPower);
+            Logger.printArgs(TL.COMMAND_POWERBOOST_BOOSTLOG.toString(), Logger.PrefixType.DEFAULT, context.fPlayer.getName(), target, roundedPower);
         }
     }
 

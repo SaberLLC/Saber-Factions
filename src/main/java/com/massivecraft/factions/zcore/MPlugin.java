@@ -7,6 +7,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.SaveTask;
 import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
@@ -67,7 +68,7 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public boolean preEnable() {
-        log("=== ENABLE START ===");
+        Logger.print("=== ENABLE START ===", Logger.PrefixType.DEFAULT);
         timeEnableStart = System.currentTimeMillis();
 
         // Ensure basefolder exists!
@@ -105,7 +106,7 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public void postEnable() {
-        log("=== ENABLE DONE (Took " + (System.currentTimeMillis() - timeEnableStart) + "ms) ===");
+        Logger.print("=== ENABLE DONE (Took " + (System.currentTimeMillis() - timeEnableStart) + "ms) ===", Logger.PrefixType.DEFAULT);
     }
 
     public void loadLang() {
@@ -161,7 +162,7 @@ public abstract class MPlugin extends JavaPlugin {
         // Remove this here because I'm sick of dealing with bug reports due to bad decisions on my part.
         if (conf.getString(TL.COMMAND_SHOW_POWER.getPath(), "").contains("%5$s")) {
             conf.set(TL.COMMAND_SHOW_POWER.getPath(), TL.COMMAND_SHOW_POWER.getDefault());
-            log(Level.INFO, "Removed errant format specifier from f show power.");
+            Logger.print( "Removed errant format specifier from f show power.", Logger.PrefixType.DEFAULT);
         }
 
         TL.setFile(conf);
@@ -186,7 +187,7 @@ public abstract class MPlugin extends JavaPlugin {
             Board.getInstance().forceSave();
         }
 
-        log("Shutdown Successful!");
+        Logger.print("Shutdown Successful!", Logger.PrefixType.DEFAULT);
     }
 
     // -------------------------------------------- //
@@ -196,7 +197,7 @@ public abstract class MPlugin extends JavaPlugin {
     // -------------------------------------------- //
 
     public void suicide() {
-        log("Now I suicide!");
+        Logger.print("Plugin Suicide Initiating!", Logger.PrefixType.DEFAULT);
         this.getServer().getPluginManager().disablePlugin(this);
     }
 
@@ -312,22 +313,4 @@ public abstract class MPlugin extends JavaPlugin {
         return this.timers;
     }
 
-    // -------------------------------------------- //
-    // LOGGING
-    // -------------------------------------------- //
-    public void log(Object msg) {
-        log(Level.INFO, msg);
-    }
-
-    public void log(String str, Object... args) {
-        log(Level.INFO, this.txt.parse(str, args));
-    }
-
-    public void log(Level level, String str, Object... args) {
-        log(level, this.txt.parse(str, args));
-    }
-
-    public void log(Level level, Object msg) {
-        getLogger().log(level, "[" + this.getDescription().getVersion() + "] " + msg); // Full name is really ugly
-    }
 }

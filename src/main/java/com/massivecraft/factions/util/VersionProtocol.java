@@ -12,25 +12,25 @@ public class VersionProtocol {
         short version = Short.parseShort(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
         switch (version) {
             case 7:
-                FactionsPlugin.instance.log("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, corners, and Titles.");
+                Logger.print("Minecraft Version 1.7 found, disabling banners, itemflags inside GUIs, corners, and Titles.", Logger.PrefixType.DEFAULT);
                 break;
             case 8:
-                FactionsPlugin.instance.log("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.");
+                Logger.print("Minecraft Version 1.8 found, Title Fadeouttime etc will not be configurable.", Logger.PrefixType.DEFAULT);
                 break;
             case 13:
-                FactionsPlugin.instance.log("Minecraft Version 1.13 found, New Items will be used.");
+                Logger.print("Minecraft Version 1.13 found, New Items will be used.", Logger.PrefixType.DEFAULT);
                 break;
             case 14:
-                FactionsPlugin.instance.log("Minecraft Version 1.14 found.");
+                Logger.print("Minecraft Version 1.14 found.", Logger.PrefixType.DEFAULT);
                 break;
             case 15:
-                FactionsPlugin.instance.log("Minecraft Version 1.15 found.");
+                Logger.print("Minecraft Version 1.15 found.", Logger.PrefixType.DEFAULT);
                 break;
             case 16:
-                FactionsPlugin.instance.log("Minecraft Version 1.16 found.");
+                Logger.print("Minecraft Version 1.16 found.", Logger.PrefixType.DEFAULT);
                 break;
             case 17:
-                FactionsPlugin.instance.log("Minecraft Version 1.17 found.");
+                Logger.print("Minecraft Version 1.17 found.", Logger.PrefixType.DEFAULT);
                 break;
         }
     }
@@ -44,9 +44,9 @@ public class VersionProtocol {
 
         if (FactionsPlugin.instance.version > 8) {
             FactionsPlugin.instance.useNonPacketParticles = true;
-            FactionsPlugin.instance.log("Minecraft com.massivecraft.factions.Version 1.9 or higher found, using non packet based particle API");
+            Logger.print("Minecraft com.massivecraft.factions.Version 1.9 or higher found, using non packet based particle API", Logger.PrefixType.DEFAULT);
         }
 
-        Bukkit.getLogger().info(FactionsPlugin.instance.txt.parse("Using %1s as a particle provider", FactionsPlugin.instance.particleProvider.name()));
+        Logger.print(FactionsPlugin.instance.txt.parse("Using %1s as a particle provider", FactionsPlugin.instance.particleProvider.name()), Logger.PrefixType.DEFAULT);
     }
 }

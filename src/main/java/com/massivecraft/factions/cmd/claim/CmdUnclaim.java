@@ -11,6 +11,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.ChunkReference;
 import com.massivecraft.factions.util.FastChunk;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -90,7 +91,7 @@ public class CmdUnclaim extends FCommand {
                 context.msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
+                    Logger.print(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
                 }
                 return true;
             } else {
@@ -103,7 +104,7 @@ public class CmdUnclaim extends FCommand {
                 context.msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
 
                 if (Conf.logLandUnclaims) {
-                    FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
+                    Logger.print(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
                 }
                 return true;
             } else {
@@ -125,7 +126,7 @@ public class CmdUnclaim extends FCommand {
             context.msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
 
             if (Conf.logLandUnclaims) {
-                FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
+                Logger.print(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
             }
 
             return true;
@@ -185,7 +186,7 @@ public class CmdUnclaim extends FCommand {
         context.faction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, context.fPlayer.describeTo(context.faction, true));
 
         if (Conf.logLandUnclaims) {
-            FactionsPlugin.getInstance().log(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()));
+            Logger.print(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
         }
 
         return true;

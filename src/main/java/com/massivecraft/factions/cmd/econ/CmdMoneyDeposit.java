@@ -10,6 +10,7 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 
@@ -47,7 +48,7 @@ public class CmdMoneyDeposit extends FCommand {
         boolean success = Econ.transferMoney(context.fPlayer, context.fPlayer, faction, amount);
 
         if (success && Conf.logMoneyTransactions) {
-            FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null))));
+            Logger.printArgs(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), Logger.PrefixType.DEFAULT, context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null));
             FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.BANK_EDIT, context.fPlayer.getName(), ChatColor.GREEN + ChatColor.BOLD.toString() + "DEPOSITED", amount + "");
 
         }

@@ -9,6 +9,7 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -50,7 +51,7 @@ public class CmdSafeunclaimall extends FCommand {
             context.msg(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMED);
 
             if (Conf.logLandUnclaims) {
-                FactionsPlugin.getInstance().log(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(context.sender.getName()));
+                Logger.print(TL.COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG.format(context.sender.getName()), Logger.PrefixType.DEFAULT);
             }
         });
     }

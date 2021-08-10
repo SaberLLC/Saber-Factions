@@ -5,6 +5,7 @@ import com.massivecraft.factions.discord.FactionChatHandler;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -187,9 +188,9 @@ public class FactionsChatListener implements Listener {
                     listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
                 } catch (UnknownFormatConversionException ex) {
                     Conf.chatTagInsertIndex = 0;
-                    FactionsPlugin.getInstance().log(Level.SEVERE, "Critical error in chat message formatting!");
-                    FactionsPlugin.getInstance().log(Level.SEVERE, "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.");
-                    FactionsPlugin.getInstance().log(Level.SEVERE, "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration");
+                    Logger.print( "Critical error in chat message formatting!", Logger.PrefixType.FAILED);
+                    Logger.print( "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.", Logger.PrefixType.FAILED);
+                    Logger.print( "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration", Logger.PrefixType.FAILED);
                     return;
                 }
             }

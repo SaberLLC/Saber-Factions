@@ -3,6 +3,7 @@ package com.massivecraft.factions.discord;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Logger;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
@@ -194,7 +195,7 @@ public class Discord {
                         .setPermissions(Permission.EMPTY_PERMISSIONS)
                         .complete(true);
             } catch (RateLimitedException e) {
-                System.out.print(e.getMessage());
+                Logger.print(e.getMessage(), Logger.PrefixType.FAILED);
             }
         } else {
             return getRoleFromName(sb.toString());
@@ -256,7 +257,7 @@ public class Discord {
                         mainGuild.addRoleToMember(m, Objects.requireNonNull(createFactionRole(f.getTag()))).queue();
                     }
                 } catch (HierarchyException e) {
-                    System.out.print(e.getMessage());
+                    Logger.print(e.getMessage(), Logger.PrefixType.FAILED);
                 }
             }
         }

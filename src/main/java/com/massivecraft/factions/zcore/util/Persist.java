@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.MPlugin;
 
 import java.io.File;
@@ -65,7 +66,7 @@ public class Persist {
 
     public <T> T loadOrSaveDefault(T def, Class<T> clazz, File file) {
         if (!file.exists()) {
-            p.log("Creating default: " + file);
+            Logger.print("Creating default: " + file, Logger.PrefixType.DEFAULT);
             this.save(def, file);
             return def;
         }
@@ -73,14 +74,14 @@ public class Persist {
         T loaded = this.load(clazz, file);
 
         if (loaded == null) {
-            p.log(Level.WARNING, "Using default as I failed to load: " + file);
+            Logger.print("Using default as I failed to load: " + file, Logger.PrefixType.WARNING);
 
             // backup bad file, so user can attempt to recover their changes from it
             File backup = new File(file.getPath() + "_bad");
             if (backup.exists()) {
                 backup.delete();
             }
-            p.log(Level.WARNING, "Backing up copy of bad file to: " + backup);
+            Logger.print("Backing up copy of bad file to: " + backup, Logger.PrefixType.WARNING);
             file.renameTo(backup);
 
             return def;
@@ -134,7 +135,7 @@ public class Persist {
         try {
             return p.gson.fromJson(content, clazz);
         } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the file, most likely
-            p.log(Level.WARNING, ex.getMessage());
+            Logger.print(ex.getMessage(), Logger.PrefixType.WARNING);
         }
 
         return null;
@@ -157,7 +158,7 @@ public class Persist {
         try {
             return (T) p.gson.fromJson(content, typeOfT);
         } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the file, most likely
-            p.log(Level.WARNING, ex.getMessage());
+            Logger.print(ex.getMessage(), Logger.PrefixType.WARNING);
         }
 
         return null;

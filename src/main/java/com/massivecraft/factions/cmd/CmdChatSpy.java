@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdChatSpy extends FCommand {
@@ -27,10 +28,10 @@ public class CmdChatSpy extends FCommand {
 
         if (context.fPlayer.isSpyingChat()) {
             context.msg(TL.COMMAND_CHATSPY_ENABLE);
-            FactionsPlugin.getInstance().log(context.fPlayer.getName() + TL.COMMAND_CHATSPY_ENABLELOG.toString());
+            Logger.print(context.fPlayer.getName() + TL.COMMAND_CHATSPY_ENABLELOG.toString(), Logger.PrefixType.DEFAULT);
         } else {
             context.msg(TL.COMMAND_CHATSPY_DISABLE);
-            FactionsPlugin.getInstance().log(context.fPlayer.getName() + TL.COMMAND_CHATSPY_DISABLELOG.toString());
+            Logger.print(context.fPlayer.getName() + TL.COMMAND_CHATSPY_DISABLELOG.toString(), Logger.PrefixType.DEFAULT);
         }
     }
 

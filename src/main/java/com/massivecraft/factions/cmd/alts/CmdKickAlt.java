@@ -13,6 +13,7 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -122,8 +123,7 @@ public class CmdKickAlt extends FCommand {
         }
 
         if (Conf.logFactionKick) {
-            FactionsPlugin.instance.log((context.sender instanceof ConsoleCommandSender ? "A console command" : context.fPlayer.getName()) + " kicked " + toKick.getName() + " from the faction: "
-                    + toKickFaction.getTag());
+            Logger.print((context.sender instanceof ConsoleCommandSender ? "A console command" : context.fPlayer.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag(), Logger.PrefixType.DEFAULT);
         }
         // SHOULD NOT BE POSSIBLE BUT KEPT INCASE
         if (toKick.getRole() == Role.LEADER) {

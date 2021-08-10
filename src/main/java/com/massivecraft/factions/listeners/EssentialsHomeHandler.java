@@ -7,6 +7,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.util.Logger;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,7 +42,7 @@ public class EssentialsHomeHandler implements Listener {
             Faction factionAt = Board.getInstance().getFactionAt(floc);
             if (factionAt.equals(faction) && factionAt.isNormal()) {
                 user.delHome(homeName);
-                FactionsPlugin.getInstance().log(Level.INFO, "Removing home %s, player %s, in territory of %s", homeName, event.getfPlayer().getName(), faction.getTag());
+                Logger.printArgs( "Removing home %s, player %s, in territory of %s", Logger.PrefixType.DEFAULT, homeName, event.getfPlayer().getName(), faction.getTag());
             }
         }
     }

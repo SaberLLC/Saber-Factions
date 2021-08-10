@@ -9,6 +9,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Cooldown;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import net.dv8tion.jda.api.entities.Member;
@@ -133,13 +134,13 @@ public class CmdCreate extends FCommand {
                 }
             }
         } catch (HierarchyException e) {
-            System.out.print(e.getMessage());
+            Logger.print(e.getMessage(), Logger.PrefixType.FAILED);
         }
         //End Discord
         context.msg(TL.COMMAND_CREATE_YOUSHOULD, FactionsPlugin.getInstance().cmdBase.cmdDescription.getUsageTemplate(context));
         if (Conf.econEnabled) Econ.setBalance(faction.getAccountId(), Conf.econFactionStartingBalance);
         if (Conf.logFactionCreate)
-            FactionsPlugin.getInstance().log(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag);
+            Logger.print(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag, Logger.PrefixType.DEFAULT);
         if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled"))
             context.msg(TL.COMMAND_PAYPALSET_CREATED);
         if (Conf.useCustomDefaultPermissions) faction.setDefaultPerms();

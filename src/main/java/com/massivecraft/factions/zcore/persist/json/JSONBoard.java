@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 
@@ -71,10 +72,10 @@ public class JSONBoard extends MemoryBoard {
     }
 
     public boolean load() {
-        FactionsPlugin.getInstance().log("Loading board from disk");
+        Logger.print("Loading board from disk", Logger.PrefixType.DEFAULT);
 
         if (!file.exists()) {
-            FactionsPlugin.getInstance().log("No board to load from disk. Creating new file.");
+            Logger.print("No board to load from disk. Creating new file.", Logger.PrefixType.DEFAULT);
             forceSave();
             return true;
         }
@@ -84,10 +85,10 @@ public class JSONBoard extends MemoryBoard {
             }.getType();
             Map<String, Map<String, String>> worldCoordIds = FactionsPlugin.getInstance().gson.fromJson(DiscUtil.read(file), type);
             loadFromSaveFormat(worldCoordIds);
-            FactionsPlugin.getInstance().log("Loaded " + flocationIds.size() + " board locations");
+            Logger.print("Loaded " + flocationIds.size() + " board locations", Logger.PrefixType.DEFAULT);
         } catch (Exception e) {
             e.printStackTrace();
-            FactionsPlugin.getInstance().log("Failed to load the board from disk.");
+            Logger.print("Failed to load the board from disk.", Logger.PrefixType.FAILED);
             return false;
         }
 

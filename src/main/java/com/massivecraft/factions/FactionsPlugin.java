@@ -128,8 +128,8 @@ public class FactionsPlugin extends MPlugin {
     public void onEnable() {
 
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            System.out.println("You are missing dependencies!");
-            System.out.println("Please verify [Vault] is installed!");
+            Logger.print("You are missing dependencies!", Logger.PrefixType.FAILED);
+            Logger.print("Please verify [Vault] is installed!", Logger.PrefixType.FAILED);
             Conf.save();
             Bukkit.getPluginManager().disablePlugin(instance);
             return;
@@ -231,7 +231,7 @@ public class FactionsPlugin extends MPlugin {
             this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
             if (this.clipPlaceholderAPIManager.register()) {
                 PlaceholderApi = true;
-                log(Level.INFO, "Successfully registered placeholders with PlaceholderAPI.");
+                Logger.print("Successfully registered placeholders with PlaceholderAPI.", Logger.PrefixType.DEFAULT);
             } else {
                 PlaceholderApi = false;
             }
@@ -242,7 +242,7 @@ public class FactionsPlugin extends MPlugin {
         Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
         if (mvdw != null && mvdw.isEnabled()) {
             this.mvdwPlaceholderAPIManager = true;
-            log(Level.INFO, "Found MVdWPlaceholderAPI. Adding hooks.");
+            Logger.print("Found MVdWPlaceholderAPI. Adding hooks.", Logger.PrefixType.DEFAULT);
         }
     }
 
@@ -464,16 +464,10 @@ public class FactionsPlugin extends MPlugin {
         return timerManager;
     }
 
-    public void debug(Level level, String s) {
-        if (getConfig().getBoolean("debug", false)) getLogger().log(level, s);
-    }
 
     public FactionsPlayerListener getFactionsPlayerListener() {
         return this.factionsPlayerListener;
     }
 
-    public void debug(String s) {
-        debug(Level.INFO, s);
-    }
 
 }

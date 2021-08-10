@@ -8,6 +8,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.SpawnerChunkUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
@@ -170,7 +171,7 @@ public abstract class MemoryBoard extends Board {
         while (iter.hasNext()) {
             Entry<FLocation, String> entry = iter.next();
             if (!Factions.getInstance().isValidFactionId(entry.getValue())) {
-                FactionsPlugin.getInstance().log("Board cleaner removed " + entry.getValue() + " from " + entry.getKey());
+                Logger.print("Board cleaner removed " + entry.getValue() + " from " + entry.getKey(), Logger.PrefixType.DEFAULT);
                 iter.remove();
             }
         }

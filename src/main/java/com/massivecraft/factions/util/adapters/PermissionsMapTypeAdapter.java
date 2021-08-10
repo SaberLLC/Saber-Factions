@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -62,7 +63,7 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
             return permissionsMap;
 
         } catch (Exception ex) {
-            FactionsPlugin.getInstance().log(Level.WARNING, "Error encountered while deserializing a PermissionsMap.");
+            Logger.print("Error encountered while deserializing a PermissionsMap.", Logger.PrefixType.WARNING);
             ex.printStackTrace();
             return null;
         }

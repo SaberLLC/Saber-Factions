@@ -14,10 +14,7 @@ import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.FastChunk;
-import com.massivecraft.factions.util.LazyLocation;
-import com.massivecraft.factions.util.MiscUtil;
-import com.massivecraft.factions.util.RelationUtil;
+import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -422,7 +419,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         if (Conf.logFactionDisband) {
             //TODO: Format this correctly and translate.
-            FactionsPlugin.getInstance().log("The faction " + this.getTag() + " (" + this.getId() + ") was disbanded by " + (disbanderIsConsole ? "console command" : fdisbander.getName()) + ".");
+            Logger.print("The faction " + this.getTag() + " (" + this.getId() + ") was disbanded by " + (disbanderIsConsole ? "console command" : fdisbander.getName()) + ".", Logger.PrefixType.DEFAULT);
         }
 
         if (Econ.shouldBeUsed() && !disbanderIsConsole) {
@@ -436,7 +433,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 String amountString = Econ.moneyString(amount);
                 msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
                 //TODO: Format this correctly and translate
-                FactionsPlugin.getInstance().log(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".");
+                Logger.print(fdisbander.getName() + " has been given bank holdings of " + amountString + " from disbanding " + this.getTag() + ".", Logger.PrefixType.DEFAULT);
             }
         }
         Factions.getInstance().removeFaction(this.getId());
@@ -966,7 +963,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void resetPerms() {
         if (!this.isSystemFaction()) {
-            FactionsPlugin.instance.log(Level.WARNING, "Resetting permissions for Faction: " + this.tag);
+            Logger.print("Resetting permissions for Faction: " + this.tag, Logger.PrefixType.WARNING);
 
             permissions.clear();
 
@@ -1335,7 +1332,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
             // no members left and faction isn't permanent, so disband it
             if (Conf.logFactionDisband)
-                FactionsPlugin.getInstance().log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left" + (autoLeave ? " and by inactivity" : "") + ".");
+                Logger.print("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left" + (autoLeave ? " and by inactivity" : "") + ".", Logger.PrefixType.DEFAULT);
 
             if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-disband-broadcast")) {
                 String message = TL.COMMAND_DISBAND_BROADCAST_GENERIC.toString()
@@ -1362,7 +1359,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                     Discord.mainGuild.modifyNickname(m, Discord.getNicknameString(replacements.get(0))).queue();
             }
             this.msg(TL.AUTOLEAVE_ADMIN_PROMOTED, oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
-            FactionsPlugin.getInstance().log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
+            Logger.print("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName(), Logger.PrefixType.DEFAULT);
         }
     }
 

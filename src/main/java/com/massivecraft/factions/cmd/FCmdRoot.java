@@ -27,6 +27,7 @@ import com.massivecraft.factions.discord.CmdInviteBot;
 import com.massivecraft.factions.discord.CmdSetGuild;
 import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.shop.CmdShop;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
@@ -363,9 +364,9 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         //}
         //FTOP
         if ((Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null) && !internalFTOPEnabled) {
-            FactionsPlugin.getInstance().log(Level.INFO, "Found FactionsTop plugin. Disabling our own /f top command.");
+            Logger.print( "Found FactionsTop plugin. Disabling our own /f top command.", Logger.PrefixType.DEFAULT);
         } else {
-            FactionsPlugin.getInstance().log(Level.INFO, "Internal Factions Top Being Used. NOTE: Very Basic");
+            Logger.print( "Internal Factions Top Being Used. NOTE: Very Basic", Logger.PrefixType.DEFAULT);
             this.addSubCommand(this.cmdTop);
             internalFTOPEnabled = true;
         }

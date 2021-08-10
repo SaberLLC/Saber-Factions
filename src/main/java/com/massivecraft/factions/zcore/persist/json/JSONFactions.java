@@ -7,6 +7,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.MemoryFaction;
 import com.massivecraft.factions.zcore.persist.MemoryFactions;
 import com.massivecraft.factions.zcore.util.DiscUtil;
@@ -63,7 +64,7 @@ public class JSONFactions extends MemoryFactions {
         if (factions == null) return;
         this.factions.putAll(factions);
         super.load();
-        FactionsPlugin.getInstance().log("Loaded " + factions.size() + " Factions");
+        Logger.print("Loaded " + factions.size() + " Factions", Logger.PrefixType.DEFAULT);
     }
 
     private Map<String, JSONFaction> loadCore() {

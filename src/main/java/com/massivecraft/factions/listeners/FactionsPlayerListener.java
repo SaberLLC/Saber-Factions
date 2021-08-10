@@ -19,6 +19,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -101,7 +102,6 @@ public class FactionsPlayerListener implements Listener {
 
         // Also cancel if player doesn't have ownership rights for this claim
         if (Conf.ownedAreasEnabled && myFaction == otherFaction && !myFaction.playerHasOwnershipRights(me, loc)) {
-            //System.out.print(!myFaction.playerHasOwnershipRights(me, loc));
             if (!justCheck) {
                 me.msg(TL.ACTIONS_OWNEDTERRITORYDENY.toString().replace("{owners}", myFaction.getOwnerListString(loc)));
             }
@@ -402,12 +402,12 @@ public class FactionsPlayerListener implements Listener {
 
         if (me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {
             me.setSpyingChat(false);
-            FactionsPlugin.instance.log(Level.INFO, "Found %s spying chat without permission on login. Disabled their chat spying.", player.getName());
+            Logger.printArgs( "Found %s spying chat without permission on login. Disabled their chat spying.", Logger.PrefixType.DEFAULT, player.getName());
         }
 
         if (me.isAdminBypassing() && !player.hasPermission(Permission.BYPASS.node)) {
             me.setIsAdminBypassing(false);
-            FactionsPlugin.instance.log(Level.INFO, "Found %s on admin Bypass without permission on login. Disabled it for them.", player.getName());
+            Logger.printArgs( "Found %s on admin Bypass without permission on login. Disabled it for them.", Logger.PrefixType.DEFAULT, player.getName());
         }
 
         me.setAutoLeave(!player.hasPermission(Permission.AUTO_LEAVE_BYPASS.node));

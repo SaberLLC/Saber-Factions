@@ -3,6 +3,7 @@ package com.massivecraft.factions.listeners;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -233,7 +234,7 @@ public class FactionsEntityListener implements Listener {
                 }
             }
         } catch (NullPointerException e) {
-            FactionsPlugin.getInstance().log(Level.SEVERE, "[SaberFactions] NPE Detected - v1000");
+            Logger.print( "NPE Detected - v1000", Logger.PrefixType.FAILED);
         }
     }
 

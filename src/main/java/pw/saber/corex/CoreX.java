@@ -1,6 +1,7 @@
 package pw.saber.corex;
 
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.file.CustomFile;
 import pw.saber.corex.cmds.chunkbusters.CommandChunkbuster;
 import pw.saber.corex.cmds.chunkbusters.listener.ChunkBusterListener;
@@ -16,7 +17,7 @@ public class CoreX {
     }
 
     public static void init() {
-        FactionsPlugin.getInstance().log(Level.INFO, "CoreX Integration Starting!");
+        Logger.print("CoreX Integration Starting!", Logger.PrefixType.DEFAULT);
         if (getConfig().fetchBoolean("Features.Anti-Baby-Zombies")) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBabyZombie(), FactionsPlugin.getInstance());
         }

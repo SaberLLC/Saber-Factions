@@ -9,6 +9,7 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 
@@ -49,7 +50,7 @@ public class CmdMoneyTransferFp extends FCommand {
         boolean success = Econ.transferMoney(context.fPlayer, from, to, amount);
 
         if (success && Conf.logMoneyTransactions) {
-            FactionsPlugin.getInstance().log(ChatColor.stripColor(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_MONEYTRANSFERFP_TRANSFER.toString(), context.fPlayer.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null))));
+            Logger.printArgs(TL.COMMAND_MONEYTRANSFERFP_TRANSFER.toString(), Logger.PrefixType.DEFAULT, context.fPlayer.getName(), Econ.moneyString(amount), from.describeTo(null), to.describeTo(null));
         }
     }
 

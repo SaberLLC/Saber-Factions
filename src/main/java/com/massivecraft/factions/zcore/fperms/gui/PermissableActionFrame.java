@@ -7,6 +7,7 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -63,7 +64,7 @@ public class PermissableActionFrame {
                     }
                     if (success) fplayer.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), perm.name());
                     else fplayer.msg(TL.COMMAND_PERM_LOCKED);
-                    FactionsPlugin.getInstance().log(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.name()) + " for faction " + fplayer.getTag());
+                    Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.name()) + " for faction " + fplayer.getTag(), Logger.PrefixType.DEFAULT);
                     // Closing and opening resets the cursor.
                     // fplayer.getPlayer().closeInventory();
                     buildGUI(fplayer, perm);

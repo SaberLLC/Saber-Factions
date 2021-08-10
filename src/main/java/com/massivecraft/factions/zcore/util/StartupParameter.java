@@ -13,6 +13,7 @@ import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.Metrics;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
@@ -50,7 +51,7 @@ public class StartupParameter {
         for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
             Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
             if (faction == null) {
-                FactionsPlugin.getInstance().log("Invalid faction id on " + fPlayer.getName() + ":" + fPlayer.getFactionId());
+                Logger.print("Invalid faction id on " + fPlayer.getName() + ":" + fPlayer.getFactionId(), Logger.PrefixType.WARNING);
                 fPlayer.resetFactionData(false);
                 continue;
             }
@@ -75,14 +76,14 @@ public class StartupParameter {
         FactionsPlugin.cachedRadiusClaim = Conf.useRadiusClaimSystem;
 
         if (FactionsPlugin.getInstance().getServer().getPluginManager().getPlugin("Skript") != null) {
-            FactionsPlugin.getInstance().log("Skript was found! Registering SaberFactions Addon...");
+            Logger.print("Skript was found! Registering SaberFactions Addon...", Logger.PrefixType.DEFAULT);
             FactionsPlugin.getInstance().skriptAddon = Skript.registerAddon(FactionsPlugin.getInstance());
             try {
                 FactionsPlugin.getInstance().skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            FactionsPlugin.getInstance().log("Skript addon registered!");
+            Logger.print("Skript addon registered!", Logger.PrefixType.DEFAULT);
         }
 
         CoreX.init();
@@ -106,7 +107,7 @@ public class StartupParameter {
 
         FactionsPlugin.getInstance().timerManager = new TimerManager(plugin);
         FactionsPlugin.getInstance().timerManager.reloadTimerData();
-        System.out.println("[SABER-FACTIONS] - Loaded " + FactionsPlugin.getInstance().timerManager.getTimers().size() + " timers into list!");
+        Logger.print("Loaded " + FactionsPlugin.getInstance().timerManager.getTimers().size() + " timers into list!", Logger.PrefixType.DEFAULT);
 
     }
 

@@ -130,7 +130,7 @@ public class MiscUtil {
             // Fix for some data being broken when we added the recruit rank.
             if (player.getRole() == null) {
                 player.setRole(Role.NORMAL);
-                FactionsPlugin.getInstance().log(Level.WARNING, String.format("Player %s had null role. Setting them to normal. This isn't good D:", player.getName()));
+                Logger.print( String.format("Player %s had null role. Setting them to normal. This isn't good D:", player.getName()), Logger.PrefixType.WARNING);
             }
 
             switch (player.getRole()) {

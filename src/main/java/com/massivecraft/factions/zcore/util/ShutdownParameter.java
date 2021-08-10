@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.discord.DiscordListener;
+import com.massivecraft.factions.util.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.logging.Level;
 public class ShutdownParameter {
 
     public static void initShutdown(FactionsPlugin plugin) {
-        FactionsPlugin.getInstance().log(Level.INFO, "===== Shutdown Start =====");
+        Logger.print( "===== Shutdown Start =====", Logger.PrefixType.DEFAULT);
         Conf.saveSync();
         FactionsPlugin.getInstance().getTimerManager().saveTimerData();
         DiscordListener.saveGuilds();

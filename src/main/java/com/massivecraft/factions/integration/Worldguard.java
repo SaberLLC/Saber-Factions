@@ -2,6 +2,7 @@ package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.Logger;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.Association;
@@ -56,7 +57,7 @@ public class Worldguard {
         Plugin p = Bukkit.getPluginManager().getPlugin("WorldGuard");
 
         if (p == null) {
-            FactionsPlugin.getInstance().log("Could not find WorldGuard! Support will not be added.");
+            Logger.print("Could not find WorldGuard! Support will not be added.", Logger.PrefixType.WARNING);
             return;
         }
         if (p instanceof WorldGuardPlugin) {
@@ -66,9 +67,9 @@ public class Worldguard {
                 Class<?> worldGuardClass = Class.forName("com.sk89q.worldguard.WorldGuard");
                 Method getInstanceMethod = worldGuardClass.getMethod("getInstance");
                 worldGuard = getInstanceMethod.invoke(null);
-                FactionsPlugin.getInstance().log("Found WorldGuard 7+");
+                Logger.print("Found WorldGuard 7+", Logger.PrefixType.DEFAULT);
             } catch (Exception ex) {
-                FactionsPlugin.getInstance().log("Found WorldGuard <7");
+                Logger.print("Found WorldGuard <7", Logger.PrefixType.DEFAULT);
             }
         }
     }
@@ -120,8 +121,8 @@ public class Worldguard {
                     breakFlag = (StateFlag) flagsClass.getField("BREAK").get(null);
 
                 } catch (Exception ex) {
-                    FactionsPlugin.getInstance().log("We failed to load some part of World Guard. Support will be removed!");
-                    FactionsPlugin.getInstance().log("WorldGuard 7.0.0 support is currently in BETA. Please be careful!");
+                    Logger.print("We failed to load some part of World Guard. Support will be removed!", Logger.PrefixType.DEFAULT);
+                    Logger.print("WorldGuard 7.0.0 support is currently in BETA. Please be careful!", Logger.PrefixType.DEFAULT);
                     regionContainer = null;
                     return;
                 }
@@ -139,8 +140,8 @@ public class Worldguard {
                     breakFlag = (StateFlag) flagsClass.getField("BREAK").get(null);
 
                 } catch (Exception ex) {
-                    FactionsPlugin.getInstance().log("We failed to load some part of World Guard. Support will be removed!");
-                    FactionsPlugin.getInstance().log("WorldGuard 7.0.0 support is currently in BETA. Please be careful!");
+                    Logger.print("We failed to load some part of World Guard. Support will be removed!", Logger.PrefixType.DEFAULT);
+                    Logger.print("WorldGuard 7.0.0 support is currently in BETA. Please be careful!", Logger.PrefixType.DEFAULT);
                     regionContainer = null;
                     return;
                 }
@@ -156,8 +157,8 @@ public class Worldguard {
                     vectorConstructorAsAMethodBecauseWhyNot = vectorClass.getMethod("at", Double.TYPE, Double.TYPE, Double.TYPE);
                     regionManagerGetMethod = RegionManager.class.getMethod("getApplicableRegions", vectorClass);
                 } catch (Exception sodonewiththis) {
-                    FactionsPlugin.getInstance().log("We failed to load Vector Classes from WorldGuard! Support will be removed!");
-                    FactionsPlugin.getInstance().log("WorldGuard 7.0.0 support is currently in BETA. Please be careful!");
+                    Logger.print("We failed to load Vector Classes from WorldGuard! Support will be removed!", Logger.PrefixType.DEFAULT);
+                    Logger.print("WorldGuard 7.0.0 support is currently in BETA. Please be careful!", Logger.PrefixType.DEFAULT);
                     regionContainer = null;
                     return;
                 }
@@ -177,7 +178,7 @@ public class Worldguard {
                 regionManager = (RegionManager) regionContainerGetMethod.invoke(regionContainer, world);
             }
         } catch (Exception ex) {
-            FactionsPlugin.getInstance().log("An error occurred looking up a WorldGuard RegionManager");
+            Logger.print("An error occurred looking up a WorldGuard RegionManager", Logger.PrefixType.WARNING);
         }
         return regionManager;
     }
@@ -191,8 +192,8 @@ public class Worldguard {
                     : vectorConstructorAsAMethodBecauseWhyNot.invoke(null, location.getX(), location.getY(), location.getZ());
             return (ApplicableRegionSet) regionManagerGetMethod.invoke(regionManager, vector);
         } catch (Exception ex) {
-            FactionsPlugin.getInstance().log("An error occurred looking up a WorldGuard ApplicableRegionSet");
-            FactionsPlugin.getInstance().log("WorldGuard 7.0.0 support is currently in BETA. Please be careful!");
+           Logger.print("An error occurred looking up a WorldGuard ApplicableRegionSet", Logger.PrefixType.DEFAULT);
+           Logger.print("WorldGuard 7.0.0 support is currently in BETA. Please be careful!", Logger.PrefixType.DEFAULT);
         }
         return null;
     }
@@ -216,8 +217,8 @@ public class Worldguard {
                 } else
                     return (boolean) regionQueryTestStateMethod.invoke(query, location, getAssociable(player), new StateFlag[]{buildFlag});
             } catch (Exception ex) {
-                FactionsPlugin.getInstance().log("An error occurred querying WorldGuard! Report this issue to SF Developers!");
-                FactionsPlugin.getInstance().log("WorldGuard 7.0.0 support is currently in BETA. Please be careful!");
+                Logger.print("An error occurred querying WorldGuard! Report this issue to SF Developers!", Logger.PrefixType.DEFAULT);
+                Logger.print("WorldGuard 7.0.0 support is currently in BETA. Please be careful!", Logger.PrefixType.DEFAULT);
             }
         }
         return true;
@@ -242,8 +243,8 @@ public class Worldguard {
                     return (boolean) regionQueryTestStateMethod.invoke(query, location, getAssociable(player), new StateFlag[]{breakFlag});
 
             } catch (Exception ex) {
-                FactionsPlugin.getInstance().log("An error occurred querying WorldGuard! Report this issue to SF Developers!");
-                FactionsPlugin.getInstance().log("WorldGuard 7.0.0 support is currently in BETA. Please be careful!");
+                Logger.print("An error occurred querying WorldGuard! Report this issue to SF Developers!", Logger.PrefixType.WARNING);
+                Logger.print("WorldGuard 7.0.0 support is currently in BETA. Please be careful!", Logger.PrefixType.WARNING);
             }
         }
         return true;
@@ -281,8 +282,8 @@ public class Worldguard {
 
                 return overlaps != null && !overlaps.isEmpty();
             } catch (Exception ex) {
-                FactionsPlugin.getInstance().log("An error occurred querying WorldGuard! Report this issue to SF Developers!");
-                FactionsPlugin.getInstance().log("WorldGuard 7.0.0 support is currently in BETA. Please be careful!");
+                Logger.print("An error occurred querying WorldGuard! Report this issue to SF Developers!", Logger.PrefixType.WARNING);
+                Logger.print("WorldGuard 7.0.0 support is currently in BETA. Please be careful!", Logger.PrefixType.WARNING);
             }
         }
         return false;

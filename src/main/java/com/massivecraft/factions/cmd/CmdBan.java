@@ -7,6 +7,7 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
@@ -70,7 +71,7 @@ public class CmdBan extends FCommand {
 
             if (event.isCancelled()) {
                 // if someone cancels a ban, we'll get people complaining here. So lets log it.
-                FactionsPlugin.getInstance().log(Level.WARNING, "Attempted to ban {0} but someone cancelled the kick event. This isn't good.", target.getName());
+                Logger.printArgs( "Attempted to ban {0} but someone cancelled the kick event. This isn't good.", Logger.PrefixType.WARNING, target.getName());
                 return;
             }
 
