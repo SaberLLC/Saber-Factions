@@ -13,7 +13,7 @@ import java.io.File;
  */
 public class FileManager {
 
-    private CustomFile boosters = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "booster.yml"));
+    private CustomFile boosters = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "boosters.yml"));
     private CustomFile timers = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "timers.yml"));
     private CustomFile shop = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/shop.yml"));
     private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "permissions.yml"));
@@ -21,8 +21,8 @@ public class FileManager {
     private CustomFile corex = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "corex" + File.separator + "corex.yml"));
 
     public void setupFiles() {
-        boosters.setup(false, "data");
-        timers.setup(false, "data");
+        boosters.setup(true, "data");
+        timers.setup(true, "data");
         shop.setup(true, "");
         permissions.setup(true, "data");
         discord.setup(true, "");
