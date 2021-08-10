@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.util;
 
 import ch.njol.skript.Skript;
+import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.audit.FLogManager;
@@ -120,25 +121,25 @@ public class StartupParameter {
             safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
         }
 
-        territoryDenyUsageMaterials.add(Material.FIRE_CHARGE);
-        territoryDenyUsageMaterials.add(Material.FLINT_AND_STEEL);
-        territoryDenyUsageMaterials.add(Material.BUCKET);
-        territoryDenyUsageMaterials.add(Material.WATER_BUCKET);
-        territoryDenyUsageMaterials.add(Material.LAVA_BUCKET);
+        territoryDenyUsageMaterials.add(XMaterial.FIRE_CHARGE.parseMaterial());
+        territoryDenyUsageMaterials.add(XMaterial.FLINT_AND_STEEL.parseMaterial());
+        territoryDenyUsageMaterials.add(XMaterial.BUCKET.parseMaterial());
+        territoryDenyUsageMaterials.add(XMaterial.WATER_BUCKET.parseMaterial());
+        territoryDenyUsageMaterials.add(XMaterial.LAVA_BUCKET.parseMaterial());
         if (FactionsPlugin.getInstance().version != 7) {
-            territoryDenyUsageMaterials.add(Material.ARMOR_STAND);
+            territoryDenyUsageMaterials.add(XMaterial.ARMOR_STAND.parseMaterial());
         }
 
         if (FactionsPlugin.getInstance().version >= 13) {
-            territoryDenyUsageMaterials.add(Material.COD_BUCKET);
-            territoryDenyUsageMaterials.add(Material.PUFFERFISH_BUCKET);
-            territoryDenyUsageMaterials.add(Material.SALMON_BUCKET);
-            territoryDenyUsageMaterials.add(Material.TROPICAL_FISH_BUCKET);
+            territoryDenyUsageMaterials.add(XMaterial.COD_BUCKET.parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.PUFFERFISH_BUCKET.parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.SALMON_BUCKET.parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.TROPICAL_FISH_BUCKET.parseMaterial());
         }
 
         if (FactionsPlugin.getInstance().version == 17) {
-            territoryDenyUsageMaterials.add(Material.AXOLOTL_BUCKET);
-            territoryDenyUsageMaterials.add(Material.POWDER_SNOW_BUCKET);
+            territoryDenyUsageMaterials.add(XMaterial.AXOLOTL_BUCKET.parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.POWDER_SNOW_BUCKET.parseMaterial());
         }
 
         Conf.save();
