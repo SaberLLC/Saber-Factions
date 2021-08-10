@@ -39,27 +39,30 @@ public class AsciiCompass {
 
     public static ArrayList<String> getAsciiCompass(Point point, ChatColor colorActive, String colorDefault) {
         ArrayList<String> ret = new ArrayList<>();
+        String row;
 
-        StringBuilder builder = new StringBuilder();
+        row = "";
+        row += Point.NW.toString(Point.NW == point, colorActive, colorDefault);
+        row += Point.N.toString(Point.N == point, colorActive, colorDefault);
+        row += Point.NE.toString(Point.NE == point, colorActive, colorDefault);
+        ret.add(row);
 
-        builder.append(Point.NW.toString(Point.NW == point, colorActive, colorDefault))
-                .append(Point.N.toString(Point.N == point, colorActive, colorDefault))
-                .append(Point.NE.toString(Point.NE == point, colorActive, colorDefault));
-        ret.add(builder.toString());
+        row = "";
+        row += Point.W.toString(Point.W == point, colorActive, colorDefault);
+        row += colorDefault + "+";
+        row += Point.E.toString(Point.E == point, colorActive, colorDefault);
+        ret.add(row);
 
-        builder.append(Point.W.toString(Point.W == point, colorActive, colorDefault))
-                .append(colorDefault).append("+")
-                .append(Point.E.toString(Point.E == point, colorActive, colorDefault));
-        ret.add(builder.toString());
+        row = "";
+        row += Point.SW.toString(Point.SW == point, colorActive, colorDefault);
+        row += Point.S.toString(Point.S == point, colorActive, colorDefault);
+        row += Point.SE.toString(Point.SE == point, colorActive, colorDefault);
+        ret.add(row);
 
-        builder.append(Point.SW.toString(Point.SW == point, colorActive, colorDefault))
-                .append(Point.S.toString(Point.S == point, colorActive, colorDefault))
-                .append(Point.SE.toString(Point.SE == point, colorActive, colorDefault));
-        ret.add(builder.toString());
         return ret;
     }
 
-    public static List<String> getAsciiCompass(double inDegrees, ChatColor colorActive, String colorDefault) {
+    public static ArrayList<String> getAsciiCompass(double inDegrees, ChatColor colorActive, String colorDefault) {
         return getAsciiCompass(getCompassPointForDirection(inDegrees), colorActive, colorDefault);
     }
 

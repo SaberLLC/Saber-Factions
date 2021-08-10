@@ -58,7 +58,7 @@ public class CmdDebug extends FCommand {
         Logger.print("End Attempt Log", Logger.PrefixType.DEBUG);
         Logger.print("----End Discord----", Logger.PrefixType.DEBUG);
         Logger.print("--------End Debug Info--------", Logger.PrefixType.DEBUG);
-        context.fPlayer.msg(TL.COMMAND_DEBUG_PRINTED);
+        context.msg(TL.COMMAND_DEBUG_PRINTED);
     }
 
     @Override
