@@ -16,7 +16,6 @@ public class IronGolemHealth implements Listener {
         if (event.getEntity().getType() != EntityType.IRON_GOLEM)
             return;
 
-        IronGolem ironGolem = (IronGolem) event.getEntity();
-        ironGolem.setHealth(CoreX.getConfig().fetchDouble("ironGolemHealth"));
+        event.getEntity().setHealth(CoreX.getConfig().fetchDouble("ironGolemHealth"));
     }
 }
