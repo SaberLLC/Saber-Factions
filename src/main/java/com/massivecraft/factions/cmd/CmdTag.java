@@ -62,44 +62,41 @@ public class CmdTag extends FCommand {
                 return;
             }
 
-            Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    // trigger the faction rename event (cancellable)
-                    FactionRenameEvent renameEvent = new FactionRenameEvent(context.fPlayer, tag);
-                    Bukkit.getServer().getPluginManager().callEvent(renameEvent);
-                    if (renameEvent.isCancelled()) {
-                        return;
-                    }
-
-                    // then make 'em pay (if applicable)
-                    if (!context.payForCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
-                        return;
-                    }
-
-
-                    String oldtag = context.faction.getTag();
-                    context.faction.setTag(tag);
-
-                    Discord.changeFactionTag(context.faction, oldtag);
-                    FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.FTAG_EDIT, context.fPlayer.getName(), tag);
-
-
-                    // Inform
-                    for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                        if (fplayer.getFactionId().equals(context.faction.getId())) {
-                            fplayer.msg(TL.COMMAND_TAG_FACTION, context.fPlayer.describeTo(context.faction, true), context.faction.getTag(context.faction));
-                            Cooldown.setCooldown(fplayer.getPlayer(), "tagCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-tag"));
-                            continue;
-                        }
-                        // Broadcast the tag change (if applicable)
-                        if (Conf.broadcastTagChanges) {
-                            Faction faction = fplayer.getFaction();
-                            fplayer.msg(TL.COMMAND_TAG_CHANGED, context.fPlayer.getColorTo(faction) + oldtag, context.faction.getTag(faction));
-                        }
-                    }
-                    FTeamWrapper.updatePrefixes(context.faction);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> {
+                // trigger the faction rename event (cancellable)
+                FactionRenameEvent renameEvent = new FactionRenameEvent(context.fPlayer, tag);
+                Bukkit.getServer().getPluginManager().callEvent(renameEvent);
+                if (renameEvent.isCancelled()) {
+                    return;
                 }
+
+                // then make 'em pay (if applicable)
+                if (!context.payForCommand(Conf.econCostTag, TL.COMMAND_TAG_TOCHANGE, TL.COMMAND_TAG_FORCHANGE)) {
+                    return;
+                }
+
+
+                String oldtag = context.faction.getTag();
+                context.faction.setTag(tag);
+
+                Discord.changeFactionTag(context.faction, oldtag);
+                FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.FTAG_EDIT, context.fPlayer.getName(), tag);
+
+
+                // Inform
+                for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
+                    if (fplayer.getFactionId().equals(context.faction.getId())) {
+                        fplayer.msg(TL.COMMAND_TAG_FACTION, context.fPlayer.describeTo(context.faction, true), context.faction.getTag(context.faction));
+                        Cooldown.setCooldown(fplayer.getPlayer(), "tagCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-tag"));
+                        continue;
+                    }
+                    // Broadcast the tag change (if applicable)
+                    if (Conf.broadcastTagChanges) {
+                        Faction faction = fplayer.getFaction();
+                        fplayer.msg(TL.COMMAND_TAG_CHANGED, context.fPlayer.getColorTo(faction) + oldtag, context.faction.getTag(faction));
+                    }
+                }
+                FTeamWrapper.updatePrefixes(context.faction);
             });
         });
     }
