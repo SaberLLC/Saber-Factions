@@ -32,8 +32,6 @@ public class CmdMod extends FCommand {
     @Override
     public void perform(CommandContext context) {
         FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
-
-
             FPlayer you = context.argAsBestFPlayerMatch(0);
             if (you == null) {
                 FancyMessage msg = new FancyMessage(TL.COMMAND_MOD_CANDIDATES.toString()).color(ChatColor.GOLD);
@@ -74,18 +72,22 @@ public class CmdMod extends FCommand {
 
             if (you.getRole() == Role.MODERATOR) {
                 // Revoke
-                you.setRole(Role.NORMAL);
+                setRole(you, Role.NORMAL);
                 targetFaction.msg(TL.COMMAND_MOD_REVOKED, you.describeTo(targetFaction, true));
                 context.msg(TL.COMMAND_MOD_REVOKES, you.describeTo(context.fPlayer, true));
             } else {
                 // Give
-                you.setRole(Role.MODERATOR);
+                setRole(you, Role.MODERATOR);
                 targetFaction.msg(TL.COMMAND_MOD_PROMOTED, you.describeTo(targetFaction, true));
                 context.msg(TL.COMMAND_MOD_PROMOTES, you.describeTo(context.fPlayer, true));
                 FactionsPlugin.instance.getFlogManager().log(targetFaction, FLogType.RANK_EDIT, context.fPlayer.getName(), you.getName(), ChatColor.LIGHT_PURPLE + "Mod");
 
             }
         });
+    }
+
+    private void setRole(FPlayer fp, Role r) {
+        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, () -> fp.setRole(r));
     }
 
     @Override
