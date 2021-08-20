@@ -65,7 +65,6 @@ public class ShopGUIFrame extends SaberGUI {
                 } else {
                     fPlayer.msg(TL.SHOP_NOT_ENOUGH_POINTS);
                 }
-                this.close();
             }));
         }
     }

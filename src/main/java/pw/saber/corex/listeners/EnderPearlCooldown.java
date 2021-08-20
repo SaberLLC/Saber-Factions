@@ -21,15 +21,17 @@ public class EnderPearlCooldown implements Listener {
     public void onPearl(PlayerInteractEvent e){
         Action action = e.getAction();
         Player player = e.getPlayer();
-        if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK && e.getItem() != null && e.getItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
-           if(Cooldown.isOnCooldown(player, "enderPearlCooldown")) {
-               e.setCancelled(true);
-               long remaining = player.getMetadata("enderPearlCooldown").get(0).asLong() - System.currentTimeMillis();
-               int remainSec = (int) (remaining / 1000L);
-               e.getPlayer().sendMessage(CC.translate(TL.ENDER_PEARL_COOLDOWN.toString().replace("{seconds}", TimeUtil.formatSeconds(remainSec))));
-           } else {
-               Cooldown.setCooldown(player, "enderPearlCooldown", CoreX.getConfig().fetchInt("Cooldowns.EnderPearl"));
-           }
+        if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+            if (e.getItem() != null && e.getItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
+                if (Cooldown.isOnCooldown(player, "enderPearlCooldown")) {
+                    e.setCancelled(true);
+                    long remaining = player.getMetadata("enderPearlCooldown").get(0).asLong() - System.currentTimeMillis();
+                    int remainSec = (int) (remaining / 1000L);
+                    e.getPlayer().sendMessage(CC.translate(TL.ENDER_PEARL_COOLDOWN.toString().replace("{seconds}", TimeUtil.formatSeconds(remainSec))));
+                } else {
+                    Cooldown.setCooldown(player, "enderPearlCooldown", CoreX.getConfig().fetchInt("Cooldowns.EnderPearl"));
+                }
+            }
         }
     }
 }

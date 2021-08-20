@@ -15,7 +15,7 @@ Features:
   Anti-Nether-Portal: false #Denies players teleporting from nether portals
   Anti-End-Portal: false #Denies players teleporting from end portals
   No-Cursor-Drop: true #When a player closes their inventory whilst a item is on their cursor it does not drop on the ground it goes back into their inventory
-  Armor-Swap: true #Allows PLayers To Right Click Armor and Rotate Their Equipped Armor Into Their Hotbar just by right clicking
+  Armor-Swap: true #Allows PLayers To Right-Click Armor and Rotate Their Equipped Armor Into Their Hotbar just by right-clicking
   Blocked-Enchantments: false #Denies Specific Enchantments Whilst Being In Enchantment Table
   Anti-Block-Placement: true #Configurable List Below For Specific Blocks You Do NOT want your players placing
   Anti-Baby-Zombies: true #Denies Baby Zombies and Pig Zombies from Spawning
@@ -30,7 +30,7 @@ Features:
   Anti-Piston-Glitch: false #Denies Automatic Piston Farms
   Anti-Wilderness-Spawner: false #Denies Spawners From Spawning in Wilderness
   Auto-Respawn: false #Automatically Respawn on Death
-  Book-Disenchant: false #Left-Click and enchantment table, to remove all of the enchantments off of an item
+  Book-Disenchant: false #Left-Click and enchantment table, to remove all the enchantments off of an item
   Border-Patches: true #Various Border Patches, Useful for Most Factions Servers
   Anti-Explosion-Damage: false #Denies Players from Taking Damage To TNT
   Anti-Dragon-Egg-TP: true #Denies Dragon Egg Teleport
