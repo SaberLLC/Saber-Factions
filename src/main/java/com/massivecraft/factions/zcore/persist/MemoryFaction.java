@@ -996,8 +996,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         for (Role role : Role.values()) {
             if (role == Role.LEADER) continue;
-            if (Conf.defaultFactionPermissions.containsKey(role.nicename.toUpperCase())) {
-                permissions.put(role, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(role.nicename.toUpperCase())));
+            if (Conf.defaultFactionPermissions.containsKey(role.name())) {
+                permissions.put(role, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(role.name())));
             } else permissions.put(role, new HashMap<>(defaultMap));
         }
     }
