@@ -49,10 +49,10 @@ public class FactionLogs {
             if (logs == null) {
                 toRemove.add(logType);
             } else if (logType != FLogType.F_TNT) {
-                Iterator iter = logs.iterator();
+                Iterator<FactionLog> iter = logs.iterator();
                 while (iter.hasNext()) {
                     try {
-                        FactionLog log = (FactionLog) iter.next();
+                        FactionLog log = iter.next();
                         if (log == null || log.isExpired(duration)) {
                             iter.remove();
                         }

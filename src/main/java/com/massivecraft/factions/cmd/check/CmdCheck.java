@@ -52,10 +52,7 @@ public class CmdCheck extends FCommand {
         long currentTime = System.currentTimeMillis();
         if (subCommand.equalsIgnoreCase("leaderboard")) {
             context.msg(TL.CHECK_LEADERBOARD_HEADER);
-            Map<UUID, Integer> players = new HashMap<>();
-            for (Map.Entry<UUID, Integer> entry : context.faction.getPlayerWallCheckCount().entrySet()) {
-                players.put(entry.getKey(), entry.getValue());
-            }
+            Map<UUID, Integer> players = new HashMap<>(context.faction.getPlayerWallCheckCount());
             for (Map.Entry<UUID, Integer> entry : context.faction.getPlayerBufferCheckCount().entrySet()) {
                 if (players.containsKey(entry.getKey())) {
                     players.replace(entry.getKey(), players.get(entry.getKey()) + entry.getValue());

@@ -481,7 +481,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean hasLoginPvpDisabled() {
         if (!loginPvpDisabled) return false;
-        if (this.lastLoginTime + (Conf.noPVPDamageToOthersForXSecondsAfterLogin * 1000) < System.currentTimeMillis()) {
+        if (this.lastLoginTime + (Conf.noPVPDamageToOthersForXSecondsAfterLogin * 1000L) < System.currentTimeMillis()) {
             this.loginPvpDisabled = false;
             return false;
         }

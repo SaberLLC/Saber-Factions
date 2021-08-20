@@ -187,7 +187,7 @@ public class FactionsEntityListener implements Listener {
                     if (!combatList.contains(damageee.getUniqueId())) {
                         combatList.add(damagee.getUniqueId());
                     }
-                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20 * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
+                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
                     cancelFFly((Player) damageee);
                     FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damageee);
                     if (fplayer.isInspectMode()) {
@@ -202,7 +202,7 @@ public class FactionsEntityListener implements Listener {
                     }
 
                     Entity finalDamager = damager;
-                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(finalDamager.getUniqueId()), 20 * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
+                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(finalDamager.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
 
                     cancelFFly((Player) damager);
                     FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
@@ -364,7 +364,7 @@ public class FactionsEntityListener implements Listener {
         if (thrower instanceof Player) {
             Player player = (Player) thrower;
             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-            if (badjuju && fPlayer.getFaction().isPeaceful()) {
+            if (fPlayer.getFaction().isPeaceful()) {
                 event.setCancelled(true);
                 return;
             }

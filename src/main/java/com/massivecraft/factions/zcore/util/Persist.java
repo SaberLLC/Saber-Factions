@@ -145,7 +145,7 @@ public class Persist {
     // LOAD BY TYPE
     @SuppressWarnings("unchecked")
     public <T> T load(Type typeOfT, String name) {
-        return (T) load(typeOfT, getFile(name));
+        return load(typeOfT, getFile(name));
     }
 
     @SuppressWarnings("unchecked")

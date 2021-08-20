@@ -105,7 +105,7 @@ public class Econ {
             return;
         }
 
-        String name = (about instanceof Faction) ? about.getTag() : about.describeTo(to, true);
+        String name = (about != null) ? about.getTag() : about.describeTo(to, true);
 
         to.sendMessage(String.format(TL.ECON_PLAYERBALANCE.toString(), about.getTag(), insertCommas(getFactionBalance(about)), name));
     }

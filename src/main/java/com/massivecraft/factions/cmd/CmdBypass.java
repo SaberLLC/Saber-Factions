@@ -30,10 +30,10 @@ public class CmdBypass extends FCommand {
         // TODO: Move this to a transient field in the model??
         if (context.fPlayer.isAdminBypassing()) {
             context.fPlayer.msg(TL.COMMAND_BYPASS_ENABLE.toString());
-            Logger.print(context.fPlayer.getName() + TL.COMMAND_BYPASS_ENABLELOG.toString(), Logger.PrefixType.DEFAULT);
+            Logger.print(context.fPlayer.getName() + TL.COMMAND_BYPASS_ENABLELOG, Logger.PrefixType.DEFAULT);
         } else {
             context.fPlayer.msg(TL.COMMAND_BYPASS_DISABLE.toString());
-            Logger.print(context.fPlayer.getName() + TL.COMMAND_BYPASS_DISABLELOG.toString(), Logger.PrefixType.DEFAULT);
+            Logger.print(context.fPlayer.getName() + TL.COMMAND_BYPASS_DISABLELOG, Logger.PrefixType.DEFAULT);
         }
     }
 

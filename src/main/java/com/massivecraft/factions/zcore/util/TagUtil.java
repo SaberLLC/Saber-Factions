@@ -250,9 +250,7 @@ public class TagUtil {
                     firstAlt = false;
                     if (alts.toJSONString().length() > ARBITRARY_LIMIT) {
                         fancyMessages.add(alts);
-                        currentOffline = new FancyMessage("");
                     }
-
                 }
                 fancyMessages.add(alts);
                 return firstAlt && minimal ? null : fancyMessages;

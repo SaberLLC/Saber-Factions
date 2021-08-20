@@ -44,8 +44,8 @@ public class TextUtil {
     }
 
     public static FancyMessage toFancy(String first) {
-        String text = "";
-        FancyMessage message = new FancyMessage(text);
+        StringBuilder text = new StringBuilder();
+        FancyMessage message = new FancyMessage(text.toString());
         ChatColor color = null;
         ChatColor style = null;
         char[] chars = first.toCharArray();
@@ -55,14 +55,14 @@ public class TextUtil {
             String compareChar = chars[i] + "";
             if (compareChar.equals("§")) {
                 if (color != null || style != null) {
-                    message.then(text);
+                    message.then(text.toString());
                     if (color != null)
                         message.color(color);
                     if (style != null) {
                         message.style(style);
                         style = null;
                     }
-                    text = "";
+                    text = new StringBuilder();
                 }
                 ChatColor tempColor = ChatColor.getByChar(chars[i + 1]);
                 if (tempColor != null) {
@@ -76,18 +76,18 @@ public class TextUtil {
                 }
                 i++; // skip color char
             } else {
-                text += chars[i];
+                text.append(chars[i]);
             }
         }
         if (text.length() > 0) {
             if (color != null || style != null) {
-                message.then(text);
+                message.then(text.toString());
                 if (color != null)
                     message.color(color);
                 if (style != null)
                     message.style(style);
             } else {
-                message.text(text);
+                message.text(text.toString());
             }
         }
         return message;
@@ -131,7 +131,7 @@ public class TextUtil {
         StringBuilder ret = new StringBuilder();
         for (String s : list) ret.append(glue).append(s);
 
-        return ret.length() > 0 ? ret.toString().substring(glue.length()) : "";
+        return ret.length() > 0 ? ret.substring(glue.length()) : "";
     }
 
     // -------------------------------------------- //

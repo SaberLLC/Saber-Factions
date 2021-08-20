@@ -60,7 +60,7 @@ public class CmdHome extends FCommand {
         }
 
         if (!context.faction.hasHome()) {
-            context.msg(TL.COMMAND_HOME_NOHOME.toString() + (context.fPlayer.getRole().value < Role.MODERATOR.value ? TL.GENERIC_ASKYOURLEADER.toString() : TL.GENERIC_YOUSHOULD.toString()));
+            context.msg(TL.COMMAND_HOME_NOHOME + (context.fPlayer.getRole().value < Role.MODERATOR.value ? TL.GENERIC_ASKYOURLEADER.toString() : TL.GENERIC_YOUSHOULD.toString()));
             context.sendMessage(FactionsPlugin.getInstance().cmdBase.cmdSethome.getUsageTemplate(context));
             return;
         }

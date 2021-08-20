@@ -471,7 +471,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public void removeRule(int index) {
         HashMap<Integer, String> newRule = rules;
         newRule.remove(index);
-        rules = newRule;
     }
 
     public void addTnt(int amt) {
@@ -886,7 +885,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean isPowerFrozen() {
         int freezeSeconds = FactionsPlugin.getInstance().getConfig().getInt("hcf.powerfreeze", 0);
-        return freezeSeconds != 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
+        return freezeSeconds != 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000L;
 
     }
 

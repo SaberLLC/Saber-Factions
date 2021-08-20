@@ -414,10 +414,7 @@ public class DiscordListener extends ListenerAdapter {
         if (faction == null) return;
         if (cantAccessRoleWithWarning(event.getChannel(), faction, event.getMember())) return;
 
-        Map<UUID, Integer> players = new HashMap<>();
-        for (Map.Entry<UUID, Integer> entry : faction.getPlayerWallCheckCount().entrySet()) {
-            players.put(entry.getKey(), entry.getValue());
-        }
+        Map<UUID, Integer> players = new HashMap<>(faction.getPlayerWallCheckCount());
         for (Map.Entry<UUID, Integer> entry : faction.getPlayerBufferCheckCount().entrySet()) {
             if (players.containsKey(entry.getKey())) {
                 players.replace(entry.getKey(), players.get(entry.getKey()) + entry.getValue());

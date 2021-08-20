@@ -34,7 +34,7 @@ public class Essentials {
         try {
             teleport.teleport(loc, trade);
         } catch (Exception e) {
-            player.sendMessage(ChatColor.RED.toString() + e.getMessage());
+            player.sendMessage(ChatColor.RED + e.getMessage());
         }
         return true;
     }

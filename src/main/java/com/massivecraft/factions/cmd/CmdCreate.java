@@ -140,7 +140,7 @@ public class CmdCreate extends FCommand {
         context.msg(TL.COMMAND_CREATE_YOUSHOULD, FactionsPlugin.getInstance().cmdBase.cmdDescription.getUsageTemplate(context));
         if (Conf.econEnabled) Econ.setBalance(faction.getAccountId(), Conf.econFactionStartingBalance);
         if (Conf.logFactionCreate)
-            Logger.print(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG.toString() + tag, Logger.PrefixType.DEFAULT);
+            Logger.print(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG + tag, Logger.PrefixType.DEFAULT);
         if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled"))
             context.msg(TL.COMMAND_PAYPALSET_CREATED);
         if (Conf.useCustomDefaultPermissions) faction.setDefaultPerms();

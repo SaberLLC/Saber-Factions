@@ -8,6 +8,8 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
+import java.util.Objects;
+
 public class CmdDebug extends FCommand {
     public CmdDebug() {
         super();
@@ -45,7 +47,7 @@ public class CmdDebug extends FCommand {
         Logger.print("Discord Integration enabled: " + Discord.useDiscord, Logger.PrefixType.DEBUG);
         Logger.print("Setup attempts: " + Discord.setupLog.size(), Logger.PrefixType.DEBUG);
         Logger.print("FPlayers waiting to link: " + Discord.waitingLink.size(), Logger.PrefixType.DEBUG);
-        Logger.print("Bot Token: " + (Discord.botToken == "<token here>" ? "Not Set" : "Set"), Logger.PrefixType.DEBUG);
+        Logger.print("Bot Token: " + (Objects.equals(Discord.botToken, "<token here>") ? "Not Set" : "Set"), Logger.PrefixType.DEBUG);
         Logger.print("JDA Null: " + (Discord.jda == null ? "True" : "False"), Logger.PrefixType.DEBUG);
         Logger.print("Main Guild ID: " + Discord.mainGuildID, Logger.PrefixType.DEBUG);
         Logger.print("Main Guild Null: " + (Discord.mainGuild == null ? "True" : "False"), Logger.PrefixType.DEBUG);

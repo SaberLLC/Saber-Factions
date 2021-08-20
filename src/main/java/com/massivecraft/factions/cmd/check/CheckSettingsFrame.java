@@ -92,9 +92,6 @@ public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
             case 15: {
                 return 30;
             }
-            case 30: {
-                return 0;
-            }
             default: {
                 return 0;
             }

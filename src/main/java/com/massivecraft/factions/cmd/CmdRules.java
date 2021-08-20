@@ -66,7 +66,7 @@ public class CmdRules extends FCommand {
                 String message = "";
                 StringBuilder string = new StringBuilder(message);
                 for (int i = 1; i <= context.args.size() - 1; i++) {
-                    string.append(" " + context.args.get(i));
+                    string.append(" ").append(context.args.get(i));
                 }
                 context.faction.addRule(string.toString());
                 context.msg(TL.COMMAND_RULES_ADD_SUCCESS);

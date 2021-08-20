@@ -103,7 +103,7 @@ public class EngineDynmap {
 
     // Thread Safe / Asynchronous: Yes
     public static void severe(String msg) {
-        Logger.print(DYNMAP_INTEGRATION + ChatColor.RED.toString() + msg, Logger.PrefixType.FAILED);
+        Logger.print(DYNMAP_INTEGRATION + ChatColor.RED + msg, Logger.PrefixType.FAILED);
     }
 
     public void init() {
@@ -729,7 +729,7 @@ public class EngineDynmap {
     }
 
     // Find all contiguous blocks, set in target and clear in source
-    private int floodFillTarget(TileFlags source, TileFlags destination, int x, int y) {
+    private void floodFillTarget(TileFlags source, TileFlags destination, int x, int y) {
         int cnt = 0;
         ArrayDeque<int[]> stack = new ArrayDeque<>();
         stack.push(new int[]{x, y});
@@ -756,7 +756,6 @@ public class EngineDynmap {
                 }
             }
         }
-        return cnt;
     }
 
     enum Direction {

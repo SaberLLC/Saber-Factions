@@ -36,7 +36,7 @@ public class CmdAutoHelp extends FCommand {
             // TODO deal with other visibilities
         }
 
-        context.sendMessage(FactionsPlugin.getInstance().txt.getPage(lines, context.argAsInt(0, 1), TL.COMMAND_AUTOHELP_HELPFOR.toString() + pcmd.aliases.get(0) + "\""));
+        context.sendMessage(FactionsPlugin.getInstance().txt.getPage(lines, context.argAsInt(0, 1), TL.COMMAND_AUTOHELP_HELPFOR + pcmd.aliases.get(0) + "\""));
     }
 
     @Override

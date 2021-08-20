@@ -149,7 +149,7 @@ public class StartupParameter {
 
     public static void initReserves() {
         FactionsPlugin.getInstance().reserveObjects = new ArrayList<>();
-        String path = Paths.get(FactionsPlugin.getInstance().getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "data" + File.separator + "reserves.json";
+        String path = Paths.get(FactionsPlugin.getInstance().getDataFolder().getAbsolutePath()).toAbsolutePath() + File.separator + "data" + File.separator + "reserves.json";
         File file = new File(path);
         try {
             String json;

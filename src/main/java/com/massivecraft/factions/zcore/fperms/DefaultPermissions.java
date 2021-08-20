@@ -1,5 +1,7 @@
 package com.massivecraft.factions.zcore.fperms;
 
+import java.util.Objects;
+
 public class DefaultPermissions {
 
     /**
@@ -133,35 +135,35 @@ public class DefaultPermissions {
 
     @Deprecated
     public boolean getbyName(String name) {
-        if (name == "ban") return this.ban;
-        else if (name == "build") return this.build;
-        else if (name == "destroy") return this.destroy;
-        else if (name == "frostwalk") return this.frostwalk;
-        else if (name == "painbuild") return this.painbuild;
-        else if (name == "door") return this.door;
-        else if (name == "button") return this.button;
-        else if (name == "lever") return this.lever;
-        else if (name == "home") return this.home;
-        else if (name == "container") return this.container;
-        else if (name == "invite") return this.invite;
-        else if (name == "kick") return this.kick;
-        else if (name == "items") return this.items;
-        else if (name == "sethome") return this.sethome;
-        else if (name == "territory") return this.territory;
-        else if (name == "disband") return this.disband;
-        else if (name == "promote") return this.promote;
-        else if (name == "setwarp") return this.setwarp;
-        else if (name == "warp") return this.warp;
-        else if (name == "fly") return this.fly;
-        else if (name == "vault") return this.vault;
-        else if (name == "tntbank") return this.tntbank;
-        else if (name == "tntfill") return this.tntfill;
-        else if (name == "withdraw") return this.withdraw;
-        else if (name == "chest") return this.chest;
-        else if (name == "audit") return this.audit;
-        else if (name == "check") return this.check;
-        else if (name == "drain") return this.drain;
-        else if (name == "spawner") return this.spawner;
+        if (Objects.equals(name, "ban")) return this.ban;
+        else if (Objects.equals(name, "build")) return this.build;
+        else if (Objects.equals(name, "destroy")) return this.destroy;
+        else if (Objects.equals(name, "frostwalk")) return this.frostwalk;
+        else if (Objects.equals(name, "painbuild")) return this.painbuild;
+        else if (Objects.equals(name, "door")) return this.door;
+        else if (Objects.equals(name, "button")) return this.button;
+        else if (Objects.equals(name, "lever")) return this.lever;
+        else if (Objects.equals(name, "home")) return this.home;
+        else if (Objects.equals(name, "container")) return this.container;
+        else if (Objects.equals(name, "invite")) return this.invite;
+        else if (Objects.equals(name, "kick")) return this.kick;
+        else if (Objects.equals(name, "items")) return this.items;
+        else if (Objects.equals(name, "sethome")) return this.sethome;
+        else if (Objects.equals(name, "territory")) return this.territory;
+        else if (Objects.equals(name, "disband")) return this.disband;
+        else if (Objects.equals(name, "promote")) return this.promote;
+        else if (Objects.equals(name, "setwarp")) return this.setwarp;
+        else if (Objects.equals(name, "warp")) return this.warp;
+        else if (Objects.equals(name, "fly")) return this.fly;
+        else if (Objects.equals(name, "vault")) return this.vault;
+        else if (Objects.equals(name, "tntbank")) return this.tntbank;
+        else if (Objects.equals(name, "tntfill")) return this.tntfill;
+        else if (Objects.equals(name, "withdraw")) return this.withdraw;
+        else if (Objects.equals(name, "chest")) return this.chest;
+        else if (Objects.equals(name, "audit")) return this.audit;
+        else if (Objects.equals(name, "check")) return this.check;
+        else if (Objects.equals(name, "drain")) return this.drain;
+        else if (Objects.equals(name, "spawner")) return this.spawner;
         else return false;
     }
 }

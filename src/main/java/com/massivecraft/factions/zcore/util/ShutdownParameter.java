@@ -29,7 +29,7 @@ public class ShutdownParameter {
 
     public static void saveReserves() {
         try {
-            String path = Paths.get(FactionsPlugin.getInstance().getDataFolder().getAbsolutePath()).toAbsolutePath().toString() + File.separator + "data" + File.separator + "reserves.json";
+            String path = Paths.get(FactionsPlugin.getInstance().getDataFolder().getAbsolutePath()).toAbsolutePath() + File.separator + "data" + File.separator + "reserves.json";
             File file = new File(path);
             if (!file.exists()) {
                 file.getParentFile().mkdirs();

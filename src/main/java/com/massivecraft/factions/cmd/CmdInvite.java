@@ -37,7 +37,7 @@ public class CmdInvite extends FCommand {
 
         if (target.getFaction() == context.faction) {
             context.msg(TL.COMMAND_INVITE_ALREADYMEMBER, target.getName(), context.faction.getTag());
-            context.msg(TL.GENERIC_YOUMAYWANT.toString() + FactionsPlugin.getInstance().cmdBase.cmdKick.getUsageTemplate(context));
+            context.msg(TL.GENERIC_YOUMAYWANT + FactionsPlugin.getInstance().cmdBase.cmdKick.getUsageTemplate(context));
             return;
         }
 

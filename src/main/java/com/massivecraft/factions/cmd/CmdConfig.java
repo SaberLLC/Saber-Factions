@@ -69,9 +69,9 @@ public class CmdConfig extends FCommand {
                 target.setBoolean(null, targetValue);
 
                 if (targetValue) {
-                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_TRUE.toString();
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_TRUE;
                 } else {
-                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_FALSE.toString();
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_SET_FALSE;
                 }
             }
 
@@ -80,7 +80,7 @@ public class CmdConfig extends FCommand {
                 try {
                     int intVal = Integer.parseInt(value.toString());
                     target.setInt(null, intVal);
-                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + intVal + ".";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET + intVal + ".";
                 } catch (NumberFormatException ex) {
                     context.sendMessage(TL.COMMAND_CONFIG_INTREQUIRED.format(fieldName));
                     return;
@@ -92,7 +92,7 @@ public class CmdConfig extends FCommand {
                 try {
                     long longVal = Long.parseLong(value.toString());
                     target.setLong(null, longVal);
-                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + longVal + ".";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET + longVal + ".";
                 } catch (NumberFormatException ex) {
                     context.sendMessage(TL.COMMAND_CONFIG_LONGREQUIRED.format(fieldName));
                     return;
@@ -104,7 +104,7 @@ public class CmdConfig extends FCommand {
                 try {
                     double doubleVal = Double.parseDouble(value.toString());
                     target.setDouble(null, doubleVal);
-                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + doubleVal + ".";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET + doubleVal + ".";
                 } catch (NumberFormatException ex) {
                     context.sendMessage(TL.COMMAND_CONFIG_DOUBLEREQUIRED.format(fieldName));
                     return;
@@ -116,7 +116,7 @@ public class CmdConfig extends FCommand {
                 try {
                     float floatVal = Float.parseFloat(value.toString());
                     target.setFloat(null, floatVal);
-                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + floatVal + ".";
+                    success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET + floatVal + ".";
                 } catch (NumberFormatException ex) {
                     context.sendMessage(TL.COMMAND_CONFIG_FLOATREQUIRED.format(fieldName));
                     return;
@@ -126,7 +126,7 @@ public class CmdConfig extends FCommand {
             // String
             else if (target.getType() == String.class) {
                 target.set(null, value.toString());
-                success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET.toString() + value + "\".";
+                success = "\"" + fieldName + TL.COMMAND_CONFIG_OPTIONSET + value + "\".";
             }
 
             // ChatColor
@@ -142,7 +142,7 @@ public class CmdConfig extends FCommand {
                     return;
                 }
                 target.set(null, newColor);
-                success = "\"" + fieldName + TL.COMMAND_CONFIG_COLOURSET.toString() + value.toString().toUpperCase() + "\".";
+                success = "\"" + fieldName + TL.COMMAND_CONFIG_COLOURSET + value.toString().toUpperCase() + "\".";
             }
 
             // Set<?> or other parameterized collection

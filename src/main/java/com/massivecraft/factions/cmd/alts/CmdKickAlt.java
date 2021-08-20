@@ -54,7 +54,7 @@ public class CmdKickAlt extends FCommand {
 
         if (context.fPlayer == toKick) {
             context.msg(TL.COMMAND_KICK_SELF);
-            context.msg(TL.GENERIC_YOUMAYWANT.toString() + FactionsPlugin.instance.cmdBase.cmdLeave.getUsageTemplate(context));
+            context.msg(TL.GENERIC_YOUMAYWANT + FactionsPlugin.instance.cmdBase.cmdLeave.getUsageTemplate(context));
             return;
         }
 

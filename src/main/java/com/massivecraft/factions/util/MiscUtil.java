@@ -36,13 +36,13 @@ public class MiscUtil {
             sb.append(day).append((day == 1L) ? "day" : "days").append(" ");
         }
         if (hours > 0L) {
-            sb.append(hours).append((hours == 1L) ? "h" : "h").append(" ");
+            sb.append(hours).append("h").append(" ");
         }
         if (minutes > 0L) {
-            sb.append(minutes).append((minutes == 1L) ? "m" : "m").append(" ");
+            sb.append(minutes).append("m").append(" ");
         }
         if (seconds > 0L) {
-            sb.append(seconds).append((seconds == 1L) ? "s" : "s");
+            sb.append(seconds).append("s");
         }
         String diff = sb.toString().trim();
         return diff.isEmpty() ? "Now" : diff;
@@ -138,7 +138,7 @@ public class MiscUtil {
                     admins.add(player);
                     break;
                 case COLEADER:
-                    admins.add(player);
+                    coleaders.add(player);
                     break;
                 case MODERATOR:
                     moderators.add(player);
