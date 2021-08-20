@@ -38,13 +38,14 @@ public enum Relation implements Permissable {
 
     public static Relation fromString(String s) {
         // Because Java 6 doesn't allow String switches :(
-        if (s.equalsIgnoreCase(MEMBER.nicename)) {
+        // We should use name here. Since most of features use name as identifier.
+        if (s.equalsIgnoreCase(MEMBER.name())) {
             return MEMBER;
-        } else if (s.equalsIgnoreCase(ALLY.nicename)) {
+        } else if (s.equalsIgnoreCase(ALLY.name())) {
             return ALLY;
-        } else if (s.equalsIgnoreCase(TRUCE.nicename)) {
+        } else if (s.equalsIgnoreCase(TRUCE.name())) {
             return TRUCE;
-        } else if (s.equalsIgnoreCase(ENEMY.nicename)) {
+        } else if (s.equalsIgnoreCase(ENEMY.name())) {
             return ENEMY;
         } else {
             return NEUTRAL; // If they somehow mess things up, go back to default behavior.
