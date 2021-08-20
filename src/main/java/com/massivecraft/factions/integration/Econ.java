@@ -291,7 +291,16 @@ public class Econ {
         // code goes here.
         if (!shouldBeUsed()) return false;
 
-        OfflinePlayer acc = getPlayerFromUUIDOrName(ep.getAccountId());
+        OfflinePlayer acc;
+
+        if (isUUID(ep.getAccountId())) {
+            acc = Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId()));
+            if (acc.getName() == null) {
+                return false;
+            }
+        } else {
+            acc = Bukkit.getOfflinePlayer(ep.getAccountId());
+        }
 
         String You = ep.describeTo(ep, true);
 

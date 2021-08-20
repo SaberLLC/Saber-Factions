@@ -1,39 +1,38 @@
 package com.massivecraft.factions.shop;
 
+import com.github.stefvanschie.inventoryframework.Gui;
+import com.github.stefvanschie.inventoryframework.GuiItem;
+import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.shop.utils.ItemUtils;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Cooldown;
-import com.massivecraft.factions.util.SaberGUI;
-import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShopGUIFrame extends SaberGUI {
+public class ShopGUIFrame {
 
-    public ShopGUIFrame(Player player) {
-        super(player, CC.translate(FactionsPlugin.getInstance().getConfig().getString("F-Shop.GUI.Name")), FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Rows") * 9);
+    private final Gui gui;
+
+    public ShopGUIFrame() {
+        this.gui = new Gui(FactionsPlugin.getInstance(), FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Rows") * 9, CC.translate(FactionsPlugin.getInstance().getConfig().getString("F-Shop.GUI.Name")));
     }
 
-    @Override
-    public void redraw() {
+    public void buildGUI(FPlayer fPlayer) {
+        PaginatedPane pane = new PaginatedPane(0, 0, 9, this.gui.getRows());
+        List<GuiItem> GUIItems = new ArrayList<>();
+
         List<String> list = FactionsPlugin.getInstance().getFileManager().getShop().getConfig().getStringList("items");
         int i = 0;
 
-        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(this.player);
         Faction faction = fPlayer.getFaction();
-
         int facPoints = faction.getPoints();
-
         for (String l : list) {
             int cost = ItemUtils.getCost(l);
             int amount = ItemUtils.getAmount(l);
@@ -41,7 +40,11 @@ public class ShopGUIFrame extends SaberGUI {
             ItemStack x = ItemUtils.getItem(l);
             x.setAmount(amount);
             ItemMeta meta = x.getItemMeta();
-            List<String> lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
+            List<String> lore = null;
+            if (meta != null) {
+                lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
+            }
+            assert lore != null;
             lore.add("");
             if (facPoints < cost) {
                 lore.add(CC.translate(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("item-affordable-lore").replace("{cost}", cost + "")));
@@ -51,21 +54,28 @@ public class ShopGUIFrame extends SaberGUI {
             }
             meta.setLore(lore);
             x.setItemMeta(meta);
-            this.setItem(i++, new InventoryItem(x).click(ClickType.LEFT, () -> {
+            GUIItems.set(i++, new GuiItem(x, (e) -> {
+                e.setCancelled(true);
                 if (facPoints >= cost) {
                     if (FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("purchase-cooldown") != -1) {
                         Cooldown.setCooldown(faction, "factionShop", FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("purchase-cooldown"));
                     }
                     faction.setPoints(facPoints - cost);
-                    this.player.sendMessage(CC.translate(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("prefix")
+                    fPlayer.getPlayer().sendMessage(CC.translate(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("prefix")
                             .replace("%item%", meta.getDisplayName())
                             .replace("%points%", cost + "")
                             .replace("%amount%", amount + "")));
                     fPlayer.getPlayer().getInventory().addItem(ItemUtils.getItem(l));
                 } else {
+                    e.setCancelled(true);
+                    fPlayer.getPlayer().closeInventory();
                     fPlayer.msg(TL.SHOP_NOT_ENOUGH_POINTS);
                 }
             }));
         }
+        pane.populateWithGuiItems(GUIItems);
+        gui.addPane(pane);
+        gui.update();
+        gui.show(fPlayer.getPlayer());
     }
 }

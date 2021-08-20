@@ -114,7 +114,7 @@ public class CmdShop extends FCommand {
 
         if (context.fPlayer.getFaction().isNormal()) {
             if (!Cooldown.isOnCooldown(context.fPlayer.getPlayer(), "factionShop")) {
-                new ShopGUIFrame(context.player).openGUI(FactionsPlugin.getInstance());
+                new ShopGUIFrame().buildGUI(context.fPlayer);
             }
         } else {
             context.fPlayer.msg(TL.COMMAND_SHOP_NO_FACTION);

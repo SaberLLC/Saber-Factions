@@ -853,7 +853,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public String getAccountId() {
         // We need to override the default money given to players.
-
         return "faction-" + this.getId();
     }
 
