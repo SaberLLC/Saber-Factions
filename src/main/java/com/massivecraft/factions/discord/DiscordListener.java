@@ -467,7 +467,7 @@ public class DiscordListener extends ListenerAdapter {
             }
             faction.setWeeWoo(false);
             event.getMessage().addReaction("\u2705").queue();
-            faction.msg(TL.COMMAND_WEEWOO_STARTED, event.getAuthor().getAsTag());
+            faction.msg(TL.COMMAND_WEEWOO_STOPPED, event.getAuthor().getAsTag());
             String discordChannelId = faction.getWeeWooChannelId();
             if (discordChannelId != null && !discordChannelId.isEmpty()) {
                 TextChannel textChannel = event.getJDA().getTextChannelById(discordChannelId);
