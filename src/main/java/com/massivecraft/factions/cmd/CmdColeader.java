@@ -21,7 +21,7 @@ public class CmdColeader extends FCommand {
         super();
         this.aliases.addAll(Aliases.coleader);
 
-        this.optionalArgs.put("player name", "name");
+        this.requiredArgs.add("name");
 
         this.requirements = new CommandRequirements.Builder(Permission.COLEADER)
                 .memberOnly()
