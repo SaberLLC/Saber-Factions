@@ -26,7 +26,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.*;
-import java.util.logging.Level;
 
 
 public class FactionsEntityListener implements Listener {
@@ -162,7 +161,7 @@ public class FactionsEntityListener implements Listener {
                         }
                         // we don't need to go after
                         return;
-                    }else if(damagee.getType() == EntityType.VILLAGER || damagee instanceof Animals){
+                    } else if (damagee.getType() == EntityType.VILLAGER || damagee instanceof Animals) {
                         if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
                             damager = (Entity) ((Projectile) damager).getShooter();
                         }
@@ -182,7 +181,7 @@ public class FactionsEntityListener implements Listener {
                     //this one should trigger if something other than a player takes damage
                     if (damager instanceof Player) return;
                 }
-                if (damageee != null && damageee instanceof Player && (playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-player-damage", true) || (!playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-mob-damage", true)))) {
+                if (damageee != null && damageee instanceof Player && (playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-player-damage", true) || !playerHurt && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.disable-flight-on-mob-damage"))) {
                     cancelFStuckTeleport((Player) damageee);
                     if (!combatList.contains(damageee.getUniqueId())) {
                         combatList.add(damagee.getUniqueId());
@@ -234,7 +233,7 @@ public class FactionsEntityListener implements Listener {
                 }
             }
         } catch (NullPointerException e) {
-            Logger.print( "NPE Detected - v1000", Logger.PrefixType.FAILED);
+            Logger.print("NPE Detected - v1000", Logger.PrefixType.FAILED);
         }
     }
 
@@ -579,7 +578,7 @@ public class FactionsEntityListener implements Listener {
     public void onHangerBreak(HangingBreakByEntityEvent e) {
 
         Entity remover = e.getRemover();
-        if(remover instanceof Projectile){
+        if (remover instanceof Projectile) {
             remover = (Entity) ((Projectile) remover).getShooter();
         }
         if (!(remover instanceof Player)) return;
