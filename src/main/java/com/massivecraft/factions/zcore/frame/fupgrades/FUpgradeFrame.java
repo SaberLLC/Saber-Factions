@@ -41,7 +41,7 @@ public class FUpgradeFrame {
                     e.setCancelled(true);
                     FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
                     if (fme.getFaction().getUpgrade(value) == value.getMaxLevel()) return;
-                    int cost = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu." + value.toString() + ".Cost.level-" + (fme.getFaction().getUpgrade(value) + 1));
+                    int cost = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu." + value + ".Cost.level-" + (fme.getFaction().getUpgrade(value) + 1));
                     if (FactionsPlugin.getInstance().getConfig().getBoolean("fupgrades.usePointsAsCurrency")) {
                         if (fme.getFaction().getPoints() >= cost) {
                             fme.getFaction().setPoints(fme.getFaction().getPoints() - cost);

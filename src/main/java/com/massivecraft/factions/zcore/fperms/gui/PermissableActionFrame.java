@@ -4,14 +4,15 @@ import com.cryptomorin.xseries.XMaterial;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.audit.FLogType;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -29,11 +30,11 @@ public class PermissableActionFrame {
     private Gui gui;
 
     public PermissableActionFrame(Faction f) {
-        ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.action");
+        ConfigurationSection section = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.action");
         assert section != null;
         gui = new Gui(FactionsPlugin.getInstance(),
                 section.getInt("rows", 4),
-                FactionsPlugin.getInstance().color(Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.action.name")).replace("{faction}", f.getTag())));
+                FactionsPlugin.getInstance().color(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.name")).replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(FPlayer fplayer, Permissable perm) {
@@ -48,6 +49,7 @@ public class PermissableActionFrame {
                 e.setCancelled(true);
                 if (PermissableAction.fromSlot(e.getSlot()) == action) {
                     Access access;
+                    String color;
                     boolean success;
                     switch (e.getClick()) {
                         case LEFT:
@@ -62,16 +64,22 @@ public class PermissableActionFrame {
                         default:
                             return;
                     }
+                    color = CC.translate(access.getColor() + "&l");
+
                     if (success) fplayer.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), perm.name());
                     else fplayer.msg(TL.COMMAND_PERM_LOCKED);
-                    Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.name()) + " for faction " + fplayer.getTag(), Logger.PrefixType.DEFAULT);
+                    if(Conf.logLandClaims) {
+                        Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.name()) + " for faction " + fplayer.getTag(), Logger.PrefixType.DEFAULT);
+                    }
                     // Closing and opening resets the cursor.
                     // fplayer.getPlayer().closeInventory();
+                    FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), color + access.getInlinedName(access), action.name().toUpperCase(), perm.name());
+
                     buildGUI(fplayer, perm);
                 }
             }));
         }
-        GUIItems.set(FactionsPlugin.getInstance().getConfig().getInt("fperm-gui.action.slots.back"), new GuiItem(buildBackItem(), event -> {
+        GUIItems.set(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getInt("fperm-gui.action.slots.back"), new GuiItem(buildBackItem(), event -> {
             event.setCancelled(true);
             // Closing and opening resets the cursor.
             // fplayer.getPlayer().closeInventory();
@@ -85,7 +93,7 @@ public class PermissableActionFrame {
 
 
     private ItemStack buildDummyItem() {
-        ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.dummy-item");
+        ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.dummy-item");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
@@ -97,7 +105,7 @@ public class PermissableActionFrame {
     }
 
     private ItemStack buildBackItem() {
-        ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.back-item");
+        ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.back-item");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {

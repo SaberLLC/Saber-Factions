@@ -86,11 +86,11 @@ public enum PermissableAction {
     }
 
     public String getDescription() {
-        return CC.translate(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.action.Descriptions." + this.name.toLowerCase()));
+        return CC.translate(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.Descriptions." + this.name.toLowerCase()));
     }
 
     public int getSlot() {
-        return FactionsPlugin.getInstance().getConfig().getInt("fperm-gui.action.slots." + this.name.toLowerCase());
+        return FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getInt("fperm-gui.action.slots." + this.name.toLowerCase());
     }
 
     /**
@@ -108,7 +108,7 @@ public enum PermissableAction {
     }
 
     public ItemStack buildAsset(FPlayer fme, Permissable perm) {
-        ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.action");
+        ConfigurationSection section = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.action");
         ItemStack item = XMaterial.matchXMaterial(section.getString("Materials." + this.name)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
 
