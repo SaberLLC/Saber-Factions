@@ -39,7 +39,7 @@ public class UpgradesListener implements Listener {
         Faction faction = Board.getInstance().getFactionAt(floc);
         if (!faction.isWilderness()) {
             int level = faction.getUpgrade(UpgradeType.EXP);
-            double multiplier = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-" + level);
+            double multiplier = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-" + level);
             if (level != 0 && multiplier > 0.0) {
                 this.spawnMoreExp(e, multiplier);
             }
@@ -58,7 +58,7 @@ public class UpgradesListener implements Listener {
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.SPAWNER);
             if (level == 0) return;
-            this.lowerSpawnerDelay(e, FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.Spawners.Spawner-Boost.level-" + level));
+            this.lowerSpawnerDelay(e, FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.Spawners.Spawner-Boost.level-" + level));
         }
     }
 
@@ -80,7 +80,7 @@ public class UpgradesListener implements Listener {
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.CROP);
-            int chance = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-" + level);
+            int chance = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-" + level);
             if (level == 0 || chance == 0) return;
 
             int randomNum = ThreadLocalRandom.current().nextInt(1, 101);
@@ -147,7 +147,7 @@ public class UpgradesListener implements Listener {
 
         if (e.getItem().getType().toString().contains("LEGGINGS") || e.getItem().getType().toString().contains("CHESTPLATE") || e.getItem().getType().toString().contains("HELMET") || e.getItem().getType().toString().contains("BOOTS")) {
             int lvl = FPlayers.getInstance().getByPlayer(e.getPlayer()).getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
-            double drop = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);
+            double drop = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);
             int newDamage = (int) Math.round(e.getDamage() - e.getDamage() * drop);
             e.setDamage(newDamage);
         }

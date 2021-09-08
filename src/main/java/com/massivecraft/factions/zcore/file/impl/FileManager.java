@@ -15,10 +15,12 @@ public class FileManager {
     private CustomFile boosters = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "boosters.yml"));
     private CustomFile timers = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "timers.yml"));
     private CustomFile fperms = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "fperms.yml"));
+    private CustomFile upgrades = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "upgrades.yml"));
     private CustomFile shop = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "shop.yml"));
     private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "permissions.yml"));
     private CustomFile discord = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "discord.yml"));
     private CustomFile corex = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "corex" + File.separator + "corex.yml"));
+    private CustomFile missions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "missions.yml"));
 
     public void setupFiles() {
         boosters.setup(true, "data");
@@ -28,6 +30,16 @@ public class FileManager {
         discord.setup(true, "configuration");
         corex.setup(true, "corex");
         fperms.setup(true, "configuration");
+        upgrades.setup(true, "configuration");
+        missions.setup(true, "configuration");
+    }
+
+    public CustomFile getUpgrades() {
+        return upgrades;
+    }
+
+    public CustomFile getMissions() {
+        return missions;
     }
 
     public CustomFile getFperms() {
