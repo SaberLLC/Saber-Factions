@@ -19,6 +19,7 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
+import com.massivecraft.factions.integration.LunarAPI;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.missions.MissionHandler;
@@ -175,7 +176,6 @@ public class FactionsPlugin extends MPlugin {
         }
         getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
-
 
         if (Conf.userSpawnerChunkSystem) {
             this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);

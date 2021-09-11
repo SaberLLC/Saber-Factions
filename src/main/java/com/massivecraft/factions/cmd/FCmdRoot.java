@@ -381,11 +381,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             fStrikes = true;
         }
 
-        //Other
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("Wild.Enabled", false) && !fWildEnabled) {
-            fWildEnabled = true;
-        }
-
         if (Conf.userSpawnerChunkSystem) {
             this.addSubCommand(this.cmdSpawnerChunk);
         }

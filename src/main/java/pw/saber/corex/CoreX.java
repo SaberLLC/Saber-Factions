@@ -28,6 +28,7 @@ public class CoreX {
 
         if (getConfig().fetchBoolean("Features.Anti-Mob-Targeting")) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiMobTargeting(), FactionsPlugin.getInstance());
+
         }
 
         if (getConfig().fetchBoolean("Features.Iron-Golem-Health")) {

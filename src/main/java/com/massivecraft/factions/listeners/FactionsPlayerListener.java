@@ -11,6 +11,7 @@ import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.integration.LunarAPI;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
@@ -716,7 +717,7 @@ public class FactionsPlayerListener implements Listener {
     @EventHandler
     public void onInventorySee(InventoryClickEvent e) {
         if (e.getCurrentItem() == null) return;
-        if (!e.getView().getTitle().endsWith("'s Inventory")) return;
+        if (!e.getView().getTitle().endsWith("'s Player Inventory")) return;
         e.setCancelled(true);
     }
 

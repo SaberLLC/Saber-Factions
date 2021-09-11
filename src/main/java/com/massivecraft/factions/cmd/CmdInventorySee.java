@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -61,7 +62,8 @@ public class CmdInventorySee extends FCommand {
 
 
     public Inventory createCopy(Player player) {
-        Inventory inventory = Bukkit.createInventory(null, player.getInventory().getSize() + 9, player.getName() + "'s Inventory");
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+        Inventory inventory = Bukkit.createInventory(null, player.getInventory().getSize() + 9, fPlayer.getNameAndTag() + "'s Player Inventory");
         ItemStack[] armor = Objects.requireNonNull(player.getEquipment()).getArmorContents();
         ItemStack[] items = player.getInventory().getContents();
         for (int i = 0; i < items.length; ++i) {
