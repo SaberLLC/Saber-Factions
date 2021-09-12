@@ -126,7 +126,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (otherFaction.isWilderness()) {
-            if (!Conf.wildernessDenyUsage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
+            if (!Conf.wildernessDenyUsage || ((Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) ) {
                 return true; // This is not faction territory. Use whatever you like here.
             }
 
@@ -747,7 +747,7 @@ public class FactionsPlayerListener implements Listener {
         if (Conf.homesEnabled &&
                 Conf.homesTeleportToOnDeath &&
                 home != null &&
-                (Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))) {
+                (Conf.homesRespawnFromNoPowerLossWorlds || ( (!Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist) ) )) {
             event.setRespawnLocation(home);
         }
     }
