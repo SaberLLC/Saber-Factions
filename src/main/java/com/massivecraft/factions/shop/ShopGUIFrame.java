@@ -21,7 +21,7 @@ public class ShopGUIFrame {
     private final Gui gui;
 
     public ShopGUIFrame() {
-        this.gui = new Gui(FactionsPlugin.getInstance(), FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Rows") * 9, CC.translate(FactionsPlugin.getInstance().getConfig().getString("F-Shop.GUI.Name")));
+        this.gui = new Gui(FactionsPlugin.getInstance(), FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Rows"), CC.translate(FactionsPlugin.getInstance().getConfig().getString("F-Shop.GUI.Name")));
     }
 
     public void buildGUI(FPlayer fPlayer) {
