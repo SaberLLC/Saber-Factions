@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-2.9.3-RC</version>
+    <version>1.6.9.5-2.9.4-RC</version>
     <packaging>jar</packaging>
 
     <name>SaberFactions</name>
@@ -281,6 +281,13 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>Lunar-Client-API</groupId>
+            <artifactId>LC-API</artifactId>
+            <scope>system</scope>
+            <version>1.16</version>
+            <systemPath>${project.basedir}/dependencies/LunarClientAPI.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>club.minnced</groupId>
             <artifactId>discord-webhooks</artifactId>
             <version>0.5.0</version>
@@ -517,6 +524,12 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>1.7</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
