@@ -25,8 +25,7 @@ public class CmdReload extends FCommand {
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
         Conf.save();
-        FactionsPlugin.getInstance().getFileManager().getShop().loadFile();
-        FactionsPlugin.getInstance().getFileManager().getCoreX().loadFile();
+        FactionsPlugin.getInstance().getFileManager().loadCustomFiles();
         FactionsPlugin.getInstance().reloadConfig();
         FactionsPlugin.getInstance().loadLang();
 

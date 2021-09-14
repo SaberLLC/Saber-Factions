@@ -34,6 +34,20 @@ public class FileManager {
         missions.setup(true, "configuration");
     }
 
+
+    public void loadCustomFiles() {
+        boosters.loadFile();
+        timers.loadFile();
+        shop.loadFile();
+        permissions.loadFile();
+        discord.loadFile();
+        corex.loadFile();
+        fperms.loadFile();
+        upgrades.loadFile();
+        missions.loadFile();
+    }
+
+
     public CustomFile getUpgrades() {
         return upgrades;
     }
