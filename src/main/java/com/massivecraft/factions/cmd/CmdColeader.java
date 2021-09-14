@@ -31,65 +31,62 @@ public class CmdColeader extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
-
-
-            FPlayer you = context.argAsBestFPlayerMatch(0);
-            if (you == null) {
-                FancyMessage msg = new FancyMessage(TL.COMMAND_COLEADER_CANDIDATES.toString()).color(ChatColor.GOLD);
-                for (FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
-                    String s = player.getName();
-                    msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + Conf.baseCommandAliases.get(0) + " coleader " + s);
-                }
-                for (FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
-                    String s = player.getName();
-                    msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + Conf.baseCommandAliases.get(0) + " coleader " + s);
-                }
-
-                context.sendFancyMessage(msg);
-                return;
+        FPlayer you = context.argAsBestFPlayerMatch(0);
+        if (you == null) {
+            FancyMessage msg = new FancyMessage(TL.COMMAND_COLEADER_CANDIDATES.toString()).color(ChatColor.GOLD);
+            for (FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
+                String s = player.getName();
+                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + Conf.baseCommandAliases.get(0) + " coleader " + s);
+            }
+            for (FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
+                String s = player.getName();
+                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + Conf.baseCommandAliases.get(0) + " coleader " + s);
             }
 
-            boolean permAny = Permission.COLEADER_ANY.has(context.sender, false);
-            Faction targetFaction = you.getFaction();
+            context.sendFancyMessage(msg);
+            return;
+        }
 
-            if (targetFaction != context.faction && !permAny) {
-                context.msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(context.fPlayer, true));
-                return;
-            }
+        boolean permAny = Permission.COLEADER_ANY.has(context.sender, false);
+        Faction targetFaction = you.getFaction();
 
-            if (you.isAlt()) {
-                return;
-            }
+        if (targetFaction != context.faction && !permAny) {
+            context.msg(TL.COMMAND_MOD_NOTMEMBER, you.describeTo(context.fPlayer, true));
+            return;
+        }
 
-            if (context.fPlayer != null && context.fPlayer.getRole() != Role.LEADER && !permAny) {
-                context.msg(TL.COMMAND_COLEADER_NOTADMIN);
-                return;
-            }
+        if (you.isAlt()) {
+            return;
+        }
 
-            if (you == context.fPlayer && !permAny) {
-                context.msg(TL.COMMAND_COLEADER_SELF);
-                return;
-            }
+        if (context.fPlayer != null && context.fPlayer.getRole() != Role.LEADER && !permAny) {
+            context.msg(TL.COMMAND_COLEADER_NOTADMIN);
+            return;
+        }
 
-            if (you.getRole() == Role.LEADER) {
-                context.msg(TL.COMMAND_COLEADER_TARGETISADMIN);
-                return;
-            }
+        if (you == context.fPlayer && !permAny) {
+            context.msg(TL.COMMAND_COLEADER_SELF);
+            return;
+        }
 
-            if (you.getRole() == Role.COLEADER) {
-                // Revoke
-                you.setRole(Role.MODERATOR);
-                targetFaction.msg(TL.COMMAND_COLEADER_REVOKED, you.describeTo(targetFaction, true));
-                context.msg(TL.COMMAND_COLEADER_REVOKES, you.describeTo(context.fPlayer, true));
-            } else {
-                // Give
-                you.setRole(Role.COLEADER);
-                targetFaction.msg(TL.COMMAND_COLEADER_PROMOTED, you.describeTo(targetFaction, true));
-                context.msg(TL.COMMAND_COLEADER_PROMOTES, you.describeTo(context.fPlayer, true));
-                FactionsPlugin.instance.getFlogManager().log(targetFaction, FLogType.RANK_EDIT, context.fPlayer.getName(), you.getName(), ChatColor.RED + "Co-Leader");
-            }
-        });
+        if (you.getRole() == Role.LEADER) {
+            context.msg(TL.COMMAND_COLEADER_TARGETISADMIN);
+            return;
+        }
+
+        if (you.getRole() == Role.COLEADER) {
+            // Revoke
+            you.setRole(Role.MODERATOR);
+            targetFaction.msg(TL.COMMAND_COLEADER_REVOKED, you.describeTo(targetFaction, true));
+            context.msg(TL.COMMAND_COLEADER_REVOKES, you.describeTo(context.fPlayer, true));
+        } else {
+            // Give
+            you.setRole(Role.COLEADER);
+            targetFaction.msg(TL.COMMAND_COLEADER_PROMOTED, you.describeTo(targetFaction, true));
+            context.msg(TL.COMMAND_COLEADER_PROMOTES, you.describeTo(context.fPlayer, true));
+            FactionsPlugin.instance.getFlogManager().log(targetFaction, FLogType.RANK_EDIT, context.fPlayer.getName(), you.getName(), ChatColor.RED + "Co-Leader");
+        }
+
     }
 
     @Override
