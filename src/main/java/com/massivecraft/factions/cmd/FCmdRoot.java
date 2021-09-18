@@ -385,7 +385,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             this.addSubCommand(this.cmdSpawnerChunk);
         }
 
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("Missions-Enabled", false) && !missionsEnabled) {
+        if (FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getBoolean("Missions-Enabled", false) && !missionsEnabled) {
             this.addSubCommand(this.cmdMissions);
             missionsEnabled = true;
         }
