@@ -769,7 +769,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void sendFactionHereMessage(Faction from) {
         Faction toShow = Board.getInstance().getFactionAt(getLastStoodAt());
 
-        if (Conf.worldsNoClaiming.contains(getLastStoodAt().getWorldName())) return;
+        if ( (Conf.worldsNoClaiming.contains(getLastStoodAt().getWorldName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoClaiming.contains(getLastStoodAt().getWorldName()) && Conf.useWorldConfigurationsAsWhitelist) ) return;
 
         if (showInfoBoard(toShow)) {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
@@ -902,7 +902,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             error = plugin.txt.parse(TL.CLAIM_PROTECTED.toString());
         } else if (flocation.isOutsideWorldBorder(plugin.getConfig().getInt("world-border.buffer", 0) - 1)) {
             error = plugin.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
-        } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName())) {
+        } else if ( (Conf.worldsNoClaiming.contains(flocation.getWorldName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoClaiming.contains(flocation.getWorldName()) && Conf.useWorldConfigurationsAsWhitelist) ) {
             error = plugin.txt.parse(TL.CLAIM_DISABLED.toString());
         } else if (this.isAdminBypassing()) {
             return true;
