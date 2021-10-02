@@ -20,6 +20,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -183,12 +184,19 @@ public class FactionsPlayerListener implements Listener {
         FLocation loc = new FLocation(block);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
         Faction myFaction = me.getFaction();
-        Relation rel = myFaction.getRelationTo(otherFaction);
 
         // no door/chest/whatever protection in wilderness, war zones, or safe zones
         if (otherFaction.isSystemFaction()) return true;
         if (myFaction.isWilderness()) {
-            me.msg(TL.GENERIC_NOPERMISSION, TL.GENERIC_DOTHAT);
+            if(block.getType().name().contains("PLATE")) {
+                if(!Cooldown.isOnCooldown(player, "plateMessage")) {
+                    Cooldown.setCooldown(player, "plateMessage", 3);
+                } else {
+                    return false;
+                }
+            }
+
+            me.msg(TL.GENERIC_ACTION_NOPERMISSION, block.getType().toString().replace("_", " "));
             return false;
         }
 
