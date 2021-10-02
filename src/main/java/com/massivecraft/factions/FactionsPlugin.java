@@ -19,7 +19,6 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
-import com.massivecraft.factions.integration.LunarAPI;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.missions.MissionHandler;
@@ -30,7 +29,6 @@ import com.massivecraft.factions.struct.nms.impl.*;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.adapters.*;
 import com.massivecraft.factions.util.flight.FlightEnhance;
-import com.massivecraft.factions.util.particle.ParticleProvider;
 import com.massivecraft.factions.util.particle.darkblade12.ReflectionUtils;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.CommandVisibility;
@@ -86,7 +84,6 @@ public class FactionsPlugin extends MPlugin {
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     public SkriptAddon skriptAddon;
     public boolean hookedPlayervaults;
-    public ParticleProvider particleProvider;
     public FLogManager fLogManager;
     public List<ReserveObject> reserveObjects;
     public FileManager fileManager;
@@ -155,7 +152,6 @@ public class FactionsPlugin extends MPlugin {
 
         StartupParameter.initData(this);
 
-        VersionProtocol.doBigThingsWithParticlesOMEGALUL();
         VersionProtocol.printVerionInfo();
 
         this.nmsManager = setupNMS();

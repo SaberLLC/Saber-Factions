@@ -161,7 +161,7 @@ public class FactionsEntityListener implements Listener {
                         }
                         // we don't need to go after
                         return;
-                    } else if (damagee.getType() == EntityType.VILLAGER || damagee instanceof Animals) {
+                    } else if (damagee.getType() == EntityType.VILLAGER || damagee instanceof Animals && Conf.protectAnimalsInFactionTerritory) {
                         if (damager instanceof Projectile && ((Projectile) damager).getShooter() instanceof Entity) {
                             damager = (Entity) ((Projectile) damager).getShooter();
                         }
