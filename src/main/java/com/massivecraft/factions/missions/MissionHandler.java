@@ -43,7 +43,7 @@ public class MissionHandler implements Listener {
         }
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("tame")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType")) && !section.getConfigurationSection("Mission").getString("EntityType").equalsIgnoreCase("ALL")) {
                 continue;
             }
@@ -63,7 +63,7 @@ public class MissionHandler implements Listener {
         }
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("kill")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType"))) {
                 continue;
             }
@@ -80,7 +80,7 @@ public class MissionHandler implements Listener {
         }
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("mine")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             if (!event.getBlock().getType().toString().equals(section.getConfigurationSection("Mission").getString("Material"))) {
                 continue;
             }
@@ -97,7 +97,7 @@ public class MissionHandler implements Listener {
         }
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("place")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             if (!event.getBlock().getType().toString().equals(section.getConfigurationSection("Mission").getString("Material"))) {
                 continue;
             }
@@ -117,7 +117,7 @@ public class MissionHandler implements Listener {
         }
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("fish")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             mission2.incrementProgress();
             checkIfDone(fPlayer, mission2, section);
         }
@@ -131,7 +131,7 @@ public class MissionHandler implements Listener {
         }
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("enchant")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             mission2.incrementProgress();
             checkIfDone(fPlayer, mission2, section);
         }
@@ -145,7 +145,7 @@ public class MissionHandler implements Listener {
         }
         List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("consume")).collect(Collectors.toList());
         for (Mission mission2 : missions) {
-            ConfigurationSection section = plugin.getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
+            ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
 
             if (!e.getItem().toString().contains(section.getConfigurationSection("Mission").getString("Item")) && !section.getConfigurationSection("Mission").getString("Item").equalsIgnoreCase("ALL")) {
                 continue;
@@ -160,7 +160,7 @@ public class MissionHandler implements Listener {
             return;
         }
         for (String command : section.getConfigurationSection("Reward").getStringList("Commands")) {
-            FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), command.replace("%faction%", fPlayer.getFaction().getTag()));
+            FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), command.replace("%faction%", fPlayer.getFaction().getTag()).replace("%player%", fPlayer.getPlayer().getName()));
         }
         fPlayer.getFaction().getMissions().remove(mission.getName());
         fPlayer.getFaction().msg(TL.MISSION_MISSION_FINISHED, plugin.color(section.getString("Name")));

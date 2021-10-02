@@ -206,7 +206,7 @@ public enum Relation implements Permissable {
     // Utility method to build items for F Perm GUI
     @Override
     public ItemStack buildItem() {
-        final ConfigurationSection RELATION_CONFIG = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.relation");
+        final ConfigurationSection RELATION_CONFIG = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.relation");
 
         String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""));
         List<String> lore = new ArrayList<>();

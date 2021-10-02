@@ -22,20 +22,20 @@ public enum UpgradeType {
      * @author Illyria Team
      */
 
-    CHEST("Chest", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Max-Level")),
+    CHEST("Chest", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Max-Level")),
     FALL_DAMAGE("Fall-Damage", 1),
-    SPAWNER("Spawners", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Spawners.Max-Level")),
-    EXP("EXP", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.EXP.Max-Level")),
-    CROP("Crops", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Crops.Max-Level")),
-    POWER("Power", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Power.Max-Level")),
-    REDSTONE("Redstone", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Redstone.Max-Level")),
-    MEMBERS("Members", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.Max-Level")),
-    TNT("TNT", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.TNT.Max-Level")),
-    WARP("Warps", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.Max-Level")),
-    DAMAGEINCREASE("DamageIncrease", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageIncrease.Max-Level")),
-    DAMAGEDECREASE("DamageReduct", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.DamageReduct.Max-Level")),
-    SPAWNERCHUNKS("SpawnerChunks", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.SpawnerChunks.Max-Level")),
-    REINFORCEDARMOR("Armor", FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Armor.Max-Level"));
+    SPAWNER("Spawners", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Spawners.Max-Level")),
+    EXP("EXP", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.EXP.Max-Level")),
+    CROP("Crops", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Crops.Max-Level")),
+    POWER("Power", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Power.Max-Level")),
+    REDSTONE("Redstone", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Redstone.Max-Level")),
+    MEMBERS("Members", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Members.Max-Level")),
+    TNT("TNT", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.TNT.Max-Level")),
+    WARP("Warps", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Warps.Max-Level")),
+    DAMAGEINCREASE("DamageIncrease", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.DamageIncrease.Max-Level")),
+    DAMAGEDECREASE("DamageReduct", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.DamageReduct.Max-Level")),
+    SPAWNERCHUNKS("SpawnerChunks", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.SpawnerChunks.Max-Level")),
+    REINFORCEDARMOR("Armor", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Armor.Max-Level"));
 
     private String id;
     private int maxLevel;
@@ -51,7 +51,7 @@ public enum UpgradeType {
     }
 
     public int getSlot() {
-        return FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu." + this.id + ".DisplayItem.Slot");
+        return FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu." + this.id + ".DisplayItem.Slot");
     }
 
     public int getMaxLevel() {
@@ -59,7 +59,7 @@ public enum UpgradeType {
     }
 
     public ItemStack buildAsset(Faction f) {
-        ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fupgrades.MainMenu." + this.id + ".DisplayItem");
+        ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getConfigurationSection("fupgrades.MainMenu." + this.id + ".DisplayItem");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         int level = f.getUpgrade(this);
         ItemMeta meta = item.getItemMeta();

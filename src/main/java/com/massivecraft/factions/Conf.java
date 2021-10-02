@@ -203,6 +203,7 @@ public class Conf {
     public static Set<String> territoryAllyDenyCommands = new LinkedHashSet<>();
     public static Set<String> warzoneDenyCommands = new LinkedHashSet<>();
     public static Set<String> wildernessDenyCommands = new LinkedHashSet<>();
+    public static boolean protectAnimalsInFactionTerritory = false; //This is a boolean to allow people to damage other animals in territory.
     public static boolean territoryDenyBuild = true;
     public static boolean territoryDenyBuildWhenOffline = true;
     public static boolean territoryPainBuild = false;

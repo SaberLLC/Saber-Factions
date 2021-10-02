@@ -1,0 +1,182 @@
+############################################################
+# +------------------------------------------------------+ #
+# |                  F Permission GUI                    | #
+# +------------------------------------------------------+ #
+############################################################
+
+# This is the Faction permissions GUI, it consists of 2 inventories
+#
+# 1st: The Relation GUI, here you choose which relation you want to set the permission of
+# 2nd: The Action GUI, here you define the permission of the clicked Action using click types,
+# depending on the click type it will set the permission differently:
+# Left Click: ALLOW
+# Middle Click: UNDEFINED
+# Right Click: DENY
+#
+#
+# The GUI configuration is based off of item placeholders these have specific placeholders that are
+# replaced, for example {relation} will be replaced with the relation that the GUI/Item is based on.
+# There is also 2 other types of GUI items
+#
+# 1st: Special items, these include Back button (Has its own item below), and Relation Item
+# indicating the current relation (Uses relation item placeholder)
+# 2nd: Dummy items, these items server no other purpose than to look good, they have their own
+# items defined in dummy items, and can later be assigned to specific slots in the GUI's
+fperm-gui:
+  relation:
+    # GUI Name
+    name: '&8&lFaction Permissions'
+    # Amount of inventory rows, No larger than 5
+    rows: 4
+    # These are the slots where the relations are going to be placed on the first GUI
+    # Note: Slots start at 0 and end at one less that GUI size
+    #Setting a slot to -1 will disable it
+    slots:
+      recruit: 10
+      normal: 12
+      moderator: 14
+      coleader: 16
+      truce: 19
+      ally: 21
+      enemy: 23
+      neutral: 25
+    # Material to be displayed
+    materials:
+      recruit: WOOD_SWORD
+      normal: GOLD_SWORD
+      moderator: IRON_SWORD
+      coleader: DIAMOND_SWORD
+      truce: IRON_AXE
+      ally: GOLD_AXE
+      enemy: DIAMOND_AXE
+      neutral: WOOD_AXE
+    Placeholder-Item:
+      Name: '&c{relation}&f Permissions!' #{relation} placeholder now returns with the first letter being capital :D
+  action:
+    name: 'Faction Permissions'
+    rows: 6
+    Access-Colors:
+      Allow: '&a'
+      Deny: '&c'
+      Undefined: '&7'
+    Materials:
+      build: COBBLESTONE
+      destroy: DIAMOND_PICKAXE
+      frostwalk: ICE
+      painbuild: ARROW
+      door: IRON_DOOR
+      button: OAK_BUTTON
+      lever: LEVER
+      container: CHEST
+      invite: NETHER_STAR
+      kick: DIAMOND_SWORD
+      items: PAPER
+      sethome: HOPPER
+      withdraw: SUNFLOWER
+      territory: SIGN
+      audit: EMERALD
+      promote: DIAMOND
+      setwarp: COMPASS
+      warp: ENDER_PEARL
+      ban: ANVIL
+      disband: BARRIER
+      fly: FEATHER
+      vault: END_PORTAL_FRAME
+      tntbank: BEACON
+      tntfill: TNT
+      chest: ENDER_CHEST
+      check: WATCH
+      drain: BUCKET
+      spawner: MOB_SPAWNER
+      home: ENDER_EYE
+    Descriptions:
+      build: '&7Grants users access to build.'
+      destroy: '&7Grant users access to destroy.'
+      frostwalk: '&7Grant users to use FrostWalker enchantment.'
+      painbuild: '&7Users denied building damage themselves.'
+      door: '&7Grant users access to use doors.'
+      button: '&7Grant users access to use buttons.'
+      lever: '&7Grant users access to use levers.'
+      container: '&7Grant users access to use containers.'
+      invite: '&7Grant users access to use /f invite.'
+      kick: '&7Grant users access to use /f kick.'
+      items: '&7Grant users access to use most generic items.'
+      sethome: '&7Grant users access to use /f sethome.'
+      withdraw: '&7Grant users access to use /f withdraw.'
+      territory: '&7Grant users access to manage claims.'
+      audit: '&7Grant users access to use /f audit.'
+      promote: '&7Grant users access to use /f <promote/demote>.'
+      setwarp: '&7Grant users access to use /f setwarp.'
+      warp: '&7Grant users access to use /f warp.'
+      ban: '&7Grant users access to use /f ban.'
+      disband: '&7Grant users access to use /f disband.'
+      fly: '&7Grant users access to use /f fly.'
+      vault: '&7Grant users access to use /f vault.'
+      tntbank: '&7Grant users access to manage /f tnt virtual bank.'
+      tntfill: '&7Grant users access to use /f tntfill.'
+      chest: '&7Grant users access to use /f chest.'
+      check: '&7Grant users access to manage /f check system.'
+      drain: '&7Grant users access to use /f drain.'
+      spawner: '&7Grant users access to manage spawners.'
+      home: '&7Grant users access to use /f home.'
+    slots:
+      # Uses same format as above to inform the player of clicked relation
+      relation: 4
+      # Back button slot
+      back: 0
+      # Start action slots
+      build: 10
+      destroy: 11
+      frostwalk: 12
+      painbuild: 13
+      door: 14
+      button: 15
+      lever: 16
+      container: 19
+      invite: 20
+      kick: 21
+      items: 22
+      sethome: 23
+      withdraw: 24
+      territory: 25
+      audit: 28
+      promote: 29
+      setwarp: 30
+      warp: 31
+      ban: 32
+      disband: 33
+      fly: 34
+      vault: 40
+      tntbank: 39
+      tntfill: 41
+      chest: 42
+      check: 50
+      spawner: 38
+      drain: 49
+      home: 48
+    # {action} Action name eg: Setwarp, Kick
+    # {action-access} Access name eg: Allow, Deny
+    # {action-access-color} Access color eg: Allow;GREEN
+    placeholder-item:
+      name: '&c&lPermission to {action}'
+      lore:
+        - ''
+        - '&4&l* &cStatus: &f{action-access-color}{action-access}'
+        - ''
+        - '&7&l* &eDescription: {description}'
+        - ''
+        - '&2&l* &aLeft click to &a&lAllow&a.'
+        - '&4&l* &cRight click to &c&lDeny&c.'
+        - '&8&l* &7Middle click to &7&lUndefine&7.'
+  # Back item will be take you to the previous GUI
+  back-item:
+    Type: ARROW
+    Name: '&c&l<- Back'
+    Lore:
+      - '&7Click to return to previous menu.'
+  # Dummy Items
+  dummy-item:
+    Type: BLACK_STAINED_GLASS_PANE
+    Name: ' '
+    Lore:
+      - ' '

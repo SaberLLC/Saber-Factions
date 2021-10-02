@@ -21,7 +21,7 @@ public class ShopGUIFrame {
     private final Gui gui;
 
     public ShopGUIFrame() {
-        this.gui = new Gui(FactionsPlugin.getInstance(), FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Rows") * 9, CC.translate(FactionsPlugin.getInstance().getConfig().getString("F-Shop.GUI.Name")));
+        this.gui = new Gui(FactionsPlugin.getInstance(), FactionsPlugin.getInstance().getConfig().getInt("F-Shop.GUI.Rows"), CC.translate(FactionsPlugin.getInstance().getConfig().getString("F-Shop.GUI.Name")));
     }
 
     public void buildGUI(FPlayer fPlayer) {
@@ -44,7 +44,6 @@ public class ShopGUIFrame {
             if (meta != null) {
                 lore = meta.hasLore() ? meta.getLore() : new ArrayList<>();
             }
-            assert lore != null;
             lore.add("");
             if (facPoints < cost) {
                 lore.add(CC.translate(FactionsPlugin.getInstance().getFileManager().getShop().fetchString("item-affordable-lore").replace("{cost}", cost + "")));
@@ -54,7 +53,7 @@ public class ShopGUIFrame {
             }
             meta.setLore(lore);
             x.setItemMeta(meta);
-            GUIItems.set(i++, new GuiItem(x, (e) -> {
+            GUIItems.add(i++, new GuiItem(x, (e) -> {
                 e.setCancelled(true);
                 if (facPoints >= cost) {
                     if (FactionsPlugin.getInstance().getFileManager().getShop().fetchInt("purchase-cooldown") != -1) {

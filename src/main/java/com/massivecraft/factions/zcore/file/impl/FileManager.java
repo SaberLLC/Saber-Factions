@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore.file.impl;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.zcore.file.CustomFile;
 
 import java.io.File;
@@ -15,18 +14,50 @@ public class FileManager {
 
     private CustomFile boosters = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "boosters.yml"));
     private CustomFile timers = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "timers.yml"));
-    private CustomFile shop = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/shop.yml"));
+    private CustomFile fperms = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "fperms.yml"));
+    private CustomFile upgrades = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "upgrades.yml"));
+    private CustomFile shop = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "shop.yml"));
     private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "permissions.yml"));
-    private CustomFile discord = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + "/discord.yml"));
+    private CustomFile discord = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "discord.yml"));
     private CustomFile corex = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "corex" + File.separator + "corex.yml"));
+    private CustomFile missions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "missions.yml"));
 
     public void setupFiles() {
         boosters.setup(true, "data");
         timers.setup(true, "data");
-        shop.setup(true, "");
+        shop.setup(true, "configuration");
         permissions.setup(true, "data");
-        discord.setup(true, "");
+        discord.setup(true, "configuration");
         corex.setup(true, "corex");
+        fperms.setup(true, "configuration");
+        upgrades.setup(true, "configuration");
+        missions.setup(true, "configuration");
+    }
+
+
+    public void loadCustomFiles() {
+        boosters.loadFile();
+        timers.loadFile();
+        shop.loadFile();
+        permissions.loadFile();
+        discord.loadFile();
+        corex.loadFile();
+        fperms.loadFile();
+        upgrades.loadFile();
+        missions.loadFile();
+    }
+
+
+    public CustomFile getUpgrades() {
+        return upgrades;
+    }
+
+    public CustomFile getMissions() {
+        return missions;
+    }
+
+    public CustomFile getFperms() {
+        return fperms;
     }
 
     public CustomFile getTimers() {

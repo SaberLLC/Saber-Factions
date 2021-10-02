@@ -11,6 +11,7 @@ import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
+import com.massivecraft.factions.integration.LunarAPI;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
@@ -125,7 +126,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (otherFaction.isWilderness()) {
-            if (!Conf.wildernessDenyUsage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
+            if (!Conf.wildernessDenyUsage || ((Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) ) {
                 return true; // This is not faction territory. Use whatever you like here.
             }
 
@@ -716,7 +717,7 @@ public class FactionsPlayerListener implements Listener {
     @EventHandler
     public void onInventorySee(InventoryClickEvent e) {
         if (e.getCurrentItem() == null) return;
-        if (!e.getView().getTitle().endsWith("'s Inventory")) return;
+        if (!e.getView().getTitle().endsWith("'s Player Inventory")) return;
         e.setCancelled(true);
     }
 
@@ -746,7 +747,7 @@ public class FactionsPlayerListener implements Listener {
         if (Conf.homesEnabled &&
                 Conf.homesTeleportToOnDeath &&
                 home != null &&
-                (Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))) {
+                (Conf.homesRespawnFromNoPowerLossWorlds || ( (!Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist) ) )) {
             event.setRespawnLocation(home);
         }
     }

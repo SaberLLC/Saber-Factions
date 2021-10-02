@@ -1,0 +1,108 @@
+############################################################
+# +------------------------------------------------------+ #
+# |                Faction Missions                      | #
+# +------------------------------------------------------+ #
+############################################################
+MissionGUISize: 4
+Missions-Enabled: true
+Missions-GUI-Title: '&8&lFaction Missions'
+MaximumMissionsAllowedAtOnce: 1
+Allow-Cancellation-Of-Missions: true
+Mission-Progress-Format: '&b&lProgression: &f{progress}&7/&e{total}'
+Randomization:
+  Enabled: false
+  Start-Item:
+    # Allowed means that they are under maximum allowed missions at one AND if applicable they have not completed every mission more than once
+    Allowed:
+      Name: "&aStart!"
+      Material: GREEN_STAINED_GLASS_PANE
+      Lore: "&2Start a new mission!"
+    Disallowed:
+      # Placeholder %reason% supported throughout this section
+      Name: "&4Cannot start new mission"
+      Material: GRAY_STAINED_GLASS_PANE
+      Lore:
+        - '&4%reason%'
+    # in default configuration you will need to change the GUI size to 4 and for best results change the fillitem rows to 4 as well.
+    Slot: 31
+DenyMissionsMoreThenOnce: true #this setting to true, means that if they complete a mission they cannot redo the same mission
+
+#Mission Types: KILL, MINE, PLACE, FISH, TAME, ENCHANT, CONSUME
+Missions:
+  FillItem:
+    Material: BLACK_STAINED_GLASS_PANE
+    Name: ' '
+    Lore:
+      - ' '
+    Rows: 4
+  sugarcane:
+    Slot: 11
+    Material: "SUGAR_CANE"
+    Name: "&f10,000 &2Sugar Cane"
+    Lore:
+      - "&b&lMine &f&n10,000&r &2Sugar Cane"
+    Mission:
+      Type: "MINE"
+      Material: "SUGAR_CANE"
+      Amount: 10000
+    Reward:
+      Commands: ["f points add %faction% 100"]
+  zombie:
+    Slot: 15
+    Material: "ROTTEN_FLESH"
+    Name: "&f1,000 &eZombies"
+    Lore:
+      - "&b&lKill &f&n1,000&r &eZombies"
+    Mission:
+      Type: "KILL"
+      EntityType: "ZOMBIE"
+      Amount: 1000
+    Reward:
+      Commands: ["f points add %faction% 100"]
+  fishing:
+    Slot: 13
+    Material: "FISHING_ROD"
+    Name: "&f100 &6Fish"
+    Lore:
+      - "&b&lCatch fish &n100&r &d&ltimes"
+    Mission:
+      Type: "FISH"
+      Amount: 100
+    Reward:
+      Commands: ["f points add %faction% 100"]
+  animaltaming:
+    Slot: 20
+    Material: "BONE"
+    Name: "&f100 &cTamed Animals"
+    Lore:
+      - "&b&lTame an animal &n100&r &d&ltimes"
+    Mission:
+      Type: "TAME"
+      EntityType: "ALL"
+      Amount: 100
+    Reward:
+      Commands: ["f points add %faction% 100"]
+  enchant:
+    Slot: 22
+    Material: "BOOK"
+    Name: "&f100 &dEnchants"
+    Lore:
+      - "&b&lEnchant &n100&r &d&litems"
+    Mission:
+      Type: "ENCHANT"
+      Amount: 100
+    Reward:
+      Commands: ["f points add %faction% 100"]
+  consume:
+    Slot: 24
+    Material: "COOKED_BEEF"
+    Name: "&f100 &dSteak"
+    Lore:
+      - "&b&lConsume &n100&r &d&lsteak"
+    Mission:
+      Type: "CONSUME"
+      # "ALL" can also be used for item
+      Item: "COOKED_BEEF"
+      Amount: 100
+    Reward:
+      Commands: ["f points add %faction% 100"]

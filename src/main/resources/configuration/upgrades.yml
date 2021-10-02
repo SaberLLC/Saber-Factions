@@ -1,0 +1,415 @@
+############################################################
+# +------------------------------------------------------+ #
+# |                  Faction Upgrades                    | #
+# +------------------------------------------------------+ #
+############################################################
+
+#NOTE: IF YOU WANT TO REMOVE AN UPGRADE SET THE SLOT TO -1
+
+fupgrades:
+  Enabled: true
+  usePointsAsCurrency: false
+  MainMenu:
+    Rows: 5
+    Title: '&8&l{faction}''s Upgrade Menu'
+    DummyItem:
+      Name: '&f'
+      Type: BLACK_STAINED_GLASS_PANE
+      Lore:
+        - ' '
+    Crops:
+      Max-Level: 4
+      Crop-Boost:
+        level-1: 10
+        level-2: 20
+        level-3: 30
+      Cost:
+        level-1: 250000
+        level-2: 500000
+        level-3: 750000
+      DisplayItem:
+        Name: '&c&lGrowth Speed'
+        Type: WHEAT #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&7&oIncrease growth &c&ospeed&7&o of crops in &c&oclaims.'
+          - '&7&oChance to Grow Two Levels.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lChances'
+          - '&4&l* &cLevel 1: &f10% Chance'
+          - '&4&l* &cLevel 2: &f20% Chance'
+          - '&4&l* &cLevel 3: &f30% Chance'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$250,000'
+          - '&4&l* &cLevel 2: &f$500,000'
+          - '&4&l* &cLevel 3: &f$750,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 31
+    Fall-Damage:
+      Cost:
+        level-1: 2000000
+      DisplayItem:
+        Name: '&c&lFall Damage'
+        Type: FEATHER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&7&oDeny &c&ofall-damage&7&o in ALL &c&oclaims.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - '&f'
+          - '&4&l* &cCost: &f$2,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 14
+    SpawnerChunks:
+      Max-Level: 3
+      chunk-limit:
+        level-1: 2
+        level-2: 3
+        level-3: 4
+      Cost:
+        level-1: 2000000
+        level-2: 4000000
+        level-3: 6000000
+      DisplayItem:
+        Name: '&e&lSpawner Chunk Limit'
+        Type: END_PORTAL_FRAME #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&7&oIncreased Spawner &e&oChunk&7&o claims&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lIncrements'
+          - '&4&l* &cLevel 1: &f2'
+          - '&4&l* &cLevel 2: &f3'
+          - '&4&l* &cLevel 3: &f4'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 12
+    EXP:
+      Max-Level: 3
+      EXP-Boost:
+        level-1: 1.5
+        level-2: 2.0
+        level-3: 2.5
+      Cost:
+        level-1: 2000000
+        level-2: 4000000
+        level-3: 6000000
+      DisplayItem:
+        Name: '&c&lEXP Drop Rate'
+        Type: EXP_BOTTLE #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&7&oIncreased Vanilla &e&oEXP&7&o gained from &c&omonsters&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lMultipliers'
+          - '&4&l* &cLevel 1: &f1.5'
+          - '&4&l* &cLevel 2: &f2.0'
+          - '&4&l* &cLevel 3: &f2.5'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 32
+    Power:
+      Max-Level: 3
+      Power-Boost:
+        level-1: 100.0
+        level-2: 200.0
+        level-3: 300.0
+      Cost:
+        level-1: 1000000
+        level-2: 2000000
+        level-3: 3000000
+      DisplayItem:
+        Name: '&c&lFaction Power'
+        Type: NETHER_STAR #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&a&oIncrease&7&o the amount of &c&opower'
+          - '&7&oyour &a&ofaction has&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lIncreased Faction Power'
+          - '&4&l* &cLevel 1: &f100'
+          - '&4&l* &cLevel 2: &f200'
+          - '&4&l* &cLevel 3: &f300'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 22
+    Redstone:
+      Max-Level: 1
+      Cost:
+        level-1: 1000000
+      DisplayItem:
+        Name: '&c&lUnbreakable Redstone'
+        Type: REDSTONE #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&7&oPrevents &e&owater&7&o from being'
+          - '&7&oable to break &c&oredstone'
+          - ''
+          - '&4&l* &cCost: &f$1,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 23
+    Spawners:
+      Max-Level: 3
+      Spawner-Boost:
+        # This is a Percentage so .10 means 10% lowered spawner delay!
+        level-1: 0.10
+        level-2: 0.20
+        level-3: 0.30
+      Cost:
+        level-1: 1000000
+        level-2: 2000000
+        level-3: 3000000
+      DisplayItem:
+        Name: '&c&lSpawn Rate'
+        Type: MOB_SPAWNER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&c&oDecreased&7&o mob spawner delay in &a&oclaims&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lDecreased Spawner Delay'
+          - '&4&l* &cLevel 1: &f0.10%'
+          - '&4&l* &cLevel 2: &f0.20%'
+          - '&4&l* &cLevel 3: &f0.30%'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 30
+    DamageReduct:
+      Max-Level: 3
+      DamageReductPercent:
+        level-1: 3
+        level-2: 5
+        level-3: 7
+      Cost:
+        level-1: 2000000
+        level-2: 4000000
+        level-3: 6000000
+      DisplayItem:
+        Name: '&c&lDamage Reduction'
+        Type: GOLD_CHESTPLATE #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&a&oReduce&7&o the amount of &a&odamage taken&7&o in faction claims.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lDamage Increase'
+          - '&4&l* &cLevel 1: &f3%'
+          - '&4&l* &cLevel 2: &f5%'
+          - '&4&l* &cLevel 3: &f7%'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 7
+    DamageIncrease:
+      Max-Level: 3
+      DamageIncreasePercent:
+        level-1: 3
+        level-2: 5
+        level-3: 7
+      Cost:
+        level-1: 2000000
+        level-2: 4000000
+        level-3: 6000000
+      DisplayItem:
+        Name: '&c&lDamage Increase'
+        Type: DIAMOND_SWORD #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&a&oIncrease&7&o the amount of &a&odamage given&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lDamage Increase'
+          - '&4&l* &cLevel 1: &f3%'
+          - '&4&l* &cLevel 2: &f5%'
+          - '&4&l* &cLevel 3: &f7%'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 1
+    TNT:
+      Max-Level: 3
+      tnt-limit:
+        level-1: 500000
+        level-2: 1000000
+        level-3: 2000000
+      Cost:
+        level-1: 2000000
+        level-2: 4000000
+        level-3: 6000000
+      DisplayItem:
+        Name: '&c&lTNT Bank'
+        Type: TNT #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&a&oUpgrade&7&o your &a&ofactions tnt&7&o limit.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lFaction Tnt Limit'
+          - '&4&l* &cLevel 1: &f500,000'
+          - '&4&l* &cLevel 2: &f1,000,000'
+          - '&4&l* &cLevel 3: &f2,000,000'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$2,000,000'
+          - '&4&l* &cLevel 2: &f$4,000,000'
+          - '&4&l* &cLevel 3: &f$6,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 21
+    Warps:
+      Max-Level: 3
+      warp-limit:
+        level-1: 3
+        level-2: 4
+        level-3: 5
+      Cost:
+        level-1: 1000000
+        level-2: 2000000
+        level-3: 3000000
+      DisplayItem:
+        Name: '&c&lWarps'
+        Type: EYE_OF_ENDER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&a&oIncrease&7&o the &a&ofaction warp&7&o limit.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lFaction Warp Limit'
+          - '&4&l* &cLevel 1: &f3'
+          - '&4&l* &cLevel 2: &f4'
+          - '&4&l* &cLevel 3: &f5'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 24
+    Chest:
+      Max-Level: 3
+      Chest-Size:
+        # This is rows
+        level-1: 2
+        level-2: 3
+        level-3: 4
+      Cost:
+        level-1: 1000000
+        level-2: 2000000
+        level-3: 3000000
+      DisplayItem:
+        Name: '&c&lFaction Chest'
+        Type: CHEST #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&a&oIncreased&7&o Faction Chest Size.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lFaction Chest Size'
+          - '&4&l* &cLevel 1: &f2 Rows'
+          - '&4&l* &cLevel 2: &f3 Rows'
+          - '&4&l* &cLevel 3: &f4 Rows'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 20
+    Members:
+      Max-Level: 3
+      Members-Limit:
+        level-1: 5 #The Number Of Members It Will Increase By
+        level-2: 10
+        level-3: 15
+      Cost:
+        level-1: 1000000
+        level-2: 2000000
+        level-3: 3000000
+      DisplayItem:
+        Name: '&c&lFaction Members'
+        Type: PAPER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&a&oIncrease&7&o the &a&ofaction member&7&o limit.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lFaction Member Limit'
+          - '&4&l* &cLevel 1: &f35'
+          - '&4&l* &cLevel 2: &f40'
+          - '&4&l* &cLevel 3: &f45'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 40
+    Armor:
+      Max-Level: 3
+      Armor-HP-Drop:
+        # HP Drop is in percent so .10 would mean it would drop 10% of the damage to the armor
+        level-1: .10
+        level-2: .15
+        level-3: .20
+      Cost:
+        level-1: 1000000
+        level-2: 2000000
+        level-3: 3000000
+      DisplayItem:
+        Name: '&c&lReinforced Armor'
+        Type: DIAMOND_CHESTPLATE #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&a&oDecreases&7&o damage done &a&oto armor&7&o.'
+          - '&7&oYour current level is &e&l&o{level}'
+          - ''
+          - '&c&lReinforced Armor'
+          - '&4&l* &cLevel 1: &f0.10%'
+          - '&4&l* &cLevel 2: &f0.15%'
+          - '&4&l* &cLevel 3: &f0.20%'
+          - '&f'
+          - '&c&lCosts'
+          - '&4&l* &cLevel 1: &f$1,000,000'
+          - '&4&l* &cLevel 2: &f$2,000,000'
+          - '&4&l* &cLevel 3: &f$3,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 4

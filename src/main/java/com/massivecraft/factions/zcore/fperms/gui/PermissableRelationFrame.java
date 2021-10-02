@@ -27,11 +27,11 @@ public class PermissableRelationFrame {
     private Gui gui;
 
     public PermissableRelationFrame(Faction f) {
-        ConfigurationSection section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.relation");
+        ConfigurationSection section = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.relation");
         assert section != null;
         gui = new Gui(FactionsPlugin.getInstance(),
                 section.getInt("rows", 4),
-                FactionsPlugin.getInstance().color(Objects.requireNonNull(FactionsPlugin.getInstance().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", f.getTag())));
+                FactionsPlugin.getInstance().color(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(FPlayer fplayer) {
@@ -40,7 +40,7 @@ public class PermissableRelationFrame {
         ItemStack dumby = buildDummyItem();
         // Fill background of GUI with dumbyitem & replace GUI assets after
         for (int x = 0; x <= (gui.getRows() * 9) - 1; x++) GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
-        ConfigurationSection sec = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.relation");
+        ConfigurationSection sec = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.relation");
         for (String key : sec.getConfigurationSection("slots").getKeys(false)) {
             if (key == null || sec.getInt("slots." + key) < 0) continue;
             GUIItems.set(sec.getInt("slots." + key), new GuiItem(buildAsset("fperm-gui.relation.materials." + key, key), e -> {
@@ -61,12 +61,14 @@ public class PermissableRelationFrame {
         // Since only two struct implement Permissible, using ternary operator to cast type is safe. By TwinkleStar03
         String relationName = fromRelation instanceof Relation ? ((Relation) fromRelation).nicename : ((Role) fromRelation).nicename;
         String nameCapitalized = relation.substring(0, 1).toUpperCase() + relation.substring(1);
-        ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString(loc)).get().parseItem();
+        ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString(loc)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(FactionsPlugin.getInstance().color(
                     FactionsPlugin
                             .getInstance()
+                            .getFileManager()
+                            .getFperms()
                             .getConfig()
                             .getString("fperm-gui.relation.Placeholder-Item.Name")
                             .replace("{relation}", relationName != null ? relationName : nameCapitalized)));
@@ -76,7 +78,7 @@ public class PermissableRelationFrame {
     }
 
     private ItemStack buildDummyItem() {
-        ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fperm-gui.dummy-item");
+        ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.dummy-item");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         // So u can set it to air.

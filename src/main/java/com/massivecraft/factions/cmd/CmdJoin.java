@@ -137,7 +137,7 @@ public class CmdJoin extends FCommand {
 
     private int getFactionMemberLimit(Faction f) {
         if (f.getUpgrade(UpgradeType.MEMBERS) == 0) return Conf.factionMemberLimit;
-        return Conf.factionMemberLimit + FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Members.Members-Limit.level-" + f.getUpgrade(UpgradeType.MEMBERS));
+        return Conf.factionMemberLimit + FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Members.Members-Limit.level-" + f.getUpgrade(UpgradeType.MEMBERS));
     }
 
     @Override

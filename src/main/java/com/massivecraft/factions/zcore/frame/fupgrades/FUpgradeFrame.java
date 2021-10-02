@@ -24,8 +24,8 @@ public class FUpgradeFrame {
 
     public FUpgradeFrame(Faction f) {
         this.gui = new Gui(FactionsPlugin.getInstance(),
-                FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Rows", 5),
-                ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getConfig()
+                FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Rows", 5),
+                ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig()
                         .getString("fupgrades.MainMenu.Title").replace("{faction}", f.getTag())));
     }
 
@@ -41,8 +41,8 @@ public class FUpgradeFrame {
                     e.setCancelled(true);
                     FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
                     if (fme.getFaction().getUpgrade(value) == value.getMaxLevel()) return;
-                    int cost = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu." + value.toString() + ".Cost.level-" + (fme.getFaction().getUpgrade(value) + 1));
-                    if (FactionsPlugin.getInstance().getConfig().getBoolean("fupgrades.usePointsAsCurrency")) {
+                    int cost = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu." + value + ".Cost.level-" + (fme.getFaction().getUpgrade(value) + 1));
+                    if (FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getBoolean("fupgrades.usePointsAsCurrency")) {
                         if (fme.getFaction().getPoints() >= cost) {
                             fme.getFaction().setPoints(fme.getFaction().getPoints() - cost);
                             fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, fme.getFaction().getPoints());
@@ -96,19 +96,19 @@ public class FUpgradeFrame {
 
     private void updateWarps(Faction faction) {
         int level = faction.getUpgrade(UpgradeType.WARP);
-        int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Warps.warp-limit.level-" + (level + 1));
+        int size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Warps.warp-limit.level-" + (level + 1));
         faction.setWarpsLimit(size);
     }
 
     private void updateSpawnerChunks(Faction faction) {
         int level = faction.getUpgrade(UpgradeType.SPAWNERCHUNKS);
-        int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.SpawnerChunks.chunk-limit.level-" + (level + 1));
+        int size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.SpawnerChunks.chunk-limit.level-" + (level + 1));
         faction.setAllowedSpawnerChunks(size);
     }
 
     private void updateTNT(Faction faction) {
         int level = faction.getUpgrade(UpgradeType.TNT);
-        int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.TNT.tnt-limit.level-" + (level + 1));
+        int size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.TNT.tnt-limit.level-" + (level + 1));
         faction.setTntBankLimit(size);
     }
 
@@ -118,19 +118,19 @@ public class FUpgradeFrame {
             if (player.getOpenInventory().getTitle().equalsIgnoreCase(invName)) player.closeInventory();
         }
         int level = faction.getUpgrade(UpgradeType.CHEST);
-        int size = FactionsPlugin.getInstance().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-" + (level + 1));
+        int size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-" + (level + 1));
         faction.setChestSize(size * 9);
     }
 
     private void updateFactionPowerBoost(Faction f) {
-        double boost = FactionsPlugin.getInstance().getConfig().getDouble("fupgrades.MainMenu.Power.Power-Boost.level-" + (f.getUpgrade(UpgradeType.POWER) + 1));
+        double boost = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.Power.Power-Boost.level-" + (f.getUpgrade(UpgradeType.POWER) + 1));
         if (boost < 0.0) return;
         f.setPowerBoost(boost);
     }
 
 
     private ItemStack buildDummyItem() {
-        ConfigurationSection config = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fupgrades.MainMenu.DummyItem");
+        ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getConfigurationSection("fupgrades.MainMenu.DummyItem");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {

@@ -29,7 +29,6 @@ import com.massivecraft.factions.struct.nms.impl.*;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.adapters.*;
 import com.massivecraft.factions.util.flight.FlightEnhance;
-import com.massivecraft.factions.util.particle.ParticleProvider;
 import com.massivecraft.factions.util.particle.darkblade12.ReflectionUtils;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.CommandVisibility;
@@ -85,7 +84,6 @@ public class FactionsPlugin extends MPlugin {
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
     public SkriptAddon skriptAddon;
     public boolean hookedPlayervaults;
-    public ParticleProvider particleProvider;
     public FLogManager fLogManager;
     public List<ReserveObject> reserveObjects;
     public FileManager fileManager;
@@ -154,7 +152,6 @@ public class FactionsPlugin extends MPlugin {
 
         StartupParameter.initData(this);
 
-        VersionProtocol.doBigThingsWithParticlesOMEGALUL();
         VersionProtocol.printVerionInfo();
 
         this.nmsManager = setupNMS();
@@ -175,7 +172,6 @@ public class FactionsPlugin extends MPlugin {
         }
         getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
-
 
         if (Conf.userSpawnerChunkSystem) {
             this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
