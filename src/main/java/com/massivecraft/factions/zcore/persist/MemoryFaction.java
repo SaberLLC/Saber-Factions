@@ -989,15 +989,15 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         for (Relation rel : Relation.values()) {
             if (rel == Relation.MEMBER) continue;
-            if (Conf.defaultFactionPermissions.containsKey(rel.nicename.toUpperCase())) {
-                permissions.put(rel, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(rel.nicename.toUpperCase())));
+            if (Conf.defaultFactionPermissions.containsKey(rel.name())) {
+                permissions.put(rel, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(rel.name())));
             } else permissions.put(rel, new HashMap<>(defaultMap));
         }
 
         for (Role role : Role.values()) {
             if (role == Role.LEADER) continue;
-            if (Conf.defaultFactionPermissions.containsKey(role.nicename.toUpperCase())) {
-                permissions.put(role, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(role.nicename.toUpperCase())));
+            if (Conf.defaultFactionPermissions.containsKey(role.name())) {
+                permissions.put(role, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(role.name())));
             } else permissions.put(role, new HashMap<>(defaultMap));
         }
     }
