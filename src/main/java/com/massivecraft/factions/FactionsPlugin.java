@@ -3,12 +3,7 @@ package com.massivecraft.factions;
 import ch.njol.skript.SkriptAddon;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.boosters.listener.RedemptionListener;
-import com.massivecraft.factions.boosters.listener.types.ExperienceListener;
-import com.massivecraft.factions.boosters.listener.types.MobDropListener;
-import com.massivecraft.factions.boosters.listener.types.mcMMOListener;
-import com.massivecraft.factions.boosters.struct.BoosterManager;
-import com.massivecraft.factions.boosters.task.BoosterTask;
+import com.massivecraft.factions.addon.AddonManager;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCmdRoot;
@@ -74,7 +69,6 @@ public class FactionsPlugin extends MPlugin {
     // a green light to use the api.
     public static boolean startupFinished = false;
     public boolean PlaceholderApi;
-    public BoosterManager boosterManager;
     // Commands
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
@@ -177,19 +171,6 @@ public class FactionsPlugin extends MPlugin {
             this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
         }
 
-        if (Conf.useBoosterSystem) {
-            (this.boosterManager = new BoosterManager()).loadActiveBoosters();
-            this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new BoosterTask(), 20L, 20L);
-            getServer().getPluginManager().registerEvents(new RedemptionListener(boosterManager), this);
-            getServer().getPluginManager().registerEvents(new ExperienceListener(), this);
-
-            if (Bukkit.getPluginManager().getPlugin("mcMMO") != null) {
-                getServer().getPluginManager().registerEvents(new mcMMOListener(), this);
-            }
-
-            getServer().getPluginManager().registerEvents(new MobDropListener(), this);
-        }
-
         // Register Event Handlers
         eventsListener = new Listener[]{
                 new FactionsChatListener(),
@@ -215,6 +196,9 @@ public class FactionsPlugin extends MPlugin {
         if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 
         this.setupPlaceholderAPI();
+
+        AddonManager.getAddonManagerInstance().loadAddons();
+
         this.postEnable();
         this.loadSuccessful = true;
         // Set startup finished to true. to give plugins hooking in a greenlight
@@ -292,11 +276,6 @@ public class FactionsPlugin extends MPlugin {
         } catch (NoClassDefFoundError ex) {
         }
     }
-
-    public BoosterManager getBoosterManager() {
-        return boosterManager;
-    }
-
 
     @Override
     public GsonBuilder getGsonBuilder() {
