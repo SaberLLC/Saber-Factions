@@ -60,6 +60,7 @@ public final class AddonManager {
                 try {
                     constructor = addonMainClass.getConstructor(FactionsPlugin.class);
                     factionsAddon = (FactionsAddon) constructor.newInstance(plugin);
+                    FactionsPlugin.getInstance().getFactionsAddonHashMap().put(factionsAddon.getAddonName(), factionsAddon);
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }

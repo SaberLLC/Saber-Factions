@@ -54,7 +54,7 @@ public abstract class FactionsAddon {
         Logger.print("Addon: " + getAddonName() + " loaded successfully!" , Logger.PrefixType.DEFAULT);
     }
 
-    private void disableAddon() {
+    public void disableAddon() {
 
         for (Listener listener : listenersToRegister()) {
 

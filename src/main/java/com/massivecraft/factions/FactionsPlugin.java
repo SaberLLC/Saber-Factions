@@ -4,6 +4,7 @@ import ch.njol.skript.SkriptAddon;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.addon.AddonManager;
+import com.massivecraft.factions.addon.FactionsAddon;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCmdRoot;
@@ -63,6 +64,7 @@ public class FactionsPlugin extends MPlugin {
     public static FactionsPlugin instance;
     public static boolean cachedRadiusClaim;
     public static Permission perms = null;
+    private HashMap<String, FactionsAddon> factionsAddonHashMap;
     // This plugin sets the boolean true when fully enabled.
     // Plugins can check this boolean while hooking in have
     // a green light to use the api.
@@ -195,7 +197,7 @@ public class FactionsPlugin extends MPlugin {
         if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 
         this.setupPlaceholderAPI();
-
+        factionsAddonHashMap = new HashMap<>();
         AddonManager.getAddonManagerInstance().loadAddons();
 
         this.postEnable();
@@ -231,6 +233,10 @@ public class FactionsPlugin extends MPlugin {
                 lore.set(x, lore.get(x).replace(placeholder.getTag(), placeholder.getReplace()));
         }
         return lore;
+    }
+
+    public HashMap<String, FactionsAddon> getFactionsAddonHashMap() {
+        return factionsAddonHashMap;
     }
 
     public NMSManager getNmsManager() {
