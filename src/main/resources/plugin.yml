@@ -9,8 +9,6 @@ commands:
   factions:
     description: Reference command for Factions.
     aliases: [f]
-  chunkbuster:
-    description: Reference command for Chunkbusters.
 permissions:
   factions.kit.admin:
     description: All faction permissions.

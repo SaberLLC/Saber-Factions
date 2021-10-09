@@ -3,7 +3,10 @@ package pw.saber.corex.listeners;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.event.FPlayerStoppedFlying;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +21,7 @@ public class EnemySpawnerMine implements Listener {
     public void onSpawnerMine(BlockBreakEvent e) {
         if (!e.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial())) return;
 
-        if (nearbyEnemies(e.getPlayer(), CoreX.getConfig().fetchDouble("AntiSpawnerMine.Radius"), null) && !e.getPlayer().hasPermission("sabercore.spawnermine,bypass")) {
+        if (hasEnemiesNear(e.getPlayer(), CoreX.getConfig().fetchDouble("AntiSpawnerMine.Radius")) && !e.getPlayer().hasPermission("sabercore.spawnermine,bypass")) {
             e.setCancelled(true);
         }
         if (e.isCancelled()) {
@@ -26,13 +29,17 @@ public class EnemySpawnerMine implements Listener {
         }
     }
 
-    public boolean nearbyEnemies(Player player, double d, String str) {
-        List<Entity> nearbyEntities = player.getNearbyEntities(d, d, d);
-        FPlayer byPlayer = FPlayers.getInstance().getByPlayer(player);
-        for (Entity entity : nearbyEntities) {
-            if ((entity instanceof Player) && (str == null || entity.hasPermission(str))) {
-                FPlayer byPlayer2 = FPlayers.getInstance().getByPlayer((Player) entity);
-                if (!(byPlayer2.getFactionId().equals(byPlayer.getFactionId()) || byPlayer2.getFaction().getRelationWish(byPlayer.getFaction()).isAlly())) {
+    public boolean hasEnemiesNear(Player player, double d) {
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+        for (Entity e : player.getNearbyEntities(d, d, d)) {
+            if (e instanceof Player) {
+                Player eplayer = (((Player) e).getPlayer());
+                if (eplayer == null) continue;
+                if (eplayer.hasMetadata("NPC")) continue;
+                FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
+                if (efplayer == null) continue;
+                if (!player.canSee(eplayer) || efplayer.isVanished()) continue;
+                if (fPlayer.getRelationTo(efplayer).equals(Relation.ENEMY)) {
                     return true;
                 }
             }

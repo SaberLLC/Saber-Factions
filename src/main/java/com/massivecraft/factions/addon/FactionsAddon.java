@@ -30,7 +30,7 @@ public abstract class FactionsAddon {
 
     private void enableAddon() {
         onEnable();
-        
+
         for (Listener listener : listenersToRegister()) {
 
             if (listener != null) {
