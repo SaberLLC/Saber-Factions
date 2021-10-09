@@ -122,7 +122,10 @@ public class CoreX {
 
         if(getConfig().fetchBoolean("Features.Anti-Vehicle-Teleport")) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiVehicleTeleport(), FactionsPlugin.getInstance());
+        }
 
+        if(getConfig().fetchBoolean("Features.God-Apple-Cooldown")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new GappleCooldown(), FactionsPlugin.getInstance());
         }
 
         //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {

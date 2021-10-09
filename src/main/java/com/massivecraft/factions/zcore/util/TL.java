@@ -402,6 +402,7 @@ public enum TL {
     DISCORD_CODE_INVALID_KEY("That code is invalid, verify the code is correct."),
     DISCORD_CODE_INVALID_FORMAT("If you are submitting a code please only type the code. Example message: 0000"),
 
+    GOD_APPLE_COOLDOWN("&c&l[!] &cYou may eat another god apple again in &b{seconds} seconds&c!"),
     ENDER_PEARL_COOLDOWN("&c&l[!] &cYou may enderpearl again in &b{seconds} seconds&c!"),
     VEHICLE_TELEPORT_BLOCK("&c&l[!] You cannot teleport while you are inside a vehicle"),
 

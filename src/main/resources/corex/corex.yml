@@ -37,12 +37,14 @@ Features:
   Enemy-Spawner-Mine: false #Denies Players to Mine spawners if they are in {x} radius of an enemy
   Insta-Sponge-Break: true #Instantly Break Sponges
   Anti-Natural-Mobs: false #Denies all natural mob spawns
+  God-Apple-Cooldown: false #Denies players spam eating god apples
 
 AntiSpawnerMine:
   Radius: 20.0 # Radius that the player will be denied mining spawners when an enemy is near.
 
 Cooldowns:
-  EnderPearl: 15
+  EnderPearl: 15 #Amount of time in seconds
+  God_Apple: 60
 
 ironGolemHealth: 50.0 #50.0 = 25 hearts
 
