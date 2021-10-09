@@ -29,7 +29,8 @@ public abstract class FactionsAddon {
     }
 
     private void enableAddon() {
-
+        onEnable();
+        
         for (Listener listener : listenersToRegister()) {
 
             if (listener != null) {
@@ -51,9 +52,6 @@ public abstract class FactionsAddon {
         }
 
         Logger.print("Addon: " + getAddonName() + " loaded successfully!" , Logger.PrefixType.DEFAULT);
-
-        onEnable();
-
     }
 
     private void disableAddon() {

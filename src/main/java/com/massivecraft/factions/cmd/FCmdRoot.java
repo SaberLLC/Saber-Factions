@@ -24,7 +24,6 @@ import com.massivecraft.factions.cmd.tnt.CmdTntFill;
 import com.massivecraft.factions.discord.CmdInviteBot;
 import com.massivecraft.factions.discord.CmdSetGuild;
 import com.massivecraft.factions.missions.CmdMissions;
-import com.massivecraft.factions.shop.CmdShop;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import me.lucko.commodore.CommodoreProvider;
@@ -149,7 +148,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdViewChest cmdViewChest = new CmdViewChest();
     public CmdPoints cmdPoints = new CmdPoints();
     //public CmdLogout cmdLogout = new CmdLogout();
-    public CmdShop cmdShop = new CmdShop();
     public CmdMissions cmdMissions = new CmdMissions();
     public CmdStrikes cmdStrikes = new CmdStrikes();
     public CmdCheck cmdCheck = new CmdCheck();
@@ -378,10 +376,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         if (FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getBoolean("Missions-Enabled", false) && !missionsEnabled) {
             this.addSubCommand(this.cmdMissions);
             missionsEnabled = true;
-        }
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("F-Shop.Enabled", false) && !fShopEnabled) {
-            this.addSubCommand(this.cmdShop);
-            fShopEnabled = true;
         }
         if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled", false) && !invSeeEnabled) {
             this.addSubCommand(this.cmdInventorySee);

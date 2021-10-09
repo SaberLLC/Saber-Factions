@@ -571,24 +571,6 @@ checkpoints:
 fnear:
   Enabled: true
   Radius: 50
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Shop                        | #
-# +------------------------------------------------------+ #
-############################################################
-#Faction Shop is 100% configurable (See More in shop.yml)
-F-Shop:
-  Enabled: true
-  GUI:
-    Name: '&b&lFaction Shop'
-    Rows: 4
-    dummy-item:
-      Type: BLACK_STAINED_GLASS_PANE
-      Name: '&cFaction Points: &b{points}'
-      Lore:
-        - ' '
-
 ############################################################
 # +------------------------------------------------------+ #
 # |           Faction Command Cooldowns                  | #

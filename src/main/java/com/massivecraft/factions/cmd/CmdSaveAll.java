@@ -30,7 +30,6 @@ public class CmdSaveAll extends FCommand {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        FactionsPlugin.getInstance().getFileManager().getShop().saveFile();
         context.msg(TL.COMMAND_SAVEALL_SUCCESS);
     }
 
