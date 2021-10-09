@@ -44,22 +44,6 @@ AntiSpawnerMine:
 Cooldowns:
   EnderPearl: 15
 
-Chunkbuster:
-  Run-Async: true
-  Countdown: 10
-  Item:
-    Type: END_PORTAL_FRAME
-    Display-Name: '&c&lChunkbuster &7&o(Place)'
-    Lore:
-      - ''
-      - '&7Place on the ground to remove chunk!'
-  denyBustedItems:
-    - 'CHEST'
-    - 'TRAPPED_CHEST'
-    - 'SPAWNER'
-    - 'AIR'
-    - 'END_PORTAL_FRAME'
-
 ironGolemHealth: 50.0 #50.0 = 25 hearts
 
 # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/enchantments/Enchantment.html
