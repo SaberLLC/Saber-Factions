@@ -700,6 +700,34 @@ fchest:
 
 ############################################################
 # +------------------------------------------------------+ #
+# |                  Faction Banners                     | #
+# +------------------------------------------------------+ #
+############################################################
+fbanners:
+  Enabled: true
+  Item:
+    Name: '&c&l*&f&l*&c&l* &c&lWar Banner &7(Place) &c&l*&f&l*&c&l*'
+    Lore:
+      - '&7Place this banner in the &nWarzone.&7 This'
+      - '&7will create a &nWarp Point&7 for your faction members.'
+      - ''
+      - '&e&lEffects'
+      - '&e&l* &fStrength II'
+      - '&e&l* &fSpeed II'
+  Banner-Cost: 5000 #The amount charged to change a banner into a War Banner
+  Banner-Time: 60 #IN SECONDS - This is how long the banner will last.
+  Banner-Place-Cooldown: 300
+  Banner-Effect-Radius: 16
+  Effects:
+    - INCREASE_DAMAGE:2
+    - SPEED:2
+  BannerHolo: '&c{Faction}''s War Banner'
+  Placeable:
+    Warzone: false
+    Enemy: true
+
+############################################################
+# +------------------------------------------------------+ #
 # |                   Faction Audit                      | #
 # +------------------------------------------------------+ #
 ############################################################
@@ -746,34 +774,6 @@ faudit-gui:
     spawner_edit: SPAWNER
     rank_edit: GOLDEN_HELMET
     f_tnt: TNT
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Banners                     | #
-# +------------------------------------------------------+ #
-############################################################
-fbanners:
-  Enabled: true
-  Item:
-    Name: '&c&l*&f&l*&c&l* &c&lWar Banner &7(Place) &c&l*&f&l*&c&l*'
-    Lore:
-      - '&7Place this banner in the &nWarzone.&7 This'
-      - '&7will create a &nWarp Point&7 for your faction members.'
-      - ''
-      - '&e&lEffects'
-      - '&e&l* &fStrength II'
-      - '&e&l* &fSpeed II'
-  Banner-Cost: 5000 #The amount charged to change a banner into a War Banner
-  Banner-Time: 60 #IN SECONDS - This is how long the banner will last.
-  Banner-Place-Cooldown: 300
-  Banner-Effect-Radius: 16
-  Effects:
-    - INCREASE_DAMAGE:2
-    - SPEED:2
-  BannerHolo: '&c{Faction}''s War Banner'
-  Placeable:
-    Warzone: false
-    Enemy: true
 
 ############################################################
 # +------------------------------------------------------+ #

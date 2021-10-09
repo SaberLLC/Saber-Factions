@@ -65,6 +65,7 @@ public class ShopGUIFrame {
                             .replace("%points%", cost + "")
                             .replace("%amount%", amount + "")));
                     fPlayer.getPlayer().getInventory().addItem(ItemUtils.getItem(l));
+                    buildGUI(fPlayer);
                 } else {
                     e.setCancelled(true);
                     fPlayer.getPlayer().closeInventory();

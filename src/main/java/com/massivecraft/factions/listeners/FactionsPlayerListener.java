@@ -656,11 +656,6 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
-    private String convertTime(int time) {
-        String result = String.valueOf(Math.round((System.currentTimeMillis() / 1000L - time) / 36.0D) / 100.0D);
-        return (result.length() == 3 ? result + "0" : result) + "/hrs ago";
-    }
-
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
         FPlayer fme = FPlayers.getInstance().getById(e.getPlayer().getUniqueId().toString());

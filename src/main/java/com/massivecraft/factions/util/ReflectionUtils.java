@@ -1,4 +1,4 @@
-package com.massivecraft.factions.util.particle.darkblade12;
+package com.massivecraft.factions.util;
 
 import org.bukkit.Bukkit;
 

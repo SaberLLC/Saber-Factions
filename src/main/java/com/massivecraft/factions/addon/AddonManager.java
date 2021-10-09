@@ -30,68 +30,45 @@ public final class AddonManager {
         addonFolder = new File(plugin.getDataFolder() + "/addons");
 
         if (!addonFolder.exists()) {
-
             addonFolder.mkdir();
-
         }
 
         addonConfigFolder = new File(plugin.getDataFolder() + "/configuration/addons");
-
         if (!addonConfigFolder.exists()) {
-
             addonConfigFolder.mkdir();
-
         }
-
     }
 
     public static AddonManager getAddonManagerInstance() {
-
         if (addonManagerInstance == null) {
-
             addonManagerInstance = new AddonManager(FactionsPlugin.getInstance());
-
         }
-
         return addonManagerInstance;
-
     }
 
     private File[] loadAddonFiles() {
-
         return addonFolder.listFiles(file -> !file.isDirectory() && file.getName().endsWith("jar"));
-
     }
 
 
     public void loadAddons() {
-
         for (File addon : loadAddonFiles()) {
-
             Class<?> addonMainClass = getAddonMainClass(addon);
-
             if (addonMainClass != null) {
-
                 Constructor<?> constructor;
                 FactionsAddon factionsAddon;
-
                 try {
                     constructor = addonMainClass.getConstructor(FactionsPlugin.class);
                     factionsAddon = (FactionsAddon) constructor.newInstance(plugin);
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
-
             }
-
         }
-
     }
 
     private Class<?> getAddonMainClass(final File addon) {
-
         //Setup this so we go deep into directories
-
         Class<?> mainClass = null;
         try {
             URLClassLoader child = new URLClassLoader(
@@ -113,9 +90,7 @@ public final class AddonManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return mainClass;
-
     }
 
 }

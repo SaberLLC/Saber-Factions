@@ -1,7 +1,5 @@
 package com.massivecraft.factions.util;
 
-import com.massivecraft.factions.util.particle.darkblade12.ReflectionUtils;
-
 public class VersionProtocol {
 
     public static void printVerionInfo() {

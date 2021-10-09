@@ -14,6 +14,8 @@ import java.util.Set;
 
 public abstract class FactionsAddon {
 
+    //Adding our custom config impl to addons?
+
     private String addonName;
     private FactionsPlugin plugin;
 
@@ -27,9 +29,6 @@ public abstract class FactionsAddon {
     }
 
     private void enableAddon() {
-
-        onEnable();
-
 
         for (Listener listener : listenersToRegister()) {
 
@@ -52,6 +51,9 @@ public abstract class FactionsAddon {
         }
 
         Logger.print("Addon: " + getAddonName() + " loaded successfully!" , Logger.PrefixType.DEFAULT);
+
+        onEnable();
+
     }
 
     private void disableAddon() {
