@@ -460,8 +460,8 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>28.0-jre</version>
-            <scope>provided</scope>
+            <version>21.0</version>
+            <scope>compile</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>jsr305</artifactId>
