@@ -26,6 +26,7 @@ import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.adapters.*;
 import com.massivecraft.factions.util.flight.FlightEnhance;
 import com.massivecraft.factions.util.ReflectionUtils;
+import com.massivecraft.factions.util.flight.stuct.AsyncPlayerMap;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MPlugin;
@@ -73,7 +74,7 @@ public class FactionsPlugin extends MPlugin {
     // Commands
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
-
+    private AsyncPlayerMap asyncPlayerMap;
     public short version;
     public boolean useNonPacketParticles = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
@@ -191,6 +192,8 @@ public class FactionsPlugin extends MPlugin {
         if (Conf.useGraceSystem) {
             getServer().getPluginManager().registerEvents(timerManager.graceTimer, this);
         }
+
+        this.asyncPlayerMap = new AsyncPlayerMap(this);
 
         this.getCommand(refCommand).setExecutor(cmdBase);
 
@@ -402,6 +405,9 @@ public class FactionsPlugin extends MPlugin {
         }
     }
 
+    public AsyncPlayerMap getAsyncPlayerMap() {
+        return asyncPlayerMap;
+    }
 
     // -------------------------------------------- //
     // Functions for other plugins to hook into

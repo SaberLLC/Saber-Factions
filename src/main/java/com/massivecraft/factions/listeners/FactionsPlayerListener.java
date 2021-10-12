@@ -19,10 +19,7 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.Cooldown;
-import com.massivecraft.factions.util.Logger;
-import com.massivecraft.factions.util.VisualizeUtil;
+import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
@@ -45,6 +42,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -472,24 +470,12 @@ public class FactionsPlayerListener implements Listener {
         FScoreboard.remove(me, event.getPlayer());
     }
 
-    public String parseAllPlaceholders(String string, Faction faction, Player player) {
-        string = TagUtil.parsePlaceholders(player, string);
-        string = string.replace("{Faction}", faction.getTag())
-                .replace("{online}", faction.getOnlinePlayers().size() + "")
-                .replace("{offline}", faction.getFPlayers().size() - faction.getOnlinePlayers().size() + "")
-                .replace("{chunks}", faction.getAllClaims().size() + "")
-                .replace("{power}", faction.getPower() + "")
-                .replace("{leader}", faction.getFPlayerAdmin() + "");
-        return string;
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
 
-        // clear visualization
-        if (event.getFrom().getBlockX() != event.getTo().getBlockX() || event.getFrom().getBlockY() != event.getTo().getBlockY() || event.getFrom().getBlockZ() != event.getTo().getBlockZ()) {
+        if(!ChunkReference.isSameBlock(event)) {
             VisualizeUtil.clear(event.getPlayer());
             if (me.isWarmingUp()) {
                 me.clearWarmup();
@@ -497,21 +483,17 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        // quick check to make sure player is moving between chunks; good performance boost
-        if (event.getFrom().getBlockX() >> 4 == event.getTo().getBlockX() >> 4 && event.getFrom().getBlockZ() >> 4 == event.getTo().getBlockZ() >> 4 && event.getFrom().getWorld() == event.getTo().getWorld()) {
+        if(ChunkReference.isSameChunk(event)) {
             return;
         }
 
-        // Did we change coord?
+            // Did we change coord?
         FLocation from = me.getLastStoodAt();
         FLocation to = new FLocation(event.getTo());
 
         if (from.equals(to)) {
             return;
         }
-
-
-        // Yes we did change coord (:
 
         me.setLastStoodAt(to);
 
@@ -551,24 +533,7 @@ public class FactionsPlayerListener implements Listener {
         if (changedFaction) {
             Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(new FPlayerEnteredFactionEvent(factionTo, factionFrom, me)));
             if (FactionsPlugin.getInstance().getConfig().getBoolean("Title.Show-Title")) {
-                String title = FactionsPlugin.getInstance().getConfig().getString("Title.Format.Title");
-                title = title.replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
-                title = parseAllPlaceholders(title, factionTo, player);
-                String subTitle = FactionsPlugin.getInstance().getConfig().getString("Title.Format.Subtitle").replace("{Description}", factionTo.getDescription()).replace("{Faction}", factionTo.getColorTo(me) + factionTo.getTag());
-                subTitle = parseAllPlaceholders(subTitle, factionTo, player);
-                final String finalTitle = title;
-                final String finalsubTitle = subTitle;
-                if (FactionsPlugin.getInstance().version != 7) {
-                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-                        if (FactionsPlugin.getInstance().version != 8) {
-                            me.getPlayer().sendTitle(FactionsPlugin.getInstance().color(finalTitle), FactionsPlugin.getInstance().color(finalsubTitle), FactionsPlugin.getInstance().getConfig().getInt("Title.Options.FadeInTime"),
-                                    FactionsPlugin.getInstance().getConfig().getInt("Title.Options.ShowTime"),
-                                    FactionsPlugin.getInstance().getConfig().getInt("Title.Options.FadeOutTime"));
-                        } else {
-                            me.getPlayer().sendTitle(FactionsPlugin.getInstance().color(finalTitle), FactionsPlugin.getInstance().color(finalsubTitle));
-                        }
-                    }, 5);
-                }
+                player.setMetadata("showFactionTitle", new FixedMetadataValue(FactionsPlugin.getInstance(), true));
             }
         }
 

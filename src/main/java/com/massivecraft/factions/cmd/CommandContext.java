@@ -367,16 +367,11 @@ public class CommandContext {
             return false;
         }
 
-        if (i.getRole().value > you.getRole().value || i.getRole().equals(Role.LEADER)) return true;
+        if (i.getRole().value >= you.getRole().value || i.getRole() == Role.LEADER) {
+            return true;
+        }
 
-        if (you.getRole().equals(Role.LEADER)) i.msg(TL.COMMAND_CONTEXT_ADMINISTER_ADMIN_REQUIRED);
-
-        else if (i.getRole().equals(Role.MODERATOR)) {
-
-            if (i == you) return true; //Moderators can control themselves
-            else i.msg(TL.COMMAND_CONTEXT_ADMINISTER_SAME_RANK_CONTROL);
-
-        } else i.msg(TL.COMMAND_CONTEXT_ADMINISTER_MOD_REQUIRED);
+        i.sendMessage(FactionsPlugin.getInstance().txt.parse("%s <b>has a higher rank than you.", you.describeTo(i, true)));
 
         return false;
     }
