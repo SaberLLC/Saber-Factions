@@ -10,6 +10,9 @@
 #<-------------------------------------->NOTES<-------------------------------------->#
 
 Features:
+  Anti-Boat-Placement: false #Denies Players From Placing Boats
+  Anti-Minecart-Placement: false #Denies Players From Placing Minecarts
+
   Anti-Vehicle-Teleport: true #Denies Block Phasing Through Exiting Vehicles!
   EnderPearl-Cooldown: false #Places a Cooldown on Ender Pearls!
   Anti-Nether-Portal: false #Denies players teleporting from nether portals

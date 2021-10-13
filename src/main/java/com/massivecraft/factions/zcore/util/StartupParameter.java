@@ -75,17 +75,6 @@ public class StartupParameter {
 
         FactionsPlugin.cachedRadiusClaim = Conf.useRadiusClaimSystem;
 
-        if (FactionsPlugin.getInstance().getServer().getPluginManager().getPlugin("Skript") != null) {
-            Logger.print("Skript was found! Registering SaberFactions Addon...", Logger.PrefixType.DEFAULT);
-            FactionsPlugin.getInstance().skriptAddon = Skript.registerAddon(FactionsPlugin.getInstance());
-            try {
-                FactionsPlugin.getInstance().skriptAddon.loadClasses("com.massivecraft.factions.skript", "expressions");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            Logger.print("Skript addon registered!", Logger.PrefixType.DEFAULT);
-        }
-
         CoreX.init();
 
         if (Conf.useCheckSystem) {

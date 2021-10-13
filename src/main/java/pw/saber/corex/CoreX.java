@@ -128,6 +128,14 @@ public class CoreX {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new GappleCooldown(), FactionsPlugin.getInstance());
         }
 
+        if(getConfig().fetchBoolean("Features.Anti-Boat-Placement")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBoatPlacement(), FactionsPlugin.getInstance());
+        }
+
+        if(getConfig().fetchBoolean("Features.Anti-Minecart-Placement")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiMinecartPlacement(), FactionsPlugin.getInstance());
+        }
+
         //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {
         //    FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ChunkBusterListener(), FactionsPlugin.getInstance());
         //    FactionsPlugin.getInstance().getCommand("chunkbuster").setExecutor(new CommandChunkbuster());
