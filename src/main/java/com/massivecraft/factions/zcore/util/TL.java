@@ -809,6 +809,7 @@ public enum TL {
     COMMAND_RELATIONS_PROPOSAL_SENT("&c&l[!]&7 &c%1$s&7 were informed that you wish to be &c%2$s&7."),
 
     COMMAND_RELOAD_TIME("&c&l[!]&7 Reloaded &call &7configuration files from disk, took &c%1$d ms."),
+    COMMAND_RELOAD_NOTICE("&c&l[!] NOTE: &fFiles That Require Stopping Server: conf.json, any file in the configuration directory."),
     COMMAND_RELOAD_DESCRIPTION("Reload data file(s) from disk"),
 
     COMMAND_RESERVE_DESCRIPTION("Reserve any faction name for any player"),

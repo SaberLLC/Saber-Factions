@@ -41,6 +41,7 @@ public class CmdReload extends FCommand {
         long timeReload = (System.currentTimeMillis() - timeInitStart);
 
         context.msg(TL.COMMAND_RELOAD_TIME, timeReload);
+        context.msg(TL.COMMAND_RELOAD_NOTICE);
     }
 
     @Override
