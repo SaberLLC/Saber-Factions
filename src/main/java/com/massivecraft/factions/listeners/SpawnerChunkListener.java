@@ -2,7 +2,6 @@ package com.massivecraft.factions.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -19,7 +18,6 @@ public class SpawnerChunkListener implements Listener {
             Location location = e.getBlockPlaced().getLocation();
             FLocation fLoc = new FLocation(location);
             Faction fac = Board.getInstance().getFactionAt(fLoc);
-            FastChunk fc = new FastChunk(location.getWorld().getName(), location.getChunk().getX(), location.getChunk().getZ());
             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
 
             if (fPlayer.isAdminBypassing()) {
@@ -28,7 +26,7 @@ public class SpawnerChunkListener implements Listener {
 
             if (!Conf.allowSpawnersPlacedInWilderness) {
                 if (fac.isNormal()) {
-                    if (!fac.getSpawnerChunks().contains(fc)) {
+                    if (!fac.getSpawnerChunks().contains(fLoc)) {
                         e.setCancelled(true);
                         e.getPlayer().sendMessage(TL.SPAWNER_CHUNK_PLACE_DENIED_NOT_SPAWNERCHUNK.toString());
                     }

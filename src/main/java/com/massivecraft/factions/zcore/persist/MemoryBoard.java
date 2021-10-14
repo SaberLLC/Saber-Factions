@@ -9,7 +9,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
-import com.massivecraft.factions.util.SpawnerChunkUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
@@ -277,15 +276,13 @@ public abstract class MemoryBoard extends Board {
                         }
                         char tag = fList.get(factionHere.getTag());
 
-                        if (SpawnerChunkUtil.isSpawnerChunk(flocationHere)) {
-                            row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
-                            continue;
-                        }
-
                         //row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));
                         //changed out with a performance friendly one line tooltip :D
-                        row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(oneLineToolTip(factionHere, fplayer));
-                    } else {
+                        if (factionHere.getSpawnerChunks().contains(flocationHere) && Conf.userSpawnerChunkSystem) {
+                            row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
+                        } else {
+                            row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(oneLineToolTip(factionHere, fplayer));
+                        }                    } else {
                         row.then("-").color(ChatColor.GRAY);
                     }
                 }

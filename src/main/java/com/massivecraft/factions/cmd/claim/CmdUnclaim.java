@@ -10,7 +10,6 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.ChunkReference;
-import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -146,11 +145,10 @@ public class CmdUnclaim extends FCommand {
             return false;
         }
 
-        FastChunk fc = new FastChunk(target.getWorldName(), target.getChunk().getX(), target.getChunk().getZ());
         if (Conf.userSpawnerChunkSystem) {
-            if (faction.getSpawnerChunks().contains(fc) && faction.getSpawnerChunks() != null) {
+            if (faction.getSpawnerChunks().contains(target) && faction.getSpawnerChunks() != null) {
                 if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
-                    context.faction.getSpawnerChunks().remove(fc);
+                    context.faction.getSpawnerChunks().remove(target);
                     context.fPlayer.msg(TL.SPAWNER_CHUNK_UNCLAIMED);
                 } else {
                     if (ChunkReference.getSpawnerCount(target.getChunk()) > 0) {
