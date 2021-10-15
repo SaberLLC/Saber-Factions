@@ -135,9 +135,6 @@ public class Conf {
     //Denies User Join BEFORE Faction Data is Fully Loaded!
     public static boolean usePreStartupKickSystem = true;
 
-    //Showing these clowns how to make a booster system
-    public static boolean useBoosterSystem = true;
-
     //SpawnerChunks
     public static boolean userSpawnerChunkSystem = false;
     public static int allowedSpawnerChunks = 2;

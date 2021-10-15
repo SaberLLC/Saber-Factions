@@ -769,7 +769,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void sendFactionHereMessage(Faction from) {
         Faction toShow = Board.getInstance().getFactionAt(getLastStoodAt());
 
-        if ( (Conf.worldsNoClaiming.contains(getLastStoodAt().getWorldName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoClaiming.contains(getLastStoodAt().getWorldName()) && Conf.useWorldConfigurationsAsWhitelist) ) return;
+        if ((Conf.worldsNoClaiming.contains(getLastStoodAt().getWorldName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoClaiming.contains(getLastStoodAt().getWorldName()) && Conf.useWorldConfigurationsAsWhitelist))
+            return;
 
         if (showInfoBoard(toShow)) {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
@@ -862,7 +863,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-disband-broadcast")) {
 
                 String message = TL.LEAVE_DISBANDED.toString()
-                        .replace("{claims}",myFaction.getAllClaims().size()+"");
+                        .replace("{claims}", myFaction.getAllClaims().size() + "");
 
                 for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers())
                     fplayer.msg(message, myFaction.describeTo(fplayer, true));
@@ -876,7 +877,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             if (Conf.logFactionDisband)
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance,
                         () -> Logger.print(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(),
-                                this.getName()).replace("{claims}",myFaction.getAllClaims().size()+""), Logger.PrefixType.DEFAULT));
+                                this.getName()).replace("{claims}", myFaction.getAllClaims().size() + ""), Logger.PrefixType.DEFAULT));
         }
     }
 
@@ -895,14 +896,14 @@ public abstract class MemoryFPlayer implements FPlayer {
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
         int ownedLand = forFaction.getLandRounded();
         int factionBuffer = plugin.getConfig().getInt("hcf.buffer-zone", 0);
-        int worldBuffer = plugin.getConfig().getInt("world-border.buffer", 0) - 1;
+        int worldBuffer = plugin.getConfig().getInt("world-border.buffer", 0);
 
         if (Conf.worldGuardChecking && Worldguard.getInstance().checkForRegionsInChunk(flocation)) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = plugin.txt.parse(TL.CLAIM_PROTECTED.toString());
-        } else if (flocation.isOutsideWorldBorder(plugin.getConfig().getInt("world-border.buffer", 0) - 1)) {
+        } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
             error = plugin.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
-        } else if ( (Conf.worldsNoClaiming.contains(flocation.getWorldName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoClaiming.contains(flocation.getWorldName()) && Conf.useWorldConfigurationsAsWhitelist) ) {
+        } else if ((Conf.worldsNoClaiming.contains(flocation.getWorldName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoClaiming.contains(flocation.getWorldName()) && Conf.useWorldConfigurationsAsWhitelist)) {
             error = plugin.txt.parse(TL.CLAIM_DISABLED.toString());
         } else if (this.isAdminBypassing()) {
             return true;

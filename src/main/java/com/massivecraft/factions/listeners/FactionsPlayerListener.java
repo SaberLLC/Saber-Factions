@@ -498,29 +498,31 @@ public class FactionsPlayerListener implements Listener {
         me.setLastStoodAt(to);
 
         Faction at = Board.getInstance().getFactionAt(new FLocation(me.getPlayer().getLocation()));
-        if (me.getAutoClaimFor() != null) {
-            if (FactionsPlugin.cachedRadiusClaim && me.attemptClaim(me.getFaction(), me.getPlayer().getLocation(), true)) {
-                me.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_CLAIMED, me.describeTo(f, true), me.getFaction().describeTo(f), at.describeTo(f)));
-            } else {
-                me.attemptClaim(me.getAutoClaimFor(), me.getPlayer().getLocation(), true);
-            }
-            FactionsPlugin.instance.logFactionEvent(me.getAutoClaimFor(), FLogType.CHUNK_CLAIMS, me.getName(), CC.GreenB + "CLAIMED", String.valueOf(1), (new FLocation(player.getLocation())).formatXAndZ(","));
-        } else if (me.isAutoSafeClaimEnabled()) {
-            if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
-                me.setIsAutoSafeClaimEnabled(false);
-            } else {
-                if (!Board.getInstance().getFactionAt(to).isSafeZone()) {
-                    Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
-                    me.msg(TL.PLAYER_SAFEAUTO);
+        if(me.getPlayer().getGameMode() != GameMode.SPECTATOR) { //To Disable Roam Plugins w/AutoClaim On
+            if (me.getAutoClaimFor() != null) {
+                if (FactionsPlugin.cachedRadiusClaim && me.attemptClaim(me.getFaction(), me.getPlayer().getLocation(), true)) {
+                    me.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_CLAIMED, me.describeTo(f, true), me.getFaction().describeTo(f), at.describeTo(f)));
+                } else {
+                    me.attemptClaim(me.getAutoClaimFor(), me.getPlayer().getLocation(), true);
                 }
-            }
-        } else if (me.isAutoWarClaimEnabled()) {
-            if (!Permission.MANAGE_WAR_ZONE.has(player)) {
-                me.setIsAutoWarClaimEnabled(false);
-            } else {
-                if (!Board.getInstance().getFactionAt(to).isWarZone()) {
-                    Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
-                    me.msg(TL.PLAYER_WARAUTO);
+                FactionsPlugin.instance.logFactionEvent(me.getAutoClaimFor(), FLogType.CHUNK_CLAIMS, me.getName(), CC.GreenB + "CLAIMED", String.valueOf(1), (new FLocation(player.getLocation())).formatXAndZ(","));
+            } else if (me.isAutoSafeClaimEnabled()) {
+                if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
+                    me.setIsAutoSafeClaimEnabled(false);
+                } else {
+                    if (!Board.getInstance().getFactionAt(to).isSafeZone()) {
+                        Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
+                        me.msg(TL.PLAYER_SAFEAUTO);
+                    }
+                }
+            } else if (me.isAutoWarClaimEnabled()) {
+                if (!Permission.MANAGE_WAR_ZONE.has(player)) {
+                    me.setIsAutoWarClaimEnabled(false);
+                } else {
+                    if (!Board.getInstance().getFactionAt(to).isWarZone()) {
+                        Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
+                        me.msg(TL.PLAYER_WARAUTO);
+                    }
                 }
             }
         }
