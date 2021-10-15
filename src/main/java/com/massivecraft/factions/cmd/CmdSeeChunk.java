@@ -8,8 +8,10 @@ import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import xyz.xenondevs.particle.ParticleBuilder;
 import xyz.xenondevs.particle.ParticleEffect;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 public class CmdSeeChunk extends FCommand {
@@ -111,10 +113,8 @@ public class CmdSeeChunk extends FCommand {
                 continue;
             }
             if (useParticles) {
-
-                    // Dust options only exists in the 1.13 API, so we use an
-                    // alternative method to achieve this in lower versions.
-                    this.effect.display(loc);
+                new ParticleBuilder(this.effect, loc).setColor(Color.RED).display(player);
+                    //this.effect.display(loc, player);
             } else {
                 Material type = blockY % 5 == 0 ? XMaterial.REDSTONE_LAMP.parseMaterial() : XMaterial.BLACK_STAINED_GLASS.parseMaterial();
                 VisualizeUtil.addLocation(player, loc, type);
