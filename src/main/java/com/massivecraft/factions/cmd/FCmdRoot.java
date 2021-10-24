@@ -170,6 +170,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSetPower cmdSetPower = new CmdSetPower();
     public CmdSpawnerChunk cmdSpawnerChunk = new CmdSpawnerChunk();
     public CmdSetTnt cmdSetTnt = new CmdSetTnt();
+    public CmdCornerList cmdCornerList = new CmdCornerList();
 
 
     //Variables to know if we already setup certain sub commands
@@ -299,6 +300,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdChest);
         this.addSubCommand(this.cmdSetBanner);
         this.addSubCommand(this.cmdCorner);
+        this.addSubCommand(this.cmdCornerList);
         this.addSubCommand(this.cmdFGlobal);
         this.addSubCommand(this.cmdViewChest);
         this.addSubCommand(this.cmdSpawnerLock);

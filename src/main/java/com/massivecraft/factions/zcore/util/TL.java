@@ -141,6 +141,7 @@ public enum TL {
     COMMAND_CORNER_NOT_CORNER("&c&l[!] &7You must be in a corner to use this command!"),
     COMMAND_CORNER_DESCRIPTION("claim a corner at world border"),
     COMMAND_CORNERLIST_DESCRIPTION("list of all corners"),
+    COMMAND_CORNERLIST_TITLE("&7Listing corner claims in &2{world}"),
 
     COMMAND_CHUNKBUSTER_USAGE("&c&l[!] &7Try /chunkbuster give <player> <amount>"),
     CHUNKBUSTER_RECEIEVED("&a&l[!] &7You have received a &cChunkbuster&7!"),
