@@ -78,9 +78,7 @@ public class CmdSetGuild extends FCommand {
                             privateChannel.sendMessage(TL.SET_GUILD_ID_TIMED_OUT_DISCORD.toString()).queue();
                             context.msg(TL.SET_GUILD_ID_TIMED_OUT_MINECRAFT);
                         });
-                    }, (t) -> {
-                        context.msg(TL.SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER);
-                    }), (t) -> context.msg(TL.SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER));
+                    }, (t) -> context.msg(TL.SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER)), (t) -> context.msg(TL.SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER));
                 }
             } else {
                 faction.setGuildId(null);

@@ -380,6 +380,7 @@ public enum TL {
     COMMAND_DEBUG_PRINTED("&c&l[!]&7 Debug info has been printed to console"),
 
     //DISCORD
+    COMMAND_INVITE_BOT("&c&l[!] Click Here To Invite The Discord Bot To Your Factions Discord"),
     WEEWOO_ALREADY_STARTED_DISCORD("Weewoo already started"),
     WEEWOO_ALREADY_STARTED_INGAME("&cWeewoo already started"),
     WEEWOO_STARTED_DISCORD("Weewoo started by %1$s"),
@@ -393,7 +394,7 @@ public enum TL {
     SET_GUILD_ID_TIMED_OUT_MINECRAFT("&cTimed out"),
     SET_GUILD_ID_TIMED_OUT_DISCORD("Timed out"),
     SET_GUILD_ID_GUILD_ALREADY_LINKED("&cThat guild is already linked to a faction"),
-    SET_GUILD_ID_RESET_ID("&cGuild id removed"),
+    SET_GUILD_ID_RESET_ID("&c&l[!] &7You have reset your guild id!"),
     SET_GUILD_ID_PMING_OWNER("&aNow Direct messaging the Discord server owner to approve the link, times out in 15 seconds."),
     CANT_FORCE_SET_GUILD_ID("&cYou cannot forcefully set guild ids for other guilds."),
     DISCORD_LINK_REQUIRED("&c&l[!] You cannot do this while your Discord is not linked! Link your account by using /f discord link"),
@@ -1200,6 +1201,7 @@ public enum TL {
 
     PLAYER_NOT_FOUND("&c&l[!] &b%1$s &7is either not online or not in your faction!"),
     INVALID_PLAYER("&c&l[!] &b{player} &7is not online!"),
+    INVALID_WORLD("&c&l[!] &b{world} &7is not a world!"),
     PLACEHOLDER_ROLE_NAME("None"),
     PLACEHOLDER_CUSTOM_FACTION("{faction} "),
 

@@ -27,6 +27,7 @@ public class Aliases {
     public static ArrayList<String> claim_claimFill = new ArrayList<>(Arrays.asList("claimfill", "cf"));
     public static ArrayList<String> claim_line = new ArrayList<>(Arrays.asList("claimline", "cl"));
     public static ArrayList<String> claim_corner = new ArrayList<>(Arrays.asList("corner"));
+    public static ArrayList<String> corner_list = new ArrayList<>(Arrays.asList("clist", "cornerlist"));
     public static ArrayList<String> delfHome = new ArrayList<>(Arrays.asList("delhome", "deletehome"));
     public static ArrayList<String> unclaim_all_safe = new ArrayList<>(Arrays.asList("safeunclaimall", "safedeclaimall"));
     public static ArrayList<String> unclaim_unclaim = new ArrayList<>(Arrays.asList("unclaim", "declaim"));

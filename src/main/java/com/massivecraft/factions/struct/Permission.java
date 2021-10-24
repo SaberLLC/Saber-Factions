@@ -37,6 +37,7 @@ public enum Permission {
     CONVERTCONFIG("convertconfig"),
     CREATE("create"),
     CORNER("corner"),
+    CORNER_LIST("corner.list"),
     DEBUG("debug"),
     DEFAULTRANK("defaultrank"),
     DEINVITE("deinvite"),

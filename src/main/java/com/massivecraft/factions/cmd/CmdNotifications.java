@@ -22,7 +22,8 @@ public class CmdNotifications extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (context.fPlayer.hasNotificationsEnabled()) {
+        if (context.fPlayer.
+                hasNotificationsEnabled()) {
             context.fPlayer.setNotificationsEnabled(false);
             context.msg(TL.COMMAND_NOTIFICATIONS_TOGGLED_OFF);
         } else {

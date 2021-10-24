@@ -306,7 +306,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.0_222</version>
+            <version>LATEST</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -519,16 +519,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>me.rayzr522</groupId>
-            <artifactId>jsonmessage</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>com.jagrosh</groupId>
-            <artifactId>jda-utilities-commons</artifactId>
-            <version>3.0.5</version>
+            <artifactId>jda-utilities</artifactId>
+            <version>LATEST</version>
             <scope>compile</scope>
+            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
