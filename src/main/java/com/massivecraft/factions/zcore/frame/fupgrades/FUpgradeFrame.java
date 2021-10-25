@@ -46,20 +46,7 @@ public class FUpgradeFrame {
                         if (fac.getPoints() >= cost) {
                             fac.setPoints(fac.getPoints() - cost);
                             fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, fac.getPoints());
-                            if (value == UpgradeType.CHEST) updateChests(fac);
-
-                            if (value == UpgradeType.POWER) updateFactionPowerBoost(fac);
-
-                            if (value == UpgradeType.TNT) updateTNT(fac);
-
-                            if (value == UpgradeType.WARP) updateWarps(fac);
-
-                            if (value == UpgradeType.SPAWNERCHUNKS) {
-                                if (Conf.allowSpawnerChunksUpgrade) {
-                                    updateSpawnerChunks(fac);
-                                }
-                            }
-
+                            handleTransaction(fme, value);
                             fac.setUpgrade(value, fac.getUpgrade(value) + 1);
                             buildGUI(fme);
                         } else {
@@ -68,20 +55,7 @@ public class FUpgradeFrame {
                         }
                     } else if (fme.hasMoney(cost)) {
                         fme.takeMoney(cost);
-                        if (value == UpgradeType.CHEST) updateChests(fac);
-
-                        if (value == UpgradeType.POWER) updateFactionPowerBoost(fac);
-
-                        if (value == UpgradeType.TNT) updateTNT(fac);
-
-                        if (value == UpgradeType.WARP) updateWarps(fac);
-
-                        if (value == UpgradeType.SPAWNERCHUNKS) {
-                            if (Conf.allowSpawnerChunksUpgrade) {
-                                updateSpawnerChunks(fac);
-                            }
-                        }
-
+                        handleTransaction(fme, value);
                         fac.setUpgrade(value, fac.getUpgrade(value) + 1);
                         buildGUI(fme);
                     }
@@ -92,6 +66,29 @@ public class FUpgradeFrame {
         gui.addPane(pane);
         gui.update();
         gui.show(fme.getPlayer());
+    }
+
+    private void handleTransaction(FPlayer fme, UpgradeType value) {
+        Faction fac = fme.getFaction();
+        switch (value) {
+            case CHEST:
+                updateChests(fac);
+                break;
+            case POWER:
+                updateFactionPowerBoost(fac);
+                break;
+            case TNT:
+                updateTNT(fac);
+                break;
+            case WARP:
+                updateWarps(fac);
+                break;
+            case SPAWNERCHUNKS:
+                if (Conf.allowSpawnerChunksUpgrade) {
+                    updateSpawnerChunks(fac);
+                    break;
+                }
+        }
     }
 
     private void updateWarps(Faction faction) {
