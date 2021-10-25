@@ -29,38 +29,38 @@ public class FUpgradeFrame {
                         .getString("fupgrades.MainMenu.Title").replace("{faction}", f.getTag())));
     }
 
-    public void buildGUI(FPlayer fplayer) {
+    public void buildGUI(FPlayer fme) {
         PaginatedPane pane = new PaginatedPane(0, 0, 9, this.gui.getRows());
         List<GuiItem> GUIItems = new ArrayList<>();
         ItemStack dummy = buildDummyItem();
+        Faction fac = fme.getFaction();
         for (int x = 0; x <= this.gui.getRows() * 9 - 1; ++x)
             GUIItems.add(new GuiItem(dummy, e -> e.setCancelled(true)));
         for (UpgradeType value : UpgradeType.values()) {
             if (value.getSlot() != -1) {
-                GUIItems.set(value.getSlot(), new GuiItem(value.buildAsset(fplayer.getFaction()), e -> {
+                GUIItems.set(value.getSlot(), new GuiItem(value.buildAsset(fac), e -> {
                     e.setCancelled(true);
-                    FPlayer fme = FPlayers.getInstance().getByPlayer((Player) e.getWhoClicked());
-                    if (fme.getFaction().getUpgrade(value) == value.getMaxLevel()) return;
-                    int cost = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu." + value + ".Cost.level-" + (fme.getFaction().getUpgrade(value) + 1));
+                    if (fac.getUpgrade(value) == value.getMaxLevel()) return;
+                    int cost = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu." + value + ".Cost.level-" + (fac.getUpgrade(value) + 1));
                     if (FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getBoolean("fupgrades.usePointsAsCurrency")) {
-                        if (fme.getFaction().getPoints() >= cost) {
-                            fme.getFaction().setPoints(fme.getFaction().getPoints() - cost);
-                            fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, fme.getFaction().getPoints());
-                            if (value == UpgradeType.CHEST) updateChests(fme.getFaction());
+                        if (fac.getPoints() >= cost) {
+                            fac.setPoints(fac.getPoints() - cost);
+                            fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, fac.getPoints());
+                            if (value == UpgradeType.CHEST) updateChests(fac);
 
-                            if (value == UpgradeType.POWER) updateFactionPowerBoost(fme.getFaction());
+                            if (value == UpgradeType.POWER) updateFactionPowerBoost(fac);
 
-                            if (value == UpgradeType.TNT) updateTNT(fme.getFaction());
+                            if (value == UpgradeType.TNT) updateTNT(fac);
 
-                            if (value == UpgradeType.WARP) updateWarps(fme.getFaction());
+                            if (value == UpgradeType.WARP) updateWarps(fac);
 
                             if (value == UpgradeType.SPAWNERCHUNKS) {
                                 if (Conf.allowSpawnerChunksUpgrade) {
-                                    updateSpawnerChunks(fme.getFaction());
+                                    updateSpawnerChunks(fac);
                                 }
                             }
 
-                            fme.getFaction().setUpgrade(value, fme.getFaction().getUpgrade(value) + 1);
+                            fac.setUpgrade(value, fac.getUpgrade(value) + 1);
                             buildGUI(fme);
                         } else {
                             fme.getPlayer().closeInventory();
@@ -68,21 +68,21 @@ public class FUpgradeFrame {
                         }
                     } else if (fme.hasMoney(cost)) {
                         fme.takeMoney(cost);
-                        if (value == UpgradeType.CHEST) updateChests(fme.getFaction());
+                        if (value == UpgradeType.CHEST) updateChests(fac);
 
-                        if (value == UpgradeType.POWER) updateFactionPowerBoost(fme.getFaction());
+                        if (value == UpgradeType.POWER) updateFactionPowerBoost(fac);
 
-                        if (value == UpgradeType.TNT) updateTNT(fme.getFaction());
+                        if (value == UpgradeType.TNT) updateTNT(fac);
 
-                        if (value == UpgradeType.WARP) updateWarps(fme.getFaction());
+                        if (value == UpgradeType.WARP) updateWarps(fac);
 
                         if (value == UpgradeType.SPAWNERCHUNKS) {
                             if (Conf.allowSpawnerChunksUpgrade) {
-                                updateSpawnerChunks(fme.getFaction());
+                                updateSpawnerChunks(fac);
                             }
                         }
 
-                        fme.getFaction().setUpgrade(value, fme.getFaction().getUpgrade(value) + 1);
+                        fac.setUpgrade(value, fac.getUpgrade(value) + 1);
                         buildGUI(fme);
                     }
                 }));
@@ -91,7 +91,7 @@ public class FUpgradeFrame {
         pane.populateWithGuiItems(GUIItems);
         gui.addPane(pane);
         gui.update();
-        gui.show(fplayer.getPlayer());
+        gui.show(fme.getPlayer());
     }
 
     private void updateWarps(Faction faction) {
