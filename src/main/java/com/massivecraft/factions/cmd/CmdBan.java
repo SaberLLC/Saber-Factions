@@ -12,8 +12,6 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
-import java.util.logging.Level;
-
 public class CmdBan extends FCommand {
 
     /**

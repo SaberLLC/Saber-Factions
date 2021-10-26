@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -206,7 +207,7 @@ public abstract class FCommand {
  */
     public String getUsageTemplate(CommandContext context, boolean addShortHelp) {
         StringBuilder ret = new StringBuilder();
-        ret.append(FactionsPlugin.getInstance().color(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString()));
+        ret.append(CC.translate(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString()));
         ret.append('/');
 
         for (FCommand fc : context.commandChain) {

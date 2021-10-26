@@ -4,7 +4,10 @@ import com.cryptomorin.xseries.XMaterial;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
@@ -12,7 +15,6 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -34,7 +36,7 @@ public class PermissableActionFrame {
         assert section != null;
         gui = new Gui(FactionsPlugin.getInstance(),
                 section.getInt("rows", 4),
-                FactionsPlugin.getInstance().color(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.name")).replace("{faction}", f.getTag())));
+                CC.translate(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.name")).replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(FPlayer fplayer, Permissable perm) {
@@ -97,8 +99,8 @@ public class PermissableActionFrame {
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
-            meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
+            meta.setLore(CC.translate(config.getStringList("Lore")));
+            meta.setDisplayName(CC.translate(config.getString("Name")));
             item.setItemMeta(meta);
         }
         return item;
@@ -109,8 +111,8 @@ public class PermissableActionFrame {
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
-            meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
+            meta.setLore(CC.translate(config.getStringList("Lore")));
+            meta.setDisplayName(CC.translate(config.getString("Name")));
             item.setItemMeta(meta);
         }
         return item;

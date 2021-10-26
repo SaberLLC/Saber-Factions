@@ -4,7 +4,6 @@ import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AsciiCompass {
 

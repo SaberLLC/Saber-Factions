@@ -2,8 +2,6 @@ package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FactionsPlugin;
 
-import java.util.Objects;
-
 public enum Access {
 
     /**

@@ -8,6 +8,7 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.ItemBuilder;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -170,7 +171,7 @@ public class FactionsBlockListener implements Listener {
         if (isSpawner) {
             if (Conf.spawnerLock) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(FactionsPlugin.getInstance().color(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
+                event.getPlayer().sendMessage(CC.translate(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
             }
         }
     }
@@ -352,8 +353,8 @@ public class FactionsBlockListener implements Listener {
             ItemStack warBanner = fme.getFaction().getBanner();
             if (warBanner == null) return;
             ItemMeta warmeta = warBanner.getItemMeta();
-            warmeta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
-            warmeta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore")));
+            warmeta.setDisplayName(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
+            warmeta.setLore(CC.translate(FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore")));
             warBanner.setItemMeta(warmeta);
             if (warBanner.isSimilar(bannerInHand)) {
                 if (fme.getFaction().isWilderness()) {
@@ -371,7 +372,7 @@ public class FactionsBlockListener implements Listener {
                         return;
                     }
                     for (FPlayer fplayer : fme.getFaction().getFPlayers()) {
-                        fplayer.getPlayer().sendTitle(FactionsPlugin.getInstance().color(fme.getTag() + " Placed A WarBanner!"), FactionsPlugin.getInstance().color("&7use &c/f tpbanner&7 to tp to the banner!"));
+                        fplayer.getPlayer().sendTitle(CC.translate(fme.getTag() + " Placed A WarBanner!"), CC.translate("&7use &c/f tpbanner&7 to tp to the banner!"));
                     }
                     bannerCooldownMap.put(fme.getTag(), true);
                     FactionsBlockListener.bannerLocations.put(fme.getTag(), e.getBlockPlaced().getLocation());
@@ -380,7 +381,7 @@ public class FactionsBlockListener implements Listener {
                     as.setVisible(false);
                     as.setGravity(false);
                     as.setCanPickupItems(false);
-                    as.setCustomName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fbanners.BannerHolo").replace("{Faction}", fme.getTag())));
+                    as.setCustomName(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fbanners.BannerHolo").replace("{Faction}", fme.getTag())));
                     as.setCustomNameVisible(true);
                     String tag = fme.getTag();
                     Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> bannerCooldownMap.remove(tag), Long.parseLong(bannerCooldown + ""));

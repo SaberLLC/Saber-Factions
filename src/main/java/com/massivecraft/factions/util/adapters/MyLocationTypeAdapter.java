@@ -1,12 +1,10 @@
 package com.massivecraft.factions.util.adapters;
 
 import com.google.gson.*;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.util.Logger;
 
 import java.lang.reflect.Type;
-import java.util.logging.Level;
 
 
 public class MyLocationTypeAdapter implements JsonDeserializer<LazyLocation>, JsonSerializer<LazyLocation> {

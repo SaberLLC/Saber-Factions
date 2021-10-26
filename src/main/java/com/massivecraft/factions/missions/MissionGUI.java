@@ -32,7 +32,7 @@ public class MissionGUI implements FactionGUI {
         this.slots = new HashMap<>();
         this.plugin = plugin;
         this.fPlayer = fPlayer;
-        this.inventory = plugin.getServer().createInventory(this, plugin.getFileManager().getMissions().getConfig().getInt("MissionGUISize") * 9, plugin.color(plugin.getFileManager().getMissions().getConfig().getString("Missions-GUI-Title")));
+        this.inventory = plugin.getServer().createInventory(this, plugin.getFileManager().getMissions().getConfig().getInt("MissionGUISize") * 9, CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Missions-GUI-Title")));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class MissionGUI implements FactionGUI {
         String missionName = slots.get(slot);
         if (missionName == null) return;
         ConfigurationSection configurationSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions");
-        if (missionName.equals(plugin.color(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Allowed.Name")))) {
+        if (missionName.equals(CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Allowed.Name")))) {
             Mission pickedMission = null;
             Set<String> keys = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getKeys(false);
             while (pickedMission == null) {
@@ -51,7 +51,7 @@ public class MissionGUI implements FactionGUI {
                     if (!fPlayer.getFaction().getMissions().containsKey(missionName)) {
                         pickedMission = new Mission(missionName, plugin.getFileManager().getMissions().getConfig().getString("Missions." + missionName + ".Mission.Type"));
                         fPlayer.getFaction().getMissions().put(missionName, pickedMission);
-                        fPlayer.msg(TL.MISSION_MISSION_STARTED, fPlayer.describeTo(fPlayer.getFaction()), plugin.color(plugin.getFileManager().getMissions().getConfig().getString("Missions." + missionName + ".Name")));
+                        fPlayer.msg(TL.MISSION_MISSION_STARTED, fPlayer.describeTo(fPlayer.getFaction()), CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Missions." + missionName + ".Name")));
                         build();
                         fPlayer.getPlayer().openInventory(inventory);
                         return;
@@ -78,7 +78,7 @@ public class MissionGUI implements FactionGUI {
             fPlayer.msg(TL.MISSION_MISSION_MAX_ALLOWED, max);
             return;
         }
-        if (missionName.equals(plugin.color(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Name"))))
+        if (missionName.equals(CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Name"))))
             return;
 
         if (fPlayer.getFaction().getMissions().containsKey(missionName)) {
@@ -101,7 +101,7 @@ public class MissionGUI implements FactionGUI {
         Mission mission = new Mission(missionName, missionSection.getString("Type"));
 
         fPlayer.getFaction().getMissions().put(missionName, mission);
-        fPlayer.msg(TL.MISSION_MISSION_STARTED, fPlayer.describeTo(fPlayer.getFaction()), plugin.color(section.getString("Name")));
+        fPlayer.msg(TL.MISSION_MISSION_STARTED, fPlayer.describeTo(fPlayer.getFaction()), CC.translate(section.getString("Name")));
         build();
         fPlayer.getPlayer().openInventory(inventory);
     }
@@ -115,7 +115,7 @@ public class MissionGUI implements FactionGUI {
         ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).get().parseItem();
         ItemMeta fillmeta = fillItem.getItemMeta();
         fillmeta.setDisplayName(CC.translate(configurationSection.getString("FillItem.Name")));
-        fillmeta.setLore(FactionsPlugin.getInstance().colorList(configurationSection.getStringList("FillItem.Lore")));
+        fillmeta.setLore(CC.translate(configurationSection.getStringList("FillItem.Lore")));
         fillItem.setItemMeta(fillmeta);
         for (int fill = 0; fill < configurationSection.getInt("FillItem.Rows") * 9; ++fill) {
             //Why were we generating a new itemstack per slot?????
@@ -138,7 +138,7 @@ public class MissionGUI implements FactionGUI {
                     itemMeta.addEnchant(Enchantment.SILK_TOUCH, 1, true);
                     itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     loreLines.add("");
-                    loreLines.add(plugin.color(plugin.getFileManager().getMissions().getConfig().getString("Mission-Progress-Format")
+                    loreLines.add(CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Mission-Progress-Format")
                             .replace("{progress}", String.valueOf(mission.getProgress()))
                             .replace("{total}", String.valueOf(section.getConfigurationSection("Mission").get("Amount")))));
                 }
@@ -154,20 +154,20 @@ public class MissionGUI implements FactionGUI {
             ItemMeta meta;
             start = XMaterial.matchXMaterial(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Allowed.Material")).get().parseItem();
             meta = start.getItemMeta();
-            meta.setDisplayName(plugin.color(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Allowed.Name")));
+            meta.setDisplayName(CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Allowed.Name")));
             List<String> loree = new ArrayList<>();
             for (String string : plugin.getFileManager().getMissions().getConfig().getStringList("Randomization.Start-Item.Allowed.Lore")) {
-                loree.add(plugin.color(string));
+                loree.add(CC.translate(string));
             }
             meta.setLore(loree);
             start.setItemMeta(meta);
             if (fPlayer.getFaction().getCompletedMissions().size() >= configurationSection.getKeys(false).size() - 1 && plugin.getFileManager().getMissions().getConfig().getBoolean("DenyMissionsMoreThenOnce")) {
                 start = XMaterial.matchXMaterial(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Material")).get().parseItem();
                 meta = start.getItemMeta();
-                meta.setDisplayName(plugin.color(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Name")));
+                meta.setDisplayName(CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Name")));
                 List<String> lore = new ArrayList<>();
                 for (String string : plugin.getFileManager().getMissions().getConfig().getStringList("Randomization.Start-Item.Disallowed.Lore")) {
-                    lore.add(plugin.color(string).replace("%reason%", TL.MISSION_MISSION_ALL_COMPLETED.toString()));
+                    lore.add(CC.translate(string).replace("%reason%", TL.MISSION_MISSION_ALL_COMPLETED.toString()));
                 }
                 meta.setLore(lore);
                 start.setItemMeta(meta);
@@ -175,10 +175,10 @@ public class MissionGUI implements FactionGUI {
             if (fPlayer.getFaction().getMissions().size() >= plugin.getFileManager().getMissions().getConfig().getInt("MaximumMissionsAllowedAtOnce")) {
                 start = XMaterial.matchXMaterial(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Material")).get().parseItem();
                 meta = start.getItemMeta();
-                meta.setDisplayName(plugin.color(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Name")));
+                meta.setDisplayName(CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Name")));
                 List<String> lore = new ArrayList<>();
                 for (String string : plugin.getFileManager().getMissions().getConfig().getStringList("Randomization.Start-Item.Disallowed.Lore")) {
-                    lore.add(plugin.color(string).replace("%reason%", FactionsPlugin.getInstance().txt.parse(TL.MISSION_MISSION_MAX_ALLOWED.toString(), plugin.getFileManager().getMissions().getConfig().getInt("MaximumMissionsAllowedAtOnce"))));
+                    lore.add(CC.translate(string).replace("%reason%", FactionsPlugin.getInstance().txt.parse(TL.MISSION_MISSION_MAX_ALLOWED.toString(), plugin.getFileManager().getMissions().getConfig().getInt("MaximumMissionsAllowedAtOnce"))));
                 }
                 meta.setLore(lore);
                 start.setItemMeta(meta);

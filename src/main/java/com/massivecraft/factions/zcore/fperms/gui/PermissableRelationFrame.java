@@ -9,6 +9,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +32,7 @@ public class PermissableRelationFrame {
         assert section != null;
         gui = new Gui(FactionsPlugin.getInstance(),
                 section.getInt("rows", 4),
-                FactionsPlugin.getInstance().color(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", f.getTag())));
+                CC.translate(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", f.getTag())));
     }
 
     public void buildGUI(FPlayer fplayer) {
@@ -64,7 +65,7 @@ public class PermissableRelationFrame {
         ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString(loc)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(FactionsPlugin.getInstance().color(
+            meta.setDisplayName(CC.translate(
                     FactionsPlugin
                             .getInstance()
                             .getFileManager()
@@ -83,8 +84,8 @@ public class PermissableRelationFrame {
         ItemMeta meta = item.getItemMeta();
         // So u can set it to air.
         if (meta != null) {
-            meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
-            meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
+            meta.setLore(CC.translate(config.getStringList("Lore")));
+            meta.setDisplayName(CC.translate(config.getString("Name")));
             item.setItemMeta(meta);
         }
         return item;

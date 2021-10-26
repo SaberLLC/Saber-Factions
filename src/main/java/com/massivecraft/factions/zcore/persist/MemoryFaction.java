@@ -32,7 +32,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public HashMap<Integer, String> rules = new HashMap<>();
@@ -512,7 +511,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     @Override
     public Inventory getChestInventory() {
         if (chest == null) {
-            this.chest = Bukkit.createInventory(null, getChestSize(), FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
+            this.chest = Bukkit.createInventory(null, getChestSize(), CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
             return chest;
         }
         return chest;
@@ -538,7 +537,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     @Override
     public void setChestSize(int chestSize) {
         ItemStack[] contents = this.getChestInventory().getContents();
-        chest = Bukkit.createInventory(null, chestSize, FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
+        chest = Bukkit.createInventory(null, chestSize, CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
         chest.setContents(contents);
     }
 

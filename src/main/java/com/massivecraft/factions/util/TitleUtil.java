@@ -20,11 +20,11 @@ public class TitleUtil {
         if (FactionsPlugin.getInstance().version != 7) {
             Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
                 if (FactionsPlugin.getInstance().version != 8) {
-                    me.getPlayer().sendTitle(FactionsPlugin.getInstance().color(finalTitle), FactionsPlugin.getInstance().color(finalsubTitle), FactionsPlugin.getInstance().getConfig().getInt("Title.Options.FadeInTime"),
+                    me.getPlayer().sendTitle(CC.translate(finalTitle), CC.translate(finalsubTitle), FactionsPlugin.getInstance().getConfig().getInt("Title.Options.FadeInTime"),
                             FactionsPlugin.getInstance().getConfig().getInt("Title.Options.ShowTime"),
                             FactionsPlugin.getInstance().getConfig().getInt("Title.Options.FadeOutTime"));
                 } else {
-                    me.getPlayer().sendTitle(FactionsPlugin.getInstance().color(finalTitle), FactionsPlugin.getInstance().color(finalsubTitle));
+                    me.getPlayer().sendTitle(CC.translate(finalTitle), CC.translate(finalsubTitle));
                 }
             }, 5);
             me.getPlayer().removeMetadata("showFactionTitle", FactionsPlugin.getInstance());

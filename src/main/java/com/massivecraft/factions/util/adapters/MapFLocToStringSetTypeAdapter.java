@@ -2,7 +2,6 @@ package com.massivecraft.factions.util.adapters;
 
 import com.google.gson.*;
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Logger;
 
 import java.lang.reflect.Type;
@@ -12,7 +11,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 
 
 public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLocation, Set<String>>>, JsonSerializer<Map<FLocation, Set<String>>> {

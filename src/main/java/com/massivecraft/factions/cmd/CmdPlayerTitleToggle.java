@@ -1,7 +1,7 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdPlayerTitleToggle extends FCommand {
@@ -15,7 +15,7 @@ public class CmdPlayerTitleToggle extends FCommand {
     @Override
     public void perform(CommandContext context) {
         context.fPlayer.setTitlesEnabled(!context.fPlayer.hasTitlesEnabled());
-        context.msg(TL.COMMAND_TITLETOGGLE_TOGGLED, context.fPlayer.hasTitlesEnabled() ? FactionsPlugin.getInstance().color("&dEnabled") : FactionsPlugin.getInstance().color("&dDisabled"));
+        context.msg(TL.COMMAND_TITLETOGGLE_TOGGLED, context.fPlayer.hasTitlesEnabled() ? CC.translate("&dEnabled") : CC.translate("&dDisabled"));
     }
 
     @Override

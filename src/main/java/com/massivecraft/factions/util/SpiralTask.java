@@ -6,8 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import java.util.logging.Level;
-
 
 /*
  * reference diagram, task should move in this pattern out from chunk 0 in the center.

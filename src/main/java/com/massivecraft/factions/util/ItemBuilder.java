@@ -1,7 +1,6 @@
 package com.massivecraft.factions.util;
 
 
-import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -32,7 +31,7 @@ public class ItemBuilder {
     public static List<String> color(List<String> string) {
         List<String> colored = new ArrayList<>();
         for (String line : string) {
-            colored.add(FactionsPlugin.instance.color(line));
+            colored.add(CC.translate(line));
         }
         return colored;
     }
@@ -46,7 +45,7 @@ public class ItemBuilder {
         if (lore != null) {
             ArrayList<String> arrayList = new ArrayList<>();
             for (String line : lore) {
-                arrayList.add(FactionsPlugin.instance.color(line));
+                arrayList.add(CC.translate(line));
             }
             this.meta.setLore(arrayList);
         }
@@ -86,7 +85,7 @@ public class ItemBuilder {
 
     public ItemBuilder addLineToLore(String line) {
         List<String> lore = this.meta.getLore();
-        lore.add(FactionsPlugin.instance.color(line));
+        lore.add(CC.translate(line));
         this.meta.setLore(lore);
         return this;
     }

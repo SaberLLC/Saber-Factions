@@ -46,7 +46,7 @@ public class FChestListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         Faction faction;
-        if (!event.getView().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"))))
+        if (!event.getView().getTitle().equalsIgnoreCase(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"))))
             return;
         if (event.getClick() == ClickType.UNKNOWN) {
             event.setCancelled(true);
@@ -67,7 +67,7 @@ public class FChestListener implements Listener {
             return;
         }
         if (event.getClickedInventory() == null) return;
-        if (event.getView().getTitle().equalsIgnoreCase(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"))) && !event.getClick().isShiftClick()) {
+        if (event.getView().getTitle().equalsIgnoreCase(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"))) && !event.getClick().isShiftClick()) {
             if (currentItemType != Material.AIR) {
                 Inventory ours = faction.getChestInventory();
                 if (event.getClickedInventory() == ours) {

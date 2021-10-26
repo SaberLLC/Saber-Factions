@@ -5,7 +5,6 @@ import com.earth2me.essentials.User;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.util.Logger;
 import org.bukkit.Location;
@@ -14,7 +13,6 @@ import org.bukkit.event.Listener;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class EssentialsHomeHandler implements Listener {
 

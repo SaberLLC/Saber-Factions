@@ -6,7 +6,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-import java.util.logging.Level;
 
 public class AutoLeaveProcessTask extends BukkitRunnable {
 

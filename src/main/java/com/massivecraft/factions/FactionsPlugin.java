@@ -25,7 +25,6 @@ import com.massivecraft.factions.struct.nms.impl.*;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.adapters.*;
 import com.massivecraft.factions.util.flight.FlightEnhance;
-import com.massivecraft.factions.util.ReflectionUtils;
 import com.massivecraft.factions.util.flight.stuct.AsyncPlayerMap;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.CommandVisibility;
@@ -424,17 +423,6 @@ public class FactionsPlugin extends MPlugin {
 
     public void logFactionEvent(Faction faction, FLogType type, String... arguments) {
         this.fLogManager.log(faction, type, arguments);
-    }
-
-    public String color(String line) {
-        line = ChatColor.translateAlternateColorCodes('&', line);
-        return line;
-    }
-
-    //colors a string list
-    public List<String> colorList(List<String> lore) {
-        for (int i = 0; i <= lore.size() - 1; i++) lore.set(i, color(lore.get(i)));
-        return lore;
     }
 
     public List<ReserveObject> getFactionReserves() {

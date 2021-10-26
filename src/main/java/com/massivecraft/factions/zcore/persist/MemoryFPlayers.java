@@ -3,7 +3,6 @@ package com.massivecraft.factions.zcore.persist;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

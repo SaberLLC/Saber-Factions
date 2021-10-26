@@ -1,7 +1,6 @@
 package com.massivecraft.factions.integration;
 
 import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Logger;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;

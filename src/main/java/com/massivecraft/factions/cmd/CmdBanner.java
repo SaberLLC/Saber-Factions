@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Material;
@@ -39,8 +40,8 @@ public class CmdBanner extends FCommand {
         }
         ItemStack warBanner = context.fPlayer.getFaction().getBanner();
         ItemMeta warmeta = warBanner.getItemMeta();
-        warmeta.setDisplayName(FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
-        warmeta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore")));
+        warmeta.setDisplayName(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
+        warmeta.setLore(CC.translate(FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore")));
         warBanner.setItemMeta(warmeta);
         context.msg(TL.COMMAND_BANNER_SUCCESS);
         warBanner.setAmount(1);

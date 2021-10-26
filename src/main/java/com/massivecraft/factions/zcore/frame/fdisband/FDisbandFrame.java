@@ -7,6 +7,7 @@ import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -82,10 +83,10 @@ public class FDisbandFrame {
         if (meta != null) {
             List<String> lore = new ArrayList<>();
             for (String s : config.getStringList("Lore")) {
-                lore.add(FactionsPlugin.getInstance().color(s).replace("{faction}", faction.getTag()));
+                lore.add(CC.translate(s).replace("{faction}", faction.getTag()));
             }
             meta.setLore(lore);
-            meta.setDisplayName(FactionsPlugin.getInstance().color(Objects.requireNonNull(config.getString("Name"))));
+            meta.setDisplayName(CC.translate(Objects.requireNonNull(config.getString("Name"))));
             item.setItemMeta(meta);
         }
         return item;
@@ -96,8 +97,8 @@ public class FDisbandFrame {
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
-            meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
+            meta.setLore(CC.translate(config.getStringList("Lore")));
+            meta.setDisplayName(CC.translate(config.getString("Name")));
             item.setItemMeta(meta);
         }
         return item;

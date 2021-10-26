@@ -6,6 +6,8 @@ package com.massivecraft.factions.util;
 
 import org.bukkit.ChatColor;
 
+import java.util.List;
+
 public class CC {
     public static String Black = ChatColor.BLACK.toString();
     public static String BlackB = ChatColor.BLACK + ChatColor.BOLD.toString();
@@ -87,6 +89,11 @@ public class CC {
 
     public static String translate(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    public static List<String> translate(List<String> lore) {
+        for (int i = 0; i <= lore.size() - 1; i++) lore.set(i, translate(lore.get(i)));
+        return lore;
     }
 
     public static String strip(String string) {

@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.frame.fupgrades;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Placeholder;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
@@ -64,8 +65,8 @@ public enum UpgradeType {
         int level = f.getUpgrade(this);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setLore(FactionsPlugin.getInstance().colorList(FactionsPlugin.getInstance().replacePlaceholders(config.getStringList("Lore"), new Placeholder("{level}", level + ""))));
-            meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
+            meta.setLore(CC.translate(FactionsPlugin.getInstance().replacePlaceholders(config.getStringList("Lore"), new Placeholder("{level}", level + ""))));
+            meta.setDisplayName(CC.translate(config.getString("Name")));
             item.setItemMeta(meta);
             if (XMaterial.matchXMaterial(item) == XMaterial.PLAYER_HEAD && config.isSet("Texture")) {
                 SkullMeta skullMeta = (SkullMeta) meta;

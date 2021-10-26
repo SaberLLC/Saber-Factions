@@ -112,7 +112,7 @@ public enum PermissableAction {
         ItemStack item = XMaterial.matchXMaterial(section.getString("Materials." + this.name)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(FactionsPlugin.getInstance().color(section.getString("placeholder-item.name").replace("{action}", this.name)));
+        meta.setDisplayName(CC.translate(section.getString("placeholder-item.name").replace("{action}", this.name)));
         List<String> lore = section.getStringList("placeholder-item.lore");
 
         lore = FactionsPlugin.getInstance().replacePlaceholders(lore,
@@ -120,7 +120,7 @@ public enum PermissableAction {
                 new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
                 new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
 
-        meta.setLore(FactionsPlugin.getInstance().colorList(lore));
+        meta.setLore(CC.translate(lore));
         item.setItemMeta(meta);
         return item;
     }

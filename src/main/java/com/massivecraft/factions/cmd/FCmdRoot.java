@@ -35,7 +35,6 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.logging.Level;
 
 public class FCmdRoot extends FCommand implements CommandExecutor {
 

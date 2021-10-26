@@ -4,7 +4,11 @@ import com.cryptomorin.xseries.XMaterial;
 import com.github.stefvanschie.inventoryframework.Gui;
 import com.github.stefvanschie.inventoryframework.GuiItem;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -110,7 +114,7 @@ public class FUpgradeFrame {
     }
 
     private void updateChests(Faction faction) {
-        String invName = FactionsPlugin.getInstance().color(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"));
+        String invName = CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"));
         for (Player player : faction.getOnlinePlayers()) {
             if (player.getOpenInventory().getTitle().equalsIgnoreCase(invName)) player.closeInventory();
         }
@@ -131,8 +135,8 @@ public class FUpgradeFrame {
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setLore(FactionsPlugin.getInstance().colorList(config.getStringList("Lore")));
-            meta.setDisplayName(FactionsPlugin.getInstance().color(config.getString("Name")));
+            meta.setLore(CC.translate(config.getStringList("Lore")));
+            meta.setDisplayName(CC.translate(config.getString("Name")));
             item.setItemMeta(meta);
         }
         return item;
