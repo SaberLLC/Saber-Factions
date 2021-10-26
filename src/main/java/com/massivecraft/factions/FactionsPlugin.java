@@ -1,6 +1,5 @@
 package com.massivecraft.factions;
 
-import ch.njol.skript.SkriptAddon;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.addon.AddonManager;
@@ -77,7 +76,6 @@ public class FactionsPlugin extends MPlugin {
     public short version;
     public boolean useNonPacketParticles = false;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
-    public SkriptAddon skriptAddon;
     public boolean hookedPlayervaults;
     public FLogManager fLogManager;
     public List<ReserveObject> reserveObjects;
