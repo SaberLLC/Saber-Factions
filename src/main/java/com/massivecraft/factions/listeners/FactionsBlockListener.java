@@ -141,22 +141,6 @@ public class FactionsBlockListener implements Listener {
         }
     }
 
-    @EventHandler(
-            priority = EventPriority.HIGH,
-            ignoreCancelled = true
-    )
-    public void onPlayerPlace(BlockPlaceEvent event) {
-        ItemStack item = event.getItemInHand();
-        if (item != null && item.getType() == XMaterial.SPAWNER.parseMaterial()) {
-            Faction at = Board.getInstance().getFactionAt(new FLocation(event.getBlockPlaced()));
-            if (at != null && at.isNormal()) {
-                FPlayer fplayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
-                if (fplayer != null && at.getRelationTo(fplayer.getFaction()).isAtLeast(Relation.TRUCE)) {
-                    this.handleSpawnerUpdate(at, event.getPlayer(), item, LogTimer.TimerSubType.SPAWNER_PLACE);
-                }
-            }
-        }
-    }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -482,7 +466,7 @@ public class FactionsBlockListener implements Listener {
             Block block = event.getBlock();
 
             Faction at = Board.getInstance().getFactionAt(new FLocation(block));
-            boolean isSpawner = event.getBlock().getType().equals(XMaterial.SPAWNER.parseMaterial());
+            boolean isSpawner = event.getBlock().getType().equals(XMaterial.matchXMaterial("MOB_SPAWNER").get().parseMaterial());
             if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
                 event.setCancelled(true);
                 return;
@@ -495,21 +479,6 @@ public class FactionsBlockListener implements Listener {
                 Access access = fme.getFaction().getAccess(fme, PermissableAction.SPAWNER);
                 if (access != Access.ALLOW && fme.getRole() != Role.LEADER) {
                     fme.msg(TL.GENERIC_FPERM_NOPERMISSION, "mine spawners");
-                }
-            }
-
-            if (isSpawner && !fme.isAdminBypassing()) {
-                ItemStack item = new ItemStack(block.getType(), 1, block.getData());
-                if (at != null && at.isNormal()) {
-                    FPlayer fplayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
-                    if (fplayer != null) {
-                        BlockState state = block.getState();
-                        if (state instanceof CreatureSpawner) {
-                            CreatureSpawner spawner = (CreatureSpawner) state;
-                            item.setDurability(spawner.getSpawnedType().getTypeId());
-                        }
-                        handleSpawnerUpdate(at, event.getPlayer(), item, LogTimer.TimerSubType.SPAWNER_BREAK);
-                    }
                 }
             }
         } catch (Exception e) {

@@ -143,6 +143,10 @@ public class CmdCreate extends FCommand {
             Logger.print(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG + tag, Logger.PrefixType.DEFAULT);
         if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled"))
             context.msg(TL.COMMAND_PAYPALSET_CREATED);
+        if(Conf.allFactionsPeaceful) {
+            faction.setPeaceful(true);
+            faction.setPeacefulExplosionsEnabled(false);
+        }
         if (Conf.useCustomDefaultPermissions) faction.setDefaultPerms();
         if (Conf.usePermissionHints) context.msg(TL.COMMAND_HINT_PERMISSION);
     }
