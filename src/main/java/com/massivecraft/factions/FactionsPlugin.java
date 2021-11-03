@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.lunarclient.bukkitapi.LunarClientAPI;
 import com.massivecraft.factions.addon.AddonManager;
 import com.massivecraft.factions.addon.FactionsAddon;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -89,6 +90,7 @@ public class FactionsPlugin extends MPlugin {
     private boolean mvdwPlaceholderAPIManager = false;
     private Listener[] eventsListener;
     private Worldguard wg;
+    public LunarClientAPI lunarClientAPI;
 
     public FactionsPlugin() {
         instance = this;
@@ -421,6 +423,10 @@ public class FactionsPlugin extends MPlugin {
 
     public void logFactionEvent(Faction faction, FLogType type, String... arguments) {
         this.fLogManager.log(faction, type, arguments);
+    }
+
+    public LunarClientAPI getLunarClientAPI() {
+        return lunarClientAPI;
     }
 
     public List<ReserveObject> getFactionReserves() {

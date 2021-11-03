@@ -8,6 +8,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
@@ -250,6 +251,7 @@ public abstract class MemoryBoard extends Board {
                     row.then("+").color(ChatColor.AQUA).tooltip(TL.CLAIM_YOUAREHERE.toString());
                 } else {
                     FLocation flocationHere = topLeft.getRelative(dx, dz);
+                    FastChunk fastChunk = new FastChunk(flocationHere);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = fplayer.getRelationTo(factionHere);
                     if (flocationHere.isOutsideWorldBorder(buffer)) {
@@ -278,11 +280,11 @@ public abstract class MemoryBoard extends Board {
 
                         //row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));
                         //changed out with a performance friendly one line tooltip :D
-                        if (factionHere.getSpawnerChunks().contains(flocationHere) && Conf.userSpawnerChunkSystem) {
+                        if (factionHere.getSpawnerChunks().contains(fastChunk) && Conf.userSpawnerChunkSystem) {
                             row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
                         } else {
                             row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(oneLineToolTip(factionHere, fplayer));
-                        }                    } else {
+                        }            } else {
                         row.then("-").color(ChatColor.GRAY);
                     }
                 }

@@ -1,9 +1,7 @@
 package com.massivecraft.factions.util.flight.stuct;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.*;
+import com.massivecraft.factions.integration.LunarAPI;
 import com.massivecraft.factions.util.TitleUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,7 +30,7 @@ public class AsyncPlayerMap implements Runnable, Listener {
 
     public void run() {
         for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
-            if(pl.hasMetadata("showFactionTitle")) {
+            if (pl.hasMetadata("showFactionTitle")) {
                 FPlayer fPlayer = FPlayers.getInstance().getByPlayer(pl);
                 Faction factionTo = Board.getInstance().getFactionAt(fPlayer.getLastStoodAt());
                 TitleUtil.sendFactionChangeTitle(fPlayer, factionTo);

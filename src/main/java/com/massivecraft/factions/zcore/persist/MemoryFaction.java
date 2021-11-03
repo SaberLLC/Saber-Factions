@@ -93,7 +93,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private String guildId;
     private String memberRoleId;
     private int allowedSpawnerChunks;
-    private Set<FLocation> spawnerChunks;
+    private Set<FastChunk> spawnerChunks;
     private boolean protectedfac = true;
     private boolean cloaked;
 
@@ -205,11 +205,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.allowedSpawnerChunks = chunks;
     }
 
-    public Set<FLocation> getSpawnerChunks() {
+    public Set<FastChunk> getSpawnerChunks() {
         return this.spawnerChunks;
     }
 
-    public void setSpawnerChunks(Set<FLocation> spawnerChunks) {
+    public void setSpawnerChunks(Set<FastChunk> spawnerChunks) {
         this.spawnerChunks = spawnerChunks;
     }
 

@@ -43,6 +43,7 @@ public class CmdCreate extends FCommand {
             context.player.sendMessage(ChatColor.translateAlternateColorCodes('&', TL.DISCORD_LINK_REQUIRED.toString()));
             return;
         }
+
         String tag = context.argAsString(0);
 
         if (context.fPlayer.hasFaction()) {
