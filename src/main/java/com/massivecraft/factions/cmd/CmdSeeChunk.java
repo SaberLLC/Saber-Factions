@@ -110,7 +110,7 @@ public class CmdSeeChunk extends FCommand {
     }
 
     private void showPillar(Player player, World world, int blockX, int blockZ) {
-        for (int blockY = 0; blockY < player.getLocation().getBlockY() + 15; blockY++) {
+        for (int blockY = player.getLocation().getBlockY() - 15; blockY < player.getLocation().getBlockY() + 15; blockY++) {
             Location loc = new Location(world, blockX, blockY, blockZ).add(0.5, 0, 0.5);
             if (loc.getBlock().getType() != Material.AIR) {
                 continue;
