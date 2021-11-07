@@ -114,7 +114,9 @@ public class Conf {
     public static int maxFillClaimCount = 25;
     public static int maxFillClaimDistance = 5;
 
+    //Drain
     public static boolean factionsDrainEnabled = false;
+    public static int factionDrainCooldown = 60;
     //RESERVE
     public static boolean useReserveSystem = true;
     //AUDIT
