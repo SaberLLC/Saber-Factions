@@ -12,6 +12,8 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.audit.FChestListener;
 import com.massivecraft.factions.cmd.audit.FLogManager;
 import com.massivecraft.factions.cmd.audit.FLogType;
+import com.massivecraft.factions.cmd.banner.listener.BannerListener;
+import com.massivecraft.factions.cmd.banner.struct.BannerManager;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
@@ -71,6 +73,7 @@ public class FactionsPlugin extends MPlugin {
     public static boolean startupFinished = false;
     public boolean PlaceholderApi;
     // Commands
+
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
     private AsyncPlayerMap asyncPlayerMap;
@@ -88,6 +91,7 @@ public class FactionsPlugin extends MPlugin {
     private Integer AutoLeaveTask = null;
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
+    private BannerManager bannerManager;
     private Listener[] eventsListener;
     private Worldguard wg;
     public LunarClientAPI lunarClientAPI;
@@ -192,6 +196,13 @@ public class FactionsPlugin extends MPlugin {
             getServer().getPluginManager().registerEvents(timerManager.graceTimer, this);
         }
 
+
+        if(getFileManager().getBanners().fetchBoolean("Banners.Enabled")) {
+            this.bannerManager = new BannerManager();
+            this.bannerManager.onEnable(this);
+            getServer().getPluginManager().registerEvents(new BannerListener(), this);
+        }
+
         this.asyncPlayerMap = new AsyncPlayerMap(this);
 
         this.getCommand(refCommand).setExecutor(cmdBase);
@@ -206,6 +217,10 @@ public class FactionsPlugin extends MPlugin {
         this.loadSuccessful = true;
         // Set startup finished to true. to give plugins hooking in a greenlight
         FactionsPlugin.startupFinished = true;
+    }
+
+    public BannerManager getBannerManager() {
+        return bannerManager;
     }
 
     private void setupPlaceholderAPI() {
@@ -309,7 +324,7 @@ public class FactionsPlugin extends MPlugin {
             getServer().getScheduler().cancelTask(this.AutoLeaveTask);
             this.AutoLeaveTask = null;
         }
-
+        this.bannerManager.onDisable(this);
         ShutdownParameter.initShutdown(this);
 
         super.onDisable();

@@ -17,12 +17,6 @@ public class TimeUtil {
         int minutes = secondsLeft / 60;
         int seconds = secondsLeft - minutes * 60;
         String formattedTime = "";
-        if (hours < 10)
-            formattedTime = formattedTime + "0";
-        formattedTime = formattedTime + hours + ":";
-        if (minutes < 10)
-            formattedTime = formattedTime + "0";
-        formattedTime = formattedTime + minutes + ":";
         if (seconds < 10)
             formattedTime = formattedTime + "0";
         formattedTime = formattedTime + seconds;

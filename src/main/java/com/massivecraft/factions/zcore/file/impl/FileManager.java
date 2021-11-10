@@ -20,6 +20,7 @@ public class FileManager {
     private CustomFile discord = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "discord.yml"));
     private CustomFile corex = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "corex" + File.separator + "corex.yml"));
     private CustomFile missions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "missions.yml"));
+    private CustomFile banners = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "banners.yml"));
 
     public void setupFiles() {
         boosters.setup(true, "data");
@@ -30,6 +31,7 @@ public class FileManager {
         fperms.setup(true, "configuration");
         upgrades.setup(true, "configuration");
         missions.setup(true, "configuration");
+        banners.setup(true, "configuration");
     }
 
 
@@ -42,8 +44,13 @@ public class FileManager {
         fperms.loadFile();
         upgrades.loadFile();
         missions.loadFile();
+        banners.loadFile();
     }
 
+
+    public CustomFile getBanners() {
+        return banners;
+    }
 
     public CustomFile getUpgrades() {
         return upgrades;

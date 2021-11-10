@@ -4,6 +4,8 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.alts.CmdAlts;
 import com.massivecraft.factions.cmd.audit.CmdAudit;
+import com.massivecraft.factions.cmd.banner.CmdBanner;
+import com.massivecraft.factions.cmd.banner.CmdTpBanner;
 import com.massivecraft.factions.cmd.check.CmdCheck;
 import com.massivecraft.factions.cmd.check.CmdWeeWoo;
 import com.massivecraft.factions.cmd.chest.CmdChest;

@@ -13,14 +13,9 @@ import com.massivecraft.factions.util.ItemBuilder;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,23 +25,16 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class FactionsBlockListener implements Listener {
 
-    public static HashMap<String, Location> bannerLocations = new HashMap<>();
-    private HashMap<String, Boolean> bannerCooldownMap = new HashMap<>();
     private long placeTimer = TimeUnit.SECONDS.toMillis(15L);
 
 
@@ -63,7 +51,7 @@ public class FactionsBlockListener implements Listener {
         if (otherFaction.isWilderness()) {
             if (Conf.worldGuardBuildPriority && Worldguard.getInstance().playerCanBuild(player, location)) return true;
             if (location.getWorld() != null) {
-                if (!Conf.wildernessDenyBuild || ((Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) )
+                if (!Conf.wildernessDenyBuild || ((Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)))
                     return true;
             }
             if (!justCheck) me.msg(TL.ACTION_DENIED_WILDERNESS, action);
@@ -127,18 +115,6 @@ public class FactionsBlockListener implements Listener {
             }
         }
         return CheckPlayerAccess(me.getPlayer(), me, location, target, target.getAccess(me, action), action, pain);
-    }
-
-    public void handleSpawnerUpdate(Faction at, Player player, ItemStack spawnerItem, LogTimer.TimerSubType subType) {
-        FLogManager manager = FactionsPlugin.instance.getFlogManager();
-        LogTimer logTimer = manager.getLogTimers().computeIfAbsent(player.getUniqueId(), e -> new LogTimer(player.getName(), at.getId()));
-        LogTimer.Timer timer = logTimer.attemptLog(LogTimer.TimerType.SPAWNER_EDIT, subType, 0L);
-        Map<MaterialData, AtomicInteger> currentCounts = (timer.getExtraData() == null) ? new HashMap<>() : ((Map) timer.getExtraData());
-        currentCounts.computeIfAbsent(spawnerItem.getData(), e -> new AtomicInteger(0)).addAndGet(1);
-        timer.setExtraData(currentCounts);
-        if (timer.isReadyToLog(this.placeTimer)) {
-            logTimer.pushLogs(at, LogTimer.TimerType.SPAWNER_EDIT);
-        }
     }
 
 
@@ -310,109 +286,8 @@ public class FactionsBlockListener implements Listener {
         if (!canPistonMoveBlock(pistonFaction, targetLoc)) event.setCancelled(true);
     }
 
-    @EventHandler
-    public void onBannerBreak(BlockBreakEvent e) {
-
-        FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
-        if (FactionsPlugin.getInstance().version == 7) {
-            return;
-        }
-
-        if (bannerLocations.containsValue(e.getBlock().getLocation())) {
-            if (e.getBlock().getType().name().contains("BANNER")) {
-                e.setCancelled(true);
-                fme.msg(TL.BANNER_CANNOT_BREAK);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onBannerPlace(BlockPlaceEvent e) {
-
-        if (FactionsPlugin.getInstance().version == 7) return;
-
-        if (e.getItemInHand().getType().name().contains("BANNER")) {
-            ItemStack bannerInHand = e.getItemInHand();
-            FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
-            ItemStack warBanner = fme.getFaction().getBanner();
-            if (warBanner == null) return;
-            ItemMeta warmeta = warBanner.getItemMeta();
-            warmeta.setDisplayName(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
-            warmeta.setLore(CC.translate(FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore")));
-            warBanner.setItemMeta(warmeta);
-            if (warBanner.isSimilar(bannerInHand)) {
-                if (fme.getFaction().isWilderness()) {
-                    fme.msg(TL.WARBANNER_NOFACTION);
-                    e.setCancelled(true);
-                    return;
-                }
-                int bannerTime = FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Time") * 20;
-                Location placedLoc = e.getBlockPlaced().getLocation();
-                FLocation fplacedLoc = new FLocation(placedLoc);
-                if ((Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Placeable.Warzone")) || (fme.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY && FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Placeable.Enemy"))) {
-                    if (bannerCooldownMap.containsKey(fme.getTag())) {
-                        fme.msg(TL.WARBANNER_COOLDOWN);
-                        e.setCancelled(true);
-                        return;
-                    }
-                    for (FPlayer fplayer : fme.getFaction().getFPlayers()) {
-                        fplayer.getPlayer().sendTitle(CC.translate(fme.getTag() + " Placed A WarBanner!"), CC.translate("&7use &c/f tpbanner&7 to tp to the banner!"));
-                    }
-                    bannerCooldownMap.put(fme.getTag(), true);
-                    FactionsBlockListener.bannerLocations.put(fme.getTag(), e.getBlockPlaced().getLocation());
-                    int bannerCooldown = FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Place-Cooldown");
-                    ArmorStand as = (ArmorStand) e.getBlockPlaced().getLocation().add(0.5, 1.0, 0.5).getWorld().spawnEntity(e.getBlockPlaced().getLocation().add(0.5, 1.0, 0.5), EntityType.ARMOR_STAND);
-                    as.setVisible(false);
-                    as.setGravity(false);
-                    as.setCanPickupItems(false);
-                    as.setCustomName(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fbanners.BannerHolo").replace("{Faction}", fme.getTag())));
-                    as.setCustomNameVisible(true);
-                    String tag = fme.getTag();
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> bannerCooldownMap.remove(tag), Long.parseLong(bannerCooldown + ""));
-                    Block banner = e.getBlockPlaced();
-                    Material bannerType = banner.getType();
-                    Faction bannerFaction = fme.getFaction();
-                    banner.getWorld().strikeLightningEffect(banner.getLocation());
-                    int radius = FactionsPlugin.getInstance().getConfig().getInt("fbanners.Banner-Effect-Radius");
-                    List<String> effects = FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Effects");
-                    int affectorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
-                        for (Entity e1 : Objects.requireNonNull(banner.getLocation().getWorld()).getNearbyEntities(banner.getLocation(), radius, 255.0, radius)) {
-                            if (e1 instanceof Player) {
-                                Player player = (Player) e1;
-                                FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-                                if (fplayer.getFaction() != bannerFaction) {
-                                    continue;
-                                }
-                                for (String effect : effects) {
-                                    String[] components = effect.split(":");
-                                    player.addPotionEffect(new PotionEffect(Objects.requireNonNull(PotionEffectType.getByName(components[0])), 100, Integer.parseInt(components[1])));
-                                }
-                                if (banner.getType() == bannerType) {
-                                    continue;
-                                }
-                                banner.setType(bannerType);
-                            }
-                        }
-                    }, 0L, 20L);
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> {
-                        banner.setType(Material.AIR);
-                        as.remove();
-                        banner.getWorld().strikeLightningEffect(banner.getLocation());
-                        Bukkit.getScheduler().cancelTask(affectorTask);
-                        FactionsBlockListener.bannerLocations.remove(bannerFaction.getTag());
-                    }, Long.parseLong(bannerTime + ""));
-                } else {
-                    fme.msg(TL.WARBANNER_INVALIDLOC);
-                    e.setCancelled(true);
-                }
-            }
-        }
-    }
-
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onFrostWalker(EntityBlockFormEvent event) {
-
-
         if (event.getEntity() == null || event.getEntity().getType() != EntityType.PLAYER || event.getBlock() == null)
             return;
 
@@ -449,7 +324,7 @@ public class FactionsBlockListener implements Listener {
         if (pistonFaction == otherFaction) return true;
 
         if (otherFaction.isWilderness())
-            return !Conf.wildernessDenyBuild || ((Conf.worldsNoWildernessProtection.contains(target.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(target.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist) );
+            return !Conf.wildernessDenyBuild || ((Conf.worldsNoWildernessProtection.contains(target.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(target.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist));
         else if (otherFaction.isSafeZone()) return !Conf.safeZoneDenyBuild;
         else if (otherFaction.isWarZone()) return !Conf.warZoneDenyBuild;
 
