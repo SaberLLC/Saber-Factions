@@ -114,7 +114,7 @@
         <dependency>
             <groupId>xyz.xenondevs</groupId>
             <artifactId>particle</artifactId>
-            <version>1.6.6</version>
+            <version>1.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -178,6 +178,13 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>1.18-Spigot</groupId>
+            <artifactId>1.18-Spigot</artifactId>
+            <scope>system</scope>
+            <version>1.18</version>
+            <systemPath>${project.basedir}/serverJars/1.18.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>1.17-Spigot</groupId>
             <artifactId>1.17-Spigot</artifactId>
             <scope>system</scope>
@@ -211,13 +218,6 @@
             <scope>system</scope>
             <version>1.13</version>
             <systemPath>${project.basedir}/serverJars/1.13.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.13.2-Spigot</groupId>
-            <artifactId>1.13.2-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.13.2</version>
-            <systemPath>${project.basedir}/serverJars/1.13.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>1.14-Spigot</groupId>
@@ -308,7 +308,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>LATEST</version>
+            <version>4.2.0_247</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>

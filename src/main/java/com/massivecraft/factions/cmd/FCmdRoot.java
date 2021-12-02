@@ -292,8 +292,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdVault);
         this.addSubCommand(this.cmdGetVault);
         this.addSubCommand(this.cmdColeader);
-        this.addSubCommand(this.cmdBanner);
-        this.addSubCommand(this.cmdTpBanner);
+        //this.addSubCommand(this.cmdBanner);
+        //this.addSubCommand(this.cmdTpBanner);
         this.addSubCommand(this.cmdKillHolograms);
         this.addSubCommand(this.cmdCoords);
         this.addSubCommand(this.cmdShowClaims);
