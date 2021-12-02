@@ -12,7 +12,6 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.audit.FChestListener;
 import com.massivecraft.factions.cmd.audit.FLogManager;
 import com.massivecraft.factions.cmd.audit.FLogType;
-import com.massivecraft.factions.cmd.banner.listener.BannerListener;
 import com.massivecraft.factions.cmd.banner.struct.BannerManager;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
@@ -324,7 +323,7 @@ public class FactionsPlugin extends MPlugin {
             getServer().getScheduler().cancelTask(this.AutoLeaveTask);
             this.AutoLeaveTask = null;
         }
-        this.bannerManager.onDisable(this);
+        //this.bannerManager.onDisable(this);
         ShutdownParameter.initShutdown(this);
 
         super.onDisable();
