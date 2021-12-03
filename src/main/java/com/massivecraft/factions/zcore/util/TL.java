@@ -1057,6 +1057,15 @@ public enum TL {
     COMMAND_UNCLAIMALL_DESCRIPTION("Unclaim all of your factions land"),
     COMMAND_UNCLAIM_CLICKTOUNCLAIM("Click to unclaim &2(%1$d, %2$d)"),
 
+    COMMAND_UNCLAIMFILL_DESCRIPTION("Unclaim contiguous land"),
+    COMMAND_UNCLAIMFILL_ABOVEMAX("&cThe maximum limit for unclaim fill is %s."),
+    COMMAND_UNCLAIMFILL_NOTCLAIMED("&cCannot unclaim fill using non-claimed land!"),
+    COMMAND_UNCLAIMFILL_TOOFAR("&cThis unclaim would exceed the maximum distance of %.2f"),
+    COMMAND_UNCLAIMFILL_PASTLIMIT("&cThis unclaim would exceed the limit!"),
+    COMMAND_UNCLAIMFILL_TOOMUCHFAIL("&cAborting unclaim fill after %d failures"),
+    COMMAND_UNCLAIMFILL_UNCLAIMED("%1$s&e unclaimed %d claims of your faction's land around %s."),
+    COMMAND_UNCLAIMFILL_BYPASSCOMPLETE("&eUnclaimed %d claims."),
+
     COMMAND_VERSION_NAME("&c&l[!]&7 &c&k||| &r&4SaberFactions&7 &c&k|||&r &c» &7By Driftay"),
     COMMAND_VERSION_VERSION("&7Version &c» &7%1$s"),
     COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
@@ -1114,6 +1123,7 @@ public enum TL {
     CLAIM_PROTECTED("This land is protected"),
     CLAIM_DISABLED("Sorry, this world has land claiming disabled."),
     CLAIM_CANTCLAIM("You can't claim land for %s."),
+    CLAIM_CANTUNCLAIM("&cYou can't unclaim land for &d%s&c."),
     CLAIM_ALREADYOWN("%s already own this land."),
     CLAIM_MUSTBE("You must be %s to claim land."),
     CLAIM_MEMBERS("Factions must have at least %s members to claim land."),

@@ -390,6 +390,7 @@ public class FactionsEntityListener implements Listener {
         Entity damager = sub.getDamager();
         Entity damagee = sub.getEntity();
         if (!(damagee instanceof Player)) return true;
+        if(damagee.hasMetadata("NPC")) return true;
         FPlayer defender = FPlayers.getInstance().getByPlayer((Player) damagee);
         if (damager instanceof Player) {
             FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);

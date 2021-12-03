@@ -2,8 +2,6 @@ package com.massivecraft.factions.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.cmd.audit.FLogManager;
-import com.massivecraft.factions.cmd.audit.LogTimer;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -25,12 +23,8 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class FactionsBlockListener implements Listener {

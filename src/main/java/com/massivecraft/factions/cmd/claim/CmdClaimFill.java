@@ -18,10 +18,7 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class CmdClaimFill extends FCommand {
 
@@ -74,7 +71,7 @@ public class CmdClaimFill extends FCommand {
         long startX = loc.getX();
         long startZ = loc.getZ();
 
-        Set<FLocation> toClaim = new HashSet<>();
+        Set<FLocation> toClaim = new LinkedHashSet<>();
         Queue<FLocation> queue = new LinkedList<>();
         FLocation currentHead;
         queue.add(loc);

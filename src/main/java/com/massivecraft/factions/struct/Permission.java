@@ -136,6 +136,7 @@ public enum Permission {
     TITLE_COLOR("title.color"),
     TOGGLE_ALLIANCE_CHAT("togglealliancechat"),
     UNCLAIM("unclaim"),
+    UNCLAIM_FILL("unclaim.fill"),
     UNCLAIM_ALL("unclaimall"),
     VERSION("version"),
     SCOREBOARD("scoreboard"),
