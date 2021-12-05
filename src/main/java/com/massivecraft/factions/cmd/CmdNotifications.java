@@ -15,7 +15,6 @@ public class CmdNotifications extends FCommand {
         this.aliases.addAll(Aliases.notifications);
         this.requirements = new CommandRequirements.Builder(Permission.NOTIFICATIONS)
                 .playerOnly()
-                .memberOnly()
                 .build();
     }
 

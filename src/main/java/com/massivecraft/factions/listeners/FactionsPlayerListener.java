@@ -536,7 +536,7 @@ public class FactionsPlayerListener implements Listener {
 
         if (changedFaction) {
             Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(new FPlayerEnteredFactionEvent(factionTo, factionFrom, me)));
-            if (FactionsPlugin.getInstance().getConfig().getBoolean("Title.Show-Title")) {
+            if (FactionsPlugin.getInstance().getConfig().getBoolean("Title.Show-Title") && me.hasNotificationsEnabled()) {
                 player.setMetadata("showFactionTitle", new FixedMetadataValue(FactionsPlugin.getInstance(), true));
             }
         }

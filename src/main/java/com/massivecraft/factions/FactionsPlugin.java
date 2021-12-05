@@ -269,8 +269,6 @@ public class FactionsPlugin extends MPlugin {
                 return new Version_1_12_R1();
             case "v1_13_R1":
                 return new Version_1_13_R1();
-            case "v1_13_R2":
-                return new Version_1_13_R2();
             case "v1_14_R1":
                 return new Version_1_14_R1();
             case "v1_15_R1":
