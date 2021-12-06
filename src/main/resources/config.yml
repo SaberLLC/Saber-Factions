@@ -209,6 +209,8 @@ warmups:
   f-checkpoint: 10
   #Delay for /f tpbanner
   f-banner: 10
+  #Delay for /f wild
+  f-wild: 5
 
 ######################################################
 #################### HCF Features ####################
