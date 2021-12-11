@@ -26,10 +26,8 @@ public class ModuleManager {
                 module.onEnable();
             } catch (Exception e) {
                 e.printStackTrace();
-                //plugin.getLogger().severe("============= WARFARE EXTRAS ERROR =============");
                 //plugin.getLogger().severe("There was an error loading the " + module.getModuleType() + " patch module");
                 //plugin.getLogger().severe("The plugin will now disable..");
-                //plugin.getLogger().severe("============= WARFARE EXTRAS ERROR =============");
                 //plugin.getServer().getPluginManager().disablePlugin((Plugin)plugin);
                 break;
             }

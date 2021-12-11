@@ -19,14 +19,14 @@ public class FastChunk {
 
     public FastChunk(String world, FLocation floc) {
         this.world = world;
-        this.x = floc.getChunk().getX();
-        this.z = floc.getChunk().getZ();
+        this.x = (int) floc.getX();
+        this.z = (int) floc.getZ();
     }
 
     public FastChunk(FLocation floc) {
         this.world = floc.getWorld().getName();
-        this.x = floc.getChunk().getX();
-        this.z = floc.getChunk().getZ();
+        this.x = (int) floc.getX();
+        this.z = (int) floc.getZ();
     }
 
     @Override

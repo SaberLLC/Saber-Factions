@@ -1,5 +1,6 @@
 package pw.saber.corex;
 
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.file.CustomFile;
@@ -134,6 +135,10 @@ public class CoreX {
 
         if(getConfig().fetchBoolean("Features.Anti-Minecart-Placement")) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiMinecartPlacement(), FactionsPlugin.getInstance());
+        }
+
+        if(getConfig().fetchBoolean("Features.Anti-Bow-Boosting")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBowBoosting(), FactionsPlugin.getInstance());
         }
 
         //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {

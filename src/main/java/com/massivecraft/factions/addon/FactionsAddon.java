@@ -34,21 +34,14 @@ public abstract class FactionsAddon {
         for (Listener listener : listenersToRegister()) {
 
             if (listener != null) {
-
                 plugin.getServer().getPluginManager().registerEvents(listener, plugin);
-
             }
-
         }
 
         for (FCommand fCommand : fCommandsToRegister()) {
-
             if (fCommand != null) {
-
                 plugin.cmdBase.addSubCommand(fCommand);
-
             }
-
         }
 
         Logger.print("Addon: " + getAddonName() + " loaded successfully!" , Logger.PrefixType.DEFAULT);
