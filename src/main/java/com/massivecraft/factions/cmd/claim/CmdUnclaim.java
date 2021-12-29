@@ -13,6 +13,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.ChunkReference;
+import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -51,7 +52,7 @@ public class CmdUnclaim extends FCommand {
 
         if (radius < 2) {
             // single chunk
-            unClaim(new FLocation(context.player), context, forFaction);
+            context.fPlayer.attemptUnclaim(forFaction, new FLocation(context.player), true);
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(context.sender, false)) {
@@ -65,7 +66,7 @@ public class CmdUnclaim extends FCommand {
 
                 @Override
                 public boolean work() {
-                    boolean success = unClaim(this.currentFLocation(), context, forFaction);
+                    boolean success = context.fPlayer.attemptUnclaim(forFaction, this.currentFLocation(), true);
                     if (success) {
                         failCount = 0;
                     } else if (failCount++ >= limit) {
@@ -79,119 +80,6 @@ public class CmdUnclaim extends FCommand {
         }
     }
 
-    private boolean unClaim(FLocation target, CommandContext context, Faction faction) {
-        Faction targetFaction = Board.getInstance().getFactionAt(target);
-
-        if (context.faction != targetFaction && !context.fPlayer.isAdminBypassing()) {
-            context.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
-            return false;
-        }
-
-        if (targetFaction.isSafeZone()) {
-            if (Permission.MANAGE_SAFE_ZONE.has(context.sender)) {
-                Board.getInstance().removeAt(target);
-                context.msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
-
-                if (Conf.logLandUnclaims) {
-                    Logger.print(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
-                }
-                return true;
-            } else {
-                context.msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
-                return false;
-            }
-        } else if (targetFaction.isWarZone()) {
-            if (Permission.MANAGE_WAR_ZONE.has(context.sender)) {
-                Board.getInstance().removeAt(target);
-                context.msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
-
-                if (Conf.logLandUnclaims) {
-                    Logger.print(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
-                }
-                return true;
-            } else {
-                context.msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
-                return false;
-            }
-        }
-
-        if (context.fPlayer.isAdminBypassing()) {
-            LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, context.fPlayer);
-            Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
-            if (unclaimEvent.isCancelled()) {
-                return false;
-            }
-
-            Board.getInstance().removeAt(target);
-
-            targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, context.fPlayer.describeTo(targetFaction, true));
-            context.msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
-
-            if (Conf.logLandUnclaims) {
-                Logger.print(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
-            }
-
-            return true;
-        }
-
-        if (!context.assertHasFaction()) {
-            return false;
-        }
-
-        if (targetFaction.getAccess(context.fPlayer, PermissableAction.TERRITORY) == Access.DENY && context.fPlayer.getRole() != Role.LEADER) {
-            context.msg(TL.GENERIC_FPERM_NOPERMISSION, "unclaim");
-            return false;
-        }
-
-        if (context.faction != targetFaction && !context.fPlayer.isAdminBypassing()) {
-            context.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
-            return false;
-        }
-
-        if (Conf.userSpawnerChunkSystem) {
-            if (faction.getSpawnerChunks().contains(target) && faction.getSpawnerChunks() != null) {
-                if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
-                    context.faction.getSpawnerChunks().remove(target);
-                    context.fPlayer.msg(TL.SPAWNER_CHUNK_UNCLAIMED);
-                } else {
-                    if (ChunkReference.getSpawnerCount(target.getChunk()) > 0) {
-                        context.fPlayer.msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(target.getChunk()));
-                    }
-                    return false;
-                }
-            }
-        }
-
-        LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(target, targetFaction, context.fPlayer);
-        Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
-        if (unclaimEvent.isCancelled()) {
-            return false;
-        }
-
-        if (Econ.shouldBeUsed()) {
-            double refund = Econ.calculateClaimRefund(context.faction.getLandRounded());
-
-            if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
-                if (!Econ.modifyMoney(context.faction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
-                    return false;
-                }
-            } else {
-                if (!Econ.modifyMoney(context.fPlayer, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
-                    return false;
-                }
-            }
-        }
-
-        Board.getInstance().removeAt(target);
-
-        context.faction.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, context.fPlayer.describeTo(context.faction, true));
-
-        if (Conf.logLandUnclaims) {
-            Logger.print(TL.COMMAND_UNCLAIM_LOG.format(context.fPlayer.getName(), target.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
-        }
-
-        return true;
-    }
 
     @Override
     public TL getUsageTranslation() {

@@ -26,5 +26,4 @@ public class LunarAPI {
             FactionsPlugin.getInstance().getLunarClientAPI().sendWaypoint(player, waypoint);
         }
     }
-
 }

@@ -184,6 +184,11 @@ public enum TL {
     COMMAND_AUTOCLAIM_OTHERFACTION("&c&l[!]&7 You &ccan't &7claim land for &c%1$s&7."),
     COMMAND_AUTOCLAIM_DESCRIPTION("Auto-claim land as you walk around"),
 
+    COMMAND_AUTOUNCLAIM_ENABLED("&eNow auto-unclaiming land for &d%1$s&e."),
+    COMMAND_AUTOUNCLAIM_DISABLED("&eAuto-unclaiming of land disabled."),
+    COMMAND_AUTOUNCLAIM_OTHERFACTION("&cYou can't unclaim land for &d%1$s&c."),
+    COMMAND_AUTOUNCLAIM_DESCRIPTION("Auto-unclaim land as you walk around"),
+
 
     COMMAND_ALTINVITE_DESCRIPTION("Invite Alts to your faction."),
     COMMAND_ALTKICK_DESCRIPTION("Kick alts from your faction"),
@@ -1037,6 +1042,7 @@ public enum TL {
     COMMAND_UNBAN_TARGETUNBANNED("&aYou were unbanned from &r%s"),
 
     COMMAND_UNCLAIM_SAFEZONE_SUCCESS("Safe zone was unclaimed."),
+    COMMAND_UNCLAIM_WRONGFACTIONOTHER("&cAttempted to unclaim land for incorrect faction"),
     COMMAND_UNCLAIM_SAFEZONE_NOPERM("This is a safe zone. You lack permissions to unclaim."),
     COMMAND_UNCLAIM_WARZONE_SUCCESS("War zone was unclaimed."),
     COMMAND_UNCLAIM_WARZONE_NOPERM("This is a war zone. You lack permissions to unclaim."),

@@ -27,6 +27,11 @@ import java.util.List;
 
 public interface FPlayer extends EconomyParticipator {
 
+    Faction getAutoUnclaimFor();
+
+    void setAutoUnclaimFor(Faction faction);
+
+
     void setNotificationsEnabled(boolean notifications);
 
     boolean hasNotificationsEnabled();
@@ -406,6 +411,8 @@ public interface FPlayer extends EconomyParticipator {
     boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure);
 
     boolean attemptClaim(Faction forFaction, FLocation location, boolean notifyFailure);
+
+    boolean attemptUnclaim(Faction forFaction, FLocation flocation, boolean notifyFailure);
 
     boolean isInVault();
 

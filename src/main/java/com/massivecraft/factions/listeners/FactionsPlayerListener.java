@@ -508,24 +508,8 @@ public class FactionsPlayerListener implements Listener {
                     me.attemptClaim(me.getAutoClaimFor(), me.getPlayer().getLocation(), true);
                 }
                 FactionsPlugin.instance.logFactionEvent(me.getAutoClaimFor(), FLogType.CHUNK_CLAIMS, me.getName(), CC.GreenB + "CLAIMED", String.valueOf(1), (new FLocation(player.getLocation())).formatXAndZ(","));
-            } else if (me.isAutoSafeClaimEnabled()) {
-                if (!Permission.MANAGE_SAFE_ZONE.has(player)) {
-                    me.setIsAutoSafeClaimEnabled(false);
-                } else {
-                    if (!Board.getInstance().getFactionAt(to).isSafeZone()) {
-                        Board.getInstance().setFactionAt(Factions.getInstance().getSafeZone(), to);
-                        me.msg(TL.PLAYER_SAFEAUTO);
-                    }
-                }
-            } else if (me.isAutoWarClaimEnabled()) {
-                if (!Permission.MANAGE_WAR_ZONE.has(player)) {
-                    me.setIsAutoWarClaimEnabled(false);
-                } else {
-                    if (!Board.getInstance().getFactionAt(to).isWarZone()) {
-                        Board.getInstance().setFactionAt(Factions.getInstance().getWarZone(), to);
-                        me.msg(TL.PLAYER_WARAUTO);
-                    }
-                }
+            } else if (me.getAutoUnclaimFor() != null) {
+                me.attemptUnclaim(me.getAutoUnclaimFor(), new FLocation(event.getTo()), true);
             }
         }
 

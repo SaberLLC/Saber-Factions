@@ -16,10 +16,7 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.Logger;
-import com.massivecraft.factions.util.RelationUtil;
-import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -83,8 +80,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
     protected transient Faction autoClaimFor;
-    protected transient boolean autoSafeZoneEnabled;
-    protected transient boolean autoWarZoneEnabled;
+    protected transient Faction autoUnclaimFor;
     protected transient boolean loginPvpDisabled;
     protected transient long lastFrostwalkerMessage;
     protected transient boolean shouldTakeFallDamage = true;
@@ -108,8 +104,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.mapAutoUpdating = false;
         this.autoClaimFor = null;
         this.notificationsEnabled = true;
-        this.autoSafeZoneEnabled = false;
-        this.autoWarZoneEnabled = false;
         this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
         this.powerBoost = 0.0;
         this.getKills();
@@ -130,8 +124,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.lastLoginTime = other.lastLoginTime;
         this.mapAutoUpdating = other.mapAutoUpdating;
         this.autoClaimFor = other.autoClaimFor;
-        this.autoSafeZoneEnabled = other.autoSafeZoneEnabled;
-        this.autoWarZoneEnabled = other.autoWarZoneEnabled;
         this.loginPvpDisabled = other.loginPvpDisabled;
         this.powerBoost = other.powerBoost;
         this.role = other.role;
@@ -345,31 +337,40 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setAutoClaimFor(Faction faction) {
         this.autoClaimFor = faction;
-        if (this.autoClaimFor != null) {
-            // TODO: merge these into same autoclaim
-            this.autoSafeZoneEnabled = false;
-            this.autoWarZoneEnabled = false;
+
+        if (faction != null) {
+            this.autoUnclaimFor = null;
         }
     }
 
+    public Faction getAutoUnclaimFor() {
+        return autoUnclaimFor;
+    }
+
+    public void setAutoUnclaimFor(Faction faction) {
+        this.autoUnclaimFor = faction;
+        if (faction != null) {
+            this.autoClaimFor = null;
+        }
+    }
+
+    @Deprecated
     public boolean isAutoSafeClaimEnabled() {
-        return autoSafeZoneEnabled;
+        return autoClaimFor != null && autoClaimFor.isSafeZone();
     }
 
+    @Deprecated
     public void setIsAutoSafeClaimEnabled(boolean enabled) {
-        this.autoSafeZoneEnabled = enabled;
-        if (enabled) this.autoClaimFor = null;
-        this.autoWarZoneEnabled = false;
+        this.setAutoClaimFor(enabled ? Factions.getInstance().getSafeZone() : null);
     }
 
+    @Deprecated
     public boolean isAutoWarClaimEnabled() {
-        return autoWarZoneEnabled;
+        return autoClaimFor != null && autoClaimFor.isWarZone();
     }
 
     public void setIsAutoWarClaimEnabled(boolean enabled) {
-        this.autoWarZoneEnabled = enabled;
-        if (enabled) this.autoClaimFor = null;
-        this.autoSafeZoneEnabled = false;
+        this.setAutoClaimFor(enabled ? Factions.getInstance().getWarZone() : null);
     }
 
     public boolean isAdminBypassing() {
@@ -968,6 +969,125 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure) {
         return attemptClaim(forFaction, new FLocation(location), notifyFailure);
+    }
+
+    public boolean attemptUnclaim(Faction forFaction, FLocation flocation, boolean notifyFailure) {
+        Faction targetFaction = Board.getInstance().getFactionAt(flocation);
+
+        if (!targetFaction.equals(forFaction)) {
+            this.msg(TL.COMMAND_UNCLAIM_WRONGFACTIONOTHER);
+            return false;
+        }
+
+        if (targetFaction.isSafeZone()) {
+            if (Permission.MANAGE_SAFE_ZONE.has(this.getPlayer())) {
+                Board.getInstance().removeAt(flocation);
+                this.msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
+
+                if (Conf.logLandUnclaims) {
+                    Logger.print(TL.COMMAND_UNCLAIM_LOG.format(this.getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
+                }
+                return true;
+            } else {
+                this.msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
+                return false;
+            }
+        } else if (targetFaction.isWarZone()) {
+            if (Permission.MANAGE_WAR_ZONE.has(this.getPlayer())) {
+                Board.getInstance().removeAt(flocation);
+                this.msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
+
+                if (Conf.logLandUnclaims) {
+                    Logger.print(TL.COMMAND_UNCLAIM_LOG.format(this.getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
+                }
+                return true;
+            } else {
+                this.msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
+                return false;
+            }
+        }
+
+        if (this.isAdminBypassing()) {
+            LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, targetFaction, this);
+            Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
+            if (unclaimEvent.isCancelled()) {
+                return false;
+            }
+
+            Board.getInstance().removeAt(flocation);
+
+            targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, this.describeTo(targetFaction, true));
+            this.msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
+
+            if (Conf.logLandUnclaims) {
+                Logger.print(TL.COMMAND_UNCLAIM_LOG.format(this.getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
+            }
+
+            return true;
+        }
+
+        if (!this.hasFaction()) {
+            if (notifyFailure) {
+                this.msg("You are not member of any faction.");
+            }
+            return false;
+        }
+
+
+        if (targetFaction.getAccess(this, PermissableAction.TERRITORY) == Access.DENY && this.getRole() != Role.LEADER) {
+            this.msg(TL.GENERIC_FPERM_NOPERMISSION, "unclaim");
+            return false;
+        }
+
+        if (this.getFaction() != targetFaction) {
+            if (notifyFailure) {
+                this.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
+            }
+            return false;
+        }
+
+        if (Conf.userSpawnerChunkSystem) {
+            FastChunk fastChunk = new FastChunk(flocation);
+            if (this.getFaction().getSpawnerChunks().contains(fastChunk) && this.getFaction().getSpawnerChunks() != null) {
+                if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
+                    this.getFaction().getSpawnerChunks().remove(fastChunk);
+                    this.msg(TL.SPAWNER_CHUNK_UNCLAIMED);
+                } else if (ChunkReference.getSpawnerCount(flocation.getChunk()) > 0) {
+                    this.msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(flocation.getChunk()));
+                }
+                return false;
+            }
+        }
+
+        LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, targetFaction, this);
+        Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
+        if (unclaimEvent.isCancelled()) {
+            return false;
+        }
+
+        if (Econ.shouldBeUsed()) {
+            double refund = Econ.calculateClaimRefund(this.getFaction().getLandRounded());
+
+            if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
+                if (!Econ.modifyMoney(this.getFaction(), refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
+                    return false;
+                }
+            } else {
+                if (!Econ.modifyMoney(this, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
+                    return false;
+                }
+            }
+        }
+
+        Board.getInstance().removeAt(flocation);
+
+        this.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, this.describeTo(this.getFaction(), true));
+
+        if (Conf.logLandUnclaims) {
+            Logger.print(TL.COMMAND_UNCLAIM_LOG.format(this.getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
+        }
+
+        return true;
     }
 
 
