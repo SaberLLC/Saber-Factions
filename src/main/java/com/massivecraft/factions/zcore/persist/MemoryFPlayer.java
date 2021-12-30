@@ -739,6 +739,12 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void onDeath() {
         this.updatePower();
+
+        if(this.getPlayer().hasMetadata("diedToPlayer")) {
+            this.alterPower(-Conf.deathToPlayerPowerLoss);
+            this.getPlayer().removeMetadata("diedToPlayer", FactionsPlugin.getInstance());
+        }
+
         this.alterPower(-Conf.powerPerDeath);
         if (hasFaction()) getFaction().setLastDeath(System.currentTimeMillis());
     }

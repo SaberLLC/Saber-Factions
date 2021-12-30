@@ -21,6 +21,7 @@ import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -82,6 +83,9 @@ public class FactionsEntityListener implements Listener {
 
         // Call player onDeath if the event is not cancelled and not using custom power
         if (!powerLossEvent.isCancelled() && !powerLossEvent.usingCustomPower()) {
+            if(Conf.deathToPlayerPowerLoss > 0.0 && event.getEntity().getKiller() != null) {
+                player.setMetadata("diedToPlayer", new FixedMetadataValue(FactionsPlugin.getInstance(), true));
+            }
             fplayer.onDeath();
         } else if (powerLossEvent.usingCustomPower() && !powerLossEvent.isCancelled()) {
             fplayer.alterPower(-powerLossEvent.getCustomPowerLost());
