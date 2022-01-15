@@ -42,6 +42,7 @@ public class Aliases {
     public static ArrayList<String> money_withdraw = new ArrayList<>(Arrays.asList("w", "withdraw"));
     public static ArrayList<String> grace = new ArrayList<>(Collections.singletonList("grace"));
     public static ArrayList<String> logout = new ArrayList<>(Collections.singletonList("logout"));
+    public static ArrayList<String> rally = new ArrayList<>(Collections.singletonList("rally"));
     public static ArrayList<String> points_balance = new ArrayList<>(Arrays.asList("balance", "bal"));
     public static ArrayList<String> points_points = new ArrayList<>(Collections.singletonList("points"));
     public static ArrayList<String> points_add = new ArrayList<>(Collections.singletonList("add"));

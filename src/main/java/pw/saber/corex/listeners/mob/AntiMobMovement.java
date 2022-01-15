@@ -22,6 +22,7 @@ public class AntiMobMovement implements Listener {
         if (entList.isEmpty()) return;
         if (event.getEntity().getType() == EntityType.DROPPED_ITEM || event.getEntity().getType() == EntityType.PRIMED_TNT)
             return;
+
         if (event.getEntity() instanceof Player) return;
 
         if (!entList.contains(event.getEntity().getType().toString())) return;

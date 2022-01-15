@@ -114,6 +114,7 @@ public enum Permission {
     POWER("power"),
     POWER_ANY("power.any"),
     PROMOTE("promote"),
+    RALLY("rally"),
     RELATION("relation"),
     RELOAD("reload"),
     ROSTER("roster"),

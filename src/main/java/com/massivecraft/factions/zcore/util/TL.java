@@ -800,6 +800,9 @@ public enum TL {
     COMMAND_POWERBOOST_BOOSTLOG("%1$s has set the power bonus/penalty for %2$s to %3$d."),
     COMMAND_POWERBOOST_DESCRIPTION("Apply permanent power bonus/penalty to specified player or faction"),
 
+    FACTION_RALLY_MESSAGE("&e&l[!] &7%1$s's coords are &e%2$s, %3$s, %4$s"),
+    COMMAND_RALLY_DESCRIPTION("Send a Rally Message/Waypoint To Faction Members"),
+
     COMMAND_RELATIONS_ALLTHENOPE("&c&l[!]&7 &cNope!You can't."),
     COMMAND_RELATIONS_MORENOPE("&c&l[!]&7 &cNope!&7You can't declare a relation to &cyourself"),
     COMMAND_RELATIONS_ALREADYINRELATIONSHIP("&c&l[!]&7 You &calready&7 have that relation wish set with&c %1$s."),

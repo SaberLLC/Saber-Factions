@@ -41,6 +41,8 @@ Missions:
     Name: "&f10,000 &2Sugar Cane"
     Lore:
       - "&b&lMine &f&n10,000&r &2Sugar Cane"
+      - ""
+      - "&7&nClick-here to start your mission!"
     Mission:
       Type: "MINE"
       Material: "SUGAR_CANE"
@@ -53,6 +55,8 @@ Missions:
     Name: "&f1,000 &eZombies"
     Lore:
       - "&b&lKill &f&n1,000&r &eZombies"
+      - ""
+      - "&7&nClick-here to start your mission!"
     Mission:
       Type: "KILL"
       EntityType: "ZOMBIE"
@@ -64,7 +68,9 @@ Missions:
     Material: "FISHING_ROD"
     Name: "&f100 &6Fish"
     Lore:
-      - "&b&lCatch fish &n100&r &d&ltimes"
+      - "&b&lCatch fish &n100&r &d&lTimes"
+      - ""
+      - "&7&nClick-here to start your mission!"
     Mission:
       Type: "FISH"
       Amount: 100
@@ -75,7 +81,9 @@ Missions:
     Material: "BONE"
     Name: "&f100 &cTamed Animals"
     Lore:
-      - "&b&lTame an animal &n100&r &d&ltimes"
+      - "&b&lTame an animal &n100&r &d&lTimes"
+      - ""
+      - "&7&nClick-here to start your mission!"
     Mission:
       Type: "TAME"
       EntityType: "ALL"
@@ -87,7 +95,9 @@ Missions:
     Material: "BOOK"
     Name: "&f100 &dEnchants"
     Lore:
-      - "&b&lEnchant &n100&r &d&litems"
+      - "&b&lEnchant &n100&r &d&lItems"
+      - ""
+      - "&7&nClick-here to start your mission!"
     Mission:
       Type: "ENCHANT"
       Amount: 100
@@ -98,7 +108,9 @@ Missions:
     Material: "COOKED_BEEF"
     Name: "&f100 &dSteak"
     Lore:
-      - "&b&lConsume &n100&r &d&lsteak"
+      - "&b&lConsume &n100&r &d&lSteak"
+      - ""
+      - "&7&nClick-here to start your mission!"
     Mission:
       Type: "CONSUME"
       # "ALL" can also be used for item
