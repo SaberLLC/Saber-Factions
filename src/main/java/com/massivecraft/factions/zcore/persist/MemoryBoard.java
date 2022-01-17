@@ -284,7 +284,8 @@ public abstract class MemoryBoard extends Board {
                             row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
                         } else {
                             row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(oneLineToolTip(factionHere, fplayer));
-                        }            } else {
+                        }
+                    } else {
                         row.then("-").color(ChatColor.GRAY);
                     }
                 }
