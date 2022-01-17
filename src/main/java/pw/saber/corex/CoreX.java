@@ -14,6 +14,10 @@ public class CoreX {
         return FactionsPlugin.getInstance().getFileManager().getCoreX();
     }
 
+    public static String pluginName() {
+        return "SaberFactions";
+    }
+
     public static void init() {
         Logger.print("CoreX Integration Starting!", Logger.PrefixType.DEFAULT);
         if (getConfig().fetchBoolean("Features.Anti-Baby-Zombies")) {

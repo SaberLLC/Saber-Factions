@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 public class TitleUtil {
 
     public static void sendFactionChangeTitle(FPlayer me, Faction faction) {
+        if(me == null) return;
         String title = FactionsPlugin.getInstance().getConfig().getString("Title.Format.Title");
         title = title.replace("{Faction}", faction.getColorTo(me) + faction.getTag());
         title = parseAllPlaceholders(title, faction, me.getPlayer());
