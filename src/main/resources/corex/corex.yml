@@ -12,7 +12,6 @@
 Features:
   Anti-Boat-Placement: false #Denies Players From Placing Boats
   Anti-Minecart-Placement: false #Denies Players From Placing Minecarts
-
   Anti-Vehicle-Teleport: true #Denies Block Phasing Through Exiting Vehicles!
   EnderPearl-Cooldown: false #Places a Cooldown on Ender Pearls!
   Anti-Nether-Portal: false #Denies players teleporting from nether portals
@@ -41,6 +40,7 @@ Features:
   Insta-Sponge-Break: true #Instantly Break Sponges
   Anti-Natural-Mobs: false #Denies all natural mob spawns
   God-Apple-Cooldown: false #Denies players spam eating god apples
+  Global-Gamemode: true #Allows ops to change worlds and keep their gamemode
 
 AntiSpawnerMine:
   Radius: 20.0 # Radius that the player will be denied mining spawners when an enemy is near.

@@ -141,6 +141,10 @@ public class CoreX {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBowBoosting(), FactionsPlugin.getInstance());
         }
 
+        if(getConfig().fetchBoolean("Features.Global-Gamemode")) {
+            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new GlobalGamemode(), FactionsPlugin.getInstance());
+        }
+
         //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {
         //    FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ChunkBusterListener(), FactionsPlugin.getInstance());
         //    FactionsPlugin.getInstance().getCommand("chunkbuster").setExecutor(new CommandChunkbuster());
