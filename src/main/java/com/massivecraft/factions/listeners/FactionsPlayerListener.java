@@ -53,7 +53,6 @@ public class FactionsPlayerListener implements Listener {
      * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
-    HashMap<Player, Boolean> fallMap = new HashMap<>();
     // Holds the next time a player can have a map shown.
     private HashMap<UUID, Long> showTimes = new HashMap<>();
 
@@ -402,9 +401,6 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        fallMap.put(me.getPlayer(), false);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> fallMap.remove(me.getPlayer()), 180L);
-
         if (me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {
             me.setSpyingChat(false);
             Logger.printArgs( "Found %s spying chat without permission on login. Disabled their chat spying.", Logger.PrefixType.DEFAULT, player.getName());
@@ -426,19 +422,6 @@ public class FactionsPlayerListener implements Listener {
             LunarAPI.sendHomeWaypoint(me);
         }
 
-    }
-
-    @EventHandler
-    public void onPlayerFall(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player) {
-            if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
-                Player player = (Player) e.getEntity();
-                if (fallMap.containsKey(player)) {
-                    e.setCancelled(true);
-                    fallMap.remove(player);
-                }
-            }
-        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
