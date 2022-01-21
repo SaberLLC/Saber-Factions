@@ -71,9 +71,11 @@ public class EngineDynmap {
         }
         return ret.toString();
     }
-
     public static String getHtmlPlayerName(FPlayer fplayer) {
         return fplayer != null ? escapeHtml(fplayer.getName()) : "none";
+    }
+    public static String getHtmlPlayerUUID(FPlayer fplayer) {
+        return fplayer != null ? escapeHtml(fplayer.getAccountId()) : "none";
     }
 
     public static String escapeHtml(String string) {
@@ -661,6 +663,7 @@ public class EngineDynmap {
 
         FPlayer playersLeaderObject = faction.getFPlayerAdmin();
         String playersLeader = getHtmlPlayerName(playersLeaderObject);
+        String playersLeaderId = getHtmlPlayerUUID(playersLeaderObject);
 
         ArrayList<FPlayer> playersCoAdminsList = faction.getFPlayersWhereRole(Role.COLEADER);
         String playersCoAdminsCount = String.valueOf(playersCoAdminsList.size());
@@ -677,6 +680,7 @@ public class EngineDynmap {
         ret = ret.replace("%players%", players);
         ret = ret.replace("%players.count%", playersCount);
         ret = ret.replace("%players.leader%", playersLeader);
+        ret = ret.replace("%players.leader.id%", playersLeaderId);
         ret = ret.replace("%players.admins%", playersCoAdmins);
         ret = ret.replace("%players.admins.count%", playersCoAdminsCount);
         ret = ret.replace("%players.moderators%", playersModerators);
