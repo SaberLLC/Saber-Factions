@@ -77,7 +77,7 @@ public class FactionWarpsFrame {
         final ConfigurationSection config = this.section.getConfigurationSection("warp-item");
         final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         final ItemMeta meta = item.getItemMeta();
-        meta.setLore(CC.translate(FactionsPlugin.getInstance().replacePlaceholders(config.getStringList("Lore"), new Placeholder("{warp-protected}", faction.hasWarpPassword(warp.getKey()) ? "Enabled" : "Disabled"), new Placeholder("{warp-cost}", FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) ? Integer.toString(FactionsPlugin.getInstance().getConfig().getInt("warp-cost.warp", 5)) : "Disabled"))));
+        meta.setLore(CC.translate(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{warp-protected}", faction.hasWarpPassword(warp.getKey()) ? "Enabled" : "Disabled"), new Placeholder("{warp-cost}", FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) ? Integer.toString(FactionsPlugin.getInstance().getConfig().getInt("warp-cost.warp", 5)) : "Disabled"))));
         meta.setDisplayName(CC.translate(config.getString("Name").replace("{warp}", warp.getKey())));
         item.setItemMeta(meta);
         return item;

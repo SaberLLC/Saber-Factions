@@ -18,6 +18,7 @@ import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
+import com.massivecraft.factions.listeners.vspecific.ChorusFruitListener;
 import com.massivecraft.factions.missions.MissionHandler;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -168,11 +169,16 @@ public class FactionsPlugin extends MPlugin {
         if (Conf.usePreStartupKickSystem) {
             getServer().getPluginManager().registerEvents(new LoginRegistry(), this);
         }
+
         getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
         getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
         if (Conf.userSpawnerChunkSystem) {
             this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
+        }
+
+        if(FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
+            this.getServer().getPluginManager().registerEvents(new ChorusFruitListener(), this);
         }
 
         // Register Event Handlers
@@ -218,10 +224,6 @@ public class FactionsPlugin extends MPlugin {
         FactionsPlugin.startupFinished = true;
     }
 
-    public BannerManager getBannerManager() {
-        return bannerManager;
-    }
-
     private void setupPlaceholderAPI() {
         Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
         if (clip != null && clip.isEnabled()) {
@@ -241,14 +243,6 @@ public class FactionsPlugin extends MPlugin {
             this.mvdwPlaceholderAPIManager = true;
             Logger.print("Found MVdWPlaceholderAPI. Adding hooks.", Logger.PrefixType.DEFAULT);
         }
-    }
-
-    public List<String> replacePlaceholders(List<String> lore, Placeholder... placeholders) {
-        for (Placeholder placeholder : placeholders) {
-            for (int x = 0; x <= lore.size() - 1; x++)
-                lore.set(x, lore.get(x).replace(placeholder.getTag(), placeholder.getReplace()));
-        }
-        return lore;
     }
 
     public HashMap<String, FactionsAddon> getFactionsAddonHashMap() {
@@ -294,6 +288,10 @@ public class FactionsPlugin extends MPlugin {
             if (rsp != null) perms = rsp.getProvider();
         } catch (NoClassDefFoundError ex) {
         }
+    }
+
+    public BannerManager getBannerManager() {
+        return bannerManager;
     }
 
     @Override

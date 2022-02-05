@@ -337,7 +337,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setAutoClaimFor(Faction faction) {
         this.autoClaimFor = faction;
-
         if (faction != null) {
             this.autoUnclaimFor = null;
         }

@@ -65,7 +65,7 @@ public enum UpgradeType {
         int level = f.getUpgrade(this);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setLore(CC.translate(FactionsPlugin.getInstance().replacePlaceholders(config.getStringList("Lore"), new Placeholder("{level}", level + ""))));
+            meta.setLore(CC.translate(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{level}", level + ""))));
             meta.setDisplayName(CC.translate(config.getString("Name")));
             item.setItemMeta(meta);
             if (XMaterial.matchXMaterial(item) == XMaterial.PLAYER_HEAD && config.isSet("Texture")) {

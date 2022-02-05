@@ -115,7 +115,7 @@ public enum PermissableAction {
         meta.setDisplayName(CC.translate(section.getString("placeholder-item.name").replace("{action}", this.name)));
         List<String> lore = section.getStringList("placeholder-item.lore");
 
-        lore = FactionsPlugin.getInstance().replacePlaceholders(lore,
+        lore = Placeholder.replacePlaceholders(lore,
                 new Placeholder("{description}", this.getDescription()),
                 new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
                 new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
