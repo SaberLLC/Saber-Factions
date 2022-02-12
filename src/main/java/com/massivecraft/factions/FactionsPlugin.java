@@ -15,6 +15,7 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
+import com.massivecraft.factions.integration.LunarClientWrapper;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.missions.MissionHandler;
@@ -90,7 +91,7 @@ public class FactionsPlugin extends MPlugin {
     private boolean mvdwPlaceholderAPIManager = false;
     private Listener[] eventsListener;
     private Worldguard wg;
-    public LunarClientAPI lunarClientAPI;
+    public LunarClientWrapper lcWrapper;
 
     public FactionsPlugin() {
         instance = this;
@@ -425,8 +426,8 @@ public class FactionsPlugin extends MPlugin {
         this.fLogManager.log(faction, type, arguments);
     }
 
-    public LunarClientAPI getLunarClientAPI() {
-        return lunarClientAPI;
+    public LunarClientWrapper getLunarClientWrapper() {
+        return lcWrapper;
     }
 
     public List<ReserveObject> getFactionReserves() {
