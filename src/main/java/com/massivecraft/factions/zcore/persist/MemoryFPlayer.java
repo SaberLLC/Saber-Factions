@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.persist;
 
+import cc.javajobs.wgbridge.WorldGuardBridge;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.discord.Discord;
@@ -9,7 +10,6 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
-import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
 import com.massivecraft.factions.struct.ChatMode;
@@ -904,7 +904,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         int factionBuffer = plugin.getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = plugin.getConfig().getInt("world-border.buffer", 0);
 
-        if (Conf.worldGuardChecking && Worldguard.getInstance().checkForRegionsInChunk(flocation)) {
+        if (Conf.worldGuardChecking && WorldGuardBridge.getInstance().getAPI().checkForRegionsInChunk(flocation.getChunk())) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = plugin.txt.parse(TL.CLAIM_PROTECTED.toString());
         } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
@@ -1475,7 +1475,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return false;
         }
 
-        if (Conf.worldGuardChecking && Worldguard.getInstance().checkForRegionsInChunk(flocation)) {
+        if (Conf.worldGuardChecking && WorldGuardBridge.getInstance().getAPI().checkForRegionsInChunk(flocation.getChunk())) {
             this.msg(TL.GENERIC_WORLDGUARD);
             return false;
         }

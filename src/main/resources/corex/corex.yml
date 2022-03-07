@@ -26,7 +26,6 @@ Features:
   Iron-Golem-Health: true #Configurable Amount of Health an Iron Golem can spawn in with
   Water-Proof-Blazes: true #Denies Water Damage To Blazes (Useful for most Factions Servers)
   Anti-Book-Quill-Crash: true #Denies Players to be able to do book and quill crashes
-  Anti-Death-Clip: true #Denies Death Clipping EX: Killing each other at the same time
   Anti-Dupe: true #Multiple general dupe patches, more to be added soon
   Anti-Nether-Roof: true #Denies Pistons breaching the nether roof.
   Anti-Piston-Glitch: false #Denies Automatic Piston Farms

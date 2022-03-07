@@ -9,9 +9,11 @@ import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.reserve.ListParameterizedType;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
+import com.massivecraft.factions.data.helpers.FactionDataHelper;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
+import com.massivecraft.factions.integration.LunarClientWrapper;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.Metrics;
@@ -67,7 +69,7 @@ public class StartupParameter {
         EngineDynmap.getInstance().init();
 
         if(Bukkit.getPluginManager().isPluginEnabled("LunarClient-API")) {
-            FactionsPlugin.getInstance().lunarClientAPI = LunarClientAPI.getInstance();
+            FactionsPlugin.getInstance().lcWrapper = new LunarClientWrapper(LunarClientAPI.getInstance());
             Logger.print("Implementing Lunar Client Integration", Logger.PrefixType.DEFAULT);
         }
 
@@ -80,6 +82,8 @@ public class StartupParameter {
         FactionsPlugin.cachedRadiusClaim = Conf.useRadiusClaimSystem;
 
         CoreX.init();
+
+        //FactionDataHelper.init();
 
         if (Conf.useCheckSystem) {
             int minute = 1200;

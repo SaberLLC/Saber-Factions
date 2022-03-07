@@ -1,6 +1,5 @@
 package pw.saber.corex;
 
-import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.file.CustomFile;
@@ -29,7 +28,6 @@ public class CoreX {
         }
 
         if (getConfig().fetchBoolean("Features.Anti-Mob-Targeting")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiMobTargeting(), FactionsPlugin.getInstance());
 
         }
 

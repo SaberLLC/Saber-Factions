@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.util;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.addon.FactionsAddon;
+import com.massivecraft.factions.data.helpers.FactionDataHelper;
 import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.discord.DiscordListener;
 import com.massivecraft.factions.util.Logger;
@@ -23,6 +24,8 @@ public class ShutdownParameter {
             factionsAddon.disableAddon();
             Logger.print("Disabled " + factionsAddon.getAddonName() + " addon", Logger.PrefixType.DEFAULT);
         }
+
+        FactionDataHelper.onDisable();
 
         if (Discord.jda != null) Discord.jda.shutdownNow();
 

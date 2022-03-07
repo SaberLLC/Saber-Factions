@@ -160,8 +160,9 @@ public class FactionsEntityListener implements Listener {
                         } else {
                             // we don't want to let mobs/arrows destroy item frames/armor stands
                             // so we only have to run the check as if there had been an explosion at the damager location
-                            if (!this.checkExplosionForBlock(damager, damageee.getLocation().getBlock()))
+                            if (!this.checkExplosionForBlock(damager, damageee.getLocation().getBlock())) {
                                 event.setCancelled(true);
+                            }
                         }
                         // we don't need to go after
                         return;
@@ -177,8 +178,9 @@ public class FactionsEntityListener implements Listener {
                                 event.setCancelled(true);
                             }
                         } else {
-                            if (!this.checkExplosionForBlock(damager, damagee.getLocation().getBlock()))
+                            if (!this.checkExplosionForBlock(damager, damagee.getLocation().getBlock())) {
                                 event.setCancelled(true);
+                            }
                         }
                     }
 
@@ -330,12 +332,13 @@ public class FactionsEntityListener implements Listener {
                 (boomer instanceof Fireball || boomer instanceof Wither) && (faction.isWilderness() && Conf.wildernessBlockFireballs && ((!Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) || faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline) || faction.isWarZone() && Conf.warZoneBlockFireballs || faction.isSafeZone())) {
             // ghast fireball which needs prevention
             return false;
-        } else
-            return (!(boomer instanceof TNTPrimed) && !(boomer instanceof ExplosiveMinecart)) || ((!faction.isWilderness() || !Conf.wildernessBlockTNT || ((Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) ) &&
+        } else {
+            return  (!(boomer instanceof TNTPrimed) && !(boomer instanceof ExplosiveMinecart)) || ((!faction.isWilderness() || !Conf.wildernessBlockTNT || ((Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist))) &&
                     (!faction.isNormal() || (online ? !Conf.territoryBlockTNT : !Conf.territoryBlockTNTWhenOffline)) &&
                     (!faction.isWarZone() || !Conf.warZoneBlockTNT) &&
                     (!faction.isSafeZone() || !Conf.safeZoneBlockTNT));
 
+        }
         // No condition retained, destroy the block!
     }
 

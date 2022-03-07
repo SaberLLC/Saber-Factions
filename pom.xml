@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>Factions</artifactId>
-    <version>1.6.9.5-3.0.1-RC</version>
+    <version>1.6.9.5-3.0.2-RC</version>
     <packaging>jar</packaging>
 
     <name>SaberFactions</name>
@@ -72,10 +72,6 @@
                                 <shadedPattern>com.massivecraft.factions.shade.mkremins.fanciful</shadedPattern>
                             </relocation>
                             <relocation>
-                                <pattern>com.google.gson</pattern>
-                                <shadedPattern>com.massivecraft.factions.shade.com.google.gson</shadedPattern>
-                            </relocation>
-                            <relocation>
                                 <pattern>com.darkblade12</pattern>
                                 <shadedPattern>com.massivecraft.factions.shade.com.darkblade12</shadedPattern>
                             </relocation>
@@ -112,9 +108,15 @@
 
     <dependencies>
         <dependency>
+            <groupId>cc.javajobs.wgbridge</groupId>
+            <artifactId>WorldGuardBridge</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>xyz.xenondevs</groupId>
             <artifactId>particle</artifactId>
-            <version>1.7</version>
+            <version>1.7.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -470,12 +472,6 @@
                     <groupId>com.google.code.findbugs</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.5</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>

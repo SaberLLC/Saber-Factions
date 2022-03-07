@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import cc.javajobs.wgbridge.WorldGuardBridge;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.lunarclient.bukkitapi.LunarClientAPI;
@@ -16,7 +17,7 @@ import com.massivecraft.factions.cmd.banner.struct.BannerManager;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
-import com.massivecraft.factions.integration.Worldguard;
+import com.massivecraft.factions.integration.LunarClientWrapper;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.listeners.vspecific.ChorusFruitListener;
 import com.massivecraft.factions.missions.MissionHandler;
@@ -93,8 +94,7 @@ public class FactionsPlugin extends MPlugin {
     private boolean mvdwPlaceholderAPIManager = false;
     private BannerManager bannerManager;
     private Listener[] eventsListener;
-    private Worldguard wg;
-    public LunarClientAPI lunarClientAPI;
+    public LunarClientWrapper lcWrapper;
 
     public FactionsPlugin() {
         instance = this;
@@ -161,7 +161,9 @@ public class FactionsPlugin extends MPlugin {
 
         setupPermissions();
 
-        if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) wg = new Worldguard();
+        if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
+            new WorldGuardBridge().connect(this, true);
+        }
 
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
         startAutoLeaveTask(false);
@@ -435,8 +437,8 @@ public class FactionsPlugin extends MPlugin {
         this.fLogManager.log(faction, type, arguments);
     }
 
-    public LunarClientAPI getLunarClientAPI() {
-        return lunarClientAPI;
+    public LunarClientWrapper getLunarClientWrapper() {
+        return lcWrapper;
     }
 
     public List<ReserveObject> getFactionReserves() {

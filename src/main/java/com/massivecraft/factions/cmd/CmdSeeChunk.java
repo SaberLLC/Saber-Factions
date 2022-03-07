@@ -23,7 +23,8 @@ public class CmdSeeChunk extends FCommand {
     public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
     Long interval;
     private boolean useParticles;
-    private ParticleEffect effect;
+    private final ParticleEffect effect = ParticleEffect.REDSTONE;
+
     private int taskID = -1;
 
 
@@ -33,10 +34,6 @@ public class CmdSeeChunk extends FCommand {
     public CmdSeeChunk() {
         super();
         aliases.addAll(Aliases.seeChunk);
-        effect = ParticleEffect.valueOf(FactionsPlugin.getInstance().getConfig().getString("see-chunk.particle-type"));
-        if(effect == null) {
-            effect = ParticleEffect.REDSTONE;
-        }
 
         this.useParticles = FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.particles", true);
         interval = FactionsPlugin.getInstance().getConfig().getLong("see-chunk.interval", 10L);

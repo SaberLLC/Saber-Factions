@@ -264,7 +264,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdSB);
         this.addSubCommand(this.cmdShowInvites);
         this.addSubCommand(this.cmdAnnounce);
-        this.addSubCommand(this.cmdSeeChunk);
         this.addSubCommand(this.cmdConvert);
         this.addSubCommand(this.cmdFWarp);
         this.addSubCommand(this.cmdSetFWarp);
@@ -348,6 +347,11 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             this.addSubCommand(this.cmdWeeWoo);
             checkEnabled = true;
         }
+
+        if(FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.Enabled")) {
+            this.addSubCommand(this.cmdSeeChunk);
+        }
+
         //CoreProtect
         //if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null && !coreProtectEnabled) {
         //    FactionsPlugin.getInstance().log("Found CoreProtect, enabling Inspect");
