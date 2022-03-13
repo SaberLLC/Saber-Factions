@@ -103,7 +103,7 @@ public class CoreX {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new BlockedEnchantments(), FactionsPlugin.getInstance());
         }
 
-        if(getConfig().fetchBoolean("Features.Armor-Swap")) {
+        if(getConfig().fetchBoolean("Features.Armor-Swap") && FactionsPlugin.getInstance().version == 8) {
             FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ArmorSwap(), FactionsPlugin.getInstance());
         }
 

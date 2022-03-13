@@ -50,6 +50,7 @@ public class CmdInvite extends FCommand {
             context.msg(TL.COMMAND_INVITE_ALREADYINVITED, target.getName());
             return;
         }
+
         if (context.faction.isBanned(target)) {
             context.msg(TL.COMMAND_INVITE_BANNED, target.getName());
             return;
