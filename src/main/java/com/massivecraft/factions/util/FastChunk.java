@@ -11,6 +11,9 @@ public class FastChunk {
     private String world;
     private int x, z;
 
+    public FastChunk() {
+    }
+
     public FastChunk(String world, int x, int z) {
         this.world = world;
         this.x = x;
@@ -24,7 +27,7 @@ public class FastChunk {
     }
 
     public FastChunk(FLocation floc) {
-        this.world = floc.getWorld().getName();
+        this.world = floc.getWorldName();
         this.x = (int) floc.getX();
         this.z = (int) floc.getZ();
     }
@@ -37,6 +40,10 @@ public class FastChunk {
         return x == fastChunk.x &&
                 z == fastChunk.z &&
                 world.equals(fastChunk.world);
+    }
+
+    public FastChunk getRelative(String world, int dx, int dz) {
+        return new FastChunk(world, this.x + dx, this.z + dz);
     }
 
     @Override

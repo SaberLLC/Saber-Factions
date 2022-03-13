@@ -25,7 +25,7 @@ public class ShutdownParameter {
             Logger.print("Disabled " + factionsAddon.getAddonName() + " addon", Logger.PrefixType.DEFAULT);
         }
 
-        FactionDataHelper.onDisable();
+        //FactionDataHelper.onDisable();
 
         if (Discord.jda != null) Discord.jda.shutdownNow();
 

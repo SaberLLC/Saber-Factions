@@ -112,15 +112,19 @@ public class MissionGUI implements FactionGUI {
         if (configurationSection == null) {
             return;
         }
-        ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).get().parseItem();
-        ItemMeta fillmeta = fillItem.getItemMeta();
-        fillmeta.setDisplayName(CC.translate(configurationSection.getString("FillItem.Name")));
-        fillmeta.setLore(CC.translate(configurationSection.getStringList("FillItem.Lore")));
-        fillItem.setItemMeta(fillmeta);
-        for (int fill = 0; fill < configurationSection.getInt("FillItem.Rows") * 9; ++fill) {
-            //Why were we generating a new itemstack per slot?????
-            inventory.setItem(fill, fillItem);
+
+        if(!Objects.equals(configurationSection.getString("FillItem.Material"), "AIR")) {
+            ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).get().parseItem();
+            ItemMeta fillmeta = fillItem.getItemMeta();
+            fillmeta.setDisplayName(CC.translate(configurationSection.getString("FillItem.Name")));
+            fillmeta.setLore(CC.translate(configurationSection.getStringList("FillItem.Lore")));
+            fillItem.setItemMeta(fillmeta);
+            for (int fill = 0; fill < configurationSection.getInt("FillItem.Rows") * 9; ++fill) {
+                //Why were we generating a new itemstack per slot?????
+                inventory.setItem(fill, fillItem);
+            }
         }
+
         for (String key : configurationSection.getKeys(false)) {
             if (!key.equals("FillItem")) {
                 ConfigurationSection section = configurationSection.getConfigurationSection(key);

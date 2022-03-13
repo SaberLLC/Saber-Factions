@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.MiscUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -166,6 +167,18 @@ public class FLocation implements Serializable {
 
     public FLocation getRelative(int dx, int dz) {
         return new FLocation(this.worldName, this.x + dx, this.z + dz);
+    }
+
+    public FLocation fromFastChunk(FastChunk fastChunk) {
+        return new FLocation(fastChunk.getWorld(), fastChunk.getX(), fastChunk.getZ());
+    }
+
+    public FastChunk toFastChunk() {
+        return new FastChunk(this);
+    }
+
+    public FLocation getRelativeWorldName(String worldName, int dx, int dz) {
+        return new FLocation(worldName, this.x + dx, this.z + dz);
     }
 
     public double getDistanceTo(FLocation that) {

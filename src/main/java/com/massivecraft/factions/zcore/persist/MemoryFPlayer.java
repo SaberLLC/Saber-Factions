@@ -1283,9 +1283,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void sendFancyMessage(List<FancyMessage> messages) {
-        Player player = getPlayer();
-        if (player == null) return;
-        for (FancyMessage msg : messages) msg.send(player);
+        messages.forEach(this::sendFancyMessage);
     }
 
     public int getMapHeight() {

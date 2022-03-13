@@ -65,5 +65,10 @@ Anti-Mob-Movement:
     - 'CREEPER'
     - 'BLAZE'
 
+Anti-Mob-Targeting:
+  Mob-List:
+    - 'CREEPER'
+    - 'BLAZE'
+
 
 

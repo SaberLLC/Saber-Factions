@@ -211,6 +211,8 @@ public abstract class MemoryBoard extends Board {
      */
     public ArrayList<FancyMessage> getMap(FPlayer fplayer, FLocation flocation, double inDegrees) {
         Faction faction = fplayer.getFaction();
+        String worldName = fplayer.getPlayer().getWorld().getName();
+
         ArrayList<FancyMessage> ret = new ArrayList<>();
         Faction factionLoc = getFactionAt(flocation);
         ret.add(new FancyMessage(ChatColor.DARK_GRAY + FactionsPlugin.getInstance().txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
@@ -250,8 +252,7 @@ public abstract class MemoryBoard extends Board {
                 if (dx == halfWidth && dz == halfHeight) {
                     row.then("+").color(ChatColor.AQUA).tooltip(TL.CLAIM_YOUAREHERE.toString());
                 } else {
-                    FLocation flocationHere = topLeft.getRelative(dx, dz);
-                    FastChunk fastChunk = new FastChunk(flocationHere);
+                    FLocation flocationHere = topLeft.getRelativeWorldName(worldName, dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = fplayer.getRelationTo(factionHere);
                     if (flocationHere.isOutsideWorldBorder(buffer)) {
@@ -280,7 +281,7 @@ public abstract class MemoryBoard extends Board {
 
                         //row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));
                         //changed out with a performance friendly one line tooltip :D
-                        if (factionHere.getSpawnerChunks().contains(fastChunk) && Conf.userSpawnerChunkSystem) {
+                        if (factionHere.getSpawnerChunks().contains(flocationHere.toFastChunk()) && Conf.userSpawnerChunkSystem) {
                             row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
                         } else {
                             row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(oneLineToolTip(factionHere, fplayer));

@@ -132,10 +132,14 @@ public class UpgradesListener implements Listener {
             if (e.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 Player player = (Player) e.getEntity();
                 FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-                int level = fPlayer.getFaction().getUpgrade(UpgradeType.FALL_DAMAGE);
 
-                if (level > 0) {
-                    e.setCancelled(true);
+                if (fPlayer.getFaction().isNormal()) {
+
+                    int level = fPlayer.getFaction().getUpgrade(UpgradeType.FALL_DAMAGE);
+
+                    if (level > 0) {
+                        e.setCancelled(true);
+                    }
                 }
             }
         }

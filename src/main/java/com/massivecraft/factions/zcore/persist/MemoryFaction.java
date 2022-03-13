@@ -401,6 +401,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         // Send FPlayerLeaveEvent for each player in the faction and reset their Discord settings
         for (FPlayer fplayer : this.getFPlayers()) {
+            if(fplayer.isInFactionsChest()) {
+                fplayer.getPlayer().closeInventory();
+            }
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, this, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
             if (Discord.useDiscord && fplayer.discordSetup() && Discord.isInMainGuild(fplayer.discordUser()) && Discord.mainGuild != null) {
                 Member m = Discord.mainGuild.retrieveMember(fplayer.discordUser()).complete();
