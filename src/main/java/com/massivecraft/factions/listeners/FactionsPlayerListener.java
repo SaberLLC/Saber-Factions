@@ -417,11 +417,6 @@ public class FactionsPlayerListener implements Listener {
         if (FCmdRoot.instance.fFlyEnabled && me.isFlying()) {
             me.setFlying(false);
         }
-
-        if(LunarAPI.isLunarAPIEnabled()) {
-            LunarAPI.sendHomeWaypoint(me);
-        }
-
     }
 
     @EventHandler(priority = EventPriority.NORMAL)

@@ -563,7 +563,6 @@ public class Conf {
 
         territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
 
-        territoryDenyUsageMaterialsWhenOffline.add(XMaterial.FIRE_CHARGE.parseMaterial());
         territoryDenyUsageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
         territoryDenyUsageMaterialsWhenOffline.add(Material.BUCKET);
         territoryDenyUsageMaterialsWhenOffline.add(Material.WATER_BUCKET);

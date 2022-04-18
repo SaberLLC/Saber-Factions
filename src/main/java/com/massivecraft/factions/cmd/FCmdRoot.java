@@ -173,6 +173,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSetTnt cmdSetTnt = new CmdSetTnt();
     public CmdCornerList cmdCornerList = new CmdCornerList();
     public CmdAutoUnclaim cmdAutoUnclaim = new CmdAutoUnclaim();
+    public CmdRally cmdRally = new CmdRally();
 
 
     //Variables to know if we already setup certain sub commands
@@ -313,6 +314,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdSetTnt);
         this.addSubCommand(this.cmdUnclaimfill);
         this.addSubCommand(this.cmdAutoUnclaim);
+        this.addSubCommand(this.cmdRally);
         addVariableCommands();
         if (CommodoreProvider.isSupported()) brigadierManager.build();
     }

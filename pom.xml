@@ -47,13 +47,12 @@
                                 <shadedPattern>com.massivecraft.factions.shade.me.lucko.helper</shadedPattern>
                             </relocation>
                             <relocation>
-                                <pattern>com.github.cryptomorin</pattern>
-                                <shadedPattern>com.massivecraft.factions.shade.xseries</shadedPattern>
+                                <pattern>com.cryptomorin</pattern>
+                                <shadedPattern>com.massivecraft.factions.shade</shadedPattern>
                             </relocation>
                             <relocation>
                                 <pattern>com.github.stefvanschie.inventoryframework</pattern>
-                                <shadedPattern>com.massivecraft.factions.shade.stefvanschie.inventoryframework
-                                </shadedPattern>
+                                <shadedPattern>com.massivecraft.factions.shade.stefvanschie.inventoryframework</shadedPattern>
                             </relocation>
                             <relocation>
                                 <pattern>org.bstats</pattern>
@@ -108,6 +107,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>cc.javajobs.wgbridge</groupId>
             <artifactId>WorldGuardBridge</artifactId>
             <version>1.0</version>
@@ -140,7 +145,7 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>8.2.0</version>
+            <version>8.7.0</version>
         </dependency>
         <dependency>
             <groupId>mcMMO</groupId>
@@ -178,69 +183,6 @@
             <artifactId>IF</artifactId>
             <version>0.5.8</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>1.18-Spigot</groupId>
-            <artifactId>1.18-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.18</version>
-            <systemPath>${project.basedir}/serverJars/1.18.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.17-Spigot</groupId>
-            <artifactId>1.17-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.17</version>
-            <systemPath>${project.basedir}/serverJars/1.17.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.8.8-Spigot</groupId>
-            <artifactId>1.8.8-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.8.8</version>
-            <systemPath>${project.basedir}/serverJars/1.8.8.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.11-Spigot</groupId>
-            <artifactId>1.11-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.11</version>
-            <systemPath>${project.basedir}/serverJars/1.11.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.12-Spigot</groupId>
-            <artifactId>1.12-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.12</version>
-            <systemPath>${project.basedir}/serverJars/1.12.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.13-Spigot</groupId>
-            <artifactId>1.13-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.13</version>
-            <systemPath>${project.basedir}/serverJars/1.13.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.14-Spigot</groupId>
-            <artifactId>1.14-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.14</version>
-            <systemPath>${project.basedir}/serverJars/1.14.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.15-Spigot</groupId>
-            <artifactId>1.15-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.15</version>
-            <systemPath>${project.basedir}/serverJars/1.15.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>1.16.5-Spigot</groupId>
-            <artifactId>1.16.5-Spigot</artifactId>
-            <scope>system</scope>
-            <version>1.16.5</version>
-            <systemPath>${project.basedir}/serverJars/1.16.5.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -596,6 +538,11 @@
             <id>minecraft-libraries</id>
             <name>Minecraft Libraries</name>
             <url>https://libraries.minecraft.net</url>
+        </repository>
+        <repository>
+            <id>maven_central</id>
+            <name>Maven Central</name>
+            <url>https://repo.maven.apache.org/maven2/</url>
         </repository>
     </repositories>
 

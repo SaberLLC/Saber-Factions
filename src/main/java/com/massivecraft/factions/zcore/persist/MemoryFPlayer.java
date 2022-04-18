@@ -34,6 +34,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.text.DecimalFormat;
 import java.util.*;
 
+import static com.massivecraft.factions.integration.Econ.moneyString;
+
 
 /**
  * Logged in players always have exactly one FPlayer instance. Logged out players may or may not have an FPlayer
@@ -739,7 +741,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void onDeath() {
         this.updatePower();
 
-        if(this.getPlayer().hasMetadata("diedToPlayer")) {
+        if (this.getPlayer().hasMetadata("diedToPlayer")) {
             this.alterPower(-Conf.deathToPlayerPowerLoss);
             this.getPlayer().removeMetadata("diedToPlayer", FactionsPlugin.getInstance());
         }
@@ -1486,14 +1488,30 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         // then make 'em pay (if applicable)
-        if (mustPay && !Econ.modifyMoney(payee, -cost, TL.CLAIM_TOCLAIM.toString(), TL.CLAIM_FORCLAIM.toString())) {
-            return false;
+        if (mustPay) {
+            if (payee == this) {
+                if (!Econ.modifyMoney(payee, -cost, TL.CLAIM_TOCLAIM.toString(), TL.CLAIM_FORCLAIM.toString())) {
+                    return false;
+                }
+            } else {
+                if (Econ.withdrawFactionBalance(this.getFaction(), cost)) {
+                    this.getFaction().msg("<h>%s<i> lost <h>%s<i> %s.", CC.translate("&aYour faction"), moneyString(cost), TL.CLAIM_FORCLAIM.toString());
+                } else {
+                    this.getFaction().msg("<h>%s<i> can't afford <h>%s<i> %s.", CC.translate("&aYour faction"), moneyString(cost), TL.CLAIM_TOCLAIM.toString());
+                    return false;
+                }
+            }
         }
 
         // Was an over claim
         if (currentFaction.isNormal() && currentFaction.hasLandInflation()) {
             // Give them money for over claiming.
-            Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
+            if (payee == this) {
+                Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
+            } else if (Conf.econOverclaimRewardMultiplier > 0.0) {
+                Econ.depositFactionBalance(this.getFaction(), Conf.econOverclaimRewardMultiplier);
+                this.getFaction().msg(TL.COMMAND_MONEY_GAINED, CC.translate("&aYour faction"), Conf.econOverclaimRewardMultiplier, TL.CLAIM_FOROVERCLAIM.toString());
+            }
         }
 
 

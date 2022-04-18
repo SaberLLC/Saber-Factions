@@ -119,7 +119,6 @@ public class StartupParameter {
             safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
         }
 
-        territoryDenyUsageMaterials.add(XMaterial.FIRE_CHARGE.parseMaterial());
         territoryDenyUsageMaterials.add(XMaterial.FLINT_AND_STEEL.parseMaterial());
         territoryDenyUsageMaterials.add(XMaterial.BUCKET.parseMaterial());
         territoryDenyUsageMaterials.add(XMaterial.WATER_BUCKET.parseMaterial());
