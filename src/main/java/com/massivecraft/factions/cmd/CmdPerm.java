@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -47,6 +49,11 @@ public class CmdPerm extends FCommand {
             return;
         }
 
+        if (FactionsPlugin.getInstance().getFileManager().getFperms().fetchBoolean("fperm-gui.denyCommandsToEditPerms")) {
+            context.msg(TL.COMMAND_PERM_EDIT_ONLY_MENU);
+            return;
+        }
+
         // If not opening GUI, then setting the permission manually.
         if (context.args.size() != 3) {
             context.msg(TL.COMMAND_PERM_DESCRIPTION);
@@ -91,14 +98,18 @@ public class CmdPerm extends FCommand {
             return;
         }
 
+        boolean success = false;
         for (Permissable permissable : permissables) {
             for (PermissableAction permissableAction : permissableActions) {
-                context.faction.setPermission(permissable, permissableAction, access);
+                success = context.faction.setPermission(permissable, permissableAction, access, context.fPlayer);
             }
         }
 
-        context.msg(TL.COMMAND_PERM_SET, context.argAsString(1), access.name(), context.argAsString(0));
-        Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), context.argAsString(1), access.name(), context.argAsString(0)) + " for faction " + context.fPlayer.getTag(), Logger.PrefixType.DEFAULT);
+        if(success) {
+            context.msg(TL.COMMAND_PERM_SET, context.argAsString(1), access.name(), context.argAsString(0));
+            Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), context.argAsString(1), access.name(), context.argAsString(0)) + " for faction " + context.fPlayer.getTag(), Logger.PrefixType.DEFAULT);
+        }
+
     }
 
     private Permissable getPermissable(String name) {

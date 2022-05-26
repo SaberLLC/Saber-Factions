@@ -954,7 +954,20 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean setPermission(Permissable permissable, PermissableAction permissableAction, Access access) {
-        if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(permissableAction)) return false;
+        if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(permissableAction)) {
+            return false;
+        }
+        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
+        if (accessMap == null) accessMap = new HashMap<>();
+        accessMap.put(permissableAction, access);
+        return true;
+    }
+
+    public boolean setPermission(Permissable permissable, PermissableAction permissableAction, Access access, FPlayer fPlayer) {
+        if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(permissableAction)) {
+            fPlayer.msg(TL.COMMAND_PERM_LOCKED);
+            return false;
+        }
         Map<PermissableAction, Access> accessMap = permissions.get(permissable);
         if (accessMap == null) accessMap = new HashMap<>();
         accessMap.put(permissableAction, access);

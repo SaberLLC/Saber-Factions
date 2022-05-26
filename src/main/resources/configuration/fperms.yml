@@ -23,6 +23,7 @@
 # 2nd: Dummy items, these items server no other purpose than to look good, they have their own
 # items defined in dummy items, and can later be assigned to specific slots in the GUI's
 fperm-gui:
+  denyCommandsToEditPerms: false
   relation:
     # GUI Name
     name: '&8&lFaction Permissions'

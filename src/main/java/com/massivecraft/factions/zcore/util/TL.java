@@ -736,6 +736,7 @@ public enum TL {
     COMMAND_PERM_SET("&c&l[!]&7 Set permission&c %1$s &7to &c%2$s &7for relation&c %3$s"),
     COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
     COMMAND_PERM_LOCKED("&cThis permission has been locked by the server"),
+    COMMAND_PERM_EDIT_ONLY_MENU("&c&l[!] &cYou mat not edit permissions via command!"),
 
 
     COMMAND_POINTS_SHOW_DESCRIPTION("See the point balance of factions"),

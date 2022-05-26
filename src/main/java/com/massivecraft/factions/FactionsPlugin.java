@@ -199,13 +199,6 @@ public class FactionsPlugin extends MPlugin {
             getServer().getPluginManager().registerEvents(timerManager.graceTimer, this);
         }
 
-
-        //if(getFileManager().getBanners().fetchBoolean("Banners.Enabled")) {
-        //    this.bannerManager = new BannerManager();
-        //    this.bannerManager.onEnable(this);
-        //    getServer().getPluginManager().registerEvents(new BannerListener(), this);
-        //}
-
         this.asyncPlayerMap = new AsyncPlayerMap(this);
 
         this.getCommand(refCommand).setExecutor(cmdBase);
