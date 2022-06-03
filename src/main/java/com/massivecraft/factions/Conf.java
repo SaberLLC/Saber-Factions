@@ -596,7 +596,7 @@ public class Conf {
         // Is this called lazy load?
         defaultFactionPermissions.put("COLEADER", new DefaultPermissions(true));
         defaultFactionPermissions.put("MODERATOR", new DefaultPermissions(true));
-        defaultFactionPermissions.put("NORMAL MEMBER", new DefaultPermissions(false));
+        defaultFactionPermissions.put("NORMAL", new DefaultPermissions(false));
         defaultFactionPermissions.put("RECRUIT", new DefaultPermissions(false));
         defaultFactionPermissions.put("ALLY", new DefaultPermissions(false));
         defaultFactionPermissions.put("ENEMY", new DefaultPermissions(false));
