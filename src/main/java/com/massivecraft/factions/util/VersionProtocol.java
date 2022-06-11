@@ -29,6 +29,9 @@ public class VersionProtocol {
             case 18:
                 Logger.print("Minecraft Version 1.18 found.", Logger.PrefixType.DEFAULT);
                 break;
+            case 19:
+                Logger.print("Minecraft Version 1.19 found.", Logger.PrefixType.DEFAULT);
+                break;
         }
     }
 }
