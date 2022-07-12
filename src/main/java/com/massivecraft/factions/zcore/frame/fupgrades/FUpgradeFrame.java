@@ -44,7 +44,7 @@ public class FUpgradeFrame {
             if (value.getSlot() != -1) {
                 GUIItems.set(value.getSlot(), new GuiItem(value.buildAsset(fac), e -> {
                     e.setCancelled(true);
-                    if (fac.getUpgrade(value) == value.getMaxLevel()) return;
+                    if (fac.getUpgrade(value) >= value.getMaxLevel()) return;
                     int cost = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu." + value + ".Cost.level-" + (fac.getUpgrade(value) + 1));
                     if (FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getBoolean("fupgrades.usePointsAsCurrency")) {
                         if (fac.getPoints() >= cost) {
