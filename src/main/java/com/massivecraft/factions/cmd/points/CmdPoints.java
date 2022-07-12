@@ -22,9 +22,7 @@ public class CmdPoints extends FCommand {
     public CmdPoints() {
         super();
         this.aliases.addAll(Aliases.points_points);
-
         this.requirements = new CommandRequirements.Builder(Permission.POINTS)
-                .playerOnly()
                 .build();
 
 

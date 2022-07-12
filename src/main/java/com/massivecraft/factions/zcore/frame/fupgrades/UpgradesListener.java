@@ -134,10 +134,10 @@ public class UpgradesListener implements Listener {
                 FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
 
                 if (fPlayer.getFaction().isNormal()) {
-
                     int level = fPlayer.getFaction().getUpgrade(UpgradeType.FALL_DAMAGE);
 
-                    if (level > 0) {
+                    FLocation fLocation = new FLocation(player.getLocation());
+                    if (Board.getInstance().getFactionAt(fLocation) == fPlayer.getFaction() && level > 0) {
                         e.setCancelled(true);
                     }
                 }
