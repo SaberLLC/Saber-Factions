@@ -60,6 +60,9 @@ public class FDisbandFrame {
             }
             separatorMeta.setLore(lore);
         }
+
+        separatorItem.setItemMeta(separatorMeta);
+
         GUIItems.set(4, new GuiItem(separatorItem, (e) -> e.setCancelled(true)));
         //End Separator
 
