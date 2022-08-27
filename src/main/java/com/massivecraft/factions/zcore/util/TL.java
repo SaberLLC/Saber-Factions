@@ -757,6 +757,9 @@ public enum TL {
     COMMAND_SETPOINTS_SUCCESSFUL("&c&l[!] &7You have set &e%1$s &7points to &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
     COMMAND_SETPOINTS_DESCRIPTION("Set Points of a Faction"),
 
+    COMMAND_SET_RELATION_SUCCESS("&c&l[!] &7You have set a relation of &e%1$s &7between &b%2$s and &b%3$s&7."),
+    COMMAND_SET_RELATION_DESCRIPTION("Set the relation of 2 factions."),
+
     COMMAND_PERMANENT_DESCRIPTION("Toggles a permanent faction option"),
     COMMAND_PERMANENT_GRANT("&c&l[!]&7 added permanent status to"),
     COMMAND_PERMANENT_REVOKE("&c&l[!]&7 removed permanent status from"),

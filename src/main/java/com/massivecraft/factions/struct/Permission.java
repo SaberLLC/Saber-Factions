@@ -105,6 +105,7 @@ public enum Permission {
     SET_PEACEFUL("setpeaceful"),
     SET_PERMANENT("setpermanent"),
     SET_PERMANENTPOWER("setpermanentpower"),
+    SET_RELATION("setrelation"),
     SHOW_INVITES("showinvites"),
     PAYPAL("paypal"),
     PAYPALSET("setpaypal"),

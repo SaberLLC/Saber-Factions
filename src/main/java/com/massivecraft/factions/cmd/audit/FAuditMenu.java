@@ -21,9 +21,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class FAuditMenu extends GUIMenu {
-    private Player player;
+    private final Player player;
     private boolean showTimestamps = true;
-    private Faction faction;
+    private final Faction faction;
 
     public FAuditMenu(Player player, Faction faction) {
         super("Faction Logs", 18);
@@ -41,10 +41,10 @@ public class FAuditMenu extends GUIMenu {
                 if (recentLogs == null) recentLogs = Lists.newLinkedList();
                 List<String> lore = Lists.newArrayList("", CC.GreenB + "Recent Logs " + CC.Green + "(" + CC.GreenB + recentLogs.size() + CC.Green + ")");
                 int added = 0;
-                Iterator backwars = recentLogs.descendingIterator();
+                Iterator<FactionLogs.FactionLog> backwars = recentLogs.descendingIterator();
                 int logsPerPage = 20;
                 while (backwars.hasNext()) {
-                    FactionLogs.FactionLog log = (FactionLogs.FactionLog) backwars.next();
+                    FactionLogs.FactionLog log = backwars.next();
                     if (added >= logsPerPage) break;
                     String length = log.getLogLine(type, showTimestamps);
                     lore.add(" " + CC.Yellow + length);
@@ -74,9 +74,9 @@ public class FAuditMenu extends GUIMenu {
     }
 
     static class FAuditLogMenu extends GUIMenu {
-        private Player player;
-        private Faction faction;
-        private FLogType logType;
+        private final Player player;
+        private final Faction faction;
+        private final FLogType logType;
         private boolean timeStamp = false;
 
         public FAuditLogMenu(Player player, Faction faction, FLogType type) {

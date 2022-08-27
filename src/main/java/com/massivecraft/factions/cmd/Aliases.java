@@ -133,6 +133,7 @@ public class Aliases {
     public static ArrayList<String> discord_see = new ArrayList<>(Collections.singletonList("seediscord"));
     public static ArrayList<String> discord_set = new ArrayList<>(Collections.singletonList("setdiscord"));
     public static ArrayList<String> setBanner = new ArrayList<>(Collections.singletonList("setbanner"));
+    public static ArrayList<String> setRelation = new ArrayList<>(Collections.singletonList("setrelation"));
     public static ArrayList<String> setDefaultRole = new ArrayList<>(Arrays.asList("defaultrole", "def", "default", "defaultrank"));
     public static ArrayList<String> setWarp = new ArrayList<>(Arrays.asList("sw", "setwarp"));
     public static ArrayList<String> setHome = new ArrayList<>(Collections.singletonList("sethome"));

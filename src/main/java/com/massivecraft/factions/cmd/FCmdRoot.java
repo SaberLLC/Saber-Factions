@@ -12,10 +12,7 @@ import com.massivecraft.factions.cmd.drain.CmdDrain;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
 import com.massivecraft.factions.cmd.grace.CmdGrace;
 import com.massivecraft.factions.cmd.points.CmdPoints;
-import com.massivecraft.factions.cmd.relational.CmdRelationAlly;
-import com.massivecraft.factions.cmd.relational.CmdRelationEnemy;
-import com.massivecraft.factions.cmd.relational.CmdRelationNeutral;
-import com.massivecraft.factions.cmd.relational.CmdRelationTruce;
+import com.massivecraft.factions.cmd.relational.*;
 import com.massivecraft.factions.cmd.reserve.CmdReserve;
 import com.massivecraft.factions.cmd.roles.CmdDemote;
 import com.massivecraft.factions.cmd.roles.CmdPromote;
@@ -174,6 +171,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdCornerList cmdCornerList = new CmdCornerList();
     public CmdAutoUnclaim cmdAutoUnclaim = new CmdAutoUnclaim();
     public CmdRally cmdRally = new CmdRally();
+    public CmdSetRelation cmdSetRelation = new CmdSetRelation();
 
 
     //Variables to know if we already setup certain sub commands
@@ -315,6 +313,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdUnclaimfill);
         this.addSubCommand(this.cmdAutoUnclaim);
         this.addSubCommand(this.cmdRally);
+        this.addSubCommand(this.cmdSetRelation);
         addVariableCommands();
         if (CommodoreProvider.isSupported()) brigadierManager.build();
     }

@@ -74,7 +74,7 @@ public class FChestListener implements Listener {
                     if (ours == null || !ours.contains(currentItem)) {
                         event.setCancelled(true);
                         player.sendMessage(CC.RedB + "(!) That item not longer exists!");
-                        Bukkit.getLogger().info("[FactionChest] " + player.getName() + " tried to remove " + currentItem + " from /f chest when it didnt contain! Items: " + (ours == null ? "none" : Arrays.toString(ours.getContents())));
+                        Bukkit.getLogger().info("[FactionChest] " + player.getName() + " tried to remove " + currentItem + " from /f chest when it didn't contain! Items: " + (ours == null ? "none" : Arrays.toString(ours.getContents())));
                         player.closeInventory();
                         return;
                     }
