@@ -5,18 +5,10 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -81,33 +73,6 @@ public class CheckTask implements Runnable {
                 CheckTask.wallChecks.add(faction.getId());
             }
             faction.msg(TL.CHECK_WALLS_CHECK);
-
-            if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem"))
-                return;
-
-
-            String channelId = faction.getWallNotifyChannelId();
-            if (channelId == null) {
-                continue;
-            }
-            if (channelId.isEmpty()) {
-                continue;
-            }
-            TextChannel textChannel = Discord.jda.getTextChannelById(channelId);
-            if (textChannel == null) {
-                continue;
-            }
-            if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, Permission.MESSAGE_READ, Permission.MESSAGE_WRITE)) {
-                textChannel.getGuild().retrieveOwner().complete().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
-            } else {
-                String format = faction.getNotifyFormat();
-                if (format == null || format.isEmpty()) {
-                    format = "@everyone, check %type%";
-                }
-                format = format.replace("%type%", "walls");
-                MessageEmbed embed = new EmbedBuilder().setColor(Color.WHITE).setFooter(this.simpleDateFormat.format(new Date(currentTime)), null).build();
-                textChannel.sendMessage(new MessageBuilder(embed).setContent(format).build()).queue();
-            }
         }
 
 
@@ -131,33 +96,6 @@ public class CheckTask implements Runnable {
                 CheckTask.bufferChecks.add(faction.getId());
             }
             faction.msg(TL.CHECK_BUFFERS_CHECK);
-
-            if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem"))
-                return;
-
-
-            String channelId = faction.getBufferNotifyChannelId();
-            if (channelId == null) {
-                continue;
-            }
-            if (channelId.isEmpty()) {
-                continue;
-            }
-            TextChannel textChannel = Discord.jda.getTextChannelById(channelId);
-            if (textChannel == null) {
-                continue;
-            }
-            if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, Permission.MESSAGE_READ, Permission.MESSAGE_WRITE)) {
-                textChannel.getGuild().retrieveOwner().complete().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
-            } else {
-                String format = faction.getNotifyFormat();
-                if (format == null || format.isEmpty()) {
-                    format = "@everyone, check %type%";
-                }
-                format = format.replace("%type%", "buffers");
-                MessageEmbed embed = new EmbedBuilder().setColor(Color.WHITE).setFooter(this.simpleDateFormat.format(new Date(currentTime)), null).build();
-                textChannel.sendMessage(new MessageBuilder(embed).setContent(format).build()).queue();
-            }
         }
     }
 }

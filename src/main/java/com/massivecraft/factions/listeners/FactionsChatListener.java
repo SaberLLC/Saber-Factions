@@ -1,7 +1,6 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.discord.FactionChatHandler;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -89,7 +88,6 @@ public class FactionsChatListener implements Listener {
                     fplayer.sendMessage("[FCspy] " + myFaction.getTag() + ": " + message);
                 }
             }
-            FactionChatHandler.sendMessage(FactionsPlugin.getInstance(), myFaction, me.getPlayer().getUniqueId(), me.getPlayer().getName(), event.getMessage());
             event.setCancelled(true);
         } else if (chat == ChatMode.ALLIANCE) {
             Faction myFaction = me.getFaction();

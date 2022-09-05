@@ -7,7 +7,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
 import mkremins.fanciful.FancyMessage;
-import net.dv8tion.jda.api.entities.User;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -50,41 +49,6 @@ public interface FPlayer extends EconomyParticipator {
      * @param b enemiesNearby
      */
     void setEnemiesNearby(Boolean b);
-
-    /**
-     * Get if a player has setup their Discord before
-     *
-     * @return if the player setup Discord as a boolean
-     */
-    boolean discordSetup();
-
-    /**
-     * Get the players Discord user ID
-     *
-     * @return players Discord user ID as a String
-     */
-    String discordUserID();
-
-    /**
-     * Set the players Boolean defining if the player has setup their Discord
-     *
-     * @param b Boolean for discordSetup to be defined to
-     */
-    void setDiscordSetup(Boolean b);
-
-    /**
-     * Set the players Discord user ID
-     *
-     * @param s String for their user ID to be set to
-     */
-    void setDiscordUserID(String s);
-
-    /**
-     * Get the players Discord user (If the player has not setup Discord it will return null!)
-     *
-     * @return User from players set Discord User ID
-     */
-    User discordUser();
 
     /**
      * Used to check if this player should be served titles

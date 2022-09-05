@@ -27,7 +27,7 @@ public class FactionDataListener implements Listener {
                         public void run() {
                             if (!FactionDataHelper.doesConfigurationExist(faction)) {
                                 FactionDataHelper.createConfiguration(faction);
-                                Bukkit.getLogger().info("FactionData] Creating Faction Data for " + faction.getTag());
+                                Bukkit.getLogger().info("[FactionData] Creating Faction Data for " + faction.getTag());
                             }
                             final FactionData data = new FactionData(faction);
                             new FactionDataHelper(data);

@@ -1,8 +1,6 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.discord.Discord;
-import com.massivecraft.factions.discord.DiscordSetupAttempt;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
@@ -42,23 +40,7 @@ public class CmdDebug extends FCommand {
         Logger.print("Internal FTOP Command: " + FCmdRoot.instance.internalFTOPEnabled, Logger.PrefixType.DEBUG);
         Logger.print("----End Command----", Logger.PrefixType.DEBUG);
         Logger.print("-----End Main-----", Logger.PrefixType.DEBUG);
-        Logger.print("------Discord------", Logger.PrefixType.DEBUG);
-        Logger.print("Discord Integration enabled in config: " + Discord.confUseDiscord, Logger.PrefixType.DEBUG);
-        Logger.print("Discord Integration enabled: " + Discord.useDiscord, Logger.PrefixType.DEBUG);
-        Logger.print("Setup attempts: " + Discord.setupLog.size(), Logger.PrefixType.DEBUG);
-        Logger.print("FPlayers waiting to link: " + Discord.waitingLink.size(), Logger.PrefixType.DEBUG);
-        Logger.print("Bot Token: " + (Objects.equals(Discord.botToken, "<token here>") ? "Not Set" : "Set"), Logger.PrefixType.DEBUG);
-        Logger.print("JDA Null: " + (Discord.jda == null ? "True" : "False"), Logger.PrefixType.DEBUG);
-        Logger.print("Main Guild ID: " + Discord.mainGuildID, Logger.PrefixType.DEBUG);
-        Logger.print("Main Guild Null: " + (Discord.mainGuild == null ? "True" : "False"), Logger.PrefixType.DEBUG);
-        Logger.print("Emotes enabled: " + Discord.useEmotes, Logger.PrefixType.DEBUG);
-        Logger.print("Leader role null: " + (Discord.leader == null ? "True" : "False"), Logger.PrefixType.DEBUG);
-        Logger.print("Attempt Log:", Logger.PrefixType.DEBUG);
-        for (DiscordSetupAttempt d : Discord.setupLog) {
-            Logger.print(d.getDifferentialFormatted() + " " + d.getSuccess() + " " + d.getReason(), Logger.PrefixType.DEBUG);
-        }
         Logger.print("End Attempt Log", Logger.PrefixType.DEBUG);
-        Logger.print("----End Discord----", Logger.PrefixType.DEBUG);
         Logger.print("--------End Debug Info--------", Logger.PrefixType.DEBUG);
         context.msg(TL.COMMAND_DEBUG_PRINTED);
     }

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
@@ -20,7 +19,6 @@ import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeType;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.api.entities.Member;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -84,14 +82,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private int warpLimit;
     private double reinforcedArmor;
     private List<String> completedMissions;
-    private String factionChatChannelId;
-    private String wallNotifyChannelId;
-    private String bufferNotifyChannelId;
-    private String weeWooChannelId;
-    private String notifyFormat;
-    private String weeWooFormat;
-    private String guildId;
-    private String memberRoleId;
     private int allowedSpawnerChunks;
     private Set<FastChunk> spawnerChunks;
     private boolean protectedfac = true;
@@ -126,11 +116,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
         this.completedMissions = new ArrayList<>();
-        this.wallNotifyChannelId = null;
-        this.bufferNotifyChannelId = null;
-        this.notifyFormat = "@everyone, check %type%";
-        this.weeWooFormat = "@everyone, we're being raided! Get online!";
-        this.memberRoleId = null;
         allowedSpawnerChunks = Conf.allowedSpawnerChunks;
         spawnerChunks = new HashSet<>();
         cloaked = false;
@@ -405,18 +390,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 fplayer.getPlayer().closeInventory();
             }
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, this, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
-            if (Discord.useDiscord && fplayer.discordSetup() && Discord.isInMainGuild(fplayer.discordUser()) && Discord.mainGuild != null) {
-                Member m = Discord.mainGuild.retrieveMember(fplayer.discordUser()).complete();
-                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && fplayer.getRole() == Role.LEADER) {
-                    Discord.mainGuild.removeRoleFromMember(m, Discord.mainGuild.getRoleById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.leaderRoleID"))).queue();
-                }
-                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles")) {
-                    Discord.mainGuild.removeRoleFromMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getTag()))).queue();
-                }
-                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) {
-                    Discord.resetNick(fplayer);
-                }
-            }
         }
 
         if (Conf.logFactionDisband) {
@@ -625,86 +598,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Map<UUID, Integer> getPlayerWallCheckCount() {
         return this.playerWallCheckCount;
-    }
-
-    @Override
-    public String getGuildId() {
-        return this.guildId;
-    }
-
-    @Override
-    public void setGuildId(String guildId) {
-        this.guildId = guildId;
-    }
-
-    @Override
-    public String getMemberRoleId() {
-        return this.memberRoleId;
-    }
-
-    @Override
-    public void setMemberRoleId(String memberRoleId) {
-        this.memberRoleId = memberRoleId;
-    }
-
-    @Override
-    public String getFactionChatChannelId() {
-        return this.factionChatChannelId;
-    }
-
-    @Override
-    public void setFactionChatChannelId(String factionChatChannelId) {
-        this.factionChatChannelId = factionChatChannelId;
-    }
-
-    @Override
-    public String getWallNotifyChannelId() {
-        return this.wallNotifyChannelId;
-    }
-
-    @Override
-    public void setWallNotifyChannelId(String wallNotifyChannelId) {
-        this.wallNotifyChannelId = wallNotifyChannelId;
-    }
-
-    @Override
-    public String getBufferNotifyChannelId() {
-        return this.bufferNotifyChannelId;
-    }
-
-    @Override
-    public void setBufferNotifyChannelId(String bufferNotifyChannelId) {
-        this.bufferNotifyChannelId = bufferNotifyChannelId;
-    }
-
-    @Override
-    public String getWeeWooChannelId() {
-        return this.weeWooChannelId;
-    }
-
-    @Override
-    public void setWeeWooChannelId(String weeWooChannelId) {
-        this.weeWooChannelId = weeWooChannelId;
-    }
-
-    @Override
-    public String getNotifyFormat() {
-        return this.notifyFormat;
-    }
-
-    @Override
-    public void setNotifyFormat(String notifyFormat) {
-        this.notifyFormat = notifyFormat;
-    }
-
-    @Override
-    public String getWeeWooFormat() {
-        return this.weeWooFormat;
-    }
-
-    @Override
-    public void setWeeWooFormat(String weeWooFormat) {
-        this.weeWooFormat = weeWooFormat;
     }
 
     public boolean isWeeWoo() {
@@ -1362,15 +1255,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         } else { // promote new faction admin
             if (oldLeader != null) oldLeader.setRole(Role.NORMAL);
             replacements.get(0).setRole(Role.LEADER);
-            if (Discord.useDiscord && replacements.get(0).discordSetup() && Discord.isInMainGuild(replacements.get(0).discordUser()) && Discord.mainGuild != null) {
-                Member m = Discord.mainGuild.retrieveMember(replacements.get(0).discordUser()).complete();
-                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles"))
-                    Discord.mainGuild.addRoleToMember(m, Objects.requireNonNull(Discord.createFactionRole(this.getTag()))).queue();
-                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles"))
-                    Discord.mainGuild.addRoleToMember(m, Discord.mainGuild.getRoleById(FactionsPlugin.getInstance().getFileManager().getDiscord().fetchString("Discord.Guild.leaderRoleID"))).queue();
-                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags"))
-                    Discord.mainGuild.modifyNickname(m, Discord.getNicknameString(replacements.get(0))).queue();
-            }
             this.msg(TL.AUTOLEAVE_ADMIN_PROMOTED, oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
             Logger.print("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName(), Logger.PrefixType.DEFAULT);
         }

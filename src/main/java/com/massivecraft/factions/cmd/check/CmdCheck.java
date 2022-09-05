@@ -6,14 +6,10 @@ import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.OfflinePlayer;
 
 import java.awt.*;
@@ -85,22 +81,6 @@ public class CmdCheck extends FCommand {
                 }
                 context.faction.getChecks().put(currentTime, "U" + context.fPlayer.getNameAndTag());
                 context.msg(TL.CHECK_WALLS_MARKED_CHECKED);
-                if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem"))
-                    return;
-                String channelId = context.faction.getWallNotifyChannelId();
-                if (channelId == null || channelId.isEmpty()) {
-                    return;
-                }
-                TextChannel textChannel = Discord.jda.getTextChannelById(channelId);
-                if (textChannel == null) {
-                    return;
-                }
-                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.api.Permission.MESSAGE_READ, net.dv8tion.jda.api.Permission.MESSAGE_WRITE)) {
-                    textChannel.getGuild().retrieveOwner().complete().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
-                    return;
-                }
-                MessageEmbed embed = new EmbedBuilder().setColor(Color.MAGENTA).setTitle("Walls checked by " + context.fPlayer.getNameAndTag()).setFooter(simpleDateFormat.format(new Date(currentTime)), null).build();
-                textChannel.sendMessage(embed).queue();
             }
         } else if (subCommand.equalsIgnoreCase("buffers")) {
             if (!CheckTask.bufferCheck(context.faction.getId())) {
@@ -118,22 +98,7 @@ public class CmdCheck extends FCommand {
                 }
                 context.faction.getChecks().put(System.currentTimeMillis(), "Y" + context.fPlayer.getNameAndTag());
                 context.msg(TL.CHECK_BUFFERS_MARKED_CHECKED);
-                if (!FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem"))
-                    return;
-                String channelId = context.faction.getBufferNotifyChannelId();
-                if (channelId == null || channelId.isEmpty()) {
-                    return;
-                }
-                TextChannel textChannel = Discord.jda.getTextChannelById(channelId);
-                if (textChannel == null) {
-                    return;
-                }
-                if (!textChannel.getGuild().getSelfMember().hasPermission(textChannel, net.dv8tion.jda.api.Permission.MESSAGE_READ, net.dv8tion.jda.api.Permission.MESSAGE_WRITE)) {
-                    textChannel.getGuild().retrieveOwner().complete().getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage((":x: Missing read/write in " + textChannel.getAsMention())).queue());
-                    return;
-                }
-                MessageEmbed embed = new EmbedBuilder().setColor(Color.MAGENTA).setTitle("Buffers checked by " + context.fPlayer.getNameAndTag()).setFooter(simpleDateFormat.format(new Date(currentTime)), null).build();
-                textChannel.sendMessage(embed).queue();
+
             }
         } else if (subCommand.equalsIgnoreCase("settings")) {
             if (!context.fPlayer.getRole().isAtLeast(Role.COLEADER)) {

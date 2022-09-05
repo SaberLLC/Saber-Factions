@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
-import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionCreateEvent;
 import com.massivecraft.factions.integration.Econ;
@@ -12,8 +11,6 @@ import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.exceptions.HierarchyException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -39,11 +36,6 @@ public class CmdCreate extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.restrictActionsWhenNotLinked") && !context.fPlayer.discordSetup()) {
-            context.player.sendMessage(ChatColor.translateAlternateColorCodes('&', TL.DISCORD_LINK_REQUIRED.toString()));
-            return;
-        }
-
         String tag = context.argAsString(0);
 
         if (context.fPlayer.hasFaction()) {
@@ -120,24 +112,6 @@ public class CmdCreate extends FCommand {
                 follower.msg(TL.COMMAND_CREATE_CREATED, context.fPlayer.getName(), faction.getTag(follower));
             }
         }
-        //Discord
-        try {
-            if (Discord.useDiscord && context.fPlayer.discordSetup() && Discord.isInMainGuild(context.fPlayer.discordUser()) && Discord.mainGuild != null) {
-                Member m = Discord.mainGuild.retrieveMember(context.fPlayer.discordUser()).complete();
-                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionRoles")) {
-                    Discord.mainGuild.addRoleToMember(m, Discord.createFactionRole(faction.getTag())).queue();
-                }
-                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.leaderRoles") && Discord.leader != null) {
-                    Discord.mainGuild.addRoleToMember(m, Discord.leader).queue();
-                }
-                if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.Guild.factionDiscordTags")) {
-                    Discord.mainGuild.modifyNickname(m, Discord.getNicknameString(context.fPlayer)).queue();
-                }
-            }
-        } catch (HierarchyException e) {
-            Logger.print(e.getMessage(), Logger.PrefixType.FAILED);
-        }
-        //End Discord
         context.msg(TL.COMMAND_CREATE_YOUSHOULD, FactionsPlugin.getInstance().cmdBase.cmdDescription.getUsageTemplate(context));
         if (Conf.econEnabled) Econ.setBalance(faction.getAccountId(), Conf.econFactionStartingBalance);
         if (Conf.logFactionCreate)

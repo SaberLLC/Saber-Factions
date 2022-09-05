@@ -17,7 +17,6 @@ public class FileManager {
     private CustomFile fperms = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "fperms.yml"));
     private CustomFile upgrades = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "upgrades.yml"));
     private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "permissions.yml"));
-    private CustomFile discord = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "discord.yml"));
     private CustomFile corex = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "corex" + File.separator + "corex.yml"));
     private CustomFile missions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "missions.yml"));
     private CustomFile banners = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "banners.yml"));
@@ -26,7 +25,6 @@ public class FileManager {
         boosters.setup(true, "data");
         timers.setup(true, "data");
         permissions.setup(true, "data");
-        discord.setup(true, "configuration");
         corex.setup(true, "corex");
         fperms.setup(true, "configuration");
         upgrades.setup(true, "configuration");
@@ -39,7 +37,6 @@ public class FileManager {
         boosters.loadFile();
         timers.loadFile();
         permissions.loadFile();
-        discord.loadFile();
         corex.loadFile();
         fperms.loadFile();
         upgrades.loadFile();
@@ -80,8 +77,4 @@ public class FileManager {
         return permissions;
     }
 
-
-    public CustomFile getDiscord() {
-        return discord;
-    }
 }

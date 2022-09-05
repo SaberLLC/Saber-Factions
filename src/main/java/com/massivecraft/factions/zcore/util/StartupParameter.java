@@ -10,7 +10,6 @@ import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.reserve.ListParameterizedType;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.data.helpers.FactionDataHelper;
-import com.massivecraft.factions.discord.Discord;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.LunarClientWrapper;
@@ -83,7 +82,7 @@ public class StartupParameter {
 
         CoreX.init();
 
-        //FactionDataHelper.init();
+        FactionDataHelper.init();
 
         if (Conf.useCheckSystem) {
             int minute = 1200;
@@ -96,7 +95,6 @@ public class StartupParameter {
             FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, new WeeWooTask(plugin), 600L, 600L);
         }
 
-        new Discord(plugin);
 
         populateConfSets();
 

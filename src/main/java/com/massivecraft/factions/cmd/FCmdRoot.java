@@ -19,8 +19,6 @@ import com.massivecraft.factions.cmd.roles.CmdPromote;
 import com.massivecraft.factions.cmd.tnt.CmdSetTnt;
 import com.massivecraft.factions.cmd.tnt.CmdTnt;
 import com.massivecraft.factions.cmd.tnt.CmdTntFill;
-import com.massivecraft.factions.discord.CmdInviteBot;
-import com.massivecraft.factions.discord.CmdSetGuild;
 import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
@@ -153,9 +151,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSpawnerLock cmdSpawnerLock = new CmdSpawnerLock();
     public CmdSetDiscord cmdSetDiscord = new CmdSetDiscord();
     public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
-    public CmdInviteBot cmdInviteBot = new CmdInviteBot();
-    public CmdSetGuild cmdSetGuild = new CmdSetGuild();
-    public CmdDiscord cmdDiscord = new CmdDiscord();
     public CmdDebug cmdDebug = new CmdDebug();
     public CmdDrain cmdDrain = new CmdDrain();
     public CmdLookup cmdLookup = new CmdLookup();
@@ -314,6 +309,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdAutoUnclaim);
         this.addSubCommand(this.cmdRally);
         this.addSubCommand(this.cmdSetRelation);
+        this.addSubCommand(this.cmdSetDiscord);
+        this.addSubCommand(this.cmdSeeDiscord);
         addVariableCommands();
         if (CommodoreProvider.isSupported()) brigadierManager.build();
     }
@@ -322,15 +319,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
      * Add sub commands to the root if they are enabled
      */
     public void addVariableCommands() {
-        //Discord
-        if (FactionsPlugin.getInstance().getFileManager().getDiscord().fetchBoolean("Discord.useDiscordSystem") && !discordEnabled) {
-            this.addSubCommand(this.cmdInviteBot);
-            this.addSubCommand(this.cmdSetGuild);
-            this.addSubCommand(this.cmdSetDiscord);
-            this.addSubCommand(this.cmdSeeDiscord);
-            this.addSubCommand(this.cmdDiscord);
-            discordEnabled = true;
-        }
+
         //Reserve
         if (Conf.useReserveSystem) {
             this.addSubCommand(this.cmdReserve);
