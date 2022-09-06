@@ -6,6 +6,7 @@ import com.massivecraft.factions.util.Logger;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
+import java.io.File;
 import java.util.Set;
 
 /**
@@ -31,16 +32,19 @@ public abstract class FactionsAddon {
     private void enableAddon() {
         onEnable();
 
-        for (Listener listener : listenersToRegister()) {
-
-            if (listener != null) {
-                plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+        if(!listenersToRegister().isEmpty()) {
+            for (Listener listener : listenersToRegister()) {
+                if (listener != null) {
+                    plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+                }
             }
         }
 
-        for (FCommand fCommand : fCommandsToRegister()) {
-            if (fCommand != null) {
-                plugin.cmdBase.addSubCommand(fCommand);
+        if(!fCommandsToRegister().isEmpty()) {
+            for (FCommand fCommand : fCommandsToRegister()) {
+                if (fCommand != null) {
+                    plugin.cmdBase.addSubCommand(fCommand);
+                }
             }
         }
 
@@ -48,11 +52,10 @@ public abstract class FactionsAddon {
     }
 
     public void disableAddon() {
-
-        for (Listener listener : listenersToRegister()) {
-
-            HandlerList.unregisterAll(listener);
-
+        if(!listenersToRegister().isEmpty()) {
+            for (Listener listener : listenersToRegister()) {
+                HandlerList.unregisterAll(listener);
+            }
         }
 
         onDisable();
@@ -81,7 +84,6 @@ public abstract class FactionsAddon {
      * @return Set of commands you want to register.
      */
     public abstract Set<FCommand> fCommandsToRegister();
-
 
     /**
      * Addon name

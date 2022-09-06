@@ -8,6 +8,7 @@ import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -17,7 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class FactionDataListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onFPlayerCreate(FPlayerJoinEvent e) {
         Faction faction = e.getFaction();
         if (e.getReason() == FPlayerJoinEvent.PlayerJoinReason.CREATE) {
@@ -36,7 +37,7 @@ public class FactionDataListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onFactionDisband(FactionDisbandEvent e) {
         FactionData data = FactionDataHelper.findFactionData(e.getFaction());
 
@@ -48,9 +49,8 @@ public class FactionDataListener implements Listener {
                 (Runnable) new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if (data != null) {
-                            data.deleteFactionData(e.getFaction());
-                        }
+                        data.deleteFactionData(e.getFaction());
+                        data.remove();
                     }
                 });
     }

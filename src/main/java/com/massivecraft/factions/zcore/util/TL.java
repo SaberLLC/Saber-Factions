@@ -877,6 +877,8 @@ public enum TL {
     COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
     COMMAND_ONCOOOLDOWN("&c&l[!] &7You cannot use this command for another &b%1$s &7seconds."),
 
+    COMMAND_SHIELD_DESCRIPTION("Use of shield selection guis"),
+
     COMMAND_SPAWNER_LOCK_TOGGLED("&c&l[!] &7You have set placement of spawners to %1$s"),
     COMMAND_SPAWNER_LOCK_DESCRIPTION("enable/disable placement of spawners"),
     COMMAND_SPAWNER_LOCK_CANNOT_PLACE("&c&l[!] &7Placement of spawners has been temporarily disabled!"),

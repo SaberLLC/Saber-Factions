@@ -6,6 +6,7 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.data.FactionData;
 import com.massivecraft.factions.data.listener.FactionDataListener;
+import com.massivecraft.factions.data.task.FactionDataDeploymentTask;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -24,6 +25,7 @@ public class FactionDataHelper {
 
     public static void init() {
         FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new FactionDataListener(), FactionsPlugin.getInstance());
+        new FactionDataDeploymentTask().runTaskTimerAsynchronously(FactionsPlugin.getInstance(), 20, 20);
         data = Lists.newArrayList();
         File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data");
         if (!file.exists()) {

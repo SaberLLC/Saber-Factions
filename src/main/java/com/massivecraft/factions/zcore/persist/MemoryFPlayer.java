@@ -277,6 +277,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (this.role == role) return;
         FPlayerRoleChangeEvent event = new FPlayerRoleChangeEvent(getFaction(), this, role);
         Bukkit.getPluginManager().callEvent(event);
+
+        if (!event.isCancelled()) {
+            this.role = event.getTo();
+        }
     }
 
     public double getPowerBoost() {
@@ -395,6 +399,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         // clean up any territory ownership in old faction, if there is one
         if (factionId != null && Factions.getInstance().isValidFactionId(this.getFactionId())) {
             Faction currentFaction = this.getFaction();
+
             currentFaction.removeFPlayer(this);
             if (currentFaction.isNormal()) currentFaction.clearClaimOwnership(this);
         }
