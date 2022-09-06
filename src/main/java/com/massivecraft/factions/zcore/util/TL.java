@@ -228,6 +228,14 @@ public enum TL {
     COMMAND_GIVEBOOSTER_BOOSTER_GIVEN("&a&l[!] &7You have given a booster to &b%1$s&7."),
     COMMAND_GIVEBOOSTER_DESCRIPTION("Give a Player a Faction Booster"),
 
+    COMMAND_SET_BASE_REGION_FAILED("&cPlease wait {time} minutes before resetting your base region."),
+    COMMAND_SET_BASE_REGION_SUCCESS("&aSaved {claims} connected claims in a 50x50 radius as your faction's base region."),
+    COMMAND_SET_BASE_REGION_DESCRIPTION("Set base region for faction"),
+    COMMAND_SET_BASE_REGION_RESET("&aYour factions Base Region has been successfully cleared"),
+    COMMAND_SET_BASE_REGION_MAX_REGIONS("&c&l[!] &7Your faction already has set their base region &e%1$s&7/&e%2$s times!"),
+    COMMAND_SET_BASE_REGION_GRACE("&c&l[!] &7You may not set your base region whilst &cgrace is disabled&7!"),
+    COMMAND_SET_BASE_REGION_NOT_CLAIMS("&c&l[!] &7You must be in &eyour own claims &7to use this command!"),
+
     COMMAND_BOOSTER_NONE_ACTIVE("&c&l[!] &7Your faction does not have any boosters active!"),
     COMMAND_BOOSTER_DESCRIPTION("View All Active Factions Boosters"),
 

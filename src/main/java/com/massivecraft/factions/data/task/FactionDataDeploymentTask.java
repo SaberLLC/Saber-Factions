@@ -4,7 +4,6 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.data.FactionData;
 import com.massivecraft.factions.data.helpers.FactionDataHelper;
-import com.massivecraft.factions.util.Logger;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ public class FactionDataDeploymentTask extends BukkitRunnable {
             new FactionDataHelper(data);
 
             cachedList.add(faction);
-            Logger.print("Cached Faction Data For Faction: " + faction.getTag(), Logger.PrefixType.DEFAULT);
         }
     }
 }

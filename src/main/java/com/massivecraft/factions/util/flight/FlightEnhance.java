@@ -18,8 +18,6 @@ public class FlightEnhance implements Runnable {
     @Override
     public void run() {
         for (FPlayer player : FPlayers.getInstance().getOnlinePlayers()) {
-            if (!player.isFlying()) continue;
-
             if (player.isAdminBypassing()
                     || player.getPlayer().isOp()
                     || player.getPlayer().getGameMode() == GameMode.CREATIVE
@@ -36,8 +34,7 @@ public class FlightEnhance implements Runnable {
                     }
                 } else if (player.canFlyAtLocation()
                         && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")
-                        && !FactionsEntityListener.combatList.contains(player.getPlayer().getUniqueId())
-                        && !CmdFly.falseList.contains(player.getPlayer().getUniqueId())) {
+                        && !FactionsEntityListener.combatList.contains(player.getPlayer().getUniqueId())) {
                     player.setFlying(true);
                 }
             }
