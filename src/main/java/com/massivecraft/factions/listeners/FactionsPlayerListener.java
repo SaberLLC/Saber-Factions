@@ -338,6 +338,7 @@ public class FactionsPlayerListener implements Listener {
                 || material.name().contains("_FENCE_GATE")
                 || material.name().startsWith("FENCE_GATE")) return PermissableAction.DOOR;
         if (material.name().contains("SHULKER_BOX")
+                || material.name().equals("SMOKER")
                 || material.name().equals("FLOWER_POT")
                 || material.name().startsWith("POTTED_")
                 || material.name().endsWith("ANVIL")
@@ -598,7 +599,6 @@ public class FactionsPlayerListener implements Listener {
 
         Material type;
         if (event.getItem() != null) {
-            // Convert 1.8 Material Names -> 1.14
             try {
                 type = XMaterial.matchXMaterial(event.getItem().getType().toString()).get().parseMaterial();
             } catch (NullPointerException npe) {
