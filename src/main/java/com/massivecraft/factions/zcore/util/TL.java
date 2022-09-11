@@ -143,11 +143,6 @@ public enum TL {
     COMMAND_CORNERLIST_DESCRIPTION("list of all corners"),
     COMMAND_CORNERLIST_TITLE("&7Listing corner claims in &2{world}"),
 
-    COMMAND_CHUNKBUSTER_USAGE("&c&l[!] &7Try /chunkbuster give <player> <amount>"),
-    CHUNKBUSTER_RECEIEVED("&a&l[!] &7You have received a &cChunkbuster&7!"),
-    CHUNKBUSTER_ALREADY_BEING_BUSTED("&c&l[!] &7This chunk is already being busted."),
-    CHUNKBUSTER_USE_MESSAGE("&c&l[!] &7A ChunkBuster has been placed, you have &c10 seconds &7 to leave this chunk!"),
-
     COMMAND_ADMIN_NOTMEMBER("&c&l[!] &7%1$s &cis not a member in your faction."),
     COMMAND_ADMIN_NOTADMIN("&c&l[!] &cYou are not the faction admin."),
     COMMAND_ADMIN_TARGETSELF("'&c&l[!] &cThe target player musn''t be yourself."),
@@ -169,14 +164,7 @@ public enum TL {
 
     COMMAND_ALTS_LIST_DESCRIPTION("List all alts in your faction"),
 
-    COMMAND_FREECAM_ENEMYINRADIUS("Freecam disabled, An enemy is closeby!"),
-    COMMAND_FREECAM_OUTSIDEFLIGHT("Please dont leave the flight radius!"),
-    COMMAND_FREECAM_ENABLED("Freecam is now enabled!"),
-    COMMAND_FREECAM_DISABLED("Freecam is now disabled"),
-    COMMAND_FREECAM_DESCRIPTION("Go into spectator mode"),
-
     ANTI_SPAWNER_MINE_PLAYERS_NEAR("&c&l[!] &7You may not break spawners while enemies are near!"),
-
 
     COMMAND_AUTOCLAIM_ENABLED("&c&l[!] &7Now &cauto-claiming&7 land for %1$s."),
     COMMAND_AUTOCLAIM_DISABLED("&c&l[!] Auto-claiming&7 of land is now &cdisabled."),
@@ -538,11 +526,7 @@ public enum TL {
     COMMAND_INVITE_ALREADYINVITED("&c&l[!]&7 &c%1$s&7 has already been invited"),
     COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
     COMMAND_INVITE_BANNED("&c&l[!]&7 &7%1$s &cis banned &7from your Faction. &cNot &7sending an invite."),
-
-    BANKNOTE_WITHDRAW_NOT_ENOUGH("&c&l[!] &7You do not have enough money!"),
-    BANKNOTE_WITHDRAW_NO_ARGS("&c&l[!] &7Try /withdraw <amount>"),
-    XPBOTTLE_NOT_ENOUGH("&c&l[!] &7You do not have enough experience!"),
-    XPBOTTLE_WITHDRAW_NO_ARGS("&c&l[!] &7Try /bottle <amount>"),
+    COMMAND_INVITE_NOT_IN_ROSTER("&c&l[!] &b%s &7is not in your factions roster!"),
 
     COMMAND_JOIN_CANNOTFORCE("&c&l[!]&7 You&c do not&7 have permission to &cmove other players&7 into a faction."),
     COMMAND_JOIN_SYSTEMFACTION("&c&l[!]&7 Players may only join &cnormal factions&7. This is a &c&lsystem faction&7."),
@@ -562,6 +546,7 @@ public enum TL {
     COMMAND_JOIN_MOVEDLOG("&c&l[!]&7 &c%1$s &7moved the player&c %2$s &7into the faction&c %3$s&7."),
     COMMAND_JOIN_DESCRIPTION("&a&l» &7Join a faction"),
     COMMAND_JOIN_BANNED("&c&l[!]&7 You are &cbanned &7from &c%1$s."),
+    COMMAND_JOIN_NOT_IN_ROSTER("&c&l[!] &7You cannot join this faction, you're not on their roster!"),
 
     COMMAND_KICK_CANDIDATES("&c&l[!]&7 Players you can kick: "),
     COMMAND_KICK_CLICKTOKICK("Click to kick "),
@@ -1219,6 +1204,27 @@ public enum TL {
     GENERIC_WORLDGUARD("&cThis area is worldguard protected."),
     GRACE_DISABLED_PLACEHOLDER("Disabled"),
     MACRO_DETECTED("&c&l[!] &cNo sir!"),
+
+    ROLE_LIST("&eTry using &arecruit, normal, moderator, coleader"),
+
+
+    COMMAND_ROSTER_DESCRIPTION("manage your roster"),
+    COMMAND_ROSTER_GRACE("&c&l[!] &7You may not edit your faction roster whilst grace period is disabled!"),
+    COMMAND_ROSTER_ADD_LIMIT("&c&l[!] &7You may not add more people to your roster. &b%1$s&7/&b%2$s &7Roster Players"),
+
+    COMMAND_ROSTERADD_NEED_ROLE("&c[!] &7You need to enter a role"),
+    COMMAND_ROSTERADD_COLEADER("&c[!] &7You cannot set them as a leader try coleader"),
+    COMMAND_ROSTERADD_DESCRIPTION("add users to your roster"),
+
+    COMMAND_ROSTERMANGE_KICKUSAGE("&cSet a factions roster kicks"),
+
+    COMMAND_ROSTERKICK_NOTMEMBER("&c&l[!] &7This player is not in your factions roster"),
+    COMMAND_ROSTERKICK_DESCRIPTION("Kick roster members from your faction"),
+    COMMAND_ROSTERKICK_NOTALT("&c&l[!] &7Player is not on your roster"),
+    COMMAND_ROSTERREMOVE_NOTENOUGH_KICKS("&cYou have no more roster kicks avaiable"),
+
+    COMMAND_ROSTER_GUI_KICK("&a&l[!] &7You have removed &b%1$s &7from your faction roster."),
+
 
     // MISSION_CREATED_COOLDOWN("&c&l[!] &7Due to your immediate faction creation, you may not start missions for &b%1$s minutes&7!"),
     MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),

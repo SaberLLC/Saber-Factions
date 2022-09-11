@@ -26,6 +26,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.saberdev.roster.RosterAPI;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -823,7 +824,21 @@ public abstract class MemoryFPlayer implements FPlayer {
             myFaction.removeAltPlayer(this);
             this.msg(TL.LEAVE_LEFT, this.describeTo(this, true), myFaction.describeTo(this));
         }
-        this.resetFactionData();
+
+        if(FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
+            HashMap<UUID, Role> roleHashMap = RosterAPI.getCachedRoster().get(myFaction);
+            if(roleHashMap.containsKey(this.getPlayer().getUniqueId())) {
+                Role role = roleHashMap.getOrDefault(this.getPlayer().getUniqueId(), this.getRole());
+                this.resetFactionData();
+                RosterAPI.addRosterPlayer(this, role);
+            } else {
+                this.resetFactionData();
+            }
+        } else {
+            this.resetFactionData();
+        }
+
+
         FactionsPlugin.instance.logFactionEvent(myFaction, FLogType.INVITES, this.getName(), CC.Red + "left", "the faction");
         setFlying(false);
         if (myFaction.isNormal() && !perm && myFaction.getFPlayers().isEmpty()) {

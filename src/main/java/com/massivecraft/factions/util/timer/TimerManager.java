@@ -24,6 +24,8 @@ public class TimerManager implements Listener, Runnable {
     private final List<TimerRunnable> timerRunnableList = new ArrayList<>();
     public GraceTimer graceTimer;
     private CustomFile config;
+    public static boolean graceEnabled;
+
 
     public TimerManager(FactionsPlugin plugin) {
         this.timers = new HashSet<>();
@@ -78,6 +80,7 @@ public class TimerManager implements Listener, Runnable {
     public void run() {
         long now = System.currentTimeMillis();
         timerRunnableList.removeIf(next -> next.check(now));
+        graceEnabled = this.graceTimer.getRemaining() <= 0;
     }
 
     public List<TimerRunnable> getTimerRunnableList() {

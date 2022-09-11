@@ -11,6 +11,14 @@ public class Aliases {
      * @author DroppingAnvil
      */
 
+    public static ArrayList<String> sandbot = new ArrayList<>(Arrays.asList("sandbot", "sandbots"));
+    public static ArrayList<String> set_base_region = new ArrayList<>(Collections.singletonList("setbaseregion"));
+    public static ArrayList<String> shields = new ArrayList<>(Arrays.asList("shield", "forcefield", "armistice"));
+    public static ArrayList<String> roster_rosters = new ArrayList<>(Arrays.asList("rosters", "roster"));
+    public static ArrayList<String> roster_invite = new ArrayList<>(Arrays.asList("add", "invite"));
+    public static ArrayList<String> roster_kick = new ArrayList<>(Collections.singletonList("kick"));
+    public static ArrayList<String> tnt_stick = new ArrayList<>(Collections.singletonList("tntstick"));
+
     public static ArrayList<String> friendlyFire = new ArrayList<>(Arrays.asList("friendlyfire", "ff"));
     public static ArrayList<String> notifications = new ArrayList<>(Arrays.asList("notifications", "notis"));
     public static ArrayList<String> alts_alts = new ArrayList<>(Arrays.asList("alts", "alt"));

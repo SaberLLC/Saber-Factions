@@ -56,9 +56,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdGrace cmdGrace = new CmdGrace();
     public CmdHelp cmdHelp = new CmdHelp();
     public CmdHome cmdHome = new CmdHome();
-    public CmdInvite cmdInvite = new CmdInvite();
-    public CmdJoin cmdJoin = new CmdJoin();
-    public CmdKick cmdKick = new CmdKick();
     public CmdLeave cmdLeave = new CmdLeave();
     public CmdList cmdList = new CmdList();
     public CmdLock cmdLock = new CmdLock();
@@ -167,6 +164,9 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdAutoUnclaim cmdAutoUnclaim = new CmdAutoUnclaim();
     public CmdRally cmdRally = new CmdRally();
     public CmdSetRelation cmdSetRelation = new CmdSetRelation();
+    public CmdInvite cmdInvite = new CmdInvite();
+    public CmdJoin cmdJoin = new CmdJoin();
+    public CmdKick cmdKick = new CmdKick();
 
 
     //Variables to know if we already setup certain sub commands
@@ -218,9 +218,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdDisband);
         this.addSubCommand(this.cmdHelp);
         this.addSubCommand(this.cmdHome);
-        this.addSubCommand(this.cmdInvite);
-        this.addSubCommand(this.cmdJoin);
-        this.addSubCommand(this.cmdKick);
         this.addSubCommand(this.cmdLeave);
         this.addSubCommand(this.cmdList);
         this.addSubCommand(this.cmdLock);
@@ -319,6 +316,14 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
      * Add sub commands to the root if they are enabled
      */
     public void addVariableCommands() {
+
+        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+            if(!FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
+                this.addSubCommand(this.cmdInvite);
+                this.addSubCommand(this.cmdJoin);
+                this.addSubCommand(this.cmdKick);
+            }
+        }, 200);
 
         //Reserve
         if (Conf.useReserveSystem) {
