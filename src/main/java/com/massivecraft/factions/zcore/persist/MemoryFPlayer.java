@@ -3,6 +3,8 @@ package com.massivecraft.factions.zcore.persist;
 import cc.javajobs.wgbridge.WorldGuardBridge;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.audit.FLogType;
+import com.massivecraft.factions.data.FactionData;
+import com.massivecraft.factions.data.helpers.FactionDataHelper;
 import com.massivecraft.factions.event.*;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
@@ -824,19 +826,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             myFaction.removeAltPlayer(this);
             this.msg(TL.LEAVE_LEFT, this.describeTo(this, true), myFaction.describeTo(this));
         }
-
-        if(FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
-            HashMap<UUID, Role> roleHashMap = RosterAPI.getCachedRoster().get(myFaction);
-            if(roleHashMap.containsKey(this.getPlayer().getUniqueId())) {
-                Role role = roleHashMap.getOrDefault(this.getPlayer().getUniqueId(), this.getRole());
-                this.resetFactionData();
-                RosterAPI.addRosterPlayer(this, role);
-            } else {
-                this.resetFactionData();
-            }
-        } else {
-            this.resetFactionData();
-        }
+        
+        this.resetFactionData();
 
 
         FactionsPlugin.instance.logFactionEvent(myFaction, FLogType.INVITES, this.getName(), CC.Red + "left", "the faction");
