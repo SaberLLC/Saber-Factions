@@ -132,6 +132,8 @@ permissions:
       factions.banner: true
       factions.vault: true
       factions.getvault: true
+  factions.sandbots:
+    description: gives players access to use sandbot commands
   factions.shield:
     description: gives players access to use shield commands
   factions.check:

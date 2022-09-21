@@ -826,7 +826,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             myFaction.removeAltPlayer(this);
             this.msg(TL.LEAVE_LEFT, this.describeTo(this, true), myFaction.describeTo(this));
         }
-        
+
         this.resetFactionData();
 
 

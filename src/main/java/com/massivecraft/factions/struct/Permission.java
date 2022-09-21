@@ -143,6 +143,7 @@ public enum Permission {
     UNCLAIM_ALL("unclaimall"),
     VERSION("version"),
     SCOREBOARD("scoreboard"),
+    SANDBOTS("sandbots"),
     SEECHUNK("seechunk"),
     SETWARP("setwarp"),
     SHOP("shop"),
