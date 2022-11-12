@@ -751,6 +751,14 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerCloseGUI(InventoryCloseEvent event) {
+        if (event.getInventory().getHolder() instanceof FactionGUI) {
+            ((FactionGUI) event.getInventory().getHolder()).onClose(event.getPlayer());
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerMoveGUI(InventoryDragEvent event) {
         if (event.getInventory().getHolder() instanceof FactionGUI) event.setCancelled(true);

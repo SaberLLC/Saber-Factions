@@ -8,6 +8,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.DyeColor;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -36,6 +37,10 @@ public class CheckHistoryFrame implements FactionGUI {
     }
 
     public void onClick(int slot, ClickType action) {
+    }
+
+    @Override
+    public void onClose(HumanEntity player) {
     }
 
     public void build() {

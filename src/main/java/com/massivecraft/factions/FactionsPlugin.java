@@ -21,6 +21,7 @@ import com.massivecraft.factions.integration.LunarClientWrapper;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.listeners.vspecific.ChorusFruitListener;
 import com.massivecraft.factions.missions.MissionHandler;
+import com.massivecraft.factions.missions.TributeInventoryHandler;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
@@ -181,6 +182,7 @@ public class FactionsPlugin extends MPlugin {
 
         // Register Event Handlers
         eventsListener = new Listener[]{
+                new TributeInventoryHandler(),
                 new FactionsChatListener(),
                 new FactionsEntityListener(),
                 new FactionsExploitListener(),

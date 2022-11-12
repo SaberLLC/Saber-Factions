@@ -133,6 +133,9 @@ public enum TL {
     COMMAND_UPGRADES_POINTS_TAKEN("&cFaction upgrade purchased for &e%1$s points! &cNew Point Balance: &e%2$s"),
     COMMAND_UPGRADES_NOT_ENOUGH_POINTS("&cYour faction does not have enough points to purchase this upgrade!"),
     COMMAND_UPGRADES_DISABLED("&c[!] &7Faction Upgrades are &cdisabled&7."),
+    COMMAND_UPGRADES_LEVEL_ERROR("&c[!] &7Faction Upgrade &e%1$s &7of level &e%2$s &7led to an invalid value&7."),
+    UPGRADE_TOUPGRADE("to buy the %1$s upgrade"),
+    UPGRADE_FORUPGRADE("for buying the %1$s upgrade"),
 
     COMMAND_CORNER_CANT_CLAIM("&c&l[!] &cYou may not claim this corner!"),
     COMMAND_CORNER_CLAIMED("\n&2&l[!] &aYou have claimed the corner successfully, totalling in &b%1$d &achunks!\n"),
@@ -1234,9 +1237,18 @@ public enum TL {
     MISSION_MISSION_ACTIVE("&c&l[!] &7This mission is currently active!"),
     MISSION_MISSION_MAX_ALLOWED("&c&l[!] &7You may not have more than &b%1$s &7missions active at once."),
     MISSION_MISSION_ALL_COMPLETED("&c&l[!] &7Your faction has completed all available missions."),
-    MISSION_MISSION_FINISHED("&c&l[!] &7Your faction has successfully completed %1$s mission!"),
+    MISSION_MISSION_FINISHED("&c&l[!] &7Your faction has successfully completed %1$s &7mission!"),
+    MISSION_MISSION_FAILED("&c&l[!] &7Your faction has failed %1$s &cmission!"),
     COMMAND_MISSION_DESCRIPTION("Opens missions gui"),
     MISSION_MISSION_CANCELLED("&c&l[!] &7You have cancelled your factions current mission!"),
+    MISSION_TRIBUTE_ITEM_DENIED_TRANSFER("&c&l[!] &7There are no tribute missions that accept &b%1$s&7."),
+    MISSION_RANDOM_MODE_DENIED("&c&l[!] &7Please select the %1$s&7 item to have a random mission assigned."),
+    MISSION_CANCEL_POINTS_TAKEN("&cFaction Mission cancelled for &e%1$s points! &cNew Point Balance: &e%2$s"),
+    MISSION_CANCEL_NOT_ENOUGH_POINTS("&cYour faction does not have enough points to cancel this mission!"),
+    MISSION_TOCANCEL("to cancel this mission."),
+    MISSION_FORCANCEL("for cancelling this mission."),
+
+
     // F Global \\
 
 

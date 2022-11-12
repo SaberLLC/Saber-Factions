@@ -18,7 +18,7 @@ public class Aliases {
     public static ArrayList<String> roster_invite = new ArrayList<>(Arrays.asList("add", "invite"));
     public static ArrayList<String> roster_kick = new ArrayList<>(Collections.singletonList("kick"));
     public static ArrayList<String> tnt_stick = new ArrayList<>(Collections.singletonList("tntstick"));
-
+    public static ArrayList<String> missions_missions = new ArrayList<>(Arrays.asList("missions", "mission", "objectives", "objective"));
     public static ArrayList<String> friendlyFire = new ArrayList<>(Arrays.asList("friendlyfire", "ff"));
     public static ArrayList<String> notifications = new ArrayList<>(Arrays.asList("notifications", "notis"));
     public static ArrayList<String> alts_alts = new ArrayList<>(Arrays.asList("alts", "alt"));

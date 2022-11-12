@@ -7,12 +7,23 @@ public class Mission {
      */
 
     private long progress;
-    private String name;
-    private String type;
+    private final String name;
+    private final MissionType type;
+    private final long startTime;
 
-    public Mission(String name, String type) {
+    public Mission(String name, MissionType type, long startTime) {
         this.name = name;
         this.type = type;
+        this.startTime = startTime;
+
+    }
+
+    public void incrementProgress(long increment) {
+        progress += increment;
+    }
+
+    public long getStartTime() {
+        return startTime;
     }
 
     public long getProgress() {
@@ -27,7 +38,7 @@ public class Mission {
         return name;
     }
 
-    public String getType() {
+    public MissionType getType() {
         return type;
     }
 }

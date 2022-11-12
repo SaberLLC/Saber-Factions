@@ -6,8 +6,13 @@
 MissionGUISize: 4
 Missions-Enabled: true
 Missions-GUI-Title: '&8&lFaction Missions'
+Tribute-GUI-Title: '&8&lMissions Tribute'
 MaximumMissionsAllowedAtOnce: 1
 Allow-Cancellation-Of-Missions: true
+CancellableMissionLore: "&c&oRight-Click to forfeit this mission for $1000."
+CancelMissionCost: 1000
+PayCancelMissionCostWithPoints: false
+FactionPaysCancelMissionCost: true
 Mission-Progress-Format: '&b&lProgression: &f{progress}&7/&e{total}'
 Randomization:
   Enabled: false
@@ -25,9 +30,19 @@ Randomization:
         - '&4%reason%'
     # in default configuration you will need to change the GUI size to 4 and for best results change the fillitem rows to 4 as well.
     Slot: 31
-DenyMissionsMoreThenOnce: true #this setting to true, means that if they complete a mission they cannot redo the same mission
 
-#Mission Types: KILL, MINE, PLACE, FISH, TAME, ENCHANT, CONSUME
+DenyMissionsMoreThenOnce: true #this setting to true, means that if they complete a mission they cannot redo the same mission
+DeniedMissionMaterial: "BARRIER"
+DeniedMissionExtraLore: "&cYou've already completed this mission."
+MissionDeadline: 86400000 #in milliseconds, 0 disables it
+DeadlineMissionLore: "&7&oThe mission expires in &3%1$s."
+Prestige: #requires DenyMissionsMoreThenOnce = true
+  Enabled: false
+  CongratulationMessage: "&aYour faction has completed all the missions!"
+  Reward:
+    Commands: [ "f powerboost faction %faction% 1" ]
+
+#Mission Types: KILL, MINE, PLACE, FISH, TAME, ENCHANT, CONSUME, BREED, TRIBUTE
 Missions:
   FillItem:
     Material: BLACK_STAINED_GLASS_PANE

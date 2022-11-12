@@ -5,6 +5,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class CustomFile {
 
     public CustomFile(File file) {
         this.file = file;
-        this.fileConfig = YamlConfiguration.loadConfiguration(file);
+        loadFile();
     }
 
     public void setup(boolean loadFromProject, String inFolder) {
@@ -41,6 +43,25 @@ public class CustomFile {
             }
         }
         loadFile();
+        // Add default values for missing config options
+        InputStream resource;
+        if (!inFolder.equalsIgnoreCase("")) {
+            resource = FactionsPlugin.getInstance().getResource(inFolder + "/" + file.getName());
+        } else {
+            resource = FactionsPlugin.getInstance().getResource(file.getName());
+        }
+
+        if(resource == null)
+            return;
+        YamlConfiguration defaultConf = YamlConfiguration.loadConfiguration(new InputStreamReader(resource));
+        getConfig().setDefaults(defaultConf);
+        getConfig().options().copyDefaults(true);
+        try {
+            getConfig().save(getFile());
+            loadFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadFile() {

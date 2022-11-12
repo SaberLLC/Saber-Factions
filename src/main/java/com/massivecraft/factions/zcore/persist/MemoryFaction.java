@@ -386,7 +386,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         // Send FPlayerLeaveEvent for each player in the faction and reset their Discord settings
         for (FPlayer fplayer : this.getFPlayers()) {
-            if(fplayer.isInFactionsChest()) {
+            if (fplayer.isInFactionsChest()) {
                 fplayer.getPlayer().closeInventory();
             }
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, this, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
@@ -495,16 +495,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     private int getChestSize() {
         int size = FactionsPlugin.getInstance().getConfig().getInt("fchest.Default-Size");
-        switch (getUpgrade(UpgradeType.CHEST)) {
-            case 1:
-                size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-1") * 9;
-                break;
-            case 2:
-                size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-2") * 9;
-                break;
-            case 3:
-                size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-3") * 9;
-                break;
+        int chestUpgrade = getUpgrade(UpgradeType.CHEST);
+        if (chestUpgrade > 0) {
+            int upgradedSize = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-" + chestUpgrade, -1);
+            if (upgradedSize > -1) {
+                size = upgradedSize;
+            } else {
+                FactionsPlugin.getInstance().getLogger().severe(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_UPGRADES_LEVEL_ERROR.toString(), "CHEST", chestUpgrade));
+            }
         }
         return size * 9;
     }
@@ -1242,7 +1240,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
             if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-disband-broadcast")) {
                 String message = TL.COMMAND_DISBAND_BROADCAST_GENERIC.toString()
-                        .replace("{claims}",this.getAllClaims().size()+"");
+                        .replace("{claims}", this.getAllClaims().size() + "");
                 for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers())
                     fplayer.msg(message, this.getTag(fplayer));
             }
