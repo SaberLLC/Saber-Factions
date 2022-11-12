@@ -13,12 +13,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 public class MissionHandler implements Listener {
@@ -27,10 +30,29 @@ public class MissionHandler implements Listener {
      * @author Driftay
      */
 
-    private FactionsPlugin plugin;
+    static final String matchAnythingRegex = ".*";
+
+    private final FactionsPlugin plugin;
 
     public MissionHandler(FactionsPlugin plugin) {
         this.plugin = plugin;
+    }
+
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerBreed(EntityBreedEvent e) {
+        if (!(e.getBreeder() instanceof Player)) {
+            return;
+        }
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) e.getBreeder());
+        if (fPlayer == null) {
+            return;
+        }
+
+        handleMissionsOfType(fPlayer, MissionType.BREED, (mission, section) -> {
+            String entity = section.getString("Mission.Entity", matchAnythingRegex);
+            return e.getEntityType().toString().matches(entity);
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -42,7 +64,7 @@ public class MissionHandler implements Listener {
         if (fPlayer == null) {
             return;
         }
-        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("tame")).collect(Collectors.toList());
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType() == MissionType.TAME).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType")) && !section.getConfigurationSection("Mission").getString("EntityType").equalsIgnoreCase("ALL")) {
@@ -62,7 +84,7 @@ public class MissionHandler implements Listener {
         if (fPlayer == null) {
             return;
         }
-        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("kill")).collect(Collectors.toList());
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType() == MissionType.KILL).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             if (!event.getEntityType().toString().equals(section.getConfigurationSection("Mission").getString("EntityType"))) {
@@ -79,7 +101,7 @@ public class MissionHandler implements Listener {
         if (fPlayer == null) {
             return;
         }
-        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("mine")).collect(Collectors.toList());
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType() == MissionType.MINE).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             if (!event.getBlock().getType().toString().equals(section.getConfigurationSection("Mission").getString("Material"))) {
@@ -96,7 +118,7 @@ public class MissionHandler implements Listener {
         if (fPlayer == null) {
             return;
         }
-        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("place")).collect(Collectors.toList());
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType() == MissionType.PLACE).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             if (!event.getBlock().getType().toString().equals(section.getConfigurationSection("Mission").getString("Material"))) {
@@ -116,7 +138,7 @@ public class MissionHandler implements Listener {
         if (fPlayer == null) {
             return;
         }
-        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("fish")).collect(Collectors.toList());
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType() == MissionType.FISH).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             mission2.incrementProgress();
@@ -130,7 +152,7 @@ public class MissionHandler implements Listener {
         if (fPlayer == null) {
             return;
         }
-        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("enchant")).collect(Collectors.toList());
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType() == MissionType.ENCHANT).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
             mission2.incrementProgress();
@@ -144,7 +166,7 @@ public class MissionHandler implements Listener {
         if (fPlayer == null) {
             return;
         }
-        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType().equalsIgnoreCase("consume")).collect(Collectors.toList());
+        List<Mission> missions = fPlayer.getFaction().getMissions().values().stream().filter(mission -> mission.getType() == MissionType.CONSUME).collect(Collectors.toList());
         for (Mission mission2 : missions) {
             ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getConfigurationSection(mission2.getName());
 
@@ -156,8 +178,23 @@ public class MissionHandler implements Listener {
         }
     }
 
-    private void checkIfDone(FPlayer fPlayer, Mission mission, ConfigurationSection section) {
-        if (mission.getProgress() < section.getConfigurationSection("Mission").getLong("Amount")) {
+    private void handleMissionsOfType(FPlayer fPlayer, MissionType missionType, BiFunction<Mission, ConfigurationSection, Boolean> missionConsumer){
+        fPlayer.getFaction().getMissions().values().stream()
+                .filter(mission -> mission.getType() == missionType)
+                .forEach(mission -> {
+                    ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
+                    if(missionConsumer.apply(mission, section)){
+                        mission.incrementProgress();
+                        checkIfDone(fPlayer, mission, section);
+                    }
+                });
+    }
+
+    private void checkIfDone(FPlayer fPlayer, Mission mission, @Nullable ConfigurationSection section) {
+        if(section == null)
+            return;
+
+        if (mission.getProgress() < section.getLong("Mission.Amount")) {
             return;
         }
         for (String command : section.getConfigurationSection("Reward").getStringList("Commands")) {
