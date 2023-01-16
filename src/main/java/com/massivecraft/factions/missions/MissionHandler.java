@@ -65,22 +65,6 @@ public class MissionHandler implements Listener {
 
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerBreed(EntityBreedEvent e) {
-        if (!(e.getBreeder() instanceof Player)) {
-            return;
-        }
-        FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) e.getBreeder());
-        if (fPlayer == null) {
-            return;
-        }
-
-        handleMissionsOfType(fPlayer, MissionType.BREED, (mission, section) -> {
-            String entity = section.getString("Mission.Entity", matchAnythingRegex);
-            return e.getEntityType().toString().matches(entity) ? 1 : -1;
-        });
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTame(EntityTameEvent event) {
         if (!(event.getOwner() instanceof Player)) {
             return;

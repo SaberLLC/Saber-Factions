@@ -22,6 +22,7 @@ import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.listeners.vspecific.ChorusFruitListener;
 import com.massivecraft.factions.missions.MissionHandler;
 import com.massivecraft.factions.missions.TributeInventoryHandler;
+import com.massivecraft.factions.missions.impl.MissionHandlerModern;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
@@ -182,6 +183,7 @@ public class FactionsPlugin extends MPlugin {
 
         // Register Event Handlers
         eventsListener = new Listener[]{
+
                 new TributeInventoryHandler(),
                 new FactionsChatListener(),
                 new FactionsEntityListener(),
@@ -193,6 +195,10 @@ public class FactionsPlugin extends MPlugin {
                 new MenuListener(),
                 new AntiChestListener()
         };
+
+        if(version > 8) {
+            getServer().getPluginManager().registerEvents(new MissionHandlerModern(), this);
+        }
 
         for (Listener eventListener : eventsListener)
             getServer().getPluginManager().registerEvents(eventListener, this);

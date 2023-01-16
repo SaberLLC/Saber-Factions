@@ -200,15 +200,15 @@ public class FactionsPlayerListener implements Listener {
         if (action == null) return false;
         // We only care about some material types.
         /// Who was the idiot?
-        if (otherFaction.hasPlayersOnline()) {
-            if (Conf.territoryProtectedMaterials.contains(material)) {
-                return false;
-            }
-        } else {
-            if (Conf.territoryProtectedMaterialsWhenOffline.contains(material)) {
-                return false;
-            }
-        }
+        //if (otherFaction.hasPlayersOnline()) {
+        //    if (Conf.territoryProtectedMaterials.contains(material)) {
+        //        return false;
+        //    }
+        //} else {
+        //    if (Conf.territoryProtectedMaterialsWhenOffline.contains(material)) {
+        //        return false;
+        //    }
+        //}
 
         // Move up access check to check for exceptions
         if (!otherFaction.getId().equals(myFaction.getId())) { // If the faction target is not my own

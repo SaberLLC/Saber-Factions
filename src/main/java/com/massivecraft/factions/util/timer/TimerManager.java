@@ -1,6 +1,5 @@
 package com.massivecraft.factions.util.timer;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.timer.type.GraceTimer;
 import com.massivecraft.factions.zcore.file.CustomFile;
@@ -31,9 +30,7 @@ public class TimerManager implements Listener, Runnable {
         this.timers = new HashSet<>();
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        if (Conf.useGraceSystem) {
-            this.registerTimer(this.graceTimer = new GraceTimer());
-        }
+        this.registerTimer(this.graceTimer = new GraceTimer());
         plugin.getServer().getScheduler().runTaskTimer(plugin, this, 4, 4);
     }
 
@@ -80,7 +77,9 @@ public class TimerManager implements Listener, Runnable {
     public void run() {
         long now = System.currentTimeMillis();
         timerRunnableList.removeIf(next -> next.check(now));
-        graceEnabled = this.graceTimer.getRemaining() <= 0;
+        if (this.graceTimer != null) {
+            graceEnabled = this.graceTimer.getRemaining() <= 0;
+        }
     }
 
     public List<TimerRunnable> getTimerRunnableList() {
