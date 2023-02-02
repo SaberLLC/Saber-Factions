@@ -219,7 +219,7 @@ public class MissionHandler implements Listener {
         long deadlineMillis = plugin.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
         if (deadlineMillis > 0L && deadlines.containsKey(faction.getId())) {
             BukkitTask bukkitTask = deadlines.get(faction.getId()).getOrDefault(mission.getName(), null);
-            if (bukkitTask != null && !bukkitTask.isCancelled())
+            if (bukkitTask != null)
                 bukkitTask.cancel();
             deadlines.get(faction.getId()).remove(mission.getName());
 

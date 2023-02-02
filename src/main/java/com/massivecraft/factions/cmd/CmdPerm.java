@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -42,10 +43,10 @@ public class CmdPerm extends FCommand {
     public void perform(CommandContext context) {
 
         if (context.args.size() == 0) {
-            new PermissableRelationFrame(context.faction).buildGUI(context.fPlayer);
+            new PermissableRelationFrame(context.player, context.faction).openGUI(FactionsPlugin.getInstance());
             return;
         } else if (context.args.size() == 1 && getPermissable(context.argAsString(0)) != null) {
-            new PermissableActionFrame(context.faction).buildGUI(context.fPlayer, getPermissable(context.argAsString(0)));
+            new PermissableActionFrame(context.player, context.faction, getPermissable(context.argAsString(0))).openGUI(FactionsPlugin.getInstance());
             return;
         }
 

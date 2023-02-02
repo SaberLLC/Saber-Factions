@@ -1,60 +1,33 @@
 package com.massivecraft.factions.zcore.fperms.gui;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.github.stefvanschie.inventoryframework.Gui;
-import com.github.stefvanschie.inventoryframework.GuiItem;
-import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.SaberGUI;
+import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class PermissableRelationFrame {
+public class PermissableRelationFrame extends SaberGUI {
 
     /**
      * @author Illyria Team
      */
 
-    private Gui gui;
 
-    public PermissableRelationFrame(Faction f) {
-        ConfigurationSection section = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.relation");
-        assert section != null;
-        gui = new Gui(FactionsPlugin.getInstance(),
-                section.getInt("rows", 4),
-                CC.translate(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", f.getTag())));
-    }
 
-    public void buildGUI(FPlayer fplayer) {
-        PaginatedPane pane = new PaginatedPane(0, 0, 9, gui.getRows());
-        List<GuiItem> GUIItems = new ArrayList<>();
-        ItemStack dumby = buildDummyItem();
-        // Fill background of GUI with dumbyitem & replace GUI assets after
-        for (int x = 0; x <= (gui.getRows() * 9) - 1; x++) GUIItems.add(new GuiItem(dumby, e -> e.setCancelled(true)));
-        ConfigurationSection sec = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.relation");
-        for (String key : sec.getConfigurationSection("slots").getKeys(false)) {
-            if (key == null || sec.getInt("slots." + key) < 0) continue;
-            GUIItems.set(sec.getInt("slots." + key), new GuiItem(buildAsset("fperm-gui.relation.materials." + key, key), e -> {
-                e.setCancelled(true);
-                // Closing and opening resets the cursor.
-                // e.getWhoClicked().closeInventory();
-                new PermissableActionFrame(fplayer.getFaction()).buildGUI(fplayer, getPermissable(key));
-            }));
-        }
-        pane.populateWithGuiItems(GUIItems);
-        gui.addPane(pane);
-        gui.update();
-        gui.show(fplayer.getPlayer());
+    public PermissableRelationFrame(Player player, Faction faction) {
+        super(player, CC.translate(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", faction.getTag())), FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getInt("fperm-gui.relation.rows") * 9);
     }
 
     private ItemStack buildAsset(String loc, String relation) {
@@ -98,6 +71,23 @@ public class PermissableRelationFrame {
             return Relation.fromString(name.toUpperCase());
         } else {
             return null;
+        }
+    }
+
+    @Override
+    public void redraw() {
+        for (int x = 0; x <= this.size - 1; ++x) {
+            this.setItem(x, new InventoryItem(buildDummyItem()));
+        }
+        Faction faction = FPlayers.getInstance().getByPlayer(player).getFaction();
+        ConfigurationSection sec = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.relation");
+        for (String key : sec.getConfigurationSection("slots").getKeys(false)) {
+            if (key == null || sec.getInt("slots." + key) < 0) continue;
+            this.setItem(sec.getInt("slots." + key), new InventoryItem(buildAsset("fperm-gui.relation.materials." + key, key)).click(ClickType.LEFT, () -> {
+                // Closing and opening resets the cursor.
+                // e.getWhoClicked().closeInventory();
+                new PermissableActionFrame(player, faction, getPermissable(key)).openGUI(FactionsPlugin.getInstance());
+            }));
         }
     }
 }

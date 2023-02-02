@@ -313,6 +313,7 @@ show-exempt:
 
 # You can use any variable here, including fancy messages. Color codes and or tags work fine.
 # Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+
 map:
   # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
   - ''
@@ -764,6 +765,8 @@ faudit-gui:
 #Title when moving between chunks
 Title:
   Show-Title: true
+  Cached: true #Titles will be ran on an ASYNC Task To Avoid Spam
+
   # You can configure the time in 1.9 or higher! The values are in ticks (20 ticks = 1 second)
   Options:
     FadeInTime: 1

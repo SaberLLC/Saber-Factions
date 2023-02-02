@@ -92,7 +92,7 @@ public class Econ {
 
     public static void sendBalanceInfo(FPlayer to, EconomyParticipator about) {
         if (!shouldBeUsed()) {
-            Logger.print( "Vault does not appear to be hooked into an economy plugin.", Logger.PrefixType.WARNING);
+            Logger.print("Vault does not appear to be hooked into an economy plugin.", Logger.PrefixType.WARNING);
             return;
         }
         to.msg(TL.ECON_PLAYERBALANCE, about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));
@@ -100,7 +100,7 @@ public class Econ {
 
     public static void sendBalanceInfo(FPlayer to, Faction about) {
         if (!shouldBeUsed()) {
-            Logger.print( "Vault does not appear to be hooked into an economy plugin.", Logger.PrefixType.WARNING);
+            Logger.print("Vault does not appear to be hooked into an economy plugin.", Logger.PrefixType.WARNING);
             return;
         }
 
@@ -288,7 +288,9 @@ public class Econ {
 
     public static boolean modifyMoney(EconomyParticipator ep, double delta, String toDoThis, String forDoingThis) {
         // code goes here.
-        if (!shouldBeUsed()) return false;
+        if (!shouldBeUsed()) {
+            return false;
+        }
 
         OfflinePlayer acc;
 
@@ -323,7 +325,7 @@ public class Econ {
                 return false;
             }
         } else {
-            // The player should loose money
+            // The player should lose money
             // The player might not have enough.
             if (ep instanceof Faction) {
                 if (hasAtLeast(ep, -delta, null)) {

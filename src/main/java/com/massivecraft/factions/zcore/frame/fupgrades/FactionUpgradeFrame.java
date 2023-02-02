@@ -1,86 +1,84 @@
 package com.massivecraft.factions.zcore.frame.fupgrades;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.github.stefvanschie.inventoryframework.Gui;
-import com.github.stefvanschie.inventoryframework.GuiItem;
-import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.SaberGUI;
+import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * @author Saser
+ * @Author: Driftay
+ * @Date: 2/2/2023 4:45 AM
  */
-public class FUpgradeFrame {
+public class FactionUpgradeFrame extends SaberGUI {
 
-    private Gui gui;
+    private Faction faction;
 
-    public FUpgradeFrame(Faction f) {
-        this.gui = new Gui(FactionsPlugin.getInstance(),
-                FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Rows", 5),
-                ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig()
-                        .getString("fupgrades.MainMenu.Title").replace("{faction}", f.getTag())));
+    public FactionUpgradeFrame(Player player, Faction faction) {
+        super(player, CC.translate(FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig()
+                .getString("fupgrades.MainMenu.Title").replace("{faction}", faction.getTag())), FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Rows", 5) * 9);
+        this.faction = faction;
     }
 
-    public void buildGUI(FPlayer fme) {
-        PaginatedPane pane = new PaginatedPane(0, 0, 9, this.gui.getRows());
-        List<GuiItem> GUIItems = new ArrayList<>();
+    @Override
+    public void redraw() {
         ItemStack dummy = buildDummyItem();
-        Faction fac = fme.getFaction();
-        for (int x = 0; x <= this.gui.getRows() * 9 - 1; ++x)
-            GUIItems.add(new GuiItem(dummy, e -> e.setCancelled(true)));
+        FPlayer fme = FPlayers.getInstance().getByPlayer(player);
+        for (int x = 0; x <= this.size - 1; ++x) {
+            this.setItem(x, new InventoryItem(dummy));
+        }
+
         for (UpgradeType upgradeType : UpgradeType.values()) {
             if (upgradeType.getSlot() != -1) {
-                GUIItems.set(upgradeType.getSlot(), new GuiItem(upgradeType.buildAsset(fac), e -> {
-                    e.setCancelled(true);
-                    if (fac.getUpgrade(upgradeType) >= upgradeType.getMaxLevel()) return;
-                    int cost = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu." + upgradeType + ".Cost.level-" + (fac.getUpgrade(upgradeType) + 1));
+                this.setItem(upgradeType.getSlot(), new InventoryItem(upgradeType.buildAsset(faction)).click(ClickType.LEFT, () -> {
+                    if (faction.getUpgrade(upgradeType) >= upgradeType.getMaxLevel()) return;
+
+                    int cost = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu." + upgradeType + ".Cost.level-" + (faction.getUpgrade(upgradeType) + 1));
+
+
                     if (FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getBoolean("fupgrades.usePointsAsCurrency")) {
-                        if (fac.getPoints() >= cost) {
-                            fac.setPoints(fac.getPoints() - cost);
-                            fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, fac.getPoints());
+                        if (faction.getPoints() >= cost) {
+                            faction.setPoints(faction.getPoints() - cost);
+                            fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, faction.getPoints());
                             handleTransaction(fme, upgradeType);
-                            fac.setUpgrade(upgradeType, fac.getUpgrade(upgradeType) + 1);
-                            buildGUI(fme);
+                            faction.setUpgrade(upgradeType, faction.getUpgrade(upgradeType) + 1);
+                            redraw();
                         } else {
                             fme.getPlayer().closeInventory();
                             fme.msg(TL.COMMAND_UPGRADES_NOT_ENOUGH_POINTS);
                         }
                     } else {
-                        EconomyParticipator payee = null;
+
+                        EconomyParticipator payee;
 
                         if (Conf.bankEnabled && FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getBoolean("fupgrades.factionPaysForUpgradeCost", false)) {
-                            payee = fac;
+                            payee = faction;
                         } else {
                             payee = fme;
                         }
 
                         if (Econ.modifyMoney(payee, -cost, FactionsPlugin.getInstance().txt.parse(TL.UPGRADE_TOUPGRADE.toString(), upgradeType), FactionsPlugin.getInstance().txt.parse(TL.UPGRADE_FORUPGRADE.toString(), upgradeType))) {
                             handleTransaction(fme, upgradeType);
-                            fac.setUpgrade(upgradeType, fac.getUpgrade(upgradeType) + 1);
-                            buildGUI(fme);
+                            faction.setUpgrade(upgradeType, faction.getUpgrade(upgradeType) + 1);
+                            redraw();
+                        } else if (fme.hasMoney(cost)) {
+                            fme.takeMoney(cost);
+                            handleTransaction(fme, upgradeType);
+                            faction.setUpgrade(upgradeType, faction.getUpgrade(upgradeType) + 1);
                         }
                     }
                 }));
             }
         }
-        pane.populateWithGuiItems(GUIItems);
-        gui.addPane(pane);
-        gui.update();
-        gui.show(fme.getPlayer());
     }
 
     private void handleTransaction(FPlayer fme, UpgradeType value) {
@@ -140,6 +138,9 @@ public class FUpgradeFrame {
         f.setPowerBoost(boost);
     }
 
+    public Faction getFaction() {
+        return faction;
+    }
 
     private ItemStack buildDummyItem() {
         ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getConfigurationSection("fupgrades.MainMenu.DummyItem");
