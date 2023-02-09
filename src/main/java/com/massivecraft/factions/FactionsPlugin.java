@@ -39,6 +39,7 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fupgrades.UpgradesListener;
 import com.massivecraft.factions.zcore.util.ShutdownParameter;
 import com.massivecraft.factions.zcore.util.StartupParameter;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -46,6 +47,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -160,7 +162,10 @@ public class FactionsPlugin extends MPlugin {
         setupPermissions();
 
         if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
-            new WorldGuardBridge().connect(this, true);
+            Plugin plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
+            if (plugin != null) {
+                new WorldGuardBridge().connect(this, true);
+            }
         }
 
         // start up task which runs the autoLeaveAfterDaysOfInactivity routine
@@ -292,6 +297,9 @@ public class FactionsPlugin extends MPlugin {
         if (this.AutoLeaveTask != null) {
             getServer().getScheduler().cancelTask(this.AutoLeaveTask);
             this.AutoLeaveTask = null;
+        }
+        if(TextUtil.AUDIENCES != null) {
+            TextUtil.AUDIENCES.close();
         }
         //this.bannerManager.onDisable(this);
         ShutdownParameter.initShutdown(this);

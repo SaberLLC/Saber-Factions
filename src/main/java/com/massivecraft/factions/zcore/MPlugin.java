@@ -222,20 +222,7 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public void initTXT() {
-        this.addRawTags();
-
-        Type type = new TypeToken<Map<String, String>>() {
-        }.getType();
-
-        Map<String, String> tagsFromFile = this.persist.load(type, "tags");
-        if (tagsFromFile != null) {
-            this.rawTags.putAll(tagsFromFile);
-        }
-        this.persist.save(this.rawTags, "tags");
-
-        for (Entry<String, String> rawTag : this.rawTags.entrySet()) {
-            this.txt.tags.put(rawTag.getKey(), TextUtil.parseColor(rawTag.getValue()));
-        }
+        TextUtil.init();
     }
 
     // -------------------------------------------- //
