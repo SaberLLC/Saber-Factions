@@ -16,7 +16,7 @@ public class ChorusFruitListener implements Listener {
         if(!FactionsPlugin.instance.getConfig().getBoolean("disable-chorus-teleport-in-territory", true))return;
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT) {
             if(event.getTo() == null )return;
-            Faction fac = Board.getInstance().getFactionAt(new FLocation(event.getTo()));
+            Faction fac = Board.getInstance().getFactionAt(FLocation.wrap(event.getTo()));
             FPlayer fplayer = FPlayers.getInstance().getByPlayer(event.getPlayer());
             if(fac != null && !fac.isSystemFaction()){
                 if(!fplayer.hasFaction() || fplayer.getFaction() != fac){

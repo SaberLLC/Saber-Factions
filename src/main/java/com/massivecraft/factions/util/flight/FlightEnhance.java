@@ -23,7 +23,7 @@ public class FlightEnhance implements Runnable {
                     || player.getPlayer().getGameMode() == GameMode.CREATIVE
                     || player.getPlayer().getGameMode() == GameMode.SPECTATOR) continue;
 
-            FLocation fLocation = new FLocation(player.getPlayer().getLocation());
+            FLocation fLocation = FLocation.wrap(player.getPlayer().getLocation());
 
             player.checkIfNearbyEnemies();
 

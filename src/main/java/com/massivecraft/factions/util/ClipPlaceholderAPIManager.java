@@ -218,7 +218,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                     return TL.GRACE_DISABLED_PLACEHOLDER.toString();
                 }
             case "faction_name_at_location":
-                Faction factionAtLocation = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
+                Faction factionAtLocation = Board.getInstance().getFactionAt(FLocation.wrap(player.getLocation()));
                 return factionAtLocation != null ? factionAtLocation.getTag() : Factions.getInstance().getWilderness().getTag();
         }
         //If its not hardcoded lets try to grab it anyways

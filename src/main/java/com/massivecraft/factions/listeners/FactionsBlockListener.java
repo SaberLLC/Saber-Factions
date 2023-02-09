@@ -61,7 +61,7 @@ public class FactionsBlockListener implements Listener {
         FPlayer me = FPlayers.getInstance().getById(player.getUniqueId().toString());
         if (me.isAdminBypassing()) return true;
 
-        FLocation loc = new FLocation(location);
+        FLocation loc = FLocation.wrap(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
         Faction myFaction = me.getFaction();
 
@@ -160,8 +160,8 @@ public class FactionsBlockListener implements Listener {
 
         if (event.getBlock().isLiquid()) {
             if (event.getToBlock().isEmpty()) {
-                Faction from = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
-                Faction to = Board.getInstance().getFactionAt(new FLocation(event.getToBlock()));
+                Faction from = Board.getInstance().getFactionAt(FLocation.wrap(event.getBlock()));
+                Faction to = Board.getInstance().getFactionAt(FLocation.wrap(event.getToBlock()));
                 if (from == to || to.isWilderness()) return;
                 // from faction != to faction
                 if (to.isSystemFaction()) {
@@ -191,7 +191,7 @@ public class FactionsBlockListener implements Listener {
 
 
         if (!Conf.pistonProtectionThroughDenyBuild) return;
-        Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+        Faction pistonFaction = Board.getInstance().getFactionAt(FLocation.wrap(event.getBlock()));
 
         // target end-of-the-line empty (air) block which is being pushed into, including if piston itself would extend into air
         Block targetBlock = event.getBlock().getRelative(event.getDirection(), event.getLength() + 1);
@@ -219,7 +219,7 @@ public class FactionsBlockListener implements Listener {
                     e.setCancelled(true);
                     return;
                 }
-                FLocation flocation = new FLocation(e.getBlockPlaced().getLocation());
+                FLocation flocation = FLocation.wrap(e.getBlockPlaced().getLocation());
                 if (Board.getInstance().getFactionAt(flocation) != fme.getFaction()) {
                     fme.msg(TL.COMMAND_GETVAULT_INVALIDLOCATION);
                     e.setCancelled(true);
@@ -255,7 +255,7 @@ public class FactionsBlockListener implements Listener {
 
         if (e.getItemInHand().getType() != Material.HOPPER && !FactionsPlugin.instance.getConfig().getBoolean("fvault.No-Hoppers-near-vault"))
             return;
-        Faction factionAt = Board.getInstance().getFactionAt(new FLocation(e.getBlockPlaced().getLocation()));
+        Faction factionAt = Board.getInstance().getFactionAt(FLocation.wrap(e.getBlockPlaced().getLocation()));
         if (factionAt.isWilderness() || factionAt.getVault() == null) return;
         FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
         Block start = e.getBlockPlaced();
@@ -289,7 +289,7 @@ public class FactionsBlockListener implements Listener {
         if (!event.isSticky() || !Conf.pistonProtectionThroughDenyBuild) return;
 
         Location targetLoc = event.getRetractLocation();
-        Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(targetLoc));
+        Faction otherFaction = Board.getInstance().getFactionAt(FLocation.wrap(targetLoc));
 
         // Check if the piston is moving in a faction's territory. This disables pistons entirely in faction territory.
         if (otherFaction.isNormal() && FactionsPlugin.instance.getConfig().getBoolean("disable-pistons-in-territory", false)) {
@@ -299,7 +299,7 @@ public class FactionsBlockListener implements Listener {
 
         // if potentially retracted block is just air/water/lava, no worries
         if (targetLoc.getBlock().isEmpty() || targetLoc.getBlock().isLiquid()) return;
-        Faction pistonFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+        Faction pistonFaction = Board.getInstance().getFactionAt(FLocation.wrap(event.getBlock()));
         if (!canPistonMoveBlock(pistonFaction, targetLoc)) event.setCancelled(true);
     }
 
@@ -328,7 +328,7 @@ public class FactionsBlockListener implements Listener {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("Falling-Block-Fix.Enabled"))
             return;
 
-        Faction faction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+        Faction faction = Board.getInstance().getFactionAt(FLocation.wrap(event.getBlock()));
         if (faction.isWarZone() || faction.isSafeZone()) {
             event.getBlock().setType(Material.AIR);
             event.setCancelled(true);
@@ -336,7 +336,7 @@ public class FactionsBlockListener implements Listener {
     }
 
     private boolean canPistonMoveBlock(Faction pistonFaction, Location target) {
-        Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(target));
+        Faction otherFaction = Board.getInstance().getFactionAt(FLocation.wrap(target));
 
         if (pistonFaction == otherFaction) return true;
 
@@ -356,7 +356,7 @@ public class FactionsBlockListener implements Listener {
         try {
             Block block = event.getBlock();
 
-            Faction at = Board.getInstance().getFactionAt(new FLocation(block));
+            Faction at = Board.getInstance().getFactionAt(FLocation.wrap(block));
             boolean isSpawner = event.getBlock().getType().equals(XMaterial.matchXMaterial("MOB_SPAWNER").get().parseMaterial());
             if (!playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
                 event.setCancelled(true);
@@ -401,7 +401,7 @@ public class FactionsBlockListener implements Listener {
             Player player = (Player) event.getEntity();
             if (!playerCanBuildDestroyBlock(player, event.getBlock().getLocation(), "destroy", true)) {
                 FPlayer me = FPlayers.getInstance().getByPlayer(player);
-                Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(event.getBlock().getLocation()));
+                Faction otherFaction = Board.getInstance().getFactionAt(FLocation.wrap(event.getBlock().getLocation()));
                 me.msg(TL.ACTION_DENIED_OTHER, otherFaction.getTag(), "trample crops");
                 event.setCancelled(true);
             }

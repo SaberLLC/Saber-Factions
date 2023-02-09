@@ -16,7 +16,7 @@ public class SpawnerChunkListener implements Listener {
         if (e.getBlockPlaced().getType() == XMaterial.SPAWNER.parseMaterial()) {
             Location location = e.getBlockPlaced().getLocation();
             FastChunk fastChunk = new FastChunk(location.getWorld().getName(), location.getChunk().getX(), location.getChunk().getZ());
-            FLocation fLoc = new FLocation(location);
+            FLocation fLoc = FLocation.wrap(location);
             Faction fac = Board.getInstance().getFactionAt(fLoc);
             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
 

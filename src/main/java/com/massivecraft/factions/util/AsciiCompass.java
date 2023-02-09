@@ -1,69 +1,17 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 public class AsciiCompass {
-
-    public static Point getCompassPointForDirection(double inDegrees) {
-        double degrees = (inDegrees - 180) % 360;
-        if (degrees < 0) {
-            degrees += 360;
-        }
-
-        if (0 <= degrees && degrees < 22.5) {
-            return Point.N;
-        } else if (22.5 <= degrees && degrees < 67.5) {
-            return Point.NE;
-        } else if (67.5 <= degrees && degrees < 112.5) {
-            return Point.E;
-        } else if (112.5 <= degrees && degrees < 157.5) {
-            return Point.SE;
-        } else if (157.5 <= degrees && degrees < 202.5) {
-            return Point.S;
-        } else if (202.5 <= degrees && degrees < 247.5) {
-            return Point.SW;
-        } else if (247.5 <= degrees && degrees < 292.5) {
-            return Point.W;
-        } else if (292.5 <= degrees && degrees < 337.5) {
-            return Point.NW;
-        } else if (337.5 <= degrees && degrees < 360.0) {
-            return Point.N;
-        } else {
-            return null;
-        }
-    }
-
-    public static ArrayList<String> getAsciiCompass(Point point, ChatColor colorActive, String colorDefault) {
-        ArrayList<String> ret = new ArrayList<>();
-        String row;
-
-        row = "";
-        row += Point.NW.toString(Point.NW == point, colorActive, colorDefault);
-        row += Point.N.toString(Point.N == point, colorActive, colorDefault);
-        row += Point.NE.toString(Point.NE == point, colorActive, colorDefault);
-        ret.add(row);
-
-        row = "";
-        row += Point.W.toString(Point.W == point, colorActive, colorDefault);
-        row += colorDefault + "+";
-        row += Point.E.toString(Point.E == point, colorActive, colorDefault);
-        ret.add(row);
-
-        row = "";
-        row += Point.SW.toString(Point.SW == point, colorActive, colorDefault);
-        row += Point.S.toString(Point.S == point, colorActive, colorDefault);
-        row += Point.SE.toString(Point.SE == point, colorActive, colorDefault);
-        ret.add(row);
-
-        return ret;
-    }
-
-    public static ArrayList<String> getAsciiCompass(double inDegrees, ChatColor colorActive, String colorDefault) {
-        return getAsciiCompass(getCompassPointForDirection(inDegrees), colorActive, colorDefault);
-    }
 
     public enum Point {
 
@@ -76,35 +24,84 @@ public class AsciiCompass {
         W('W'),
         NW('\\');
 
-        public final char asciiChar;
+        private final char asciiChar;
 
-        Point(final char asciiChar) {
+        public static final Point[] VALUES = values();
+
+        Point(char asciiChar) {
             this.asciiChar = asciiChar;
+        }
+
+        public Point getOppositePoint() {
+            return VALUES[(ordinal() + 4) % 8];
         }
 
         @Override
         public String toString() {
-            return String.valueOf(this.asciiChar);
+            return Character.toString(this.asciiChar);
         }
 
         public String getTranslation() {
-            if (this == N) {
-                return TL.COMPASS_SHORT_NORTH.toString();
+            switch(this) {
+                case N:
+                    return TL.COMPASS_SHORT_NORTH.toString();
+                case E:
+                    return TL.COMPASS_SHORT_EAST.toString();
+                case S:
+                    return TL.COMPASS_SHORT_SOUTH.toString();
+                case W:
+                    return TL.COMPASS_SHORT_WEST.toString();
+                default:
+                    return toString();
             }
-            if (this == E) {
-                return TL.COMPASS_SHORT_EAST.toString();
-            }
-            if (this == S) {
-                return TL.COMPASS_SHORT_SOUTH.toString();
-            }
-            if (this == W) {
-                return TL.COMPASS_SHORT_WEST.toString();
-            }
-            return toString();
         }
 
-        public String toString(boolean isActive, ChatColor colorActive, String colorDefault) {
-            return (isActive ? colorActive : colorDefault) + getTranslation();
+        public String toString(boolean isActive, ChatColor ACTIVE_COLOR, String colorDefault) {
+            return (isActive ? ACTIVE_COLOR : colorDefault) + getTranslation();
         }
+
+        public static Point fromAngle(double degrees) {
+            return VALUES[FastMath.round((degrees + 180) % 360 / 45) % 8];
+        }
+    }
+
+    private static final ChatColor ACTIVE_COLOR = ChatColor.DARK_GREEN;
+    private static final String DEFAULT_COLOR = TextUtil.parse("<gray>");
+
+    private static final Map<Point, List<Component>> COMPASSES = new EnumMap<>(Point.class);
+
+    static {
+        for (Point point : Point.VALUES) {
+            List<Component> ret = new ArrayList<>(3);
+
+            StringBuilder builder = new StringBuilder(4);
+
+            builder.append(Point.NW.toString(Point.NW == point, ACTIVE_COLOR, DEFAULT_COLOR))
+                    .append(Point.N.toString(Point.N == point, ACTIVE_COLOR, DEFAULT_COLOR))
+                    .append(Point.NE.toString(Point.NE == point, ACTIVE_COLOR, DEFAULT_COLOR));
+            ret.add(TextUtil.parseFancy(builder.toString()).build());
+
+            builder.setLength(0);
+            builder.append(Point.W.toString(Point.W == point, ACTIVE_COLOR, DEFAULT_COLOR))
+                    .append(DEFAULT_COLOR).append("+")
+                    .append(Point.E.toString(Point.E == point, ACTIVE_COLOR, DEFAULT_COLOR));
+            ret.add(TextUtil.parseFancy(builder.toString()).build());
+
+            builder.setLength(0);
+            builder.append(Point.SW.toString(Point.SW == point, ACTIVE_COLOR, DEFAULT_COLOR))
+                    .append(Point.S.toString(Point.S == point, ACTIVE_COLOR, DEFAULT_COLOR))
+                    .append(Point.SE.toString(Point.SE == point, ACTIVE_COLOR, DEFAULT_COLOR));
+            ret.add(TextUtil.parseFancy(builder.toString()).build());
+
+            COMPASSES.put(point, ret);
+        }
+    }
+
+    private static List<Component> get(Point point) {
+        return point == null ? Collections.emptyList() : COMPASSES.get(point);
+    }
+
+    public static List<Component> getAsciiCompass(double degrees) {
+        return get(Point.fromAngle(degrees));
     }
 }

@@ -31,7 +31,7 @@ public class CmdCheckpoint extends FCommand {
         }
         if (context.args.size() == 1 && context.args.get(0).equalsIgnoreCase("set")) {
             if (context.fPlayer.getRole() == Role.LEADER) {
-                FLocation myLocation = new FLocation(context.player.getLocation());
+                FLocation myLocation = FLocation.wrap(context.player.getLocation());
                 Faction myLocFaction = Board.getInstance().getFactionAt(myLocation);
                 if (myLocFaction == Factions.getInstance().getWilderness() || myLocFaction == context.faction) {
                     context.faction.setCheckpoint(context.player.getLocation());
@@ -49,7 +49,7 @@ public class CmdCheckpoint extends FCommand {
                 context.msg(TL.GENERIC_FPERM_NOPERMISSION, action.getName());
                 return;
             } else {
-                FLocation myLocation = new FLocation(context.player.getLocation());
+                FLocation myLocation = FLocation.wrap(context.player.getLocation());
                 Faction myLocFaction = Board.getInstance().getFactionAt(myLocation);
                 if (myLocFaction == Factions.getInstance().getWilderness() || myLocFaction == context.faction) {
                     context.faction.setCheckpoint(context.player.getLocation());
@@ -65,7 +65,7 @@ public class CmdCheckpoint extends FCommand {
             context.msg(TL.COMMAND_CHECKPOINT_NOT_SET);
             return;
         }
-        FLocation checkLocation = new FLocation(context.faction.getCheckpoint());
+        FLocation checkLocation = FLocation.wrap(context.faction.getCheckpoint());
         Faction checkfaction = Board.getInstance().getFactionAt(checkLocation);
 
         if (checkfaction.getId().equals(Factions.getInstance().getWilderness().getId()) || checkfaction.getId().equals(context.faction.getId())) {

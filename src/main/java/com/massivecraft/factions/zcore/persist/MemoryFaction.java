@@ -735,7 +735,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void confirmValidHome() {
-        if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
+        if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(FLocation.wrap(this.home.getLocation())) == this)) {
             return;
         }
 
@@ -1050,11 +1050,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public int getPowerRounded() {
-        return (int) Math.round(this.getPower());
+        return FastMath.round(this.getPower());
     }
 
     public int getPowerMaxRounded() {
-        return (int) Math.round(this.getPowerMax());
+        return FastMath.round(this.getPowerMax());
     }
 
     public int getLandRounded() {

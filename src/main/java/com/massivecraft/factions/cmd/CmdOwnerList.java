@@ -36,7 +36,7 @@ public class CmdOwnerList extends FCommand {
             return;
         }
 
-        FLocation flocation = new FLocation(context.fPlayer);
+        FLocation flocation = FLocation.wrap(context.fPlayer);
 
         if (Board.getInstance().getFactionAt(flocation) != context.faction) {
             if (!hasBypass) {

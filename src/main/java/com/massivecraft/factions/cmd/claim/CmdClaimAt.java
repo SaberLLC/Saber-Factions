@@ -39,13 +39,13 @@ public class CmdClaimAt extends FCommand {
     public void perform(CommandContext context) {
         int x = context.argAsInt(1);
         int z = context.argAsInt(2);
-        FLocation location = new FLocation(context.argAsString(0), x, z);
+        FLocation location = FLocation.wrap(context.argAsString(0), x, z);
 
-        Faction at = Board.getInstance().getFactionAt(new FLocation(context.fPlayer.getPlayer().getLocation()));
+        Faction at = Board.getInstance().getFactionAt(location);
 
-        if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(context.fPlayer.getFaction(), context.player.getLocation(), true)) {
+        if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(context.fPlayer.getFaction(), location, true)) {
             context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_CLAIMED, context.fPlayer.describeTo(f, true), context.fPlayer.getFaction().describeTo(f), at.describeTo(f)));
-            FactionsPlugin.instance.logFactionEvent(context.fPlayer.getFaction(), FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (new FLocation(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
+            FactionsPlugin.instance.logFactionEvent(context.fPlayer.getFaction(), FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (FLocation.wrap(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
             showMap(context);
             return;
         }
@@ -55,7 +55,7 @@ public class CmdClaimAt extends FCommand {
     }
 
     public void showMap(CommandContext context) {
-        context.sendComponent(Board.getInstance().getMap(context.fPlayer, new FLocation(context.fPlayer), context.player.getLocation().getYaw()));
+        context.sendComponent(Board.getInstance().getMap(context.fPlayer, FLocation.wrap(context.fPlayer), context.player.getLocation().getYaw()));
     }
 
 

@@ -8,16 +8,14 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagReplacer;
-import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -209,115 +207,152 @@ public abstract class MemoryBoard extends Board {
         return ret;
     }
 
-    /**
-     * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
-     * of decreasing z
-     */
     @Override
-    public ArrayList<Component> getMap(FPlayer fplayer, FLocation flocation, double inDegrees) {
-        Faction faction = fplayer.getFaction();
-        String worldName = fplayer.getPlayer().getWorld().getName();
+    public List<Component> getMap(FPlayer fPlayer, FLocation flocation, double inDegrees) {
+        List<Component> lines = new ArrayList<>(18);
+        lines.add(Component.text(TextUtil.titleize(ChatColor.DARK_GRAY + TextUtil.titleize("(" + flocation.getCoordString() + ") " + getFactionAt(flocation).getTag(fPlayer)))));
 
-        ArrayList<Component> ret = new ArrayList<>();
-        Faction factionLoc = getFactionAt(flocation);
-        ret.add(Component.text(TextUtil.titleize(ChatColor.DARK_GRAY + FactionsPlugin.getInstance().txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer)))));
-        int buffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0);
+        int worldBorderBuffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0);
 
+        int height = Math.max(3, Math.min(fPlayer.getMapHeight(), Conf.mapHeight));
+        int length = Math.max(3, Conf.mapWidth);
 
-        // Get the compass
-        List<String> asciiCompass = AsciiCompass.getAsciiCompass(inDegrees, ChatColor.DARK_GREEN, FactionsPlugin.getInstance().txt.parse("<gray>"));
+        FLocation startingOffset = FLocation.wrap(flocation.getWorldName(), length / 2, height / 2);
 
-        //Still use the player defined mapHeight, but if a server owner decides /f map command needs a nerf,
-        //Use the smaller config value to allow for mapHeight updating without rewriting the entire players.json file
-        int mapHeight = fplayer.getMapHeight();
-        if (mapHeight > Conf.mapHeight) mapHeight = Conf.mapHeight;
-
-        int halfWidth = Conf.mapWidth / 2;
-        int halfHeight = mapHeight / 2;
-        FLocation topLeft = flocation.getRelative(-halfWidth, -halfHeight);
-        int width = halfWidth * 2 + 1;
-        int height = halfHeight * 2 + 1;
+        Map<String, Character> territories = new HashMap<>(Conf.mapWidth * fPlayer.getMapHeight());
+        int charIdx = 0;
 
         if (Conf.showMapFactionKey) {
             height--;
         }
 
-        Map<String, Character> fList = new HashMap<>();
-        int chrIdx = 0;
+        List<Component> compass = AsciiCompass.getAsciiCompass(inDegrees);
 
-        // For each row
-        for (int dz = 0; dz < height; dz++) {
-            // Draw and add that row
-
-            TextComponent.Builder row = TextUtil.parseFancy("");
-
-            if (dz < 3) {
-                row.append(Component.text(asciiCompass.get(dz)));
-            }
-            for (int dx = (dz < 3 ? 6 : 3); dx < width; dx++) {
-                if (dx == halfWidth && dz == halfHeight) {
-                    row.append(Component.text("+").color(TextUtil.kyoriColor(ChatColor.AQUA)).hoverEvent(HoverEvent.showText(TL.CLAIM_YOUAREHERE.toComponent())));
-                } else {
-                    FLocation flocationHere = topLeft.getRelativeWorldName(worldName, dx, dz);
-                    Faction factionHere = getFactionAt(flocationHere);
-                    Relation relation = fplayer.getRelationTo(factionHere);
-                    if (flocationHere.isOutsideWorldBorder(buffer)) {
-                        row.append(Component.text("-").color(TextUtil.kyoriColor(ChatColor.BLACK)).hoverEvent(HoverEvent.showText(TL.CLAIM_MAP_OUTSIDEBORDER.toComponent())));
-                    } else if (factionHere.isWilderness()) {
-                        row.append(Component.text("-").color(TextUtil.kyoriColor(Conf.colorWilderness)));
-                        // Lol someone didnt add the x and z making it claim the wrong position Can i copyright this xD
-                        if (fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
-                            if (Conf.enableClickToClaim) {
-                                row.hoverEvent(TL.CLAIM_CLICK_TO_CLAIM.toFormattedComponent(dx + topLeft.getX(), dz + topLeft.getZ()))
-                                                .clickEvent(ClickEvent.runCommand(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx + topLeft.getX(), dz + topLeft.getZ())));
-                            }
-                        }
-                    } else if (factionHere.isSafeZone()) {
-                        row.append(Component.text("+")).color(TextUtil.kyoriColor(Conf.colorSafezone)).hoverEvent(HoverEvent.showText(Component.text(oneLineToolTip(factionHere, fplayer).get(0))));
-                    } else if (factionHere.isWarZone()) {
-                        row.append(Component.text("+")).color(TextUtil.kyoriColor(Conf.colorWar)).hoverEvent(HoverEvent.showText(Component.text(oneLineToolTip(factionHere, fplayer).get(0))));
-                    } else if (factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
-                            (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
-                            (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY)) ||
-                            (Conf.showTrucesFactionsOnMap && relation.equals(Relation.TRUCE))) {
-                        if (!fList.containsKey(factionHere.getTag())) {
-                            fList.put(factionHere.getTag(), Conf.mapKeyChrs[Math.min(chrIdx++, Conf.mapKeyChrs.length - 1)]);
-                        }
-                        char tag = fList.get(factionHere.getTag());
-
-                        //row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));
-                        //changed out with a performance friendly one line tooltip :D
-                        if (factionHere.getSpawnerChunks().contains(flocationHere.toFastChunk()) && Conf.userSpawnerChunkSystem) {
-                            row.append(Component.text(Character.toString(tag)).color(TextUtil.kyoriColor(Conf.spawnerChunkColor)).hoverEvent(HoverEvent.showText(Component.text(oneLineToolTip(factionHere, fplayer).get(0) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString))));
-                        } else {
-                            row.append(Component.text(Character.toString(tag)).color(TextUtil.kyoriColor(factionHere.getColorTo(faction))).hoverEvent(HoverEvent.showText(Component.text(oneLineToolTip(factionHere, fplayer).get(0)))));
-                        }
-                    } else {
-                        row.append(Component.text("-").color(TextUtil.kyoriColor(ChatColor.GRAY)));
-                    }
+        for (int y = 0; y < height; y++) {
+            TextComponent.Builder row = Component.text();
+            for (int x = y < 3 ? 2 : 0; x < length; x++) {
+                if (y < 3 && x == 2) {
+                    row.append(compass.get(y));
+                    continue;
                 }
-            }
-            ret.add(row.build());
-        }
 
-        // Add the faction key
-        if (Conf.showMapFactionKey) {
-            Component fRow = Component.text("");
-            for (String key : fList.keySet()) {
-                fRow.append(Component.text(String.format("%s: %s ", fList.get(key), key)).color(TextUtil.kyoriColor(ChatColor.GRAY)));
-            }
-            ret.add(fRow);
-        }
+                FLocation found = FLocation.wrap(flocation.getWorldName(), ((flocation.getX() + x) - (startingOffset.getX())), ((flocation.getZ() + y) - (startingOffset.getZ())));
 
-        return ret;
+                if (found.equals(flocation)) {
+                    row.append(
+                            Component.text("+")
+                                    .color(TextUtil.kyoriColor(ChatColor.AQUA))
+                                    .hoverEvent(
+                                            HoverEvent.showText(TL.CLAIM_YOUAREHERE.toComponent())
+                                    )
+                    );
+                    continue;
+                }
+                Faction factionFound = this.getFactionAt(found);
+                if (found.isOutsideWorldBorder(worldBorderBuffer)) {
+                    row.append(
+                            Component.text("-")
+                                    .color(TextUtil.kyoriColor(ChatColor.BLACK))
+                                    .hoverEvent(
+                                            HoverEvent.showText(TL.CLAIM_MAP_OUTSIDEBORDER.toComponent()))
+                    );
+                    continue;
+                }
+                if (factionFound.isWilderness()) {
+                    TextComponent.Builder land = Component.text()
+                            .content("-")
+                            .color(TextUtil.kyoriColor(Conf.colorWilderness));
+
+                    if (Conf.enableClickToClaim && fPlayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
+                        land.hoverEvent(TL.CLAIM_CLICK_TO_CLAIM.toFormattedComponent(found.getX(), found.getZ()))
+                                .clickEvent(ClickEvent.runCommand(String.format("/f claimat %s %d %d", flocation.getWorldName(), found.getX(), found.getZ())));
+                    } else {
+                        land.hoverEvent(HoverEvent.showText(TL.WILDERNESS.toComponent()));
+                    }
+
+                    row.append(land.build());
+                    continue;
+                }
+                if (factionFound.isSafeZone()) {
+                    row.append(
+                            Component.text("+")
+                                    .color(TextUtil.kyoriColor(Conf.colorSafezone))
+                                    .hoverEvent(
+                                            HoverEvent.showText(TL.SAFEZONE.toComponent())
+                                    )
+                    );
+                    continue;
+                }
+                if (factionFound.isWarZone()) {
+                    row.append(
+                            Component.text("+")
+                                    .color(TextUtil.kyoriColor(Conf.colorWar))
+                                    .hoverEvent(
+                                            HoverEvent.showText(TL.WARZONE.toComponent())
+                                    )
+                    );
+                    continue;
+                }
+                Relation relation = fPlayer.getRelationTo(factionFound);
+                if (fPlayer.getFactionId().equals(factionFound.getId()) || relation.isAtLeast(Relation.ALLY) || (Conf.showNeutralFactionsOnMap && relation == Relation.NEUTRAL) || (Conf.showEnemyFactionsOnMap && relation == Relation.ENEMY) || (Conf.showTrucesFactionsOnMap && relation == Relation.TRUCE)) {
+                    int incremented = charIdx++;
+                    char assigned = territories.computeIfAbsent(factionFound.getTag(), c -> Conf.mapKeyChrs[(incremented) % Conf.mapKeyChrs.length]);
+
+                    if (Conf.userSpawnerChunkSystem && factionFound.getSpawnerChunks().contains(found.toFastChunk())) {
+                        row.append(
+                                Component.text(assigned)
+                                        .color(TextUtil.kyoriColor(Conf.spawnerChunkColor))
+                                        .hoverEvent(
+                                                HoverEvent.showText(Component.text(toolTip(factionFound, fPlayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString)))
+                                        .clickEvent(
+                                                ClickEvent.runCommand("/f show " + factionFound.getTag())
+                                        )
+
+                        );
+                    } else {
+                        row.append(
+                                Component.text(assigned)
+                                        .color(TextUtil.kyoriColor(factionFound.getColorTo(fPlayer.getFaction())))
+                                        .hoverEvent(
+                                                HoverEvent.showText(Component.text(toolTip(factionFound, fPlayer))))
+                                        .clickEvent(
+                                                ClickEvent.runCommand("/f show " + factionFound.getTag())
+                                        )
+                        );
+                    }
+                    continue;
+                }
+                row.append(
+                        Component.text("-")
+                                .color(TextUtil.kyoriColor(ChatColor.GRAY))
+                                .hoverEvent(
+                                        HoverEvent.showText(Component.text(factionFound.getTag()).color(TextUtil.kyoriColor(ChatColor.GRAY))))
+                                .clickEvent(
+                                        ClickEvent.runCommand("/f show " + factionFound.getTag())
+                                )
+                );
+            }
+            lines.add(row.build());
+        }
+        if (Conf.showMapFactionKey && !territories.isEmpty()) {
+            TextComponent.Builder territory = Component.text();
+            for (Entry<String, Character> entry : territories.entrySet()) {
+                territory.append(
+                        Component.text(entry.getValue() + ": " + entry.getKey() + " ")
+                                .color(TextUtil.kyoriColor(fPlayer.getRelationTo(Factions.getInstance().getByTag(entry.getKey())).getColor()))
+                );
+            }
+            lines.add(territory.build());
+        }
+        return lines;
     }
 
     //----------------------------------------------//
     // Map generation
     //----------------------------------------------//
 
-    private List<String> oneLineToolTip(Faction faction, FPlayer to) {
-        return Collections.singletonList(faction.describeTo(to));
+    private String toolTip(Faction faction, FPlayer to) {
+        return faction.describeTo(to);
     }
 
     @Deprecated

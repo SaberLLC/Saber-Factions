@@ -48,7 +48,7 @@ public class CmdUnclaimfill extends FCommand {
 
         final Faction forFaction = context.argAsFaction(1, context.faction);
         Location location = context.player.getLocation();
-        FLocation loc = new FLocation(location);
+        FLocation loc = FLocation.wrap(location);
         final boolean bypass = context.fPlayer.isAdminBypassing();
 
         Faction currentFaction = Board.getInstance().getFactionAt(loc);

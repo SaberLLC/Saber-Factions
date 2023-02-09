@@ -6106,7 +6106,7 @@ var rboxStyle = new RegExp( cssExpand.join( "|" ), "i" );
 	}
 
 	function roundPixelMeasures( measure ) {
-		return Math.round( parseFloat( measure ) );
+		return FastMath.round( parseFloat( measure ) );
 	}
 
 	var pixelPositionVal, boxSizingReliableVal, scrollboxSizeVal, pixelBoxStylesVal,

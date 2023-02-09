@@ -41,7 +41,7 @@ public class MapFLocToStringSetTypeAdapter implements JsonDeserializer<Map<FLoca
                     iter = entry2.getValue().getAsJsonArray().iterator();
                     while (iter.hasNext()) nameSet.add(iter.next().getAsString());
 
-                    locationMap.put(new FLocation(worldName, x, z), nameSet);
+                    locationMap.put(FLocation.wrap(worldName, x, z), nameSet);
                 }
             }
 

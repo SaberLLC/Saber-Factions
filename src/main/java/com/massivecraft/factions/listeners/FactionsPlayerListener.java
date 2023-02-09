@@ -64,10 +64,10 @@ public class FactionsPlayerListener implements Listener {
             WorldBorder border = world.getWorldBorder();
             if (border != null) {
                 int cornerCoord = (int) ((border.getSize() - 1.0) / 2.0);
-                FactionsPlayerListener.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(cornerCoord)));
-                FactionsPlayerListener.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(cornerCoord), FLocation.blockToChunk(-cornerCoord)));
-                FactionsPlayerListener.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(cornerCoord)));
-                FactionsPlayerListener.corners.add(new FLocation(world.getName(), FLocation.blockToChunk(-cornerCoord), FLocation.blockToChunk(-cornerCoord)));
+                FactionsPlayerListener.corners.add(FLocation.wrap(world.getName(), WorldUtil.blockToChunk(cornerCoord), WorldUtil.blockToChunk(cornerCoord)));
+                FactionsPlayerListener.corners.add(FLocation.wrap(world.getName(), WorldUtil.blockToChunk(cornerCoord), WorldUtil.blockToChunk(-cornerCoord)));
+                FactionsPlayerListener.corners.add(FLocation.wrap(world.getName(), WorldUtil.blockToChunk(-cornerCoord), WorldUtil.blockToChunk(cornerCoord)));
+                FactionsPlayerListener.corners.add(FLocation.wrap(world.getName(), WorldUtil.blockToChunk(-cornerCoord), WorldUtil.blockToChunk(-cornerCoord)));
             }
         }
     }
@@ -89,7 +89,7 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        FLocation loc = new FLocation(location);
+        FLocation loc = FLocation.wrap(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
@@ -173,7 +173,7 @@ public class FactionsPlayerListener implements Listener {
         Material material = block.getType();
 
         // Dupe fix.
-        FLocation loc = new FLocation(block);
+        FLocation loc = FLocation.wrap(block);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
         Faction myFaction = me.getFaction();
 
@@ -247,7 +247,7 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        Faction at = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
+        Faction at = Board.getInstance().getFactionAt(FLocation.wrap(player.getLocation()));
         if (at.isWilderness() && !Conf.wildernessDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.wildernessDenyCommands.iterator())) {
             me.msg(TL.PLAYER_COMMAND_WILDERNESS, fullCmd);
             return true;
@@ -378,7 +378,7 @@ public class FactionsPlayerListener implements Listener {
         me.setLastLoginTime(System.currentTimeMillis());
 
         // Store player's current FLocation and notify them where they are
-        me.setLastStoodAt(new FLocation(player.getLocation()));
+        me.setLastStoodAt(FLocation.wrap(player.getLocation()));
 
         me.login(); // set kills / deaths
 
@@ -467,7 +467,7 @@ public class FactionsPlayerListener implements Listener {
 
             // Did we change coord?
         FLocation from = me.getLastStoodAt();
-        FLocation to = new FLocation(event.getTo());
+        FLocation to = FLocation.wrap(event.getTo());
 
         if (from.equals(to)) {
             return;
@@ -479,7 +479,7 @@ public class FactionsPlayerListener implements Listener {
             if (me.getAutoClaimFor() != null) {
                 me.attemptClaim(me.getAutoClaimFor(), event.getTo(), true);
             } else if (me.getAutoUnclaimFor() != null) {
-                me.attemptUnclaim(me.getAutoUnclaimFor(), new FLocation(event.getTo()), true);
+                me.attemptUnclaim(me.getAutoUnclaimFor(), FLocation.wrap(event.getTo()), true);
             }
         }
 
@@ -720,7 +720,7 @@ public class FactionsPlayerListener implements Listener {
     public void onTeleportChange(PlayerTeleportEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
 
-        FLocation to = new FLocation(Objects.requireNonNull(event.getTo()));
+        FLocation to = FLocation.wrap(Objects.requireNonNull(event.getTo()));
         me.setLastStoodAt(to);
 
         // Check the location they're teleporting to and check if they can fly there.

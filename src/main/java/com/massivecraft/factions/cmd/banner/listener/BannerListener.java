@@ -109,7 +109,7 @@ public class BannerListener implements Listener {
                 }
 
                 Location placedLoc = e.getBlockPlaced().getLocation();
-                FLocation fplacedLoc = new FLocation(placedLoc);
+                FLocation fplacedLoc = FLocation.wrap(placedLoc);
                 if (Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Placeable.Warzone") || fPlayer.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY && FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Placeable.Enemy")) {
 
                     Location playerLoc = e.getPlayer().getLocation();

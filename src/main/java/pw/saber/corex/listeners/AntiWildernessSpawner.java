@@ -11,7 +11,7 @@ public class AntiWildernessSpawner implements Listener {
 
     @EventHandler
     public void onSpawner(SpawnerSpawnEvent e) {
-        FLocation floc = new FLocation(e.getSpawner().getLocation());
+        FLocation floc = FLocation.wrap(e.getSpawner().getLocation());
 
         if (floc == null) {
             return;

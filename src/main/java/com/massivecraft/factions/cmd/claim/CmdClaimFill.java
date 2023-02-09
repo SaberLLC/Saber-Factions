@@ -48,7 +48,7 @@ public class CmdClaimFill extends FCommand {
 
         final Faction forFaction = context.argAsFaction(2, context.faction);
         Location location = context.player.getLocation();
-        FLocation loc = new FLocation(location);
+        FLocation loc = FLocation.wrap(location);
 
         Faction currentFaction = Board.getInstance().getFactionAt(loc);
 
