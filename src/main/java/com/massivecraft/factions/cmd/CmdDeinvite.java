@@ -7,7 +7,10 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
+import com.massivecraft.factions.zcore.util.TextUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.ChatColor;
 
 public class CmdDeinvite extends FCommand {
@@ -35,13 +38,13 @@ public class CmdDeinvite extends FCommand {
 
             FPlayer you = context.argAsBestFPlayerMatch(0);
             if (you == null) {
-                FancyMessage msg = new FancyMessage(TL.COMMAND_DEINVITE_CANDEINVITE.toString()).color(ChatColor.GOLD);
+                Component msg = TL.COMMAND_DEINVITE_CANDEINVITE.toComponent().color(TextUtil.kyoriColor(ChatColor.GOLD));
                 for (String id : context.faction.getInvites()) {
                     FPlayer fp = FPlayers.getInstance().getById(id);
                     String name = fp != null ? fp.getName() : id;
-                    msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_DEINVITE_CLICKTODEINVITE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
+                    msg.append(Component.text(name + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_DEINVITE_CLICKTODEINVITE.toFormattedComponent(name)).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name)));
                 }
-                context.sendFancyMessage(msg);
+                context.sendComponent(msg);
                 return;
             }
 

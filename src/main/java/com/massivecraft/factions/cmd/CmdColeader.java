@@ -8,7 +8,9 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
+import com.massivecraft.factions.zcore.util.TextUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.ChatColor;
 
 public class CmdColeader extends FCommand {
@@ -33,17 +35,17 @@ public class CmdColeader extends FCommand {
     public void perform(CommandContext context) {
         FPlayer you = context.argAsBestFPlayerMatch(0);
         if (you == null) {
-            FancyMessage msg = new FancyMessage(TL.COMMAND_COLEADER_CANDIDATES.toString()).color(ChatColor.GOLD);
+            Component msg = TL.COMMAND_COLEADER_CANDIDATES.toComponent().color(TextUtil.kyoriColor(ChatColor.GOLD));
             for (FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
                 String s = player.getName();
-                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + Conf.baseCommandAliases.get(0) + " coleader " + s);
+                msg.append(Component.text(s + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_MOD_CLICKTOPROMOTE.toComponent().append(Component.text(s))).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " coleader " + s)));
             }
             for (FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
                 String s = player.getName();
-                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + Conf.baseCommandAliases.get(0) + " coleader " + s);
+                msg.append(Component.text(s + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_MOD_CLICKTOPROMOTE.toComponent().append(Component.text(s))).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " coleader " + s)));
             }
 
-            context.sendFancyMessage(msg);
+            context.sendComponent(msg);
             return;
         }
 

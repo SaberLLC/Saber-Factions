@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.util;
 
 
+import com.google.gson.Gson;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
@@ -8,7 +9,10 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
-import mkremins.fanciful.FancyMessage;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -18,6 +22,8 @@ import java.util.List;
 import static com.massivecraft.factions.zcore.util.TagReplacer.TagType;
 
 public class TagUtil {
+
+    public static final Gson SERIALIZER = GsonComponentSerializer.colorDownsamplingGson().serializer();
 
     private static final int ARBITRARY_LIMIT = 25000;
 
@@ -87,7 +93,7 @@ public class TagUtil {
      * @param line    fancy message prefix
      * @return list of fancy msgs
      */
-    public static List<FancyMessage> parseFancy(Faction faction, FPlayer fme, String line) {
+    public static List<Component> parseFancy(Faction faction, FPlayer fme, String line) {
         for (TagReplacer tagReplacer : TagReplacer.getByType(TagType.FANCY)) {
             if (tagReplacer.contains(line)) {
                 String clean = line.replace(tagReplacer.getTag(), ""); // remove tag
@@ -131,13 +137,13 @@ public class TagUtil {
      * @param prefix First part of the fancy message
      * @return list of fancy messages to send
      */
-    protected static List<FancyMessage> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
-        List<FancyMessage> fancyMessages = new ArrayList<>();
+    protected static List<Component> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
+        List<Component> Components = new ArrayList<>();
         boolean minimal = FactionsPlugin.getInstance().getConfig().getBoolean("minimal-show", false);
 
         switch (type) {
             case ALLIES_LIST:
-                FancyMessage currentAllies = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+                TextComponent.Builder currentAllies = TextUtil.parseFancy(prefix);
                 boolean firstAlly = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
@@ -145,19 +151,19 @@ public class TagUtil {
                     }
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isAlly()) {
-                        currentAllies.then(firstAlly ? s : ", " + s);
-                        currentAllies.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor());
+                        currentAllies.append(Component.text(firstAlly ? s : ", " + s));
+                        currentAllies.hoverEvent(HoverEvent.showText(Component.text(tipFactionSingular(otherFaction)).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor()))));
                         firstAlly = false;
-                        if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
-                            fancyMessages.add(currentAllies);
-                            currentAllies = new FancyMessage("");
+                        if (SERIALIZER.toJson(currentAllies.build()).length() > ARBITRARY_LIMIT) {
+                            Components.add(currentAllies.build());
+                            currentAllies = TextUtil.toFancy("");
                         }
                     }
                 }
-                fancyMessages.add(currentAllies);
-                return firstAlly && minimal ? null : fancyMessages; // we must return here and not outside the switch
+                Components.add(currentAllies.build());
+                return firstAlly && minimal ? null : Components; // we must return here and not outside the switch
             case ENEMIES_LIST:
-                FancyMessage currentEnemies = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+                TextComponent.Builder currentEnemies = TextUtil.parseFancy(prefix);
                 boolean firstEnemy = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
@@ -165,19 +171,19 @@ public class TagUtil {
                     }
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isEnemy()) {
-                        currentEnemies.then(firstEnemy ? s : ", " + s);
-                        currentEnemies.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor());
+                        currentEnemies.append(Component.text(firstEnemy ? s : ", " + s));
+                        currentEnemies.hoverEvent(HoverEvent.showText(Component.text(tipFactionSingular(otherFaction)).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor()))));
                         firstEnemy = false;
-                        if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
-                            fancyMessages.add(currentEnemies);
-                            currentEnemies = new FancyMessage("");
+                        if (SERIALIZER.toJson(currentEnemies.build()).length() > ARBITRARY_LIMIT) {
+                            Components.add(currentEnemies.build());
+                            currentEnemies = TextUtil.toFancy("");
                         }
                     }
                 }
-                fancyMessages.add(currentEnemies);
-                return firstEnemy && minimal ? null : fancyMessages; // we must return here and not outside the switch
+                Components.add(currentEnemies.build());
+                return firstEnemy && minimal ? null : Components; // we must return here and not outside the switch
             case TRUCES_LIST:
-                FancyMessage currentTruces = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+                TextComponent.Builder currentTruces = TextUtil.parseFancy(prefix);
                 boolean firstTruce = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
@@ -185,55 +191,55 @@ public class TagUtil {
                     }
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isTruce()) {
-                        currentTruces.then(firstTruce ? s : ", " + s);
-                        currentTruces.tooltip(tipFaction(otherFaction)).color(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor());
+                        currentTruces.append(Component.text(firstTruce ? s : ", " + s));
+                        currentTruces.hoverEvent(HoverEvent.showText(Component.text(tipFactionSingular(otherFaction)).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor()))));
                         firstTruce = false;
-                        if (currentTruces.toJSONString().length() > ARBITRARY_LIMIT) {
-                            fancyMessages.add(currentTruces);
-                            currentTruces = new FancyMessage("");
+                        if (SERIALIZER.toJson(currentTruces.build()).length() > ARBITRARY_LIMIT) {
+                            Components.add(currentTruces.build());
+                            currentTruces = TextUtil.toFancy("");
                         }
                     }
                 }
-                fancyMessages.add(currentTruces);
-                return firstTruce && minimal ? null : fancyMessages; // we must return here and not outside the switch
+                Components.add(currentTruces.build());
+                return firstTruce && minimal ? null : Components; // we must return here and not outside the switch
             case ONLINE_LIST:
-                FancyMessage currentOnline = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+                TextComponent.Builder currentOnline = TextUtil.parseFancy(prefix);
                 boolean firstOnline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
                     if (fme != null && fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
                         continue; // skip
                     }
                     String name = p.getNameAndTitle();
-                    currentOnline.then(firstOnline ? name : ", " + name);
-                    currentOnline.tooltip(tipPlayer(p)).color(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor());
+                    currentOnline.append(Component.text(firstOnline ? name : ", " + name));
+                    currentOnline.hoverEvent(Component.text(tipPlayerSingular(p))).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor()));
                     firstOnline = false;
-                    if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
-                        fancyMessages.add(currentOnline);
-                        currentOnline = new FancyMessage("");
+                    if (SERIALIZER.toJson(currentOnline.build()).length() > ARBITRARY_LIMIT) {
+                        Components.add(currentOnline.build());
+                        currentOnline = TextUtil.toFancy("");
                     }
                 }
-                fancyMessages.add(currentOnline);
-                return firstOnline && minimal ? null : fancyMessages; // we must return here and not outside the switch
+                Components.add(currentOnline.build());
+                return firstOnline && minimal ? null : Components; // we must return here and not outside the switch
             case OFFLINE_LIST:
-                FancyMessage currentOffline = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+                TextComponent.Builder currentOffline = TextUtil.parseFancy(prefix);
                 boolean firstOffline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
                     String name = p.getNameAndTitle();
                     // Also make sure to add players that are online BUT can't be seen.
                     if (!p.isOnline() || (fme != null && fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer()))) {
-                        currentOffline.then(firstOffline ? name : ", " + name);
-                        currentOffline.tooltip(tipPlayer(p)).color(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor());
+                        currentOffline.append(Component.text(firstOffline ? name : ", " + name));
+                        currentOffline.hoverEvent(Component.text(tipPlayerSingular(p))).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor()));
                         firstOffline = false;
-                        if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
-                            fancyMessages.add(currentOffline);
-                            currentOffline = new FancyMessage("");
+                        if (SERIALIZER.toJson(currentOffline.build()).length() > ARBITRARY_LIMIT) {
+                            Components.add(currentOffline.build());
+                            currentOffline = TextUtil.toFancy("");
                         }
                     }
                 }
-                fancyMessages.add(currentOffline);
-                return firstOffline && minimal ? null : fancyMessages; // we must return here and not outside the switch
+                Components.add(currentOffline.build());
+                return firstOffline && minimal ? null : Components; // we must return here and not outside the switch
             case ALTS:
-                FancyMessage alts = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+                TextComponent.Builder alts = TextUtil.parseFancy(prefix);
                 boolean firstAlt = true;
                 for (FPlayer p : target.getAltPlayers()) {
                     String name = p.getName();
@@ -245,15 +251,15 @@ public class TagUtil {
                         color = ChatColor.RED;
                     }
 
-                    alts.then(firstAlt ? name : ", " + name);
-                    alts.tooltip(tipPlayer(p)).color(color);
+                    alts.append(Component.text(firstAlt ? name : ", " + name));
+                    alts.hoverEvent(HoverEvent.showText(Component.text(tipPlayerSingular(p)).color(TextUtil.kyoriColor(color))));
                     firstAlt = false;
-                    if (alts.toJSONString().length() > ARBITRARY_LIMIT) {
-                        fancyMessages.add(alts);
+                    if (SERIALIZER.toJson(alts.build()).length() > ARBITRARY_LIMIT) {
+                        Components.add(alts.build());
                     }
                 }
-                fancyMessages.add(alts);
-                return firstAlt && minimal ? null : fancyMessages;
+                Components.add(alts.build());
+                return firstAlt && minimal ? null : Components;
             default:
                 break;
         }
@@ -274,6 +280,14 @@ public class TagUtil {
         return lines;
     }
 
+    private static String tipFactionSingular(Faction faction) {
+        List<String> lines = new ArrayList<>();
+        for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
+            lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(faction, line)));
+        }
+        return String.join("\n", lines);
+    }
+
     /**
      * Parses tooltip variables from config <br> Supports variables for players and factions (types 1 and 2)
      *
@@ -286,5 +300,13 @@ public class TagUtil {
             lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(fplayer, line)));
         }
         return lines;
+    }
+
+    private static String tipPlayerSingular(FPlayer fplayer) {
+        List<String> lines = new ArrayList<>();
+        for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
+            lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(fplayer, line)));
+        }
+        return String.join("\n", lines);
     }
 }
