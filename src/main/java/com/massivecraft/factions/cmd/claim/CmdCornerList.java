@@ -11,8 +11,7 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -48,15 +47,15 @@ public class CmdCornerList extends FCommand {
     }
 
     public void handleCornerList(FPlayer fme, World world) {
-        ArrayList<Component> ret = new ArrayList<>();
-        ret.add(Component.text(TextUtil.titleize(TL.COMMAND_CORNERLIST_TITLE.toString().replace("{world}", world.getName()))));
+        ArrayList<FancyMessage> ret = new ArrayList<>();
+        ret.add(new FancyMessage(FactionsPlugin.getInstance().txt.titleize(TL.COMMAND_CORNERLIST_TITLE.toString().replace("{world}", world.getName()))));
 
         for(FLocation fLocation : FactionsPlugin.getInstance().getFactionsPlayerListener().getCorners()) {
             if(fLocation.getWorld() == world) {
-                ret.add(Component.text(CC.translate("&2Faction At &e" + fLocation.getX() + ", &e" + fLocation.getZ() + ": &r" + Board.getInstance().getFactionAt(fLocation).getTag())));
+                ret.add(new FancyMessage(CC.translate("&2Faction At &e" + fLocation.getX() + ", &e" + fLocation.getZ() + ": &r" + Board.getInstance().getFactionAt(fLocation).getTag())));
             }
         }
-        fme.sendComponent(ret);
+        fme.sendFancyMessage(ret);
     }
 
     @Override

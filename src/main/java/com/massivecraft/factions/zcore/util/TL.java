@@ -16,8 +16,6 @@
  */
 package com.massivecraft.factions.zcore.util;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -1454,14 +1452,6 @@ public enum TL {
     public static void setFile(YamlConfiguration config) {
         LANG = config;
         sdf = new SimpleDateFormat(DATE_FORMAT.toString());
-    }
-
-    public Component toComponent() {
-        return TextUtil.parseFancy(toString()).build();
-    }
-
-    public TextComponent toFormattedComponent(Object... args) {
-        return TextUtil.parseFancy(format(args)).build();
     }
 
     @Override

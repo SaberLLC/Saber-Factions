@@ -8,11 +8,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
+import mkremins.fanciful.FancyMessage;
 
 public class CmdInvite extends FCommand {
 
@@ -64,10 +60,13 @@ public class CmdInvite extends FCommand {
         // Send the invitation to the target player when online, otherwise just ignore
         if (target.isOnline()) {
             // Tooltips, colors, and commands only apply to the string immediately before it.
-            Component message = TL.COMMAND_INVITE_INVITEDYOU.toFormattedComponent(context.fPlayer.describeTo(target, true), context.faction.getTag())
-                    .hoverEvent(HoverEvent.showText(TL.COMMAND_INVITE_CLICKTOJOIN.toComponent()))
-                    .clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag()));
-            TextUtil.AUDIENCES.player(target.getPlayer()).sendMessage(message);
+            FancyMessage message = new FancyMessage(TL.COMMAND_INVITE_INVITEDYOU.toString()
+                    .replace("%1$s", context.fPlayer.describeTo(target, true))
+                    .replace("%2$s", context.faction.getTag())
+                    .replaceAll("&", "§"))
+                    .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
+                    .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag());
+            message.send(target.getPlayer());
         }
         context.faction.msg(TL.COMMAND_INVITE_INVITED, context.fPlayer.describeTo(context.faction, true), target.describeTo(context.faction));
         FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.INVITES, context.fPlayer.getName(), CC.Green + "invited", target.getName());

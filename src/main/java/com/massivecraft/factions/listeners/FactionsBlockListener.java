@@ -1,11 +1,6 @@
 package com.massivecraft.factions.listeners;
 
 import cc.javajobs.wgbridge.WorldGuardBridge;
-import cc.javajobs.wgbridge.infrastructure.WGBridgeAPI;
-import cc.javajobs.wgbridge.infrastructure.struct.WGFlag;
-import cc.javajobs.wgbridge.infrastructure.struct.WGRegion;
-import cc.javajobs.wgbridge.infrastructure.struct.WGRegionSet;
-import cc.javajobs.wgbridge.infrastructure.struct.WGState;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
@@ -36,24 +31,6 @@ public class FactionsBlockListener implements Listener {
 
     private long placeTimer = TimeUnit.SECONDS.toMillis(15L);
 
-    public static boolean canBuildWG(Location location) {
-        WorldGuardBridge worldGuardBridge = WorldGuardBridge.getInstance();
-        if (worldGuardBridge == null || worldGuardBridge.getAPI() == null) {
-            return true;
-        }
-        WGRegionSet regions = worldGuardBridge.getAPI().getRegions(location);
-        if (regions == null) {
-            return true;
-        }
-        for (WGRegion region : regions.getRegions()) {
-            WGState state = region.getStateFor("build");
-            if (state == WGState.DENY) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
         if (Conf.playersWhoBypassAllProtection.contains(player.getName())) return true;
@@ -66,7 +43,7 @@ public class FactionsBlockListener implements Listener {
         Faction myFaction = me.getFaction();
 
         if (otherFaction.isWilderness()) {
-            if (Conf.worldGuardBuildPriority && canBuildWG(location)) return true;
+            if (Conf.worldGuardBuildPriority && WorldGuardBridge.getInstance().getAPI().canPlayerBuild(location)) return true;
             if (location.getWorld() != null) {
                 if (!Conf.wildernessDenyBuild || ((Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)))
                     return true;
@@ -74,12 +51,12 @@ public class FactionsBlockListener implements Listener {
             if (!justCheck) me.msg(TL.ACTION_DENIED_WILDERNESS, action);
             return false;
         } else if (otherFaction.isSafeZone()) {
-            if (Conf.worldGuardBuildPriority &&  canBuildWG(location)) return true;
+            if (Conf.worldGuardBuildPriority &&  WorldGuardBridge.getInstance().getAPI().canPlayerBuild(location)) return true;
             if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player)) return true;
             if (!justCheck) me.msg(TL.ACTION_DENIED_SAFEZONE, action);
             return false;
         } else if (otherFaction.isWarZone()) {
-            if (Conf.worldGuardBuildPriority &&  canBuildWG(location)) return true;
+            if (Conf.worldGuardBuildPriority &&  WorldGuardBridge.getInstance().getAPI().canPlayerBuild(location)) return true;
             if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player)) return true;
             if (!justCheck) me.msg(TL.ACTION_DENIED_WARZONE, action);
             return false;

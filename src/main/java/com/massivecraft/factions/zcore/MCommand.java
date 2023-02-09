@@ -7,7 +7,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
+import mkremins.fanciful.FancyMessage;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -270,13 +270,13 @@ public abstract class MCommand<T extends MPlugin> {
         }
     }
 
-    public void sendComponent(Component message) {
-        TextUtil.AUDIENCES.sender(this.sender).sendMessage(message);
+    public void sendFancyMessage(FancyMessage message) {
+        message.send(sender);
     }
 
-    public void sendComponent(List<Component> messages) {
-        for (Component m : messages) {
-            sendComponent(m);
+    public void sendFancyMessage(List<FancyMessage> messages) {
+        for (FancyMessage m : messages) {
+            sendFancyMessage(m);
         }
     }
 

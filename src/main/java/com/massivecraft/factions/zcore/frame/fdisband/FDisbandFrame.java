@@ -68,8 +68,8 @@ public class FDisbandFrame extends SaberGUI {
         ItemStack confirm = buildConfirmDummyItem(fPlayer.getFaction());
         ItemStack deny = buildDenyDummyItem();
 
-        for (i = 0; i < 4; ++i) {
-            this.setItem(i, new InventoryItem(confirm).click(() -> {
+        for (i = 0; i < 5; ++i) {
+            this.setItem(0, new InventoryItem(confirm).click(() -> {
                 fPlayer.getPlayer().setMetadata("disband_confirm", new FixedMetadataValue(FactionsPlugin.getInstance(), System.currentTimeMillis()));
                 fPlayer.getPlayer().closeInventory();
                 fPlayer.getPlayer().performCommand("f disband");
@@ -95,7 +95,7 @@ public class FDisbandFrame extends SaberGUI {
         this.setItem(4, new InventoryItem(separatorItem));
         //End Separator
 
-        for (i = 5; i < 9; ++i) {
+        for (i = 5; i < 10; ++i) {
             this.setItem(i, new InventoryItem(deny).click(() -> {
                 fPlayer.getPlayer().closeInventory();
             }));

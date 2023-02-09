@@ -1,7 +1,7 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.zcore.persist.json.JSONBoard;
-import net.kyori.adventure.text.Component;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.World;
 
 import java.util.List;
@@ -80,7 +80,7 @@ public abstract class Board {
      * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
      * of decreasing z
      */
-    public abstract List<Component> getMap(FPlayer fPlayer, FLocation flocation, double inDegrees);
+    public abstract List<FancyMessage> getMap(FPlayer fPlayer, FLocation flocation, double inDegrees);
 
     public abstract void forceSave();
 

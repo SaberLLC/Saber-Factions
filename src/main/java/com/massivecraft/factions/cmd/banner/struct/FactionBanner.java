@@ -4,9 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -90,9 +88,9 @@ public class FactionBanner {
         this.activeLocation = location;
         this.placeTime = System.currentTimeMillis();
         this.faction = faction;
-        Component msg = Component.text("");
+        FancyMessage msg = new FancyMessage("");
         //JSONMessage msg = new JSONMessage("");
-        msg.hoverEvent(Component.text("Click Here To TP To Banner")).clickEvent(ClickEvent.runCommand("/f tpbanner"));
+        msg.text("").tooltip("Click Here To TP To Banner").command("/f tpbanner");
         //msg.addText(null, CC.Gray + "          Click ", ChatColor.GRAY);
         //msg.addRunCommand(CC.GrayB + CC.Underline + "HERE", ChatColor.GRAY, "/frecall", CC.Gray + "Click to teleport to " + this.whoPlacedUsername + "'s banner!");
         //msg.addText(null, CC.Gray + " or use " + CC.DarkPurple + "/f assist" + CC.Gray + " to teleport!", ChatColor.GRAY);
@@ -103,7 +101,7 @@ public class FactionBanner {
             pl.sendMessage("");
             //pl.sendMessage(StringUtils.getCenteredMessage(CC.DarkPurpleB + "[/f banner]: " + CC.LightPurple + this.whoPlacedUsername + ", at: " +
             //        LocationUtils.printPretty(this.activeLocation, ChatColor.DARK_PURPLE, false)));
-            TextUtil.AUDIENCES.player(pl).sendMessage(msg);
+            msg.send(pl);
             pl.sendMessage("");
         }
     }

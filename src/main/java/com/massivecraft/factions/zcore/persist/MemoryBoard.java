@@ -13,11 +13,7 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
@@ -213,14 +209,13 @@ public abstract class MemoryBoard extends Board {
      * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
      * of decreasing z
      */
-    @Override
-    public ArrayList<Component> getMap(FPlayer fplayer, FLocation flocation, double inDegrees) {
+    public ArrayList<FancyMessage> getMap(FPlayer fplayer, FLocation flocation, double inDegrees) {
         Faction faction = fplayer.getFaction();
         String worldName = fplayer.getPlayer().getWorld().getName();
 
-        ArrayList<Component> ret = new ArrayList<>();
+        ArrayList<FancyMessage> ret = new ArrayList<>();
         Faction factionLoc = getFactionAt(flocation);
-        ret.add(Component.text(TextUtil.titleize(ChatColor.DARK_GRAY + FactionsPlugin.getInstance().txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer)))));
+        ret.add(new FancyMessage(ChatColor.DARK_GRAY + FactionsPlugin.getInstance().txt.titleize("(" + flocation.getCoordString() + ") " + factionLoc.getTag(fplayer))));
         int buffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0);
 
 
@@ -248,34 +243,33 @@ public abstract class MemoryBoard extends Board {
         // For each row
         for (int dz = 0; dz < height; dz++) {
             // Draw and add that row
-
-            TextComponent.Builder row = TextUtil.parseFancy("");
+            FancyMessage row = new FancyMessage("");
 
             if (dz < 3) {
-                row.append(Component.text(asciiCompass.get(dz)));
+                row.then(asciiCompass.get(dz));
             }
             for (int dx = (dz < 3 ? 6 : 3); dx < width; dx++) {
                 if (dx == halfWidth && dz == halfHeight) {
-                    row.append(Component.text("+").color(TextUtil.kyoriColor(ChatColor.AQUA)).hoverEvent(HoverEvent.showText(TL.CLAIM_YOUAREHERE.toComponent())));
+                    row.then("+").color(ChatColor.AQUA).tooltip(TL.CLAIM_YOUAREHERE.toString());
                 } else {
                     FLocation flocationHere = topLeft.getRelativeWorldName(worldName, dx, dz);
                     Faction factionHere = getFactionAt(flocationHere);
                     Relation relation = fplayer.getRelationTo(factionHere);
                     if (flocationHere.isOutsideWorldBorder(buffer)) {
-                        row.append(Component.text("-").color(TextUtil.kyoriColor(ChatColor.BLACK)).hoverEvent(HoverEvent.showText(TL.CLAIM_MAP_OUTSIDEBORDER.toComponent())));
+                        row.then("-").color(ChatColor.BLACK).tooltip(TL.CLAIM_MAP_OUTSIDEBORDER.toString());
                     } else if (factionHere.isWilderness()) {
-                        row.append(Component.text("-").color(TextUtil.kyoriColor(Conf.colorWilderness)));
+                        row.then("-").color(Conf.colorWilderness);
                         // Lol someone didnt add the x and z making it claim the wrong position Can i copyright this xD
                         if (fplayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
                             if (Conf.enableClickToClaim) {
-                                row.hoverEvent(TL.CLAIM_CLICK_TO_CLAIM.toFormattedComponent(dx + topLeft.getX(), dz + topLeft.getZ()))
-                                                .clickEvent(ClickEvent.runCommand(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx + topLeft.getX(), dz + topLeft.getZ())));
+                                row.tooltip(TL.CLAIM_CLICK_TO_CLAIM.format(dx + topLeft.getX(), dz + topLeft.getZ()))
+                                        .command(String.format("/f claimat %s %d %d", flocation.getWorldName(), dx + topLeft.getX(), dz + topLeft.getZ()));
                             }
                         }
                     } else if (factionHere.isSafeZone()) {
-                        row.append(Component.text("+")).color(TextUtil.kyoriColor(Conf.colorSafezone)).hoverEvent(HoverEvent.showText(Component.text(oneLineToolTip(factionHere, fplayer).get(0))));
+                        row.then("+").color(Conf.colorSafezone).tooltip(oneLineToolTip(factionHere, fplayer));
                     } else if (factionHere.isWarZone()) {
-                        row.append(Component.text("+")).color(TextUtil.kyoriColor(Conf.colorWar)).hoverEvent(HoverEvent.showText(Component.text(oneLineToolTip(factionHere, fplayer).get(0))));
+                        row.then("+").color(Conf.colorWar).tooltip(oneLineToolTip(factionHere, fplayer));
                     } else if (factionHere == faction || factionHere == factionLoc || relation.isAtLeast(Relation.ALLY) ||
                             (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
                             (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY)) ||
@@ -288,23 +282,23 @@ public abstract class MemoryBoard extends Board {
                         //row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(getToolTip(factionHere, fplayer));
                         //changed out with a performance friendly one line tooltip :D
                         if (factionHere.getSpawnerChunks().contains(flocationHere.toFastChunk()) && Conf.userSpawnerChunkSystem) {
-                            row.append(Component.text(Character.toString(tag)).color(TextUtil.kyoriColor(Conf.spawnerChunkColor)).hoverEvent(HoverEvent.showText(Component.text(oneLineToolTip(factionHere, fplayer).get(0) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString))));
+                            row.then(String.valueOf(tag)).color(Conf.spawnerChunkColor).tooltip(oneLineToolTip(factionHere, fplayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString);
                         } else {
-                            row.append(Component.text(Character.toString(tag)).color(TextUtil.kyoriColor(factionHere.getColorTo(faction))).hoverEvent(HoverEvent.showText(Component.text(oneLineToolTip(factionHere, fplayer).get(0)))));
+                            row.then(String.valueOf(tag)).color(factionHere.getColorTo(faction)).tooltip(oneLineToolTip(factionHere, fplayer));
                         }
                     } else {
-                        row.append(Component.text("-").color(TextUtil.kyoriColor(ChatColor.GRAY)));
+                        row.then("-").color(ChatColor.GRAY);
                     }
                 }
             }
-            ret.add(row.build());
+            ret.add(row);
         }
 
         // Add the faction key
         if (Conf.showMapFactionKey) {
-            Component fRow = Component.text("");
+            FancyMessage fRow = new FancyMessage("");
             for (String key : fList.keySet()) {
-                fRow.append(Component.text(String.format("%s: %s ", fList.get(key), key)).color(TextUtil.kyoriColor(ChatColor.GRAY)));
+                fRow.then(String.format("%s: %s ", fList.get(key), key)).color(ChatColor.GRAY);
             }
             ret.add(fRow);
         }
@@ -320,10 +314,9 @@ public abstract class MemoryBoard extends Board {
         return Collections.singletonList(faction.describeTo(to));
     }
 
-    @Deprecated
+    @SuppressWarnings("unused")
     private List<String> getToolTip(Faction faction, FPlayer to) {
-        throw new UnsupportedOperationException("no longer supported");
-/*        List<String> ret = new ArrayList<>();
+        List<String> ret = new ArrayList<>();
         List<String> show = FactionsPlugin.getInstance().getConfig().getStringList("map");
 
         if (!faction.isNormal()) {
@@ -350,9 +343,9 @@ public abstract class MemoryBoard extends Board {
             }
 
             if (TagUtil.hasFancy(parsed)) {
-                List<Component> fancy = TagUtil.parseFancy(faction, to, parsed);
+                List<FancyMessage> fancy = TagUtil.parseFancy(faction, to, parsed);
                 if (fancy != null) {
-                    for (Component msg : fancy) {
+                    for (FancyMessage msg : fancy) {
                         ret.add((FactionsPlugin.getInstance().txt.parse(msg.toOldMessageFormat())));
                     }
                 }
@@ -371,7 +364,7 @@ public abstract class MemoryBoard extends Board {
             }
         }
 
-        return ret;*/
+        return ret;
     }
 
     public abstract void convertFrom(MemoryBoard old);

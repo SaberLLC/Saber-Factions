@@ -14,9 +14,7 @@ import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
+import mkremins.fanciful.FancyMessage;
 
 public class CmdInviteAlt extends FCommand {
 
@@ -77,10 +75,13 @@ public class CmdInviteAlt extends FCommand {
             return;
         }
 
-        Component message = TL.COMMAND_INVITE_INVITEDYOU.toFormattedComponent(context.fPlayer.describeTo(target, true), context.faction.getTag())
-                .hoverEvent(TL.COMMAND_INVITE_CLICKTOJOIN.toComponent())
-                .clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag()));
-        TextUtil.AUDIENCES.player(target.getPlayer()).sendMessage(message);
+        FancyMessage message = new FancyMessage(TL.COMMAND_INVITE_INVITEDYOU.toString()
+                .replace("%1$s", context.fPlayer.describeTo(target, true))
+                .replace("%2$s", context.faction.getTag())
+                .replaceAll("&", "§"))
+                .tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString())
+                .command("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag());
+        message.send(target.getPlayer());
         FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.INVITES, context.fPlayer.getName(), CC.Green + "invited", target.getName());
         context.faction.msg(TL.COMMAND_ALTINVITE_INVITED_ALT, context.fPlayer.describeTo(context.faction, true), target.describeTo(context.faction));
     }

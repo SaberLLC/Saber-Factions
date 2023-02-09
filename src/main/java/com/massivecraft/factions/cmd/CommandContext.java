@@ -5,8 +5,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -52,11 +51,11 @@ public class CommandContext {
     // -------------------------------------------- //
 
     public void msg(String str, Object... args) {
-        sender.sendMessage(TextUtil.parse(str, args));
+        sender.sendMessage(FactionsPlugin.getInstance().txt.parse(str, args));
     }
 
     public void msg(TL translation, Object... args) {
-        sender.sendMessage(TextUtil.parse(translation.toString(), args));
+        sender.sendMessage(FactionsPlugin.getInstance().txt.parse(translation.toString(), args));
     }
 
     public void sendMessage(String msg) {
@@ -69,13 +68,13 @@ public class CommandContext {
         }
     }
 
-    public void sendComponent(Component message) {
-        TextUtil.AUDIENCES.sender(sender).sendMessage(message);
+    public void sendFancyMessage(FancyMessage message) {
+        message.send(sender);
     }
 
-    public void sendComponent(List<Component> messages) {
-        for (Component m : messages) {
-            sendComponent(m);
+    public void sendFancyMessage(List<FancyMessage> messages) {
+        for (FancyMessage m : messages) {
+            sendFancyMessage(m);
         }
     }
 
@@ -372,7 +371,7 @@ public class CommandContext {
             return true;
         }
 
-        i.sendMessage(TextUtil.parse("%s <b>has a higher rank than you.", you.describeTo(i, true)));
+        i.sendMessage(FactionsPlugin.getInstance().txt.parse("%s <b>has a higher rank than you.", you.describeTo(i, true)));
 
         return false;
     }

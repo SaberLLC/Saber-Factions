@@ -55,7 +55,7 @@ public class CmdClaimAt extends FCommand {
     }
 
     public void showMap(CommandContext context) {
-        context.sendComponent(Board.getInstance().getMap(context.fPlayer, new FLocation(context.fPlayer), context.player.getLocation().getYaw()));
+        context.sendFancyMessage(Board.getInstance().getMap(context.fPlayer, new FLocation(context.fPlayer), context.player.getLocation().getYaw()));
     }
 
 

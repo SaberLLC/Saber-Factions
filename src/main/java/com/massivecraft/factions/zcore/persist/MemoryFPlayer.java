@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore.persist;
 
 import cc.javajobs.wgbridge.WorldGuardBridge;
-import cc.javajobs.wgbridge.infrastructure.struct.WGRegionSet;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.*;
@@ -20,8 +19,7 @@ import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
+import mkremins.fanciful.FancyMessage;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
@@ -863,15 +861,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         return canClaimForFactionAtLocation(forFaction, new FLocation(location), notifyFailure);
     }
 
-    public boolean hasRegionsInChunk(Chunk chunk) {
-        WorldGuardBridge worldGuardBridge = WorldGuardBridge.getInstance();
-        if (worldGuardBridge == null || worldGuardBridge.getAPI() == null) {
-            return false;
-        }
-        WGRegionSet regions = worldGuardBridge.getAPI().getRegions(new Location(chunk.getWorld(), chunk.getX() << 4, 0, chunk.getZ() << 4));
-        return regions != null;
-    }
-
     public boolean canClaimForFactionAtLocation(Faction forFaction, FLocation flocation, boolean notifyFailure) {
         FactionsPlugin plugin = FactionsPlugin.getInstance();
         String error = null;
@@ -881,7 +870,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         int factionBuffer = plugin.getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = plugin.getConfig().getInt("world-border.buffer", 0);
 
-        if (Conf.worldGuardChecking && hasRegionsInChunk(flocation.getChunk())) {
+        if (Conf.worldGuardChecking && WorldGuardBridge.getInstance().getAPI().checkForRegionsInChunk(flocation.getChunk())) {
             // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = plugin.txt.parse(TL.CLAIM_PROTECTED.toString());
         } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
@@ -1253,14 +1242,14 @@ public abstract class MemoryFPlayer implements FPlayer {
         for (String msg : msgs) this.sendMessage(msg);
     }
 
-    public void sendComponent(Component message) {
+    public void sendFancyMessage(FancyMessage message) {
         Player player = getPlayer();
         if (player == null || !player.isOnGround()) return;
-        TextUtil.AUDIENCES.player(player).sendMessage(message);
+        message.send(player);
     }
 
-    public void sendComponent(List<Component> messages) {
-        messages.forEach(this::sendComponent);
+    public void sendFancyMessage(List<FancyMessage> messages) {
+        messages.forEach(this::sendFancyMessage);
     }
 
     public int getMapHeight() {
@@ -1450,7 +1439,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return false;
         }
 
-        if (Conf.worldGuardChecking && hasRegionsInChunk(flocation.getChunk())) {
+        if (Conf.worldGuardChecking && WorldGuardBridge.getInstance().getAPI().checkForRegionsInChunk(flocation.getChunk())) {
             this.msg(TL.GENERIC_WORLDGUARD);
             return false;
         }

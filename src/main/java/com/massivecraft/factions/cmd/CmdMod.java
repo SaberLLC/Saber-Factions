@@ -8,9 +8,7 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
 public class CmdMod extends FCommand {
@@ -35,13 +33,13 @@ public class CmdMod extends FCommand {
     public void perform(CommandContext context) {
         FPlayer you = context.argAsBestFPlayerMatch(0);
         if (you == null) {
-            Component msg = TL.COMMAND_MOD_CANDIDATES.toComponent().color(TextUtil.kyoriColor(ChatColor.GOLD));
+            FancyMessage msg = new FancyMessage(TL.COMMAND_MOD_CANDIDATES.toString()).color(ChatColor.GOLD);
             for (FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
                 String s = player.getName();
-                msg.append(Component.text(s + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_MOD_CLICKTOPROMOTE.toComponent().append(Component.text(s)).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " mod " + s))));
+                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_MOD_CLICKTOPROMOTE + s).command("/" + Conf.baseCommandAliases.get(0) + " mod " + s);
             }
 
-            context.sendComponent(msg);
+            context.sendFancyMessage(msg);
             return;
         }
 

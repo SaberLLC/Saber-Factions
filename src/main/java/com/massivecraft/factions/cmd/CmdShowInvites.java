@@ -6,9 +6,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TextUtil;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
+import mkremins.fanciful.FancyMessage;
 import org.bukkit.ChatColor;
 
 public class CmdShowInvites extends FCommand {
@@ -33,13 +31,13 @@ public class CmdShowInvites extends FCommand {
         FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
 
 
-            Component msg = TL.COMMAND_SHOWINVITES_PENDING.toComponent().color(TextUtil.kyoriColor(ChatColor.GOLD));
+            FancyMessage msg = new FancyMessage(TL.COMMAND_SHOWINVITES_PENDING.toString()).color(ChatColor.GOLD);
             for (String id : context.faction.getInvites()) {
                 FPlayer fp = FPlayers.getInstance().getById(id);
                 String name = fp != null ? fp.getName() : id;
-                msg.append(Component.text(name + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_SHOWINVITES_CLICKTOREVOKE.toFormattedComponent(name)).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name)));
+                msg.then(name + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_SHOWINVITES_CLICKTOREVOKE.format(name)).command("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name);
             }
-            context.sendComponent(msg);
+            context.sendFancyMessage(msg);
         });
     }
 
