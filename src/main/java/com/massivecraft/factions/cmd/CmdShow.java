@@ -7,7 +7,8 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
-import mkremins.fanciful.FancyMessage;
+import com.massivecraft.factions.zcore.util.TextUtil;
+import net.kyori.adventure.text.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,7 @@ public class CmdShow extends FCommand {
             return; // we only show header for non-normal factions
         }
 
-        List<FancyMessage> fancy = new ArrayList<>();
+        List<Component> fancy = new ArrayList<>();
         List<String> finalShow = show;
         Faction finalFaction = faction;
         instance.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
@@ -98,7 +99,7 @@ public class CmdShow extends FCommand {
                 }
 
                 if (TagUtil.hasFancy(parsed)) {
-                    List<FancyMessage> localFancy = TagUtil.parseFancy(finalFaction, context.fPlayer, parsed);
+                    List<Component> localFancy = TagUtil.parseFancy(finalFaction, context.fPlayer, parsed);
                     if (localFancy != null)
                         fancy.addAll(localFancy);
 
@@ -112,12 +113,12 @@ public class CmdShow extends FCommand {
                     if (parsed.contains("%")) {
                         parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
                     }
-                    parsed = FactionsPlugin.getInstance().txt.parse(parsed);
-                    FancyMessage localFancy = instance.txt.parseFancy(parsed);
+                    parsed = TextUtil.parse(parsed);
+                    Component localFancy = TextUtil.parseFancy(parsed).build();
                     fancy.add(localFancy);
                 }
             }
-            instance.getServer().getScheduler().runTask(instance, () -> context.sendFancyMessage(fancy));
+            instance.getServer().getScheduler().runTask(instance, () -> context.sendComponent(fancy));
         });
     }
 

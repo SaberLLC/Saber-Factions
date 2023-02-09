@@ -7,7 +7,11 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.QuadFunction;
-import mkremins.fanciful.FancyMessage;
+import com.massivecraft.factions.zcore.util.TagUtil;
+import com.massivecraft.factions.zcore.util.TextUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.ChatColor;
 
 import java.util.*;
@@ -23,58 +27,59 @@ public enum FancyTag implements Tag {
     ENEMIES_LIST("{enemies-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.ENEMY)),
     TRUCES_LIST("{truces-list}", (target, fme, prefix, gm) -> processRelation(prefix, target, fme, Relation.TRUCE)),
     ONLINE_LIST("{online-list}", (target, fme, prefix, gm) -> {
-        List<FancyMessage> fancyMessages = new ArrayList<>();
-        FancyMessage currentOnline = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+        List<Component> Components = new ArrayList<>();
+        TextComponent.Builder currentOnline = TextUtil.parseFancy(prefix);
         boolean firstOnline = true;
         for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
             if (fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
                 continue; // skip
             }
             String name = p.getNameAndTitle();
-            currentOnline.then(firstOnline ? name : ", " + name);
-            currentOnline.tooltip(tipPlayer(p, gm)).color(fme.getColorTo(p));
+            currentOnline.append(Component.text(firstOnline ? name : ", " + name))
+                            .hoverEvent(HoverEvent.showText(Component.text(String.join("\n", tipPlayer(p, gm))))).color(TextUtil.kyoriColor(fme.getColorTo(p)));
             firstOnline = false;
-            if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
-                fancyMessages.add(currentOnline);
-                currentOnline = new FancyMessage("");
+            if (TagUtil.SERIALIZER.toJson(currentOnline.build()).length() > ARBITRARY_LIMIT) {
+                Components.add(currentOnline.build());
+                currentOnline = TextUtil.toFancy("");
             }
         }
-        fancyMessages.add(currentOnline);
-        return firstOnline && Tag.isMinimalShow() ? null : fancyMessages;
+        Components.add(currentOnline.build());
+        return firstOnline && Tag.isMinimalShow() ? null : Components;
     }),
     OFFLINE_LIST("{offline-list}", (target, fme, prefix, gm) -> {
-        List<FancyMessage> fancyMessages = new ArrayList<>();
-        FancyMessage currentOffline = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+        List<Component> Components = new ArrayList<>();
+        TextComponent.Builder currentOffline = TextUtil.parseFancy(prefix);
         boolean firstOffline = true;
         for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
             String name = p.getNameAndTitle();
             // Also make sure to add players that are online BUT can't be seen.
             if (!p.isOnline() || (fme.getPlayer() != null && p.isOnline() && !fme.getPlayer().canSee(p.getPlayer()))) {
-                currentOffline.then(firstOffline ? name : ", " + name);
-                currentOffline.tooltip(tipPlayer(p, gm)).color(fme.getColorTo(p));
+
+                currentOffline.append(Component.text(firstOffline ? name : ", " + name))
+                        .hoverEvent(HoverEvent.showText(Component.text(String.join("\n", tipPlayer(p, gm))))).color(TextUtil.kyoriColor(fme.getColorTo(p)));
                 firstOffline = false;
-                if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
-                    fancyMessages.add(currentOffline);
-                    currentOffline = new FancyMessage("");
+                if (TagUtil.SERIALIZER.toJson(currentOffline.build()).length() > ARBITRARY_LIMIT) {
+                    Components.add(currentOffline.build());
+                    currentOffline = TextUtil.toFancy("");
                 }
             }
         }
-        fancyMessages.add(currentOffline);
-        return firstOffline && Tag.isMinimalShow() ? null : fancyMessages;
+        Components.add(currentOffline.build());
+        return firstOffline && Tag.isMinimalShow() ? null : Components;
     }),
     ;
 
     private final String tag;
-    private final QuadFunction<Faction, FPlayer, String, Map<UUID, String>, List<FancyMessage>> function;
+    private final QuadFunction<Faction, FPlayer, String, Map<UUID, String>, List<Component>> function;
 
-    FancyTag(String tag, QuadFunction<Faction, FPlayer, String, Map<UUID, String>, List<FancyMessage>> function) {
+    FancyTag(String tag, QuadFunction<Faction, FPlayer, String, Map<UUID, String>, List<Component>> function) {
         this.tag = tag;
         this.function = function;
     }
 
-    private static List<FancyMessage> processRelation(String prefix, Faction faction, FPlayer fPlayer, Relation relation) {
-        List<FancyMessage> fancyMessages = new ArrayList<>();
-        FancyMessage message = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+    private static List<Component> processRelation(String prefix, Faction faction, FPlayer fPlayer, Relation relation) {
+        List<Component> Components = new ArrayList<>();
+        TextComponent.Builder message = FactionsPlugin.getInstance().txt.parseFancy(prefix);
         boolean first = true;
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
@@ -82,20 +87,19 @@ public enum FancyTag implements Tag {
             }
             String s = otherFaction.getTag(fPlayer);
             if (otherFaction.getRelationTo(faction) == relation) {
-                message.then(first ? s : ", " + s);
-                message.tooltip(tipFaction(otherFaction, fPlayer)).color(fPlayer.getColorTo(otherFaction));
+                message.append(Component.text(first ? s : ", " + s)).hoverEvent(Component.text(String.join("\n", tipFaction(otherFaction, fPlayer))).color(TextUtil.kyoriColor(fPlayer.getColorTo(otherFaction))));
                 first = false;
-                if (message.toJSONString().length() > ARBITRARY_LIMIT) {
-                    fancyMessages.add(message);
-                    message = new FancyMessage("");
+                if (TagUtil.SERIALIZER.toJson(message.build()).length() > ARBITRARY_LIMIT) {
+                    Components.add(message.build());
+                    message = TextUtil.toFancy("");
                 }
             }
         }
-        fancyMessages.add(message);
-        return first && Tag.isMinimalShow() ? null : fancyMessages;
+        Components.add(message.build());
+        return first && Tag.isMinimalShow() ? null : Components;
     }
 
-    public static List<FancyMessage> parse(String text, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
+    public static List<Component> parse(String text, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
         for (FancyTag tag : VALUES) {
             if (tag.foundInString(text)) {
                 return tag.getMessage(text, faction, player, groupMap);

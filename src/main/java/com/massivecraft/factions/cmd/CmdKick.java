@@ -12,7 +12,9 @@ import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
+import com.massivecraft.factions.zcore.util.TextUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -39,27 +41,27 @@ public class CmdKick extends FCommand {
     public void perform(CommandContext context) {
         FPlayer toKick = context.argIsSet(0) ? context.argAsBestFPlayerMatch(0) : null;
         if (toKick == null) {
-            FancyMessage msg = new FancyMessage(TL.COMMAND_KICK_CANDIDATES.toString()).color(ChatColor.GOLD);
+            Component msg = TL.COMMAND_KICK_CANDIDATES.toComponent().color(TextUtil.kyoriColor(ChatColor.GOLD));
             for (FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
                 String s = player.getName();
-                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
+                msg.append(Component.text(s + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_KICK_CLICKTOKICK.toComponent().append(Component.text(s))).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " kick " + s)));
             }
             if (context.fPlayer.getRole().isAtLeast(Role.COLEADER)) {
                 // For both coleader and admin, add mods.
                 for (FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
                     String s = player.getName();
-                    msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
+                    msg.append(Component.text(s + " ").color(TextUtil.kyoriColor(ChatColor.GRAY)).hoverEvent(TL.COMMAND_KICK_CLICKTOKICK.toComponent().append(Component.text(s))).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " kick " + s)));
                 }
                 if (context.fPlayer.getRole() == Role.LEADER) {
                     // Only add coleader to this for the leader.
                     for (FPlayer player : context.faction.getFPlayersWhereRole(Role.COLEADER)) {
                         String s = player.getName();
-                        msg.then(s + " ").color(ChatColor.RED).tooltip(TL.COMMAND_KICK_CLICKTOKICK + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
+                        msg.append(Component.text(s + " ").color(TextUtil.kyoriColor(ChatColor.RED)).hoverEvent(TL.COMMAND_KICK_CLICKTOKICK.toComponent().append(Component.text(s))).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " kick " + s)));
                     }
                 }
             }
 
-            context.sendFancyMessage(msg);
+            context.sendComponent(msg);
             return;
         }
 
