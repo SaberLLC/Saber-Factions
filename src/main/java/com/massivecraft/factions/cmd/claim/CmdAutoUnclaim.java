@@ -44,7 +44,7 @@ public class CmdAutoUnclaim extends FCommand {
         context.fPlayer.setAutoUnclaimFor(forFaction);
 
         context.msg(TL.COMMAND_AUTOUNCLAIM_ENABLED, forFaction.describeTo(context.fPlayer));
-        context.fPlayer.attemptUnclaim(forFaction, new FLocation(context.player.getLocation()), true);
+        context.fPlayer.attemptUnclaim(forFaction, FLocation.wrap(context.player.getLocation()), true);
     }
 
     @Override

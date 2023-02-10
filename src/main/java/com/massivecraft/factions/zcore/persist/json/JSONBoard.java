@@ -58,7 +58,7 @@ public class JSONBoard extends MemoryBoard {
                 x = Integer.parseInt(coords[0]);
                 z = Integer.parseInt(coords[1]);
                 factionId = entry2.getValue();
-                flocationIds.put(new FLocation(worldName, x, z), factionId);
+                flocationIds.put(FLocation.wrap(worldName, x, z), factionId);
             }
         }
     }

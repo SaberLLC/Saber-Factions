@@ -52,7 +52,7 @@ public class FactionsEntityListener implements Listener {
 
         Player player = (Player) entity;
         FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-        Faction faction = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
+        Faction faction = Board.getInstance().getFactionAt(FLocation.wrap(player.getLocation()));
 
         PowerLossEvent powerLossEvent = new PowerLossEvent(faction, fplayer);
         // Check for no power loss conditions
@@ -313,7 +313,7 @@ public class FactionsEntityListener implements Listener {
     }
 
     private boolean checkExplosionForBlock(Entity boomer, Block block) {
-        Faction faction = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
+        Faction faction = Board.getInstance().getFactionAt(FLocation.wrap(block.getLocation()));
 
         if (faction.noExplosionsInTerritory() || (faction.isPeaceful() && Conf.peacefulTerritoryDisableBoom))
             return false;
@@ -386,7 +386,7 @@ public class FactionsEntityListener implements Listener {
 
     public boolean isPlayerInSafeZone(Entity damagee) {
         if (!(damagee instanceof Player)) return false;
-        return Board.getInstance().getFactionAt(new FLocation(damagee.getLocation())).isSafeZone();
+        return Board.getInstance().getFactionAt(FLocation.wrap(damagee.getLocation())).isSafeZone();
     }
 
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {
@@ -414,7 +414,7 @@ public class FactionsEntityListener implements Listener {
             }
         }
         Location defenderLoc = defender.getPlayer().getLocation();
-        Faction defLocFaction = Board.getInstance().getFactionAt(new FLocation(defenderLoc));
+        Faction defLocFaction = Board.getInstance().getFactionAt(FLocation.wrap(defenderLoc));
         // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
         if (damager instanceof Projectile) {
             Projectile projectile = (Projectile) damager;
@@ -460,7 +460,7 @@ public class FactionsEntityListener implements Listener {
             return false;
         }
 
-        Faction locFaction = Board.getInstance().getFactionAt(new FLocation(attacker));
+        Faction locFaction = Board.getInstance().getFactionAt(FLocation.wrap(attacker));
 
         // so we know from above that the defender isn't in a safezone... what about the attacker, sneaky dog that he might be?
         if (locFaction.noPvPInTerritory()) {
@@ -529,7 +529,7 @@ public class FactionsEntityListener implements Listener {
         if (event.getLocation() == null) return;
 
 
-        if (Conf.safeZoneNerfedCreatureTypes.contains(event.getEntityType()) && Board.getInstance().getFactionAt(new FLocation(event.getLocation())).noMonstersInTerritory()) {
+        if (Conf.safeZoneNerfedCreatureTypes.contains(event.getEntityType()) && Board.getInstance().getFactionAt(FLocation.wrap(event.getLocation())).noMonstersInTerritory()) {
             event.setCancelled(true);
         }
     }
@@ -545,7 +545,7 @@ public class FactionsEntityListener implements Listener {
         if (!Conf.safeZoneNerfedCreatureTypes.contains(MiscUtil.creatureTypeFromEntity(event.getEntity()))) return;
 
         // in case the target is in a safe zone.
-        if (Board.getInstance().getFactionAt(new FLocation(target.getLocation())).noMonstersInTerritory()) {
+        if (Board.getInstance().getFactionAt(FLocation.wrap(target.getLocation())).noMonstersInTerritory()) {
             event.setCancelled(true);
         }
     }
@@ -555,7 +555,7 @@ public class FactionsEntityListener implements Listener {
 
         if (event.getCause() == RemoveCause.EXPLOSION) {
             Location loc = event.getEntity().getLocation();
-            Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
+            Faction faction = Board.getInstance().getFactionAt(FLocation.wrap(loc));
             if (faction.noExplosionsInTerritory()) {
                 // faction is peaceful and has explosions set to disabled
                 event.setCancelled(true);
@@ -623,7 +623,7 @@ public class FactionsEntityListener implements Listener {
         if (entity.getType() == EntityType.ENDERMAN) {
             if (stopEndermanBlockManipulation(loc)) e.setCancelled(true);
         } else if (entity.getType() == EntityType.WITHER) {
-            Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
+            Faction faction = Board.getInstance().getFactionAt(FLocation.wrap(loc));
             // it's a bit crude just using fireball protection, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
             if ((faction.isWilderness() && Conf.wildernessBlockFireballs && ((!Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) ) ||
                     (faction.isNormal() && (faction.hasPlayersOnline() ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline)) ||
@@ -734,7 +734,7 @@ public class FactionsEntityListener implements Listener {
                 Conf.warZoneDenyEndermanBlocks) return true;
 
 
-        FLocation fLoc = new FLocation(loc);
+        FLocation fLoc = FLocation.wrap(loc);
         Faction claimFaction = Board.getInstance().getFactionAt(fLoc);
 
         if (claimFaction.isWilderness())

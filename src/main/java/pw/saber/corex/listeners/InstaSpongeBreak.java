@@ -22,7 +22,7 @@ public class InstaSpongeBreak implements Listener {
         if (block != null && block.getType() == XMaterial.SPONGE.parseMaterial()) {
             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
             Faction faction = fPlayer.getFaction();
-            Faction location = Board.getInstance().getFactionAt(new FLocation(block.getLocation()));
+            Faction location = Board.getInstance().getFactionAt(FLocation.wrap(block.getLocation()));
             if (faction.getId().equals(location.getId()) || (location.isNone())) {
                 block.breakNaturally();
                 event.setCancelled(true);

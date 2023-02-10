@@ -3,6 +3,7 @@ package com.massivecraft.factions.zcore.frame.fupgrades;
 import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.util.FastMath;
 import dev.rosewood.rosestacker.api.RoseStackerAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.CropState;
@@ -35,7 +36,7 @@ public class UpgradesListener implements Listener {
         Entity killer = e.getEntity().getKiller();
         if (killer == null || !(killer instanceof Player)) return;
 
-        FLocation floc = new FLocation(e.getEntity().getLocation());
+        FLocation floc = FLocation.wrap(e.getEntity().getLocation());
         Faction faction = Board.getInstance().getFactionAt(floc);
         if (!faction.isWilderness()) {
             int level = faction.getUpgrade(UpgradeType.EXP);
@@ -53,7 +54,7 @@ public class UpgradesListener implements Listener {
 
     @EventHandler
     public void onSpawn(SpawnerSpawnEvent e) {
-        FLocation floc = new FLocation(e.getLocation());
+        FLocation floc = FLocation.wrap(e.getLocation());
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.SPAWNER);
@@ -63,7 +64,7 @@ public class UpgradesListener implements Listener {
     }
 
     private void lowerSpawnerDelay(SpawnerSpawnEvent e, double multiplier) {
-        int lowerby = (int) Math.round(e.getSpawner().getDelay() * multiplier);
+        int lowerby = FastMath.round(e.getSpawner().getDelay() * multiplier);
 
         if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) {
             WildStackerAPI.getStackedSpawner(e.getSpawner()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
@@ -76,7 +77,7 @@ public class UpgradesListener implements Listener {
 
     @EventHandler
     public void onCropGrow(BlockGrowEvent e) {
-        FLocation floc = new FLocation(e.getBlock().getLocation());
+        FLocation floc = FLocation.wrap(e.getBlock().getLocation());
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.CROP);
@@ -114,7 +115,7 @@ public class UpgradesListener implements Listener {
     public void onWaterRedstone(BlockFromToEvent e) {
         List<String> unbreakable = FactionsPlugin.getInstance().getConfig().getStringList("no-water-destroy.Item-List");
         String block = e.getToBlock().getType().toString();
-        FLocation floc = new FLocation(e.getToBlock().getLocation());
+        FLocation floc = FLocation.wrap(e.getToBlock().getLocation());
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
 
         if (!factionAtLoc.isWilderness()) {
@@ -136,7 +137,7 @@ public class UpgradesListener implements Listener {
                 if (fPlayer.getFaction().isNormal()) {
                     int level = fPlayer.getFaction().getUpgrade(UpgradeType.FALL_DAMAGE);
 
-                    FLocation fLocation = new FLocation(player.getLocation());
+                    FLocation fLocation = FLocation.wrap(player.getLocation());
                     if (Board.getInstance().getFactionAt(fLocation) == fPlayer.getFaction() && level > 0) {
                         e.setCancelled(true);
                     }
@@ -152,7 +153,7 @@ public class UpgradesListener implements Listener {
         if (e.getItem().getType().toString().contains("LEGGINGS") || e.getItem().getType().toString().contains("CHESTPLATE") || e.getItem().getType().toString().contains("HELMET") || e.getItem().getType().toString().contains("BOOTS")) {
             int lvl = FPlayers.getInstance().getByPlayer(e.getPlayer()).getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
             double drop = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);
-            int newDamage = (int) Math.round(e.getDamage() - e.getDamage() * drop);
+            int newDamage = (int) FastMath.round(e.getDamage() - e.getDamage() * drop);
             e.setDamage(newDamage);
         }
     }

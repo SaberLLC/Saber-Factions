@@ -5,6 +5,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.FastMath;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.entity.Player;
 
@@ -160,7 +161,7 @@ public class CmdTop extends FCommand {
         } else { // Last one is balance, and it has 3 different things it could be.
             double balance = faction.getFactionBalance();
             for (FPlayer fp : faction.getFPlayers()) {
-                balance = Math.round(balance + Econ.getBalance(fp.getAccountId()));
+                balance = FastMath.round(balance + Econ.getBalance(fp.getAccountId()));
             }
             return String.valueOf(balance);
         }

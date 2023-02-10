@@ -47,7 +47,7 @@ public class CmdVault extends FCommand {
             context.msg(TL.COMMAND_VAULT_INVALID);
             return;
         }
-        FLocation vaultFLocation = new FLocation(vaultLocation);
+        FLocation vaultFLocation = FLocation.wrap(vaultLocation);
         if (Board.getInstance().getFactionAt(vaultFLocation) != context.faction) {
             context.faction.setVault(null);
             context.msg(TL.COMMAND_VAULT_INVALID);

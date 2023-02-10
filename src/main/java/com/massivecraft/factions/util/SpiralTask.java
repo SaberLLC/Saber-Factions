@@ -47,13 +47,13 @@ public abstract class SpiralTask implements Runnable {
             return;
         }
 
-        this.x = (int) fLocation.getX();
-        this.z = (int) fLocation.getZ();
+        this.x = fLocation.getX();
+        this.z = fLocation.getZ();
 
         this.readyToGo = true;
 
         // get this party started
-        this.setTaskID(Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), this, 2, 2));
+        this.setTaskID(Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), this, 2, 2).getTaskId());
     }
 
     private static long now() {
@@ -71,7 +71,7 @@ public abstract class SpiralTask implements Runnable {
      * Returns an FLocation pointing at the current chunk X and Z values.
      */
     public final FLocation currentFLocation() {
-        return new FLocation(world.getName(), x, z);
+        return FLocation.wrap(world.getName(), x, z);
     }
 
     /*
@@ -79,7 +79,7 @@ public abstract class SpiralTask implements Runnable {
      * note that the Location is at the corner of the chunk, not the center.
      */
     public final Location currentLocation() {
-        return new Location(world, FLocation.chunkToBlock(x), 65.0, FLocation.chunkToBlock(z));
+        return new Location(world, WorldUtil.chunkToBlock(x), 65.0, WorldUtil.chunkToBlock(z));
     }
 
     /*

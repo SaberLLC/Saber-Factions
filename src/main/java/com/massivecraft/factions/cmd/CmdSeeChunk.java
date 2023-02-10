@@ -81,7 +81,7 @@ public class CmdSeeChunk extends FCommand {
 
     private void showBorders(Player me) {
         World world = me.getWorld();
-        FLocation flocation = new FLocation(me);
+        FLocation flocation = FLocation.wrap(me);
         int chunkX = (int) flocation.getX();
         int chunkZ = (int) flocation.getZ();
 

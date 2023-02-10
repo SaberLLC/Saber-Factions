@@ -27,10 +27,10 @@ public class CmdSpawnerChunk extends FCommand {
     public void perform(CommandContext context) {
         Faction fac = context.faction;
         Location location = context.player.getLocation();
-        FLocation fLocation = new FLocation(location);
+        FLocation fLocation = FLocation.wrap(location);
         FastChunk fastChunk = new FastChunk(fLocation);
         if (fac.getSpawnerChunkCount() < fac.getAllowedSpawnerChunks()) {
-            if (context.fPlayer.attemptClaim(fac, new FLocation(context.player.getLocation()), true)) {
+            if (context.fPlayer.attemptClaim(fac, FLocation.wrap(context.player.getLocation()), true)) {
                 if (!fac.getSpawnerChunks().contains(fastChunk)) {
                     fac.getSpawnerChunks().add(fastChunk);
                     context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_CLAIM_SUCCESSFUL);
