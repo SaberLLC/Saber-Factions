@@ -19,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -33,11 +34,7 @@ public abstract class MemoryBoard extends Board {
     // Get and Set
     //----------------------------------------------//
     public String getIdAt(FLocation flocation) {
-        if (!flocationIds.containsKey(flocation)) {
-            return "0";
-        }
-
-        return flocationIds.get(flocation);
+        return flocationIds.getOrDefault(flocation, "0");
     }
 
     public Faction getFactionAt(FLocation flocation) {
@@ -62,7 +59,7 @@ public abstract class MemoryBoard extends Board {
         Faction faction = getFactionAt(flocation);
         faction.getWarps().values().removeIf(lazyLocation -> flocation.isInChunk(lazyLocation.getLocation()));
         for (Entity entity : flocation.getChunk().getEntities()) {
-            if (entity instanceof Player) {
+            if (entity.getType() == EntityType.PLAYER) {
                 FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
                 if (!fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
                     fPlayer.setFlying(false);
@@ -79,7 +76,7 @@ public abstract class MemoryBoard extends Board {
 
     public Set<FLocation> getAllClaims(String factionId) {
         Set<FLocation> locs = new HashSet<>();
-        for (Entry<FLocation, String> entry : flocationIds.entrySet()) {
+        for (Entry<FLocation, String> entry : this.flocationIds.entrySet()) {
             if (entry.getValue().equals(factionId)) {
                 locs.add(entry.getKey());
             }
@@ -199,9 +196,9 @@ public abstract class MemoryBoard extends Board {
     public int getFactionCoordCountInWorld(Faction faction, String worldName) {
         String factionId = faction.getId();
         int ret = 0;
-        for (Entry<FLocation, String> entry : flocationIds.entrySet()) {
+        for (Map.Entry<FLocation, String> entry : this.flocationIds.entrySet()) {
             if (entry.getValue().equals(factionId) && entry.getKey().getWorldName().equals(worldName)) {
-                ret += 1;
+                ret++;
             }
         }
         return ret;
