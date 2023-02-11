@@ -5,76 +5,42 @@ import org.bukkit.Bukkit;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DiscUtil {
 
-    // -------------------------------------------- //
-    // CONSTANTS
-    // -------------------------------------------- //
-
-    private final static String UTF8 = "UTF-8";
-
-    // -------------------------------------------- //
-    // BYTE
-    // -------------------------------------------- //
-    private static HashMap<String, Lock> locks = new HashMap<>();
+    private static final HashMap<String, Lock> LOCKS = new HashMap<>();
 
     public static byte[] readBytes(File file) throws IOException {
-        int length = (int) file.length();
-        byte[] output = new byte[length];
-        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
-            int offset = 0;
-            while (offset < length) {
-                offset += in.read(output, offset, (length - offset));
-            }
-        }
-        return output;
+        return Files.readAllBytes(file.toPath());
     }
-
-    // -------------------------------------------- //
-    // STRING
-    // -------------------------------------------- //
 
     public static void writeBytes(File file, byte[] bytes) throws IOException {
         if (!file.exists()) {
             file.createNewFile();
         }
 
-        try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
+        try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(file.toPath()))) {
             out.write(bytes);
         }
     }
 
     public static void write(File file, String content) throws IOException {
-        writeBytes(file, utf8(content));
+        writeBytes(file, content.getBytes(StandardCharsets.UTF_8));
     }
 
-    // -------------------------------------------- //
-    // CATCH
-    // -------------------------------------------- //
-
     public static String read(File file) throws IOException {
-        return utf8(readBytes(file));
+        return new String(readBytes(file), StandardCharsets.UTF_8);
     }
 
     public static boolean writeCatch(final File file, final String content, boolean sync) {
         String name = file.getName();
-        final Lock lock;
+        Lock lock = LOCKS.computeIfAbsent(name, n -> new ReentrantReadWriteLock().writeLock());
 
-        // Create lock for each file if there isn't already one.
-        if (locks.containsKey(name)) {
-            lock = locks.get(name);
-        } else {
-            ReadWriteLock rwl = new ReentrantReadWriteLock();
-            lock = rwl.writeLock();
-            locks.put(name, lock);
-        }
-
-        if (sync) {
+        Runnable write = () -> {
             lock.lock();
             try {
                 write(file, content);
@@ -83,20 +49,14 @@ public class DiscUtil {
             } finally {
                 lock.unlock();
             }
-        } else {
-            Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
-                lock.lock();
-                try {
-                    write(file, content);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    lock.unlock();
-                }
-            });
-        }
+        };
 
-        return true; // don't really care but for some reason this is a boolean.
+        if (sync) {
+            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), write);
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), write);
+        }
+        return true;
     }
 
     public static String readCatch(File file) {
@@ -106,17 +66,4 @@ public class DiscUtil {
             return null;
         }
     }
-
-    // -------------------------------------------- //
-    // UTF8 ENCODE AND DECODE
-    // -------------------------------------------- //
-
-    public static byte[] utf8(String string) {
-        return string.getBytes(StandardCharsets.UTF_8);
-    }
-
-    public static String utf8(byte[] bytes) {
-        return new String(bytes, StandardCharsets.UTF_8);
-    }
-
 }

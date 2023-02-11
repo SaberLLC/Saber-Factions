@@ -85,14 +85,10 @@ public class StartupParameter {
         FactionDataHelper.init();
 
         if (Conf.useCheckSystem) {
-            int minute = 1200;
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, new CheckTask(plugin, 3), 0L, minute * 3);
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, new CheckTask(plugin, 5), 0L, minute * 5);
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, new CheckTask(plugin, 10), 0L, minute * 10);
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, new CheckTask(plugin, 15), 0L, minute * 15);
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, new CheckTask(plugin, 30), 0L, minute * 30);
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimer(plugin, CheckTask::cleanupTask, 0L, 1200L);
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, new WeeWooTask(plugin), 600L, 600L);
+            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, CheckTask.getInstance(), 0L, 1200L);
+            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimer(plugin, CheckTask.getInstance()::cleanupTask, 0L, 1220L);
+
+            FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, WeeWooTask::new, 600L, 600L);
         }
 
 

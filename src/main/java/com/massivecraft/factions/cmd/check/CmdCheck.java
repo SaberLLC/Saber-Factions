@@ -66,7 +66,7 @@ public class CmdCheck extends FCommand {
                 context.msg(TL.CHECK_LEADERBOARD_NO_DATA);
             }
         } else if (subCommand.equalsIgnoreCase("walls")) {
-            if (!CheckTask.wallCheck(context.faction.getId())) {
+            if (!CheckTask.getInstance().removeWallCheck(context.faction.getId(), context.faction.getWallCheckMinutes())) {
                 if (context.faction.getChecks().isEmpty()) {
                     context.msg(TL.CHECK_NO_CHECKS);
                     return;
@@ -83,7 +83,7 @@ public class CmdCheck extends FCommand {
                 context.msg(TL.CHECK_WALLS_MARKED_CHECKED);
             }
         } else if (subCommand.equalsIgnoreCase("buffers")) {
-            if (!CheckTask.bufferCheck(context.faction.getId())) {
+            if (!CheckTask.getInstance().removeBufferCheck(context.faction.getId(), context.faction.getBufferCheckMinutes())) {
                 if (context.faction.getChecks().isEmpty()) {
                     context.msg(TL.CHECK_NO_CHECKS);
                     return;

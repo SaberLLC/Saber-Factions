@@ -19,11 +19,15 @@ import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 public class JSONFPlayers extends MemoryFPlayers {
     // Info on how to persist
     private Gson gson;
     private File file;
+
+    private static final Pattern PATTERN_UUID = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+    private static final Pattern PATTERN_USERNAME = Pattern.compile("[a-zA-Z0-9_]{2,16}");
 
     public JSONFPlayers() {
         file = new File(FactionsPlugin.getInstance().getDataFolder(), "players.json");
@@ -49,7 +53,7 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     public void forceSave(boolean sync) {
-        final Map<String, JSONFPlayer> entitiesThatShouldBeSaved = new HashMap<>();
+        final Map<String, JSONFPlayer> entitiesThatShouldBeSaved = new HashMap<>(this.fPlayers.size());
         for (FPlayer entity : this.fPlayers.values()) {
             if (((MemoryFPlayer) entity).shouldBeSaved()) {
                 entitiesThatShouldBeSaved.put(entity.getId(), (JSONFPlayer) entity);
@@ -83,7 +87,7 @@ public class JSONFPlayers extends MemoryFPlayers {
                 String key = entry.getKey();
                 entry.getValue().setId(key);
                 if (doesKeyNeedMigration(key)) {
-                    if (!isKeyInvalid(key)) {
+                    if (isKeyValid(key)) {
                         list.add(key);
                     } else {
                         invalidList.add(key);
@@ -163,17 +167,17 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     private boolean doesKeyNeedMigration(String key) {
-        if (!key.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"))
+        if (!PATTERN_UUID.matcher(key).matches()) {
             // Not a valid UUID..
             // Valid playername, we'll mark this as one for conversion
             // to UUID
-            return key.matches("[a-zA-Z0-9_]{2,16}");
-
+            return isKeyValid(key);
+        }
         return false;
     }
 
-    private boolean isKeyInvalid(String key) {
-        return !key.matches("[a-zA-Z0-9_]{2,16}");
+    private boolean isKeyValid(String key) {
+        return !PATTERN_USERNAME.matcher(key).matches();
     }
 
     @Override

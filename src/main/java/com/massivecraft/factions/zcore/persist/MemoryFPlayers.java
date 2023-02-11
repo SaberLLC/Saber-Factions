@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.util.Logger;
+import com.massivecraft.factions.zcore.persist.json.JSONFPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -24,9 +25,11 @@ public abstract class MemoryFPlayers extends FPlayers {
     }
 
     public Collection<FPlayer> getOnlinePlayers() {
-        Set<FPlayer> entities = new HashSet<>();
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            entities.add(this.getByPlayer(player));
+        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+        Set<FPlayer> entities = new HashSet<>(players.size());
+
+        for (Player player : players) {
+            entities.add(getByPlayer(player));
         }
         return entities;
     }
@@ -53,11 +56,7 @@ public abstract class MemoryFPlayers extends FPlayers {
 
     @Override
     public FPlayer getById(String id) {
-        FPlayer player = fPlayers.get(id);
-        if (player == null) {
-            player = generateFPlayer(id);
-        }
-        return player;
+        return fPlayers.computeIfAbsent(id, JSONFPlayer::new);
     }
 
     public abstract FPlayer generateFPlayer(String id);
