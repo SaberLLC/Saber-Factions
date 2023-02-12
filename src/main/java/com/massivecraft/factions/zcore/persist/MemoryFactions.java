@@ -11,12 +11,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 public abstract class MemoryFactions extends Factions {
     public final Map<String, Faction> factions = new ConcurrentHashMap<>();
     public int nextId = 1;
 
-    public void load() {
+    public void load(Consumer<Boolean> success) {
         // Make sure the default neutral faction exists
         if (!factions.containsKey("0")) {
             Faction faction = generateFactionObject("0");
@@ -59,6 +60,7 @@ public abstract class MemoryFactions extends Factions {
             // if WarZone has old pre-1.6.0 name, rename it to remove troublesome " "
             if (faction.getTag().contains(" ")) faction.setTag(TL.WARZONE.toString());
         }
+        success.accept(true);
     }
 
     public Faction getFactionById(String id) {

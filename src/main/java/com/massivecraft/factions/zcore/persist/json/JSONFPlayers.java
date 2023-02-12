@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
@@ -66,104 +67,108 @@ public class JSONFPlayers extends MemoryFPlayers {
         return DiscUtil.writeCatch(target, this.gson.toJson(data), sync);
     }
 
-    public void load() {
-        Map<String, JSONFPlayer> fplayers = this.loadCore();
-        if (fplayers == null) return;
-        this.fPlayers.clear();
-        this.fPlayers.putAll(fplayers);
-        Logger.print("Loaded " + fPlayers.size() + " players", Logger.PrefixType.DEFAULT);
+    public void load(Consumer<Boolean> finish) {
+        this.loadCore(data -> {
+            if (data == null) {
+                Logger.print("No players loaded. Fresh start?", Logger.PrefixType.DEFAULT);
+                finish.accept(true);
+                return;
+            }
+            this.fPlayers.clear();
+            this.fPlayers.putAll(data);
+            Logger.print("Loaded " + fPlayers.size() + " players", Logger.PrefixType.DEFAULT);
+            finish.accept(true);
+        });
     }
 
-    private Map<String, JSONFPlayer> loadCore() {
-        if (!this.file.exists()) return new HashMap<>();
-        String content = DiscUtil.readCatch(this.file);
-        if (content == null) return null;
-        try {
-            Map<String, JSONFPlayer> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>() {
-            }.getType());
-            Set<String> list = new HashSet<>();
-            Set<String> invalidList = new HashSet<>();
-            for (Entry<String, JSONFPlayer> entry : data.entrySet()) {
-                String key = entry.getKey();
-                entry.getValue().setId(key);
-                if (doesKeyNeedMigration(key)) {
-                    if (isKeyValid(key)) {
-                        list.add(key);
-                    } else {
-                        invalidList.add(key);
-                    }
+    private void loadCore(Consumer<Map<String, JSONFPlayer>> finish) {
+        if (!file.exists()) {
+            finish.accept(new HashMap<>());
+            return;
+        }
+
+        String content = DiscUtil.readCatch(file);
+        if (content == null) {
+            finish.accept(null);
+            return;
+        }
+
+        Map<String, JSONFPlayer> data = gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>(){}.getType());
+        if (data == null) {
+            finish.accept(null);
+            return;
+        }
+
+        Set<String> list = new HashSet<>();
+        Set<String> invalidList = new HashSet<>();
+        for (Entry<String, JSONFPlayer> entry : data.entrySet()) {
+            String key = entry.getKey();
+            entry.getValue().setId(key);
+            if (doesKeyNeedMigration(key)) {
+                if (isKeyValid(key)) {
+                    list.add(key);
+                } else {
+                    invalidList.add(key);
                 }
-            }
-
-            if (list.size() > 0) {
-                // We've got some converting to do!
-                Bukkit.getLogger().log(Level.INFO, "Factions is now updating players.json");
-
-                // First we'll make a backup, because god forbid anybody heed a
-                // warning
-                File file = new File(this.file.getParentFile(), "players.json.old");
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                saveCore(file, data, true);
-                Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + file.getAbsolutePath());
-
-                // Start fetching those UUIDs
-                Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
-                UUIDFetcher fetcher = new UUIDFetcher(new ArrayList<>(list));
-                try {
-                    Map<String, UUID> response = fetcher.call();
-                    for (String s : list) {
-                        // Are we missing any responses?
-                        if (!response.containsKey(s)) {
-                            // They don't have a UUID so they should just be removed
-                            invalidList.add(s);
-                        }
-                    }
-                    for (String value : response.keySet()) {
-                        // For all the valid responses, let's replace their old
-                        // named entry with a UUID key
-                        String id = response.get(value).toString();
-
-                        JSONFPlayer player = data.get(value);
-
-                        if (player == null) {
-                            // The player never existed here, and shouldn't persist
-                            invalidList.add(value);
-                            continue;
-                        }
-
-                        player.setId(id); // Update the object so it knows
-
-                        data.remove(value); // Out with the old...
-                        data.put(id, player); // And in with the new
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (invalidList.size() > 0) {
-                    for (String name : invalidList) {
-                        // Remove all the invalid names we collected
-                        data.remove(name);
-                    }
-                    Bukkit.getLogger().log(Level.INFO, "While converting we found names that either don't have a UUID or aren't players and removed them from storage.");
-                    Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + StringUtils.join(invalidList, ", "));
-                }
-                saveCore(this.file, data, true); // Update the
-                // flatfile
-                Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
-            }
-            return data;
-        } catch (NullPointerException exception) {
-            exception.printStackTrace();
-            if (this.file.length() < 200) {
-                return new HashMap<>();
-            } else {
-                throw exception;
             }
         }
+
+        if (list.isEmpty()) {
+            finish.accept(data);
+            return;
+        }
+
+        Bukkit.getLogger().log(Level.INFO, "Factions is now updating players.json");
+
+        File backup = new File(file.getParentFile(), "players.json.old");
+        try {
+            backup.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        saveCore(backup, data, true);
+        Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + backup.getAbsolutePath());
+
+        Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
+
+        UUIDFetcher.FetchingSession session = UUIDFetcher.getInstance().newSession(new ArrayList<>(list));
+
+        session.fetch()
+                .whenComplete((response, throwable) -> {
+                    Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> {
+                        if (throwable != null) {
+                            finish.accept(new HashMap<>());
+                            throwable.printStackTrace();
+                            return;
+                        }
+                        for (Map.Entry<String, UUID> entry : response.entrySet()) {
+                            String value = entry.getKey();
+                            String id = entry.getValue().toString();
+
+                            JSONFPlayer player = data.get(value);
+                            if (player == null) {
+                                invalidList.add(value);
+                                continue;
+                            }
+
+                            player.setId(id);
+
+                            data.remove(value);
+                            data.put(id, player);
+                        }
+                        if (!invalidList.isEmpty()) {
+                            for (String name : invalidList) {
+                                data.remove(name);
+                            }
+                            Bukkit.getLogger().log(Level.INFO, "While converting, invalid names were removed from storage.");
+                            Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + String.join(", ", invalidList));
+                        }
+                        saveCore(file, data, true);
+                        Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
+
+                        finish.accept(data);
+                    });
+                });
     }
 
     private boolean doesKeyNeedMigration(String key) {

@@ -61,7 +61,7 @@ public class AsciiCompass {
         }
 
         public static Point fromAngle(double degrees) {
-            return VALUES[FastMath.round((degrees + 180) % 360 / 45) % 8];
+            return VALUES[(int) (Math.round((degrees + 180) % 360 / 45) % 8)];
         }
     }
 

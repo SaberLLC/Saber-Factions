@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.function.Consumer;
 
 public abstract class MemoryFPlayers extends FPlayers {
     public Map<String, FPlayer> fPlayers = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -47,7 +48,7 @@ public abstract class MemoryFPlayers extends FPlayers {
     @Override
     public abstract void forceSave();
 
-    public abstract void load();
+    public abstract void load(Consumer<Boolean> finish);
 
     @Override
     public FPlayer getByOfflinePlayer(OfflinePlayer player) {

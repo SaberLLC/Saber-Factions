@@ -28,7 +28,7 @@ public class CheckTask implements Runnable {
 
     private static CheckTask instance;
 
-    public CheckTask() {
+    private CheckTask() {
         for (int interval : INTERVALS_MINUTES) {
             wallChecks.put(interval, new ArrayList<>());
             bufferChecks.put(interval, new ArrayList<>());

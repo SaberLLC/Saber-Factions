@@ -146,86 +146,86 @@ public class FactionsPlugin extends MPlugin {
         // Load Conf from disk
         Conf.load();
 
-        if (getConfig().getBoolean("enable-faction-flight", true)) {
-            Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), new FlightEnhance(), 30L, 30L);
-        }
-
-        StartupParameter.initData(this);
-
-        VersionProtocol.printVerionInfo();
-
-
-        // Add Base Commands
-        this.cmdBase = new FCmdRoot();
-        this.cmdAutoHelp = new CmdAutoHelp();
-
-        setupPermissions();
-
-        if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
-            Plugin plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
-            if (plugin != null) {
-                new WorldGuardBridge().connect(this, true);
+        StartupParameter.initData(this, () -> {
+            if (getConfig().getBoolean("enable-faction-flight", true)) {
+                Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), new FlightEnhance(), 30L, 30L);
             }
-        }
 
-        // start up task which runs the autoLeaveAfterDaysOfInactivity routine
-        startAutoLeaveTask(false);
+            VersionProtocol.printVerionInfo();
 
-        if (Conf.usePreStartupKickSystem) {
-            getServer().getPluginManager().registerEvents(new LoginRegistry(), this);
-        }
 
-        getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
-        getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
+            // Add Base Commands
+            this.cmdBase = new FCmdRoot();
+            this.cmdAutoHelp = new CmdAutoHelp();
 
-        if (Conf.userSpawnerChunkSystem) {
-            this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
-        }
+            setupPermissions();
 
-        if(FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
-            this.getServer().getPluginManager().registerEvents(new ChorusFruitListener(), this);
-        }
+            if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
+                Plugin plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
+                if (plugin != null) {
+                    new WorldGuardBridge().connect(this, true);
+                }
+            }
 
-        // Register Event Handlers
-        eventsListener = new Listener[]{
+            // start up task which runs the autoLeaveAfterDaysOfInactivity routine
+            startAutoLeaveTask(false);
 
-                new TributeInventoryHandler(),
-                new FactionsChatListener(),
-                new FactionsEntityListener(),
-                new FactionsExploitListener(),
-                new FactionsBlockListener(),
-                new UpgradesListener(),
-                new MissionHandler(this),
-                new FChestListener(),
-                new MenuListener(),
-                new AntiChestListener()
-        };
+            if (Conf.usePreStartupKickSystem) {
+                getServer().getPluginManager().registerEvents(new LoginRegistry(), this);
+            }
 
-        if(version > 8) {
-            getServer().getPluginManager().registerEvents(new MissionHandlerModern(), this);
-        }
+            getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
+            getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
-        for (Listener eventListener : eventsListener)
-            getServer().getPluginManager().registerEvents(eventListener, this);
+            if (Conf.userSpawnerChunkSystem) {
+                this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
+            }
 
-        if (Conf.useGraceSystem) {
-            getServer().getPluginManager().registerEvents(timerManager.graceTimer, this);
-        }
+            if(FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
+                this.getServer().getPluginManager().registerEvents(new ChorusFruitListener(), this);
+            }
 
-        this.asyncPlayerMap = new AsyncPlayerMap(this);
+            // Register Event Handlers
+            eventsListener = new Listener[]{
 
-        this.getCommand(refCommand).setExecutor(cmdBase);
+                    new TributeInventoryHandler(),
+                    new FactionsChatListener(),
+                    new FactionsEntityListener(),
+                    new FactionsExploitListener(),
+                    new FactionsBlockListener(),
+                    new UpgradesListener(),
+                    new MissionHandler(this),
+                    new FChestListener(),
+                    new MenuListener(),
+                    new AntiChestListener()
+            };
 
-        if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
+            if(version > 8) {
+                getServer().getPluginManager().registerEvents(new MissionHandlerModern(), this);
+            }
 
-        this.setupPlaceholderAPI();
-        factionsAddonHashMap = new HashMap<>();
-        AddonManager.getAddonManagerInstance().loadAddons();
+            for (Listener eventListener : eventsListener)
+                getServer().getPluginManager().registerEvents(eventListener, this);
 
-        this.postEnable();
-        this.loadSuccessful = true;
-        // Set startup finished to true. to give plugins hooking in a greenlight
-        FactionsPlugin.startupFinished = true;
+            if (Conf.useGraceSystem) {
+                getServer().getPluginManager().registerEvents(timerManager.graceTimer, this);
+            }
+
+            this.asyncPlayerMap = new AsyncPlayerMap(this);
+
+            this.getCommand(refCommand).setExecutor(cmdBase);
+
+            if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
+
+            this.setupPlaceholderAPI();
+            factionsAddonHashMap = new HashMap<>();
+            AddonManager.getAddonManagerInstance().loadAddons();
+
+            this.postEnable();
+            this.loadSuccessful = true;
+            // Set startup finished to true. to give plugins hooking in a greenlight
+            FactionsPlugin.startupFinished = true;
+        });
     }
 
     private void setupPlaceholderAPI() {
