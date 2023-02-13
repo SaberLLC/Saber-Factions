@@ -6,7 +6,6 @@ import com.massivecraft.factions.util.Logger;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
-import java.io.File;
 import java.util.Set;
 
 /**

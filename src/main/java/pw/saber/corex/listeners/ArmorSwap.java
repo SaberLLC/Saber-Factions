@@ -1,10 +1,7 @@
 package pw.saber.corex.listeners;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FactionsPlugin;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.block.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;

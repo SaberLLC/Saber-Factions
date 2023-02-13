@@ -8,7 +8,6 @@ import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.SaberGUI;
 import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

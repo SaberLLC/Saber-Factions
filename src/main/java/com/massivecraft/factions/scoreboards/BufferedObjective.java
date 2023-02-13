@@ -65,7 +65,7 @@ public class BufferedObjective {
         while (builder.length() < 14) {
             builder.append(Integer.toHexString(random.nextInt()));
         }
-        return builder.toString().substring(0, 14);
+        return builder.substring(0, 14);
     }
 
     public void setTitle(String title) {

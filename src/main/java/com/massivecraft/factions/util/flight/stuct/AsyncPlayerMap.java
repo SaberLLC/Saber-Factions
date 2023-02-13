@@ -1,7 +1,6 @@
 package com.massivecraft.factions.util.flight.stuct;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.LunarAPI;
 import com.massivecraft.factions.util.TitleUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -11,7 +11,6 @@ import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayers;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 
 import java.io.File;

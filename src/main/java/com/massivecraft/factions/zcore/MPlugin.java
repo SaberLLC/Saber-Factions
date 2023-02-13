@@ -2,7 +2,6 @@ package com.massivecraft.factions.zcore;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
@@ -20,9 +19,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 
 

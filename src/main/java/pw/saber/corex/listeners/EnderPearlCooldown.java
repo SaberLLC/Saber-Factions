@@ -12,8 +12,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import pw.saber.corex.CoreX;
 
-import javax.swing.*;
-
 public class EnderPearlCooldown implements Listener {
 
 

@@ -5,7 +5,6 @@ package com.massivecraft.factions.cmd.audit;
  */
 
 import com.google.common.collect.Lists;
-import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
@@ -66,7 +65,7 @@ public class FactionLogs {
                         }
                     }
                 }
-                if (logs.size() <= 0)
+                if (logs.isEmpty())
                     toRemove.add(logType);
             }
         });

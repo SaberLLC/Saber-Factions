@@ -1,7 +1,5 @@
 package com.massivecraft.factions.zcore.util;
 
-import com.google.common.collect.ImmutableList;
-import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.util.FastMath;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,9 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
