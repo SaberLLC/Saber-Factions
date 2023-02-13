@@ -6,9 +6,9 @@ import org.bukkit.Location;
 public class LocUtils {
 
     public static String printPretty(Location location, ChatColor color, boolean bold) {
-        String xyzBefore = "%sx%s %sy%s %sz%s";
         String boldText = bold ? CC.Bold : "";
-        return String.format(xyzBefore, color, color + boldText + location.getBlockX(), color, color + boldText + location
-                .getBlockY(), color, color + boldText + location.getBlockZ());
+        return color + "x" + color + boldText + location.getBlockX() +
+                " " + color + "y" + color + boldText + location.getBlockY() +
+                " " + color + "z" + color + boldText + location.getBlockZ();
     }
 }

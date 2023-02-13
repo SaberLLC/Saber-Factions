@@ -19,6 +19,7 @@ import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeType;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -1179,7 +1180,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public ArrayList<Player> getOnlinePlayers() {
         ArrayList<Player> ret = new ArrayList<>();
         if (this.isPlayerFreeType()) return ret;
-        for (Player player : FactionsPlugin.getInstance().getServer().getOnlinePlayers()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
             if (fplayer.getFaction() == this && !fplayer.isAlt()) {
                 ret.add(player);
@@ -1262,7 +1263,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // Messages
     // ----------------------------------------------//
     public void msg(String message, Object... args) {
-        message = FactionsPlugin.getInstance().txt.parse(message, args);
+        message = TextUtil.parse(message, args);
         for (FPlayer fplayer : this.getFPlayersWhereOnline(true)) fplayer.sendMessage(message);
     }
 
@@ -1306,15 +1307,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void clearClaimOwnership(FPlayer player) {
-        if (id == null || id.isEmpty()) return;
-        Set<String> ownerData;
-
-        for (Entry<FLocation, Set<String>> entry : claimOwnership.entrySet()) {
-            ownerData = entry.getValue();
-            if (ownerData == null) continue;
-            ownerData.removeIf(s -> s.equals(player.getId()));
-            if (ownerData.isEmpty()) claimOwnership.remove(entry.getKey());
+        if (id == null || id.isEmpty()) {
+            return;
         }
+
+        String playerId = player.getId();
+
+        this.claimOwnership.entrySet().removeIf(entry -> {
+            Set<String> ownerData = entry.getValue();
+            return ownerData != null && ownerData.removeIf(s -> s.equals(playerId)) && ownerData.isEmpty();
+        });
     }
 
     public int getCountOfClaimsWithOwners() {

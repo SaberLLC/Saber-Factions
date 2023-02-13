@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class InventoryItem {
     private Runnable runnable;
 
     public InventoryItem(ItemStack original) {
-        this.clickMap = new HashMap<>();
+        this.clickMap = new EnumMap<>(ClickType.class);
         this.item = original;
     }
 
@@ -44,7 +45,6 @@ public class InventoryItem {
                 found.run();
             }
         }
-
     }
 
     public ItemStack getItem() {

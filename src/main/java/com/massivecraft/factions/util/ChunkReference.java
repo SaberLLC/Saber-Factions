@@ -18,7 +18,7 @@ public class ChunkReference {
         for (BlockState state : chunk.getTileEntities()) {
             if (state instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner) state;
-                spawners.put(spawner.getSpawnedType(), spawners.getOrDefault(spawner.getSpawnedType(), 0) + 1);
+                spawners.merge(spawner.getSpawnedType(), 1, Integer::sum);
             }
         }
         return spawners;

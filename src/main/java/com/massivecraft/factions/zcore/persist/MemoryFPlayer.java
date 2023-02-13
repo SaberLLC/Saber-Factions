@@ -403,7 +403,9 @@ public abstract class MemoryFPlayer implements FPlayer {
             Faction currentFaction = this.getFaction();
 
             currentFaction.removeFPlayer(this);
-            if (currentFaction.isNormal()) currentFaction.clearClaimOwnership(this);
+            if (currentFaction.isNormal()) {
+                currentFaction.clearClaimOwnership(this);
+            }
         }
 
         this.factionId = "0"; // The default neutral faction

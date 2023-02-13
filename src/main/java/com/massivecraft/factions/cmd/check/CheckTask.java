@@ -63,9 +63,9 @@ public class CheckTask implements Runnable {
             if (!faction.isNormal() || faction.getChecks() == null) {
                 continue;
             }
-            Set<Long> timestamps = new HashSet<>(faction.getChecks().keySet());
+            List<Long> timestamps = new ArrayList<>(faction.getChecks().keySet());
             int count = 0;
-            for (long timestamp : Lists.reverse(new ArrayList<>(timestamps))) {
+            for (long timestamp : Lists.reverse(timestamps)) {
                 if (count >= 54) {
                     faction.getChecks().remove(timestamp);
                 }
@@ -86,15 +86,13 @@ public class CheckTask implements Runnable {
             }
 
             if (faction.getWallCheckMinutes() % 60 == minute % 60) {
-                if (this.wallChecks.containsKey(faction.getWallCheckMinutes())
-                        && this.wallChecks.get(faction.getWallCheckMinutes()).contains(faction.getId())) {
+                List<String> checks = this.wallChecks.get(faction.getWallCheckMinutes());
+                if (this.wallChecks.containsKey(faction.getWallCheckMinutes()) && checks.contains(faction.getId())) {
                     continue;
                 }
+                List<String> found = this.wallChecks.computeIfAbsent(faction.getWallCheckMinutes(), integer -> new ArrayList<>());
+                found.add(faction.getId());
 
-                if (!this.wallChecks.containsKey(faction.getWallCheckMinutes())) {
-                    this.wallChecks.put(faction.getWallCheckMinutes(), new ArrayList<>());
-                }
-                this.wallChecks.get(faction.getWallCheckMinutes()).add(faction.getId());
                 faction.msg(TL.CHECK_WALLS_CHECK);
                 Bukkit.getScheduler().runTask(
                         FactionsPlugin.getInstance(),
@@ -103,15 +101,13 @@ public class CheckTask implements Runnable {
             }
 
             if (faction.getBufferCheckMinutes() % 60 == minute % 60) {
-                if (this.bufferChecks.containsKey(faction.getBufferCheckMinutes())
-                        && this.bufferChecks.get(faction.getBufferCheckMinutes()).contains(faction.getId())) {
+                List<String> checks = this.bufferChecks.get(faction.getBufferCheckMinutes());
+                if (this.bufferChecks.containsKey(faction.getBufferCheckMinutes()) && checks.contains(faction.getId())) {
                     continue;
                 }
+                List<String> found = this.bufferChecks.computeIfAbsent(faction.getBufferCheckMinutes(), integer -> new ArrayList<>());
+                found.add(faction.getId());
 
-                if (!this.bufferChecks.containsKey(faction.getBufferCheckMinutes())) {
-                    this.bufferChecks.put(faction.getBufferCheckMinutes(), new ArrayList<>());
-                }
-                this.bufferChecks.get(faction.getBufferCheckMinutes()).add(faction.getId());
                 faction.msg(TL.CHECK_BUFFERS_CHECK);
                 Bukkit.getScheduler().runTask(
                         FactionsPlugin.getInstance(),

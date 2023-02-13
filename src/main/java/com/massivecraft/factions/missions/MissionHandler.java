@@ -21,6 +21,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
@@ -231,7 +232,7 @@ public class MissionHandler implements Listener {
                         .stream().filter(key -> !key.equals("FillItem")).collect(Collectors.toSet());
 
                 // Check if the player has already completed all the missions
-                if (faction.getCompletedMissions().containsAll(availableMissions)) {
+                if (new HashSet<>(faction.getCompletedMissions()).containsAll(availableMissions)) {
 
                     faction.getCompletedMissions().removeAll(availableMissions);
 

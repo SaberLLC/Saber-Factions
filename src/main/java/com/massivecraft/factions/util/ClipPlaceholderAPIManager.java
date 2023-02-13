@@ -7,6 +7,7 @@ import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.clip.placeholderapi.expansion.Relational;
 import org.apache.commons.lang.time.DurationFormatUtils;
@@ -60,8 +61,11 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
         }
 
         FPlayer fp1 = FPlayers.getInstance().getByPlayer(p1);
+        if (fp1 == null) {
+            return "";
+        }
         FPlayer fp2 = FPlayers.getInstance().getByPlayer(p2);
-        if (fp1 == null || fp2 == null) {
+        if (fp2 == null) {
             return "";
         }
 
@@ -86,7 +90,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
         Faction faction = fPlayer.getFaction();
         if (placeholder.contains("faction_territory")) {
             faction = Board.getInstance().getFactionAt(fPlayer.getLastStoodAt());
-            placeholder = placeholder.replace("_territory", "");
+            placeholder = TextUtil.replace(placeholder, "_territory", "");
         }
         switch (placeholder) {
             // First list player stuff
@@ -250,15 +254,10 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
     private int countOn(Faction f, Relation relation, Boolean status, FPlayer player) {
         int count = 0;
         for (Faction faction : Factions.getInstance().getAllFactions()) {
-            if (faction.getRelationTo(f) == relation) {
-                if (status == null) {
-                    count += faction.getFPlayers().size();
-                } else if (status) {
-                    count += faction.getFPlayersWhereOnline(true, player).size();
-                } else {
-                    count += faction.getFPlayersWhereOnline(false, player).size();
-                }
+            if (faction.getRelationTo(f) != relation) {
+                continue;
             }
+            count += ((status == null) ? faction.getFPlayers() : faction.getFPlayersWhereOnline(status, player)).size();
         }
         return count;
     }
