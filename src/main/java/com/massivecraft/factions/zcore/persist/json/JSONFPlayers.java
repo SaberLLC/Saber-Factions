@@ -182,7 +182,7 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     private boolean isKeyValid(String key) {
-        return !PATTERN_USERNAME.matcher(key).matches();
+        return PATTERN_USERNAME.matcher(key).matches();
     }
 
     @Override

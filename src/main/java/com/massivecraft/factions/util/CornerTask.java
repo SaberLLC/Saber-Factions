@@ -20,21 +20,23 @@ public class CornerTask extends BukkitRunnable {
     }
 
     public void run() {
-        if (surrounding.isEmpty()) {
-            fPlayer.sendMessage(TL.COMMAND_CORNER_CLAIMED.format(amount));
+        if (this.fPlayer.isOffline()) {
             cancel();
-        } else if (fPlayer.isOffline()) {
+            return;
+        }
+        if (this.surrounding.isEmpty()) {
+            this.fPlayer.sendMessage(TL.COMMAND_CORNER_CLAIMED.format(this.amount));
             cancel();
+            return;
+        }
+        FLocation fLocation = this.surrounding.remove(0);
+        if (FactionsPlugin.cachedRadiusClaim && this.fPlayer.attemptClaim(this.fPlayer.getFaction(), fLocation, true)) {
+            ++amount;
+        } else if (this.fPlayer.attemptClaim(this.fPlayer.getFaction(), fLocation, true)) {
+            ++amount;
         } else {
-            FLocation fLocation = surrounding.remove(0);
-            if (FactionsPlugin.cachedRadiusClaim && fPlayer.attemptClaim(fPlayer.getFaction(), fLocation, true)) {
-                ++amount;
-            } else if (fPlayer.attemptClaim(fPlayer.getFaction(), fLocation, true)) {
-                ++amount;
-            } else {
-                fPlayer.sendMessage(TL.COMMAND_CORNER_FAIL_WITH_FEEDBACK.toString().replace("&", "§") + amount);
-                cancel();
-            }
+            this.fPlayer.sendMessage(TL.COMMAND_CORNER_FAIL_WITH_FEEDBACK.toString().replace("&", "§") + amount);
+            cancel();
         }
     }
 }

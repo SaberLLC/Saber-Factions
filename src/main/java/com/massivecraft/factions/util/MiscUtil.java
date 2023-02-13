@@ -19,8 +19,14 @@ import java.util.concurrent.TimeUnit;
 public class MiscUtil {
 
     /// TODO create tag whitelist!!
-    public static HashSet<String> substanceChars =
-            new HashSet<>(Arrays.asList("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("")));
+    public static final String substanceString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    public static final int[] substanceChars = new int[256];
+
+    static {
+        for (char c : substanceString.toCharArray()) {
+            substanceChars[Character.toLowerCase(c)] = 1;
+        }
+    }
 
     public static String formatDifference(long time) {
         if (time == 0L) {
@@ -76,13 +82,14 @@ public class MiscUtil {
     }
 
     public static String getComparisonString(String str) {
-        StringBuilder ret = new StringBuilder();
-
         str = ChatColor.stripColor(str);
-        str = str.toLowerCase();
+        int len = str.length();
 
-        for (char c : str.toCharArray()) {
-            if (substanceChars.contains(String.valueOf(c))) {
+        StringBuilder ret = new StringBuilder(len);
+
+        for (int i = 0; i < len; i++) {
+            char c = str.charAt(i);
+            if (substanceChars[Character.toLowerCase(c)] == 1) {
                 ret.append(c);
             }
         }
@@ -108,7 +115,7 @@ public class MiscUtil {
         }
 
         for (char c : str.toCharArray()) {
-            if (!substanceChars.contains(String.valueOf(c))) {
+            if (substanceChars[c] != 1) {
                 errors.add(FactionsPlugin.getInstance().txt.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
                 break;
             }

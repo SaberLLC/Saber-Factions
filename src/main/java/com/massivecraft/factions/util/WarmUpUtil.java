@@ -3,6 +3,7 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 
 public class WarmUpUtil {
 
@@ -21,7 +22,7 @@ public class WarmUpUtil {
                 player.msg(TL.WARMUPS_ALREADY);
             } else {
                 player.msg(translationKey.format(action, delay));
-                int id = FactionsPlugin.getInstance().getServer().getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+                int id = Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
                     player.stopWarmup();
                     runnable.run();
                 }, delay * 20).getTaskId();

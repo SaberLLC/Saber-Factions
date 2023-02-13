@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore;
 
 import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -47,6 +48,10 @@ public class MPluginSecretPlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerPreLogin(PlayerLoginEvent event) {
+        if (!FactionsPlugin.startupFinished) {
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "Server still starting.. try again in a moment.");
+            return;
+        }
         FPlayers.getInstance().getByPlayer(event.getPlayer());
     }
 }

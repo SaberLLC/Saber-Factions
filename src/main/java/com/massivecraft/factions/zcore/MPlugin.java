@@ -209,6 +209,10 @@ public abstract class MPlugin extends JavaPlugin {
         return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
     }
 
+    public Gson getGson() {
+        return this.gson;
+    }
+
     public void addRawTags() {
         this.rawTags.put("l", "<green>"); // logo
         this.rawTags.put("a", "<gold>"); // art

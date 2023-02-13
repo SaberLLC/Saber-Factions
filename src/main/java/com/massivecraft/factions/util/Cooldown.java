@@ -5,7 +5,9 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,31 +16,36 @@ import java.util.concurrent.TimeUnit;
  * Creation Date: 4/6/2020
  */
 public class Cooldown {
+    
+    private static final long MILLIS_IN_SECOND = TimeUnit.SECONDS.toMillis(1);
 
     public static void setCooldown(Player player, String name, int seconds) {
-        player.setMetadata(name, new FixedMetadataValue(FactionsPlugin.getInstance(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(seconds)));
+        player.setMetadata(name, new FixedMetadataValue(FactionsPlugin.getInstance(), System.currentTimeMillis() + seconds * MILLIS_IN_SECOND));
     }
 
     public static void setCooldown(Faction fac, String name, int seconds) {
+        long expiration = System.currentTimeMillis() + seconds * MILLIS_IN_SECOND;
         for (FPlayer fPlayer : fac.getFPlayersWhereOnline(true)) {
-            if (fPlayer == null) continue;
-            fPlayer.getPlayer().setMetadata(name, new FixedMetadataValue(FactionsPlugin.getInstance(), System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(seconds)));
+            Player player = fPlayer.getPlayer();
+            if (player == null) continue;
+            player.setMetadata(name, new FixedMetadataValue(FactionsPlugin.getInstance(), expiration));
         }
     }
 
     public static String sendCooldownLeft(Player player, String name) {
-        if (player.hasMetadata(name) || player.getMetadata(name).size() > 0) {
-            long remaining = player.getMetadata(name).get(0).asLong() - System.currentTimeMillis();
-            int remainSec = (int) (remaining / 1000L);
-            return TimeUtil.formatSeconds(remainSec);
-        }
-        return "";
+        List<MetadataValue> values = player.getMetadata(name);
+        if (values.isEmpty()) return "";
+
+        long remaining = values.get(0).asLong() - System.currentTimeMillis();
+        int remainSec = (int) (remaining / MILLIS_IN_SECOND);
+        return TimeUtil.formatSeconds(remainSec);
     }
 
-
     public static boolean isOnCooldown(Player player, String name) {
-        if (!player.hasMetadata(name) || player.getMetadata(name).size() <= 0) return false;
-        long time = player.getMetadata(name).get(0).asLong();
-        return (time > System.currentTimeMillis());
+        List<MetadataValue> values = player.getMetadata(name);
+        if (values.isEmpty()) return false;
+
+        long time = values.get(0).asLong();
+        return time > System.currentTimeMillis();
     }
 }

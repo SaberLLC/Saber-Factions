@@ -7,6 +7,7 @@ import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -19,47 +20,19 @@ public abstract class MemoryFactions extends Factions {
 
     public void load(Consumer<Boolean> success) {
         // Make sure the default neutral faction exists
-        if (!factions.containsKey("0")) {
-            Faction faction = generateFactionObject("0");
-            factions.put("0", faction);
-            faction.setTag(TL.WILDERNESS.toString());
-            faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
-        } else {
-            Faction faction = factions.get("0");
-            if (!faction.getTag().equalsIgnoreCase(TL.WILDERNESS.toString())) faction.setTag(TL.WILDERNESS.toString());
-            if (!faction.getDescription().equalsIgnoreCase(TL.WILDERNESS_DESCRIPTION.toString()))
-                faction.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
-        }
 
-        // Make sure the safe zone faction exists
-        if (!factions.containsKey("-1")) {
-            Faction faction = generateFactionObject("-1");
-            factions.put("-1", faction);
-            faction.setTag(TL.SAFEZONE.toString());
-            faction.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
-        } else {
-            Faction faction = factions.get("-1");
-            if (!faction.getTag().equalsIgnoreCase(TL.SAFEZONE.toString())) faction.setTag(TL.SAFEZONE.toString());
-            if (!faction.getDescription().equalsIgnoreCase(TL.SAFEZONE_DESCRIPTION.toString()))
-                faction.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
-            // if SafeZone has old pre-1.6.0 name, rename it to remove troublesome " "
-            if (faction.getTag().contains(" ")) faction.setTag(TL.SAFEZONE.toString());
-        }
+        Faction wilderness = this.factions.computeIfAbsent("0", this::generateFactionObject);
+        wilderness.setTag(TL.WILDERNESS.toString());
+        wilderness.setDescription(TL.WILDERNESS_DESCRIPTION.toString());
 
-        // Make sure the war zone faction exists
-        if (!factions.containsKey("-2")) {
-            Faction faction = generateFactionObject("-2");
-            factions.put("-2", faction);
-            faction.setTag(TL.WARZONE.toString());
-            faction.setDescription(TL.WARZONE_DESCRIPTION.toString());
-        } else {
-            Faction faction = factions.get("-2");
-            if (!faction.getTag().equalsIgnoreCase(TL.WARZONE.toString())) faction.setTag(TL.WARZONE.toString());
-            if (!faction.getDescription().equalsIgnoreCase(TL.WARZONE_DESCRIPTION.toString()))
-                faction.setDescription(TL.WARZONE_DESCRIPTION.toString());
-            // if WarZone has old pre-1.6.0 name, rename it to remove troublesome " "
-            if (faction.getTag().contains(" ")) faction.setTag(TL.WARZONE.toString());
-        }
+        Faction safezone = this.factions.computeIfAbsent("-1", this::generateFactionObject);
+        safezone.setTag(TL.SAFEZONE.toString());
+        safezone.setDescription(TL.SAFEZONE_DESCRIPTION.toString());
+
+        Faction warzone = this.factions.computeIfAbsent("-2", this::generateFactionObject);
+        warzone.setTag(TL.WARZONE.toString());
+        warzone.setDescription(TL.WARZONE_DESCRIPTION.toString());
+
         success.accept(true);
     }
 
@@ -78,24 +51,33 @@ public abstract class MemoryFactions extends Factions {
     }
 
     public Faction getBestTagMatch(String start) {
-        int best = 0;
         start = start.toLowerCase();
-        int minlength = start.length();
+        int minLength = start.length();
         Faction bestMatch = null;
+        int bestLengthDiff = Integer.MAX_VALUE;
+
         for (Faction faction : factions.values()) {
-            String candidate = faction.getTag();
-            candidate = ChatColor.stripColor(candidate);
-            if (candidate.length() < minlength) continue;
-            if (!candidate.toLowerCase().startsWith(start)) continue;
+            String tag = ChatColor.stripColor(faction.getTag());
+            if (tag.length() < minLength) {
+                continue;
+            }
 
-            // The closer to zero the better
-            int lendiff = candidate.length() - minlength;
-            if (lendiff == 0) return faction;
+            String tagLower = tag.toLowerCase();
+            if (!tagLower.startsWith(start)) {
+                continue;
+            }
 
-            if (lendiff < best || best == 0)
-                best = lendiff;
-            bestMatch = faction;
+            int lengthDiff = tag.length() - minLength;
+            if (lengthDiff == 0) {
+                return faction;
+            }
+
+            if (lengthDiff < bestLengthDiff) {
+                bestLengthDiff = lengthDiff;
+                bestMatch = faction;
+            }
         }
+
         return bestMatch;
     }
 
@@ -114,8 +96,10 @@ public abstract class MemoryFactions extends Factions {
     }
 
     public Set<String> getFactionTags() {
-        Set<String> tags = new HashSet<>();
-        for (Faction faction : factions.values()) tags.add(faction.getTag());
+        Set<String> tags = new HashSet<>(this.factions.size());
+        for (Faction faction : this.factions.values()) {
+            tags.add(faction.getTag());
+        }
         return tags;
     }
 

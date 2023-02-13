@@ -1,9 +1,9 @@
 package com.massivecraft.factions;
 
 import cc.javajobs.wgbridge.WorldGuardBridge;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.lunarclient.bukkitapi.LunarClientAPI;
 import com.massivecraft.factions.addon.AddonManager;
 import com.massivecraft.factions.addon.FactionsAddon;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -47,7 +47,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -67,6 +66,16 @@ public class FactionsPlugin extends MPlugin {
     // Our single plugin instance.
     // Single 4 life.
     public static FactionsPlugin instance;
+
+    private final Gson gsonSerializer = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+            .registerTypeAdapter(new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>(){}.getType(), new PermissionsMapTypeAdapter())
+            .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
+            .registerTypeAdapter(new TypeToken<Map<FLocation, Set<String>>>(){}.getType(), new MapFLocToStringSetTypeAdapter())
+            .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
+            .registerTypeAdapter(ReserveObject.class, new ReserveAdapter())
+            .registerTypeAdapter(Location.class, new LocationTypeAdapter())
+            .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY)
+            .create();
     public static boolean cachedRadiusClaim;
     public static Permission perms = null;
     private HashMap<String, FactionsAddon> factionsAddonHashMap;
@@ -291,6 +300,10 @@ public class FactionsPlugin extends MPlugin {
                 .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
+    @Override
+    public Gson getGson() {
+        return this.gsonSerializer;
+    }
 
     @Override
     public void onDisable() {

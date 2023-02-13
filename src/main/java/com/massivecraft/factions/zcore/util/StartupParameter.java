@@ -24,6 +24,8 @@ import org.bukkit.plugin.Plugin;
 import pw.saber.corex.CoreX;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -158,11 +160,11 @@ public class StartupParameter {
                 Files.write(Paths.get(path), "[]".getBytes());
                 json = "[]";
             }
-            FactionsPlugin.getInstance().reserveObjects = FactionsPlugin.getInstance().getGsonBuilder().create().fromJson(json, new ListParameterizedType(ReserveObject.class));
+            FactionsPlugin.getInstance().reserveObjects = FactionsPlugin.getInstance().getGson().fromJson(json, new ListParameterizedType(ReserveObject.class));
             if (FactionsPlugin.getInstance().reserveObjects == null)
                 FactionsPlugin.getInstance().reserveObjects = new ArrayList<>();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 

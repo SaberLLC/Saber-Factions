@@ -9,7 +9,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -96,6 +98,8 @@ public enum TagReplacer {
     private TagType type;
     private String tag;
 
+    public static final TagReplacer[] VALUES = values();
+
     TagReplacer(TagType type, String tag) {
         this.type = type;
         this.tag = tag;
@@ -107,9 +111,9 @@ public enum TagReplacer {
      * @param type the type we want
      * @return a list of all the variables with this type
      */
-    protected static List<TagReplacer> getByType(TagType type) {
-        List<TagReplacer> tagReplacers = new ArrayList<>();
-        for (TagReplacer tagReplacer : TagReplacer.values()) {
+    static Set<TagReplacer> getByType(TagType type) {
+        Set<TagReplacer> tagReplacers = EnumSet.noneOf(TagReplacer.class);
+        for (TagReplacer tagReplacer : VALUES) {
             if (type == TagType.FANCY) {
                 if (tagReplacer.type == TagType.FANCY) {
                     tagReplacers.add(tagReplacer);
@@ -126,7 +130,7 @@ public enum TagReplacer {
      *
      * @return value for this generic server related variable<br>
      */
-    protected String getValue() {
+    private String getValue() {
         switch (this) {
             case GRACE_TIMER:
                 return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
@@ -168,7 +172,7 @@ public enum TagReplacer {
      * @param fp  Target player (can be null)
      * @return the value for this enum!
      */
-    protected String getValue(Faction fac, FPlayer fp) {
+    String getValue(Faction fac, FPlayer fp) {
         if (this.type == TagType.GENERAL) {
             return getValue();
         }
@@ -178,7 +182,7 @@ public enum TagReplacer {
         if (fp != null) {
             switch (this) {
                 case HEADER:
-                    return FactionsPlugin.getInstance().txt.titleize(fac.getTag(fp));
+                    return TextUtil.titleize(fac.getTag(fp));
                 case PLAYER_NAME:
                     return fp.getName();
                 case FACTION:
@@ -293,8 +297,7 @@ public enum TagReplacer {
      * @return the string with the new value
      */
     public String replace(String original, String value) {
-        return (original != null && value != null) ? original.replace(tag, value) : original;
-
+        return (original != null && value != null) ? TextUtil.replace(original, tag, value) : original;
     }
 
     /**
@@ -319,7 +322,7 @@ public enum TagReplacer {
 
     protected enum TagType {
         FANCY(0), PLAYER(1), FACTION(2), GENERAL(3);
-        public int id;
+        public final int id;
 
         TagType(int id) {
             this.id = id;
