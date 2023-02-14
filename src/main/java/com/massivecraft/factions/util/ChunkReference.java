@@ -39,11 +39,9 @@ public class ChunkReference {
     }
 
     public static boolean isSameChunk(Location one, Location two) {
-        if (one.getBlockX() >> 4 != two.getBlockX() >> 4)
-            return false;
-        if (one.getBlockZ() >> 4 != two.getBlockZ() >> 4)
-            return false;
-        return one.getWorld() == two.getWorld();
+        return one.getWorld() == two.getWorld() &&
+                WorldUtil.blockToChunk(FastMath.floor(one.getX())) == WorldUtil.blockToChunk(FastMath.floor(two.getX())) &&
+                WorldUtil.blockToChunk(FastMath.floor(one.getZ())) == WorldUtil.blockToChunk(FastMath.floor(two.getZ()));
     }
 
     public static boolean isSameBlock(PlayerMoveEvent event) {
@@ -51,13 +49,9 @@ public class ChunkReference {
     }
 
     public static boolean isSameBlock(Location one, Location two) {
-        if (one.getBlockX() != two.getBlockX())
-            return false;
-        if (one.getBlockZ() != two.getBlockZ())
-            return false;
-        if (one.getBlockY() != two.getBlockY())
-            return false;
-        return Objects.equals(one.getWorld(), two.getWorld());
+        return Objects.equals(one.getWorld(), two.getWorld()) &&
+                FastMath.floor(one.getX()) == FastMath.floor(two.getX()) &&
+                FastMath.floor(one.getZ()) == FastMath.floor(two.getZ()) &&
+                FastMath.floor(one.getY()) == FastMath.floor(two.getY());
     }
-
 }

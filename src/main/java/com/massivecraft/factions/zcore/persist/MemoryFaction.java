@@ -1405,4 +1405,17 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public Set<FLocation> getAllClaims() {
         return Board.getInstance().getAllClaims(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MemoryFaction that = (MemoryFaction) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
+    }
 }

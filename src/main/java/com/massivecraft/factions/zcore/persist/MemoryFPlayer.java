@@ -19,6 +19,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.FastUUID;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
@@ -481,7 +482,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             // Older versions of FactionsUUID don't save the name,
             // so `name` will be null the first time it's retrieved
             // after updating
-            OfflinePlayer offline = Bukkit.getOfflinePlayer(UUID.fromString(getId()));
+            OfflinePlayer offline = Bukkit.getOfflinePlayer(FastUUID.parseUUID(getId()));
             this.name = offline.getName() != null ? offline.getName() : getId();
         }
         return name;
@@ -499,10 +500,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     // These are used in information messages
 
     public String getNameAndSomething(String something) {
-        String ret = this.role.getPrefix();
-        if (something.length() > 0) ret += something + " ";
-        ret += this.getName();
-        return ret;
+        return this.role.getPrefix() + (something.length() > 0 ? something + " " : "") + this.getName();
     }
 
     public String getNameAndTitle() {
@@ -600,11 +598,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void alterPower(double delta) {
-        this.power += delta;
-        if (this.power > this.getPowerMax())
-            this.power = this.getPowerMax();
-        else if (this.power < this.getPowerMin())
-            this.power = this.getPowerMin();
+        this.power = Math.max(Math.min(this.power + delta, this.getPowerMax()), this.getPowerMin());
     }
 
     public double getPowerMax() {
@@ -1088,7 +1082,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public Player getPlayer() {
-        return Bukkit.getPlayer(UUID.fromString(this.getId()));
+        return Bukkit.getPlayer(FastUUID.parseUUID(this.getId()));
     }
 
     public boolean isOnline() {
@@ -1557,5 +1551,18 @@ public abstract class MemoryFPlayer implements FPlayer {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MemoryFPlayer that = (MemoryFPlayer) o;
+        return Objects.equals(this.id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.id);
     }
 }

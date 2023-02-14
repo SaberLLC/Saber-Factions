@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -109,8 +110,20 @@ public abstract class MemoryFactions extends Factions {
     }
 
     @Override
-    public ArrayList<Faction> getAllFactions() {
+    public List<Faction> getAllFactions() {
         return new ArrayList<>(factions.values());
+    }
+
+    @Override
+    public List<Faction> getAllNormalFactions() {
+        ArrayList<Faction> normal = new ArrayList<>(this.factions.size() - 1);
+        for (Faction value : this.factions.values()) {
+            if (!value.isNormal()) {
+                continue;
+            }
+            normal.add(value);
+        }
+        return normal;
     }
 
     @Override

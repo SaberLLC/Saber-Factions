@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.json.JSONFPlayer;
+import com.massivecraft.factions.zcore.util.FastUUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -37,7 +38,7 @@ public abstract class MemoryFPlayers extends FPlayers {
 
     @Override
     public FPlayer getByPlayer(Player player) {
-        return getById(player.getUniqueId().toString());
+        return getById(FastUUID.toString(player.getUniqueId()));
     }
 
     @Override

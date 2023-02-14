@@ -46,10 +46,7 @@ public class CmdList extends FCommand {
             if (!context.payForCommand(Conf.econCostList, "to list the factions", "for listing the factions"))
                 return;
 
-            ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
-            factionList.remove(Factions.getInstance().getWilderness());
-            factionList.remove(Factions.getInstance().getSafeZone());
-            factionList.remove(Factions.getInstance().getWarZone());
+            List<Faction> factionList = Factions.getInstance().getAllNormalFactions();
 
             // remove exempt factions
             if (context.fPlayer != null && context.fPlayer.getPlayer() != null && !context.fPlayer.getPlayer().hasPermission("factions.show.bypassexempt")) {
