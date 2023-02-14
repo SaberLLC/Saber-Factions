@@ -29,7 +29,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
@@ -502,7 +501,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             if (upgradedSize > -1) {
                 size = upgradedSize;
             } else {
-                FactionsPlugin.getInstance().getLogger().severe(FactionsPlugin.getInstance().txt.parse(TL.COMMAND_UPGRADES_LEVEL_ERROR.toString(), "CHEST", chestUpgrade));
+                FactionsPlugin.getInstance().getLogger().severe(TextUtil.parse(TL.COMMAND_UPGRADES_LEVEL_ERROR.toString(), "CHEST", chestUpgrade));
             }
         }
         return size * 9;
@@ -1124,11 +1123,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
-        Set<FPlayer> ret = new HashSet<>();
+        Set<FPlayer> ret = new HashSet<>(this.getSize());
+        Set<FPlayer> onlinePlayers = FPlayers.getInstance().getOnlinePlayers();
 
-        for (FPlayer fplayer : fplayers)
-            if (fplayer.isOnline() == online) ret.add(fplayer);
-
+        for (FPlayer fplayer : this.fplayers) {
+            if (online == onlinePlayers.contains(fplayer)) {
+                ret.add(fplayer);
+            }
+        }
         return ret;
     }
 

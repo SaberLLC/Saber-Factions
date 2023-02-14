@@ -46,7 +46,7 @@ public class MPluginSecretPlayerListener implements Listener {
         */
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(PlayerLoginEvent event) {
         if (!FactionsPlugin.startupFinished) {
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER, "Server still starting.. try again in a moment.");

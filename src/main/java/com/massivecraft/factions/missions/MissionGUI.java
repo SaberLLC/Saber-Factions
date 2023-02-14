@@ -10,6 +10,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -231,7 +232,7 @@ public class MissionGUI implements FactionGUI {
                         long timeTillDeadline = mission.getStartTime() + deadlineMillis - System.currentTimeMillis();
 
                         loreLines.add("");
-                        loreLines.add( FactionsPlugin.getInstance().txt.parse(plugin.getFileManager().getMissions().getConfig().getString("DeadlineMissionLore", ""),
+                        loreLines.add(TextUtil.parse(plugin.getFileManager().getMissions().getConfig().getString("DeadlineMissionLore", ""),
                                 String.format("%02dh %02dm %02ds",
                                         TimeUnit.MILLISECONDS.toHours(timeTillDeadline),
                                         TimeUnit.MILLISECONDS.toMinutes(timeTillDeadline) -
@@ -267,7 +268,7 @@ public class MissionGUI implements FactionGUI {
             if (plugin.getFileManager().getMissions().getConfig().getBoolean("DenyMissionsMoreThenOnce") &&
                     // Check if the completed missions contain all the available missions,
                     // doing it this way since there might be completed missions that are no longer available
-                    fPlayer.getFaction().getCompletedMissions().containsAll(configurationSection.getKeys(false)
+                    new HashSet<>(fPlayer.getFaction().getCompletedMissions()).containsAll(configurationSection.getKeys(false)
                             .stream().filter(key -> !key.equals("FillItem")).collect(Collectors.toSet()))) {
                 material = plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Material");
                 displayName = plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Name");
@@ -283,7 +284,7 @@ public class MissionGUI implements FactionGUI {
 
                 loree.clear();
                 for (String string : plugin.getFileManager().getMissions().getConfig().getStringList("Randomization.Start-Item.Disallowed.Lore")) {
-                    loree.add(CC.translate(string).replace("%reason%", FactionsPlugin.getInstance().txt.parse(TL.MISSION_MISSION_MAX_ALLOWED.toString(), plugin.getFileManager().getMissions().getConfig().getInt("MaximumMissionsAllowedAtOnce"))));
+                    loree.add(CC.translate(string).replace("%reason%", TextUtil.parse(TL.MISSION_MISSION_MAX_ALLOWED.toString(), plugin.getFileManager().getMissions().getConfig().getInt("MaximumMissionsAllowedAtOnce"))));
                 }
             }
 

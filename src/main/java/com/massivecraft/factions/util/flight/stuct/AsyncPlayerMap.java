@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -19,8 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Creation Date: 10/27/2020
  */
 public class AsyncPlayerMap implements Runnable, Listener {
-    private volatile ConcurrentHashMap<String, Player> players = new ConcurrentHashMap<>();
-    private volatile ConcurrentHashMap<String, Location> locations = new ConcurrentHashMap<>();
+    private volatile Map<String, Player> players = new ConcurrentHashMap<>();
+    private volatile Map<String, Location> locations = new ConcurrentHashMap<>();
 
     public AsyncPlayerMap(Plugin bukkitPlugin) {
         Bukkit.getPluginManager().registerEvents(this, bukkitPlugin);
@@ -48,11 +49,11 @@ public class AsyncPlayerMap implements Runnable, Listener {
         this.players.remove(e.getPlayer().getName());
     }
 
-    public ConcurrentHashMap<String, Player> getPlayers() {
+    public Map<String, Player> getPlayers() {
         return this.players;
     }
 
-    public ConcurrentHashMap<String, Location> getLocations() {
+    public Map<String, Location> getLocations() {
         return this.locations;
     }
 }

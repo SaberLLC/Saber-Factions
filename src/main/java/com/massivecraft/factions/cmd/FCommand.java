@@ -234,12 +234,12 @@ public abstract class FCommand {
         }
 
         if (args.size() > 0) {
-            ret.append(FactionsPlugin.getInstance().txt.parseTags(" "));
+            ret.append(TextUtil.parseTags(" "));
             ret.append(TextUtil.implode(args, " "));
         }
 
         if (addShortHelp) {
-            ret.append(FactionsPlugin.getInstance().txt.parseTags(" "));
+            ret.append(TextUtil.parseTags(" "));
             ret.append(this.getHelpShort());
         }
 

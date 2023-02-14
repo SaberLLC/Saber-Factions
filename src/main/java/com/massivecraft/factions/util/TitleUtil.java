@@ -13,9 +13,10 @@ public class TitleUtil {
 
     public static void sendFactionChangeTitle(FPlayer me, Faction faction) {
         if (me == null) return;
-        FileConfiguration config = FactionsPlugin.getInstance().getConfig();
         int version = FactionsPlugin.getInstance().version;
         if (version != 7) {
+            FileConfiguration config = FactionsPlugin.getInstance().getConfig();
+
             String title = parseAllPlaceholders(TextUtil.replace(config.getString("Title.Format.Title"), "{Faction}", faction.getColorTo(me) + faction.getTag()), faction, me.getPlayer());
             String subTitle = parseAllPlaceholders(TextUtil.replace(config.getString("Title.Format.Subtitle"), "{Description}", faction.getDescription()).replace("{Faction}", faction.getColorTo(me) + faction.getTag()), faction, me.getPlayer());
 

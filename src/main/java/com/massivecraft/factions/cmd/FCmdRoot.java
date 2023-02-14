@@ -22,6 +22,7 @@ import com.massivecraft.factions.cmd.tnt.CmdTntFill;
 import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -198,7 +199,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.aliases.removeAll(Collections.<String>singletonList(null));
 
         this.setHelpShort("The faction base command");
-        this.helpLong.add(FactionsPlugin.getInstance().txt.parseTags("<i>This command contains all faction stuff."));
+        this.helpLong.add(TextUtil.parseTags("<i>This command contains all faction stuff."));
 
         if (CommodoreProvider.isSupported()) brigadierManager = new BrigadierManager();
 

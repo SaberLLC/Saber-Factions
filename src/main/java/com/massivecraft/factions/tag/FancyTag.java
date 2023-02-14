@@ -79,7 +79,7 @@ public enum FancyTag implements Tag {
 
     private static List<Component> processRelation(String prefix, Faction faction, FPlayer fPlayer, Relation relation) {
         List<Component> Components = new ArrayList<>();
-        TextComponent.Builder message = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+        TextComponent.Builder message = TextUtil.parseFancy(prefix);
         boolean first = true;
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {

@@ -128,13 +128,7 @@ public class FactionDataHelper {
     }
 
     public static FactionData findFactionData(Faction faction) {
-        String id = faction.getId();
-        for (FactionData data : FactionDataHelper.data) {
-            if (data.getFactionID().equals(id)) {
-                return data;
-            }
-        }
-        return null;
+        return findFactionData(faction.getId());
     }
 
     public static String getFactionIDFromFile(File file) {

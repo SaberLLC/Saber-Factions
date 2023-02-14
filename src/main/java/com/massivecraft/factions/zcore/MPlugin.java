@@ -7,6 +7,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.util.Logger;
+import com.massivecraft.factions.zcore.persist.MemoryFPlayers;
 import com.massivecraft.factions.zcore.persist.SaveTask;
 import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
@@ -19,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
 import java.lang.reflect.Modifier;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.logging.Level;
 
@@ -29,7 +31,6 @@ public abstract class MPlugin extends JavaPlugin {
     public final Gson gson = this.getGsonBuilder().create();
     // Some utils
     public Persist persist;
-    public TextUtil txt;
     public PermUtil perm;
     public String refCommand = "";
     //holds f stuck taskids
@@ -75,7 +76,6 @@ public abstract class MPlugin extends JavaPlugin {
         this.perm = new PermUtil(this);
         this.persist = new Persist(this);
 
-        this.txt = new TextUtil();
         initTXT();
 
         // attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
@@ -115,7 +115,7 @@ public abstract class MPlugin extends JavaPlugin {
                 getDataFolder().mkdir();
                 lang.createNewFile();
                 if (defLangStream != null) {
-                    out = new FileOutputStream(lang);
+                    out = Files.newOutputStream(lang.toPath());
                     int read;
                     byte[] bytes = new byte[1024];
 
@@ -183,6 +183,7 @@ public abstract class MPlugin extends JavaPlugin {
             FPlayers.getInstance().forceSave();
             Board.getInstance().forceSave();
         }
+        ((MemoryFPlayers) FPlayers.getInstance()).wipeOnlinePlayers();
 
         Logger.print("Shutdown Successful!", Logger.PrefixType.DEFAULT);
     }

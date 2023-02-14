@@ -362,9 +362,9 @@ public abstract class MemoryBoard extends Board {
             // send header and that's all
             String header = show.get(0);
             if (TagReplacer.HEADER.contains(header)) {
-                ret.add(FactionsPlugin.getInstance().txt.titleize(tag));
+                ret.add(TextUtil.titleize(tag));
             } else {
-                ret.add(FactionsPlugin.getInstance().txt.parse(TagReplacer.FACTION.replace(header, tag)));
+                ret.add(TextUtil.parse(TagReplacer.FACTION.replace(header, tag)));
             }
             return ret; // we only show header for non-normal factions
         }
@@ -384,7 +384,7 @@ public abstract class MemoryBoard extends Board {
                 List<Component> fancy = TagUtil.parseFancy(faction, to, parsed);
                 if (fancy != null) {
                     for (Component msg : fancy) {
-                        ret.add((FactionsPlugin.getInstance().txt.parse(msg.toOldMessageFormat())));
+                        ret.add((TextUtil.parse(msg.toOldMessageFormat())));
                     }
                 }
                 continue;
@@ -398,7 +398,7 @@ public abstract class MemoryBoard extends Board {
                 if (parsed.contains("%")) {
                     parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
                 }
-                ret.add(FactionsPlugin.getInstance().txt.parse(parsed));
+                ret.add(TextUtil.parse(parsed));
             }
         }
 

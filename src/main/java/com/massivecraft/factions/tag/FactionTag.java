@@ -6,7 +6,9 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.util.FastMath;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -22,7 +24,7 @@ public enum FactionTag implements Tag {
     HOME_Z("{z}", (fac) -> fac.hasHome() ? String.valueOf(fac.getHome().getBlockZ()) : Tag.isMinimalShow() ? null : "{ig}"),
     CHUNKS("{chunks}", (fac) -> String.valueOf(fac.getLandRounded())),
     WARPS("{warps}", (fac) -> String.valueOf(fac.getWarps().size())),
-    HEADER("{header}", (fac, fp) -> FactionsPlugin.getInstance().txt.titleize(fac.getTag(fp))),
+    HEADER("{header}", (fac, fp) -> TextUtil.titleize(fac.getTag(fp))),
     POWER("{power}", (fac) -> String.valueOf(fac.getPowerRounded())),
     MAX_POWER("{maxPower}", (fac) -> String.valueOf(fac.getPowerMaxRounded())),
     POWER_BOOST("{power-boost}", (fac) -> {
@@ -42,7 +44,7 @@ public enum FactionTag implements Tag {
             boolean raidable = fac.getLandRounded() >= fac.getPowerRounded();
             String str = raidable ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
             if (FactionsPlugin.getInstance().getConfig().getBoolean("hcf.dtr", false)) {
-                int dtr = raidable ? 0 : (int) Math.ceil(((double) (fac.getPowerRounded() - fac.getLandRounded())) / Conf.powerPerDeath);
+                int dtr = raidable ? 0 : FastMath.ceil(((double) (fac.getPowerRounded() - fac.getLandRounded())) / Conf.powerPerDeath);
                 str += ' ' + TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE.format(dtr);
             }
             return str;

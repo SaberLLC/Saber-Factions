@@ -201,7 +201,7 @@ public abstract class MCommand<T extends MPlugin> {
 
     public String getUseageTemplate(List<MCommand<?>> commandChain, boolean addShortHelp) {
         StringBuilder ret = new StringBuilder();
-        ret.append(p.txt.parseTags("<c>"));
+        ret.append(TextUtil.parseTags("<c>"));
         ret.append('/');
 
         for (MCommand<?> mc : commandChain) {
@@ -228,12 +228,12 @@ public abstract class MCommand<T extends MPlugin> {
         }
 
         if (args.size() > 0) {
-            ret.append(p.txt.parseTags("<plugin> "));
+            ret.append(TextUtil.parseTags("<plugin> "));
             ret.append(TextUtil.implode(args, " "));
         }
 
         if (addShortHelp) {
-            ret.append(p.txt.parseTags(" <i>"));
+            ret.append(TextUtil.parseTags(" <i>"));
             ret.append(this.getHelpShort());
         }
 
@@ -253,11 +253,11 @@ public abstract class MCommand<T extends MPlugin> {
     // -------------------------------------------- //
 
     public void msg(String str, Object... args) {
-        sender.sendMessage(p.txt.parse(str, args));
+        sender.sendMessage(TextUtil.parse(str, args));
     }
 
     public void msg(TL translation, Object... args) {
-        sender.sendMessage(p.txt.parse(translation.toString(), args));
+        sender.sendMessage(TextUtil.parse(translation.toString(), args));
     }
 
     public void sendMessage(String msg) {

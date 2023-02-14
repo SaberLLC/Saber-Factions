@@ -17,6 +17,8 @@ import java.util.function.Consumer;
 public abstract class MemoryFPlayers extends FPlayers {
     public Map<String, FPlayer> fPlayers = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
 
+    private final Map<Player, FPlayer> bukkitFPlayers = new HashMap<>(Bukkit.getMaxPlayers());
+
     public void clean() {
         for (FPlayer fplayer : this.fPlayers.values()) {
             if (!Factions.getInstance().isValidFactionId(fplayer.getFactionId())) {
@@ -26,19 +28,22 @@ public abstract class MemoryFPlayers extends FPlayers {
         }
     }
 
-    public Collection<FPlayer> getOnlinePlayers() {
-        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-        Set<FPlayer> entities = new HashSet<>(players.size());
+    public Set<FPlayer> getOnlinePlayers() {
+        return new HashSet<>(this.bukkitFPlayers.values());
+    }
 
-        for (Player player : players) {
-            entities.add(getByPlayer(player));
-        }
-        return entities;
+    public FPlayer removeOnlinePlayer(Player player) {
+        return this.bukkitFPlayers.remove(player);
+    }
+
+    public void wipeOnlinePlayers() {
+        this.bukkitFPlayers.clear();
     }
 
     @Override
     public FPlayer getByPlayer(Player player) {
-        return getById(FastUUID.toString(player.getUniqueId()));
+        String id = FastUUID.toString(player.getUniqueId());
+        return player.isOnline() ? this.bukkitFPlayers.computeIfAbsent(player, key -> getById(id)) : getById(id);
     }
 
     @Override

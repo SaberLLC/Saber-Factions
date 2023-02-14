@@ -1,6 +1,7 @@
 package pw.saber.corex.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class AntiBookQuillCrash implements Listener {
 
+    private static Material WRITTABLE_BOOK = XMaterial.WRITABLE_BOOK.parseMaterial();
+
     @EventHandler
     public void onAttemptCrash(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR) {
@@ -17,7 +20,7 @@ public class AntiBookQuillCrash implements Listener {
         }
         Player player = event.getPlayer();
         ItemStack item = player.getItemInHand();
-        if (item != null && item.getType() == XMaterial.WRITABLE_BOOK.parseMaterial()) {
+        if (item != null && item.getType() == WRITTABLE_BOOK) {
             event.setCancelled(true);
         }
     }

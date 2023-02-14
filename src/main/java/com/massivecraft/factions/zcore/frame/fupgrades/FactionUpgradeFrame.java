@@ -8,6 +8,7 @@ import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.SaberGUI;
 import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -65,7 +66,7 @@ public class FactionUpgradeFrame extends SaberGUI {
                             payee = fme;
                         }
 
-                        if (Econ.modifyMoney(payee, -cost, FactionsPlugin.getInstance().txt.parse(TL.UPGRADE_TOUPGRADE.toString(), upgradeType), FactionsPlugin.getInstance().txt.parse(TL.UPGRADE_FORUPGRADE.toString(), upgradeType))) {
+                        if (Econ.modifyMoney(payee, -cost, TextUtil.parse(TL.UPGRADE_TOUPGRADE.toString(), upgradeType), TextUtil.parse(TL.UPGRADE_FORUPGRADE.toString(), upgradeType))) {
                             handleTransaction(fme, upgradeType);
                             faction.setUpgrade(upgradeType, faction.getUpgrade(upgradeType) + 1);
                             redraw();

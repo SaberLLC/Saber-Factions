@@ -19,10 +19,6 @@ public class VisualizeUtil {
         return playerLocations.computeIfAbsent(uuid, k -> new HashSet<>());
     }
 
-    public static Set<Location> getPlayerLocationsRaw(UUID uuid) {
-        return playerLocations.get(uuid);
-    }
-
     @SuppressWarnings("deprecation")
     public static void addLocation(Player player, Location location, Material type, byte data) {
         getPlayerLocations(player).add(location);
@@ -57,15 +53,13 @@ public class VisualizeUtil {
 
     @SuppressWarnings("deprecation")
     public static void clear(Player player) {
-        Set<Location> locations = getPlayerLocationsRaw(player.getUniqueId());
+        Set<Location> locations = playerLocations.remove(player.getUniqueId());
         if (locations == null) {
             return;
         }
         for (Location location : locations) {
-            Block block = location.getWorld().getBlockAt(location);
+            Block block = location.getBlock();
             player.sendBlockChange(location, block.getType(), block.getData());
         }
-        locations.clear();
     }
-
 }

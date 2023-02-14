@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd.check;
 
-import com.google.common.collect.Lists;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
@@ -9,10 +8,9 @@ import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CheckTask implements Runnable {
@@ -63,11 +61,13 @@ public class CheckTask implements Runnable {
             if (!faction.isNormal() || faction.getChecks() == null) {
                 continue;
             }
-            List<Long> timestamps = new ArrayList<>(faction.getChecks().keySet());
+            Iterator<Map.Entry<Long, String>> iterator = faction.getChecks().entrySet().iterator();
+
             int count = 0;
-            for (long timestamp : Lists.reverse(timestamps)) {
+            while (iterator.hasNext()) {
                 if (count >= 54) {
-                    faction.getChecks().remove(timestamp);
+                    iterator.next();
+                    iterator.remove();
                 }
                 ++count;
             }
@@ -87,7 +87,7 @@ public class CheckTask implements Runnable {
 
             if (faction.getWallCheckMinutes() % 60 == minute % 60) {
                 List<String> checks = this.wallChecks.get(faction.getWallCheckMinutes());
-                if (this.wallChecks.containsKey(faction.getWallCheckMinutes()) && checks.contains(faction.getId())) {
+                if (checks != null && checks.contains(faction.getId())) {
                     continue;
                 }
                 List<String> found = this.wallChecks.computeIfAbsent(faction.getWallCheckMinutes(), integer -> new ArrayList<>());
@@ -102,7 +102,7 @@ public class CheckTask implements Runnable {
 
             if (faction.getBufferCheckMinutes() % 60 == minute % 60) {
                 List<String> checks = this.bufferChecks.get(faction.getBufferCheckMinutes());
-                if (this.bufferChecks.containsKey(faction.getBufferCheckMinutes()) && checks.contains(faction.getId())) {
+                if (checks != null && checks.contains(faction.getId())) {
                     continue;
                 }
                 List<String> found = this.bufferChecks.computeIfAbsent(faction.getBufferCheckMinutes(), integer -> new ArrayList<>());
