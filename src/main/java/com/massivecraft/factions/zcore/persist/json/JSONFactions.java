@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore.persist.json;
 
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
@@ -24,17 +23,11 @@ import java.util.logging.Level;
 
 public class JSONFactions extends MemoryFactions {
     // Info on how to persist
-    private final Gson gson;
     private final File file;
 
     public JSONFactions() {
         this.file = new File(FactionsPlugin.getInstance().getDataFolder(), "factions.json");
-        this.gson = FactionsPlugin.getInstance().gson;
         this.nextId = 1;
-    }
-
-    public Gson getGson() {
-        return gson;
     }
 
     // -------------------------------------------- //
@@ -58,7 +51,7 @@ public class JSONFactions extends MemoryFactions {
     }
 
     private boolean saveCore(File target, Map<String, JSONFaction> entities, boolean sync) {
-        return DiscUtil.writeCatch(target, this.gson.toJson(entities), sync);
+        return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(entities), sync);
     }
 
     public void load(Consumer<Boolean> success) {
@@ -87,7 +80,7 @@ public class JSONFactions extends MemoryFactions {
             return;
         }
 
-        Map<String, JSONFaction> data = this.gson.fromJson(content, new TypeToken<Map<String, JSONFaction>>(){}.getType());
+        Map<String, JSONFaction> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFaction>>(){}.getType());
         if (data == null) {
             finish.accept(null);
             return;

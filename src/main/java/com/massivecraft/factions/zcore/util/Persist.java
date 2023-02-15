@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.MPlugin;
 
@@ -100,7 +101,7 @@ public class Persist {
     }
 
     public boolean save(Object instance, File file) {
-        return DiscUtil.writeCatch(file, p.gson.toJson(instance), false);
+        return DiscUtil.writeCatch(file, FactionsPlugin.getInstance().getGson().toJson(instance), false);
     }
 
     public boolean saveSync(Object instance) {
@@ -112,7 +113,7 @@ public class Persist {
     }
 
     public boolean saveSync(Object instance, File file) {
-        return DiscUtil.writeCatch(file, p.gson.toJson(instance), true);
+        return DiscUtil.writeCatch(file, FactionsPlugin.getInstance().getGson().toJson(instance), true);
     }
 
     // LOAD BY CLASS
@@ -132,7 +133,7 @@ public class Persist {
         }
 
         try {
-            return p.gson.fromJson(content, clazz);
+            return FactionsPlugin.getInstance().getGson().fromJson(content, clazz);
         } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the file, most likely
             Logger.print(ex.getMessage(), Logger.PrefixType.WARNING);
         }
@@ -155,7 +156,7 @@ public class Persist {
         }
 
         try {
-            return (T) p.gson.fromJson(content, typeOfT);
+            return FactionsPlugin.getInstance().getGson().fromJson(content, typeOfT);
         } catch (Exception ex) {    // output the error message rather than full stack trace; error parsing the file, most likely
             Logger.print(ex.getMessage(), Logger.PrefixType.WARNING);
         }

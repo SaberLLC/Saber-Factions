@@ -9,6 +9,7 @@ import me.lucko.commodore.Commodore;
 import me.lucko.commodore.CommodoreProvider;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -43,18 +44,18 @@ public class BrigadierManager {
             if (subCommand.requirements.brigadier != null) {
                 // If the requirements explicitly provide a BrigadierProvider then use it
                 Class<? extends BrigadierProvider> brigadierProvider = subCommand.requirements.brigadier;
-
                 try {
                     Constructor<? extends BrigadierProvider> constructor = brigadierProvider.getDeclaredConstructor(subCommand.getClass());
                     brigadier.then(constructor.newInstance(subCommand).get(literal));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                         InvocationTargetException exception) {
+                    exception.printStackTrace();
                 }
             } else {
                 // Generate our own based on args - quite ugly
 
                 // We create an orderly stack of all args, required and optional, format them differently
-                List<RequiredArgumentBuilder<Object, ?>> stack = new ArrayList<>();
+                List<RequiredArgumentBuilder<Object, ?>> stack = new ArrayList<>(subCommand.requiredArgs.size() + subCommand.optionalArgs.size());
                 for (String required : subCommand.requiredArgs) {
                     // Simply add the arg name as required
                     stack.add(RequiredArgumentBuilder.argument(required, StringArgumentType.word()));
@@ -92,5 +93,4 @@ public class BrigadierManager {
             }
         }
     }
-
 }

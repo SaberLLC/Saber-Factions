@@ -56,7 +56,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -78,7 +77,7 @@ public class FactionsPlugin extends MPlugin {
             .create();
     public static boolean cachedRadiusClaim;
     public static Permission perms = null;
-    private HashMap<String, FactionsAddon> factionsAddonHashMap;
+    private Map<String, FactionsAddon> factionsAddonHashMap;
     // This plugin sets the boolean true when fully enabled.
     // Plugins can check this boolean while hooking in have
     // a green light to use the api.
@@ -258,7 +257,7 @@ public class FactionsPlugin extends MPlugin {
         }
     }
 
-    public HashMap<String, FactionsAddon> getFactionsAddonHashMap() {
+    public Map<String, FactionsAddon> getFactionsAddonHashMap() {
         return factionsAddonHashMap;
     }
 
@@ -274,30 +273,12 @@ public class FactionsPlugin extends MPlugin {
         try {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
             if (rsp != null) perms = rsp.getProvider();
-        } catch (NoClassDefFoundError ex) {
+        } catch (NoClassDefFoundError ignored) {
         }
     }
 
     public BannerManager getBannerManager() {
         return bannerManager;
-    }
-
-    @Override
-    public GsonBuilder getGsonBuilder() {
-        Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
-        }.getType();
-
-        Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
-        }.getType();
-
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-                .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
-                .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
-                .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
-                .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
-                .registerTypeAdapter(ReserveObject.class, new ReserveAdapter())
-                .registerTypeAdapter(Location.class, new LocationTypeAdapter())
-                .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
 
     @Override

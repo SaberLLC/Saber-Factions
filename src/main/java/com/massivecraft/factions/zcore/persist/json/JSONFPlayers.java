@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore.persist.json;
 
 import com.google.common.collect.Maps;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
@@ -23,7 +22,6 @@ import java.util.regex.Pattern;
 
 public class JSONFPlayers extends MemoryFPlayers {
     // Info on how to persist
-    private Gson gson;
     private File file;
 
     private static final Pattern PATTERN_UUID = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
@@ -31,15 +29,6 @@ public class JSONFPlayers extends MemoryFPlayers {
 
     public JSONFPlayers() {
         file = new File(FactionsPlugin.getInstance().getDataFolder(), "players.json");
-        gson = FactionsPlugin.getInstance().gson;
-    }
-
-    public Gson getGson() {
-        return gson;
-    }
-
-    public void setGson(Gson gson) {
-        this.gson = gson;
     }
 
     public void convertFrom(MemoryFPlayers old) {
@@ -63,7 +52,7 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     private boolean saveCore(File target, Map<String, JSONFPlayer> data, boolean sync) {
-        return DiscUtil.writeCatch(target, this.gson.toJson(data), sync);
+        return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(data), sync);
     }
 
     public void load(Consumer<Boolean> finish) {
@@ -92,7 +81,7 @@ public class JSONFPlayers extends MemoryFPlayers {
             return;
         }
 
-        Map<String, JSONFPlayer> data = gson.fromJson(content, new TypeToken<Map<String, JSONFPlayer>>(){}.getType());
+        Map<String, JSONFPlayer> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFPlayer>>(){}.getType());
         if (data == null) {
             finish.accept(null);
             return;

@@ -1422,6 +1422,8 @@ public enum TL {
     private String path;
     private String def;
 
+    public static final TL[] VALUES = values();
+
     /**
      * Lang enum constructor.
      *
