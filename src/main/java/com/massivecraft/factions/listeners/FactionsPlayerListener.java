@@ -595,20 +595,17 @@ public class FactionsPlayerListener implements Listener {
 
         if (block == null) return;
 
-
-        Material type;
-        if (event.getItem() != null) {
-            try {
-                type = XMaterial.matchXMaterial(event.getItem().getType().toString()).get().parseMaterial();
-            } catch (NullPointerException npe) {
-                type = null;
+        XMaterial type = null;
+        try {
+            type = event.getItem() == null ? null : XMaterial.matchXMaterial(event.getItem());
+        } catch (IllegalArgumentException exception) {
+            if (event.getItem() != null) {
+                FactionsPlugin.getInstance().getLogger().info("Cannot find valid material for: " + event.getItem().getType().name());
             }
-        } else {
-            type = null;
         }
 
         // Creeper Egg Bypass.
-        if (Conf.allowCreeperEggingChests && block.getType() == Material.CHEST && type == XMaterial.CREEPER_SPAWN_EGG.parseMaterial() && event.getPlayer().isSneaking()) {
+        if (Conf.allowCreeperEggingChests && block.getType() == Material.CHEST && type == XMaterial.CREEPER_SPAWN_EGG && event.getPlayer().isSneaking()) {
             return;
         }
 
