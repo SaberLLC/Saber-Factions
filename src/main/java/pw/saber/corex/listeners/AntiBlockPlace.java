@@ -1,25 +1,30 @@
 package pw.saber.corex.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
-import org.bukkit.block.Block;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import pw.saber.corex.CoreX;
 
-import java.util.List;
+import java.util.EnumSet;
+import java.util.Set;
 
 public class AntiBlockPlace implements Listener {
 
-    private List<String> deniedMatList = CoreX.getConfig().fetchStringList("Denied-Blocks");
+    private final Set<Material> deniedMatList = EnumSet.allOf(Material.class);
+
+    public AntiBlockPlace() {
+        for (String attempt : CoreX.getConfig().fetchStringList("Denied-Blocks")) {
+            XMaterial.matchXMaterial(attempt).map(XMaterial::parseMaterial).ifPresent(deniedMatList::add);
+        }
+    }
 
     @EventHandler
     public void onDeniedPlace(BlockPlaceEvent e) {
-        Block block = e.getBlockPlaced();
-        XMaterial xMat = XMaterial.matchXMaterial(block.getType());
         Player player = e.getPlayer();
-        if(!player.isOp() && deniedMatList.contains(xMat.name())) {
+        if(!player.isOp() && deniedMatList.contains(e.getBlockPlaced().getType())) {
             e.setCancelled(true);
         }
     }

@@ -91,10 +91,7 @@ public class CommandContext {
 
     // STRING ======================
     public String argAsString(int idx, String def) {
-        if (args.size() < idx + 1) {
-            return def;
-        }
-        return args.get(idx);
+        return args.size() > idx ? args.get(idx) : def;
     }
 
     public String argAsString(int idx) {
@@ -108,7 +105,7 @@ public class CommandContext {
         }
         try {
             return Integer.parseInt(str);
-        } catch (Exception e) {
+        } catch (NumberFormatException ignored) {
             return def;
         }
     }
@@ -128,7 +125,7 @@ public class CommandContext {
         }
         try {
             return Double.parseDouble(str);
-        } catch (Exception e) {
+        } catch (NumberFormatException ignored) {
             return def;
         }
     }
@@ -150,11 +147,7 @@ public class CommandContext {
 
     public Boolean argAsBool(int idx, boolean def) {
         String str = argAsString(idx);
-        if (str == null) {
-            return def;
-        }
-
-        return strAsBool(str);
+        return str == null ? def : strAsBool(str);
     }
 
     public Boolean argAsBool(int idx) {
@@ -166,7 +159,7 @@ public class CommandContext {
         Player ret = def;
 
         if (name != null) {
-            Player player = Bukkit.getServer().getPlayer(name);
+            Player player = Bukkit.getPlayer(name);
             if (player != null) {
                 ret = player;
             }
@@ -196,7 +189,7 @@ public class CommandContext {
         Player ret = def;
 
         if (name != null) {
-            List<Player> players = Bukkit.getServer().matchPlayer(name);
+            List<Player> players = Bukkit.matchPlayer(name);
             if (players.size() > 0) {
                 ret = players.get(0);
             }

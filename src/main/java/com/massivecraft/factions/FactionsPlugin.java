@@ -178,10 +178,6 @@ public class FactionsPlugin extends MPlugin {
             // start up task which runs the autoLeaveAfterDaysOfInactivity routine
             startAutoLeaveTask(false);
 
-            if (Conf.usePreStartupKickSystem) {
-                getServer().getPluginManager().registerEvents(new LoginRegistry(), this);
-            }
-
             getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
             getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
