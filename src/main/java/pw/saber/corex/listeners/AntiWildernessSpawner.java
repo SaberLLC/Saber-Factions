@@ -11,14 +11,7 @@ public class AntiWildernessSpawner implements Listener {
 
     @EventHandler
     public void onSpawner(SpawnerSpawnEvent e) {
-        FLocation floc = FLocation.wrap(e.getSpawner().getLocation());
-
-        if (floc == null) {
-            return;
-        }
-
-        Faction faction = Board.getInstance().getFactionAt(floc);
-
+        Faction faction = Board.getInstance().getFactionAt(FLocation.wrap(e.getSpawner().getLocation()));
         if (faction == null) {
             return;
         }
@@ -27,4 +20,3 @@ public class AntiWildernessSpawner implements Listener {
         }
     }
 }
-

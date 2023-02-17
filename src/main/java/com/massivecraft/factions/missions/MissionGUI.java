@@ -46,7 +46,7 @@ public class MissionGUI implements FactionGUI {
         this.slots = new HashMap<>();
         this.plugin = plugin;
         this.fPlayer = fPlayer;
-        this.inventory = plugin.getServer().createInventory(this, plugin.getFileManager().getMissions().getConfig().getInt("MissionGUISize") * 9, CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Missions-GUI-Title")));
+        this.inventory = Bukkit.createInventory(this, plugin.getFileManager().getMissions().getConfig().getInt("MissionGUISize") * 9, CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Missions-GUI-Title")));
     }
 
     @Override
@@ -182,21 +182,13 @@ public class MissionGUI implements FactionGUI {
             return;
         }
 
-        if (!Objects.equals(configurationSection.getString("FillItem.Material"), "AIR")) {
-            ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).get().parseItem();
-            ItemMeta fillmeta = fillItem.getItemMeta();
-            fillmeta.setDisplayName(CC.translate(configurationSection.getString("FillItem.Name")));
-            fillmeta.setLore(CC.translate(configurationSection.getStringList("FillItem.Lore")));
-            fillItem.setItemMeta(fillmeta);
-            for (int fill = 0; fill < configurationSection.getInt("FillItem.Rows") * 9; ++fill) {
-                //Why were we generating a new itemstack per slot?????
-                inventory.setItem(fill, fillItem);
-            }
-        }
 
         for (String missionName : configurationSection.getKeys(false)) {
             if (!missionName.equals("FillItem")) {
                 ConfigurationSection section = configurationSection.getConfigurationSection(missionName);
+                if (!section.getBoolean("enabled", true)) {
+                    continue;
+                }
                 int slot = section.getInt("Slot");
 
                 String material = section.getString("Material", "DIRT");
@@ -213,7 +205,7 @@ public class MissionGUI implements FactionGUI {
                     }
                 }
 
-                ItemStack itemStack = XMaterial.matchXMaterial(material).get().parseItem();
+                ItemStack itemStack = XMaterial.matchXMaterial(material).orElse(XMaterial.STONE).parseItem();
                 ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', section.getString("Name")));
 
@@ -241,7 +233,7 @@ public class MissionGUI implements FactionGUI {
                                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeTillDeadline)))));
 
 
-                        if(updateItemsTask == null || updateItemsTask.isCancelled())
+                        if(updateItemsTask == null || !Bukkit.getScheduler().isCurrentlyRunning(updateItemsTask.getTaskId()))
                             updateItemsTask = Bukkit.getScheduler().runTaskTimer(plugin, this::updateGUI, 20L, 20L);
                     }
 
@@ -254,6 +246,19 @@ public class MissionGUI implements FactionGUI {
                 itemStack.setItemMeta(itemMeta);
                 inventory.setItem(slot, itemStack);
                 slots.put(slot, missionName);
+            }
+        }
+        if (!Objects.equals(configurationSection.getString("FillItem.Material"), "AIR")) {
+            ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).orElse(XMaterial.BLACK_STAINED_GLASS_PANE).parseItem();
+            ItemMeta fillmeta = fillItem.getItemMeta();
+            fillmeta.setDisplayName(CC.translate(configurationSection.getString("FillItem.Name")));
+            fillmeta.setLore(CC.translate(configurationSection.getStringList("FillItem.Lore")));
+            fillItem.setItemMeta(fillmeta);
+            for (int fill = 0; fill < configurationSection.getInt("FillItem.Rows") * 9; ++fill) {
+                //Why were we generating a new itemstack per slot?????
+                if (inventory.getItem(fill) == null) {
+                    inventory.setItem(fill, fillItem);
+                }
             }
         }
 
@@ -288,7 +293,7 @@ public class MissionGUI implements FactionGUI {
                 }
             }
 
-            ItemStack itemStack = XMaterial.matchXMaterial(material).get().parseItem();
+            ItemStack itemStack = XMaterial.matchXMaterial(material).orElse(XMaterial.STONE).parseItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(CC.translate(displayName));
             itemMeta.setLore(loree);
