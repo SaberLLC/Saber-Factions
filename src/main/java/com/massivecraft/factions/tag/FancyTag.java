@@ -12,7 +12,7 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 
 import java.util.*;
 
@@ -134,7 +134,7 @@ public enum FancyTag implements Tag {
             if (string == null) {
                 continue;
             }
-            lines.add(ChatColor.translateAlternateColorCodes('&', string));
+            lines.add(CC.translate(string));
         }
         return lines;
     }
@@ -164,7 +164,7 @@ public enum FancyTag implements Tag {
             if (string == null) {
                 continue;
             }
-            lines.add(ChatColor.translateAlternateColorCodes('&', string));
+            lines.add(CC.translate(string));
         }
         return lines;
     }

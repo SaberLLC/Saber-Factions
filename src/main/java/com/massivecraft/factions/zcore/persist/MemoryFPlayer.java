@@ -471,7 +471,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setTitle(CommandSender sender, String title) {
         // Check if the setter has it.
         if (sender.hasPermission(Permission.TITLE_COLOR.node))
-            title = ChatColor.translateAlternateColorCodes('&', title);
+            title = CC.translate(title);
         this.title = title;
     }
 

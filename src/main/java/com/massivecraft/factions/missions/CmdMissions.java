@@ -39,7 +39,7 @@ public class CmdMissions extends FCommand {
         }
 
         final MissionGUI missionsGUI = new MissionGUI(FactionsPlugin.getInstance(), context.fPlayer);
-        missionsGUI.build();
+        missionsGUI.build(true);
         context.player.openInventory(missionsGUI.getInventory());
     }
 

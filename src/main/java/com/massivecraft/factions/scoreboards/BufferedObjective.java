@@ -1,6 +1,6 @@
 package com.massivecraft.factions.scoreboards;
 
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -93,7 +93,7 @@ public class BufferedObjective {
         if (content.length() > MAX_LINE_LENGTH) {
             content = content.substring(0, MAX_LINE_LENGTH);
         }
-        content = ChatColor.translateAlternateColorCodes('&', content);
+        content = CC.translate(content);
 
         if (contents.get(lineNumber) == null || !contents.get(lineNumber).equals(content)) {
             contents.put(lineNumber, content);

@@ -7,12 +7,11 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.HumanEntity;
@@ -21,7 +20,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -38,9 +36,7 @@ public class MissionGUI implements FactionGUI {
     private final Inventory inventory;
     private final Map<Integer, String> slots;
 
-    BukkitTask updateItemsTask = null;
-    BukkitTask cancelTask = null;
-
+    private Integer task;
 
     public MissionGUI(FactionsPlugin plugin, FPlayer fPlayer) {
         this.slots = new HashMap<>();
@@ -51,20 +47,11 @@ public class MissionGUI implements FactionGUI {
 
     @Override
     public void onClose(HumanEntity player) {
-        //onClose is called every time a related inventory instance is closed.
-        //This means that every time we use openInventory to show the inventory once again
-        //the inventory technically closes and opens up once again, triggering this event each time.
-        if (cancelTask != null && !cancelTask.isCancelled())
-            cancelTask.cancel();
-        //Because of what's mentioned before, we check on the next tick if the inventory that the player
-        //is currently viewing is the same as this GUI, if it isn't, the updateItemsTask gets cancelled
-        cancelTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if(player.getOpenInventory().getTopInventory() != inventory)
-                if (updateItemsTask != null && !updateItemsTask.isCancelled())
-                    updateItemsTask.cancel();
-        }, 1);
+        if (task != null) {
+            Bukkit.getScheduler().cancelTask(this.task);
+            this.task = null;
+        }
     }
-
 
     @Override
     public void onClick(int slot, ClickType action) {
@@ -107,8 +94,7 @@ public class MissionGUI implements FactionGUI {
 
             fPlayer.getFaction().getMissions().remove(missionName);
             fPlayer.msg(TL.MISSION_MISSION_CANCELLED);
-            build();
-            fPlayer.getPlayer().openInventory(inventory);
+            build(false);
             return;
         }
 
@@ -169,20 +155,15 @@ public class MissionGUI implements FactionGUI {
         if(deadlineMillis > 0L) {
             MissionHandler.setDeadlineTask(mission, fPlayer.getFaction(), deadlineMillis);
         }
-
-
-        build();
-        fPlayer.getPlayer().openInventory(inventory);
+        build(false);
     }
 
     @Override
-    public void build() {
+    public void build(boolean initialOpen) {
         ConfigurationSection configurationSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions");
         if (configurationSection == null) {
             return;
         }
-
-
         for (String missionName : configurationSection.getKeys(false)) {
             if (!missionName.equals("FillItem")) {
                 ConfigurationSection section = configurationSection.getConfigurationSection(missionName);
@@ -193,10 +174,7 @@ public class MissionGUI implements FactionGUI {
 
                 String material = section.getString("Material", "DIRT");
 
-                List<String> loreLines = new ArrayList<>();
-                for (String line : section.getStringList("Lore")) {
-                    loreLines.add(CC.translate(line));
-                }
+                List<String> loreLines = CC.translate(section.getStringList("Lore"));
 
                 if (plugin.getFileManager().getMissions().getConfig().getBoolean("DenyMissionsMoreThenOnce")) {
                     if (fPlayer.getFaction().getCompletedMissions().contains(missionName)) {
@@ -205,18 +183,16 @@ public class MissionGUI implements FactionGUI {
                     }
                 }
 
-                ItemStack itemStack = XMaterial.matchXMaterial(material).orElse(XMaterial.STONE).parseItem();
+                ItemStack itemStack = XMaterial.matchXMaterial(material).orElse(XMaterial.DIRT).parseItem();
                 ItemMeta itemMeta = itemStack.getItemMeta();
-                itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', section.getString("Name")));
+                itemMeta.setDisplayName(CC.translate(section.getString("Name")));
 
-                if (fPlayer.getFaction().getMissions().containsKey(missionName)) {
-                    Mission mission = fPlayer.getFaction().getMissions().get(missionName);
+                Mission mission = fPlayer.getFaction().getMissions().get(missionName);
+                if (mission != null) {
                     itemMeta.addEnchant(Enchantment.SILK_TOUCH, 1, true);
                     itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
                     loreLines.add("");
-                    loreLines.add(CC.translate(plugin.getFileManager().getMissions().getConfig().getString("Mission-Progress-Format")
-                            .replace("{progress}", String.valueOf(mission.getProgress()))
-                            .replace("{total}", String.valueOf(section.getConfigurationSection("Mission").get("Amount")))));
+                    loreLines.add(CC.translate(TextUtil.replace(TextUtil.replace(plugin.getFileManager().getMissions().getConfig().getString("Mission-Progress-Format"), "{progress}", Long.toString(mission.getProgress())), "{total}", Integer.toString(section.getConfigurationSection("Mission").getInt("Amount")))));
 
                     long deadlineMillis = plugin.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
                     if (deadlineMillis > 0) {
@@ -233,8 +209,9 @@ public class MissionGUI implements FactionGUI {
                                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeTillDeadline)))));
 
 
-                        if(updateItemsTask == null || !Bukkit.getScheduler().isCurrentlyRunning(updateItemsTask.getTaskId()))
-                            updateItemsTask = Bukkit.getScheduler().runTaskTimer(plugin, this::updateGUI, 20L, 20L);
+                        if(initialOpen && this.task == null) {
+                            this.task = Bukkit.getScheduler().runTaskTimer(plugin, this::updateGUI, 20L, 20L).getTaskId();
+                        }
                     }
 
                     if (plugin.getFileManager().getMissions().getConfig().getBoolean("Allow-Cancellation-Of-Missions")) {
@@ -248,7 +225,7 @@ public class MissionGUI implements FactionGUI {
                 slots.put(slot, missionName);
             }
         }
-        if (!Objects.equals(configurationSection.getString("FillItem.Material"), "AIR")) {
+        if (initialOpen && !Objects.equals(configurationSection.getString("FillItem.Material"), "AIR")) {
             ItemStack fillItem = XMaterial.matchXMaterial(configurationSection.getString("FillItem.Material")).orElse(XMaterial.BLACK_STAINED_GLASS_PANE).parseItem();
             ItemMeta fillmeta = fillItem.getItemMeta();
             fillmeta.setDisplayName(CC.translate(configurationSection.getString("FillItem.Name")));
@@ -265,10 +242,7 @@ public class MissionGUI implements FactionGUI {
         if (plugin.getFileManager().getMissions().getConfig().getBoolean("Randomization.Enabled")) {
             String material = plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Allowed.Material");
             String displayName = plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Allowed.Name");
-            List<String> loree = new ArrayList<>();
-            for (String string : plugin.getFileManager().getMissions().getConfig().getStringList("Randomization.Start-Item.Allowed.Lore")) {
-                loree.add(CC.translate(string));
-            }
+            List<String> loree = CC.translate(plugin.getFileManager().getMissions().getConfig().getStringList("Randomization.Start-Item.Allowed.Lore"));
             // There are no more available missions
             if (plugin.getFileManager().getMissions().getConfig().getBoolean("DenyMissionsMoreThenOnce") &&
                     // Check if the completed missions contain all the available missions,
@@ -293,7 +267,7 @@ public class MissionGUI implements FactionGUI {
                 }
             }
 
-            ItemStack itemStack = XMaterial.matchXMaterial(material).orElse(XMaterial.STONE).parseItem();
+            ItemStack itemStack = XMaterial.matchXMaterial(material).orElse(XMaterial.DIRT).parseItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.setDisplayName(CC.translate(displayName));
             itemMeta.setLore(loree);
@@ -307,13 +281,12 @@ public class MissionGUI implements FactionGUI {
     }
 
     private void updateGUI() {
-        if (fPlayer.getFaction().getMissions().isEmpty()) {
-            updateItemsTask.cancel();
+        if ((fPlayer.getFaction().getMissions().isEmpty() || !this.inventory.getViewers().contains(fPlayer.getPlayer())) && this.task != null) {
+            Bukkit.getScheduler().cancelTask(this.task);
+            this.task = null;
             return;
         }
-
-        build();
-        fPlayer.getPlayer().openInventory(inventory);
+        build(false);
     }
 
     public Inventory getInventory() {

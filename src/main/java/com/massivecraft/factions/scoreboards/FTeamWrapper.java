@@ -4,7 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.zcore.util.TL;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -151,7 +151,7 @@ public class FTeamWrapper {
             if ((FactionsPlugin.getInstance().getConfig().getBoolean("ffocus.Enabled")) && (fplayer.getFaction() != null) && (fplayer.getFaction().getFocused() != null)) {
                 for (FPlayer fp : faction.getFPlayersWhereOnline(true)) {
                     if (fplayer.getFaction().getFocused().equalsIgnoreCase(fp.getName())) {
-                        team.setPrefix(ChatColor.translateAlternateColorCodes('&', FactionsPlugin.getInstance().getConfig().getString("ffocus.Prefix", "&7»&b")));
+                        team.setPrefix(CC.translate(FactionsPlugin.getInstance().getConfig().getString("ffocus.Prefix", "&7»&b")));
                         focused = true;
                     }
                 }

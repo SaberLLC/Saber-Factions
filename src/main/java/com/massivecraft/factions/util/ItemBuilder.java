@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util;
 
 
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -58,7 +58,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder name(String name) {
-        this.meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        this.meta.setDisplayName(CC.translate(name));
         return this;
     }
 

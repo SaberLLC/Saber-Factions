@@ -11,6 +11,7 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -283,7 +284,7 @@ public abstract class MCommand<T extends MPlugin> {
     public List<String> getToolTips(FPlayer player) {
         List<String> lines = new ArrayList<>();
         for (String s : p.getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
+            lines.add(CC.translate(replaceFPlayerTags(s, player)));
         }
         return lines;
     }
@@ -291,7 +292,7 @@ public abstract class MCommand<T extends MPlugin> {
     public List<String> getToolTips(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String s : p.getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
+            lines.add(CC.translate(replaceFactionTags(s, faction)));
         }
         return lines;
     }

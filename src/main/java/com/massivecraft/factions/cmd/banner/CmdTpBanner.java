@@ -8,10 +8,10 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.banner.struct.BannerManager;
 import com.massivecraft.factions.cmd.banner.struct.FactionBanner;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.LocUtils;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 

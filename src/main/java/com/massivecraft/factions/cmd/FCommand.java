@@ -4,13 +4,13 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -143,7 +143,7 @@ public abstract class FCommand {
     public List<String> getToolTips(FPlayer player) {
         List<String> lines = new ArrayList<>();
         for (String s : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
+            lines.add(CC.translate(replaceFPlayerTags(s, player)));
         }
         return lines;
     }
@@ -151,7 +151,7 @@ public abstract class FCommand {
     public List<String> getToolTips(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String s : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
+            lines.add(CC.translate(replaceFactionTags(s, faction)));
         }
         return lines;
     }

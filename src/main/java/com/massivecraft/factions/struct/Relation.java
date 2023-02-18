@@ -6,6 +6,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -231,7 +232,7 @@ public enum Relation implements Permissable {
     }
 
     public String replacePlaceholders(String string) {
-        string = ChatColor.translateAlternateColorCodes('&', string);
+        string = CC.translate(string);
 
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 
