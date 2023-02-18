@@ -225,7 +225,7 @@ public class CmdConfig extends FCommand {
         if (!success.isEmpty()) {
             if (context.sender instanceof Player) {
                 context.sendMessage(success);
-                Logger.print(success + TL.COMMAND_CONFIG_LOG.format(context.sender), Logger.PrefixType.DEFAULT);
+                Logger.print(success + TL.COMMAND_CONFIG_LOG.format(context.sender.getName()), Logger.PrefixType.DEFAULT);
             } else  // using FactionsPlugin.getInstance().log() instead of sendMessage if run from server console so that "[Factions v#.#.#]" is prepended in server log
             {
                 Logger.print(success, Logger.PrefixType.DEFAULT);

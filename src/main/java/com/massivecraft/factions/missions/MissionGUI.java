@@ -77,8 +77,8 @@ public class MissionGUI implements FactionGUI {
                     }
                 }
                 else {
-                    if (Econ.shouldBeUsed()) {
-                        Logger.print("Economy transaction failed (MISSIONS). Factions economy access is disabled or an economy plugin was not found.", Logger.PrefixType.FAILED);
+                    if (!Conf.econEnabled) {
+                        Logger.print("Economy transaction failed (MISSIONS). Factions economy access is disabled.", Logger.PrefixType.FAILED);
                         fPlayer.msg(CC.translate("&cUnable to access server economy. Please report this to an administrator."));
                         return;
                     }
