@@ -7,6 +7,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -60,15 +61,13 @@ public class MissionGUI implements FactionGUI {
         ConfigurationSection configurationSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions");
         if (configurationSection == null) return;
 
-        if (plugin.getFileManager().getMissions().getConfig().getBoolean("Allow-Cancellation-Of-Missions")
-                && action == ClickType.RIGHT) {
+        if (plugin.getFileManager().getMissions().getConfig().getBoolean("Allow-Cancellation-Of-Missions") && action == ClickType.RIGHT) {
 
             int cost = FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getInt("CancelMissionCost");
 
             if (cost > 0) {
                 Faction faction = fPlayer.getFaction();
                 if (FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getBoolean("PayCancelMissionCostWithPoints")) {
-
                     if (faction.getPoints() >= cost) {
                         faction.setPoints(faction.getPoints() - cost);
                         fPlayer.msg(TL.MISSION_CANCEL_POINTS_TAKEN, cost, faction.getPoints());
@@ -78,7 +77,12 @@ public class MissionGUI implements FactionGUI {
                     }
                 }
                 else {
-                    EconomyParticipator payee = null;
+                    if (Econ.shouldBeUsed()) {
+                        Logger.print("Economy transaction failed (MISSIONS). Factions economy access is disabled or an economy plugin was not found.", Logger.PrefixType.FAILED);
+                        fPlayer.msg(CC.translate("&cUnable to access server economy. Please report this to an administrator."));
+                        return;
+                    }
+                    EconomyParticipator payee;
 
                     if (Conf.bankEnabled && FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getBoolean("FactionPaysCancelMissionCost", false)) {
                         payee = faction;

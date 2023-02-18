@@ -47,7 +47,7 @@ public class Econ {
         if (!Conf.econEnabled)
             Logger.print("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true", Logger.PrefixType.DEFAULT);
         //FactionsPlugin.getInstance().cmdBase.cmdHelp.updateHelp();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), Econ::oldMoneyDoTransfer, 20L);
+        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), Econ::oldMoneyDoTransfer, 20L);
     }
 
     public static boolean shouldBeUsed() {
