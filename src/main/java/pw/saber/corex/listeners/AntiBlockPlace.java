@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class AntiBlockPlace implements Listener {
 
-    private final Set<Material> deniedMatList = EnumSet.allOf(Material.class);
+    private final Set<Material> deniedMatList = EnumSet.noneOf(Material.class);
 
     public AntiBlockPlace() {
         for (String attempt : CoreX.getConfig().fetchStringList("Denied-Blocks")) {

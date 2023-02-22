@@ -1,6 +1,5 @@
 package pw.saber.corex.listeners;
 
-import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +13,7 @@ public class NoCursorDrop implements Listener {
         Player player = (Player) e.getPlayer();
         if(player.getInventory().firstEmpty() != -1 && !player.isDead() && player.getHealth() > 0.0) {
             ItemStack itemOnCursor = player.getItemOnCursor().clone();
-            player.setItemOnCursor(XMaterial.AIR.parseItem());
+            player.setItemOnCursor(null);
             player.getInventory().addItem(itemOnCursor);
             player.updateInventory();
         }
