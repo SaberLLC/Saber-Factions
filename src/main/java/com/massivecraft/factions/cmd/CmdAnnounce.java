@@ -50,7 +50,8 @@ public class CmdAnnounce extends FCommand {
         return TL.COMMAND_ANNOUNCE_DESCRIPTION;
     }
 
-    protected static class AnnounceBrigadier implements BrigadierProvider {
+    public static class AnnounceBrigadier implements BrigadierProvider {
+
         @Override
         public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
             return parent.then(RequiredArgumentBuilder.argument("message", StringArgumentType.greedyString()));

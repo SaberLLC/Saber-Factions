@@ -45,8 +45,8 @@ public class BrigadierManager {
                 // If the requirements explicitly provide a BrigadierProvider then use it
                 Class<? extends BrigadierProvider> brigadierProvider = subCommand.requirements.brigadier;
                 try {
-                    Constructor<? extends BrigadierProvider> constructor = brigadierProvider.getDeclaredConstructor(subCommand.getClass());
-                    brigadier.then(constructor.newInstance(subCommand).get(literal));
+                    Constructor<? extends BrigadierProvider> constructor = brigadierProvider.getDeclaredConstructor();
+                    brigadier.then(constructor.newInstance().get(literal));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
                          InvocationTargetException exception) {
                     exception.printStackTrace();

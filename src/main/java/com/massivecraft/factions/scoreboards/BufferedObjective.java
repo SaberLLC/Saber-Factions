@@ -1,6 +1,7 @@
 package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.util.CC;
+import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -8,6 +9,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,10 +62,9 @@ public class BufferedObjective {
     }
 
     private String createBaseName() {
-        Random random = new Random();
         StringBuilder builder = new StringBuilder();
         while (builder.length() < 14) {
-            builder.append(Integer.toHexString(random.nextInt()));
+            builder.append(Integer.toHexString(ThreadLocalRandom.current().nextInt()));
         }
         return builder.substring(0, 14);
     }
@@ -109,6 +110,7 @@ public class BufferedObjective {
     }
 
     public void flip() {
+        Bukkit.broadcastMessage("HERE I AM!");
         if (!requiresUpdate) {
             return;
         }

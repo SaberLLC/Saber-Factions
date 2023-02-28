@@ -49,7 +49,7 @@ public abstract class MPlugin extends JavaPlugin {
 
     private static final Pattern ARGUMENT_DELIMITER = Pattern.compile("\\s+");
     // holds f stuck start times
-    private Map<UUID, Long> timers = new HashMap<>();
+    private final Map<UUID, Long> timers = new HashMap<>();
     // -------------------------------------------- //
     // ENABLE
     // -------------------------------------------- //

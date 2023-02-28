@@ -97,10 +97,11 @@ public class FTeamWrapper {
     public static void updatePrefixes(Faction faction) {
         if (!FScoreboard.isSupportedByServer()) return;
 
-        if (!wrappers.containsKey(faction)) {
+        FTeamWrapper fTeamWrapper = wrappers.get(faction);
+        if (fTeamWrapper == null) {
             applyUpdates(faction);
         } else {
-            wrappers.get(faction).updatePrefixes();
+            fTeamWrapper.updatePrefixes();
         }
     }
 

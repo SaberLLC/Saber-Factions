@@ -159,45 +159,45 @@ public abstract class FCommand {
     public String replaceFPlayerTags(String s, FPlayer player) {
         if (s.contains("{balance}")) {
             String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
-            s = s.replace("{balance}", balance);
+            s = TextUtil.replace(s, "{balance}", balance);
         }
         if (s.contains("{lastSeen}")) {
             String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - player.getLastLoginTime(), true, true) + " ago";
             String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online" : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
-            s = s.replace("{lastSeen}", lastSeen);
+            s = TextUtil.replace(s, "{lastSeen}", lastSeen);
         }
         if (s.contains("{power}")) {
             String power = player.getPowerRounded() + "/" + player.getPowerMaxRounded();
-            s = s.replace("{power}", power);
+            s = TextUtil.replace(s, "{power}", power);
         }
         if (s.contains("{group}")) {
             String group = FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
-            s = s.replace("{group}", group);
+            s = TextUtil.replace(s, "{group}", group);
         }
         return s;
     }
 
     public String replaceFactionTags(String s, Faction faction) {
         if (s.contains("{power}")) {
-            s = s.replace("{power}", String.valueOf(faction.getPowerRounded()));
+            s = TextUtil.replace(s, "{power}", String.valueOf(faction.getPowerRounded()));
         }
         if (s.contains("{maxPower}")) {
-            s = s.replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded()));
+            s = TextUtil.replace(s, "{maxPower}", String.valueOf(faction.getPowerMaxRounded()));
         }
         if (s.contains("{leader}")) {
             FPlayer fLeader = faction.getFPlayerAdmin();
             String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-            s = s.replace("{leader}", leader);
+            s = TextUtil.replace(s, "{leader}", leader);
         }
         if (s.contains("{chunks}")) {
-            s = s.replace("{chunks}", String.valueOf(faction.getLandRounded()));
+            s = TextUtil.replace(s, "{chunks}", String.valueOf(faction.getLandRounded()));
         }
         if (s.contains("{members}")) {
-            s = s.replace("{members}", String.valueOf(faction.getSize()));
+            s = TextUtil.replace(s, "{members}", String.valueOf(faction.getSize()));
 
         }
         if (s.contains("{online}")) {
-            s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size()));
+            s = TextUtil.replace(s, "{online}", String.valueOf(faction.getOnlinePlayers().size()));
         }
         return s;
     }
