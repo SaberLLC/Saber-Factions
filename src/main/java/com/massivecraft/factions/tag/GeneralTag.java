@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 
 import java.util.function.Supplier;
@@ -26,6 +27,8 @@ public enum GeneralTag implements Tag {
     private final String tag;
     private final Supplier<String> supplier;
 
+    public static GeneralTag[] VALUES = values();
+
     GeneralTag(String tag, Supplier<String> supplier) {
         this.tag = tag;
         this.supplier = supplier;
@@ -33,13 +36,13 @@ public enum GeneralTag implements Tag {
 
     private static String getRelation(String relation) {
         if (FactionsPlugin.getInstance().getConfig().getBoolean("max-relations.enabled", true)) {
-            return String.valueOf(FactionsPlugin.getInstance().getConfig().getInt("max-relations." + relation, 10));
+            return Integer.toString(FactionsPlugin.getInstance().getConfig().getInt("max-relations." + relation, 10));
         }
         return TL.GENERIC_INFINITY.toString();
     }
 
     public static String parse(String text) {
-        for (GeneralTag tag : GeneralTag.values()) {
+        for (GeneralTag tag : GeneralTag.VALUES) {
             text = tag.replace(text);
         }
         return text;
@@ -60,6 +63,6 @@ public enum GeneralTag implements Tag {
             return text;
         }
         String result = this.supplier.get();
-        return result == null ? null : text.replace(this.tag, result);
+        return result == null ? null : TextUtil.replace(text, this.tag, result);
     }
 }

@@ -206,8 +206,7 @@ public abstract class FCommand {
     Help and Usage information
  */
     public String getUsageTemplate(CommandContext context, boolean addShortHelp) {
-        StringBuilder ret = new StringBuilder();
-        ret.append(CC.translate(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString()));
+        StringBuilder ret = new StringBuilder((CC.translate(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString())));
         ret.append('/');
 
         for (FCommand fc : context.commandChain) {

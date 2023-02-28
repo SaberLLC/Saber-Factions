@@ -33,6 +33,8 @@ public enum Role implements Permissable {
     public final String nicename;
     public final TL translation;
 
+    public static Role[] VALUES = values();
+
 
     Role(final int value, final TL translation) {
         this.value = value;

@@ -15,6 +15,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeType;
@@ -872,17 +873,17 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             permissions.clear();
 
             // First populate a map with undefined as the permission for each action.
-            Map<PermissableAction, Access> freshMap = new HashMap<>();
-            for (PermissableAction action : PermissableAction.values()) freshMap.put(action, Access.DENY);
+            Map<PermissableAction, Access> freshMap = new HashMap<>(PermissableAction.VALUES.length);
+            for (PermissableAction action : PermissableAction.VALUES) freshMap.put(action, Access.DENY);
 
             // Put the map in there for each relation.
-            for (Relation relation : Relation.values()) {
+            for (Relation relation : Relation.VALUES) {
                 if (relation == Relation.MEMBER) continue;
                 permissions.put(relation, new HashMap<>(freshMap));
             }
 
             // And each role.
-            for (Role role : Role.values()) {
+            for (Role role : Role.VALUES) {
                 if (role == Role.LEADER) continue;
                 permissions.put(role, new HashMap<>(freshMap));
             }
@@ -890,21 +891,29 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void setDefaultPerms() {
-        Map<PermissableAction, Access> defaultMap = new HashMap<>();
-        for (PermissableAction action : PermissableAction.values()) defaultMap.put(action, Access.DENY);
-
-        for (Relation rel : Relation.values()) {
-            if (rel == Relation.MEMBER) continue;
-            if (Conf.defaultFactionPermissions.containsKey(rel.name())) {
-                permissions.put(rel, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(rel.name())));
-            } else permissions.put(rel, new HashMap<>(defaultMap));
+        Map<PermissableAction, Access> defaultMap = new HashMap<>(PermissableAction.VALUES.length);
+        for (PermissableAction action : PermissableAction.VALUES) {
+            defaultMap.put(action, Access.DENY);
         }
 
-        for (Role role : Role.values()) {
-            if (role == Role.LEADER) continue;
-            if (Conf.defaultFactionPermissions.containsKey(role.name())) {
-                permissions.put(role, PermissableAction.fromDefaults(Conf.defaultFactionPermissions.get(role.name())));
-            } else permissions.put(role, new HashMap<>(defaultMap));
+        for (Relation rel : Relation.VALUES) {
+            if (rel == Relation.MEMBER) {
+                continue;
+            }
+            permissions.computeIfAbsent(rel, r -> {
+                DefaultPermissions perms = Conf.defaultFactionPermissions.get(r.name());
+                return perms != null ? PermissableAction.fromDefaults(perms) : new HashMap<>(defaultMap);
+            });
+        }
+
+        for (Role role : Role.VALUES) {
+            if (role == Role.LEADER) {
+                continue;
+            }
+            permissions.computeIfAbsent(role, r -> {
+                DefaultPermissions perms = Conf.defaultFactionPermissions.get(r.name());
+                return perms != null ? PermissableAction.fromDefaults(perms) : new HashMap<>(defaultMap);
+            });
         }
     }
 
@@ -998,14 +1007,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public Relation getRelationWish(Faction otherFaction) {
-        if (this.relationWish.containsKey(otherFaction.getId())) {
-            return this.relationWish.get(otherFaction.getId());
-        }
-        return Relation.fromString(FactionsPlugin.getInstance().getConfig().getString("default-relation", "neutral")); // Always default to old behavior.
+        return this.relationWish.getOrDefault(otherFaction.getId(), Relation.fromString(FactionsPlugin.getInstance().getConfig().getString("default-relation", "neutral")));
     }
 
     public void setRelationWish(Faction otherFaction, Relation relation) {
-        if (this.relationWish.containsKey(otherFaction.getId()) && relation.equals(Relation.NEUTRAL)) {
+        if (relation == Relation.NEUTRAL) {
             this.relationWish.remove(otherFaction.getId());
         } else {
             this.relationWish.put(otherFaction.getId(), relation);
@@ -1197,15 +1203,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         // only real factions can have players online, not safe zone / war zone
         if (this.isPlayerFreeType()) return false;
 
-
-        for (Player player : FactionsPlugin.getInstance().getServer().getOnlinePlayers()) {
-            FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-            if (fplayer != null && fplayer.getFaction() == this) {
-                return true;
-            }
+        boolean has = !Collections.disjoint(this.fplayers, FPlayers.getInstance().getOnlinePlayers());
+        if (has) {
+            return true;
         }
-        // even if all players are technically logged off, maybe someone was on
-        // recently enough to not consider them officially offline yet
         return Conf.considerFactionsReallyOfflineAfterXMinutes > 0 && System.currentTimeMillis() < lastPlayerLoggedOffTime + (Conf.considerFactionsReallyOfflineAfterXMinutes * 60000);
     }
 

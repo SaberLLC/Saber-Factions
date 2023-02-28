@@ -5,6 +5,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.ChatColor;
 import com.massivecraft.factions.util.CC;
 import org.bukkit.Material;
@@ -31,6 +32,8 @@ public enum Relation implements Permissable {
 
     public final int value;
     public final String nicename;
+
+    public static Relation[] VALUES = values();
 
     Relation(final int value, final String nicename) {
         this.value = value;
@@ -236,8 +239,8 @@ public enum Relation implements Permissable {
 
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 
-        string = string.replace("{relation-color}", getColor().toString());
-        string = string.replace("{relation}", permissableName);
+        string = TextUtil.replace(string, "{relation-color}", getColor().toString());
+        string = TextUtil.replace(string, "{relation}", permissableName);
 
         return string;
     }
