@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -556,9 +557,10 @@ public class EngineDynmap {
             return null;
         }
 
-        Set<String> ret = new HashSet<>();
+        Set<FPlayer> fPlayers = faction.getFPlayers();
+        Set<String> ret = new HashSet<>(fPlayers.size() * 2);
 
-        for (FPlayer fplayer : faction.getFPlayers()) {
+        for (FPlayer fplayer : fPlayers) {
             // NOTE: We add both UUID and name. This might be a good idea for future proofing.
             ret.add(fplayer.getId());
             ret.add(fplayer.getName());
@@ -572,10 +574,10 @@ public class EngineDynmap {
         if (!Conf.dynmapVisibilityByFaction) {
             return null;
         }
+        List<Faction> allFactions = Factions.getInstance().getAllFactions();
+        Map<String, Set<String>> ret = new HashMap<>(allFactions.size());
 
-        Map<String, Set<String>> ret = new HashMap<>();
-
-        for (Faction faction : Factions.getInstance().getAllFactions()) {
+        for (Faction faction : allFactions) {
             String playersetId = createPlayersetId(faction);
             if (playersetId == null) {
                 continue;
@@ -642,19 +644,19 @@ public class EngineDynmap {
         // Name
         String name = faction.getTag();
         name = escapeHtml(ChatColor.stripColor(name));
-        ret = ret.replace("%name%", name);
+        ret = TextUtil.replace(ret, "%name%", name);
 
         // Description
         String description = faction.getDescription();
         description = escapeHtml(ChatColor.stripColor(description));
-        ret = ret.replace("%description%", description);
+        ret = TextUtil.replace(ret, "%description%", description);
 
         // Money
 
         String money = "unavailable";
         if (Conf.bankEnabled && Conf.dynmapDescriptionMoney)
             money = String.format("%.2f", faction.getFactionBalance());
-        ret = ret.replace("%money%", money);
+        ret = TextUtil.replace(ret, "%money%", money);
 
         // Players
         Set<FPlayer> playersList = faction.getFPlayers();
@@ -677,16 +679,16 @@ public class EngineDynmap {
         String playersNormalsCount = String.valueOf(playersNormalsList.size());
         String playersNormals = getHtmlPlayerString(playersNormalsList);
 
-        ret = ret.replace("%players%", players);
-        ret = ret.replace("%players.count%", playersCount);
-        ret = ret.replace("%players.leader%", playersLeader);
-        ret = ret.replace("%players.leader.id%", playersLeaderId);
-        ret = ret.replace("%players.admins%", playersCoAdmins);
-        ret = ret.replace("%players.admins.count%", playersCoAdminsCount);
-        ret = ret.replace("%players.moderators%", playersModerators);
-        ret = ret.replace("%players.moderators.count%", playersModeratorsCount);
-        ret = ret.replace("%players.normals%", playersNormals);
-        ret = ret.replace("%players.normals.count%", playersNormalsCount);
+        ret = TextUtil.replace(ret, "%players%", players);
+        ret = TextUtil.replace(ret, "%players.count%", playersCount);
+        ret = TextUtil.replace(ret, "%players.leader%", playersLeader);
+        ret = TextUtil.replace(ret, "%players.leader.id%", playersLeaderId);
+        ret = TextUtil.replace(ret, "%players.admins%", playersCoAdmins);
+        ret = TextUtil.replace(ret, "%players.admins.count%", playersCoAdminsCount);
+        ret = TextUtil.replace(ret, "%players.moderators%", playersModerators);
+        ret = TextUtil.replace(ret, "%players.moderators.count%", playersModeratorsCount);
+        ret = TextUtil.replace(ret, "%players.normals%", playersNormals);
+        ret = TextUtil.replace(ret, "%players.normals.count%", playersNormalsCount);
 
         return ret;
     }
@@ -734,8 +736,7 @@ public class EngineDynmap {
 
     // Find all contiguous blocks, set in target and clear in source
     private void floodFillTarget(TileFlags source, TileFlags destination, int x, int y) {
-        int cnt = 0;
-        ArrayDeque<int[]> stack = new ArrayDeque<>();
+        Deque<int[]> stack = new ArrayDeque<>();
         stack.push(new int[]{x, y});
 
         while (!stack.isEmpty()) {
@@ -745,7 +746,6 @@ public class EngineDynmap {
             if (source.getFlag(x, y)) { // Set in src
                 source.setFlag(x, y, false); // Clear source
                 destination.setFlag(x, y, true); // Set in destination
-                cnt++;
                 if (source.getFlag(x + 1, y)) {
                     stack.push(new int[]{x + 1, y});
                 }

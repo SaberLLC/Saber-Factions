@@ -22,6 +22,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
@@ -32,6 +33,7 @@ public abstract class MPlugin extends JavaPlugin {
     // Some utils
     public Persist persist;
     public PermUtil perm;
+
     public String refCommand = "";
     //holds f stuck taskids
     public Map<UUID, Integer> stuckMap = new HashMap<>();
@@ -41,8 +43,6 @@ public abstract class MPlugin extends JavaPlugin {
     protected boolean loadSuccessful = false;
     private Integer saveTask = null;
     private boolean autoSave = true;
-    // Listeners
-    private MPluginSecretPlayerListener mPluginSecretPlayerListener;
 
     // Our stored base commands
     private final Map<String, MCommand<?>> baseCommands = new HashMap<>();
@@ -50,6 +50,7 @@ public abstract class MPlugin extends JavaPlugin {
     private static final Pattern ARGUMENT_DELIMITER = Pattern.compile("\\s+");
     // holds f stuck start times
     private final Map<UUID, Long> timers = new HashMap<>();
+
     // -------------------------------------------- //
     // ENABLE
     // -------------------------------------------- //
@@ -69,10 +70,10 @@ public abstract class MPlugin extends JavaPlugin {
 
     public boolean preEnable() {
         Logger.print("=== ENABLE START ===", Logger.PrefixType.DEFAULT);
-        timeEnableStart = System.currentTimeMillis();
+        timeEnableStart = System.nanoTime();
 
         // Ensure basefolder exists!
-        this.getDataFolder().mkdirs();
+        this.saveDefaultConfig();
 
         // Create Utility Instances
         this.perm = new PermUtil(this);
@@ -91,13 +92,13 @@ public abstract class MPlugin extends JavaPlugin {
         }
 
         // Create and register player command listener
-        this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
-        getServer().getPluginManager().registerEvents(this.mPluginSecretPlayerListener, this);
+        // Listeners
+        Bukkit.getPluginManager().registerEvents(new MPluginSecretPlayerListener(this), this);
 
         // Register recurring tasks
         if (this.saveTask == null && Conf.saveToFileEveryXMinutes > 0.0) {
             long saveTicks = (long) (1200.0 * Conf.saveToFileEveryXMinutes);
-            this.saveTask = Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, new SaveTask(this), saveTicks, saveTicks).getTaskId();
+            this.saveTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, new SaveTask(this), saveTicks, saveTicks).getTaskId();
         }
         loadLang();
         loadSuccessful = true;
@@ -105,7 +106,7 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public void postEnable() {
-        Logger.print("=== ENABLE DONE (Took " + (System.currentTimeMillis() - timeEnableStart) + "ms) ===", Logger.PrefixType.DEFAULT);
+        Logger.print("=== ENABLE DONE (Took " + DecimalFormat.getInstance().format((System.nanoTime() - timeEnableStart) / 1_000_000.0D) + "ms) ===", Logger.PrefixType.DEFAULT);
     }
 
     public void loadLang() {

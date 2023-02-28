@@ -133,11 +133,11 @@ public class FactionsPlugin extends MPlugin {
     @Override
     public void onEnable() {
 
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
             Logger.print("You are missing dependencies!", Logger.PrefixType.FAILED);
             Logger.print("Please verify [Vault] is installed!", Logger.PrefixType.FAILED);
             Conf.save();
-            Bukkit.getPluginManager().disablePlugin(instance);
+            Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
 
@@ -147,9 +147,6 @@ public class FactionsPlugin extends MPlugin {
             this.loadSuccessful = false;
             return;
         }
-
-        saveDefaultConfig();
-        this.reloadConfig();
 
         // Load Conf from disk
         Conf.load();
@@ -178,15 +175,15 @@ public class FactionsPlugin extends MPlugin {
             // start up task which runs the autoLeaveAfterDaysOfInactivity routine
             startAutoLeaveTask(false);
 
-            getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
-            getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
+            Bukkit.getPluginManager().registerEvents(new SaberGUIListener(), this);
+            Bukkit.getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
             if (Conf.userSpawnerChunkSystem) {
-                this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
+                Bukkit.getPluginManager().registerEvents(new SpawnerChunkListener(), this);
             }
 
             if(FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
-                this.getServer().getPluginManager().registerEvents(new ChorusFruitListener(), this);
+                Bukkit.getPluginManager().registerEvents(new ChorusFruitListener(), this);
             }
 
             // Register Event Handlers
@@ -205,19 +202,19 @@ public class FactionsPlugin extends MPlugin {
             };
 
             if(version > 8) {
-                getServer().getPluginManager().registerEvents(new MissionHandlerModern(), this);
+                Bukkit.getPluginManager().registerEvents(new MissionHandlerModern(), this);
             }
 
             for (Listener eventListener : eventsListener)
-                getServer().getPluginManager().registerEvents(eventListener, this);
+                Bukkit.getPluginManager().registerEvents(eventListener, this);
 
             if (Conf.useGraceSystem) {
-                getServer().getPluginManager().registerEvents(timerManager.graceTimer, this);
+                Bukkit.getPluginManager().registerEvents(timerManager.graceTimer, this);
             }
 
             this.asyncPlayerMap = new AsyncPlayerMap(this);
 
-            this.getCommand(refCommand).setExecutor(cmdBase);
+            this.getCommand(refCommand).setExecutor((FCmdRoot) cmdBase);
 
             if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 
@@ -233,7 +230,7 @@ public class FactionsPlugin extends MPlugin {
     }
 
     private void setupPlaceholderAPI() {
-        Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        Plugin clip = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
         if (clip != null && clip.isEnabled()) {
             this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
             if (this.clipPlaceholderAPIManager.register()) {
@@ -246,7 +243,7 @@ public class FactionsPlugin extends MPlugin {
             PlaceholderApi = false;
         }
 
-        Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
+        Plugin mvdw = Bukkit.getPluginManager().getPlugin("MVdWPlaceholderAPI");
         if (mvdw != null && mvdw.isEnabled()) {
             this.mvdwPlaceholderAPIManager = true;
             Logger.print("Found MVdWPlaceholderAPI. Adding hooks.", Logger.PrefixType.DEFAULT);
@@ -374,8 +371,8 @@ public class FactionsPlugin extends MPlugin {
             return completions;
         } else {
             String lastArg = args[args.length - 1].toLowerCase();
-            for (Role value : Role.VALUES) completions.add(value.nicename);
-            for (Relation value : Relation.VALUES) completions.add(value.nicename);
+            for (Role value : Role.values()) completions.add(value.nicename);
+            for (Relation value : Relation.values()) completions.add(value.nicename);
             // The stream and foreach from the old implementation looped 2 times, by looping all players -> filtered -> looped filter and added -> filtered AGAIN at the end.
             // This loops them once and just adds, because we are filtering the arguments at the end anyways
             for (Player player : Bukkit.getServer().getOnlinePlayers()) completions.add(player.getName());

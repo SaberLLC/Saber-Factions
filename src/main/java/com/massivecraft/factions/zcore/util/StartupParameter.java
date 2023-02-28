@@ -35,9 +35,7 @@ import static com.massivecraft.factions.Conf.territoryDenyUsageMaterials;
 public class StartupParameter {
 
     public static void initData(FactionsPlugin plugin, Runnable finish) {
-
-        int pluginId = 7013;
-        new Metrics(FactionsPlugin.getInstance(), pluginId);
+        new Metrics(FactionsPlugin.getInstance(), 7013);
 
         FactionsPlugin.getInstance().fileManager = new FileManager();
         FactionsPlugin.getInstance().fileManager.setupFiles();
@@ -46,66 +44,64 @@ public class StartupParameter {
 
         FactionsPlugin.getInstance().fLogManager = new FLogManager();
 
-        FPlayers.getInstance().load(playersLoaded -> {
-            Factions.getInstance().load(factionsLoaded -> {
-                for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
-                    Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
-                    if (faction == null) {
-                        Logger.print("Invalid faction id on " + fPlayer.getName() + ":" + fPlayer.getFactionId(), Logger.PrefixType.WARNING);
-                        fPlayer.resetFactionData(false);
-                        continue;
-                    }
-                    if (fPlayer.isAlt()) {
-                        faction.addAltPlayer(fPlayer);
-                    } else {
-                        faction.addFPlayer(fPlayer);
-                    }
+        FPlayers.getInstance().load(playersLoaded -> Factions.getInstance().load(factionsLoaded -> {
+            for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
+                Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
+                if (faction == null) {
+                    Logger.print("Invalid faction id on " + fPlayer.getName() + ":" + fPlayer.getFactionId(), Logger.PrefixType.WARNING);
+                    fPlayer.resetFactionData(false);
+                    continue;
                 }
-
-                Factions.getInstance().getAllFactions().forEach(Faction::refreshFPlayers);
-
-                Board.getInstance().load();
-                Board.getInstance().clean();
-
-                Aliases.load();
-                EngineDynmap.getInstance().init();
-
-                if(Bukkit.getPluginManager().isPluginEnabled("LunarClient-API")) {
-                    FactionsPlugin.getInstance().lcWrapper = new LunarClientWrapper(LunarClientAPI.getInstance());
-                    Logger.print("Implementing Lunar Client Integration", Logger.PrefixType.DEFAULT);
+                if (fPlayer.isAlt()) {
+                    faction.addAltPlayer(fPlayer);
+                } else {
+                    faction.addFPlayer(fPlayer);
                 }
+            }
 
-                FactionsPlugin.getInstance().hookedPlayervaults = setupPlayerVaults();
+            Factions.getInstance().getAllFactions().forEach(Faction::refreshFPlayers);
 
-                Econ.setup();
+            Board.getInstance().load();
+            Board.getInstance().clean();
 
-                initReserves();
+            Aliases.load();
+            EngineDynmap.getInstance().init();
 
-                FactionsPlugin.cachedRadiusClaim = Conf.useRadiusClaimSystem;
+            if(Bukkit.getPluginManager().isPluginEnabled("LunarClient-API")) {
+                FactionsPlugin.getInstance().lcWrapper = new LunarClientWrapper(LunarClientAPI.getInstance());
+                Logger.print("Implementing Lunar Client Integration", Logger.PrefixType.DEFAULT);
+            }
 
-                CoreX.init();
+            FactionsPlugin.getInstance().hookedPlayervaults = setupPlayerVaults();
 
-                FactionDataHelper.init();
+            Econ.setup();
 
-                if (Conf.useCheckSystem) {
-                    FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, CheckTask.getInstance(), 0L, 1200L);
-                    FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimer(plugin, CheckTask.getInstance()::cleanupTask, 0L, 1260L);
+            initReserves();
 
-                    FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, WeeWooTask::new, 600L, 600L);
-                }
+            FactionsPlugin.cachedRadiusClaim = Conf.useRadiusClaimSystem;
+
+            CoreX.init();
+
+            FactionDataHelper.init();
+
+            if (Conf.useCheckSystem) {
+                FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, CheckTask.getInstance(), 0L, 1200L);
+                FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimer(plugin, CheckTask.getInstance()::cleanupTask, 0L, 1260L);
+
+                FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, WeeWooTask::new, 600L, 600L);
+            }
 
 
-                populateConfSets();
+            populateConfSets();
 
-                FactionsPlugin.getInstance().fLogManager.loadLogs(plugin);
+            FactionsPlugin.getInstance().fLogManager.loadLogs(plugin);
 
-                FactionsPlugin.getInstance().timerManager = new TimerManager(plugin);
-                FactionsPlugin.getInstance().timerManager.reloadTimerData();
-                Logger.print("Loaded " + FactionsPlugin.getInstance().timerManager.getTimers().size() + " timers into list!", Logger.PrefixType.DEFAULT);
+            FactionsPlugin.getInstance().timerManager = new TimerManager(plugin);
+            FactionsPlugin.getInstance().timerManager.reloadTimerData();
+            Logger.print("Loaded " + FactionsPlugin.getInstance().timerManager.getTimers().size() + " timers into list!", Logger.PrefixType.DEFAULT);
 
-                finish.run();
-            });
-        });
+            finish.run();
+        }));
 
     }
 
