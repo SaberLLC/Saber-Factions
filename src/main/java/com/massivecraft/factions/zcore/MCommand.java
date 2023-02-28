@@ -105,7 +105,7 @@ public abstract class MCommand<T extends MPlugin> {
         this.commandChain = commandChain;
 
         // Is there a matching sub command?
-        if (args.size() > 0) {
+        if (!args.isEmpty()) {
             for (MCommand<?> subCommand : this.subCommands) {
                 if (subCommand.aliases.contains(args.get(0).toLowerCase())) {
                     args.remove(0);

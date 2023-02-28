@@ -29,7 +29,7 @@ public class ItemBuilder {
     }
 
     public static List<String> color(List<String> string) {
-        List<String> colored = new ArrayList<>();
+        List<String> colored = new ArrayList<>(string.size());
         for (String line : string) {
             colored.add(CC.translate(line));
         }
@@ -43,7 +43,7 @@ public class ItemBuilder {
 
     public ItemBuilder lore(String... lore) {
         if (lore != null) {
-            ArrayList<String> arrayList = new ArrayList<>();
+            ArrayList<String> arrayList = new ArrayList<>(lore.length);
             for (String line : lore) {
                 arrayList.add(CC.translate(line));
             }

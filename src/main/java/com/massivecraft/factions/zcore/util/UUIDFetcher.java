@@ -73,7 +73,7 @@ public class UUIDFetcher {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    JSONArray array = null;
+                    JSONArray array;
                     try {
                         array = (JSONArray) JSON_PARSER.parse(new InputStreamReader(connection.getInputStream()));
                     } catch (IOException | ParseException e) {

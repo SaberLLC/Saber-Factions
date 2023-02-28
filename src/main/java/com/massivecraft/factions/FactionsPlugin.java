@@ -371,8 +371,8 @@ public class FactionsPlugin extends MPlugin {
             return completions;
         } else {
             String lastArg = args[args.length - 1].toLowerCase();
-            for (Role value : Role.values()) completions.add(value.nicename);
-            for (Relation value : Relation.values()) completions.add(value.nicename);
+            for (Role value : Role.VALUES) completions.add(value.nicename);
+            for (Relation value : Relation.VALUES) completions.add(value.nicename);
             // The stream and foreach from the old implementation looped 2 times, by looping all players -> filtered -> looped filter and added -> filtered AGAIN at the end.
             // This loops them once and just adds, because we are filtering the arguments at the end anyways
             for (Player player : Bukkit.getServer().getOnlinePlayers()) completions.add(player.getName());
