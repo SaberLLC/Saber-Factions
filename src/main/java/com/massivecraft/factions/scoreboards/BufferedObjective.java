@@ -110,7 +110,6 @@ public class BufferedObjective {
     }
 
     public void flip() {
-        Bukkit.broadcastMessage("HERE I AM!");
         if (!requiresUpdate) {
             return;
         }
