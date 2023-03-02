@@ -6,6 +6,7 @@ package com.massivecraft.factions.util;
 
 import org.bukkit.ChatColor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CC {
@@ -83,17 +84,45 @@ public class CC {
     public static String Wait = YellowB + "<!> " + Yellow;
     public static String Stop = RedB + "<!> " + Red;
 
+    private static final char[] VALID_CODES = "0123456789AaBbCcDdEeFfKkLlMmNnOoRr".toCharArray();
+    private static long VALID_MASK = 0;
+
+    static {
+        for (char c : VALID_CODES) {
+            VALID_MASK |= 1L << Character.toLowerCase(c);
+        }
+    }
+
     public static String prefix(char color) {
         return translate("&" + color + "&l<!> &" + color);
     }
 
-    public static String translate(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
+    public static String translate(char altColorChar, String textToTranslate) {
+        StringBuilder sb = new StringBuilder(textToTranslate.length());
+        int len = textToTranslate.length();
+        for (int i = 0; i < len; i++) {
+            char c = textToTranslate.charAt(i);
+            if (c == altColorChar && (VALID_MASK & (1L << textToTranslate.charAt(i + 1))) != 0) {
+                sb.append((char) 167);
+                sb.append(textToTranslate.charAt(i + 1));
+                i++;
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String translate(String textToTranslate) {
+        return translate('&', textToTranslate);
     }
 
     public static List<String> translate(List<String> lore) {
-        for (int i = 0; i <= lore.size() - 1; i++) lore.set(i, translate(lore.get(i)));
-        return lore;
+        List<String> colored = new ArrayList<>(lore.size());
+        for (String line : lore) {
+            colored.add(translate(line));
+        }
+        return colored;
     }
 
     public static String strip(String string) {

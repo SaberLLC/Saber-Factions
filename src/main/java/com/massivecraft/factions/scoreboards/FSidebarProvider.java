@@ -2,9 +2,9 @@ package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.tag.Tag;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 import java.util.List;
 
@@ -40,6 +40,6 @@ public abstract class FSidebarProvider {
             // we assume it's broken up into two lines, so returning our tl will suffice.
             return TL.COMMAND_SHOW_NOHOME.toString();
         }
-        return FactionsPlugin.getInstance().txt.parse(line); // finally add color :)
+        return TextUtil.parse(line); // finally add color :)
     }
 }

@@ -5,6 +5,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.function.Consumer;
 
 public abstract class FPlayers {
     protected static FPlayers instance = getFPlayersImpl();
@@ -22,7 +24,7 @@ public abstract class FPlayers {
 
     public abstract void clean();
 
-    public abstract Collection<FPlayer> getOnlinePlayers();
+    public abstract Set<FPlayer> getOnlinePlayers();
 
     public abstract FPlayer getByPlayer(Player player);
 
@@ -36,5 +38,5 @@ public abstract class FPlayers {
 
     public abstract FPlayer getById(String string);
 
-    public abstract void load();
+    public abstract void load(Consumer<Boolean> finish);
 }

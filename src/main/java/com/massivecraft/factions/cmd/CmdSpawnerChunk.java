@@ -31,8 +31,7 @@ public class CmdSpawnerChunk extends FCommand {
         FastChunk fastChunk = new FastChunk(fLocation);
         if (fac.getSpawnerChunkCount() < fac.getAllowedSpawnerChunks()) {
             if (context.fPlayer.attemptClaim(fac, FLocation.wrap(context.player.getLocation()), true)) {
-                if (!fac.getSpawnerChunks().contains(fastChunk)) {
-                    fac.getSpawnerChunks().add(fastChunk);
+                if (fac.getSpawnerChunks().add(fastChunk)) {
                     context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_CLAIM_SUCCESSFUL);
                 } else {
                     context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_ALREADY_CHUNK);

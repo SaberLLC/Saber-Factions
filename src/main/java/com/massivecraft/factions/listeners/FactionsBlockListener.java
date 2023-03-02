@@ -1,8 +1,6 @@
 package com.massivecraft.factions.listeners;
 
 import cc.javajobs.wgbridge.WorldGuardBridge;
-import cc.javajobs.wgbridge.infrastructure.WGBridgeAPI;
-import cc.javajobs.wgbridge.infrastructure.struct.WGFlag;
 import cc.javajobs.wgbridge.infrastructure.struct.WGRegion;
 import cc.javajobs.wgbridge.infrastructure.struct.WGRegionSet;
 import cc.javajobs.wgbridge.infrastructure.struct.WGState;

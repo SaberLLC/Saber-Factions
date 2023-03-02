@@ -5,9 +5,9 @@ package com.massivecraft.factions.cmd.audit;
  */
 
 import com.google.common.collect.Lists;
-import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
@@ -66,7 +66,7 @@ public class FactionLogs {
                         }
                     }
                 }
-                if (logs.size() <= 0)
+                if (logs.isEmpty())
                     toRemove.add(logType);
             }
         });
@@ -99,7 +99,7 @@ public class FactionLogs {
                     timeFormat = timeFormat.substring(1);
                 }
             }
-            return String.format(ChatColor.translateAlternateColorCodes('&', type.getMsg()), args) + (timestamp ? ChatColor.GRAY + " - " + timeFormat : "");
+            return String.format(CC.translate(type.getMsg()), args) + (timestamp ? ChatColor.GRAY + " - " + timeFormat : "");
         }
     }
 }

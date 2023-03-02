@@ -68,7 +68,7 @@ public class JSONBoard extends MemoryBoard {
     }
 
     public void forceSave(boolean sync) {
-        DiscUtil.writeCatch(file, FactionsPlugin.getInstance().gson.toJson(dumpAsSaveFormat()), sync);
+        DiscUtil.writeCatch(file, FactionsPlugin.getInstance().getGson().toJson(dumpAsSaveFormat()), sync);
     }
 
     public boolean load() {
@@ -83,7 +83,7 @@ public class JSONBoard extends MemoryBoard {
         try {
             Type type = new TypeToken<Map<String, Map<String, String>>>() {
             }.getType();
-            Map<String, Map<String, String>> worldCoordIds = FactionsPlugin.getInstance().gson.fromJson(DiscUtil.read(file), type);
+            Map<String, Map<String, String>> worldCoordIds = FactionsPlugin.getInstance().getGson().fromJson(DiscUtil.read(file), type);
             loadFromSaveFormat(worldCoordIds);
             Logger.print("Loaded " + flocationIds.size() + " board locations", Logger.PrefixType.DEFAULT);
         } catch (Exception e) {

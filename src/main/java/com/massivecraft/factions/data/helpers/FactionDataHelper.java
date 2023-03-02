@@ -11,6 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +27,7 @@ public class FactionDataHelper {
     public static void init() {
         FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new FactionDataListener(), FactionsPlugin.getInstance());
         new FactionDataDeploymentTask().runTaskTimerAsynchronously(FactionsPlugin.getInstance(), 20, 20);
-        data = Lists.newArrayList();
+        data = new ArrayList<>();
         File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data");
         if (!file.exists()) {
             file.mkdir();
@@ -128,13 +129,7 @@ public class FactionDataHelper {
     }
 
     public static FactionData findFactionData(Faction faction) {
-        String id = faction.getId();
-        for (FactionData data : FactionDataHelper.data) {
-            if (data.getFactionID().equals(id)) {
-                return data;
-            }
-        }
-        return null;
+        return findFactionData(faction.getId());
     }
 
     public static String getFactionIDFromFile(File file) {

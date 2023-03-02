@@ -5,7 +5,6 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 
 import java.util.Collection;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 // http://mc.kev009.com/Protocol

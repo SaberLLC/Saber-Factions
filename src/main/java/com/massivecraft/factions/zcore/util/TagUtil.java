@@ -14,6 +14,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -275,7 +276,7 @@ public class TagUtil {
     private static List<String> tipFaction(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(faction, line)));
+            lines.add(CC.translate(TagUtil.parsePlain(faction, line)));
         }
         return lines;
     }
@@ -283,7 +284,7 @@ public class TagUtil {
     private static String tipFactionSingular(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(faction, line)));
+            lines.add(CC.translate(TagUtil.parsePlain(faction, line)));
         }
         return String.join("\n", lines);
     }
@@ -297,7 +298,7 @@ public class TagUtil {
     private static List<String> tipPlayer(FPlayer fplayer) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(fplayer, line)));
+            lines.add(CC.translate(TagUtil.parsePlain(fplayer, line)));
         }
         return lines;
     }
@@ -305,7 +306,7 @@ public class TagUtil {
     private static String tipPlayerSingular(FPlayer fplayer) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(fplayer, line)));
+            lines.add(CC.translate(TagUtil.parsePlain(fplayer, line)));
         }
         return String.join("\n", lines);
     }

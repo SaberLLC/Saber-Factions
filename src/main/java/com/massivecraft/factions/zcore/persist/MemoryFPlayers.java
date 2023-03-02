@@ -5,15 +5,19 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.json.JSONFPlayer;
+import com.massivecraft.factions.zcore.util.FastUUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.function.Consumer;
 
 public abstract class MemoryFPlayers extends FPlayers {
     public Map<String, FPlayer> fPlayers = new ConcurrentSkipListMap<>(String.CASE_INSENSITIVE_ORDER);
+
+    private final Map<Player, FPlayer> bukkitFPlayers = new HashMap<>(Bukkit.getMaxPlayers());
 
     public void clean() {
         for (FPlayer fplayer : this.fPlayers.values()) {
@@ -24,19 +28,22 @@ public abstract class MemoryFPlayers extends FPlayers {
         }
     }
 
-    public Collection<FPlayer> getOnlinePlayers() {
-        Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-        Set<FPlayer> entities = new HashSet<>(players.size());
+    public Set<FPlayer> getOnlinePlayers() {
+        return new HashSet<>(this.bukkitFPlayers.values());
+    }
 
-        for (Player player : players) {
-            entities.add(getByPlayer(player));
-        }
-        return entities;
+    public FPlayer removeOnlinePlayer(Player player) {
+        return this.bukkitFPlayers.remove(player);
+    }
+
+    public void wipeOnlinePlayers() {
+        this.bukkitFPlayers.clear();
     }
 
     @Override
     public FPlayer getByPlayer(Player player) {
-        return getById(player.getUniqueId().toString());
+        String id = FastUUID.toString(player.getUniqueId());
+        return player.isOnline() ? this.bukkitFPlayers.computeIfAbsent(player, key -> getById(id)) : getById(id);
     }
 
     @Override
@@ -47,7 +54,7 @@ public abstract class MemoryFPlayers extends FPlayers {
     @Override
     public abstract void forceSave();
 
-    public abstract void load();
+    public abstract void load(Consumer<Boolean> finish);
 
     @Override
     public FPlayer getByOfflinePlayer(OfflinePlayer player) {

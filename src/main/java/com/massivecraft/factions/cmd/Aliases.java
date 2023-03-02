@@ -26,7 +26,7 @@ public class Aliases {
     public static ArrayList<String> alts_invite = new ArrayList<>(Collections.singletonList("invite"));
     public static ArrayList<String> alts_kick = new ArrayList<>(Collections.singletonList("kick"));
     public static ArrayList<String> audit = new ArrayList<>(Arrays.asList("audit", "log", "logs"));
-    public static ArrayList<String> check = new ArrayList<>(Arrays.asList("check"));
+    public static ArrayList<String> check = new ArrayList<>(Collections.singletonList("check"));
     public static ArrayList<String> weewoo = new ArrayList<>(Collections.singletonList("weewoo"));
     public static ArrayList<String> chest = new ArrayList<>(Arrays.asList("chest", "pv"));
     public static ArrayList<String> claim_auto = new ArrayList<>(Collections.singletonList("autoclaim"));
@@ -34,7 +34,7 @@ public class Aliases {
     public static ArrayList<String> claim_at = new ArrayList<>(Collections.singletonList("claimat"));
     public static ArrayList<String> claim_claimFill = new ArrayList<>(Arrays.asList("claimfill", "cf"));
     public static ArrayList<String> claim_line = new ArrayList<>(Arrays.asList("claimline", "cl"));
-    public static ArrayList<String> claim_corner = new ArrayList<>(Arrays.asList("corner"));
+    public static ArrayList<String> claim_corner = new ArrayList<>(Collections.singletonList("corner"));
     public static ArrayList<String> corner_list = new ArrayList<>(Arrays.asList("clist", "cornerlist"));
     public static ArrayList<String> delfHome = new ArrayList<>(Arrays.asList("delhome", "deletehome"));
     public static ArrayList<String> unclaim_all_safe = new ArrayList<>(Arrays.asList("safeunclaimall", "safedeclaimall"));

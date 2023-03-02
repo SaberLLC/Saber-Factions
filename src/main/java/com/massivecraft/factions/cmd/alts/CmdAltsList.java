@@ -50,7 +50,7 @@ public class CmdAltsList extends FCommand {
         }
 
         context.msg("There are " + faction.getAltPlayers().size() + " alts in " + faction.getTag() + ":");
-        context.msg(Joiner.on(", ").join(faction.getAltPlayers().stream().map(FPlayer::getName).collect(Collectors.toList())));
+        context.msg(faction.getAltPlayers().stream().map(FPlayer::getName).collect(Collectors.joining(", ")));
     }
 
 

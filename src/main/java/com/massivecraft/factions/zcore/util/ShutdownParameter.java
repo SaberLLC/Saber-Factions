@@ -37,7 +37,7 @@ public class ShutdownParameter {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
-            Files.write(Paths.get(file.getPath()), FactionsPlugin.getInstance().getGsonBuilder().create().toJson(FactionsPlugin.getInstance().reserveObjects).getBytes());
+            Files.write(Paths.get(file.getPath()), FactionsPlugin.getInstance().getGson().toJson(FactionsPlugin.getInstance().reserveObjects).getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -6,8 +6,6 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
-import java.util.Objects;
-
 public class CmdDebug extends FCommand {
     public CmdDebug() {
         super();

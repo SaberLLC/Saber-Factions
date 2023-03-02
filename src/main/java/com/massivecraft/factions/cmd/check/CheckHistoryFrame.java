@@ -43,7 +43,8 @@ public class CheckHistoryFrame implements FactionGUI {
     public void onClose(HumanEntity player) {
     }
 
-    public void build() {
+    @Override
+    public void build(boolean initialOpen) {
         int currentSlot = 0;
         for (Map.Entry<Long, String> entry : Lists.reverse(new ArrayList<>(faction.getChecks().entrySet()))) {
             if (currentSlot >= 54) {

@@ -10,6 +10,7 @@ import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class CmdBanlist extends FCommand {
 
@@ -45,12 +46,13 @@ public class CmdBanlist extends FCommand {
             context.sender.sendMessage(TL.COMMAND_BANLIST_INVALID.format(context.argAsString(0)));
             return;
         }
+        Set<BanInfo> bannedPlayers = target.getBannedPlayers();
 
-        List<String> lines = new ArrayList<>();
+        List<String> lines = new ArrayList<>(bannedPlayers.size() + 1);
         lines.add(TL.COMMAND_BANLIST_HEADER.format(target.getBannedPlayers().size(), target.getTag(context.faction)));
         int i = 1;
 
-        for (BanInfo info : target.getBannedPlayers()) {
+        for (BanInfo info : bannedPlayers) {
             FPlayer banned = FPlayers.getInstance().getById(info.getBanned());
             FPlayer banner = FPlayers.getInstance().getById(info.getBanner());
             String timestamp = TL.sdf.format(info.getTime());

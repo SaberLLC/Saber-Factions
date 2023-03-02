@@ -18,7 +18,7 @@ package com.massivecraft.factions.zcore.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.text.SimpleDateFormat;
@@ -1422,6 +1422,8 @@ public enum TL {
     private String path;
     private String def;
 
+    public static final TL[] VALUES = values();
+
     /**
      * Lang enum constructor.
      *
@@ -1466,7 +1468,7 @@ public enum TL {
 
     @Override
     public String toString() {
-        return ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def)) + (this == TITLE ? " " : "");
+        return CC.translate(LANG.getString(this.path, def)) + (this == TITLE ? " " : "");
     }
 
     public String format(Object... args) {

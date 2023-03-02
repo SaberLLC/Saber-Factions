@@ -65,8 +65,11 @@
                             <shadedPattern>com.massivecraft.factions.shade.particlelib</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>mkremins.fanciful</pattern>
-                            <shadedPattern>com.massivecraft.factions.shade.mkremins.fanciful</shadedPattern>
+                            <pattern>me.clip.placeholderapi.libs.kyori</pattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.net.kyori</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>com.darkblade12</pattern>
@@ -396,6 +399,24 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.11.2</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-platform-bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-text-serializer-gson</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-text-serializer-legacy</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

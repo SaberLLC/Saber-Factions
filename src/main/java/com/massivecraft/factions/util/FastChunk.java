@@ -9,46 +9,26 @@ import java.util.Objects;
 public class FastChunk {
 
     private String world;
-    private int x, z;
+    private long key;
 
     public FastChunk() {
     }
 
     public FastChunk(String world, int x, int z) {
         this.world = world;
-        this.x = x;
-        this.z = z;
+        this.key = WorldUtil.encodeChunk(x, z);
     }
 
     public FastChunk(String world, FLocation floc) {
-        this.world = world;
-        this.x = (int) floc.getX();
-        this.z = (int) floc.getZ();
+        this(world, floc.getX(), floc.getZ());
     }
 
     public FastChunk(FLocation floc) {
-        this.world = floc.getWorldName();
-        this.x = (int) floc.getX();
-        this.z = (int) floc.getZ();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FastChunk fastChunk = (FastChunk) o;
-        return x == fastChunk.x &&
-                z == fastChunk.z &&
-                world.equals(fastChunk.world);
+        this(floc.getWorldName(), floc);
     }
 
     public FastChunk getRelative(String world, int dx, int dz) {
-        return new FastChunk(world, this.x + dx, this.z + dz);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(world, x, z);
+        return new FastChunk(world, getX() + dx, getZ() + dz);
     }
 
     public String getWorld() {
@@ -56,14 +36,27 @@ public class FastChunk {
     }
 
     public int getX() {
-        return x;
+        return WorldUtil.getChunkX(this.key);
     }
 
     public int getZ() {
-        return z;
+        return WorldUtil.getChunkZ(this.key);
     }
 
     public Chunk getChunk() {
-        return Bukkit.getWorld(world).getChunkAt(x, z);
+        return Bukkit.getWorld(world).getChunkAt(getX(), getZ());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FastChunk fastChunk = (FastChunk) o;
+        return key == fastChunk.key && world.equals(fastChunk.world);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(world, key);
     }
 }

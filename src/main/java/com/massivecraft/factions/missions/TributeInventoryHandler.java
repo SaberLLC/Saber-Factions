@@ -19,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class TributeInventoryHandler implements Listener {

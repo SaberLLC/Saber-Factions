@@ -6,7 +6,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -44,7 +44,7 @@ public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
         } else {
             if (slot == FactionsPlugin.getInstance().getConfig().getInt("f-check.history.slot")) {
                 CheckHistoryFrame checkHistoryFrame = new CheckHistoryFrame(plugin, fPlayer.getFaction());
-                checkHistoryFrame.build();
+                checkHistoryFrame.build(false);
                 fPlayer.getPlayer().openInventory(checkHistoryFrame.getInventory());
                 return;
             }
@@ -52,11 +52,12 @@ public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
                 faction.setBufferCheckMinutes(getNext(faction.getBufferCheckMinutes()));
             }
         }
-        build();
+        build(false);
         fPlayer.getPlayer().openInventory(inventory);
     }
 
-    public void build() {
+    @Override
+    public void build(boolean initialOpen) {
         Faction faction = fPlayer.getFaction();
         ItemStack wallsStack = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("f-check.wall-check.Type")).get().parseItem();
         ItemMeta wallsMeta = wallsStack.getItemMeta();
@@ -112,7 +113,7 @@ public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
     }
 
     public String color(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return CC.translate(message);
     }
 }
 

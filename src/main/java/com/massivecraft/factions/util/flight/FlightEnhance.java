@@ -4,7 +4,6 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.CmdFly;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import org.bukkit.GameMode;
 
@@ -19,6 +18,7 @@ public class FlightEnhance implements Runnable {
     public void run() {
         for (FPlayer player : FPlayers.getInstance().getOnlinePlayers()) {
             if (player.isAdminBypassing()
+                    || player.getPlayer() == null
                     || player.getPlayer().isOp()
                     || player.getPlayer().getGameMode() == GameMode.CREATIVE
                     || player.getPlayer().getGameMode() == GameMode.SPECTATOR) continue;
