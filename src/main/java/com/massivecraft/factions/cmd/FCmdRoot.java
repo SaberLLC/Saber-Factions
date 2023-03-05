@@ -213,6 +213,9 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdClaim);
         this.addSubCommand(this.cmdConfig);
         this.addSubCommand(this.cmdCreate);
+        this.addSubCommand(this.cmdInvite);
+        this.addSubCommand(this.cmdJoin);
+        this.addSubCommand(this.cmdKick);
         this.addSubCommand(this.cmdDeinvite);
         this.addSubCommand(this.cmdDescription);
         this.addSubCommand(this.cmdDelHome);
@@ -319,10 +322,10 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public void addVariableCommands() {
 
         Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-            if(!FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
-                this.addSubCommand(this.cmdInvite);
-                this.addSubCommand(this.cmdJoin);
-                this.addSubCommand(this.cmdKick);
+            if(FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
+                this.subCommands.remove(this.cmdInvite);
+                this.subCommands.remove(this.cmdJoin);
+                this.subCommands.remove(this.cmdKick);
             }
         }, 200);
 

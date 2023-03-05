@@ -116,7 +116,7 @@ public abstract class MemoryFactions extends Factions {
 
     @Override
     public List<Faction> getAllNormalFactions() {
-        ArrayList<Faction> normal = new ArrayList<>(this.factions.size() - 1);
+        List<Faction> normal = new ArrayList<>(this.factions.size() - 3);
         for (Faction value : this.factions.values()) {
             if (!value.isNormal()) {
                 continue;
