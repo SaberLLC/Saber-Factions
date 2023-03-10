@@ -212,7 +212,7 @@ public class MissionHandler implements Listener {
         Faction faction = fPlayer.getFaction();
 
         for (String command : section.getConfigurationSection("Reward").getStringList("Commands")) {
-            FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), command.replace("%faction%", faction.getTag()).replace("%player%", fPlayer.getPlayer().getName()));
+            FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.isNormal() ? faction.getFPlayerLeader().getName() : "none"));
         }
         faction.getMissions().remove(mission.getName());
         faction.msg(TL.MISSION_MISSION_FINISHED, CC.translate(section.getString("Name")));
