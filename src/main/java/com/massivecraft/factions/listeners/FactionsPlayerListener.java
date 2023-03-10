@@ -76,11 +76,13 @@ public class FactionsPlayerListener implements Listener {
             int cornerChunkZ = WorldUtil.blockToChunk((int) cornerZ);
 
             int borderChunk = WorldUtil.blockToChunk(borderSize);
+            
+            String worldName = world.getName();
 
-            corners.add(FLocation.wrap(world.getName(), cornerChunkX, cornerChunkZ));
-            corners.add(FLocation.wrap(world.getName(), cornerChunkX, cornerChunkZ + borderChunk));
-            corners.add(FLocation.wrap(world.getName(), cornerChunkX + borderChunk, cornerChunkZ));
-            corners.add(FLocation.wrap(world.getName(), cornerChunkX + borderChunk, cornerChunkZ + borderChunk));
+            corners.add(FLocation.wrap(worldName, cornerChunkX, cornerChunkZ));
+            corners.add(FLocation.wrap(worldName, cornerChunkX, cornerChunkZ + borderChunk));
+            corners.add(FLocation.wrap(worldName, cornerChunkX + borderChunk, cornerChunkZ));
+            corners.add(FLocation.wrap(worldName, cornerChunkX + borderChunk, cornerChunkZ + borderChunk));
         }
     }
     public static Boolean isSystemFaction(Faction faction) {
