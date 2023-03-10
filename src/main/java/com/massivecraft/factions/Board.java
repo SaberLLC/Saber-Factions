@@ -80,7 +80,7 @@ public abstract class Board {
      * The map is relative to a coord and a faction north is in the direction of decreasing x east is in the direction
      * of decreasing z
      */
-    public abstract List<Component> getMap(FPlayer fPlayer, FLocation flocation, double inDegrees);
+    public abstract List<Component> getMap(FPlayer fPlayer, FLocation flocation, float inDegrees);
 
     public abstract void forceSave();
 

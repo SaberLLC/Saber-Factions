@@ -3,6 +3,7 @@ package com.massivecraft.factions.missions;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Item;
@@ -129,8 +130,8 @@ public class MissionHandler implements Listener {
             return;
         }
         handleMissionsOfType(fPlayer, MissionType.FISH, (mission, section) -> {
-            String item = section.getString("Mission.Item", matchAnythingRegex);
             if (event.getCaught() instanceof Item) {
+                String item = section.getString("Mission.Item", matchAnythingRegex);
                 Item caughtItem = (Item) event.getCaught();
                 return caughtItem.getItemStack().getType().toString().matches(item) ? 1 : -1;
             }
@@ -172,14 +173,16 @@ public class MissionHandler implements Listener {
                 faction.msg(TL.MISSION_MISSION_FAILED, CC.translate(missionSection.getString("Name")));
             }
 
-            if (deadlines.containsKey(faction.getId())) {
-                deadlines.get(faction.getId()).remove(mission.getName());
+            Map<String, BukkitTask> tasks = deadlines.get(faction.getId());
+
+            if (tasks != null) {
+                tasks.remove(mission.getName());
             }
 
         }, timeTillDeadline / 50L);
 
-        deadlines.putIfAbsent(faction.getId(), new HashMap<>());
-        deadlines.get(faction.getId()).put(mission.getName(), bukkitTask);
+        deadlines.computeIfAbsent(faction.getId(), id -> new HashMap<>())
+                .put(mission.getName(), bukkitTask);
     }
 
     public static void handleMissionsOfType(FPlayer fPlayer, MissionType missionType, BiFunction<Mission, ConfigurationSection, Integer> missionConsumer) {
@@ -208,7 +211,6 @@ public class MissionHandler implements Listener {
 
         Faction faction = fPlayer.getFaction();
 
-
         for (String command : section.getConfigurationSection("Reward").getStringList("Commands")) {
             FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), command.replace("%faction%", faction.getTag()).replace("%player%", fPlayer.getPlayer().getName()));
         }
@@ -217,11 +219,12 @@ public class MissionHandler implements Listener {
         faction.getCompletedMissions().add(mission.getName());
 
         long deadlineMillis = plugin.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
-        if (deadlineMillis > 0L && deadlines.containsKey(faction.getId())) {
-            BukkitTask bukkitTask = deadlines.get(faction.getId()).getOrDefault(mission.getName(), null);
-            if (bukkitTask != null)
+        Map<String, BukkitTask> tasks = deadlines.get(faction.getId());
+        if (deadlineMillis > 0L && tasks != null) {
+            BukkitTask bukkitTask = tasks.remove(mission.getName());
+            if (bukkitTask != null) {
                 bukkitTask.cancel();
-            deadlines.get(faction.getId()).remove(mission.getName());
+            }
 
             ConfigurationSection prestigeSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Prestige");
             // Prestige
@@ -239,7 +242,7 @@ public class MissionHandler implements Listener {
                     faction.msg(CC.translate(prestigeSection.getString("CongratulationMessage")));
 
                     for (String command : prestigeSection.getStringList("Reward.Commands")) {
-                        FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), command.replace("%faction%", faction.getTag()).replace("%player%", fPlayer.getPlayer().getName()));
+                        FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.getFPlayerLeader().getName()));
                     }
                 }
             }

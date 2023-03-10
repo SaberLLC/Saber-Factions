@@ -2,6 +2,7 @@ package com.massivecraft.factions;
 
 import com.massivecraft.factions.zcore.persist.json.JSONFactions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -37,9 +38,9 @@ public abstract class Factions {
 
     public abstract Set<String> getFactionTags();
 
-    public abstract List<Faction> getAllFactions();
+    public abstract ArrayList<Faction> getAllFactions();
 
-    public abstract List<Faction> getAllNormalFactions();
+    public abstract ArrayList<Faction> getAllNormalFactions();
 
     @Deprecated
     public abstract Faction getNone();
