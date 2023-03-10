@@ -108,7 +108,7 @@ public abstract class FCommand {
 
         if (context.args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.requirements.errorOnManyArgs) {
             if (context.sender != null) {
-                // Get the to many string slice
+                // Get the too much string slice
                 List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());
                 context.msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
                 context.sender.sendMessage(this.getUsageTemplate(context));

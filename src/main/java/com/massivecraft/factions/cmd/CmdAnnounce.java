@@ -57,5 +57,4 @@ public class CmdAnnounce extends FCommand {
             return parent.then(RequiredArgumentBuilder.argument("message", StringArgumentType.greedyString()));
         }
     }
-
 }

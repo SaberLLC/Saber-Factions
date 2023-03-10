@@ -102,7 +102,6 @@ public class FactionsPlugin extends MPlugin {
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
     private BannerManager bannerManager;
-    private Listener[] eventsListener;
     public LunarClientWrapper lcWrapper;
 
     public FactionsPlugin() {
@@ -186,8 +185,12 @@ public class FactionsPlugin extends MPlugin {
                 Bukkit.getPluginManager().registerEvents(new ChorusFruitListener(), this);
             }
 
-            // Register Event Handlers
-            eventsListener = new Listener[]{
+
+            if(version > 8) {
+                Bukkit.getPluginManager().registerEvents(new MissionHandlerModern(), this);
+            }
+
+            for (Listener eventListener : new Listener[]{
 
                     new TributeInventoryHandler(),
                     new FactionsChatListener(),
@@ -199,13 +202,7 @@ public class FactionsPlugin extends MPlugin {
                     new FChestListener(),
                     new MenuListener(),
                     new AntiChestListener()
-            };
-
-            if(version > 8) {
-                Bukkit.getPluginManager().registerEvents(new MissionHandlerModern(), this);
-            }
-
-            for (Listener eventListener : eventsListener)
+            })
                 Bukkit.getPluginManager().registerEvents(eventListener, this);
 
             if (Conf.useGraceSystem) {
@@ -214,7 +211,7 @@ public class FactionsPlugin extends MPlugin {
 
             this.asyncPlayerMap = new AsyncPlayerMap(this);
 
-            this.getCommand(refCommand).setExecutor((FCmdRoot) cmdBase);
+            this.getCommand(refCommand).setExecutor(cmdBase);
 
             if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 

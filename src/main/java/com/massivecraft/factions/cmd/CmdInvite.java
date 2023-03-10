@@ -76,5 +76,4 @@ public class CmdInvite extends FCommand {
     public TL getUsageTranslation() {
         return TL.COMMAND_INVITE_DESCRIPTION;
     }
-
 }

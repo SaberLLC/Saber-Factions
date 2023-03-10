@@ -45,7 +45,8 @@ public class CmdShow extends FCommand {
         // this.requiredArgs.add("");
         this.optionalArgs.put("faction tag", "yours");
 
-        this.requirements = new CommandRequirements.Builder(Permission.SHOW).build();
+        this.requirements = new CommandRequirements.Builder(Permission.SHOW)
+                .build();
     }
 
     @Override
@@ -126,5 +127,4 @@ public class CmdShow extends FCommand {
     public TL getUsageTranslation() {
         return TL.COMMAND_SHOW_COMMANDDESCRIPTION;
     }
-
 }

@@ -17,9 +17,6 @@ import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.ChatColor;
 import com.massivecraft.factions.util.CC;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -41,6 +38,11 @@ public abstract class MemoryBoard extends Board {
     }
 
     public void setIdAt(String id, FLocation flocation) {
+        String idAt = getIdAt(flocation);
+        if (idAt.equals(id)) {
+            return;
+        }
+
         clearOwnershipAt(flocation);
 
         if (id.equals("0")) {
@@ -57,18 +59,21 @@ public abstract class MemoryBoard extends Board {
     public void removeAt(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
         faction.getWarps().values().removeIf(lazyLocation -> flocation.isInChunk(lazyLocation.getLocation()));
-        for (Entity entity : flocation.getChunk().getEntities()) {
-            if (entity.getType() == EntityType.PLAYER) {
-                FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
-                if (!fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
-                    fPlayer.setFlying(false);
-                }
-                if (fPlayer.isWarmingUp()) {
-                    fPlayer.clearWarmup();
-                    fPlayer.msg(TL.WARMUPS_CANCELLED);
-                }
+
+        for (FPlayer onlinePlayer : FPlayers.getInstance().getOnlinePlayers()) {
+            FLocation standing = FLocation.wrap(onlinePlayer);
+            if (!standing.equals(flocation)) {
+                continue;
+            }
+            if (!onlinePlayer.isAdminBypassing() && onlinePlayer.isFlying()) {
+                onlinePlayer.setFlying(false);
+            }
+            if (onlinePlayer.isWarmingUp()) {
+                onlinePlayer.clearWarmup();
+                onlinePlayer.msg(TL.WARMUPS_CANCELLED);
             }
         }
+
         clearOwnershipAt(flocation);
         flocationIds.remove(flocation);
     }
@@ -203,8 +208,11 @@ public abstract class MemoryBoard extends Board {
         return ret;
     }
 
+    //----------------------------------------------//
+    // Map generation
+    //----------------------------------------------//
     @Override
-    public List<Component> getMap(FPlayer fPlayer, FLocation flocation, double inDegrees) {
+    public List<Component> getMap(FPlayer fPlayer, FLocation flocation, float inDegrees) {
         List<Component> lines = new ArrayList<>(18);
         lines.add(Component.text(TextUtil.titleize(ChatColor.DARK_GRAY + TextUtil.titleize("(" + flocation.getCoordString() + ") " + getFactionAt(flocation).getTag(fPlayer)))));
 
@@ -342,10 +350,6 @@ public abstract class MemoryBoard extends Board {
         }
         return lines;
     }
-
-    //----------------------------------------------//
-    // Map generation
-    //----------------------------------------------//
 
     private String toolTip(Faction faction, FPlayer to) {
         return faction.describeTo(to);
