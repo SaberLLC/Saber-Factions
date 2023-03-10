@@ -242,7 +242,7 @@ public class MissionHandler implements Listener {
                     faction.msg(CC.translate(prestigeSection.getString("CongratulationMessage")));
 
                     for (String command : prestigeSection.getStringList("Reward.Commands")) {
-                        FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.getFPlayerLeader().getName()));
+                        FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.isNormal() ? faction.getFPlayerLeader().getName() : "none"));
                     }
                 }
             }
