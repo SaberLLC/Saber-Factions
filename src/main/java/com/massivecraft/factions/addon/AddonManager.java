@@ -65,6 +65,7 @@ public final class AddonManager {
                     FactionsPlugin.getInstance().getFactionsAddonHashMap().put(factionsAddon.getAddonName(), factionsAddon);
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
+                    System.out.println("[Factions] Error instantiating addon: " + e.getMessage());
                 }
             }
         }

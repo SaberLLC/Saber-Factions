@@ -113,7 +113,7 @@ public class MiscUtil {
         }
 
         for (char c : str.toCharArray()) {
-            if (substanceChars[c] != 1) {
+            if (substanceChars[Character.toLowerCase(c)] != 1) {
                 errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
                 break;
             }
