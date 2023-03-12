@@ -49,6 +49,10 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <relocations>
                         <relocation>
+                            <pattern>org.apache.commons.lang3</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.apache</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>com.cryptomorin</pattern>
                             <shadedPattern>com.massivecraft.factions.shade</shadedPattern>
                         </relocation>
@@ -63,9 +67,6 @@
                         <relocation>
                             <pattern>xyz.xenondevs</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.particlelib</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>me.clip.placeholderapi.libs.kyori</pattern>
                         </relocation>
                         <relocation>
                             <pattern>net.kyori</pattern>
@@ -289,6 +290,7 @@
             <groupId>com.bgsoftware</groupId>
             <artifactId>WildStackerAPI</artifactId>
             <version>2022.6</version>
+            <scope>provided</scope>
         </dependency>
 
 
@@ -396,25 +398,32 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.2</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>net.kyori</groupId>
+                    <groupId>me.clip.placeholderapi.libs.kyori</groupId>
                     <artifactId>adventure-platform-bukkit</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>net.kyori</groupId>
+                    <groupId>me.clip.placeholderapi.libs.kyori</groupId>
                     <artifactId>adventure-api</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>net.kyori</groupId>
+                    <groupId>me.clip.placeholderapi.libs.kyori</groupId>
                     <artifactId>adventure-text-serializer-gson</artifactId>
                 </exclusion>
                 <exclusion>
-                    <groupId>net.kyori</groupId>
+                    <groupId>me.clip.placeholderapi.libs.kyori</groupId>
                     <artifactId>adventure-text-serializer-legacy</artifactId>
                 </exclusion>
             </exclusions>

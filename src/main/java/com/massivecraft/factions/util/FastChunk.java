@@ -20,7 +20,7 @@ public class FastChunk {
     }
 
     public FastChunk(String world, FLocation floc) {
-        this(world, floc.getX(), floc.getZ());
+        this(world, floc.getIntX(), floc.getIntZ());
     }
 
     public FastChunk(FLocation floc) {

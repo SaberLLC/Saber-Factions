@@ -80,8 +80,8 @@ public class CmdStuck extends FCommand {
                             Faction faction = board.getFactionAt(chunk);
                             int buffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0);
                             if (faction.isWilderness() && !chunk.isOutsideWorldBorder(buffer)) {
-                                int cx = WorldUtil.chunkToBlock(chunk.getX());
-                                int cz = WorldUtil.chunkToBlock(chunk.getZ());
+                                int cx = WorldUtil.chunkToBlock(chunk.getIntX());
+                                int cz = WorldUtil.chunkToBlock(chunk.getIntZ());
                                 int y = world.getHighestBlockYAt(cx, cz);
                                 Location tp = new Location(world, cx, y, cz);
                                 context.msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
