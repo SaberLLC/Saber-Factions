@@ -240,7 +240,7 @@ public abstract class MemoryBoard extends Board {
                     continue;
                 }
 
-                FLocation found = FLocation.wrap(flocation.getWorldName(), ((flocation.getX() + x) - (startingOffset.getX())), ((flocation.getZ() + y) - (startingOffset.getZ())));
+                FLocation found = FLocation.wrap(flocation.getWorldName(), ((flocation.getIntX() + x) - (startingOffset.getIntX())), ((flocation.getIntZ() + y) - (startingOffset.getIntZ())));
 
                 if (found.equals(flocation)) {
                     row.append(
