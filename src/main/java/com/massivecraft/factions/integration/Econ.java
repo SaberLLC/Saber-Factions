@@ -26,7 +26,7 @@ public class Econ {
 
     private static final DecimalFormat format = new DecimalFormat(TL.ECON_FORMAT.toString());
     private static Economy econ = null;
-    private static DecimalFormat commaFormat = new DecimalFormat("#,##0");
+    private static final DecimalFormat COMMA_FORMAT = new DecimalFormat("#,##0");
 
     public static void setup() {
         if (isSetup()) return;
@@ -47,7 +47,7 @@ public class Econ {
         if (!Conf.econEnabled)
             Logger.print("NOTE: Economy is disabled. You can enable it with the command: f config econEnabled true", Logger.PrefixType.DEFAULT);
         //FactionsPlugin.getInstance().cmdBase.cmdHelp.updateHelp();
-        Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), Econ::oldMoneyDoTransfer, 20L);
+        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), Econ::oldMoneyDoTransfer, 20L);
     }
 
     public static boolean shouldBeUsed() {
@@ -114,7 +114,7 @@ public class Econ {
     }
 
     public static String insertCommas(double amount) {
-        return commaFormat.format(amount);
+        return COMMA_FORMAT.format(amount);
     }
 
     public static boolean canIControllYou(EconomyParticipator i, EconomyParticipator you) {
@@ -200,17 +200,17 @@ public class Econ {
     }
 
     public static Set<FPlayer> getFplayers(EconomyParticipator ep) {
-        Set<FPlayer> fplayers = new HashSet<>();
+        boolean player = ep instanceof FPlayer;
+        boolean faction = ep instanceof Faction;
 
-        if (ep != null) {
-            if (ep instanceof FPlayer) {
-                fplayers.add((FPlayer) ep);
-            } else if (ep instanceof Faction) {
-                fplayers.addAll(((Faction) ep).getFPlayers());
-            }
+        Set<FPlayer> players = new HashSet<>(player ? 1 : faction ? ((Faction) ep).getFPlayers().size() : 0);
+        if (player) {
+            players.add((FPlayer) ep);
         }
-
-        return fplayers;
+        if (faction) {
+            players.addAll(((Faction) ep).getFPlayers());
+        }
+        return players;
     }
 
     public static void sendTransferInfo(EconomyParticipator invoker, EconomyParticipator from, EconomyParticipator to, double amount) {

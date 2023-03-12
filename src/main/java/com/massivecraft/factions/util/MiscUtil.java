@@ -2,25 +2,29 @@ package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class MiscUtil {
 
     /// TODO create tag whitelist!!
-    public static HashSet<String> substanceChars =
-            new HashSet<>(Arrays.asList("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split("")));
+    public static final String substanceString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    public static final int[] substanceChars = new int[256];
+
+    static {
+        for (char c : substanceString.toCharArray()) {
+            substanceChars[Character.toLowerCase(c)] = 1;
+        }
+    }
 
     public static String formatDifference(long time) {
         if (time == 0L) {
@@ -76,13 +80,14 @@ public class MiscUtil {
     }
 
     public static String getComparisonString(String str) {
-        StringBuilder ret = new StringBuilder();
-
         str = ChatColor.stripColor(str);
-        str = str.toLowerCase();
+        int len = str.length();
 
-        for (char c : str.toCharArray()) {
-            if (substanceChars.contains(String.valueOf(c))) {
+        StringBuilder ret = new StringBuilder(len);
+
+        for (int i = 0; i < len; i++) {
+            char c = str.charAt(i);
+            if (substanceChars[Character.toLowerCase(c)] == 1) {
                 ret.append(c);
             }
         }
@@ -94,22 +99,22 @@ public class MiscUtil {
 
         for (String blacklistItem : Conf.blacklistedFactionNames) {
             if (str.toLowerCase().contains(blacklistItem.toLowerCase())) {
-                errors.add(FactionsPlugin.instance.txt.parse(TL.GENERIC_FACTIONTAG_BLACKLIST.toString()));
+                errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_BLACKLIST.toString()));
                 break;
             }
         }
 
         if (getComparisonString(str).length() < Conf.factionTagLengthMin) {
-            errors.add(FactionsPlugin.getInstance().txt.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), Conf.factionTagLengthMin));
+            errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_TOOSHORT.toString(), Conf.factionTagLengthMin));
         }
 
         if (str.length() > Conf.factionTagLengthMax) {
-            errors.add(FactionsPlugin.getInstance().txt.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), Conf.factionTagLengthMax));
+            errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_TOOLONG.toString(), Conf.factionTagLengthMax));
         }
 
         for (char c : str.toCharArray()) {
-            if (!substanceChars.contains(String.valueOf(c))) {
-                errors.add(FactionsPlugin.getInstance().txt.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
+            if (substanceChars[Character.toLowerCase(c)] != 1) {
+                errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
                 break;
             }
         }

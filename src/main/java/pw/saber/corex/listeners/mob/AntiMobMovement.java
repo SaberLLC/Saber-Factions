@@ -3,7 +3,6 @@ package pw.saber.corex.listeners.mob;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -23,30 +22,35 @@ public class AntiMobMovement implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void entitySpawnEvent(EntitySpawnEvent event) {
         if (entList.isEmpty()) return;
-        if (event.getEntity().getType() == EntityType.DROPPED_ITEM || event.getEntity().getType() == EntityType.PRIMED_TNT)
+        EntityType type = event.getEntityType();
+        if (type == EntityType.PLAYER || type == EntityType.DROPPED_ITEM || type == EntityType.PRIMED_TNT) {
             return;
-
-        if (event.getEntity() instanceof Player) return;
-
-        if (!entList.contains(event.getEntity().getType().toString())) return;
-        final LivingEntity entity = (LivingEntity) event.getEntity();
+        }
+        if (!entList.contains(type.name())) {
+            return;
+        }
+        LivingEntity entity = (LivingEntity) event.getEntity();
         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 999999999, 25));
     }
-
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent e) {
         if (e.getEntity() instanceof Creeper) {
             Creeper creeper = (Creeper) e.getEntity();
-            if (creeper.hasPotionEffect(PotionEffectType.INVISIBILITY))
-                creeper.removePotionEffect(PotionEffectType.INVISIBILITY);
+            removeAllPotionEffects(creeper);
         }
     }
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e) {
         if (entList.contains(e.getEntity().getType().name())) {
-            e.getEntity().removePotionEffect(PotionEffectType.INVISIBILITY);
+            removeAllPotionEffects(e.getEntity());
+        }
+    }
+
+    private void removeAllPotionEffects(LivingEntity entity) {
+        for (PotionEffect activePotionEffect : entity.getActivePotionEffects()) {
+            entity.removePotionEffect(activePotionEffect.getType());
         }
     }
 }

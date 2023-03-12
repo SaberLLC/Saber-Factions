@@ -3,18 +3,14 @@ package pw.saber.corex.listeners;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.event.FPlayerStoppedFlying;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import pw.saber.corex.CoreX;
-
-import java.util.List;
 
 public class EnemySpawnerMine implements Listener {
     @EventHandler

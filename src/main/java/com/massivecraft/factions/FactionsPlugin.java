@@ -1,9 +1,9 @@
 package com.massivecraft.factions;
 
 import cc.javajobs.wgbridge.WorldGuardBridge;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.lunarclient.bukkitapi.LunarClientAPI;
 import com.massivecraft.factions.addon.AddonManager;
 import com.massivecraft.factions.addon.FactionsAddon;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
@@ -47,7 +47,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -57,7 +56,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -67,9 +65,19 @@ public class FactionsPlugin extends MPlugin {
     // Our single plugin instance.
     // Single 4 life.
     public static FactionsPlugin instance;
+
+    private final Gson gsonSerializer = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+            .registerTypeAdapter(new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>(){}.getType(), new PermissionsMapTypeAdapter())
+            .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
+            .registerTypeAdapter(new TypeToken<Map<FLocation, Set<String>>>(){}.getType(), new MapFLocToStringSetTypeAdapter())
+            .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
+            .registerTypeAdapter(ReserveObject.class, new ReserveAdapter())
+            .registerTypeAdapter(Location.class, new LocationTypeAdapter())
+            .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY)
+            .create();
     public static boolean cachedRadiusClaim;
     public static Permission perms = null;
-    private HashMap<String, FactionsAddon> factionsAddonHashMap;
+    private Map<String, FactionsAddon> factionsAddonHashMap;
     // This plugin sets the boolean true when fully enabled.
     // Plugins can check this boolean while hooking in have
     // a green light to use the api.
@@ -94,7 +102,6 @@ public class FactionsPlugin extends MPlugin {
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
     private BannerManager bannerManager;
-    private Listener[] eventsListener;
     public LunarClientWrapper lcWrapper;
 
     public FactionsPlugin() {
@@ -125,11 +132,11 @@ public class FactionsPlugin extends MPlugin {
     @Override
     public void onEnable() {
 
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
             Logger.print("You are missing dependencies!", Logger.PrefixType.FAILED);
             Logger.print("Please verify [Vault] is installed!", Logger.PrefixType.FAILED);
             Conf.save();
-            Bukkit.getPluginManager().disablePlugin(instance);
+            Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
 
@@ -140,96 +147,87 @@ public class FactionsPlugin extends MPlugin {
             return;
         }
 
-        saveDefaultConfig();
-        this.reloadConfig();
-
         // Load Conf from disk
         Conf.load();
 
-        if (getConfig().getBoolean("enable-faction-flight", true)) {
-            Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), new FlightEnhance(), 30L, 30L);
-        }
-
-        StartupParameter.initData(this);
-
-        VersionProtocol.printVerionInfo();
-
-
-        // Add Base Commands
-        this.cmdBase = new FCmdRoot();
-        this.cmdAutoHelp = new CmdAutoHelp();
-
-        setupPermissions();
-
-        if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
-            Plugin plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
-            if (plugin != null) {
-                new WorldGuardBridge().connect(this, true);
+        StartupParameter.initData(this, () -> {
+            if (getConfig().getBoolean("enable-faction-flight", true)) {
+                Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), new FlightEnhance(), 30L, 30L);
             }
-        }
 
-        // start up task which runs the autoLeaveAfterDaysOfInactivity routine
-        startAutoLeaveTask(false);
+            VersionProtocol.printVerionInfo();
 
-        if (Conf.usePreStartupKickSystem) {
-            getServer().getPluginManager().registerEvents(new LoginRegistry(), this);
-        }
 
-        getServer().getPluginManager().registerEvents(new SaberGUIListener(), this);
-        getServer().getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
+            // Add Base Commands
+            this.cmdBase = new FCmdRoot();
+            this.cmdAutoHelp = new CmdAutoHelp();
 
-        if (Conf.userSpawnerChunkSystem) {
-            this.getServer().getPluginManager().registerEvents(new SpawnerChunkListener(), this);
-        }
+            setupPermissions();
 
-        if(FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
-            this.getServer().getPluginManager().registerEvents(new ChorusFruitListener(), this);
-        }
+            if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
+                Plugin plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
+                if (plugin != null) {
+                    new WorldGuardBridge().connect(this, true);
+                }
+            }
 
-        // Register Event Handlers
-        eventsListener = new Listener[]{
+            // start up task which runs the autoLeaveAfterDaysOfInactivity routine
+            startAutoLeaveTask(false);
 
-                new TributeInventoryHandler(),
-                new FactionsChatListener(),
-                new FactionsEntityListener(),
-                new FactionsExploitListener(),
-                new FactionsBlockListener(),
-                new UpgradesListener(),
-                new MissionHandler(this),
-                new FChestListener(),
-                new MenuListener(),
-                new AntiChestListener()
-        };
+            Bukkit.getPluginManager().registerEvents(new SaberGUIListener(), this);
+            Bukkit.getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
-        if(version > 8) {
-            getServer().getPluginManager().registerEvents(new MissionHandlerModern(), this);
-        }
+            if (Conf.userSpawnerChunkSystem) {
+                Bukkit.getPluginManager().registerEvents(new SpawnerChunkListener(), this);
+            }
 
-        for (Listener eventListener : eventsListener)
-            getServer().getPluginManager().registerEvents(eventListener, this);
+            if(FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
+                Bukkit.getPluginManager().registerEvents(new ChorusFruitListener(), this);
+            }
 
-        if (Conf.useGraceSystem) {
-            getServer().getPluginManager().registerEvents(timerManager.graceTimer, this);
-        }
 
-        this.asyncPlayerMap = new AsyncPlayerMap(this);
+            if(version > 8) {
+                Bukkit.getPluginManager().registerEvents(new MissionHandlerModern(), this);
+            }
 
-        this.getCommand(refCommand).setExecutor(cmdBase);
+            for (Listener eventListener : new Listener[]{
 
-        if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
+                    new TributeInventoryHandler(),
+                    new FactionsChatListener(),
+                    new FactionsEntityListener(),
+                    new FactionsExploitListener(),
+                    new FactionsBlockListener(),
+                    new UpgradesListener(),
+                    new MissionHandler(this),
+                    new FChestListener(),
+                    new MenuListener(),
+                    new AntiChestListener()
+            })
+                Bukkit.getPluginManager().registerEvents(eventListener, this);
 
-        this.setupPlaceholderAPI();
-        factionsAddonHashMap = new HashMap<>();
-        AddonManager.getAddonManagerInstance().loadAddons();
+            if (Conf.useGraceSystem) {
+                Bukkit.getPluginManager().registerEvents(timerManager.graceTimer, this);
+            }
 
-        this.postEnable();
-        this.loadSuccessful = true;
-        // Set startup finished to true. to give plugins hooking in a greenlight
-        FactionsPlugin.startupFinished = true;
+            this.asyncPlayerMap = new AsyncPlayerMap(this);
+
+            this.getCommand(refCommand).setExecutor(cmdBase);
+
+            if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
+
+            this.setupPlaceholderAPI();
+            factionsAddonHashMap = new HashMap<>();
+            AddonManager.getAddonManagerInstance().loadAddons();
+
+            this.postEnable();
+            this.loadSuccessful = true;
+            // Set startup finished to true. to give plugins hooking in a greenlight
+            FactionsPlugin.startupFinished = true;
+        });
     }
 
     private void setupPlaceholderAPI() {
-        Plugin clip = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        Plugin clip = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
         if (clip != null && clip.isEnabled()) {
             this.clipPlaceholderAPIManager = new ClipPlaceholderAPIManager();
             if (this.clipPlaceholderAPIManager.register()) {
@@ -242,14 +240,14 @@ public class FactionsPlugin extends MPlugin {
             PlaceholderApi = false;
         }
 
-        Plugin mvdw = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
+        Plugin mvdw = Bukkit.getPluginManager().getPlugin("MVdWPlaceholderAPI");
         if (mvdw != null && mvdw.isEnabled()) {
             this.mvdwPlaceholderAPIManager = true;
             Logger.print("Found MVdWPlaceholderAPI. Adding hooks.", Logger.PrefixType.DEFAULT);
         }
     }
 
-    public HashMap<String, FactionsAddon> getFactionsAddonHashMap() {
+    public Map<String, FactionsAddon> getFactionsAddonHashMap() {
         return factionsAddonHashMap;
     }
 
@@ -265,7 +263,7 @@ public class FactionsPlugin extends MPlugin {
         try {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
             if (rsp != null) perms = rsp.getProvider();
-        } catch (NoClassDefFoundError ex) {
+        } catch (NoClassDefFoundError ignored) {
         }
     }
 
@@ -274,23 +272,9 @@ public class FactionsPlugin extends MPlugin {
     }
 
     @Override
-    public GsonBuilder getGsonBuilder() {
-        Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
-        }.getType();
-
-        Type accessTypeAdatper = new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
-        }.getType();
-
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-                .registerTypeAdapter(accessTypeAdatper, new PermissionsMapTypeAdapter())
-                .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
-                .registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter())
-                .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
-                .registerTypeAdapter(ReserveObject.class, new ReserveAdapter())
-                .registerTypeAdapter(Location.class, new LocationTypeAdapter())
-                .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
+    public Gson getGson() {
+        return this.gsonSerializer;
     }
-
 
     @Override
     public void onDisable() {
@@ -384,8 +368,8 @@ public class FactionsPlugin extends MPlugin {
             return completions;
         } else {
             String lastArg = args[args.length - 1].toLowerCase();
-            for (Role value : Role.values()) completions.add(value.nicename);
-            for (Relation value : Relation.values()) completions.add(value.nicename);
+            for (Role value : Role.VALUES) completions.add(value.nicename);
+            for (Relation value : Relation.VALUES) completions.add(value.nicename);
             // The stream and foreach from the old implementation looped 2 times, by looping all players -> filtered -> looped filter and added -> filtered AGAIN at the end.
             // This loops them once and just adds, because we are filtering the arguments at the end anyways
             for (Player player : Bukkit.getServer().getOnlinePlayers()) completions.add(player.getName());

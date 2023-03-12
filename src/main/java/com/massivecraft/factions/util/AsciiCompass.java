@@ -60,8 +60,8 @@ public class AsciiCompass {
             return (isActive ? ACTIVE_COLOR : colorDefault) + getTranslation();
         }
 
-        public static Point fromAngle(double degrees) {
-            return VALUES[FastMath.round((degrees + 180) % 360 / 45) % 8];
+        public static Point fromAngle(float degrees) {
+            return VALUES[FastMath.round(degrees / 45f + 4.5f) & 7];
         }
     }
 
@@ -101,7 +101,7 @@ public class AsciiCompass {
         return point == null ? Collections.emptyList() : COMPASSES.get(point);
     }
 
-    public static List<Component> getAsciiCompass(double degrees) {
+    public static List<Component> getAsciiCompass(float degrees) {
         return get(Point.fromAngle(degrees));
     }
 }

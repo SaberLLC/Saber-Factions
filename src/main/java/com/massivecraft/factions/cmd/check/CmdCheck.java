@@ -12,9 +12,7 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.OfflinePlayer;
 
-import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -106,7 +104,7 @@ public class CmdCheck extends FCommand {
                 return;
             }
             CheckSettingsFrame checkGUI = new CheckSettingsFrame(FactionsPlugin.getInstance(), context.fPlayer);
-            checkGUI.build();
+            checkGUI.build(true);
             context.fPlayer.getPlayer().openInventory(checkGUI.getInventory());
         }
     }

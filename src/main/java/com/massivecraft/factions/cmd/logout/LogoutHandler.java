@@ -23,12 +23,12 @@ public class LogoutHandler {
     }
 
     public static LogoutHandler getByName(String name) {
-        LogoutHandler logoutHandler = factionDatas.get(name);
-        return logoutHandler == null ? new LogoutHandler(name) : factionDatas.get(name);
+        return factionDatas.getOrDefault(name, new LogoutHandler(name));
     }
 
     public boolean isLogoutActive(Player player) {
-        return logoutCooldown.containsKey(player.getUniqueId()) && System.currentTimeMillis() < logoutCooldown.get(player.getUniqueId());
+        Long cooldown = logoutCooldown.get(player.getUniqueId());
+        return cooldown != null && System.currentTimeMillis() < cooldown;
     }
 
     public void cancelLogout(Player player) {

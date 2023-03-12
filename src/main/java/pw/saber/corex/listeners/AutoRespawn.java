@@ -12,6 +12,6 @@ public class AutoRespawn implements Listener {
     @EventHandler
     private void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> player.spigot().respawn(), 5L);
+        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> player.spigot().respawn(), 2L);
     }
 }

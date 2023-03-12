@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -30,17 +29,13 @@ public class CmdShowInvites extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
-
-
-            Component msg = TL.COMMAND_SHOWINVITES_PENDING.toComponent().color(TextUtil.kyoriColor(ChatColor.GOLD));
-            for (String id : context.faction.getInvites()) {
-                FPlayer fp = FPlayers.getInstance().getById(id);
-                String name = fp != null ? fp.getName() : id;
-                msg.append(Component.text(name + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_SHOWINVITES_CLICKTOREVOKE.toFormattedComponent(name)).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name)));
-            }
-            context.sendComponent(msg);
-        });
+        Component msg = TL.COMMAND_SHOWINVITES_PENDING.toComponent().color(TextUtil.kyoriColor(ChatColor.GOLD));
+        for (String id : context.faction.getInvites()) {
+            FPlayer fp = FPlayers.getInstance().getById(id);
+            String name = fp != null ? fp.getName() : id;
+            msg.append(Component.text(name + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_SHOWINVITES_CLICKTOREVOKE.toFormattedComponent(name)).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " deinvite " + name)));
+        }
+        context.sendComponent(msg);
     }
 
     @Override

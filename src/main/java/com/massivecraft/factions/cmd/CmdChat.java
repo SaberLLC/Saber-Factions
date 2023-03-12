@@ -31,54 +31,27 @@ public class CmdChat extends FCommand {
     @Override
     public void perform(CommandContext context) {
         if (!Conf.factionOnlyChat) {
-            context.msg(TL.COMMAND_CHAT_DISABLED.toString());
+            context.msg(TL.COMMAND_CHAT_DISABLED);
             return;
         }
 
-        String modeString = context.argAsString(0);
         ChatMode modeTarget = context.fPlayer.getChatMode().getNext();
-
+        String modeString = context.argAsString(0);
         if (modeString != null) {
             modeString = modeString.toLowerCase();
-            // Only allow Mods and higher rank to switch to this channel.
-            if (modeString.startsWith("m")) {
-                if (!context.fPlayer.getRole().isAtLeast(Role.MODERATOR)) {
-                    context.msg(TL.COMMAND_CHAT_MOD_ONLY);
-                    return;
-                } else modeTarget = ChatMode.MOD;
-            } else if (modeString.startsWith("p")) {
-                modeTarget = ChatMode.PUBLIC;
-            } else if (modeString.startsWith("a")) {
-                modeTarget = ChatMode.ALLIANCE;
-            } else if (modeString.startsWith("f")) {
-                modeTarget = ChatMode.FACTION;
-            } else if (modeString.startsWith("t")) {
-                modeTarget = ChatMode.TRUCE;
-            } else {
+            if (modeString.startsWith("m") && !context.fPlayer.getRole().isAtLeast(Role.MODERATOR)) {
+                context.msg(TL.COMMAND_CHAT_MOD_ONLY);
+                return;
+            }
+            modeTarget = ChatMode.fromString(modeString.charAt(0));
+            if (modeTarget == null) {
                 context.msg(TL.COMMAND_CHAT_INVALIDMODE);
                 return;
             }
         }
 
         context.fPlayer.setChatMode(modeTarget);
-
-        switch (context.fPlayer.getChatMode()) {
-            case MOD:
-                context.msg(TL.COMMAND_CHAT_MODE_MOD);
-                break;
-            case PUBLIC:
-                context.msg(TL.COMMAND_CHAT_MODE_PUBLIC);
-                break;
-            case ALLIANCE:
-                context.msg(TL.COMMAND_CHAT_MODE_ALLIANCE);
-                break;
-            case TRUCE:
-                context.msg(TL.COMMAND_CHAT_MODE_TRUCE);
-                break;
-            default:
-                context.msg(TL.COMMAND_CHAT_MODE_FACTION);
-                break;
-        }
+        context.msg(modeTarget.modeMessage);
     }
 
     @Override
@@ -86,7 +59,7 @@ public class CmdChat extends FCommand {
         return TL.COMMAND_CHAT_DESCRIPTION;
     }
 
-    protected class ChatBrigadier implements BrigadierProvider {
+    public static class ChatBrigadier implements BrigadierProvider {
         @Override
         public ArgumentBuilder<Object, ?> get(ArgumentBuilder<Object, ?> parent) {
             return parent.then(LiteralArgumentBuilder.literal("public"))

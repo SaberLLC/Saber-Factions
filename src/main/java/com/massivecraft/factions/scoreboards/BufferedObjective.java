@@ -1,6 +1,7 @@
 package com.massivecraft.factions.scoreboards;
 
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
+import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -8,6 +9,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,12 +62,11 @@ public class BufferedObjective {
     }
 
     private String createBaseName() {
-        Random random = new Random();
         StringBuilder builder = new StringBuilder();
         while (builder.length() < 14) {
-            builder.append(Integer.toHexString(random.nextInt()));
+            builder.append(Integer.toHexString(ThreadLocalRandom.current().nextInt()));
         }
-        return builder.toString().substring(0, 14);
+        return builder.substring(0, 14);
     }
 
     public void setTitle(String title) {
@@ -93,7 +94,7 @@ public class BufferedObjective {
         if (content.length() > MAX_LINE_LENGTH) {
             content = content.substring(0, MAX_LINE_LENGTH);
         }
-        content = ChatColor.translateAlternateColorCodes('&', content);
+        content = CC.translate(content);
 
         if (contents.get(lineNumber) == null || !contents.get(lineNumber).equals(content)) {
             contents.put(lineNumber, content);

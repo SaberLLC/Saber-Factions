@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd.banner;
 
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.Aliases;
@@ -11,12 +10,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import de.tr7zw.nbtapi.NBTItem;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class CmdBanner extends FCommand {

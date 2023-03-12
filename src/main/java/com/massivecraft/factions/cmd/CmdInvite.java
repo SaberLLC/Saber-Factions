@@ -10,7 +10,6 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 
@@ -77,5 +76,4 @@ public class CmdInvite extends FCommand {
     public TL getUsageTranslation() {
         return TL.COMMAND_INVITE_DESCRIPTION;
     }
-
 }

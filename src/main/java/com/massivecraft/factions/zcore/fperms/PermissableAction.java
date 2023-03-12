@@ -51,6 +51,9 @@ public enum PermissableAction {
 
     private String name;
 
+    public static PermissableAction[] VALUES = values();
+
+
     PermissableAction(String name) {
         this.name = name;
     }

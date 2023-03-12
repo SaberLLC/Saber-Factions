@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.Material;
 
 import java.awt.*;
@@ -196,7 +197,7 @@ public final class TextUtil {
     // -------------------------------------------- //
 
     public static String parseColorBukkit(String string) {
-        return ChatColor.translateAlternateColorCodes('&', string);
+        return CC.translate(string);
     }
 
     public static String parseColor(String string) {

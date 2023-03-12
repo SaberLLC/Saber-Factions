@@ -1,7 +1,6 @@
 package pw.saber.corex.listeners.mob;
 
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.IronGolem;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;

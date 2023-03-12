@@ -7,7 +7,6 @@ import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -15,12 +14,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -42,6 +38,11 @@ public abstract class MemoryBoard extends Board {
     }
 
     public void setIdAt(String id, FLocation flocation) {
+        String idAt = getIdAt(flocation);
+        if (idAt.equals(id)) {
+            return;
+        }
+
         clearOwnershipAt(flocation);
 
         if (id.equals("0")) {
@@ -58,18 +59,21 @@ public abstract class MemoryBoard extends Board {
     public void removeAt(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
         faction.getWarps().values().removeIf(lazyLocation -> flocation.isInChunk(lazyLocation.getLocation()));
-        for (Entity entity : flocation.getChunk().getEntities()) {
-            if (entity.getType() == EntityType.PLAYER) {
-                FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) entity);
-                if (!fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
-                    fPlayer.setFlying(false);
-                }
-                if (fPlayer.isWarmingUp()) {
-                    fPlayer.clearWarmup();
-                    fPlayer.msg(TL.WARMUPS_CANCELLED);
-                }
+
+        for (FPlayer onlinePlayer : FPlayers.getInstance().getOnlinePlayers()) {
+            FLocation standing = FLocation.wrap(onlinePlayer);
+            if (!standing.equals(flocation)) {
+                continue;
+            }
+            if (!onlinePlayer.isAdminBypassing() && onlinePlayer.isFlying()) {
+                onlinePlayer.setFlying(false);
+            }
+            if (onlinePlayer.isWarmingUp()) {
+                onlinePlayer.clearWarmup();
+                onlinePlayer.msg(TL.WARMUPS_CANCELLED);
             }
         }
+
         clearOwnershipAt(flocation);
         flocationIds.remove(flocation);
     }
@@ -204,8 +208,11 @@ public abstract class MemoryBoard extends Board {
         return ret;
     }
 
+    //----------------------------------------------//
+    // Map generation
+    //----------------------------------------------//
     @Override
-    public List<Component> getMap(FPlayer fPlayer, FLocation flocation, double inDegrees) {
+    public List<Component> getMap(FPlayer fPlayer, FLocation flocation, float inDegrees) {
         List<Component> lines = new ArrayList<>(18);
         lines.add(Component.text(TextUtil.titleize(ChatColor.DARK_GRAY + TextUtil.titleize("(" + flocation.getCoordString() + ") " + getFactionAt(flocation).getTag(fPlayer)))));
 
@@ -344,10 +351,6 @@ public abstract class MemoryBoard extends Board {
         return lines;
     }
 
-    //----------------------------------------------//
-    // Map generation
-    //----------------------------------------------//
-
     private String toolTip(Faction faction, FPlayer to) {
         return faction.describeTo(to);
     }
@@ -363,9 +366,9 @@ public abstract class MemoryBoard extends Board {
             // send header and that's all
             String header = show.get(0);
             if (TagReplacer.HEADER.contains(header)) {
-                ret.add(FactionsPlugin.getInstance().txt.titleize(tag));
+                ret.add(TextUtil.titleize(tag));
             } else {
-                ret.add(FactionsPlugin.getInstance().txt.parse(TagReplacer.FACTION.replace(header, tag)));
+                ret.add(TextUtil.parse(TagReplacer.FACTION.replace(header, tag)));
             }
             return ret; // we only show header for non-normal factions
         }
@@ -385,7 +388,7 @@ public abstract class MemoryBoard extends Board {
                 List<Component> fancy = TagUtil.parseFancy(faction, to, parsed);
                 if (fancy != null) {
                     for (Component msg : fancy) {
-                        ret.add((FactionsPlugin.getInstance().txt.parse(msg.toOldMessageFormat())));
+                        ret.add((TextUtil.parse(msg.toOldMessageFormat())));
                     }
                 }
                 continue;
@@ -399,7 +402,7 @@ public abstract class MemoryBoard extends Board {
                 if (parsed.contains("%")) {
                     parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
                 }
-                ret.add(FactionsPlugin.getInstance().txt.parse(parsed));
+                ret.add(TextUtil.parse(parsed));
             }
         }
 

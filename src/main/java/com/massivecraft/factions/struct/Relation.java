@@ -5,7 +5,9 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -30,6 +32,8 @@ public enum Relation implements Permissable {
 
     public final int value;
     public final String nicename;
+
+    public static Relation[] VALUES = values();
 
     Relation(final int value, final String nicename) {
         this.value = value;
@@ -66,7 +70,7 @@ public enum Relation implements Permissable {
     }
 
     public String getPluralTranslation() {
-        for (TL t : TL.values()) {
+        for (TL t : TL.VALUES) {
             if (t.name().equalsIgnoreCase("RELATION_" + name() + "_PLURAL")) {
                 return t.toString();
             }
@@ -231,12 +235,12 @@ public enum Relation implements Permissable {
     }
 
     public String replacePlaceholders(String string) {
-        string = ChatColor.translateAlternateColorCodes('&', string);
+        string = CC.translate(string);
 
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 
-        string = string.replace("{relation-color}", getColor().toString());
-        string = string.replace("{relation}", permissableName);
+        string = TextUtil.replace(string, "{relation-color}", getColor().toString());
+        string = TextUtil.replace(string, "{relation}", permissableName);
 
         return string;
     }

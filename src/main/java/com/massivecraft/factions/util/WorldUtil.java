@@ -27,7 +27,15 @@ public final class WorldUtil {
     }
 
     public static long encodeChunk(int x, int z) {
-        return (long) x & 0xffffffffL | ((long) z & 0xffffffffL) << 32;
+        return ((long) z << 32) | (x & 0xFFFFFFFFL);
+    }
+
+    public static int getChunkX(long key) {
+        return (int) key;
+    }
+
+    public static int getChunkZ(long key) {
+        return (int) (key >>> 32);
     }
 
     public static int blockToChunk(int block) {

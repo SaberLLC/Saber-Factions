@@ -4,13 +4,13 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -108,7 +108,7 @@ public abstract class FCommand {
 
         if (context.args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.requirements.errorOnManyArgs) {
             if (context.sender != null) {
-                // Get the to many string slice
+                // Get the too much string slice
                 List<String> theToMany = context.args.subList(this.requiredArgs.size() + this.optionalArgs.size(), context.args.size());
                 context.msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
                 context.sender.sendMessage(this.getUsageTemplate(context));
@@ -143,7 +143,7 @@ public abstract class FCommand {
     public List<String> getToolTips(FPlayer player) {
         List<String> lines = new ArrayList<>();
         for (String s : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
+            lines.add(CC.translate(replaceFPlayerTags(s, player)));
         }
         return lines;
     }
@@ -151,7 +151,7 @@ public abstract class FCommand {
     public List<String> getToolTips(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String s : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
+            lines.add(CC.translate(replaceFactionTags(s, faction)));
         }
         return lines;
     }
@@ -159,45 +159,45 @@ public abstract class FCommand {
     public String replaceFPlayerTags(String s, FPlayer player) {
         if (s.contains("{balance}")) {
             String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
-            s = s.replace("{balance}", balance);
+            s = TextUtil.replace(s, "{balance}", balance);
         }
         if (s.contains("{lastSeen}")) {
             String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - player.getLastLoginTime(), true, true) + " ago";
             String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online" : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
-            s = s.replace("{lastSeen}", lastSeen);
+            s = TextUtil.replace(s, "{lastSeen}", lastSeen);
         }
         if (s.contains("{power}")) {
             String power = player.getPowerRounded() + "/" + player.getPowerMaxRounded();
-            s = s.replace("{power}", power);
+            s = TextUtil.replace(s, "{power}", power);
         }
         if (s.contains("{group}")) {
             String group = FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(player.getId())));
-            s = s.replace("{group}", group);
+            s = TextUtil.replace(s, "{group}", group);
         }
         return s;
     }
 
     public String replaceFactionTags(String s, Faction faction) {
         if (s.contains("{power}")) {
-            s = s.replace("{power}", String.valueOf(faction.getPowerRounded()));
+            s = TextUtil.replace(s, "{power}", String.valueOf(faction.getPowerRounded()));
         }
         if (s.contains("{maxPower}")) {
-            s = s.replace("{maxPower}", String.valueOf(faction.getPowerMaxRounded()));
+            s = TextUtil.replace(s, "{maxPower}", String.valueOf(faction.getPowerMaxRounded()));
         }
         if (s.contains("{leader}")) {
             FPlayer fLeader = faction.getFPlayerAdmin();
             String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-            s = s.replace("{leader}", leader);
+            s = TextUtil.replace(s, "{leader}", leader);
         }
         if (s.contains("{chunks}")) {
-            s = s.replace("{chunks}", String.valueOf(faction.getLandRounded()));
+            s = TextUtil.replace(s, "{chunks}", String.valueOf(faction.getLandRounded()));
         }
         if (s.contains("{members}")) {
-            s = s.replace("{members}", String.valueOf(faction.getSize()));
+            s = TextUtil.replace(s, "{members}", String.valueOf(faction.getSize()));
 
         }
         if (s.contains("{online}")) {
-            s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size()));
+            s = TextUtil.replace(s, "{online}", String.valueOf(faction.getOnlinePlayers().size()));
         }
         return s;
     }
@@ -206,8 +206,7 @@ public abstract class FCommand {
     Help and Usage information
  */
     public String getUsageTemplate(CommandContext context, boolean addShortHelp) {
-        StringBuilder ret = new StringBuilder();
-        ret.append(CC.translate(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString()));
+        StringBuilder ret = new StringBuilder((CC.translate(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString())));
         ret.append('/');
 
         for (FCommand fc : context.commandChain) {
@@ -234,12 +233,12 @@ public abstract class FCommand {
         }
 
         if (args.size() > 0) {
-            ret.append(FactionsPlugin.getInstance().txt.parseTags(" "));
+            ret.append(TextUtil.parseTags(" "));
             ret.append(TextUtil.implode(args, " "));
         }
 
         if (addShortHelp) {
-            ret.append(FactionsPlugin.getInstance().txt.parseTags(" "));
+            ret.append(TextUtil.parseTags(" "));
             ret.append(this.getHelpShort());
         }
 

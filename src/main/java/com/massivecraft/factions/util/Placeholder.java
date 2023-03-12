@@ -1,5 +1,7 @@
 package com.massivecraft.factions.util;
 
+import com.massivecraft.factions.zcore.util.TextUtil;
+
 import java.util.List;
 
 public class Placeholder {
@@ -23,10 +25,8 @@ public class Placeholder {
     public static List<String> replacePlaceholders(List<String> lore, Placeholder... placeholders) {
         for (Placeholder placeholder : placeholders) {
             for (int x = 0; x <= lore.size() - 1; x++)
-                lore.set(x, lore.get(x).replace(placeholder.getTag(), placeholder.getReplace()));
+                lore.set(x, TextUtil.replace(lore.get(x), placeholder.getTag(), placeholder.getReplace()));
         }
         return lore;
     }
-
-
 }

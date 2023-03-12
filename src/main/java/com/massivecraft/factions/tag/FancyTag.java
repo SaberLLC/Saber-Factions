@@ -7,12 +7,13 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.QuadFunction;
+import com.massivecraft.factions.zcore.util.FastUUID;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 
 import java.util.*;
 
@@ -79,7 +80,7 @@ public enum FancyTag implements Tag {
 
     private static List<Component> processRelation(String prefix, Faction faction, FPlayer fPlayer, Relation relation) {
         List<Component> Components = new ArrayList<>();
-        TextComponent.Builder message = FactionsPlugin.getInstance().txt.parseFancy(prefix);
+        TextComponent.Builder message = TextUtil.parseFancy(prefix);
         boolean first = true;
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
@@ -134,7 +135,7 @@ public enum FancyTag implements Tag {
             if (string == null) {
                 continue;
             }
-            lines.add(ChatColor.translateAlternateColorCodes('&', string));
+            lines.add(CC.translate(string));
         }
         return lines;
     }
@@ -152,9 +153,9 @@ public enum FancyTag implements Tag {
             everythingOnYourWayOut:
             if (line.contains("{group}")) {
                 if (groupMap != null) {
-                    String group = groupMap.get(UUID.fromString(fplayer.getId()));
+                    String group = groupMap.get(FastUUID.parseUUID(fplayer.getId()));
                     if (!group.trim().isEmpty()) {
-                        newLine = newLine.replace("{group}", group);
+                        newLine = TextUtil.replace(newLine, "{group}", group);
                         break everythingOnYourWayOut;
                     }
                 }
@@ -164,7 +165,7 @@ public enum FancyTag implements Tag {
             if (string == null) {
                 continue;
             }
-            lines.add(ChatColor.translateAlternateColorCodes('&', string));
+            lines.add(CC.translate(string));
         }
         return lines;
     }
@@ -181,9 +182,9 @@ public enum FancyTag implements Tag {
         return test != null && test.contains(this.tag);
     }
 
-    public List getMessage(String text, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
+    public List<Component> getMessage(String text, Faction faction, FPlayer player, Map<UUID, String> groupMap) {
         if (!this.foundInString(text)) {
-            return Collections.EMPTY_LIST; // We really, really shouldn't be here.
+            return Collections.emptyList(); // We really, really shouldn't be here.
         }
         return this.function.apply(faction, player, text.replace(this.getTag(), ""), groupMap);
     }

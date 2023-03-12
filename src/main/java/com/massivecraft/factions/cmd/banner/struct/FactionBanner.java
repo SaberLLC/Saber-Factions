@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd.banner.struct;
 
+import com.cryptomorin.xseries.XSound;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
@@ -64,7 +65,7 @@ public class FactionBanner {
                 Player online = Bukkit.getPlayer(this.whoPlacedBanner);
                 if (online != null) {
                     online.sendMessage(CC.RedB + "(!) " + CC.Red + "Your /f banner has expired or been destroyed!");
-                    //online.playSound(online.getLocation(), Sound.PORTAL, 1.0F, 1.4F);
+                    XSound.BLOCK_PORTAL_AMBIENT.play(online.getLocation(), 1.0F, 1.4F);
                 }
             }
             for (Player p : this.faction.getOnlinePlayers()) {

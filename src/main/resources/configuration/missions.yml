@@ -51,6 +51,7 @@ Missions:
       - ' '
     Rows: 4
   sugarcane:
+    enabled: true
     Slot: 11
     Material: "SUGAR_CANE"
     Name: "&f10,000 &2Sugar Cane"
@@ -65,6 +66,7 @@ Missions:
     Reward:
       Commands: ["f points add %faction% 100"]
   zombie:
+    enabled: true
     Slot: 15
     Material: "ROTTEN_FLESH"
     Name: "&f1,000 &eZombies"
@@ -79,6 +81,7 @@ Missions:
     Reward:
       Commands: ["f points add %faction% 100"]
   fishing:
+    enabled: true
     Slot: 13
     Material: "FISHING_ROD"
     Name: "&f100 &6Fish"
@@ -92,6 +95,7 @@ Missions:
     Reward:
       Commands: ["f points add %faction% 100"]
   animaltaming:
+    enabled: true
     Slot: 20
     Material: "BONE"
     Name: "&f100 &cTamed Animals"
@@ -106,6 +110,7 @@ Missions:
     Reward:
       Commands: ["f points add %faction% 100"]
   enchant:
+    enabled: true
     Slot: 22
     Material: "BOOK"
     Name: "&f100 &dEnchants"
@@ -119,6 +124,7 @@ Missions:
     Reward:
       Commands: ["f points add %faction% 100"]
   consume:
+    enabled: true
     Slot: 24
     Material: "COOKED_BEEF"
     Name: "&f100 &dSteak"

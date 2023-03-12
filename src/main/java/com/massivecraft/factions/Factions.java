@@ -3,7 +3,9 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.zcore.persist.json.JSONFactions;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public abstract class Factions {
     protected static Factions instance = getFactionsImpl();
@@ -38,6 +40,8 @@ public abstract class Factions {
 
     public abstract ArrayList<Faction> getAllFactions();
 
+    public abstract ArrayList<Faction> getAllNormalFactions();
+
     @Deprecated
     public abstract Faction getNone();
 
@@ -51,5 +55,5 @@ public abstract class Factions {
 
     public abstract void forceSave(boolean sync);
 
-    public abstract void load();
+    public abstract void load(Consumer<Boolean> success);
 }

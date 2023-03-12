@@ -11,6 +11,7 @@ import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -104,7 +105,7 @@ public abstract class MCommand<T extends MPlugin> {
         this.commandChain = commandChain;
 
         // Is there a matching sub command?
-        if (args.size() > 0) {
+        if (!args.isEmpty()) {
             for (MCommand<?> subCommand : this.subCommands) {
                 if (subCommand.aliases.contains(args.get(0).toLowerCase())) {
                     args.remove(0);
@@ -201,7 +202,7 @@ public abstract class MCommand<T extends MPlugin> {
 
     public String getUseageTemplate(List<MCommand<?>> commandChain, boolean addShortHelp) {
         StringBuilder ret = new StringBuilder();
-        ret.append(p.txt.parseTags("<c>"));
+        ret.append(TextUtil.parseTags("<c>"));
         ret.append('/');
 
         for (MCommand<?> mc : commandChain) {
@@ -228,12 +229,12 @@ public abstract class MCommand<T extends MPlugin> {
         }
 
         if (args.size() > 0) {
-            ret.append(p.txt.parseTags("<plugin> "));
+            ret.append(TextUtil.parseTags("<plugin> "));
             ret.append(TextUtil.implode(args, " "));
         }
 
         if (addShortHelp) {
-            ret.append(p.txt.parseTags(" <i>"));
+            ret.append(TextUtil.parseTags(" <i>"));
             ret.append(this.getHelpShort());
         }
 
@@ -253,11 +254,11 @@ public abstract class MCommand<T extends MPlugin> {
     // -------------------------------------------- //
 
     public void msg(String str, Object... args) {
-        sender.sendMessage(p.txt.parse(str, args));
+        sender.sendMessage(TextUtil.parse(str, args));
     }
 
     public void msg(TL translation, Object... args) {
-        sender.sendMessage(p.txt.parse(translation.toString(), args));
+        sender.sendMessage(TextUtil.parse(translation.toString(), args));
     }
 
     public void sendMessage(String msg) {
@@ -283,7 +284,7 @@ public abstract class MCommand<T extends MPlugin> {
     public List<String> getToolTips(FPlayer player) {
         List<String> lines = new ArrayList<>();
         for (String s : p.getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
+            lines.add(CC.translate(replaceFPlayerTags(s, player)));
         }
         return lines;
     }
@@ -291,7 +292,7 @@ public abstract class MCommand<T extends MPlugin> {
     public List<String> getToolTips(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String s : p.getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
+            lines.add(CC.translate(replaceFactionTags(s, faction)));
         }
         return lines;
     }

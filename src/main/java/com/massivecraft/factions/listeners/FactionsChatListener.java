@@ -17,12 +17,15 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.UnknownFormatConversionException;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 public class FactionsChatListener implements Listener {
 
     /**
      * @author FactionsUUID Team - Modified By CmdrKittens
      */
+
+    private static final Pattern CHAT_PATTERN = Pattern.compile("(?s).");
 
     // this is for handling slashless command usage and faction/alliance chat, set at lowest priority so Factions gets to them first
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -35,7 +38,7 @@ public class FactionsChatListener implements Listener {
         // Is the player entering a password for a warp?
         if (me.isEnteringPassword()) {
             event.setCancelled(true);
-            me.sendMessage(ChatColor.DARK_GRAY + event.getMessage().replaceAll("(?s).", "*"));
+            me.sendMessage(ChatColor.DARK_GRAY + CHAT_PATTERN.matcher(event.getMessage()).replaceAll("*"));
             if (me.getFaction().isWarpPassword(me.getEnteringWarp(), event.getMessage())) {
                 doWarmup(me.getEnteringWarp(), me);
             } else {

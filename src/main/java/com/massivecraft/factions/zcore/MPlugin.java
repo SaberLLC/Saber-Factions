@@ -1,13 +1,12 @@
 package com.massivecraft.factions.zcore;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.util.Logger;
+import com.massivecraft.factions.zcore.persist.MemoryFPlayers;
 import com.massivecraft.factions.zcore.persist.SaveTask;
 import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
@@ -15,25 +14,26 @@ import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 
 public abstract class MPlugin extends JavaPlugin {
 
-    // Persist related
-    public final Gson gson = this.getGsonBuilder().create();
     // Some utils
     public Persist persist;
-    public TextUtil txt;
     public PermUtil perm;
+
     public String refCommand = "";
     //holds f stuck taskids
     public Map<UUID, Integer> stuckMap = new HashMap<>();
@@ -43,13 +43,14 @@ public abstract class MPlugin extends JavaPlugin {
     protected boolean loadSuccessful = false;
     private Integer saveTask = null;
     private boolean autoSave = true;
-    // Listeners
-    private MPluginSecretPlayerListener mPluginSecretPlayerListener;
 
     // Our stored base commands
-    private List<MCommand<?>> baseCommands = new ArrayList<>();
+    private final Map<String, MCommand<?>> baseCommands = new HashMap<>();
+
+    private static final Pattern ARGUMENT_DELIMITER = Pattern.compile("\\s+");
     // holds f stuck start times
-    private Map<UUID, Long> timers = new HashMap<>();
+    private final Map<UUID, Long> timers = new HashMap<>();
+
     // -------------------------------------------- //
     // ENABLE
     // -------------------------------------------- //
@@ -64,22 +65,21 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public List<MCommand<?>> getBaseCommands() {
-        return this.baseCommands;
+        return new ArrayList<>(this.baseCommands.values());
     }
 
     public boolean preEnable() {
         Logger.print("=== ENABLE START ===", Logger.PrefixType.DEFAULT);
-        timeEnableStart = System.currentTimeMillis();
+        timeEnableStart = System.nanoTime();
 
         // Ensure basefolder exists!
-        this.getDataFolder().mkdirs();
+        this.saveDefaultConfig();
 
         // Create Utility Instances
         this.perm = new PermUtil(this);
         this.persist = new Persist(this);
 
-        this.txt = new TextUtil();
-        initTXT();
+        TextUtil.init();
 
         // attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
         // reference command will be used to prevent "unknown command" console messages
@@ -88,17 +88,17 @@ public abstract class MPlugin extends JavaPlugin {
             if (refCmd != null && !refCmd.isEmpty()) {
                 this.refCommand = (String) (refCmd.keySet().toArray()[0]);
             }
-        } catch (ClassCastException ex) {
+        } catch (ClassCastException ignored) {
         }
 
         // Create and register player command listener
-        this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
-        getServer().getPluginManager().registerEvents(this.mPluginSecretPlayerListener, this);
+        // Listeners
+        Bukkit.getPluginManager().registerEvents(new MPluginSecretPlayerListener(this), this);
 
         // Register recurring tasks
         if (this.saveTask == null && Conf.saveToFileEveryXMinutes > 0.0) {
             long saveTicks = (long) (1200.0 * Conf.saveToFileEveryXMinutes);
-            this.saveTask = Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, new SaveTask(this), saveTicks, saveTicks).getTaskId();
+            this.saveTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, new SaveTask(this), saveTicks, saveTicks).getTaskId();
         }
         loadLang();
         loadSuccessful = true;
@@ -106,72 +106,70 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public void postEnable() {
-        Logger.print("=== ENABLE DONE (Took " + (System.currentTimeMillis() - timeEnableStart) + "ms) ===", Logger.PrefixType.DEFAULT);
+        Logger.print("=== ENABLE DONE (Took " + DecimalFormat.getInstance().format((System.nanoTime() - timeEnableStart) / 1_000_000.0D) + "ms) ===", Logger.PrefixType.DEFAULT);
     }
 
     public void loadLang() {
-        File lang = new File(getDataFolder(), "lang.yml");
-        OutputStream out = null;
-        InputStream defLangStream = this.getResource("lang.yml");
-        if (!lang.exists()) {
+        Path langPath = Paths.get(getDataFolder().getPath(), "lang.yml");
+
+        InputStream defaultLangStream = this.getResource("lang.yml");
+        if (defaultLangStream == null) {
+            getLogger().severe("[Factions] Couldn't load default language file from resources.");
+            getLogger().severe("[Factions] This is a fatal error. Now disabling");
+            this.setEnabled(false);
+            return;
+        }
+
+        YamlConfiguration defaultLangConfig;
+        try (InputStreamReader isr = new InputStreamReader(defaultLangStream)) {
+            defaultLangConfig = YamlConfiguration.loadConfiguration(isr);
+        } catch (IOException exception) {
+            getLogger().log(Level.WARNING, "Factions: Failed to load default lang.yml.");
+            getLogger().log(Level.WARNING, "Factions: Report this stack trace to Driftay.");
+            exception.printStackTrace();
+            return;
+        }
+
+        YamlConfiguration langConfig = new YamlConfiguration();
+        if (Files.exists(langPath)) {
             try {
-                getDataFolder().mkdir();
-                lang.createNewFile();
-                if (defLangStream != null) {
-                    out = new FileOutputStream(lang);
-                    int read;
-                    byte[] bytes = new byte[1024];
-
-                    while ((read = defLangStream.read(bytes)) != -1) {
-                        out.write(bytes, 0, read);
-                    }
-                    YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new BufferedReader(new InputStreamReader(defLangStream)));
-                    TL.setFile(defConfig);
-                }
-            } catch (IOException e) {
-                e.printStackTrace(); // So they notice
-                getLogger().severe("[Factions] Couldn't create language file.");
-                getLogger().severe("[Factions] This is a fatal error. Now disabling");
-                this.setEnabled(false); // Without it loaded, we can't send them messages
-            } finally {
-                if (defLangStream != null) {
-                    try {
-                        defLangStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                }
+                langConfig.load(langPath.toFile());
+            } catch (IOException | InvalidConfigurationException exception) {
+                getLogger().log(Level.WARNING, "Factions: Failed to load lang.yml.");
+                getLogger().log(Level.WARNING, "Factions: Report this stack trace to Driftay.");
+                exception.printStackTrace();
+            }
+        } else {
+            try {
+                Files.createDirectories(langPath.getParent());
+                Files.createFile(langPath);
+                langConfig.save(langPath.toFile());
+            } catch (IOException exception) {
+                getLogger().log(Level.WARNING, "Factions: Failed to create lang.yml.");
+                getLogger().log(Level.WARNING, "Factions: Report this stack trace to Driftay.");
+                exception.printStackTrace();
             }
         }
 
-        YamlConfiguration conf = YamlConfiguration.loadConfiguration(lang);
-        for (TL item : TL.values()) {
-            if (conf.getString(item.getPath()) == null) {
-                conf.set(item.getPath(), item.getDefault());
+        for (TL item : TL.VALUES) {
+            String path = item.getPath();
+            if (langConfig.get(path) == null) {
+                langConfig.set(path, defaultLangConfig.getString(path, item.getDefault()));
             }
         }
 
-        // Remove this here because I'm sick of dealing with bug reports due to bad decisions on my part.
-        if (conf.getString(TL.COMMAND_SHOW_POWER.getPath(), "").contains("%5$s")) {
-            conf.set(TL.COMMAND_SHOW_POWER.getPath(), TL.COMMAND_SHOW_POWER.getDefault());
-            Logger.print( "Removed errant format specifier from f show power.", Logger.PrefixType.DEFAULT);
+        if (langConfig.getString(TL.COMMAND_SHOW_POWER.getPath(), "").contains("%5$s")) {
+            langConfig.set(TL.COMMAND_SHOW_POWER.getPath(), TL.COMMAND_SHOW_POWER.getDefault());
+            getLogger().log(Level.INFO, "Removed errant format specifier from f show power.");
         }
 
-        TL.setFile(conf);
+        TL.setFile(langConfig);
         try {
-            conf.save(lang);
-        } catch (IOException e) {
+            langConfig.save(langPath.toFile());
+        } catch (IOException exception) {
             getLogger().log(Level.WARNING, "Factions: Failed to save lang.yml.");
             getLogger().log(Level.WARNING, "Factions: Report this stack trace to Driftay.");
-            e.printStackTrace();
+            exception.printStackTrace();
         }
     }
 
@@ -186,6 +184,7 @@ public abstract class MPlugin extends JavaPlugin {
             FPlayers.getInstance().forceSave();
             Board.getInstance().forceSave();
         }
+        ((MemoryFPlayers) FPlayers.getInstance()).wipeOnlinePlayers();
 
         Logger.print("Shutdown Successful!", Logger.PrefixType.DEFAULT);
     }
@@ -205,9 +204,7 @@ public abstract class MPlugin extends JavaPlugin {
     // LANG AND TAGS
     // -------------------------------------------- //
 
-    public GsonBuilder getGsonBuilder() {
-        return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().serializeNulls().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE);
-    }
+    public abstract Gson getGson();
 
     public void addRawTags() {
         this.rawTags.put("l", "<green>"); // logo
@@ -219,10 +216,6 @@ public abstract class MPlugin extends JavaPlugin {
         this.rawTags.put("h", "<pink>"); // highligh
         this.rawTags.put("c", "<aqua>"); // command
         this.rawTags.put("plugin", "<teal>"); // parameter
-    }
-
-    public void initTXT() {
-        TextUtil.init();
     }
 
     // -------------------------------------------- //
@@ -239,42 +232,24 @@ public abstract class MPlugin extends JavaPlugin {
     }
 
     public boolean handleCommand(final CommandSender sender, String commandString, boolean testOnly, boolean async) {
-        boolean noSlash = true;
-        if (commandString.startsWith("/")) {
-            noSlash = false;
-            commandString = commandString.substring(1);
+        commandString = ARGUMENT_DELIMITER.matcher((commandString.startsWith("/") ? commandString.substring(1) : commandString)).replaceAll(" ");
+
+        String[] arguments = ARGUMENT_DELIMITER.split(commandString);
+        MCommand<?> command = this.baseCommands.get(arguments[0]);
+        if (command == null) {
+            return false;
+        }
+        if (testOnly) {
+            return true;
         }
 
-        for (final MCommand<?> command : this.getBaseCommands()) {
-            if (noSlash && !command.allowNoSlashAccess) {
-                continue;
-            }
-
-            for (String alias : command.aliases) {
-                // disallow double-space after alias, so specific commands can be prevented (preventing "f home" won't prevent "f  home")
-                if (commandString.startsWith(alias + "  ")) {
-                    return false;
-                }
-
-                if (commandString.startsWith(alias + " ") || commandString.equals(alias)) {
-                    final List<String> args = new ArrayList<>(Arrays.asList(commandString.split("\\s+")));
-                    args.remove(0);
-
-                    if (testOnly) {
-                        return true;
-                    }
-
-                    if (async) {
-                        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () -> command.execute(sender, args));
-                    } else {
-                        command.execute(sender, args);
-                    }
-
-                    return true;
-                }
-            }
+        List<String> args = Arrays.asList(arguments).subList(1, arguments.length);
+        if (async) {
+            Bukkit.getScheduler().runTaskAsynchronously(this, () -> command.execute(sender, args));
+        } else {
+            command.execute(sender, args);
         }
-        return false;
+        return true;
     }
 
     public boolean handleCommand(CommandSender sender, String commandString) {

@@ -9,6 +9,7 @@ import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +45,13 @@ public class CmdShow extends FCommand {
         // this.requiredArgs.add("");
         this.optionalArgs.put("faction tag", "yours");
 
-        this.requirements = new CommandRequirements.Builder(Permission.SHOW).build();
+        this.requirements = new CommandRequirements.Builder(Permission.SHOW)
+                .build();
     }
 
     @Override
     public void perform(CommandContext context) {
         Faction faction = context.faction;
-        FactionsPlugin instance = FactionsPlugin.getInstance();
         if (context.argIsSet(0))
             faction = context.argAsFaction(0);
 
@@ -58,7 +59,7 @@ public class CmdShow extends FCommand {
             return;
 
         if (context.fPlayer != null && !context.player.getPlayer().hasPermission("factions.show.bypassexempt")
-                && instance.getConfig().getStringList("show-exempt").contains(faction.getTag())) {
+                && FactionsPlugin.getInstance().getConfig().getStringList("show-exempt").contains(faction.getTag())) {
             context.msg(TL.COMMAND_SHOW_EXEMPT);
             return;
         }
@@ -68,7 +69,7 @@ public class CmdShow extends FCommand {
             return;
         }
 
-        List<String> show = instance.getConfig().getStringList("show");
+        List<String> show = FactionsPlugin.getInstance().getConfig().getStringList("show");
         if (show == null || show.isEmpty())
             show = defaults;
 
@@ -77,19 +78,19 @@ public class CmdShow extends FCommand {
             // send header and that's all
             String header = show.get(0);
             if (TagReplacer.HEADER.contains(header)) {
-                context.msg(instance.txt.titleize(tag));
+                context.msg(TextUtil.titleize(tag));
             } else {
-                context.msg(instance.txt.parse(TagReplacer.FACTION.replace(header, tag)));
+                context.msg(TextUtil.parse(TagReplacer.FACTION.replace(header, tag)));
             }
             return; // we only show header for non-normal factions
         }
 
-        List<Component> fancy = new ArrayList<>();
+        List<Component> fancy = new ArrayList<>(16);
         List<String> finalShow = show;
         Faction finalFaction = faction;
-        instance.getServer().getScheduler().runTaskAsynchronously(instance, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
             for (String raw : finalShow) {
-                String parsed = instance.getConfig().getBoolean("relational-show", true) ? TagUtil.parsePlain(finalFaction, context.fPlayer, raw) : TagUtil.parsePlain(finalFaction, raw); // use relations
+                String parsed = FactionsPlugin.getInstance().getConfig().getBoolean("relational-show", true) ? TagUtil.parsePlain(finalFaction, context.fPlayer, raw) : TagUtil.parsePlain(finalFaction, raw); // use relations
                 if (parsed == null) {
                     continue; // Due to minimal f show.
                 }
@@ -118,7 +119,7 @@ public class CmdShow extends FCommand {
                     fancy.add(localFancy);
                 }
             }
-            instance.getServer().getScheduler().runTask(instance, () -> context.sendComponent(fancy));
+            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> context.sendComponent(fancy));
         });
     }
 
@@ -126,5 +127,4 @@ public class CmdShow extends FCommand {
     public TL getUsageTranslation() {
         return TL.COMMAND_SHOW_COMMANDDESCRIPTION;
     }
-
 }

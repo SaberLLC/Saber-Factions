@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd.banner;
 
-import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
@@ -8,13 +7,11 @@ import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.banner.struct.BannerManager;
 import com.massivecraft.factions.cmd.banner.struct.FactionBanner;
-import com.massivecraft.factions.listeners.FactionsBlockListener;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.LocUtils;
-import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 

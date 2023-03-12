@@ -5,10 +5,9 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.SaberGUI;
 import com.massivecraft.factions.util.serializable.InventoryItem;
-import org.bukkit.ChatColor;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -79,13 +78,13 @@ public class FDisbandFrame extends SaberGUI {
         FileConfiguration config = FactionsPlugin.getInstance().getConfig();
         ItemStack separatorItem = XMaterial.matchXMaterial(config.getString("f-disband-gui.separation-item.Type")).get().parseItem();
         ItemMeta separatorMeta = separatorItem.getItemMeta();
-        separatorMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString("f-disband-gui.separation-item.Name")));
+        separatorMeta.setDisplayName(CC.translate(config.getString("f-disband-gui.separation-item.Name")));
         List<String> separatorLore = config.getStringList("f-disband-gui.separation-item.Lore");
         if (separatorMeta.getLore() != null) separatorMeta.getLore().clear();
         if (separatorLore != null) {
             List<String> lore = new ArrayList<>();
             for (String loreEntry : config.getStringList("f-disband-gui.separation-item.Lore")) {
-                lore.add(ChatColor.translateAlternateColorCodes('&', loreEntry));
+                lore.add(CC.translate(loreEntry));
             }
             separatorMeta.setLore(lore);
         }

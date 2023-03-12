@@ -22,6 +22,7 @@ import com.massivecraft.factions.cmd.tnt.CmdTntFill;
 import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import me.lucko.commodore.CommodoreProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -198,7 +199,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.aliases.removeAll(Collections.<String>singletonList(null));
 
         this.setHelpShort("The faction base command");
-        this.helpLong.add(FactionsPlugin.getInstance().txt.parseTags("<i>This command contains all faction stuff."));
+        this.helpLong.add(TextUtil.parseTags("<i>This command contains all faction stuff."));
 
         if (CommodoreProvider.isSupported()) brigadierManager = new BrigadierManager();
 
@@ -212,6 +213,9 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdClaim);
         this.addSubCommand(this.cmdConfig);
         this.addSubCommand(this.cmdCreate);
+        this.addSubCommand(this.cmdInvite);
+        this.addSubCommand(this.cmdJoin);
+        this.addSubCommand(this.cmdKick);
         this.addSubCommand(this.cmdDeinvite);
         this.addSubCommand(this.cmdDescription);
         this.addSubCommand(this.cmdDelHome);
@@ -318,10 +322,10 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public void addVariableCommands() {
 
         Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-            if(!FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
-                this.addSubCommand(this.cmdInvite);
-                this.addSubCommand(this.cmdJoin);
-                this.addSubCommand(this.cmdKick);
+            if(FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
+                this.subCommands.remove(this.cmdInvite);
+                this.subCommands.remove(this.cmdJoin);
+                this.subCommands.remove(this.cmdKick);
             }
         }, 200);
 

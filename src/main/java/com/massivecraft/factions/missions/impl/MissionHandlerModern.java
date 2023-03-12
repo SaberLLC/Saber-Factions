@@ -2,7 +2,6 @@ package com.massivecraft.factions.missions.impl;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.missions.MissionHandler;
 import com.massivecraft.factions.missions.MissionType;
 import org.bukkit.entity.Player;
@@ -29,7 +28,7 @@ public class MissionHandlerModern implements Listener {
 
         MissionHandler.handleMissionsOfType(fPlayer, MissionType.BREED, (mission, section) -> {
             String entity = section.getString("Mission.Entity", MissionHandler.matchAnythingRegex);
-            return e.getEntityType().toString().matches(entity) ? 1 : -1;
+            return e.getEntityType().name().matches(entity) ? 1 : -1;
         });
     }
 }

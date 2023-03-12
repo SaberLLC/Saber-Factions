@@ -1,6 +1,7 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.ChatColor;
 
 public class Logger {
@@ -10,7 +11,7 @@ public class Logger {
     }
 
     public static void printArgs(String message, PrefixType type, Object... args) {
-        FactionsPlugin.getInstance().getServer().getConsoleSender().sendMessage(type.getPrefix() + FactionsPlugin.getInstance().txt.parse(message, args));
+        FactionsPlugin.getInstance().getServer().getConsoleSender().sendMessage(type.getPrefix() + TextUtil.parse(message, args));
     }
 
     public enum PrefixType {
@@ -22,7 +23,7 @@ public class Logger {
         HEADLINE(ChatColor.GOLD + ""),
         FAILED(ChatColor.RED + "FAILED: ");
 
-        private String prefix;
+        private final String prefix;
 
         PrefixType(String prefix) {
             this.prefix = prefix;

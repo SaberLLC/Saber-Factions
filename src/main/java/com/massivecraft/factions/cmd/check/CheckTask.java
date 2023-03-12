@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd.check;
 
-import com.google.common.collect.Lists;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
@@ -9,10 +8,9 @@ import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CheckTask implements Runnable {
@@ -28,7 +26,7 @@ public class CheckTask implements Runnable {
 
     private static CheckTask instance;
 
-    public CheckTask() {
+    private CheckTask() {
         for (int interval : INTERVALS_MINUTES) {
             wallChecks.put(interval, new ArrayList<>());
             bufferChecks.put(interval, new ArrayList<>());
@@ -63,11 +61,13 @@ public class CheckTask implements Runnable {
             if (!faction.isNormal() || faction.getChecks() == null) {
                 continue;
             }
-            Set<Long> timestamps = new HashSet<>(faction.getChecks().keySet());
+            Iterator<Map.Entry<Long, String>> iterator = faction.getChecks().entrySet().iterator();
+
             int count = 0;
-            for (long timestamp : Lists.reverse(new ArrayList<>(timestamps))) {
+            while (iterator.hasNext()) {
                 if (count >= 54) {
-                    faction.getChecks().remove(timestamp);
+                    iterator.next();
+                    iterator.remove();
                 }
                 ++count;
             }
@@ -86,15 +86,13 @@ public class CheckTask implements Runnable {
             }
 
             if (faction.getWallCheckMinutes() % 60 == minute % 60) {
-                if (this.wallChecks.containsKey(faction.getWallCheckMinutes())
-                        && this.wallChecks.get(faction.getWallCheckMinutes()).contains(faction.getId())) {
+                List<String> checks = this.wallChecks.get(faction.getWallCheckMinutes());
+                if (checks != null && checks.contains(faction.getId())) {
                     continue;
                 }
+                List<String> found = this.wallChecks.computeIfAbsent(faction.getWallCheckMinutes(), integer -> new ArrayList<>());
+                found.add(faction.getId());
 
-                if (!this.wallChecks.containsKey(faction.getWallCheckMinutes())) {
-                    this.wallChecks.put(faction.getWallCheckMinutes(), new ArrayList<>());
-                }
-                this.wallChecks.get(faction.getWallCheckMinutes()).add(faction.getId());
                 faction.msg(TL.CHECK_WALLS_CHECK);
                 Bukkit.getScheduler().runTask(
                         FactionsPlugin.getInstance(),
@@ -103,15 +101,13 @@ public class CheckTask implements Runnable {
             }
 
             if (faction.getBufferCheckMinutes() % 60 == minute % 60) {
-                if (this.bufferChecks.containsKey(faction.getBufferCheckMinutes())
-                        && this.bufferChecks.get(faction.getBufferCheckMinutes()).contains(faction.getId())) {
+                List<String> checks = this.bufferChecks.get(faction.getBufferCheckMinutes());
+                if (checks != null && checks.contains(faction.getId())) {
                     continue;
                 }
+                List<String> found = this.bufferChecks.computeIfAbsent(faction.getBufferCheckMinutes(), integer -> new ArrayList<>());
+                found.add(faction.getId());
 
-                if (!this.bufferChecks.containsKey(faction.getBufferCheckMinutes())) {
-                    this.bufferChecks.put(faction.getBufferCheckMinutes(), new ArrayList<>());
-                }
-                this.bufferChecks.get(faction.getBufferCheckMinutes()).add(faction.getId());
                 faction.msg(TL.CHECK_BUFFERS_CHECK);
                 Bukkit.getScheduler().runTask(
                         FactionsPlugin.getInstance(),

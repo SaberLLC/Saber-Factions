@@ -52,7 +52,7 @@ public class DiscUtil {
         };
 
         if (sync) {
-            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), write);
+            write.run();
         } else {
             Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), write);
         }

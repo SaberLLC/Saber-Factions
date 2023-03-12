@@ -7,7 +7,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import de.tr7zw.nbtapi.NBTItem;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -138,7 +137,6 @@ public class BannerListener implements Listener {
                     } else {
                         e.getPlayer().sendMessage(CC.RedB + "(!) " + CC.Red + "You must place your /f banner in an valid location!");
                         e.setCancelled(true);
-                        return;
                     }
                 }
             } else {

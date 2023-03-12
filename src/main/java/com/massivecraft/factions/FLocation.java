@@ -145,13 +145,16 @@ public final class FLocation implements Serializable {
         return getWorld().getChunkAt(this.x, this.z);
     }
 
-    @Override
-    public String toString() {
-        return "[" + getWorldName() + "," + getCoordString() + "]";
-    }
-
     public FastChunk toFastChunk() {
         return new FastChunk(this);
+    }
+
+    public int toBlockX() {
+        return WorldUtil.chunkToBlock(this.x);
+    }
+
+    public int toBlockZ() {
+        return WorldUtil.chunkToBlock(this.z);
     }
 
     public FLocation getRelative(int dx, int dz) {
@@ -214,6 +217,11 @@ public final class FLocation implements Serializable {
 
     public boolean isOutsideWorldBorder(int buffer) {
         return isOutsideWorldBorder(getWorld(), buffer);
+    }
+
+    @Override
+    public String toString() {
+        return "[" + getWorldName() + "," + getCoordString() + "]";
     }
 
     @Override

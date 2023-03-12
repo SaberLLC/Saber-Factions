@@ -10,6 +10,6 @@ public interface FactionGUI extends InventoryHolder {
 
     void onClose(HumanEntity player);
 
-    void build();
+    void build(boolean initialBuild);
 
 }

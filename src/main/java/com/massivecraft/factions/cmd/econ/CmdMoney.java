@@ -6,6 +6,7 @@ import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdMoney extends FCommand {
 
@@ -27,7 +28,7 @@ public class CmdMoney extends FCommand {
         //this.requiredArgs.add("");
         //this.optionalArgs.put("","")
 
-        this.helpLong.add(FactionsPlugin.getInstance().txt.parseTags(TL.COMMAND_MONEY_LONG.toString()));
+        this.helpLong.add(TextUtil.parseTags(TL.COMMAND_MONEY_LONG.toString()));
 
         this.addSubCommand(this.cmdMoneyBalance);
         this.addSubCommand(this.cmdMoneyDeposit);
