@@ -125,12 +125,22 @@ public final class FLocation implements Serializable {
         return getWorld().getName();
     }
 
-    public int getX() {
-        return x;
+    @Deprecated
+    public long getX() {
+        return this.x;
     }
 
-    public int getZ() {
-        return z;
+    @Deprecated
+    public long getZ() {
+        return this.z;
+    }
+
+    public int getIntX() {
+        return this.x;
+    }
+
+    public int getIntZ() {
+        return this.z;
     }
 
     public String getCoordString() {
