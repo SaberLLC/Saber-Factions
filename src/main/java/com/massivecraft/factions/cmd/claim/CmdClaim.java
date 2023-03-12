@@ -103,9 +103,9 @@ public class CmdClaim extends FCommand {
                     if (FactionsPlugin.cachedRadiusClaim) {
                         if (successfulClaims > 0) {
                             if (forFaction.isWarZone() || forFaction.isSafeZone()) {
-                                context.fPlayer.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(context.fPlayer, true), String.valueOf(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ());
+                                context.fPlayer.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(context.fPlayer, true), Integer.toString(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ());
                             } else {
-                                context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(f, true), String.valueOf(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ()));
+                                context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(f, true), Integer.toString(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ()));
                             }
                             stop();
                         }

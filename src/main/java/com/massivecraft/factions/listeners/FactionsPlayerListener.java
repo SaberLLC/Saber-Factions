@@ -62,15 +62,29 @@ public class FactionsPlayerListener implements Listener {
         FactionsPlayerListener.corners = new HashSet<>(worlds.size() * 4);
         for (World world : worlds) {
             WorldBorder border = world.getWorldBorder();
-            int cornerCoord = (int) ((border.getSize() - 1.0) / 2.0);
 
-            FactionsPlayerListener.corners.add(FLocation.wrap(world.getName(), WorldUtil.blockToChunk(cornerCoord), WorldUtil.blockToChunk(cornerCoord)));
-            FactionsPlayerListener.corners.add(FLocation.wrap(world.getName(), WorldUtil.blockToChunk(cornerCoord), WorldUtil.blockToChunk(-cornerCoord)));
-            FactionsPlayerListener.corners.add(FLocation.wrap(world.getName(), WorldUtil.blockToChunk(-cornerCoord), WorldUtil.blockToChunk(cornerCoord)));
-            FactionsPlayerListener.corners.add(FLocation.wrap(world.getName(), WorldUtil.blockToChunk(-cornerCoord), WorldUtil.blockToChunk(-cornerCoord)));
+            Location center = border.getCenter();
+            double centerX = center.getX();
+            double centerZ = center.getZ();
+
+            int borderSize = (int) border.getSize();
+
+            double cornerX = centerX - (borderSize - 1) / 2.0D;
+            double cornerZ = centerZ - (borderSize - 1) / 2.0D;
+
+            int cornerChunkX = WorldUtil.blockToChunk((int) cornerX);
+            int cornerChunkZ = WorldUtil.blockToChunk((int) cornerZ);
+
+            int borderChunk = WorldUtil.blockToChunk(borderSize);
+            
+            String worldName = world.getName();
+
+            corners.add(FLocation.wrap(worldName, cornerChunkX, cornerChunkZ));
+            corners.add(FLocation.wrap(worldName, cornerChunkX, cornerChunkZ + borderChunk));
+            corners.add(FLocation.wrap(worldName, cornerChunkX + borderChunk, cornerChunkZ));
+            corners.add(FLocation.wrap(worldName, cornerChunkX + borderChunk, cornerChunkZ + borderChunk));
         }
     }
-
     public static Boolean isSystemFaction(Faction faction) {
         return faction.isSafeZone() ||
                 faction.isWarZone() ||
