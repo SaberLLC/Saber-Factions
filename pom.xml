@@ -440,7 +440,12 @@
             <version>3.0.0</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>findbugs-maven-plugin</artifactId>
+            <version>3.0.5</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
