@@ -168,19 +168,19 @@ public class TimeUtil {
         millis -= TimeUnit.MINUTES.toMillis(minutes);
         long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
 
-        if (days > 1) output += days + " days ";
-        else if (days == 1) output += days + " day ";
+        if (days > 1) output += days + " d ";
+        else if (days == 1) output += days + " d ";
 
-        if (hours > 1) output += hours + " hours ";
-        else if (hours == 1) output += hours + " hour ";
+        if (hours > 1) output += hours + " h ";
+        else if (hours == 1) output += hours + " h ";
 
-        if (minutes > 1) output += minutes + " minutes ";
-        else if (minutes == 1) output += minutes + " minute ";
+        if (minutes > 1) output += minutes + " m ";
+        else if (minutes == 1) output += minutes + " m ";
 
-        if (seconds > 1) output += seconds + " seconds ";
-        else if (seconds == 1) output += seconds + " second ";
+        if (seconds > 1) output += seconds + " s ";
+        else if (seconds == 1) output += seconds + " s ";
 
-        if (output.isEmpty()) return "0 seconds ";
+        if (output.isEmpty()) return "0s ";
 
         return output;
     }

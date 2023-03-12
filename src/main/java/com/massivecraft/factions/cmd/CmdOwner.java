@@ -94,7 +94,6 @@ public class CmdOwner extends FCommand {
         }
 
         context.faction.setPlayerAsOwner(target, flocation);
-
         context.msg(TL.COMMAND_OWNER_ADDED, playerName);
     }
 

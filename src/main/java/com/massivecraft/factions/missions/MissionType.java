@@ -5,6 +5,7 @@ public enum MissionType {
     KILL,
     MINE,
     PLACE,
+    SPAWNER_PLACE,
     FISH,
     TAME,
     ENCHANT,

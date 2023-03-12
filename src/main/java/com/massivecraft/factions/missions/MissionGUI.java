@@ -240,7 +240,7 @@ public class MissionGUI implements FactionGUI {
                                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeTillDeadline)))));
 
 
-                        if(updateItemsTask == null || updateItemsTask.isCancelled())
+                        if(updateItemsTask == null)
                             updateItemsTask = Bukkit.getScheduler().runTaskTimer(plugin, this::updateGUI, 20L, 20L);
                     }
 
