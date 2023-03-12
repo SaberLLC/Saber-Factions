@@ -10,6 +10,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -53,13 +54,13 @@ public class MissionGUI implements FactionGUI {
         //onClose is called every time a related inventory instance is closed.
         //This means that every time we use openInventory to show the inventory once again
         //the inventory technically closes and opens up once again, triggering this event each time.
-        if (cancelTask != null && !cancelTask.isCancelled())
+        if (cancelTask != null)
             cancelTask.cancel();
         //Because of what's mentioned before, we check on the next tick if the inventory that the player
         //is currently viewing is the same as this GUI, if it isn't, the updateItemsTask gets cancelled
         cancelTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if(player.getOpenInventory().getTopInventory() != inventory)
-                if (updateItemsTask != null && !updateItemsTask.isCancelled())
+                if (updateItemsTask != null)
                     updateItemsTask.cancel();
         }, 1);
     }
@@ -106,7 +107,7 @@ public class MissionGUI implements FactionGUI {
 
             fPlayer.getFaction().getMissions().remove(missionName);
             fPlayer.msg(TL.MISSION_MISSION_CANCELLED);
-            build();
+            build(false);
             fPlayer.getPlayer().openInventory(inventory);
             return;
         }
@@ -170,12 +171,12 @@ public class MissionGUI implements FactionGUI {
         }
 
 
-        build();
+        build(false);
         fPlayer.getPlayer().openInventory(inventory);
     }
 
     @Override
-    public void build() {
+    public void build(boolean initialOpen) {
         ConfigurationSection configurationSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions");
         if (configurationSection == null) {
             return;
@@ -231,7 +232,7 @@ public class MissionGUI implements FactionGUI {
                         long timeTillDeadline = mission.getStartTime() + deadlineMillis - System.currentTimeMillis();
 
                         loreLines.add("");
-                        loreLines.add( FactionsPlugin.getInstance().txt.parse(plugin.getFileManager().getMissions().getConfig().getString("DeadlineMissionLore", ""),
+                        loreLines.add(TextUtil.parse(plugin.getFileManager().getMissions().getConfig().getString("DeadlineMissionLore", ""),
                                 String.format("%02dh %02dm %02ds",
                                         TimeUnit.MILLISECONDS.toHours(timeTillDeadline),
                                         TimeUnit.MILLISECONDS.toMinutes(timeTillDeadline) -
@@ -283,7 +284,7 @@ public class MissionGUI implements FactionGUI {
 
                 loree.clear();
                 for (String string : plugin.getFileManager().getMissions().getConfig().getStringList("Randomization.Start-Item.Disallowed.Lore")) {
-                    loree.add(CC.translate(string).replace("%reason%", FactionsPlugin.getInstance().txt.parse(TL.MISSION_MISSION_MAX_ALLOWED.toString(), plugin.getFileManager().getMissions().getConfig().getInt("MaximumMissionsAllowedAtOnce"))));
+                    loree.add(CC.translate(string).replace("%reason%", TextUtil.parse(TL.MISSION_MISSION_MAX_ALLOWED.toString(), plugin.getFileManager().getMissions().getConfig().getInt("MaximumMissionsAllowedAtOnce"))));
                 }
             }
 
@@ -306,7 +307,7 @@ public class MissionGUI implements FactionGUI {
             return;
         }
 
-        build();
+        build(false);
         fPlayer.getPlayer().openInventory(inventory);
     }
 

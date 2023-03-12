@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.frame.fupgrades;
 
+import com.bgsoftware.wildstacker.api.WildStacker;
 import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
@@ -67,7 +68,9 @@ public class UpgradesListener implements Listener {
         int lowerby = FastMath.round(e.getSpawner().getDelay() * multiplier);
 
         if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) {
-            WildStackerAPI.getStackedSpawner(e.getSpawner()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
+            WildStacker wildStacker = WildStackerAPI.getWildStacker();
+            wildStacker.getSystemManager().getStackedSpawner(e.getSpawner()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
+
         } else if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) {
             RoseStackerAPI.getInstance().getStackedSpawner(e.getSpawner().getBlock()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
         } else {

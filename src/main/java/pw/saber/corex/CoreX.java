@@ -1,10 +1,21 @@
 package pw.saber.corex;
 
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.cmd.audit.FChestListener;
+import com.massivecraft.factions.cmd.chest.AntiChestListener;
+import com.massivecraft.factions.listeners.*;
+import com.massivecraft.factions.missions.MissionHandler;
+import com.massivecraft.factions.missions.TributeInventoryHandler;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.file.CustomFile;
+import com.massivecraft.factions.zcore.frame.fupgrades.UpgradesListener;
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import pw.saber.corex.listeners.*;
 import pw.saber.corex.listeners.mob.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CoreX {
@@ -19,137 +30,152 @@ public class CoreX {
 
     public static void init() {
         Logger.print("CoreX Integration Starting!", Logger.PrefixType.DEFAULT);
-        if (getConfig().fetchBoolean("Features.Anti-Baby-Zombies")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBabyZombie(), FactionsPlugin.getInstance());
+
+        List<Listener> initializedFeatures = new ArrayList<>();
+
+        if (handleFeatureRegistry("Anti-Baby-Zombies")) {
+            initializedFeatures.add(new AntiBabyZombie());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Mob-Movement")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiMobMovement(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Mob-Movement")) {
+            initializedFeatures.add(new AntiMobMovement());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Mob-Targeting")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiMobTargeting(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Mob-Targeting")) {
+            initializedFeatures.add(new AntiMobTargeting());
         }
 
-        if (getConfig().fetchBoolean("Features.Iron-Golem-Health")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new IronGolemHealth(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Iron-Golem-Health")) {
+            initializedFeatures.add(new IronGolemHealth());
         }
 
-        if (getConfig().fetchBoolean("Features.Water-Proof-Blazes")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new WaterProofBlazes(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Water-Proof-Blazes")) {
+            initializedFeatures.add(new WaterProofBlazes());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Book-Quill-Crash")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBookQuillCrash(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Book-Quill-Crash")) {
+            initializedFeatures.add(new AntiBookQuillCrash());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Death-Clip")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiDeathClip(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Death-Clip")) {
+            initializedFeatures.add(new AntiDeathClip());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Dupe")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiDupe(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Dupe")) {
+            initializedFeatures.add(new AntiDupe());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Nether-Roof")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiNetherRoof(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Nether-Roof")) {
+            initializedFeatures.add(new AntiNetherRoof());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Piston-Glitch")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiPistonGlitch(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Piston-Glitch")) {
+            initializedFeatures.add(new AntiPistonGlitch());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Wilderness-Spawner")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiWildernessSpawner(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Wilderness-Spawner")) {
+            initializedFeatures.add(new AntiWildernessSpawner());
         }
 
-        if (getConfig().fetchBoolean("Features.Auto-Respawn")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AutoRespawn(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Auto-Respawn")) {
+            initializedFeatures.add(new AutoRespawn());
         }
 
-        if (getConfig().fetchBoolean("Features.Book-Disenchant")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new BookDisenchant(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Book-Disenchant")) {
+            initializedFeatures.add(new BookDisenchant());
         }
 
-        if (getConfig().fetchBoolean("Features.Border-Patches")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new BorderPatches(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Border-Patches")) {
+            initializedFeatures.add(new BorderPatches());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Explosion-Damage")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new DenyExplosionDamage(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Explosion-Damage")) {
+            initializedFeatures.add(new DenyExplosionDamage());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Dragon-Egg-TP")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new DragonEggAntiTP(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Dragon-Egg-TP")) {
+            initializedFeatures.add(new DragonEggAntiTP());
         }
 
-        if (getConfig().fetchBoolean("Features.Enemy-Spawner-Mine")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new EnemySpawnerMine(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Enemy-Spawner-Mine")) {
+            initializedFeatures.add(new EnemySpawnerMine());
         }
 
-        if (getConfig().fetchBoolean("Features.Insta-Sponge-Break")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new InstaSpongeBreak(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Insta-Sponge-Break")) {
+            initializedFeatures.add(new InstaSpongeBreak());
         }
 
-        if (getConfig().fetchBoolean("Features.Anti-Natural-Mobs")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new NaturalMobSpawning(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Natural-Mobs")) {
+            initializedFeatures.add(new NaturalMobSpawning());
         }
 
-        if(getConfig().fetchBoolean("Features.Anti-Block-Placement")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBlockPlace(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Block-Placement")) {
+            initializedFeatures.add(new AntiBlockPlace());
         }
 
-        if(getConfig().fetchBoolean("Features.Blocked-Enchantments")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new BlockedEnchantments(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Blocked-Enchantments")) {
+            initializedFeatures.add(new BlockedEnchantments());
         }
 
-        if(getConfig().fetchBoolean("Features.Armor-Swap") && FactionsPlugin.getInstance().version == 8) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ArmorSwap(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Armor-Swap") && FactionsPlugin.getInstance().version == 8) {
+            initializedFeatures.add(new ArmorSwap());
         }
 
-        if(getConfig().fetchBoolean("Features.No-Cursor-Drop")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new NoCursorDrop(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("No-Cursor-Drop")) {
+            initializedFeatures.add(new NoCursorDrop());
         }
 
-        if(getConfig().fetchBoolean("Features.Anti-Nether-Portal")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiNetherPortal(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Nether-Portal")) {
+            initializedFeatures.add(new AntiNetherPortal());
         }
 
-        if(getConfig().fetchBoolean("Features.Anti-End-Portal")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiEndPortal(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-End-Portal")) {
+            initializedFeatures.add(new AntiEndPortal());
         }
 
-        if(getConfig().fetchBoolean("Features.EnderPearl-Cooldown")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new EnderPearlCooldown(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("EnderPearl-Cooldown")) {
+            initializedFeatures.add(new EnderPearlCooldown());
         }
 
-        if(getConfig().fetchBoolean("Features.Anti-Vehicle-Teleport")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiVehicleTeleport(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Vehicle-Teleport")) {
+            initializedFeatures.add(new AntiVehicleTeleport());
         }
 
-        if(getConfig().fetchBoolean("Features.God-Apple-Cooldown")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new GappleCooldown(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("God-Apple-Cooldown")) {
+            initializedFeatures.add(new GappleCooldown());
         }
 
-        if(getConfig().fetchBoolean("Features.Anti-Boat-Placement")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBoatPlacement(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Boat-Placement")) {
+            initializedFeatures.add(new AntiBoatPlacement());
         }
 
-        if(getConfig().fetchBoolean("Features.Anti-Minecart-Placement")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiMinecartPlacement(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Minecart-Placement")) {
+            initializedFeatures.add(new AntiMinecartPlacement());
         }
 
-        if(getConfig().fetchBoolean("Features.Anti-Bow-Boosting")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new AntiBowBoosting(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Anti-Bow-Boosting")) {
+            initializedFeatures.add(new AntiBowBoosting());
         }
 
-        if(getConfig().fetchBoolean("Features.Global-Gamemode")) {
-            FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new GlobalGamemode(), FactionsPlugin.getInstance());
+        if (handleFeatureRegistry("Global-Gamemode")) {
+            initializedFeatures.add(new GlobalGamemode());
         }
 
         //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {
         //    FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ChunkBusterListener(), FactionsPlugin.getInstance());
         //    FactionsPlugin.getInstance().getCommand("chunkbuster").setExecutor(new CommandChunkbuster());
         //}
+
+        if (!initializedFeatures.isEmpty()) {
+            Logger.print("Enabling " + initializedFeatures.size() + " CoreX Features...", Logger.PrefixType.DEFAULT);
+            for (Listener eventListener : initializedFeatures) {
+                FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(eventListener, FactionsPlugin.getInstance());
+            }
+        }
+    }
+
+
+    public static boolean handleFeatureRegistry(String key) {
+        return getConfig().fetchBoolean("Features." + key);
     }
 }
