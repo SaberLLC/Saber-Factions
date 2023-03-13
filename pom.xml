@@ -289,11 +289,9 @@
         <dependency>
             <groupId>com.bgsoftware</groupId>
             <artifactId>WildStackerAPI</artifactId>
-            <version>2022.6</version>
+            <version>latest</version>
             <scope>provided</scope>
         </dependency>
-
-
         <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>EssentialsX</artifactId>

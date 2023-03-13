@@ -23,7 +23,6 @@ public class FactionDataDeploymentTask extends BukkitRunnable {
             if(faction.isSystemFaction()) continue;
             final FactionData data = new FactionData(faction);
             new FactionDataHelper(data);
-
             cachedList.add(faction);
         }
     }

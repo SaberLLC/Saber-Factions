@@ -67,11 +67,7 @@ public class UpgradesListener implements Listener {
     private void lowerSpawnerDelay(SpawnerSpawnEvent e, double multiplier) {
         int lowerby = FastMath.round(e.getSpawner().getDelay() * multiplier);
 
-        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) {
-            WildStacker wildStacker = WildStackerAPI.getWildStacker();
-            wildStacker.getSystemManager().getStackedSpawner(e.getSpawner()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
-
-        } else if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) {
             RoseStackerAPI.getInstance().getStackedSpawner(e.getSpawner().getBlock()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
         } else {
             e.getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
