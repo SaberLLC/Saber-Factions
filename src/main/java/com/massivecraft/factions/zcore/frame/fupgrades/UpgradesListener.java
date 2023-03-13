@@ -5,6 +5,7 @@ import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.util.FastMath;
+import com.massivecraft.factions.util.Logger;
 import dev.rosewood.rosestacker.api.RoseStackerAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.CropState;
@@ -22,9 +23,11 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.material.Crops;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Consumer;
 
 public class UpgradesListener implements Listener {
 
@@ -67,7 +70,15 @@ public class UpgradesListener implements Listener {
     private void lowerSpawnerDelay(SpawnerSpawnEvent e, double multiplier) {
         int lowerby = FastMath.round(e.getSpawner().getDelay() * multiplier);
 
-        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) {
+            WildStacker wildStacker = getWildStacker();
+            if (wildStacker != null) {
+                wildStacker.getSystemManager().getStackedSpawner(e.getSpawner()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
+            } else {
+                Logger.print("Unable to obtain WildStacker instance.", Logger.PrefixType.FAILED);
+            }
+
+        } else if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) {
             RoseStackerAPI.getInstance().getStackedSpawner(e.getSpawner().getBlock()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
         } else {
             e.getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
@@ -155,5 +166,14 @@ public class UpgradesListener implements Listener {
             int newDamage = (int) FastMath.round(e.getDamage() - e.getDamage() * drop);
             e.setDamage(newDamage);
         }
+    }
+
+    private WildStacker getWildStacker() {
+        WildStacker wildStacker = WildStackerAPI.getWildStacker();
+        if (wildStacker == null) {
+            wildStacker = (WildStacker) Bukkit.getPluginManager().getPlugin("WildStacker");
+            WildStackerAPI.setPluginInstance(wildStacker);
+        }
+        return wildStacker;
     }
 }
