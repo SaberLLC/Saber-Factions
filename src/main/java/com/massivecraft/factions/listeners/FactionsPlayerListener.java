@@ -475,7 +475,7 @@ public class FactionsPlayerListener implements Listener {
             return;
         }
 
-            // Did we change coord?
+        // Did we change coord?
         FLocation from = me.getLastStoodAt();
         FLocation to = FLocation.wrap(event.getTo());
 
@@ -506,10 +506,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (me.isMapAutoUpdating()) {
-            UUID playerId = player.getUniqueId();
-            Long timestamp = showTimes.get(playerId);
-
-            if (timestamp == null || timestamp < System.currentTimeMillis()) {
+            if (!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
                 me.sendComponent(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
                 showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().getConfig().getInt("findfactionsexploit.cooldown"));
             }

@@ -1,5 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
+import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.cryptomorin.xseries.XMaterial;
 import com.lunarclient.bukkitapi.LunarClientAPI;
 import com.massivecraft.factions.*;
@@ -13,6 +14,7 @@ import com.massivecraft.factions.data.helpers.FactionDataHelper;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.LunarClientWrapper;
+import com.massivecraft.factions.integration.WildStackerWrapper;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.Metrics;
@@ -70,6 +72,10 @@ public class StartupParameter {
             if(Bukkit.getPluginManager().isPluginEnabled("LunarClient-API")) {
                 FactionsPlugin.getInstance().lcWrapper = new LunarClientWrapper(LunarClientAPI.getInstance());
                 Logger.print("Implementing Lunar Client Integration", Logger.PrefixType.DEFAULT);
+            }
+
+            if(Bukkit.getPluginManager().isPluginEnabled("WildStacker")) {
+                FactionsPlugin.getInstance().wildStackerWrapper = new WildStackerWrapper(WildStackerAPI.getWildStacker());
             }
 
             FactionsPlugin.getInstance().hookedPlayervaults = setupPlayerVaults();

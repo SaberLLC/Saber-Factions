@@ -1,8 +1,8 @@
 # SaberFactions by Driftay
 # Report issues: https://github.com/Driftay/Saber-Factions/issues/new
-# Live support: https://discord.gg/TFxWKeX
+# Live support: https://discord.gg/saber
 # Spigot Site: https://www.spigotmc.org/resources/saberfactions-1-7-1-13-the-complete-factions-solution.68840/
-# Website: https://www.saberllc.net/
+# Website: https://www.saberdev.org/
 
 Config-Version: 1.1
 
@@ -14,11 +14,11 @@ debug: false
 
 # Prevent find factions exploit
 # This will help limit how many times a player can be sent a map of factions.
-# Set this to the cooldown you want, in miliseconds, for a map to be shown to a player.
+# Set this to the cool down you want, in milliseconds, for a map to be shown to a player.
 # If you want to log when a player violates this (only happens on chunk enter so it shouldn't be too spammy),
-#   set log to true and it will be logged to console as "player tried to show a faction map too soon and triggered exploit blocker."
+#   set log to true, and it will be logged to console as "player tried to show a faction map too soon and triggered exploit blocker."
 findfactionsexploit:
-  cooldown: 2000 # in miliseconds. 2000 = 2 seconds.
+  cooldown: 2000 # in milliseconds. 2000 = 2 seconds.
   log: false
 
 ### Hard Core Settings ###
@@ -104,7 +104,7 @@ tooltips:
   # It adds tooltips to each player in the list here, nothing else.
   # {group} will show the players primary group if you have vault installed.
   # {balance} will show their balance if you have vault installed.
-  # {lastSeen} will show human readable info on when the player was last seen, or online.
+  # {lastSeen} will show human-readable info on when the player was last seen, or online.
   show:
     - "&6&l* &eUsername: &7{name}"
     - "&6&l* &eRank: &7{group}"
@@ -146,8 +146,8 @@ scoreboard:
     - "{chunks}"
 
   # Default board that will always show up if a player wants it to.
-  # This can show any arbitrary text or you can use a lot of variables to replace things.
-  # Replace {name} - player's name. {faction} - player's faction title, factionless if none.
+  # This can show any arbitrary text, or you can use a lot of variables to replace things.
+  # Replace {name} - player's name. {faction} - player's faction title, faction-less if none.
   # {totalOnline} - total players on the server. {balance} - player's balance.
   # {maxPower} - player's max power.
   # {powerBoost} - player's powerboost.
@@ -158,7 +158,7 @@ scoreboard:
   default-enabled: false # This is to enable or disable the scoreboard: false = Disabled
   default-title: "&cSaberFactions" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
   default-update-interval: 2 # in seconds.
-  # This will show faction prefixes colored based on relation on nametags and in the tab.
+  # This will show faction prefixes colored based on relation on name-tags and in the tab.
   #   The scoreboard needs to be enabled for this to work.
   default-prefixes: true
   # SUPPORTS PLACEHOLDERS
@@ -192,7 +192,7 @@ scoreboard:
 
 
 
-# Configration section for warmups.
+# Configuration section for warmups.
 # Warmup times are in seconds - if a value of 0 is set, there is no warmup.
 warmups:
   # Delay for /f home
@@ -218,8 +218,8 @@ warmups:
 # Limits factions to having a max number of each relation.
 # Setting to 0 means none allowed. -1 for disabled.
 # This will have no effect on default or existing relations, only when relations are changed.
-# It is advised that you set the default relation to -1 so they can always go back to that.
-# Otherwise Factions could be stuck with not being able to unenemy other Factions.
+# It is advised that you set the default relation to -1, so they can always go back to that.
+# Otherwise, Factions could be stuck with not being able to enemy other Factions.
 max-relations:
   enabled: true
   ally: 1
@@ -255,8 +255,7 @@ hcf:
   # Set to 0 for no freeze. Time is in seconds.
   powerfreeze: 0
 
-  # Buffer Zone
-  # Buffer Zone is an chunk area required between claims of different Factions.
+  # Buffer Zone is a chunk area required between claims of different Factions.
   # This is default to 0 and has always been that way. Meaning Factions can have
   #   claims that border each other.
   # If this is set to 3, then Factions need to have 3 chunks between their claim
@@ -279,7 +278,7 @@ hcf:
 ############################################################
 
 # You can use any variable here, including fancy messages. Color codes and or tags work fine.
-# Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+# Lines that aren't defined won't be sent (home not set, faction not peaceful / permanent, dtr freeze)
 
 # SUPPORTS PLACEHOLDERS
 show:
@@ -303,8 +302,8 @@ show:
 relational-show: true
 minimal-show: false
 
-# Factions that should be exempt from /f show, case sensitive, useful for a
-# serverteam faction, since the command shows vanished players otherwise
+# Factions that should be exempt from /f show, case-sensitive, useful for a
+# server team faction, since the command shows vanished players otherwise
 show-exempt:
   - Wilderness
 
@@ -312,7 +311,7 @@ show-exempt:
 # THIS IS FOR /f map tool tips.
 
 # You can use any variable here, including fancy messages. Color codes and or tags work fine.
-# Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+# Lines that aren't defined won't be sent (home not set, faction not peaceful / permanent, dtr freeze)
 
 map:
   # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;plugin)
@@ -467,7 +466,7 @@ faction-leader-broadcast: true #Disabling this will not make leader changes appe
 # |                Faction Check System                   |#
 # +------------------------------------------------------+ #
 ############################################################
-#Everything else from display names to lores, is managed by lang.yml, so edit it there
+#Everything else from display names to lore's, is managed by lang.yml, so edit it there
 f-check:
   gui-rows: 3 #Rows for the check gui
   wall-check:
@@ -575,7 +574,7 @@ fnear:
 # |           Faction Command Cooldowns                  | #
 # +------------------------------------------------------+ #
 ############################################################
-fcooldowns: #All of These Cooldowns Are In Seconds
+fcooldowns: #All of These Cool downs Are In Seconds
   f-open: 5
   f-disband: 10
   f-create: 10
@@ -765,7 +764,7 @@ faudit-gui:
 #Title when moving between chunks
 Title:
   Show-Title: true
-  Cached: true #Titles will be ran on an ASYNC Task To Avoid Spam
+  Cached: true #Titles will be run on an ASYNC Task To Avoid Spam
 
   # You can configure the time in 1.9 or higher! The values are in ticks (20 ticks = 1 second)
   Options:

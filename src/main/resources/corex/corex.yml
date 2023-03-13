@@ -16,8 +16,8 @@ Features:
   EnderPearl-Cooldown: false #Places a Cooldown on Ender Pearls!
   Anti-Nether-Portal: false #Denies players teleporting from nether portals
   Anti-End-Portal: false #Denies players teleporting from end portals
-  No-Cursor-Drop: true #When a player closes their inventory whilst a item is on their cursor it does not drop on the ground it goes back into their inventory
-  Armor-Swap: true #Allows PLayers To Right-Click Armor and Rotate Their Equipped Armor Into Their Hotbar just by right-clicking
+  No-Cursor-Drop: true #When a player closes their inventory whilst an item is on their cursor it does not drop on the ground it goes back into their inventory
+  Armor-Swap: true #Allows PLayers To Right-Click Armor and Rotate Their Equipped Armor Into Their Hot-bar just by right-clicking
   Blocked-Enchantments: false #Denies Specific Enchantments Whilst Being In Enchantment Table
   Anti-Block-Placement: true #Configurable List Below For Specific Blocks You Do NOT want your players placing
   Anti-Baby-Zombies: true #Denies Baby Zombies and Pig Zombies from Spawning
@@ -39,7 +39,7 @@ Features:
   Insta-Sponge-Break: true #Instantly Break Sponges
   Anti-Natural-Mobs: false #Denies all natural mob spawns
   God-Apple-Cooldown: false #Denies players spam eating god apples
-  Global-Gamemode: true #Allows ops to change worlds and keep their gamemode
+  Global-Gamemode: true #Allows ops to change worlds and keep their game mode
 
 AntiSpawnerMine:
   Radius: 20.0 # Radius that the player will be denied mining spawners when an enemy is near.
