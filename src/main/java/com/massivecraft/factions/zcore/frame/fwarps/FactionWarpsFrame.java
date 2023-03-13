@@ -19,10 +19,12 @@ import java.util.Map;
 public class FactionWarpsFrame extends SaberGUI {
 
     private ConfigurationSection section;;
+    private Faction f;
 
-    public FactionWarpsFrame(Player player, final Faction f) {
+    public FactionWarpsFrame(Player player, Faction f) {
         super(player, CC.translate(FactionsPlugin.getInstance().getConfig().getString("fwarp-gui.name").replace("{faction}", f.getTag())),FactionsPlugin.getInstance().getConfig().getInt("fwarp-gui.rows", 3) * 9);
         this.section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fwarp-gui");
+        this.f = f;
     }
 
 
@@ -81,16 +83,17 @@ public class FactionWarpsFrame extends SaberGUI {
         //We comment this out for now so it does not interfere with item placement when no warps are set
         //slots.forEach(slot -> GUIItems.set(slot, new GuiItem(XMaterial.AIR.parseItem())));
         FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-        for (final Map.Entry<String, LazyLocation> warp : fplayer.getFaction().getWarps().entrySet()) {
-            if (slots.size() < fplayer.getFaction().getWarps().entrySet().size()) {
+
+        for (final Map.Entry<String, LazyLocation> warp : f.getWarps().entrySet()) {
+            if (slots.size() < f.getWarps().entrySet().size()) {
                 slots.add(slots.get(slots.size() - 1) + 1);
                 Logger.print("Automatically setting F WARP GUI slot since slot not specified. Head config.yml and add more entries in warp-slots section.", Logger.PrefixType.DEFAULT);
             }
 
-            this.setItem(slots.get(count), new InventoryItem(buildWarpAsset(warp, fplayer.getFaction())).click(ClickType.LEFT, () -> {
+            this.setItem(slots.get(count), new InventoryItem(buildWarpAsset(warp, f)).click(ClickType.LEFT, () -> {
                 fplayer.getPlayer().closeInventory();
 
-                if (!fplayer.getFaction().hasWarpPassword(warp.getKey())) {
+                if (!f.hasWarpPassword(warp.getKey())) {
                     if (transact(fplayer)) {
                         doWarmup(warp.getKey(), fplayer);
                     }
@@ -102,7 +105,7 @@ public class FactionWarpsFrame extends SaberGUI {
                             fplayer.msg(TL.COMMAND_FWARP_PASSWORD_TIMEOUT);
                             fplayer.setEnteringPassword(false, "");
                         }
-                    }, FactionsPlugin.getInstance().getConfig().getInt("fwarp-gui.password-timeout", 5) * 20);
+                    }, FactionsPlugin.getInstance().getConfig().getInt("fwarp-gui.password-timeout", 5) * 20L);
                 }
             }));
             ++count;

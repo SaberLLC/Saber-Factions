@@ -168,9 +168,10 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdInvite cmdInvite = new CmdInvite();
     public CmdJoin cmdJoin = new CmdJoin();
     public CmdKick cmdKick = new CmdKick();
+    public CmdAllyFWarp cmdAllyFWarp = new CmdAllyFWarp();
 
 
-    //Variables to know if we already setup certain sub commands
+    //Variables to know if we already set up certain sub commands
     public Boolean discordEnabled = false;
     public Boolean checkEnabled = false;
     public Boolean missionsEnabled = false;
@@ -203,6 +204,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
         if (CommodoreProvider.isSupported()) brigadierManager = new BrigadierManager();
 
+        this.addSubCommand(this.cmdAllyFWarp);
         this.addSubCommand(this.cmdAdmin);
         this.addSubCommand(this.cmdAutoClaim);
         this.addSubCommand(this.cmdBoom);

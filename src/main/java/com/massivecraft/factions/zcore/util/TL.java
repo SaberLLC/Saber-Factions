@@ -471,6 +471,12 @@ public enum TL {
     FRIENDLY_FIRE_OFF_ATTACKER("&b%1$s &7has friendly fire toggle &4off&7!"),
     FRIENDLY_FIRE_YOU_MUST("&c[!] &7You must have friendly fire active to attack faction members!"),
 
+    COMMAND_ALLYFWARP_INVALID_FACTION("&c&l[!] &cThat faction does not exist!"),
+    COMMAND_ALLYFWARP_DESCRIPTION("Teleport to a ally/truces faction warps"),
+
+    COMMAND_ALLYFWARP_USAGE("&c&l[!]&7 /f warp <faction> <warpname> &c[password]"),
+    COMMAND_ALLYFWARP_MUSTBE("&c&l[!] &cYou must be at least truced with this faction to access their warps!"),
+
     COMMAND_FWARP_CLICKTOWARP("&c&l[!]&7 Click to &cwarp!"),
     COMMAND_FWARP_COMMANDFORMAT("&c&l[!]&7 /f warp <warpname> &c[password]"),
     COMMAND_FWARP_WARPED("&c&l[!]&7 Warped to &c%1$s"),
