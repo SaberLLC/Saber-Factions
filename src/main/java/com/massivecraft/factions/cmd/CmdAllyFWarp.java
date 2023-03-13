@@ -1,9 +1,13 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fwarps.FactionWarpsFrame;
 import com.massivecraft.factions.zcore.util.TL;
@@ -12,41 +16,64 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class CmdFWarp extends FCommand {
+/**
+ * @Author: Driftay
+ * @Date: 3/13/2023 1:22 AM
+ */
+public class CmdAllyFWarp extends FCommand {
 
-    /**
-     * @author FactionsUUID Team - Modified By CmdrKittens
-     */
-
-    public CmdFWarp() {
-        super();
-        this.aliases.addAll(Aliases.warp);
+    public CmdAllyFWarp() {
+        this.requiredArgs.add("faction name");
         this.optionalArgs.put("warpname", "warpname");
         this.optionalArgs.put("password", "password");
+
+        this.aliases.addAll(Aliases.allyfwarp);
 
         this.requirements = new CommandRequirements.Builder(Permission.WARP)
                 .playerOnly()
                 .memberOnly()
-                .withAction(PermissableAction.WARP)
                 .build();
     }
 
     @Override
     public void perform(CommandContext context) {
-
         if (context.args.size() == 0) {
-            new FactionWarpsFrame(context.player, context.faction).openGUI(FactionsPlugin.getInstance());
-        } else if (context.args.size() > 2) {
-            context.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
-        } else {
-            final String warpName = context.argAsString(0);
-            final String passwordAttempt = context.argAsString(1);
+            context.fPlayer.msg(TL.COMMAND_ALLYFWARP_USAGE);
+            return;
+        }
 
-            if (context.faction.isWarp(context.argAsString(0))) {
+        Faction targetFaction = context.argAsFaction(0);
+
+        if (targetFaction == null) {
+            context.fPlayer.msg(TL.COMMAND_ALLYFWARP_INVALID_FACTION);
+            return;
+        }
+
+        if (targetFaction.getRelationTo(context.faction).isAtLeast(Relation.TRUCE)) {
+            context.fPlayer.msg(TL.COMMAND_ALLYFWARP_MUSTBE);
+            return;
+        }
+
+        Access access = targetFaction.getAccess(context.fPlayer, PermissableAction.WARP);
+
+        if (access != Access.ALLOW) {
+            context.msg(TL.GENERIC_NOPERMISSION, "use " + targetFaction.getTag() + "'s warps");
+            return;
+        }
+
+        if (context.args.size() == 1) {
+            new FactionWarpsFrame(context.player, targetFaction).openGUI(FactionsPlugin.getInstance());
+        } else if (context.args.size() > 3) {
+            context.fPlayer.msg(TL.COMMAND_ALLYFWARP_USAGE);
+        } else {
+            final String warpName = context.argAsString(1);
+            final String passwordAttempt = context.argAsString(2);
+
+            if (targetFaction.isWarp(warpName)) {
 
                 // Check if it requires password and if so, check if valid. CASE SENSITIVE
-                if (context.faction.hasWarpPassword(warpName) && !context.faction.isWarpPassword(warpName, passwordAttempt)) {
-                    context.faction.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
+                if (targetFaction.hasWarpPassword(warpName) && !targetFaction.isWarpPassword(warpName, passwordAttempt)) {
+                    context.fPlayer.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
                     return;
                 }
 
@@ -58,7 +85,7 @@ public class CmdFWarp extends FCommand {
                 context.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, () -> {
                     Player player = Bukkit.getPlayer(uuid);
                     if (player != null) {
-                        player.teleport(fPlayer.getFaction().getWarp(warpName).getLocation());
+                        player.teleport(targetFaction.getWarp(warpName).getLocation());
                         fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
                     }
                 }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 10));
@@ -74,6 +101,6 @@ public class CmdFWarp extends FCommand {
 
     @Override
     public TL getUsageTranslation() {
-        return TL.COMMAND_FWARP_DESCRIPTION;
+        return TL.COMMAND_ALLYFWARP_DESCRIPTION;
     }
 }
