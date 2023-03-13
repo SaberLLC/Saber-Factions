@@ -1,17 +1,22 @@
 package com.massivecraft.factions.zcore.frame.fupgrades;
 
-import com.bgsoftware.wildstacker.api.WildStacker;
-import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.cryptomorin.xseries.XMaterial;
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.FastMath;
 import com.massivecraft.factions.util.Logger;
-import dev.rosewood.rosestacker.api.RoseStackerAPI;
+import com.massivecraft.factions.zcore.frame.fupgrades.provider.stackers.RoseStackerProvider;
+import com.massivecraft.factions.zcore.frame.fupgrades.provider.stackers.WildStackerProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,18 +32,32 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Consumer;
 
 public class UpgradesListener implements Listener {
 
+
     /**
-     * @author Illyria Team
+     * @author Illyria Team, Atilt
      */
+
+    private WildStackerProvider wildStackerProvider;
+    private RoseStackerProvider roseStackerProvider;
+
+    public void init() {
+        Plugin wildStacker = Bukkit.getPluginManager().getPlugin("WildStacker");
+        if (wildStacker != null) {
+            this.wildStackerProvider = new WildStackerProvider();
+        }
+        Plugin roseStacker = Bukkit.getPluginManager().getPlugin("RoseStacker");
+        if (roseStacker != null) {
+            this.roseStackerProvider = new RoseStackerProvider();
+        }
+    }
 
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
         Entity killer = e.getEntity().getKiller();
-        if (killer == null || !(killer instanceof Player)) return;
+        if (!(killer instanceof Player)) return;
 
         FLocation floc = FLocation.wrap(e.getEntity().getLocation());
         Faction faction = Board.getInstance().getFactionAt(floc);
@@ -68,20 +87,13 @@ public class UpgradesListener implements Listener {
     }
 
     private void lowerSpawnerDelay(SpawnerSpawnEvent e, double multiplier) {
-        int lowerby = FastMath.round(e.getSpawner().getDelay() * multiplier);
+        CreatureSpawner spawner = e.getSpawner();
+        int delay = spawner.getDelay() - FastMath.round(e.getSpawner().getDelay() * multiplier);
 
-        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) {
-            WildStacker wildStacker = getWildStacker();
-            if (wildStacker != null) {
-                wildStacker.getSystemManager().getStackedSpawner(e.getSpawner()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
-            } else {
-                Logger.print("Unable to obtain WildStacker instance.", Logger.PrefixType.FAILED);
-            }
-
-        } else if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) {
-            RoseStackerAPI.getInstance().getStackedSpawner(e.getSpawner().getBlock()).getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
-        } else {
-            e.getSpawner().setDelay(e.getSpawner().getDelay() - lowerby);
+        if (this.wildStackerProvider != null && !this.wildStackerProvider.setDelay(spawner, delay)) {
+            Logger.print("Unable obtain WildStacker instance. Plugin found: " + (Bukkit.getPluginManager().getPlugin(this.wildStackerProvider.pluginName()) != null), Logger.PrefixType.FAILED);
+        } else if (this.roseStackerProvider != null && !this.roseStackerProvider.setDelay(spawner.getBlock(), delay)) {
+            Logger.print("Missing expected spawner at: " + spawner.getX() + ", " + spawner.getY() + ", " + spawner.getZ(), Logger.PrefixType.FAILED);
         }
     }
 
@@ -123,16 +135,19 @@ public class UpgradesListener implements Listener {
 
     @EventHandler
     public void onWaterRedstone(BlockFromToEvent e) {
-        List<String> unbreakable = FactionsPlugin.getInstance().getConfig().getStringList("no-water-destroy.Item-List");
-        String block = e.getToBlock().getType().toString();
         FLocation floc = FLocation.wrap(e.getToBlock().getLocation());
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
 
         if (!factionAtLoc.isWilderness()) {
             int level = factionAtLoc.getUpgrade(UpgradeType.REDSTONE);
             if (level != 0) {
-                if (level == 1)
-                    if (unbreakable.contains(block)) e.setCancelled(true);
+                if (level == 1) {
+                    List<String> unbreakable = FactionsPlugin.getInstance().getConfig().getStringList("no-water-destroy.Item-List");
+                    String block = e.getToBlock().getType().toString();
+                    if (unbreakable.contains(block)) {
+                        e.setCancelled(true);
+                    }
+                }
             }
         }
     }
@@ -163,17 +178,8 @@ public class UpgradesListener implements Listener {
         if (e.getItem().getType().toString().contains("LEGGINGS") || e.getItem().getType().toString().contains("CHESTPLATE") || e.getItem().getType().toString().contains("HELMET") || e.getItem().getType().toString().contains("BOOTS")) {
             int lvl = FPlayers.getInstance().getByPlayer(e.getPlayer()).getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
             double drop = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);
-            int newDamage = (int) FastMath.round(e.getDamage() - e.getDamage() * drop);
+            int newDamage = FastMath.round(e.getDamage() - e.getDamage() * drop);
             e.setDamage(newDamage);
         }
-    }
-
-    private WildStacker getWildStacker() {
-        WildStacker wildStacker = WildStackerAPI.getWildStacker();
-        if (wildStacker == null) {
-            wildStacker = (WildStacker) Bukkit.getPluginManager().getPlugin("WildStacker");
-            WildStackerAPI.setPluginInstance(wildStacker);
-        }
-        return wildStacker;
     }
 }
