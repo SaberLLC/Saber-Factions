@@ -89,7 +89,6 @@ public class CmdClaimFill extends FCommand {
             addIf(toClaim, queue, currentHead.getRelative(1, 0));
             addIf(toClaim, queue, currentHead.getRelative(-1, 0));
         }
-
         if (toClaim.size() > limit) {
             context.msg(TL.COMMAND_CLAIMFILL_PASTLIMIT);
             return;
@@ -114,8 +113,7 @@ public class CmdClaimFill extends FCommand {
     }
 
     private void addIf(Set<FLocation> toClaim, Queue<FLocation> queue, FLocation examine) {
-        if (Board.getInstance().getFactionAt(examine).isWilderness() && !toClaim.contains(examine)) {
-            toClaim.add(examine);
+        if (Board.getInstance().getFactionAt(examine).isWilderness() && toClaim.add(examine)) {
             queue.add(examine);
         }
     }

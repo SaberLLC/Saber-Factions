@@ -34,7 +34,13 @@ public class TitleUtil {
 
     public static String parseAllPlaceholders(String string, Faction faction, Player player) {
         string = TagUtil.parsePlaceholders(player, string);
-        string = TextUtil.replace(TextUtil.replace(TextUtil.replace(TextUtil.replace(TextUtil.replace(TextUtil.replace(string, "{Faction}", faction.getTag()), "{online}", Integer.toString(faction.getOnlinePlayers().size())), "{offline}", Integer.toString(faction.getFPlayers().size() - faction.getOnlinePlayers().size())), "{chunks}", Integer.toString(faction.getAllClaims().size())), "{power}", Double.toString(faction.getPower())), "{leader}", faction.isNormal() ? faction.getFPlayerAdmin().toString() : "");
+        string = TextUtil.replace(TextUtil.replace(TextUtil.replace(TextUtil.replace(TextUtil.replace(TextUtil.replace(string,
+                "{faction}", faction.getTag()),
+                "{online}", Integer.toString(faction.getOnlinePlayers().size())),
+                "{offline}", Integer.toString(faction.getFPlayers().size() - faction.getOnlinePlayers().size())),
+                "{chunks}", Integer.toString(faction.getAllClaims().size())),
+                "{power}", Double.toString(faction.getPower())),
+                "{leader}", faction.isNormal() ? faction.getFPlayerAdmin().toString() : "");
         return string;
     }
 }

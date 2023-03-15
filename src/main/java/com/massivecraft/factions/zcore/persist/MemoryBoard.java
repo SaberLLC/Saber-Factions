@@ -17,6 +17,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.ChatColor;
 import com.massivecraft.factions.util.CC;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -61,7 +62,11 @@ public abstract class MemoryBoard extends Board {
         faction.getWarps().values().removeIf(lazyLocation -> flocation.isInChunk(lazyLocation.getLocation()));
 
         for (FPlayer onlinePlayer : FPlayers.getInstance().getOnlinePlayers()) {
-            FLocation standing = FLocation.wrap(onlinePlayer);
+            Player player = onlinePlayer.getPlayer();
+            if (player == null) {
+                continue;
+            }
+            FLocation standing = FLocation.wrap(player);
             if (!standing.equals(flocation)) {
                 continue;
             }
