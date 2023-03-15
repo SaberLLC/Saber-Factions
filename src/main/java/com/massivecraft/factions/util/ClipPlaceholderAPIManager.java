@@ -177,6 +177,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return Econ.shouldBeUsed() ? Econ.insertCommas(faction.getFactionBalance()) : TL.ECON_OFF.format("balance");
             case "faction_allies":
                 return String.valueOf(faction.getRelationCount(Relation.ALLY));
+            case "faction_discord":
+                return faction.getDiscord() == null ? "" : faction.getDiscord();
             case "faction_allies_players":
                 return String.valueOf(this.countOn(faction, Relation.ALLY, null, fPlayer));
             case "faction_allies_players_online":

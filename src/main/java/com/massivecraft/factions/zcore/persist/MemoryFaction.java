@@ -32,7 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class MemoryFaction implements Faction, EconomyParticipator {
+public abstract class  MemoryFaction implements Faction, EconomyParticipator {
     public HashMap<Integer, String> rules = new HashMap<>();
     public int tnt;
     public Location checkpoint;
