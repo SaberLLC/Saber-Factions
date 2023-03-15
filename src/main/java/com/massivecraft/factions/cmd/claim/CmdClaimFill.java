@@ -113,8 +113,7 @@ public class CmdClaimFill extends FCommand {
     }
 
     private void addIf(Set<FLocation> toClaim, Queue<FLocation> queue, FLocation examine) {
-        if (!toClaim.contains(examine) && Board.getInstance().getFactionAt(examine).isWilderness()) {
-            toClaim.add(examine);
+        if (Board.getInstance().getFactionAt(examine).isWilderness() && toClaim.add(examine)) {
             queue.add(examine);
         }
     }
