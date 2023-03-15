@@ -1251,7 +1251,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void sendComponent(Component message) {
         Player player = getPlayer();
-        if (player == null || !player.isOnGround()) return;
+        if (player == null) {
+            return;
+        }
         TextUtil.AUDIENCES.player(player).sendMessage(message);
     }
 
