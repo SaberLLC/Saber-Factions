@@ -398,7 +398,7 @@ public class FactionsEntityListener implements Listener {
         if (damager instanceof Player) {
             FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
             if (defender == null || defender.getPlayer() == null) return true;
-            if (attacker.getFaction() == defender.getFaction() && attacker.getFaction().isNormal() && defender.getFaction().isNormal()) {
+            if (attacker.getRelationTo(defender.getFaction()).isAtLeast(Relation.TRUCE) && attacker.getFaction().isNormal() && defender.getFaction().isNormal()) {
                 if (attacker.hasFriendlyFire() && defender.hasFriendlyFire()) return true;
                 if (attacker.hasFriendlyFire() && !defender.hasFriendlyFire()) {
                     attacker.msg(TL.FRIENDLY_FIRE_OFF_ATTACKER, defender.getName());
