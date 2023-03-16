@@ -118,7 +118,9 @@ public class StartupParameter {
         }
 
         territoryDenyUsageMaterials.add(XMaterial.FLINT_AND_STEEL.parseMaterial());
-        territoryDenyUsageMaterials.add(XMaterial.END_CRYSTAL.parseMaterial());
+        if(FactionsPlugin.getInstance().version != 8) {
+            territoryDenyUsageMaterials.add(XMaterial.END_CRYSTAL.parseMaterial());
+        }
         territoryDenyUsageMaterials.add(XMaterial.BUCKET.parseMaterial());
         territoryDenyUsageMaterials.add(XMaterial.WATER_BUCKET.parseMaterial());
         territoryDenyUsageMaterials.add(XMaterial.LAVA_BUCKET.parseMaterial());
