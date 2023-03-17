@@ -121,7 +121,6 @@ public class CmdCreate extends FCommand {
             faction.setPeaceful(true);
             faction.setPeacefulExplosionsEnabled(false);
         }
-        if (Conf.useCustomDefaultPermissions) faction.setDefaultPerms();
         if (Conf.usePermissionHints) context.msg(TL.COMMAND_HINT_PERMISSION);
     }
 
