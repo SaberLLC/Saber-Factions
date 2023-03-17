@@ -362,10 +362,13 @@ public class FactionsPlugin extends MPlugin {
                 }
             }
             String lastArg = args[args.length - 1].toLowerCase();
-            completions = completions.stream()
-                    .filter(m -> m.toLowerCase().startsWith(lastArg))
-                    .collect(Collectors.toList());
-            return completions;
+            List<String> filteredCompletions = new ArrayList<>(completions.size());
+            for (String completion : completions) {
+                if (completion.toLowerCase().startsWith(lastArg)) {
+                    filteredCompletions.add(completion);
+                }
+            }
+            return filteredCompletions;
         } else {
             String lastArg = args[args.length - 1].toLowerCase();
             for (Role value : Role.VALUES) completions.add(value.nicename);
@@ -375,8 +378,13 @@ public class FactionsPlugin extends MPlugin {
             for (Player player : Bukkit.getServer().getOnlinePlayers()) completions.add(player.getName());
             for (Faction faction : Factions.getInstance().getAllFactions())
                 completions.add(ChatColor.stripColor(faction.getTag()));
-            completions = completions.stream().filter(m -> m.toLowerCase().startsWith(lastArg)).collect(Collectors.toList());
-            return completions;
+            List<String> filteredCompletions = new ArrayList<>(completions.size());
+            for (String completion : completions) {
+                if (completion.toLowerCase().startsWith(lastArg)) {
+                    filteredCompletions.add(completion);
+                }
+            }
+            return filteredCompletions;
         }
     }
 
