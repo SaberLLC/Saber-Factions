@@ -469,7 +469,7 @@ public enum TL {
     COMMAND_FRIENDLY_FIRE_TOGGLE_OFF("&c[!] &7You have toggled friendly fire &4off&7!"),
     COMMAND_FRIENDLY_FIRE_TOGGLE_ON("&c[!] &7You have toggled friendly fire &aon&7!"),
     FRIENDLY_FIRE_OFF_ATTACKER("&b%1$s &7has friendly fire toggle &4off&7!"),
-    FRIENDLY_FIRE_YOU_MUST("&c[!] &7You must have friendly fire active to attack faction members!"),
+    FRIENDLY_FIRE_YOU_MUST("&c[!] &7You must have friendly fire active to attack this person!"),
 
     COMMAND_ALLYFWARP_INVALID_FACTION("&c&l[!] &cThat faction does not exist!"),
     COMMAND_ALLYFWARP_DESCRIPTION("Teleport to a ally/truces faction warps"),

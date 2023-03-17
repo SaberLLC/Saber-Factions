@@ -74,6 +74,7 @@ public class FactionUpgradeFrame extends SaberGUI {
                             fme.takeMoney(cost);
                             handleTransaction(fme, upgradeType);
                             faction.setUpgrade(upgradeType, faction.getUpgrade(upgradeType) + 1);
+                            redraw();
                         }
                     }
                 }));

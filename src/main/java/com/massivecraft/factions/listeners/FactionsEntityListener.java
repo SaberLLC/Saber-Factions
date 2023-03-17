@@ -62,13 +62,13 @@ public class FactionsEntityListener implements Listener {
                 powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WARZONE.toString());
                 powerLossEvent.setCancelled(true);
             }
-            if ( (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist) ) {
+            if ((Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) {
                 powerLossEvent.setMessage(TL.PLAYER_POWER_LOSS_WARZONE.toString());
             }
-        } else if (faction.isWilderness() && !Conf.wildernessPowerLoss && ((!Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) ) {
+        } else if (faction.isWilderness() && !Conf.wildernessPowerLoss && ((!Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoWildernessProtection.contains(player.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist))) {
             powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WILDERNESS.toString());
             powerLossEvent.setCancelled(true);
-        } else if ( (Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist) ) {
+        } else if ((Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) {
             powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WORLD.toString());
             powerLossEvent.setCancelled(true);
         } else if (Conf.peacefulMembersDisablePowerLoss && fplayer.hasFaction() && fplayer.getFaction().isPeaceful()) {
@@ -83,7 +83,7 @@ public class FactionsEntityListener implements Listener {
 
         // Call player onDeath if the event is not cancelled and not using custom power
         if (!powerLossEvent.isCancelled() && !powerLossEvent.usingCustomPower()) {
-            if(Conf.deathToPlayerPowerLoss > 0.0 && event.getEntity().getKiller() != null) {
+            if (Conf.deathToPlayerPowerLoss > 0.0 && event.getEntity().getKiller() != null) {
                 player.setMetadata("diedToPlayer", new FixedMetadataValue(FactionsPlugin.getInstance(), true));
             }
             fplayer.onDeath();
@@ -317,7 +317,7 @@ public class FactionsEntityListener implements Listener {
 
         boolean online = faction.hasPlayersOnline();
 
-        if (boomer instanceof Creeper && ((faction.isWilderness() && Conf.wildernessBlockCreepers && ((!Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) ) ||
+        if (boomer instanceof Creeper && ((faction.isWilderness() && Conf.wildernessBlockCreepers && ((!Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist))) ||
                 (faction.isNormal() && (online ? Conf.territoryBlockCreepers : Conf.territoryBlockCreepersWhenOffline)) ||
                 (faction.isWarZone() && Conf.warZoneBlockCreepers) ||
                 faction.isSafeZone())) {
@@ -329,7 +329,7 @@ public class FactionsEntityListener implements Listener {
             // ghast fireball which needs prevention
             return false;
         } else {
-            return  (!(boomer instanceof TNTPrimed) && !(boomer instanceof ExplosiveMinecart)) || ((!faction.isWilderness() || !Conf.wildernessBlockTNT || ((Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist))) &&
+            return (!(boomer instanceof TNTPrimed) && !(boomer instanceof ExplosiveMinecart)) || ((!faction.isWilderness() || !Conf.wildernessBlockTNT || ((Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(block.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist))) &&
                     (!faction.isNormal() || (online ? !Conf.territoryBlockTNT : !Conf.territoryBlockTNTWhenOffline)) &&
                     (!faction.isWarZone() || !Conf.warZoneBlockTNT) &&
                     (!faction.isSafeZone() || !Conf.safeZoneBlockTNT));
@@ -393,22 +393,11 @@ public class FactionsEntityListener implements Listener {
         Entity damager = sub.getDamager();
         Entity damagee = sub.getEntity();
         if (!(damagee instanceof Player)) return true;
-        if(damagee.hasMetadata("NPC")) return true;
+        if (damagee.hasMetadata("NPC")) return true;
         FPlayer defender = FPlayers.getInstance().getByPlayer((Player) damagee);
-        if (damager instanceof Player) {
-            FPlayer attacker = FPlayers.getInstance().getByPlayer((Player) damager);
-            if (defender == null || defender.getPlayer() == null) return true;
-            if (attacker.getFaction() == defender.getFaction() && attacker.getFaction().isNormal() && defender.getFaction().isNormal()) {
-                if (attacker.hasFriendlyFire() && defender.hasFriendlyFire()) return true;
-                if (attacker.hasFriendlyFire() && !defender.hasFriendlyFire()) {
-                    attacker.msg(TL.FRIENDLY_FIRE_OFF_ATTACKER, defender.getName());
-                    return false;
-                } else if (!attacker.hasFriendlyFire() && defender.hasFriendlyFire()) {
-                    attacker.msg(TL.FRIENDLY_FIRE_YOU_MUST);
-                    return false;
-                }
-            }
-        }
+
+        if (defender.getPlayer() == null) return true;
+
         Location defenderLoc = defender.getPlayer().getLocation();
         Faction defLocFaction = Board.getInstance().getFactionAt(FLocation.wrap(defenderLoc));
         // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
@@ -438,7 +427,7 @@ public class FactionsEntityListener implements Listener {
 
         if (attacker == null || attacker.getPlayer() == null) return true;
 
-        if (attacker.getFaction() == defender.getFaction() && attacker.getFaction().isNormal() && defender.getFaction().isNormal()) {
+        if (attacker.getRelationTo(defender.getFaction()).isAtLeast(Relation.TRUCE) && attacker.getFaction().isNormal() && defender.getFaction().isNormal()) {
             if (attacker.hasFriendlyFire() && defender.hasFriendlyFire()) return true;
             if (attacker.hasFriendlyFire() && !defender.hasFriendlyFire()) {
                 attacker.msg(TL.FRIENDLY_FIRE_OFF_ATTACKER, defender.getName());
@@ -466,7 +455,8 @@ public class FactionsEntityListener implements Listener {
         }
 
         if (locFaction.isWarZone() && Conf.warZoneFriendlyFire) return true;
-        if ( (Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist) ) return true;
+        if ((Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsIgnorePvP.contains(defenderLoc.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist))
+            return true;
 
         Faction defendFaction = defender.getFaction();
         Faction attackFaction = attacker.getFaction();
@@ -621,7 +611,7 @@ public class FactionsEntityListener implements Listener {
         } else if (entity.getType() == EntityType.WITHER) {
             Faction faction = Board.getInstance().getFactionAt(FLocation.wrap(loc));
             // it's a bit crude just using fireball protection, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
-            if ((faction.isWilderness() && Conf.wildernessBlockFireballs && ((!Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) ) ||
+            if ((faction.isWilderness() && Conf.wildernessBlockFireballs && ((!Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist))) ||
                     (faction.isNormal() && (faction.hasPlayersOnline() ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline)) ||
                     (faction.isWarZone() && Conf.warZoneBlockFireballs) ||
                     faction.isSafeZone()) {
