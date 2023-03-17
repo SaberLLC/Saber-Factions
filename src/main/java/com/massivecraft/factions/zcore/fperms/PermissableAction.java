@@ -9,9 +9,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public enum PermissableAction {
 
@@ -74,15 +76,23 @@ public enum PermissableAction {
     }
 
     public static Map<PermissableAction, Access> fromDefaults(DefaultPermissions defaultPermissions) {
-        Map<PermissableAction, Access> defaultMap = new HashMap<>();
-        for (PermissableAction permissableAction : PermissableAction.values()) {
+        Map<PermissableAction, Access> defaultMap = new HashMap<>(PermissableAction.VALUES.length);
+        for (PermissableAction permissableAction : PermissableAction.VALUES) {
             defaultMap.put(permissableAction, defaultPermissions.getbyName(permissableAction.name) ? Access.ALLOW : Access.DENY);
         }
         return defaultMap;
     }
 
+    public static Map<PermissableAction, Access> fromPredicated(Predicate<PermissableAction> predicate) {
+        Map<PermissableAction, Access> actions = new EnumMap<>(PermissableAction.class);
+        for (PermissableAction action : PermissableAction.VALUES) {
+            actions.put(action, predicate != null ? Access.parse(predicate.test(action)) : Access.UNDEFINED);
+        }
+        return actions;
+    }
+
     public static PermissableAction fromSlot(int slot) {
-        for (PermissableAction action : PermissableAction.values()) {
+        for (PermissableAction action : PermissableAction.VALUES) {
             if (action.getSlot() == slot) return action;
         }
         return null;

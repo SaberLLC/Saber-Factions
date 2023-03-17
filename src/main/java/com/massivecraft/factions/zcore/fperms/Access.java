@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FactionsPlugin;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public enum Access {
 
@@ -11,6 +12,8 @@ public enum Access {
     ALLOW("Allow"),
     DENY("Deny"),
     UNDEFINED("Undefined");
+
+    public static final Access[] VALUES = values();
 
     private final String name;
 
@@ -25,24 +28,24 @@ public enum Access {
      * @return
      */
     public static Access fromString(String check) {
-        for (Access access : values())
+        for (Access access : VALUES)
             if (access.name().equalsIgnoreCase(check))
                 return access;
         return null;
     }
 
-    public static Access booleanToAccess(boolean access) {
-        if (access) return Access.ALLOW;
-        else return Access.DENY;
+    public static Access parse(Boolean value) {
+        return value != null ? value ? ALLOW : DENY : UNDEFINED;
     }
 
     public String getInlinedName(Access access) {
-        if(access == Access.ALLOW) {
-            return "Granted";
-        } else if(access == Access.UNDEFINED) {
-            return "Undefined";
-        } else if(access == Access.DENY) {
-            return "Denied";
+        switch (access) {
+            case ALLOW:
+                return "Granted";
+            case DENY:
+                return "Denied";
+            case UNDEFINED:
+                return "Undefined";
         }
         return null;
     }

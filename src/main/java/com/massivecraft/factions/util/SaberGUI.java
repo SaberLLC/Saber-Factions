@@ -55,17 +55,18 @@ public abstract class SaberGUI {
 
     public void openGUI(JavaPlugin owning) {
         this.owningPluginName = owning.getName();
-        SaberGUI currentlyActive = activeGUIs.get(this.player.getUniqueId());
+        UUID id = this.player.getUniqueId();
+        SaberGUI currentlyActive = activeGUIs.get(id);
         if (currentlyActive != null) {
-            Bukkit.getLogger().info("Closing already open menu first!");
+            /*Bukkit.getLogger().info("Closing already open menu first!");*/
             Bukkit.getScheduler().scheduleSyncDelayedTask(owning, () -> {
                 currentlyActive.close();
-                activeGUIs.put(this.player.getUniqueId(), this);
+                activeGUIs.put(id, this);
                 this.redraw();
                 this.player.openInventory(this.inventory);
             });
         } else {
-            activeGUIs.put(this.player.getUniqueId(), this);
+            activeGUIs.put(id, this);
             this.redraw();
             this.player.openInventory(this.inventory);
         }
