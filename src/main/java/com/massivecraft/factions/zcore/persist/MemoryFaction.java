@@ -1,6 +1,13 @@
 package com.massivecraft.factions.zcore.persist;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.FLocation;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
@@ -31,6 +38,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 public abstract class  MemoryFaction implements Faction, EconomyParticipator {
     public HashMap<Integer, String> rules = new HashMap<>();
@@ -818,12 +826,7 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
             return Access.UNDEFINED;
         }
 
-        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
-        if (accessMap != null && accessMap.containsKey(permissableAction)) {
-            return accessMap.get(permissableAction);
-        }
-
-        return Access.UNDEFINED;
+        return accessOrElse(permissable, permissableAction, Access.UNDEFINED);
     }
 
     /**
@@ -839,18 +842,25 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
 
         Permissable perm = player.getFaction() == this ? player.getRole() : player.getFaction().getRelationTo(this);
 
-        Map<PermissableAction, Access> accessMap = permissions.get(perm);
-        if (accessMap != null && accessMap.containsKey(permissableAction)) return accessMap.get(permissableAction);
+        return accessOrElse(perm, permissableAction, Access.UNDEFINED);
+    }
 
-        return Access.UNDEFINED;
+    private Access accessOrElse(Permissable permissable, PermissableAction permissableAction, Access orElse) {
+        Map<PermissableAction, Access> accessMap = this.permissions.get(permissable);
+        if (accessMap != null) {
+            Access access = accessMap.get(permissableAction);
+            if (access != null) {
+                return access;
+            }
+        }
+        return orElse;
     }
 
     public boolean setPermission(Permissable permissable, PermissableAction permissableAction, Access access) {
         if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(permissableAction)) {
             return false;
         }
-        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
-        if (accessMap == null) accessMap = new HashMap<>();
+        Map<PermissableAction, Access> accessMap = permissions.computeIfAbsent(permissable, p -> new HashMap<>(PermissableAction.VALUES.length));
         accessMap.put(permissableAction, access);
         return true;
     }
@@ -860,21 +870,17 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
             fPlayer.msg(TL.COMMAND_PERM_LOCKED);
             return false;
         }
-        Map<PermissableAction, Access> accessMap = permissions.get(permissable);
-        if (accessMap == null) accessMap = new HashMap<>();
+        Map<PermissableAction, Access> accessMap = permissions.computeIfAbsent(permissable, p -> new HashMap<>(PermissableAction.VALUES.length));
         accessMap.put(permissableAction, access);
         return true;
     }
 
     public void resetPerms() {
         if (!this.isSystemFaction()) {
-            Logger.print("Resetting permissions for Faction: " + this.tag, Logger.PrefixType.WARNING);
-
             permissions.clear();
 
             // First populate a map with undefined as the permission for each action.
-            Map<PermissableAction, Access> freshMap = new HashMap<>(PermissableAction.VALUES.length);
-            for (PermissableAction action : PermissableAction.VALUES) freshMap.put(action, Access.DENY);
+            Map<PermissableAction, Access> freshMap = PermissableAction.fromPredicated(permissableAction -> false);
 
             // Put the map in there for each relation.
             for (Relation relation : Relation.VALUES) {
@@ -891,29 +897,17 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void setDefaultPerms() {
-        Map<PermissableAction, Access> defaultMap = new HashMap<>(PermissableAction.VALUES.length);
-        for (PermissableAction action : PermissableAction.VALUES) {
-            defaultMap.put(action, Access.DENY);
-        }
+        upsertPermissions(Relation.VALUES, ignored -> ignored == Relation.MEMBER);
+        upsertPermissions(Role.VALUES, ignored -> ignored == Role.LEADER);
+    }
 
-        for (Relation rel : Relation.VALUES) {
-            if (rel == Relation.MEMBER) {
+    private void upsertPermissions(Permissable[] values, Predicate<Permissable> ignored) {
+        for (Permissable value : values) {
+            if (ignored.test(value)) {
                 continue;
             }
-            permissions.computeIfAbsent(rel, r -> {
-                DefaultPermissions perms = Conf.defaultFactionPermissions.get(r.name());
-                return perms != null ? PermissableAction.fromDefaults(perms) : new HashMap<>(defaultMap);
-            });
-        }
-
-        for (Role role : Role.VALUES) {
-            if (role == Role.LEADER) {
-                continue;
-            }
-            permissions.computeIfAbsent(role, r -> {
-                DefaultPermissions perms = Conf.defaultFactionPermissions.get(r.name());
-                return perms != null ? PermissableAction.fromDefaults(perms) : new HashMap<>(defaultMap);
-            });
+            DefaultPermissions defaultPermissions = Conf.defaultFactionPermissions.get(value.name());
+            this.permissions.compute(value, (p, permissableActionAccessMap) -> defaultPermissions != null ? PermissableAction.fromDefaults(defaultPermissions) : PermissableAction.fromPredicated(permissableAction -> false));
         }
     }
 
@@ -1011,11 +1005,7 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void setRelationWish(Faction otherFaction, Relation relation) {
-        if (relation == Relation.NEUTRAL) {
-            this.relationWish.remove(otherFaction.getId());
-        } else {
-            this.relationWish.put(otherFaction.getId(), relation);
-        }
+        this.relationWish.compute(otherFaction.getId(), (s, r) -> relation == Relation.NEUTRAL ? null : relation);
     }
 
     public int getRelationCount(Relation relation) {
@@ -1176,9 +1166,10 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
-        ArrayList<FPlayer> ret = new ArrayList<>();
-        if (!this.isNormal()) return ret;
-
+        if (!this.isNormal()){
+            return new ArrayList<>(0);
+        }
+        ArrayList<FPlayer> ret = new ArrayList<>(this.fplayers.size());
         for (FPlayer fplayer : fplayers)
             if (fplayer.getRole() == role) ret.add(fplayer);
         return ret;
@@ -1186,8 +1177,10 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
 
 
     public ArrayList<Player> getOnlinePlayers() {
+        if (isPlayerFreeType()) {
+            return new ArrayList<>(0);
+        }
         ArrayList<Player> ret = new ArrayList<>();
-        if (this.isPlayerFreeType()) return ret;
         for (Player player : Bukkit.getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
             if (fplayer.getFaction() == this && !fplayer.isAlt()) {
