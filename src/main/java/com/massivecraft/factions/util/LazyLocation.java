@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import javax.annotation.Nullable;
 import java.io.Serializable;
 
 /*
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * yet when an object of this class is created, only when the Location is first accessed.
  */
 
-public class LazyLocation implements Serializable {
+public final class LazyLocation implements Serializable {
     private static final long serialVersionUID = -6049901271320963314L;
     private transient Location location = null;
     private String worldName;
@@ -22,14 +23,14 @@ public class LazyLocation implements Serializable {
     private float yaw;
 
     public LazyLocation(Location loc) {
-        setLocation(loc);
+        this(loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
-    public LazyLocation(final String worldName, final double x, final double y, final double z) {
+    public LazyLocation(String worldName, double x, double y, double z) {
         this(worldName, x, y, z, 0, 0);
     }
 
-    public LazyLocation(final String worldName, final double x, final double y, final double z, final float yaw, final float pitch) {
+    public LazyLocation(String worldName, double x, double y, double z, float yaw, float pitch) {
         this.worldName = worldName;
         this.x = x;
         this.y = y;
@@ -37,16 +38,21 @@ public class LazyLocation implements Serializable {
         this.yaw = yaw;
         this.pitch = pitch;
     }
-
-    // This returns the actual Location
-    public final Location getLocation() {
-        // make sure Location is initialized before returning it
-        initLocation();
-        return location;
+    
+    @Nullable
+    public Location getLocation() {
+        if (this.location == null) {
+            World world = Bukkit.getWorld(this.worldName);
+            if (world == null) {
+                return null;
+            }
+            this.location = new Location(world, this.x, this.y, this.z, this.yaw, this.pitch);
+        }
+        return this.location;
     }
 
     // change the Location
-    public final void setLocation(Location loc) {
+    public void setLocation(Location loc) {
         this.location = loc;
         this.worldName = loc.getWorld().getName();
         this.x = loc.getX();
@@ -56,46 +62,27 @@ public class LazyLocation implements Serializable {
         this.pitch = loc.getPitch();
     }
 
-
-    // This initializes the Location
-    private void initLocation() {
-        // if location is already initialized, simply return
-        if (location != null) {
-            return;
-        }
-
-        // get World; hopefully it's initialized at this point
-        World world = Bukkit.getWorld(worldName);
-        if (world == null) {
-            return;
-        }
-
-        // store the Location for future calls, and pass it on
-        location = new Location(world, x, y, z, yaw, pitch);
+    public String getWorldName() {
+        return this.worldName;
     }
 
-
-    public final String getWorldName() {
-        return worldName;
+    public double getX() {
+        return this.x;
     }
 
-    public final double getX() {
-        return x;
+    public double getY() {
+        return this.y;
     }
 
-    public final double getY() {
-        return y;
+    public double getZ() {
+        return this.z;
     }
 
-    public final double getZ() {
-        return z;
+    public double getPitch() {
+        return this.pitch;
     }
 
-    public final double getPitch() {
-        return pitch;
-    }
-
-    public final double getYaw() {
-        return yaw;
+    public double getYaw() {
+        return this.yaw;
     }
 }

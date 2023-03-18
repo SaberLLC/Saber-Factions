@@ -11,9 +11,11 @@ import org.bukkit.Bukkit;
 
 import java.io.*;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class JSONUtils {
-    public static Gson gson = (new GsonBuilder()).enableComplexMapKeySerialization().create();
+    public static final Gson gson = (new GsonBuilder()).enableComplexMapKeySerialization().create();
 
     public JSONUtils() {
     }
@@ -77,10 +79,9 @@ public class JSONUtils {
 
     public static boolean saveJSONToFile(File f, Object toSave, Object token, Gson gson) throws IOException {
         String str = toJSON(toSave, token, gson);
-        FileWriter writer = new FileWriter(f);
-        writer.write(str);
-        writer.flush();
-        writer.close();
+        try (Writer writer = Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8)) {
+            writer.write(str);
+        }
         return true;
     }
 

@@ -12,21 +12,20 @@ import com.massivecraft.factions.zcore.persist.MemoryFactions;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.FastUUID;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;
-import org.bukkit.Bukkit;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 
 public class JSONFactions extends MemoryFactions {
     // Info on how to persist
-    private final File file;
+    private final Path path;
 
     public JSONFactions() {
-        this.file = new File(FactionsPlugin.getInstance().getDataFolder(), "factions.json");
+        this.path = FactionsPlugin.getInstance().getDataFolder().toPath().resolve("factions.json");
         this.nextId = 1;
     }
 
@@ -34,8 +33,8 @@ public class JSONFactions extends MemoryFactions {
     // CONSTRUCTORS
     // -------------------------------------------- //
 
-    public File getFile() {
-        return file;
+    public Path getPath() {
+        return path;
     }
 
     public void forceSave() {
@@ -47,34 +46,32 @@ public class JSONFactions extends MemoryFactions {
         for (Faction entity : this.factions.values())
             entitiesThatShouldBeSaved.put(entity.getId(), (JSONFaction) entity);
 
-        saveCore(file, entitiesThatShouldBeSaved, sync);
+        saveCore(path, entitiesThatShouldBeSaved, sync);
     }
 
-    private boolean saveCore(File target, Map<String, JSONFaction> entities, boolean sync) {
+    private boolean saveCore(Path target, Map<String, JSONFaction> entities, boolean sync) {
         return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(entities), sync);
     }
 
     public void load(Consumer<Boolean> success) {
-        this.loadCore(data -> {
-            super.load(aBoolean -> {
-                if (data == null){
-                    Logger.print("No player factions loaded. Fresh start?", Logger.PrefixType.DEFAULT);
-                    success.accept(true);
-                    return;
-                }
-                this.factions.putAll(data);
-                Logger.print("Loaded " + factions.size() + " Factions", Logger.PrefixType.DEFAULT);
+        this.loadCore(data -> super.load(aBoolean -> {
+            if (data == null){
+                Logger.print("No player factions loaded. Fresh start?", Logger.PrefixType.DEFAULT);
                 success.accept(true);
-            });
-        });
+                return;
+            }
+            this.factions.putAll(data);
+            Logger.print("Loaded " + factions.size() + " Factions", Logger.PrefixType.DEFAULT);
+            success.accept(true);
+        }));
     }
 
     private void loadCore(Consumer<Map<String, JSONFaction>> finish) {
-        if (!this.file.exists()) {
+        if (Files.notExists(this.path)) {
             finish.accept(new HashMap<>());
             return;
         }
-        String content = DiscUtil.readCatch(this.file);
+        String content = DiscUtil.readCatch(this.path);
         if (content == null) {
             finish.accept(null);
             return;
@@ -104,20 +101,20 @@ public class JSONFactions extends MemoryFactions {
 
         if (needsUpdate > 0) {
             // We've got some converting to do!
-            Bukkit.getLogger().log(Level.INFO, "Factions is now updating factions.json");
+            Logger.print("Factions is now updating factions.json");
 
             // First we'll make a backup, because god forbid anybody heed a
             // warning
-            File file = new File(this.file.getParentFile(), "factions.json.old");
+            Path backup = this.path.getParent().resolve("factions.json.old");
             try {
-                file.createNewFile();
+                Files.createFile(backup);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            saveCore(file, data, true);
-            Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + file.getAbsolutePath());
+            saveCore(backup, data, true);
+            Logger.print("Backed up your old data at " + backup.toAbsolutePath());
 
-            Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + needsUpdate + " old player names to UUID. This may take a while.");
+            Logger.print("Please wait while Factions converts " + needsUpdate + " old player names to UUID. This may take a while.");
 
             List<String> toMigrate = new ArrayList<>(needsUpdate);
 
@@ -167,9 +164,9 @@ public class JSONFactions extends MemoryFactions {
                                 faction.getInvites().add(uuid);
                             }
                         }
-                        Bukkit.getLogger().log(Level.INFO, "Done converting factions.json to UUID.");
+                        Logger.print("Done converting factions.json to UUID.");
 
-                        saveCore(this.file, data, true);
+                        saveCore(this.path, data, true);
                         finish.accept(data);
                     });
             return;
@@ -178,15 +175,12 @@ public class JSONFactions extends MemoryFactions {
     }
 
     private Set<String> whichKeysNeedMigration(Set<String> keys) {
-        HashSet<String> list = new HashSet<>();
+        HashSet<String> list = new HashSet<>(keys.size());
         for (String value : keys) {
-            if (!value.matches("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")) {
-                // Not a valid UUID..
-                if (value.matches("[a-zA-Z0-9_]{2,16}")) {
-                    // Valid playername, we'll mark this as one for conversion
-                    // to UUID
-                    list.add(value);
-                }
+            if (!JSONFPlayers.PATTERN_UUID.matcher(value).matches()) {
+               if (JSONFPlayers.PATTERN_USERNAME.matcher(value).matches()) {
+                   list.add(value);
+               }
             }
         }
         return list;

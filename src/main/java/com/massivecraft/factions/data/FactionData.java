@@ -1,6 +1,5 @@
 package com.massivecraft.factions.data;
 
-import com.google.common.collect.Maps;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.data.helpers.FactionDataHelper;
@@ -10,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,15 +18,15 @@ import java.util.Map;
  */
 public class FactionData {
 
-    private String factionID;
-    private String factionTag;
+    private final String factionID;
+    private final String factionTag;
     private Map<String, Object> map;
     private boolean saving;
 
     public FactionData(Faction faction) {
         this.factionTag = faction.getTag();
         this.factionID = faction.getId();
-        this.map = Maps.newHashMap();
+        this.map = new HashMap<>();
         this.saving = false;
     }
 
@@ -77,14 +77,7 @@ public class FactionData {
     }
 
     public Object getValue(String key) {
-
-        if (this.map.containsKey(key)) {
-            return this.map.get(key);
-        }
-
-        Object value = getConfiguration().get(key);
-        this.map.put(key, value);
-        return value;
+        return this.map.computeIfAbsent(key, k -> getConfiguration().get(k));
     }
 
 
@@ -113,12 +106,11 @@ public class FactionData {
             Object value = entry.getValue();
             configuration.set(key, value);
         }
-
         try {
             configuration.save(file);
-            this.saving = false;
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
             this.saving = false;
         }
     }
@@ -141,4 +133,13 @@ public class FactionData {
         this.remove();
     }
 
+    @Override
+    public String toString() {
+        return "FactionData{" +
+                "factionID='" + factionID + '\'' +
+                ", factionTag='" + factionTag + '\'' +
+                ", map=" + map +
+                ", saving=" + saving +
+                '}';
+    }
 }

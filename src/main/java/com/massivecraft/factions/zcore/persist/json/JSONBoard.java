@@ -8,8 +8,9 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.MemoryBoard;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 
-import java.io.File;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,7 +18,7 @@ import java.util.TreeMap;
 
 
 public class JSONBoard extends MemoryBoard {
-    private static transient File file = new File(FactionsPlugin.getInstance().getDataFolder(), "board.json");
+    private static transient Path file = FactionsPlugin.getInstance().getDataFolder().toPath().resolve("board.json");
 
     // -------------------------------------------- //
     // Persistance
@@ -61,7 +62,7 @@ public class JSONBoard extends MemoryBoard {
     public boolean load() {
         Logger.print("Loading board from disk", Logger.PrefixType.DEFAULT);
 
-        if (!file.exists()) {
+        if (Files.notExists(file)) {
             Logger.print("No board to load from disk. Creating new file.", Logger.PrefixType.DEFAULT);
             forceSave();
             return true;

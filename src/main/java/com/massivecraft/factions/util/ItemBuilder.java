@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBuilder {
-    private ItemMeta meta;
-    private ItemStack item;
+    private final ItemMeta meta;
+    private final ItemStack item;
 
     public ItemBuilder(ItemStack item) {
         this.item = item;

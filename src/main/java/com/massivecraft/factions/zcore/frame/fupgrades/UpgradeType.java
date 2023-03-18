@@ -38,8 +38,8 @@ public enum UpgradeType {
     SPAWNERCHUNKS("SpawnerChunks", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.SpawnerChunks.Max-Level")),
     REINFORCEDARMOR("Armor", FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Armor.Max-Level"));
 
-    private String id;
-    private int maxLevel;
+    private final String id;
+    private final int maxLevel;
 
     UpgradeType(String id, int maxLevel) {
         this.id = id;

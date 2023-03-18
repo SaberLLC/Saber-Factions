@@ -4,17 +4,19 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.MPlugin;
 
-import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 // TODO: Give better name and place to differentiate from the entity-orm-ish system in "com.massivecraft.core.persist".
 
 public class Persist {
 
-    private MPlugin p;
+    private final MPlugin plugin;
 
-    public Persist(MPlugin p) {
-        this.p = p;
+    public Persist(MPlugin plugin) {
+        this.plugin = plugin;
     }
 
     // ------------------------------------------------------------ //
@@ -37,97 +39,101 @@ public class Persist {
     // GET FILE - In which file would we like to store this object?
     // ------------------------------------------------------------ //
 
-    public File getFile(String name) {
-        return new File(p.getDataFolder(), name + ".json");
+    public Path getPath(String name) {
+        return plugin.getDataFolder().toPath().resolve(name + ".json");
     }
 
-    public File getFile(Class<?> clazz) {
-        return getFile(getName(clazz));
+    public Path getPath(Class<?> clazz) {
+        return getPath(getName(clazz));
     }
 
-    public File getFile(Object obj) {
-        return getFile(getName(obj));
+    public Path getPath(Object obj) {
+        return getPath(getName(obj));
     }
 
-    public File getFile(Type type) {
-        return getFile(getName(type));
+    public Path getPath(Type type) {
+        return getPath(getName(type));
     }
 
 
     // NICE WRAPPERS
 
     public <T> T loadOrSaveDefault(T def, Class<T> clazz) {
-        return loadOrSaveDefault(def, clazz, getFile(clazz));
+        return loadOrSaveDefault(def, clazz, getPath(clazz));
     }
 
     public <T> T loadOrSaveDefault(T def, Class<T> clazz, String name) {
-        return loadOrSaveDefault(def, clazz, getFile(name));
+        return loadOrSaveDefault(def, clazz, getPath(name));
     }
 
-    public <T> T loadOrSaveDefault(T def, Class<T> clazz, File file) {
-        if (!file.exists()) {
-            Logger.print("Creating default: " + file, Logger.PrefixType.DEFAULT);
-            this.save(def, file);
+    public <T> T loadOrSaveDefault(T def, Class<T> clazz, Path path) {
+        if (Files.notExists(path)) {
+            Logger.print("Creating default: " + path, Logger.PrefixType.DEFAULT);
+            this.save(def, path);
             return def;
         }
 
-        T loaded = this.load(clazz, file);
+        T loaded = this.load(clazz, path);
 
         if (loaded == null) {
-            Logger.print("Using default as I failed to load: " + file, Logger.PrefixType.WARNING);
+            Logger.print("Using default as I failed to load: " + path, Logger.PrefixType.WARNING);
 
             // backup bad file, so user can attempt to recover their changes from it
-            File backup = new File(file.getPath() + "_bad");
-            if (backup.exists()) {
-                backup.delete();
+            Path backup = path.resolve( "_bad");
+            try {
+                Files.deleteIfExists(backup);
+            } catch (IOException exception) {
+                exception.printStackTrace();
             }
             Logger.print("Backing up copy of bad file to: " + backup, Logger.PrefixType.WARNING);
-            file.renameTo(backup);
-
+            try {
+                Files.move(path, backup);
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
             return def;
         }
-
         return loaded;
     }
 
     // SAVE
 
     public boolean save(Object instance) {
-        return save(instance, getFile(instance));
+        return save(instance, getPath(instance));
     }
 
     public boolean save(Object instance, String name) {
-        return save(instance, getFile(name));
+        return save(instance, getPath(name));
     }
 
-    public boolean save(Object instance, File file) {
-        return DiscUtil.writeCatch(file, FactionsPlugin.getInstance().getGson().toJson(instance), false);
+    public boolean save(Object instance, Path path) {
+        return DiscUtil.writeCatch(path, FactionsPlugin.getInstance().getGson().toJson(instance), false);
     }
 
     public boolean saveSync(Object instance) {
-        return saveSync(instance, getFile(instance));
+        return saveSync(instance, getPath(instance));
     }
 
     public boolean saveSync(Object instance, String name) {
-        return saveSync(instance, getFile(name));
+        return saveSync(instance, getPath(name));
     }
 
-    public boolean saveSync(Object instance, File file) {
-        return DiscUtil.writeCatch(file, FactionsPlugin.getInstance().getGson().toJson(instance), true);
+    public boolean saveSync(Object instance, Path path) {
+        return DiscUtil.writeCatch(path, FactionsPlugin.getInstance().getGson().toJson(instance), true);
     }
 
     // LOAD BY CLASS
 
     public <T> T load(Class<T> clazz) {
-        return load(clazz, getFile(clazz));
+        return load(clazz, getPath(clazz));
     }
 
     public <T> T load(Class<T> clazz, String name) {
-        return load(clazz, getFile(name));
+        return load(clazz, getPath(name));
     }
 
-    public <T> T load(Class<T> clazz, File file) {
-        String content = DiscUtil.readCatch(file);
+    public <T> T load(Class<T> clazz, Path path) {
+        String content = DiscUtil.readCatch(path);
         if (content == null) {
             return null;
         }
@@ -145,12 +151,12 @@ public class Persist {
     // LOAD BY TYPE
     @SuppressWarnings("unchecked")
     public <T> T load(Type typeOfT, String name) {
-        return load(typeOfT, getFile(name));
+        return load(typeOfT, getPath(name));
     }
 
     @SuppressWarnings("unchecked")
-    public <T> T load(Type typeOfT, File file) {
-        String content = DiscUtil.readCatch(file);
+    public <T> T load(Type typeOfT, Path path) {
+        String content = DiscUtil.readCatch(path);
         if (content == null) {
             return null;
         }
