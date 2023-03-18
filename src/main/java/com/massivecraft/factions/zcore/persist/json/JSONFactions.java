@@ -175,7 +175,7 @@ public class JSONFactions extends MemoryFactions {
     }
 
     private Set<String> whichKeysNeedMigration(Set<String> keys) {
-        HashSet<String> list = new HashSet<>(keys.size());
+        Set<String> list = new HashSet<>(keys.size());
         for (String value : keys) {
             if (!JSONFPlayers.PATTERN_UUID.matcher(value).matches()) {
                if (JSONFPlayers.PATTERN_USERNAME.matcher(value).matches()) {
@@ -191,7 +191,9 @@ public class JSONFactions extends MemoryFactions {
     // -------------------------------------------- //
 
     public String getNextId() {
-        while (!isIdFree(this.nextId)) this.nextId += 1;
+        while (!isIdFree(this.nextId)) {
+            this.nextId++;
+        }
         return Integer.toString(this.nextId);
     }
 
@@ -211,8 +213,7 @@ public class JSONFactions extends MemoryFactions {
         try {
             int idAsInt = Integer.parseInt(id);
             this.updateNextIdForId(idAsInt);
-        } catch (Exception ignored) {
-        }
+        } catch (NumberFormatException ignored) {}
     }
 
     @Override
