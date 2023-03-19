@@ -228,13 +228,13 @@ public abstract class MemoryBoard extends Board {
 
         FLocation startingOffset = FLocation.wrap(flocation.getWorldName(), length / 2, height / 2);
 
-        Map<String, Character> territories = new HashMap<>(Conf.mapWidth * fPlayer.getMapHeight());
         int charIdx = 0;
 
         if (Conf.showMapFactionKey) {
             height--;
         }
 
+        Map<String, Character> territories = new HashMap<>(length * height, 1.02f);
         List<Component> compass = AsciiCompass.getAsciiCompass(inDegrees);
 
         for (int y = 0; y < height; y++) {
@@ -273,8 +273,8 @@ public abstract class MemoryBoard extends Board {
                             .color(TextUtil.kyoriColor(Conf.colorWilderness));
 
                     if (Conf.enableClickToClaim && fPlayer.getPlayer().hasPermission(Permission.CLAIMAT.node)) {
-                        land.hoverEvent(TL.CLAIM_CLICK_TO_CLAIM.toFormattedComponent(found.getX(), found.getZ()))
-                                .clickEvent(ClickEvent.runCommand(String.format("/f claimat %s %d %d", flocation.getWorldName(), found.getX(), found.getZ())));
+                        land.hoverEvent(TL.CLAIM_CLICK_TO_CLAIM.toFormattedComponent(found.getIntX(), found.getIntZ()))
+                                .clickEvent(ClickEvent.runCommand("/f claimat " + flocation.getWorldName() + " " + found.getIntX() + " " + found.getIntZ()));
                     } else {
                         land.hoverEvent(HoverEvent.showText(TL.WILDERNESS.toComponent()));
                     }
@@ -304,7 +304,7 @@ public abstract class MemoryBoard extends Board {
                 }
                 Relation relation = fPlayer.getRelationTo(factionFound);
                 if (fPlayer.getFactionId().equals(factionFound.getId()) || relation.isAtLeast(Relation.ALLY) || (Conf.showNeutralFactionsOnMap && relation == Relation.NEUTRAL) || (Conf.showEnemyFactionsOnMap && relation == Relation.ENEMY) || (Conf.showTrucesFactionsOnMap && relation == Relation.TRUCE)) {
-                    int incremented = charIdx++;
+                    int incremented = ++charIdx;
                     char assigned = territories.computeIfAbsent(factionFound.getTag(), c -> Conf.mapKeyChrs[(incremented) % Conf.mapKeyChrs.length]);
 
                     if (Conf.userSpawnerChunkSystem && factionFound.getSpawnerChunks().contains(found.toFastChunk())) {
@@ -346,9 +346,11 @@ public abstract class MemoryBoard extends Board {
         if (Conf.showMapFactionKey && !territories.isEmpty()) {
             TextComponent.Builder territory = Component.text();
             for (Entry<String, Character> entry : territories.entrySet()) {
+                String key = entry.getKey();
+                Character character = entry.getValue();
                 territory.append(
-                        Component.text(entry.getValue() + ": " + entry.getKey() + " ")
-                                .color(TextUtil.kyoriColor(fPlayer.getRelationTo(Factions.getInstance().getByTag(entry.getKey())).getColor()))
+                        Component.text(character + ": " + key + " ")
+                                .color(TextUtil.kyoriColor(fPlayer.getRelationTo(Factions.getInstance().getByTag(key)).getColor()))
                 );
             }
             lines.add(territory.build());
@@ -419,7 +421,7 @@ public abstract class MemoryBoard extends Board {
     public static class MemoryBoardMap extends HashMap<FLocation, String> {
         private static final long serialVersionUID = -6689617828610585368L;
 
-        Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
+        private final Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
 
         @Override
         public String put(FLocation floc, String factionId) {
@@ -436,10 +438,8 @@ public abstract class MemoryBoard extends Board {
         public String remove(Object key) {
             String result = super.remove(key);
             if (result != null) {
-                FLocation floc = (FLocation) key;
-                factionToLandMap.remove(result, floc);
+                factionToLandMap.remove(result, key);
             }
-
             return result;
         }
 
@@ -465,10 +465,8 @@ public abstract class MemoryBoard extends Board {
                         fPlayer.msg(TL.WARMUPS_CANCELLED);
                     }
                 }
-                for (FLocation floc : fLocations) {
-                    super.remove(floc);
-                }
             }
+            super.keySet().removeAll(fLocations);
         }
     }
 }

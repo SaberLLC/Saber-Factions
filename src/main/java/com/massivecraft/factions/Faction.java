@@ -295,6 +295,7 @@ public interface Faction extends EconomyParticipator {
 
     void resetPerms();
 
+    @Deprecated
     void setDefaultPerms();
 
     void disband(Player disbander);

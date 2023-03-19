@@ -12,8 +12,9 @@ import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.UUIDFetcher;
 import org.bukkit.Bukkit;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
@@ -22,17 +23,17 @@ import java.util.regex.Pattern;
 
 public class JSONFPlayers extends MemoryFPlayers {
     // Info on how to persist
-    private File file;
+    private Path path;
 
-    private static final Pattern PATTERN_UUID = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
-    private static final Pattern PATTERN_USERNAME = Pattern.compile("[a-zA-Z0-9_]{2,16}");
+    static final Pattern PATTERN_UUID = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}");
+    static final Pattern PATTERN_USERNAME = Pattern.compile("[a-zA-Z0-9_]{2,16}");
 
     public JSONFPlayers() {
-        file = new File(FactionsPlugin.getInstance().getDataFolder(), "players.json");
+        this.path = FactionsPlugin.getInstance().getDataFolder().toPath().resolve("players.json");
     }
 
     public void convertFrom(MemoryFPlayers old) {
-        this.fPlayers.putAll(Maps.transformValues(old.fPlayers, arg0 -> new JSONFPlayer((MemoryFPlayer) arg0)));
+        this.fPlayers.putAll(Maps.transformValues(old.fPlayers, fPlayer -> new JSONFPlayer((MemoryFPlayer) fPlayer)));
         forceSave();
         FPlayers.instance = this;
     }
@@ -48,10 +49,10 @@ public class JSONFPlayers extends MemoryFPlayers {
                 entitiesThatShouldBeSaved.put(entity.getId(), (JSONFPlayer) entity);
             }
         }
-        saveCore(file, entitiesThatShouldBeSaved, sync);
+        saveCore(path, entitiesThatShouldBeSaved, sync);
     }
 
-    private boolean saveCore(File target, Map<String, JSONFPlayer> data, boolean sync) {
+    private boolean saveCore(Path target, Map<String, JSONFPlayer> data, boolean sync) {
         return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(data), sync);
     }
 
@@ -70,12 +71,12 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     private void loadCore(Consumer<Map<String, JSONFPlayer>> finish) {
-        if (!file.exists()) {
+        if (Files.notExists(path)) {
             finish.accept(new HashMap<>());
             return;
         }
 
-        String content = DiscUtil.readCatch(file);
+        String content = DiscUtil.readCatch(path);
         if (content == null) {
             finish.accept(null);
             return;
@@ -108,14 +109,14 @@ public class JSONFPlayers extends MemoryFPlayers {
 
         Bukkit.getLogger().log(Level.INFO, "Factions is now updating players.json");
 
-        File backup = new File(file.getParentFile(), "players.json.old");
+        Path backup = path.getParent().resolve("players.json.old");
         try {
-            backup.createNewFile();
+            Files.createFile(backup);
         } catch (IOException e) {
             e.printStackTrace();
         }
         saveCore(backup, data, true);
-        Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + backup.getAbsolutePath());
+        Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + backup.toAbsolutePath());
 
         Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
 
@@ -123,7 +124,7 @@ public class JSONFPlayers extends MemoryFPlayers {
 
         session.fetch()
                 .whenComplete((response, throwable) -> {
-                    Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> {
+                    Runnable action = () -> {
                         if (throwable != null) {
                             finish.accept(new HashMap<>());
                             throwable.printStackTrace();
@@ -151,22 +152,21 @@ public class JSONFPlayers extends MemoryFPlayers {
                             Bukkit.getLogger().log(Level.INFO, "While converting, invalid names were removed from storage.");
                             Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + String.join(", ", invalidList));
                         }
-                        saveCore(file, data, true);
+                        saveCore(path, data, true);
                         Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
 
                         finish.accept(data);
-                    });
+                    };
+                    if (Bukkit.isPrimaryThread()) {
+                        action.run();
+                    } else {
+                        Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), action);
+                    }
                 });
     }
 
     private boolean doesKeyNeedMigration(String key) {
-        if (!PATTERN_UUID.matcher(key).matches()) {
-            // Not a valid UUID..
-            // Valid playername, we'll mark this as one for conversion
-            // to UUID
-            return isKeyValid(key);
-        }
-        return false;
+        return !PATTERN_UUID.matcher(key).matches() && isKeyValid(key);
     }
 
     private boolean isKeyValid(String key) {
@@ -174,8 +174,8 @@ public class JSONFPlayers extends MemoryFPlayers {
     }
 
     @Override
-    public FPlayer generateFPlayer(String id) {
-        FPlayer player = new JSONFPlayer(id);
+    public JSONFPlayer generateFPlayer(String id) {
+        JSONFPlayer player = new JSONFPlayer(id);
         this.fPlayers.put(player.getId(), player);
         return player;
     }

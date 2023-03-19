@@ -158,7 +158,7 @@ public final class TextUtil {
         return replaceTags(str, TAGS);
     }
 
-    public static final transient Pattern PATTERN_TAG = Pattern.compile("<([a-zA-Z0-9_]*)>");
+    public static final Pattern PATTERN_TAG = Pattern.compile("<([a-zA-Z0-9_]*)>");
 
     public static String replaceTags(String str, Map<String, String> tags) {
         StringBuffer ret = new StringBuffer();

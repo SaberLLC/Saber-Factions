@@ -59,7 +59,7 @@ public class UUIDFetcher {
             int requests = FastMath.ceil(size / PROFILES_PER_REQUEST);
 
             return CompletableFuture.supplyAsync(() -> {
-                Map<String, UUID> uuidMap = new HashMap<>();
+                Map<String, UUID> uuids = new HashMap<>();
                 for (int i = 0; i < requests; i++) {
                     HttpURLConnection connection = null;
                     try {
@@ -84,7 +84,7 @@ public class UUIDFetcher {
                         String id = (String) jsonProfile.get("id");
                         String name = (String) jsonProfile.get("name");
                         UUID uuid = UUIDFetcher.getInstance().getUUID(id);
-                        uuidMap.put(name, uuid);
+                        uuids.put(name, uuid);
                     }
                     if (i != requests - 1) {
                         try {
@@ -94,7 +94,7 @@ public class UUIDFetcher {
                         }
                     }
                 }
-                return uuidMap;
+                return uuids;
             }, THREAD_POOL);
         }
 

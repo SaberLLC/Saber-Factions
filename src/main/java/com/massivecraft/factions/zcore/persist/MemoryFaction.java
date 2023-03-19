@@ -879,26 +879,14 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
         if (!this.isSystemFaction()) {
             permissions.clear();
 
-            // First populate a map with undefined as the permission for each action.
-            Map<PermissableAction, Access> freshMap = PermissableAction.fromPredicated(permissableAction -> false);
-
-            // Put the map in there for each relation.
-            for (Relation relation : Relation.VALUES) {
-                if (relation == Relation.MEMBER) continue;
-                permissions.put(relation, new HashMap<>(freshMap));
-            }
-
-            // And each role.
-            for (Role role : Role.VALUES) {
-                if (role == Role.LEADER) continue;
-                permissions.put(role, new HashMap<>(freshMap));
-            }
+            upsertPermissions(Relation.VALUES, ignored -> ignored == Relation.MEMBER);
+            upsertPermissions(Role.VALUES, ignored -> ignored == Role.LEADER);
         }
     }
 
+    @Deprecated
     public void setDefaultPerms() {
-        upsertPermissions(Relation.VALUES, ignored -> ignored == Relation.MEMBER);
-        upsertPermissions(Role.VALUES, ignored -> ignored == Role.LEADER);
+        resetPerms();
     }
 
     private void upsertPermissions(Permissable[] values, Predicate<Permissable> ignored) {
@@ -907,7 +895,7 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
                 continue;
             }
             DefaultPermissions defaultPermissions = Conf.defaultFactionPermissions.get(value.name());
-            this.permissions.compute(value, (p, permissableActionAccessMap) -> defaultPermissions != null ? PermissableAction.fromDefaults(defaultPermissions) : PermissableAction.fromPredicated(permissableAction -> false));
+            this.permissions.put(value, defaultPermissions != null && Conf.useCustomDefaultPermissions ? PermissableAction.fromDefaults(defaultPermissions) : PermissableAction.fromPredicated(permissableAction -> false));
         }
     }
 

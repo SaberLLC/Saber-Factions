@@ -9,8 +9,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.List;
 
 public class CornerTask extends BukkitRunnable {
-    private FPlayer fPlayer;
-    private List<FLocation> surrounding;
+    private final FPlayer fPlayer;
+    private final List<FLocation> surrounding;
     private int amount;
 
     public CornerTask(FPlayer fPlayer, List<FLocation> surrounding) {

@@ -182,7 +182,7 @@ public abstract class MCommand<T extends MPlugin> {
 
         if (args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.errorOnToManyArgs) {
             if (sender != null) {
-                // Get the to many string slice
+                // Get the too much string slice
                 List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
                 msg(TL.GENERIC_ARGS_TOOMANY, TextUtil.implode(theToMany, " "));
                 sender.sendMessage(this.getUseageTemplate());

@@ -6,6 +6,10 @@ import org.bukkit.ChatColor;
 
 public class Logger {
 
+    public static void print(String message) {
+        print(message, PrefixType.DEFAULT);
+    }
+
     public static void print(String message, PrefixType type) {
         FactionsPlugin.getInstance().getServer().getConsoleSender().sendMessage(type.getPrefix() + message);
     }

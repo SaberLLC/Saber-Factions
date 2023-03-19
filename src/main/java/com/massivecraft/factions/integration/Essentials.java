@@ -11,18 +11,19 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import javax.annotation.Nullable;
+
 public class Essentials {
 
     private static IEssentials essentials;
 
+    @Nullable
     public static IEssentials setup() {
         Plugin ess = Bukkit.getPluginManager().getPlugin("Essentials");
         if (ess != null) {
             essentials = (IEssentials) ess;
-            return essentials;
         }
-
-        return null;
+        return essentials;
     }
 
     // return false if feature is disabled or Essentials isn't available

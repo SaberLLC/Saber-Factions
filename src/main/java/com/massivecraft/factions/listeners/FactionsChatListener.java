@@ -7,6 +7,7 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -149,34 +150,34 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         String eventFormat = event.getFormat();
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
-        int InsertIndex;
+        int insertIndex;
 
         if (!Conf.chatTagReplaceString.isEmpty() && eventFormat.contains(Conf.chatTagReplaceString)) {
             // we're using the "replace" method of inserting the faction tags
-            if (eventFormat.contains("[FACTION_TITLE]")) {
-                eventFormat = eventFormat.replace("[FACTION_TITLE]", me.getTitle());
-            }
+            eventFormat = TextUtil.replace(TextUtil.replace(
+                    eventFormat,
+                    "[FACTION_TITLE]", me.getTitle()),
+                    Conf.chatTagReplaceString, "");
 
-            InsertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
-            eventFormat = eventFormat.replace(Conf.chatTagReplaceString, "");
+            insertIndex = eventFormat.indexOf(Conf.chatTagReplaceString);
             Conf.chatTagPadAfter = false;
             Conf.chatTagPadBefore = false;
         } else if (!Conf.chatTagInsertAfterString.isEmpty() && eventFormat.contains(Conf.chatTagInsertAfterString)) {
             // we're using the "insert after string" method
-            InsertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
+            insertIndex = eventFormat.indexOf(Conf.chatTagInsertAfterString) + Conf.chatTagInsertAfterString.length();
         } else if (!Conf.chatTagInsertBeforeString.isEmpty() && eventFormat.contains(Conf.chatTagInsertBeforeString)) {
             // we're using the "insert before string" method
-            InsertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
+            insertIndex = eventFormat.indexOf(Conf.chatTagInsertBeforeString);
         } else {
             // we'll fall back to using the index place method
-            InsertIndex = Conf.chatTagInsertIndex;
-            if (InsertIndex > eventFormat.length()) {
+            insertIndex = Conf.chatTagInsertIndex;
+            if (insertIndex > eventFormat.length()) {
                 return;
             }
         }
 
-        String formatStart = eventFormat.substring(0, InsertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
-        String formatEnd = ((Conf.chatTagPadAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(InsertIndex);
+        String formatStart = eventFormat.substring(0, insertIndex) + ((Conf.chatTagPadBefore && !me.getChatTag().isEmpty()) ? " " : "");
+        String formatEnd = ((Conf.chatTagPadAfter && !me.getChatTag().isEmpty()) ? " " : "") + eventFormat.substring(insertIndex);
 
         String nonColoredMsgFormat = formatStart + me.getChatTag().trim() + formatEnd;
 
