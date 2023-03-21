@@ -1,4 +1,5 @@
 name: Factions
+prefix: SaberFactions
 version: ${project.version}
 api-version: 1.13
 main: com.massivecraft.factions.FactionsPlugin

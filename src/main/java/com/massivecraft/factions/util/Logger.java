@@ -23,20 +23,18 @@ public class Logger {
         DEBUG(ChatColor.YELLOW + "DEBUG: "),
         WARNING(ChatColor.RED + "WARNING: "),
         NONE(""),
-        DEFAULT(ChatColor.GOLD + "[SaberFactions] "),
+        DEFAULT(ChatColor.GOLD.toString()),
         HEADLINE(ChatColor.GOLD + ""),
         FAILED(ChatColor.RED + "FAILED: ");
 
         private final String prefix;
 
         PrefixType(String prefix) {
-            this.prefix = prefix;
+            this.prefix = ChatColor.GOLD + "[SaberFactions] " + prefix;
         }
 
         public String getPrefix() {
             return this.prefix;
         }
-
     }
-
 }

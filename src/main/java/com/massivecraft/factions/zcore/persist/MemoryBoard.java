@@ -184,14 +184,18 @@ public abstract class MemoryBoard extends Board {
             String id = entry.getValue();
 
             String worldName = location.getWorldName();
-            if (Bukkit.getWorld(worldName) == null) {
-                Logger.print("No world '" + worldName + "' found. Removed or not loaded?");
+            if (Bukkit.getWorld(worldName) != null) {
+                if (Factions.getInstance().isValidFactionId(id)) {
+                    continue;
+                }
+            } else {
+                if (!Conf.removeInvalidClaims) {
+                    Logger.print("No world '" + worldName + "' found. Removed or not loaded?. Enable removeInvalidClaims in Conf.json to remove these claims.");
+                    continue;
+                }
             }
-
-            if (!Factions.getInstance().isValidFactionId(id)) {
-                Logger.print("Board cleaner removed " + id + " from " + location, Logger.PrefixType.DEFAULT);
-                iter.remove();
-            }
+            Logger.print("Board cleaner removed " + id + " from " + location);
+            iter.remove();
         }
     }
 
