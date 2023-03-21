@@ -4,7 +4,7 @@ api-version: 1.13
 main: com.massivecraft.factions.FactionsPlugin
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, DroppingAnvil, Driftay, SaberDev, Callum, Atilt]
 depend: [Vault]
-softdepend: [CoreProtect, PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop, WildStacker]
+softdepend: [CoreProtect, PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, FactionsTop, WildStacker, Multiverse-Core]
 commands:
   factions:
     description: Reference command for Factions.

@@ -122,7 +122,7 @@ public final class FLocation implements Serializable {
     }
 
     public String getWorldName() {
-        return getWorld().getName();
+        return this.world;
     }
 
     @Deprecated
