@@ -3,11 +3,12 @@ package com.massivecraft.factions.zcore.util;
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -25,7 +26,7 @@ public class DiscUtil {
             Files.createFile(path);
         }
 
-        try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(path, StandardOpenOption.WRITE))) {
+        try (OutputStream out = new BufferedOutputStream(Files.newOutputStream(path))) {
             out.write(bytes);
         }
     }
