@@ -101,6 +101,7 @@ public class Conf {
     public static boolean removePlayerDataWhenBanned = true;
     public static String removePlayerDataWhenBannedReason = "Banned by admin.";
     public static boolean autoLeaveDeleteFPlayerData = true; // Let them just remove player from Faction.
+    public static boolean removeInvalidClaims = false;
     public static boolean worldGuardChecking = false;
     public static boolean worldGuardBuildPriority = false;
 

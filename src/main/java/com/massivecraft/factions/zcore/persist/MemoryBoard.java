@@ -14,6 +14,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import com.massivecraft.factions.util.CC;
 import org.bukkit.World;
@@ -175,13 +176,26 @@ public abstract class MemoryBoard extends Board {
     }
 
     public void clean() {
-        Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
+        Iterator<Entry<FLocation, String>> iter = this.flocationIds.entrySet().iterator();
         while (iter.hasNext()) {
             Entry<FLocation, String> entry = iter.next();
-            if (!Factions.getInstance().isValidFactionId(entry.getValue())) {
-                Logger.print("Board cleaner removed " + entry.getValue() + " from " + entry.getKey(), Logger.PrefixType.DEFAULT);
-                iter.remove();
+
+            FLocation location = entry.getKey();
+            String id = entry.getValue();
+
+            String worldName = location.getWorldName();
+            if (Bukkit.getWorld(worldName) != null) {
+                if (Factions.getInstance().isValidFactionId(id)) {
+                    continue;
+                }
+            } else {
+                if (!Conf.removeInvalidClaims) {
+                    Logger.print("No world '" + worldName + "' found. Removed or not loaded?. Enable removeInvalidClaims in Conf.json to remove these claims.");
+                    continue;
+                }
             }
+            Logger.print("Board cleaner removed " + id + " from " + location);
+            iter.remove();
         }
     }
 
