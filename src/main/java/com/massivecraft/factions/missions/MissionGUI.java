@@ -54,13 +54,13 @@ public class MissionGUI implements FactionGUI {
         //onClose is called every time a related inventory instance is closed.
         //This means that every time we use openInventory to show the inventory once again
         //the inventory technically closes and opens up once again, triggering this event each time.
-        if (cancelTask != null && !cancelTask.isCancelled())
+        if (cancelTask != null)
             cancelTask.cancel();
         //Because of what's mentioned before, we check on the next tick if the inventory that the player
         //is currently viewing is the same as this GUI, if it isn't, the updateItemsTask gets cancelled
         cancelTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
             if(player.getOpenInventory().getTopInventory() != inventory)
-                if (updateItemsTask != null && !updateItemsTask.isCancelled())
+                if (updateItemsTask != null)
                     updateItemsTask.cancel();
         }, 1);
     }
