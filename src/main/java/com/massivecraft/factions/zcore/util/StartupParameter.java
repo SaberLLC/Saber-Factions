@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.util;
 
-import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.cryptomorin.xseries.XMaterial;
 import com.lunarclient.bukkitapi.LunarClientAPI;
 import com.massivecraft.factions.*;
@@ -22,7 +21,7 @@ import com.massivecraft.factions.zcore.file.impl.FileManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
-import pw.saber.corex.CoreX;
+import org.saberdev.corex.CoreX;
 
 import java.io.File;
 import java.io.IOException;
