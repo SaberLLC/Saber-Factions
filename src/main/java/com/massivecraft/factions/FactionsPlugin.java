@@ -430,6 +430,4 @@ public class FactionsPlugin extends MPlugin {
     public FactionsPlayerListener getFactionsPlayerListener() {
         return this.factionsPlayerListener;
     }
-
-
 }

@@ -16,10 +16,7 @@ public abstract class FPlayers {
     }
 
     private static FPlayers getFPlayersImpl() {
-        if (Conf.backEnd == Conf.Backend.JSON) {
-            return new JSONFPlayers();
-        }
-        return null;
+        return new JSONFPlayers();
     }
 
     public abstract void clean();

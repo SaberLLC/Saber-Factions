@@ -11,20 +11,22 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class MiscUtil {
 
     /// TODO create tag whitelist!!
-    public static final String substanceString = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    public static final int[] substanceChars = new int[256];
-
-    static {
-        for (char c : substanceString.toCharArray()) {
-            substanceChars[Character.toLowerCase(c)] = 1;
+    private static final Lazy<Set<Character>> VALID_CHARACTERS = Lazy.of(() -> {
+        char[] found = Conf.allowedFactionNameCharacters.toCharArray();
+        Set<Character> allowed = new HashSet<>(found.length);
+        for (char c : found) {
+            allowed.add(c);
         }
-    }
+        return allowed;
+    });
 
     public static String formatDifference(long time) {
         if (time == 0L) {
@@ -87,7 +89,7 @@ public class MiscUtil {
 
         for (int i = 0; i < len; i++) {
             char c = str.charAt(i);
-            if (substanceChars[Character.toLowerCase(c)] == 1) {
+            if (VALID_CHARACTERS.get().contains(c)) {
                 ret.append(c);
             }
         }
@@ -113,7 +115,7 @@ public class MiscUtil {
         }
 
         for (char c : str.toCharArray()) {
-            if (substanceChars[Character.toLowerCase(c)] != 1) {
+            if (!VALID_CHARACTERS.get().contains(c)) {
                 errors.add(TextUtil.parse(TL.GENERIC_FACTIONTAG_ALPHANUMERIC.toString(), c));
                 break;
             }
