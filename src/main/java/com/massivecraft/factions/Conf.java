@@ -72,6 +72,7 @@ public class Conf {
     public static transient boolean chatTagHandledByAnotherPlugin = false;
     public static boolean chatTagRelationColored = true;
     public static List<String> blacklistedFactionNames = new ArrayList<>();
+    public static String allowedFactionNameCharacters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     public static String chatTagReplaceString = "[FACTION]";
     public static String chatTagInsertAfterString = "";
     public static String chatTagInsertBeforeString = "";

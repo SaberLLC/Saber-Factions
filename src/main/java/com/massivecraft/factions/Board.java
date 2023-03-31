@@ -12,11 +12,7 @@ public abstract class Board {
     protected static Board instance = getBoardImpl();
 
     private static Board getBoardImpl() {
-        switch (Conf.backEnd) {
-            case JSON:
-                return new JSONBoard();
-        }
-        return null;
+        return new JSONBoard();
     }
 
     public static Board getInstance() {

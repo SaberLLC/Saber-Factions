@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -80,7 +81,7 @@ public enum PlayerTag implements Tag {
             return text;
         }
         String result = this.function.apply(player);
-        return result == null ? null : text.replace(this.tag, result);
+        return result == null ? null : TextUtil.replace(text, this.tag, result);
     }
 
     public static final PlayerTag[] VALUES = PlayerTag.values();
