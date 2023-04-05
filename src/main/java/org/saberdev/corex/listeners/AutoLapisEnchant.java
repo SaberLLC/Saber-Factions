@@ -1,6 +1,7 @@
 package org.saberdev.corex.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -23,8 +24,8 @@ import java.util.List;
 public class AutoLapisEnchant implements Listener {
 
     private final List<EnchantingInventory> inventories = new ArrayList<>();
-    private final ItemStack lapis = new ItemBuilder(XMaterial.LAPIS_LAZULI.parseItem()).amount(64).build();
 
+    private final ItemStack lapis = XMaterial.LAPIS_LAZULI.parseItem();
 
     @EventHandler
     public void openInventoryEvent(InventoryOpenEvent e) {

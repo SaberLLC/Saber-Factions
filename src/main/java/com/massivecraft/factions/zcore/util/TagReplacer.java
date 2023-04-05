@@ -58,6 +58,7 @@ public enum TagReplacer {
     PLAYER_NAME(TagType.FACTION, "{name}"),
     HOME_WORLD(TagType.FACTION, "{world}"),
     RAIDABLE(TagType.FACTION, "{raidable}"),
+    RAW_TAG(TagType.FACTION, "{faction-tag}"),
     PEACEFUL(TagType.FACTION, "{peaceful}"),
     PERMANENT(TagType.FACTION, "permanent"), // no braces needed
     TIME_LEFT(TagType.FACTION, "{time-left}"),
@@ -200,6 +201,8 @@ public enum TagReplacer {
                     return String.valueOf(fp.getKills());
                 case PLAYER_DEATHS:
                     return String.valueOf(fp.getDeaths());
+                case RAW_TAG:
+                    return ChatColor.stripColor(fac.getTag());
                 default:
             }
         }
@@ -284,6 +287,8 @@ public enum TagReplacer {
                 return String.valueOf(fac.getStrikes());
             case FACTION_POINTS:
                 return String.valueOf(fac.getPoints());
+            case RAW_TAG:
+                return ChatColor.stripColor(fac.getTag());
             default:
         }
         return null;

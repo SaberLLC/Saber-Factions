@@ -10,6 +10,7 @@
 #<-------------------------------------->NOTES<-------------------------------------->#
 
 Features:
+
   Anti-Boat-Placement: false #Denies Players From Placing Boats
   Anti-Minecart-Placement: false #Denies Players From Placing Minecarts
   Anti-Vehicle-Teleport: true #Denies Block Phasing Through Exiting Vehicles!
@@ -28,6 +29,7 @@ Features:
   Anti-Book-Quill-Crash: true #Denies Players to be able to do book and quill crashes
   Anti-Chicken: true #Denies chickens from being hatched from eggs and spawning via eggs
   Anti-Dupe: true #Multiple general dupe patches, more to be added soon
+  Anti-Natural-Spawn-Faction: false #Denies Natural Mob Spawn ONLY IN Faction Territory (Warzone and Safezone Excluded)
   Anti-Nether-Roof: true #Denies Pistons breaching the nether roof.
   Anti-Piston-Glitch: false #Denies Automatic Piston Farms
   Anti-Wilderness-Spawner: false #Denies Spawners From Spawning in Wilderness

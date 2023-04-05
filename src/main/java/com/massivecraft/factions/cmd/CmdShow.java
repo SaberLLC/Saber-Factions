@@ -25,7 +25,7 @@ public class CmdShow extends FCommand {
     public CmdShow() {
         this.aliases.addAll(Aliases.show_show);
 
-        // add defaults to /f show in case config doesnt have it
+        // add defaults to /f show in case config doesn't have it
         defaults.add("&8&m--------------&7 &8<&e{faction}&8> &8&m--------------");
         defaults.add("&4* &cOwner: &f{leader}");
         defaults.add("&4* &cDescription: &f{description}");
@@ -70,7 +70,7 @@ public class CmdShow extends FCommand {
         }
 
         List<String> show = FactionsPlugin.getInstance().getConfig().getStringList("show");
-        if (show == null || show.isEmpty())
+        if (show.isEmpty())
             show = defaults;
 
         if (!faction.isNormal()) {

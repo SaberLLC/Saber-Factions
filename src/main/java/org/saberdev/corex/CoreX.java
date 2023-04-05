@@ -161,6 +161,10 @@ public class CoreX {
             initializedFeatures.add(new AntiChicken());
         }
 
+        if (handleFeatureRegistry("Anti-Natural-Spawn-Faction")) {
+            initializedFeatures.add(new AntiChicken());
+        }
+
         //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {
         //    FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ChunkBusterListener(), FactionsPlugin.getInstance());
         //    FactionsPlugin.getInstance().getCommand("chunkbuster").setExecutor(new CommandChunkbuster());
