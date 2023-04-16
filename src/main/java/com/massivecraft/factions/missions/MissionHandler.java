@@ -1,5 +1,6 @@
 package com.massivecraft.factions.missions;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
@@ -103,7 +104,7 @@ public class MissionHandler implements Listener {
         }
         handleMissionsOfType(fPlayer, MissionType.MINE, (mission, section) -> {
             String item = section.getString("Mission.Item", matchAnythingRegex);
-            return event.getBlock().getType().toString().matches(item) ? 1 : -1;
+            return XMaterial.matchXMaterial(event.getBlock().getType()).toString().matches(item) ? 1 : -1;
         });
     }
 
@@ -116,7 +117,7 @@ public class MissionHandler implements Listener {
 
         handleMissionsOfType(fPlayer, MissionType.PLACE, (mission, section) -> {
             String item = section.getString("Mission.Item", matchAnythingRegex);
-            return event.getBlockPlaced().getType().toString().matches(item) ? 1 : -1;
+            return XMaterial.matchXMaterial(event.getBlockPlaced().getType()).toString().matches(item) ? 1 : -1;
         });
     }
 
