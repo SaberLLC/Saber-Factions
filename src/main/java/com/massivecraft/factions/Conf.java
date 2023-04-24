@@ -57,6 +57,7 @@ public class Conf {
     // when faction membership hits this limit, players will no longer be able to join using /f join; default is 0, no limit
     public static int factionMemberLimit = 30;
     public static int factionAltMemberLimit = 10;
+    public static int totalAllowedFactionsOnServer = 0;
     // what faction ID to start new players in when they first join the server; default is 0, "no faction"
     public static String newPlayerStartingFactionID = "0";
     public static boolean showMapFactionKey = true;

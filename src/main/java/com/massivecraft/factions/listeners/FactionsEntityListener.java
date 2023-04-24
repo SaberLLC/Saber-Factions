@@ -62,6 +62,7 @@ public class FactionsEntityListener implements Listener {
                 powerLossEvent.setMessage(TL.PLAYER_POWER_NOLOSS_WARZONE.toString());
                 powerLossEvent.setCancelled(true);
             }
+
             if ((Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoPowerLoss.contains(player.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) {
                 powerLossEvent.setMessage(TL.PLAYER_POWER_LOSS_WARZONE.toString());
             }

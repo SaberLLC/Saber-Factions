@@ -342,6 +342,8 @@ public enum TL {
     COMMAND_CREATE_ALREADY_RESERVED("&c&l[!] &7This faction tag has already been reserved!"),
     COMMAND_CREATE_MUSTLEAVE("&c&l[!]&7 You must &cleave &7your &ccurrent faction &7first."),
     COMMAND_CREATE_INUSE("&c&l[!]&7 That tag is &calready &7in use."),
+    COMMAND_CREATE_OVER_LIMIT("&c&l[!]&7 &cThe amount of factions allowed on the server has already been reached!"),
+
     COMMAND_CREATE_TOCREATE("to create a new faction"),
     COMMAND_CREATE_FORCREATE("for creating a new faction"),
     COMMAND_CREATE_ERROR("&c&l[!]&7 There was an &cinternal error&7 while trying to create your faction. &cPlease try again&7."),

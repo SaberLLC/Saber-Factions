@@ -134,7 +134,7 @@ public class MissionHandler implements Listener {
             if (event.getCaught() instanceof Item) {
                 String item = section.getString("Mission.Item", matchAnythingRegex);
                 Item caughtItem = (Item) event.getCaught();
-                return caughtItem.getItemStack().getType().toString().matches(item) ? 1 : -1;
+                return XMaterial.matchXMaterial(caughtItem.getItemStack().getType()).toString().matches(item) ? 1 : -1;
             }
             return -1;
         });
@@ -149,7 +149,7 @@ public class MissionHandler implements Listener {
 
         handleMissionsOfType(fPlayer, MissionType.ENCHANT, (mission, section) -> {
             String item = section.getString("Mission.Item", matchAnythingRegex);
-            return e.getItem().getType().toString().matches(item) ? 1 : -1;
+            return XMaterial.matchXMaterial(e.getItem().getType()).toString().matches(item) ? 1 : -1;
         });
     }
 
@@ -162,7 +162,7 @@ public class MissionHandler implements Listener {
 
         handleMissionsOfType(fPlayer, MissionType.CONSUME, (mission, section) -> {
             String item = section.getString("Mission.Item", matchAnythingRegex);
-            return e.getItem().getType().toString().matches(item) ? 1 : -1;
+            return XMaterial.matchXMaterial(e.getItem().getType()).toString().matches(item) ? 1 : -1;
         });
     }
 

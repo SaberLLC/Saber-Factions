@@ -300,7 +300,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setAutoLeave(boolean willLeave) {
         this.willAutoLeave = willLeave;
-        Logger.print(name + " set autoLeave to " + willLeave, Logger.PrefixType.DEFAULT);
+        //Logger.print(name + " set autoLeave to " + willLeave, Logger.PrefixType.DEFAULT);
     }
 
     public long getLastFrostwalkerMessage() {
@@ -1000,7 +1000,6 @@ public abstract class MemoryFPlayer implements FPlayer {
             if (Conf.logLandUnclaims) {
                 Logger.print(TL.COMMAND_UNCLAIM_LOG.format(this.getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
             }
-
             return true;
         }
 

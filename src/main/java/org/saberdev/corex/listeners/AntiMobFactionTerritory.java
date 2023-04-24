@@ -18,10 +18,11 @@ public class AntiMobFactionTerritory implements Listener {
     public void onCreatureSpawn(CreatureSpawnEvent e) {
         FLocation fLocation = FLocation.wrap(e.getLocation());
         Faction faction = Board.getInstance().getFactionAt(fLocation);
+        if (!faction.isNormal()) return;
 
-        if(!faction.isNormal()) return;
-
-        e.setCancelled(true);
+        if(e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.NATURAL) {
+            e.setCancelled(true);
+        }
     }
 
 }

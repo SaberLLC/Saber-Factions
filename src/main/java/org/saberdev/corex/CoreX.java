@@ -162,7 +162,7 @@ public class CoreX {
         }
 
         if (handleFeatureRegistry("Anti-Natural-Spawn-Faction")) {
-            initializedFeatures.add(new AntiChicken());
+            initializedFeatures.add(new AntiMobFactionTerritory());
         }
 
         //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {

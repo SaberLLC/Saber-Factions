@@ -69,6 +69,12 @@ public class CmdCreate extends FCommand {
             return;
         }
 
+        //Check for total factions on the server.
+        if(Factions.getInstance().getAllFactions().size() >= Conf.totalAllowedFactionsOnServer && Conf.totalAllowedFactionsOnServer > 0 && !context.fPlayer.isAdminBypassing()) {
+            context.msg(TL.COMMAND_CREATE_OVER_LIMIT);
+            return;
+        }
+
         // trigger the faction creation event (cancellable)
         FactionCreateEvent createEvent = new FactionCreateEvent(context.player, tag);
         Bukkit.getServer().getPluginManager().callEvent(createEvent);
@@ -97,7 +103,7 @@ public class CmdCreate extends FCommand {
         // trigger the faction join event for the creator
         FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.CREATE);
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);
-        // join event cannot be cancelled or you'll have an empty faction
+        // join event cannot be cancelled, or you'll have an empty faction
         // finish setting up the FPlayer
         context.fPlayer.setFaction(faction, false);
         // We should consider adding the role just AFTER joining the faction.

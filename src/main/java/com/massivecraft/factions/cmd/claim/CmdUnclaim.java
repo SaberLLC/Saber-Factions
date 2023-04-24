@@ -43,7 +43,7 @@ public class CmdUnclaim extends FCommand {
 
         if (radius < 2) {
             // single chunk
-            context.fPlayer.attemptUnclaim(forFaction, FLocation.wrap(context.player), true);
+            context.fPlayer.attemptUnclaim(forFaction, FLocation.wrap(context.fPlayer), true);
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(context.sender, false)) {
@@ -51,7 +51,7 @@ public class CmdUnclaim extends FCommand {
                 return;
             }
 
-            new SpiralTask(FLocation.wrap(context.player), radius) {
+            new SpiralTask(FLocation.wrap(context.fPlayer), radius) {
                 private final int limit = Conf.radiusClaimFailureLimit - 1;
                 private int failCount = 0;
 
