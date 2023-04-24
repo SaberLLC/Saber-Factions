@@ -70,7 +70,7 @@ public class CmdCreate extends FCommand {
         }
 
         //Check for total factions on the server.
-        if(Factions.getInstance().getAllFactions().size() >= Conf.totalAllowedFactionsOnServer && Conf.totalAllowedFactionsOnServer > 0 && !context.fPlayer.isAdminBypassing()) {
+        if(Factions.getInstance().getAllNormalFactions().size() >= Conf.totalAllowedFactionsOnServer && Conf.totalAllowedFactionsOnServer > 0 && !context.fPlayer.isAdminBypassing()) {
             context.msg(TL.COMMAND_CREATE_OVER_LIMIT);
             return;
         }
