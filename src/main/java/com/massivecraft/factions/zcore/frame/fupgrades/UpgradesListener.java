@@ -17,6 +17,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -112,23 +113,26 @@ public class UpgradesListener implements Listener {
     }
 
     private void growCrop(BlockGrowEvent e) {
-        if (e.getBlock().getType().equals(XMaterial.WHEAT.parseMaterial())) {
+        Material type = e.getBlock().getType();
+        if (type.equals(XMaterial.WHEAT.parseMaterial()) || type.equals(XMaterial.BEETROOTS.parseMaterial()) || type.equals(XMaterial.CARROTS.parseMaterial()) || type.equals(XMaterial.POTATOES.parseMaterial()) || type.equals(XMaterial.NETHER_WART.parseMaterial()) || type.equals(XMaterial.COCOA.parseMaterial())) {
             e.setCancelled(true);
-            Crops c = new Crops(CropState.RIPE);
-            BlockState bs = e.getBlock().getState();
-            bs.setData(c);
-            bs.update();
-        }
-        Block below = e.getBlock().getLocation().subtract(0.0, 1.0, 0.0).getBlock();
-        if (below.getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
-            Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
-            if (above.getType() == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
-                above.setType(XMaterial.SUGAR_CANE.parseMaterial());
-            }
-        } else if (below.getType() == Material.CACTUS) {
-            Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
-            if (above.getType() == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
-                above.setType(Material.CACTUS);
+            Ageable ageable = (Ageable) e.getBlock().getBlockData();
+            int newAge = ageable.getAge() + 2;
+            if (newAge > ageable.getMaximumAge()) newAge = ageable.getMaximumAge();
+            ageable.setAge(newAge);
+            e.getBlock().setBlockData(ageable);
+        } else {
+            Block below = e.getBlock().getLocation().subtract(0.0, 1.0, 0.0).getBlock();
+            if (below.getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
+                Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
+                if (above.getType() == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
+                    above.setType(XMaterial.SUGAR_CANE.parseMaterial());
+                }
+            } else if (below.getType() == Material.CACTUS) {
+                Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
+                if (above.getType() == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
+                    above.setType(Material.CACTUS);
+                }
             }
         }
     }
