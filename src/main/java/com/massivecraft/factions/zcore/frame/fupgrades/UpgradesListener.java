@@ -31,6 +31,8 @@ import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.material.Crops;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -43,6 +45,8 @@ public class UpgradesListener implements Listener {
 
     private WildStackerProvider wildStackerProvider;
     private RoseStackerProvider roseStackerProvider;
+    private HashSet<Material> cropMaterials;
+    private Material sugarCaneMaterial;
 
     public void init() {
         Plugin wildStacker = Bukkit.getPluginManager().getPlugin("WildStacker");
@@ -114,23 +118,27 @@ public class UpgradesListener implements Listener {
 
     private void growCrop(BlockGrowEvent e) {
         Material type = e.getBlock().getType();
-        if (type.equals(XMaterial.WHEAT.parseMaterial()) || type.equals(XMaterial.BEETROOTS.parseMaterial()) || type.equals(XMaterial.CARROTS.parseMaterial()) || type.equals(XMaterial.POTATOES.parseMaterial()) || type.equals(XMaterial.NETHER_WART.parseMaterial()) || type.equals(XMaterial.COCOA.parseMaterial())) {
+        if (cropMaterials == null) {
+            cropMaterials = new HashSet<>(Arrays.asList(XMaterial.WHEAT.parseMaterial(), XMaterial.BEETROOTS.parseMaterial(), XMaterial.CARROTS.parseMaterial(), XMaterial.POTATOES.parseMaterial(), XMaterial.NETHER_WART.parseMaterial(), XMaterial.COCOA.parseMaterial()));
+            sugarCaneMaterial = XMaterial.SUGAR_CANE.parseMaterial();
+        }
+        if (cropMaterials.contains(type)) { // ageable single block crop (wheat, beetroot, etc.)
             e.setCancelled(true);
             Ageable ageable = (Ageable) e.getBlock().getBlockData();
-            int newAge = ageable.getAge() + 2;
-            if (newAge > ageable.getMaximumAge()) newAge = ageable.getMaximumAge();
+            int newAge = Math.min(ageable.getAge() + 2, ageable.getMaximumAge());
             ageable.setAge(newAge);
             e.getBlock().setBlockData(ageable);
-        } else {
-            Block below = e.getBlock().getLocation().subtract(0.0, 1.0, 0.0).getBlock();
-            if (below.getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
-                Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
-                if (above.getType() == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
-                    above.setType(XMaterial.SUGAR_CANE.parseMaterial());
+        } else { // multi-block crop (cactus, sugarcane)
+            Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
+            Block below = e.getBlock().getLocation().add(0.0, -1.0, 0.0).getBlock();
+            Material aboveType = above.getType();
+            Material belowType = below.getType();
+            if (belowType == sugarCaneMaterial) {
+                if (aboveType == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
+                    above.setType(sugarCaneMaterial);
                 }
-            } else if (below.getType() == Material.CACTUS) {
-                Block above = e.getBlock().getLocation().add(0.0, 1.0, 0.0).getBlock();
-                if (above.getType() == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
+            } else if (belowType == Material.CACTUS) {
+                if (aboveType == Material.AIR && above.getLocation().add(0.0, -2.0, 0.0).getBlock().getType() != Material.AIR) {
                     above.setType(Material.CACTUS);
                 }
             }
