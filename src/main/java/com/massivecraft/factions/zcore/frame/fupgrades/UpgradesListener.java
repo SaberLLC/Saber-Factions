@@ -12,10 +12,8 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.frame.fupgrades.provider.stackers.RoseStackerProvider;
 import com.massivecraft.factions.zcore.frame.fupgrades.provider.stackers.WildStackerProvider;
 import org.bukkit.Bukkit;
-import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Entity;
@@ -28,12 +26,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.material.Crops;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class UpgradesListener implements Listener {
@@ -45,8 +40,9 @@ public class UpgradesListener implements Listener {
 
     private WildStackerProvider wildStackerProvider;
     private RoseStackerProvider roseStackerProvider;
-    private HashSet<Material> cropMaterials;
+
     private Material sugarCaneMaterial;
+    private Set<Material> cropMaterials;
 
     public void init() {
         Plugin wildStacker = Bukkit.getPluginManager().getPlugin("WildStacker");
@@ -119,7 +115,14 @@ public class UpgradesListener implements Listener {
     private void growCrop(BlockGrowEvent e) {
         Material type = e.getBlock().getType();
         if (cropMaterials == null) {
-            cropMaterials = new HashSet<>(Arrays.asList(XMaterial.WHEAT.parseMaterial(), XMaterial.BEETROOTS.parseMaterial(), XMaterial.CARROTS.parseMaterial(), XMaterial.POTATOES.parseMaterial(), XMaterial.NETHER_WART.parseMaterial(), XMaterial.COCOA.parseMaterial()));
+            cropMaterials = EnumSet.of(
+                    XMaterial.WHEAT.parseMaterial(),
+                    XMaterial.BEETROOT.parseMaterial(),
+                    XMaterial.CARROTS.parseMaterial(),
+                    XMaterial.POTATOES.parseMaterial(),
+                    XMaterial.NETHER_WART.parseMaterial(),
+                    XMaterial.COCOA.parseMaterial()
+            );
             sugarCaneMaterial = XMaterial.SUGAR_CANE.parseMaterial();
         }
         if (cropMaterials.contains(type)) { // ageable single block crop (wheat, beetroot, etc.)
