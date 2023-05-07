@@ -62,10 +62,11 @@ public class FactionWarpsFrame extends SaberGUI {
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) || player.isAdminBypassing())
             return true;
         double cost = FactionsPlugin.getInstance().getConfig().getDouble("warp-cost.warp", 5);
+
         if (!Econ.shouldBeUsed() || cost == 0.0 || player.isAdminBypassing()) return true;
 
         if (Conf.bankEnabled && Conf.bankFactionPaysCosts && player.hasFaction()) {
-            return Econ.withdrawFactionBalance(player.getFaction(), -cost);
+            return Econ.withdrawFactionBalance(player.getFaction(), cost);
         } else {
             return Econ.modifyMoney(player, -cost, TL.COMMAND_FWARP_TOWARP.toString(), TL.COMMAND_FWARP_FORWARPING.toString());
         }

@@ -6,6 +6,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -24,7 +25,7 @@ public class CmdDescription extends FCommand {
 
         this.requirements = new CommandRequirements.Builder(Permission.DESCRIPTION)
                 .playerOnly()
-                .memberOnly()
+                .withRole(Role.MODERATOR)
                 .noErrorOnManyArgs()
                 .build();
     }
@@ -38,7 +39,7 @@ public class CmdDescription extends FCommand {
             }
 
             // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
-            // And replace all the % because it messes with string formatting and this is easy way around that.
+            // And replace all the % because it messes with string formatting and this is a easy way around that.
             String desc = TextUtil.implode(context.args, " ").replaceAll("%", "").replaceAll("(&([a-f0-9klmnor]))", "& $2");
             context.faction.setDescription(desc);
             Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.FDESC_EDIT, context.fPlayer.getName(), desc));

@@ -3,6 +3,7 @@ package com.massivecraft.factions.addon;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.util.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
@@ -31,7 +32,7 @@ public abstract class FactionsAddon {
     private void enableAddon() {
         onEnable();
 
-        if(!listenersToRegister().isEmpty()) {
+        if (!listenersToRegister().isEmpty()) {
             for (Listener listener : listenersToRegister()) {
                 if (listener != null) {
                     plugin.getServer().getPluginManager().registerEvents(listener, plugin);
@@ -39,7 +40,7 @@ public abstract class FactionsAddon {
             }
         }
 
-        if(!fCommandsToRegister().isEmpty()) {
+        if (!fCommandsToRegister().isEmpty()) {
             for (FCommand fCommand : fCommandsToRegister()) {
                 if (fCommand != null) {
                     plugin.cmdBase.addSubCommand(fCommand);
@@ -47,11 +48,15 @@ public abstract class FactionsAddon {
             }
         }
 
-        Logger.print("Addon: " + getAddonName() + " loaded successfully!" , Logger.PrefixType.DEFAULT);
+
+        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+            handleAllFactionDataManagement();
+            Logger.print("Addon: " + getAddonName() + " loaded successfully!", Logger.PrefixType.DEFAULT);
+        }, 100);
     }
 
     public void disableAddon() {
-        if(!listenersToRegister().isEmpty()) {
+        if (!listenersToRegister().isEmpty()) {
             for (Listener listener : listenersToRegister()) {
                 HandlerList.unregisterAll(listener);
             }
@@ -74,18 +79,24 @@ public abstract class FactionsAddon {
 
     /**
      * Method to define listeners you want to register. You don't need to register them.
+     *
      * @return Set of listeners you want to register.
      */
     public abstract Set<Listener> listenersToRegister();
 
     /**
      * Method to define FCommands you want to register. You don't need to register them.
+     *
      * @return Set of commands you want to register.
      */
     public abstract Set<FCommand> fCommandsToRegister();
 
+
+    public abstract void handleAllFactionDataManagement();
+
     /**
      * Addon name
+     *
      * @return Addon name.
      */
     public String getAddonName() {

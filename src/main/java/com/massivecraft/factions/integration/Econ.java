@@ -329,7 +329,7 @@ public class Econ {
             // The player might not have enough.
             if (ep instanceof Faction) {
                 if (hasAtLeast(ep, -delta, null)) {
-                    withdrawFactionBalance((Faction) ep, -delta);
+                    withdrawFactionBalance((Faction) ep, delta);
                     if (forDoingThis != null && !forDoingThis.isEmpty())
                         ep.msg("<h>%s<i> lost <h>%s<i> %s.", You, moneyString(-delta), forDoingThis);
                     return true;
