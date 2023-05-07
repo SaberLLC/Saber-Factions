@@ -71,27 +71,53 @@ public final class AddonManager {
         }
     }
 
+
     private Class<?> getAddonMainClass(final File addon) {
+        //Setup this so we go deep into directories
         Class<?> mainClass = null;
-        try (URLClassLoader child = new URLClassLoader(
-                new URL[]{addon.toURI().toURL()},
-                this.getClass().getClassLoader());
-             JarFile jarFile = new JarFile(addon)) {
+        try {
+            URLClassLoader child = new URLClassLoader(
+                    new URL[]{addon.toURI().toURL()},
+                    this.getClass().getClassLoader());
+            JarFile jarFile = new JarFile(addon);
             Enumeration<JarEntry> allEntries = jarFile.entries();
-            while (allEntries.hasMoreElements() && mainClass == null) {
+            while (allEntries.hasMoreElements()) {
                 JarEntry entry = allEntries.nextElement();
                 if (!entry.getName().endsWith(".class")) continue;
-                String className = entry.getName().replace("/", ".").replace(".class", "");
-                try {
-                    Class<?> clazz = child.loadClass(className);
-                    if (clazz.getSuperclass().equals(FactionsAddon.class)) {
-                        mainClass = clazz;
-                    }
-                } catch (ClassNotFoundException ignored) {} //continue to next entry
+                String className = entry.getName().replace(".class", "");
+                className = className.replace("/", ".");
+                Class<?> clazz = child.loadClass(className);
+                if (clazz.getSuperclass().equals(FactionsAddon.class)) {
+                    mainClass = clazz;
+                    break;
+                }
             }
-        } catch (IOException exception) {
-            exception.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return mainClass;
     }
+    //private Class<?> getAddonMainClass(final File addon) {
+    //    Class<?> mainClass = null;
+    //    try (URLClassLoader child = new URLClassLoader(
+    //            new URL[]{addon.toURI().toURL()},
+    //            this.getClass().getClassLoader());
+    //         JarFile jarFile = new JarFile(addon)) {
+    //        Enumeration<JarEntry> allEntries = jarFile.entries();
+    //        while (allEntries.hasMoreElements() && mainClass == null) {
+    //            JarEntry entry = allEntries.nextElement();
+    //            if (!entry.getName().endsWith(".class")) continue;
+    //            String className = entry.getName().replace("/", ".").replace(".class", "");
+    //            try {
+    //                Class<?> clazz = child.loadClass(className);
+    //                if (clazz.getSuperclass().equals(FactionsAddon.class)) {
+    //                    mainClass = clazz;
+    //                }
+    //            } catch (ClassNotFoundException ignored) {} //continue to next entry
+    //        }
+    //    } catch (IOException exception) {
+    //        exception.printStackTrace();
+    //    }
+    //    return mainClass;
+    //}
 }

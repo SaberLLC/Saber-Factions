@@ -217,6 +217,7 @@ public class FactionsPlugin extends MPlugin {
 
             this.setupPlaceholderAPI();
             factionsAddonHashMap = new HashMap<>();
+            AddonManager.getAddonManagerInstance().loadAddons();
 
             this.postEnable();
             this.loadSuccessful = true;

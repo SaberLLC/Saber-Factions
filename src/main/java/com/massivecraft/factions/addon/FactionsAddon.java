@@ -49,10 +49,7 @@ public abstract class FactionsAddon {
         }
 
 
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-            handleAllFactionDataManagement();
-            Logger.print("Addon: " + getAddonName() + " loaded successfully!", Logger.PrefixType.DEFAULT);
-        }, 100);
+        Logger.print("Addon: " + getAddonName() + " loaded successfully!", Logger.PrefixType.DEFAULT);
     }
 
     public void disableAddon() {
@@ -90,9 +87,6 @@ public abstract class FactionsAddon {
      * @return Set of commands you want to register.
      */
     public abstract Set<FCommand> fCommandsToRegister();
-
-
-    public abstract void handleAllFactionDataManagement();
 
     /**
      * Addon name
