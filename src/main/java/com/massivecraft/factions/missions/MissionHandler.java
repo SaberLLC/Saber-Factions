@@ -117,8 +117,6 @@ public class MissionHandler implements Listener {
 
         handleMissionsOfType(fPlayer, MissionType.PLACE, (mission, section) -> {
             String item = section.getString("Mission.Material", matchAnythingRegex);
-
-            Bukkit.broadcastMessage(item);
             return XMaterial.matchXMaterial(event.getBlockPlaced().getType()).parseMaterial() == XMaterial.matchXMaterial(item).get().parseMaterial() ? 1 : -1;
         });
     }
