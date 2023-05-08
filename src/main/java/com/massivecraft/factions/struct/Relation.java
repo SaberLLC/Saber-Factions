@@ -3,11 +3,11 @@ package com.massivecraft.factions.struct;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.ChatColor;
-import com.massivecraft.factions.util.CC;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -42,7 +42,7 @@ public enum Relation implements Permissable {
 
     public static Relation fromString(String s) {
         // Because Java 6 doesn't allow String switches :(
-        // We should use name here. Since most of features use name as identifier.
+        // We should use name here. Since most of the features use name as identifier.
         if (s.equalsIgnoreCase(MEMBER.name())) {
             return MEMBER;
         } else if (s.equalsIgnoreCase(ALLY.name())) {

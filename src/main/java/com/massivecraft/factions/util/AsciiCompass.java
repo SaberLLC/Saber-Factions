@@ -5,11 +5,7 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AsciiCompass {
 

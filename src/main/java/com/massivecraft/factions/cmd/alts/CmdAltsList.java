@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd.alts;
 
-import com.google.common.base.Joiner;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.cmd.Aliases;

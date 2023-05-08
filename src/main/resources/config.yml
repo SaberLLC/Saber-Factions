@@ -15,7 +15,7 @@ debug: false
 # Prevent find factions exploit
 # This will help limit how many times a player can be sent a map of factions.
 # Set this to the cool down you want, in milliseconds, for a map to be shown to a player.
-# If you want to log when a player violates this (only happens on chunk enter so it shouldn't be too spammy),
+# If you want to log when a player violates this (only happens on chunk enter, so it shouldn't be too spammy),
 #   set log to true, and it will be logged to console as "player tried to show a faction map too soon and triggered exploit blocker."
 findfactionsexploit:
   cooldown: 2000 # in milliseconds. 2000 = 2 seconds.
@@ -91,7 +91,7 @@ tooltips:
 
   # List
   # This shows up when someone does /f list for the top factions.
-  # It will not sure up for factionless of course, just actual factions.
+  # It will not sure up for faction-less of course, just actual factions.
   # You can use color codes here.
   list:
     - "&6&l* &eLeader: &7{leader}"
@@ -569,6 +569,7 @@ checkpoints:
 fnear:
   Enabled: true
   Radius: 50
+
 ############################################################
 # +------------------------------------------------------+ #
 # |           Faction Command Cooldowns                  | #

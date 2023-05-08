@@ -1,7 +1,6 @@
 package com.massivecraft.factions.util;
 
 import org.bukkit.ChatColor;
-import com.massivecraft.factions.util.CC;
 import org.bukkit.Location;
 
 public class LocUtils {

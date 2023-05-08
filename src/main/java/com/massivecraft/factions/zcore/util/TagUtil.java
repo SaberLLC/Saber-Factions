@@ -7,6 +7,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.MiscUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.kyori.adventure.text.Component;
@@ -14,7 +15,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.ChatColor;
-import com.massivecraft.factions.util.CC;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

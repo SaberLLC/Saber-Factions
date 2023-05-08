@@ -5,9 +5,9 @@ package com.massivecraft.factions.cmd.audit;
  */
 
 import com.google.common.collect.Lists;
+import com.massivecraft.factions.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import com.massivecraft.factions.util.CC;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;

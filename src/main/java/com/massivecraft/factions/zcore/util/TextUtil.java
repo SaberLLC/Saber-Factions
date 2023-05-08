@@ -2,20 +2,19 @@ package com.massivecraft.factions.zcore.util;
 
 import com.google.common.reflect.TypeToken;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.util.CC;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.ChatColor;
-import com.massivecraft.factions.util.CC;
 import org.bukkit.Material;
 
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

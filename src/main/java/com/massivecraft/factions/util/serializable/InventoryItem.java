@@ -6,7 +6,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

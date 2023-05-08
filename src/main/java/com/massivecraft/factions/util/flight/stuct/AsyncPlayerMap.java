@@ -1,6 +1,9 @@
 package com.massivecraft.factions.util.flight.stuct;
 
-import com.massivecraft.factions.*;
+import com.massivecraft.factions.Board;
+import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.FPlayers;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.util.TitleUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

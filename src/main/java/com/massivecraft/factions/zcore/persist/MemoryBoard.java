@@ -7,6 +7,7 @@ import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -16,7 +17,6 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import com.massivecraft.factions.util.CC;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 

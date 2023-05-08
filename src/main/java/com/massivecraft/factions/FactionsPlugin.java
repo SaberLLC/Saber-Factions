@@ -57,7 +57,6 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class FactionsPlugin extends MPlugin {
@@ -191,7 +190,6 @@ public class FactionsPlugin extends MPlugin {
             }
 
             for (Listener eventListener : new Listener[]{
-
                     new TributeInventoryHandler(),
                     new FactionsChatListener(),
                     new FactionsEntityListener(),

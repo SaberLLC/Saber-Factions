@@ -1,10 +1,10 @@
 package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
-import com.massivecraft.factions.util.CC;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.util.CC;
-import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;

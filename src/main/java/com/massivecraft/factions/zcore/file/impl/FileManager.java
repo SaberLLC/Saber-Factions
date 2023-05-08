@@ -4,8 +4,6 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.file.CustomFile;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Factions - Developed by Driftay.

@@ -5,6 +5,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.QuadFunction;
 import com.massivecraft.factions.zcore.util.FastUUID;
@@ -13,7 +14,6 @@ import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.HoverEvent;
-import com.massivecraft.factions.util.CC;
 
 import java.util.*;
 

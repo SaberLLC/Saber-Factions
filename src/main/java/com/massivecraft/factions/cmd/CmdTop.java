@@ -9,11 +9,7 @@ import com.massivecraft.factions.util.FastMath;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CmdTop extends FCommand {
 

@@ -3,7 +3,6 @@ package com.massivecraft.factions.zcore.util;
 import com.cryptomorin.xseries.XMaterial;
 import com.lunarclient.bukkitapi.LunarClientAPI;
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.addon.AddonManager;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.audit.FLogManager;
 import com.massivecraft.factions.cmd.check.CheckTask;
@@ -29,7 +28,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static com.massivecraft.factions.Conf.safeZoneNerfedCreatureTypes;
 import static com.massivecraft.factions.Conf.territoryDenyUsageMaterials;

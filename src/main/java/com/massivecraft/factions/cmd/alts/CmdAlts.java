@@ -18,7 +18,6 @@ public class CmdAlts extends FCommand {
     public CmdAltsList cmdAltsList = new CmdAltsList();
     public CmdKickAlt cmdKickAlt = new CmdKickAlt();
 
-
     public CmdAlts() {
         super();
         this.aliases.addAll(Aliases.alts_alts);

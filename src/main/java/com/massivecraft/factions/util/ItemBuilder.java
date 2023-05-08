@@ -1,7 +1,6 @@
 package com.massivecraft.factions.util;
 
 
-import com.massivecraft.factions.util.CC;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;

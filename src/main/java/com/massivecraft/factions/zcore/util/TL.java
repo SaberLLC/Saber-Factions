@@ -16,9 +16,9 @@
  */
 package com.massivecraft.factions.zcore.util;
 
+import com.massivecraft.factions.util.CC;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import com.massivecraft.factions.util.CC;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.text.SimpleDateFormat;

@@ -8,6 +8,7 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -16,7 +17,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import com.massivecraft.factions.util.CC;
 import org.bukkit.command.ConsoleCommandSender;
 
 public class CmdKick extends FCommand {

@@ -1,7 +1,6 @@
 package com.massivecraft.factions.zcore.fperms;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 public enum Access {
 

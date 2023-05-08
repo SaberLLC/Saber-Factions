@@ -3,7 +3,6 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.zcore.persist.json.JSONFactions;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 

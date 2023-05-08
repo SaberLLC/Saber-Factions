@@ -1,13 +1,6 @@
 package com.massivecraft.factions.zcore.persist;
 
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
