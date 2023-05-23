@@ -139,7 +139,7 @@ public class TagUtil {
      * @return list of fancy messages to send
      */
     protected static List<Component> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
-        List<Component> Components = new ArrayList<>();
+        List<Component> lines = new ArrayList<>();
         boolean minimal = FactionsPlugin.getInstance().getConfig().getBoolean("minimal-show", false);
 
         switch (type) {
@@ -152,17 +152,16 @@ public class TagUtil {
                     }
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isAlly()) {
-                        currentAllies.append(Component.text(firstAlly ? s : ", " + s));
-                        currentAllies.hoverEvent(HoverEvent.showText(Component.text(tipFactionSingular(otherFaction)).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor()))));
+                        currentAllies.append(Component.text(firstAlly ? s : ", " + s).hoverEvent(HoverEvent.showText(Component.text(tipFactionSingular(otherFaction)).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor())))));
                         firstAlly = false;
                         if (SERIALIZER.toJson(currentAllies.build()).length() > ARBITRARY_LIMIT) {
-                            Components.add(currentAllies.build());
+                            lines.add(currentAllies.build());
                             currentAllies = TextUtil.toFancy("");
                         }
                     }
                 }
-                Components.add(currentAllies.build());
-                return firstAlly && minimal ? null : Components; // we must return here and not outside the switch
+                lines.add(currentAllies.build());
+                return firstAlly && minimal ? null : lines; // we must return here and not outside the switch
             case ENEMIES_LIST:
                 TextComponent.Builder currentEnemies = TextUtil.parseFancy(prefix);
                 boolean firstEnemy = true;
@@ -172,17 +171,16 @@ public class TagUtil {
                     }
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isEnemy()) {
-                        currentEnemies.append(Component.text(firstEnemy ? s : ", " + s));
-                        currentEnemies.hoverEvent(HoverEvent.showText(Component.text(tipFactionSingular(otherFaction)).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor()))));
+                        currentEnemies.append(Component.text(firstEnemy ? s : ", " + s).hoverEvent(HoverEvent.showText(Component.text(tipFactionSingular(otherFaction)).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor())))));
                         firstEnemy = false;
                         if (SERIALIZER.toJson(currentEnemies.build()).length() > ARBITRARY_LIMIT) {
-                            Components.add(currentEnemies.build());
+                            lines.add(currentEnemies.build());
                             currentEnemies = TextUtil.toFancy("");
                         }
                     }
                 }
-                Components.add(currentEnemies.build());
-                return firstEnemy && minimal ? null : Components; // we must return here and not outside the switch
+                lines.add(currentEnemies.build());
+                return firstEnemy && minimal ? null : lines; // we must return here and not outside the switch
             case TRUCES_LIST:
                 TextComponent.Builder currentTruces = TextUtil.parseFancy(prefix);
                 boolean firstTruce = true;
@@ -192,17 +190,16 @@ public class TagUtil {
                     }
                     String s = otherFaction.getTag(fme);
                     if (otherFaction.getRelationTo(target).isTruce()) {
-                        currentTruces.append(Component.text(firstTruce ? s : ", " + s));
-                        currentTruces.hoverEvent(HoverEvent.showText(Component.text(tipFactionSingular(otherFaction)).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor()))));
+                        currentTruces.append(Component.text(firstTruce ? s : ", " + s).hoverEvent(HoverEvent.showText(Component.text(tipFactionSingular(otherFaction)).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(otherFaction) : Relation.NEUTRAL.getColor())))));
                         firstTruce = false;
                         if (SERIALIZER.toJson(currentTruces.build()).length() > ARBITRARY_LIMIT) {
-                            Components.add(currentTruces.build());
+                            lines.add(currentTruces.build());
                             currentTruces = TextUtil.toFancy("");
                         }
                     }
                 }
-                Components.add(currentTruces.build());
-                return firstTruce && minimal ? null : Components; // we must return here and not outside the switch
+                lines.add(currentTruces.build());
+                return firstTruce && minimal ? null : lines; // we must return here and not outside the switch
             case ONLINE_LIST:
                 TextComponent.Builder currentOnline = TextUtil.parseFancy(prefix);
                 boolean firstOnline = true;
@@ -211,16 +208,15 @@ public class TagUtil {
                         continue; // skip
                     }
                     String name = p.getNameAndTitle();
-                    currentOnline.append(Component.text(firstOnline ? name : ", " + name));
-                    currentOnline.hoverEvent(Component.text(tipPlayerSingular(p))).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor()));
+                    currentOnline.append(Component.text(firstOnline ? name : ", " + name).hoverEvent(Component.text(tipPlayerSingular(p))).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor())));
                     firstOnline = false;
                     if (SERIALIZER.toJson(currentOnline.build()).length() > ARBITRARY_LIMIT) {
-                        Components.add(currentOnline.build());
+                        lines.add(currentOnline.build());
                         currentOnline = TextUtil.toFancy("");
                     }
                 }
-                Components.add(currentOnline.build());
-                return firstOnline && minimal ? null : Components; // we must return here and not outside the switch
+                lines.add(currentOnline.build());
+                return firstOnline && minimal ? null : lines; // we must return here and not outside the switch
             case OFFLINE_LIST:
                 TextComponent.Builder currentOffline = TextUtil.parseFancy(prefix);
                 boolean firstOffline = true;
@@ -228,17 +224,16 @@ public class TagUtil {
                     String name = p.getNameAndTitle();
                     // Also make sure to add players that are online BUT can't be seen.
                     if (!p.isOnline() || (fme != null && fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer()))) {
-                        currentOffline.append(Component.text(firstOffline ? name : ", " + name));
-                        currentOffline.hoverEvent(Component.text(tipPlayerSingular(p))).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor()));
+                        currentOffline.append(Component.text(firstOffline ? name : ", " + name).hoverEvent(Component.text(tipPlayerSingular(p))).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor())));
                         firstOffline = false;
                         if (SERIALIZER.toJson(currentOffline.build()).length() > ARBITRARY_LIMIT) {
-                            Components.add(currentOffline.build());
+                            lines.add(currentOffline.build());
                             currentOffline = TextUtil.toFancy("");
                         }
                     }
                 }
-                Components.add(currentOffline.build());
-                return firstOffline && minimal ? null : Components; // we must return here and not outside the switch
+                lines.add(currentOffline.build());
+                return firstOffline && minimal ? null : lines; // we must return here and not outside the switch
             case ALTS:
                 TextComponent.Builder alts = TextUtil.parseFancy(prefix);
                 boolean firstAlt = true;
@@ -252,15 +247,14 @@ public class TagUtil {
                         color = ChatColor.RED;
                     }
 
-                    alts.append(Component.text(firstAlt ? name : ", " + name));
-                    alts.hoverEvent(HoverEvent.showText(Component.text(tipPlayerSingular(p)).color(TextUtil.kyoriColor(color))));
+                    alts.append(Component.text(firstAlt ? name : ", " + name).hoverEvent(HoverEvent.showText(Component.text(tipPlayerSingular(p)).color(TextUtil.kyoriColor(color)))));
                     firstAlt = false;
                     if (SERIALIZER.toJson(alts.build()).length() > ARBITRARY_LIMIT) {
-                        Components.add(alts.build());
+                        lines.add(alts.build());
                     }
                 }
-                Components.add(alts.build());
-                return firstAlt && minimal ? null : Components;
+                lines.add(alts.build());
+                return firstAlt && minimal ? null : lines;
             default:
                 break;
         }
