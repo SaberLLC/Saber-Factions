@@ -4,6 +4,8 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.alts.CmdAlts;
 import com.massivecraft.factions.cmd.audit.CmdAudit;
+import com.massivecraft.factions.cmd.banner.CmdBanner;
+import com.massivecraft.factions.cmd.banner.CmdTpBanner;
 import com.massivecraft.factions.cmd.check.CmdCheck;
 import com.massivecraft.factions.cmd.check.CmdWeeWoo;
 import com.massivecraft.factions.cmd.chest.CmdChest;
@@ -135,6 +137,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdTntFill cmdTntFill = new CmdTntFill();
     public CmdChest cmdChest = new CmdChest();
     public CmdSetBanner cmdSetBanner = new CmdSetBanner();
+    public CmdBanner cmdBanner = new CmdBanner();
+    public CmdTpBanner cmdTpBanner = new CmdTpBanner();
     public CmdAlts cmdAlts = new CmdAlts();
     public CmdCorner cmdCorner = new CmdCorner();
     public CmdInventorySee cmdInventorySee = new CmdInventorySee();
@@ -201,8 +205,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
         this.setHelpShort("The faction base command");
         this.helpLong.add(TextUtil.parseTags("<i>This command contains all faction stuff."));
-
-        if (CommodoreProvider.isSupported()) brigadierManager = new BrigadierManager();
 
         this.addSubCommand(this.cmdAllyFWarp);
         this.addSubCommand(this.cmdAdmin);
@@ -297,6 +299,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdTntFill);
         this.addSubCommand(this.cmdChest);
         this.addSubCommand(this.cmdSetBanner);
+        this.addSubCommand(this.cmdTpBanner);
+        this.addSubCommand(this.cmdBanner);
         this.addSubCommand(this.cmdCorner);
         this.addSubCommand(this.cmdCornerList);
         this.addSubCommand(this.cmdFGlobal);

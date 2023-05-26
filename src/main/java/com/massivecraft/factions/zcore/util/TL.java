@@ -1174,6 +1174,14 @@ public enum TL {
     CLAIM_YOUAREHERE("You are here"),
     CLAIM_NO_TERRITORY_PERM("You do not have permission from your faction leader to do this!"),
 
+
+    FACTION_BANNER_CANNOT_DESTROY_1("&c&l[!] &cYou cannot destroy %1$s's banner!"),
+    FACTION_BANNER_CANNOT_DESTROY_2("&7It will despawn in: %1$ss!"),
+    FACTION_BANNER_CANNOT_PLACE("&c&l[!] &cYou cannot place Faction Banners ion this world!"),
+    FACTION_BANNER_MUST_PLACE("&c&l[!] &cYou must place Faction Banners directly beneath you"),
+    FACTION_BANNER_ALREADY_PLACED_1("&c&l[!] &cYour faction already has an active /f banner placed!"),
+    FACTION_BANNER_ALREADY_PLACED_2("&7You can place a new /f banner in: %1$ss!"),
+
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */

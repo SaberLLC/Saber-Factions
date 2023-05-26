@@ -1,0 +1,6 @@
+Banners:
+  allowedWorldNames:
+    - 'world'
+    - 'sometestworldhere'
+  placeable-warzone: true
+  placeable-enemy: true

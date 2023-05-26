@@ -29,7 +29,7 @@ public class FileManager {
         fperms.setup(true, "configuration");
         upgrades.setup(true, "configuration");
         missions.setup(true, "configuration");
-        //banners.setup(true, "configuration");
+        banners.setup(true, "configuration");
     }
 
 
@@ -41,7 +41,7 @@ public class FileManager {
         fperms.loadFile();
         upgrades.loadFile();
         missions.loadFile();
-        //banners.loadFile();
+        banners.loadFile();
     }
 
 

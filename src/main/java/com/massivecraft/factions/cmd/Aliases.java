@@ -121,6 +121,11 @@ public class Aliases {
     public static ArrayList<String> peaceful = new ArrayList<>(Collections.singletonList("peaceful"));
     public static ArrayList<String> perm = new ArrayList<>(Arrays.asList("perm", "perms", "permission", "permissions"));
     public static ArrayList<String> permanent_faction = new ArrayList<>(Collections.singletonList("permanent"));
+
+    public static ArrayList<String> roster_rosters = new ArrayList<>(Arrays.asList("rosters", "roster"));
+    public static ArrayList<String> roster_invite = new ArrayList<>(Arrays.asList("add", "invite"));
+    public static ArrayList<String> roster_kick = new ArrayList<>(Collections.singletonList("kick"));
+
     public static ArrayList<String> permanent_power = new ArrayList<>(Collections.singletonList("permanentpower"));
     public static ArrayList<String> titles = new ArrayList<>(Collections.singletonList("titles"));
     public static ArrayList<String> power_power = new ArrayList<>(Arrays.asList("pow", "power"));
@@ -157,7 +162,7 @@ public class Aliases {
     public static ArrayList<String> title = new ArrayList<>(Collections.singletonList("title"));
     public static ArrayList<String> toggleAllianceChat = new ArrayList<>(Arrays.asList("tac", "ac", "togglealliancechat"));
     public static ArrayList<String> top = new ArrayList<>(Arrays.asList("t", "top"));
-    public static ArrayList<String> tpBanner = new ArrayList<>(Collections.singletonList("tpbanner"));
+    public static ArrayList<String> tpBanner = new ArrayList<>(Arrays.asList("tpbanner", "assist"));
     public static ArrayList<String> unban = new ArrayList<>(Collections.singletonList("unban"));
     public static ArrayList<String> upgrades = new ArrayList<>(Arrays.asList("upgrades", "upgrade"));
     public static ArrayList<String> vault = new ArrayList<>(Collections.singletonList("vault"));

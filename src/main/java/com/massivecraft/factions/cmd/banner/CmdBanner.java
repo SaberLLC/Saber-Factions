@@ -51,7 +51,6 @@ public class CmdBanner extends FCommand {
         warBanner.setItemMeta(warmeta);
         NBTItem nbtItem = new NBTItem(warBanner);
         nbtItem.setBoolean("WarBanner", true);
-
         return nbtItem.getItem();
     }
 

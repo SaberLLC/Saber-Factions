@@ -47,8 +47,8 @@ public class BannerListener implements Listener {
                     FPlayer fp = FPlayers.getInstance().getByPlayer(event.getPlayer());
                     if (fp.getFaction().getRelationTo(banner.getFaction()).isAtLeast(Relation.ALLY)) {
                         event.setCancelled(true);
-                        event.getPlayer().sendMessage(CC.RedB + "(!) " + CC.Red + "You cannot destroy " + banner.getWhoPlacedUsername() + "'s Faction Banner!");
-                        event.getPlayer().sendMessage(CC.Gray + "It will despawn in: " + banner.getSecondsLeft() + "s!");
+                        fp.msg(TL.FACTION_BANNER_CANNOT_DESTROY_1, banner.getWhoPlacedUsername());
+                        fp.msg(TL.FACTION_BANNER_CANNOT_DESTROY_2, banner.getSecondsLeft());
                         return;
                     }
                     event.setCancelled(true);
@@ -69,11 +69,10 @@ public class BannerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         ItemStack item = event.getItem();
         if (item != null && item.getType().name().contains("BANNER") && (
-                new NBTItem(item)).hasKey("WarBanner")) {
+                new NBTItem(item)).hasTag("WarBanner")) {
             if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 Block placingOn = event.getClickedBlock().getRelative(event.getBlockFace());
                 if (placingOn.getType() != Material.AIR) {
-                    event.getPlayer().sendMessage(CC.RedB + "(!) " + CC.Red + "You must place a Faction Banner in an valid location outside of spawn!");
                     event.setCancelled(true);
                     return;
                 }
@@ -83,7 +82,7 @@ public class BannerListener implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onBannerPlace(BlockPlaceEvent e) {
         if (FactionsPlugin.getInstance().version == 7) return;
 
@@ -94,7 +93,7 @@ public class BannerListener implements Listener {
 
         if (item != null && item.getType().name().contains("BANNER")) {
             NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasKey("WarBanner")) {
+            if (nbtItem.hasTag("WarBanner")) {
                 if (fPlayer.getFaction().isWilderness()) {
                     fPlayer.msg(TL.WARBANNER_NOFACTION);
                     e.setCancelled(true);
@@ -103,26 +102,26 @@ public class BannerListener implements Listener {
 
                 Block placedOn = e.getBlockPlaced();
                 if (!getBannerAllowedWorlds().contains(placedOn.getWorld().getName())) {
-                    e.getPlayer().sendMessage(CC.RedB + "(!) " + CC.Red + "You cannot place Faction Banners in this world!");
+                    fPlayer.msg(TL.FACTION_BANNER_CANNOT_PLACE);
                     return;
                 }
 
                 Location placedLoc = e.getBlockPlaced().getLocation();
                 FLocation fplacedLoc = FLocation.wrap(placedLoc);
-                if (Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Placeable.Warzone") || fPlayer.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY && FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Placeable.Enemy")) {
+                if (Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && FactionsPlugin.getInstance().getFileManager().getBanners().fetchBoolean("Banners.placeable-warzone") || fPlayer.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY &&FactionsPlugin.getInstance().getFileManager().getBanners().fetchBoolean("Banners.placeable-enemy")) {
 
                     Location playerLoc = e.getPlayer().getLocation();
                     if (playerLoc.getBlockX() != placedOn.getX() || playerLoc.getBlockZ() != placedOn.getZ() ||
                             Math.abs(playerLoc.getBlockY() - placedOn.getY()) > 1) {
-                        e.getPlayer().sendMessage(CC.RedB + "(!) " + CC.Red + "You must place faction banners directly underneath you.");
+                        fPlayer.msg(TL.FACTION_BANNER_MUST_PLACE);
                         return;
                     }
 
                     BannerManager manager = FactionsPlugin.getInstance().getBannerManager();
                     FactionBanner banner = manager.getFactionBannerMap().get(fac.getId());
                     if (banner != null && !banner.hasExpired()) {
-                        e.getPlayer().sendMessage(CC.RedB + "(!) " + CC.Red + "Your faction already has an active /f banner placed!");
-                        e.getPlayer().sendMessage(CC.Gray + "You can place a new /f banner in: " + banner.getSecondsLeft() + "s");
+                        fPlayer.msg(TL.FACTION_BANNER_ALREADY_PLACED_1);
+                        fPlayer.msg(TL.FACTION_BANNER_ALREADY_PLACED_2, banner.getSecondsLeft());
                         return;
                     }
 

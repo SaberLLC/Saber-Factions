@@ -13,6 +13,7 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.audit.FChestListener;
 import com.massivecraft.factions.cmd.audit.FLogManager;
 import com.massivecraft.factions.cmd.audit.FLogType;
+import com.massivecraft.factions.cmd.banner.listener.BannerListener;
 import com.massivecraft.factions.cmd.banner.struct.BannerManager;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
@@ -66,9 +67,11 @@ public class FactionsPlugin extends MPlugin {
     public static FactionsPlugin instance;
 
     private final Gson gsonSerializer = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-            .registerTypeAdapter(new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>(){}.getType(), new PermissionsMapTypeAdapter())
+            .registerTypeAdapter(new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
+            }.getType(), new PermissionsMapTypeAdapter())
             .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
-            .registerTypeAdapter(new TypeToken<Map<FLocation, Set<String>>>(){}.getType(), new MapFLocToStringSetTypeAdapter())
+            .registerTypeAdapter(new TypeToken<Map<FLocation, Set<String>>>() {
+            }.getType(), new MapFLocToStringSetTypeAdapter())
             .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
             .registerTypeAdapter(ReserveObject.class, new ReserveAdapter())
             .registerTypeAdapter(Location.class, new LocationTypeAdapter())
@@ -77,6 +80,8 @@ public class FactionsPlugin extends MPlugin {
     public static boolean cachedRadiusClaim;
     public static Permission perms = null;
     private Map<String, FactionsAddon> factionsAddonHashMap;
+    private HashMap<Faction, String> shieldStatMap = new HashMap<>();
+
     // This plugin sets the boolean true when fully enabled.
     // Plugins can check this boolean while hooking in have
     // a green light to use the api.
@@ -155,8 +160,6 @@ public class FactionsPlugin extends MPlugin {
             }
 
             VersionProtocol.printVerionInfo();
-
-
             // Add Base Commands
             this.cmdBase = new FCmdRoot();
             this.cmdAutoHelp = new CmdAutoHelp();
@@ -180,16 +183,17 @@ public class FactionsPlugin extends MPlugin {
                 Bukkit.getPluginManager().registerEvents(new SpawnerChunkListener(), this);
             }
 
-            if(FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
+            if (FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
                 Bukkit.getPluginManager().registerEvents(new ChorusFruitListener(), this);
             }
 
 
-            if(version > 8) {
+            if (version > 8) {
                 Bukkit.getPluginManager().registerEvents(new MissionHandlerModern(), this);
             }
 
             for (Listener eventListener : new Listener[]{
+                    new BannerListener(),
                     new TributeInventoryHandler(),
                     new FactionsChatListener(),
                     new FactionsEntityListener(),
@@ -209,13 +213,18 @@ public class FactionsPlugin extends MPlugin {
 
             this.asyncPlayerMap = new AsyncPlayerMap(this);
 
-            this.getCommand(refCommand).setExecutor(cmdBase);
-
-            if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 
             this.setupPlaceholderAPI();
             factionsAddonHashMap = new HashMap<>();
             AddonManager.getAddonManagerInstance().loadAddons();
+
+            bannerManager = new BannerManager();
+            bannerManager.onEnable(this);
+
+            this.getCommand(refCommand).setExecutor(cmdBase);
+
+            if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
+
 
             this.postEnable();
             this.loadSuccessful = true;
@@ -243,6 +252,11 @@ public class FactionsPlugin extends MPlugin {
             this.mvdwPlaceholderAPIManager = true;
             Logger.print("Found MVdWPlaceholderAPI. Adding hooks.", Logger.PrefixType.DEFAULT);
         }
+    }
+
+
+    public HashMap<Faction, String> getShieldStatMap() {
+        return shieldStatMap;
     }
 
     public Map<String, FactionsAddon> getFactionsAddonHashMap() {
@@ -280,10 +294,11 @@ public class FactionsPlugin extends MPlugin {
             getServer().getScheduler().cancelTask(this.AutoLeaveTask);
             this.AutoLeaveTask = null;
         }
-        if(TextUtil.AUDIENCES != null) {
+        if (TextUtil.AUDIENCES != null) {
             TextUtil.AUDIENCES.close();
         }
-        //this.bannerManager.onDisable(this);
+
+        bannerManager.onDisable(this);
         ShutdownParameter.initShutdown(this);
 
         super.onDisable();
