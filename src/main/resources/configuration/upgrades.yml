@@ -9,6 +9,21 @@
 fupgrades:
   Enabled: true
   usePointsAsCurrency: false
+  enabledUpgrade:
+    - "Crops"
+    - "Fall-Damage"
+    - "SpawnerChunks"
+    - "EXP"
+    - "Power"
+    - "Redstone"
+    - "Spawners"
+    - "DamageReduct"
+    - "DamageIncrease"
+    - "TNT"
+    - "Warps"
+    - "Chest"
+    - "Members"
+    - "Armor"
   MainMenu:
     Rows: 5
     Title: '&8&l{faction}''s Upgrade Menu'
@@ -17,6 +32,10 @@ fupgrades:
       Type: BLACK_STAINED_GLASS_PANE
       Lore:
         - ' '
+      Slots:
+        - 0
+        - 1
+        - 2
     Crops:
       Max-Level: 4
       Crop-Boost:

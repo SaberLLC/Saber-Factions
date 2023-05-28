@@ -61,7 +61,7 @@ public class UpgradesListener implements Listener {
         FLocation floc = FLocation.wrap(e.getEntity().getLocation());
         Faction faction = Board.getInstance().getFactionAt(floc);
         if (!faction.isWilderness()) {
-            int level = faction.getUpgrade(UpgradeType.EXP);
+            int level = faction.getUpgrade("EXP");
             double multiplier = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.EXP.EXP-Boost.level-" + level);
             if (level != 0 && multiplier > 0.0) {
                 this.spawnMoreExp(e, multiplier);
@@ -79,7 +79,7 @@ public class UpgradesListener implements Listener {
         FLocation floc = FLocation.wrap(e.getLocation());
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
         if (!factionAtLoc.isWilderness()) {
-            int level = factionAtLoc.getUpgrade(UpgradeType.SPAWNER);
+            int level = factionAtLoc.getUpgrade("Spawners");
             if (level == 0) return;
             this.lowerSpawnerDelay(e, FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.Spawners.Spawner-Boost.level-" + level));
         }
@@ -101,7 +101,7 @@ public class UpgradesListener implements Listener {
         FLocation floc = FLocation.wrap(e.getBlock().getLocation());
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
         if (!factionAtLoc.isWilderness()) {
-            int level = factionAtLoc.getUpgrade(UpgradeType.CROP);
+            int level = factionAtLoc.getUpgrade("Crops");
             int chance = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Crops.Crop-Boost.level-" + level);
             if (level == 0 || chance == 0) return;
 
@@ -136,7 +136,7 @@ public class UpgradesListener implements Listener {
         Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
 
         if (!factionAtLoc.isWilderness()) {
-            int level = factionAtLoc.getUpgrade(UpgradeType.REDSTONE);
+            int level = factionAtLoc.getUpgrade("Redstone");
             if (level != 0) {
                 if (level == 1) {
                     List<String> unbreakable = FactionsPlugin.getInstance().getConfig().getStringList("no-water-destroy.Item-List");
@@ -157,7 +157,7 @@ public class UpgradesListener implements Listener {
                 FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
 
                 if (fPlayer.getFaction().isNormal()) {
-                    int level = fPlayer.getFaction().getUpgrade(UpgradeType.FALL_DAMAGE);
+                    int level = fPlayer.getFaction().getUpgrade("Fall-Damage");
 
                     FLocation fLocation = FLocation.wrap(player.getLocation());
                     if (Board.getInstance().getFactionAt(fLocation) == fPlayer.getFaction() && level > 0) {
@@ -173,7 +173,7 @@ public class UpgradesListener implements Listener {
         if (FPlayers.getInstance().getByPlayer(e.getPlayer()) == null) return;
 
         if (e.getItem().getType().toString().contains("LEGGINGS") || e.getItem().getType().toString().contains("CHESTPLATE") || e.getItem().getType().toString().contains("HELMET") || e.getItem().getType().toString().contains("BOOTS")) {
-            int lvl = FPlayers.getInstance().getByPlayer(e.getPlayer()).getFaction().getUpgrade(UpgradeType.REINFORCEDARMOR);
+            int lvl = FPlayers.getInstance().getByPlayer(e.getPlayer()).getFaction().getUpgrade("Armor");
             double drop = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);
             int newDamage = FastMath.round(e.getDamage() - e.getDamage() * drop);
             e.setDamage(newDamage);

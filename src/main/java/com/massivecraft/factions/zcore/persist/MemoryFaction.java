@@ -18,7 +18,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeType;
+import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeManager;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
-public abstract class  MemoryFaction implements Faction, EconomyParticipator {
+public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public HashMap<Integer, String> rules = new HashMap<>();
     public int tnt;
     public Location checkpoint;
@@ -481,9 +481,8 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
         vault = new LazyLocation(vaultLocation);
     }
 
-    public int getUpgrade(UpgradeType upgrade) {
-        if (upgrades.containsKey(upgrade.toString())) return upgrades.get(upgrade.toString());
-        return 0;
+    public int getUpgrade(String upgradeName) {
+        return upgrades.getOrDefault(upgradeName, 0);
     }
 
     @Override
@@ -497,7 +496,7 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
 
     private int getChestSize() {
         int size = FactionsPlugin.getInstance().getConfig().getInt("fchest.Default-Size");
-        int chestUpgrade = getUpgrade(UpgradeType.CHEST);
+        int chestUpgrade = getUpgrade("Chest");
         if (chestUpgrade > 0) {
             int upgradedSize = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-" + chestUpgrade, -1);
             if (upgradedSize > -1) {
@@ -568,8 +567,8 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
         return ItemStack.deserialize(bannerSerialized);
     }
 
-    public void setUpgrade(UpgradeType upgrade, int level) {
-        upgrades.put(upgrade.toString(), level);
+    public void setUpgrade(String upgrade, int level) {
+        upgrades.put(upgrade, level);
     }
 
     public int getWallCheckMinutes() {
@@ -1147,7 +1146,7 @@ public abstract class  MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public ArrayList<FPlayer> getFPlayersWhereRole(Role role) {
-        if (!this.isNormal()){
+        if (!this.isNormal()) {
             return new ArrayList<>(0);
         }
         ArrayList<FPlayer> ret = new ArrayList<>(this.fplayers.size());
