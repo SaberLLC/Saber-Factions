@@ -10,6 +10,7 @@ import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -34,12 +35,17 @@ public class FactionUpgradeFrame extends SaberGUI {
 
     @Override
     public void redraw() {
-        ItemStack dummy = buildDummyItem();
-        FPlayer fme = FPlayers.getInstance().getByPlayer(player);
-        for (int x = 0; x <= this.size - 1; ++x) {
-            this.setItem(x, new InventoryItem(dummy));
+
+        ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getConfigurationSection("fupgrades.MainMenu.DummyItem");
+        if (config != null) {
+            ItemStack dummy = buildDummyItem(config);
+            for (Integer slot : config.getIntegerList("Slots")) {
+                this.setItem(slot, new InventoryItem(dummy));
+            }
+
         }
 
+        FPlayer fme = FPlayers.getInstance().getByPlayer(player);
 
         UpgradeManager upgradeManager = UpgradeManager.getInstance();
         for (Map.Entry<String, Integer> upgrades : UpgradeManager.getInstance().getUpgrades().entrySet()) {
@@ -52,10 +58,11 @@ public class FactionUpgradeFrame extends SaberGUI {
             this.setItem(upgradeManager.getSlot(upgradeId), new InventoryItem(upgradeManager.buildAsset(faction, upgradeId)).click(ClickType.LEFT, () -> {
                 if (currentFactionLevel >= upgradeMaxLevel) return;
 
-                int cost = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu." + upgradeManager + ".Cost.level-" + (faction.getUpgrade(upgradeId) + 1));
+                YamlConfiguration upgradeConf = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig();
+                int cost = upgradeConf.getInt("fupgrades.MainMenu." + upgradeId + ".Cost.level-" + (faction.getUpgrade(upgradeId) + 1));
 
 
-                if (FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getBoolean("fupgrades.usePointsAsCurrency")) {
+                if (upgradeConf.getBoolean("fupgrades.usePointsAsCurrency")) {
                     if (faction.getPoints() >= cost) {
                         faction.setPoints(faction.getPoints() - cost);
                         fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, faction.getPoints());
@@ -66,27 +73,26 @@ public class FactionUpgradeFrame extends SaberGUI {
                         fme.getPlayer().closeInventory();
                         fme.msg(TL.COMMAND_UPGRADES_NOT_ENOUGH_POINTS);
                     }
-                } else {
-
-                    EconomyParticipator payee;
-
-                    if (Conf.bankEnabled && FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getBoolean("fupgrades.factionPaysForUpgradeCost", false)) {
-                        payee = faction;
-                    } else {
-                        payee = fme;
-                    }
-
-                    if (Econ.modifyMoney(payee, -cost, TextUtil.parse(TL.UPGRADE_TOUPGRADE.toString(), upgradeManager), TextUtil.parse(TL.UPGRADE_FORUPGRADE.toString(), upgradeManager))) {
-                        handleTransaction(fme, upgradeId);
-                        faction.setUpgrade(upgradeId, currentFactionLevel + 1);
-                        redraw();
-                    } else if (fme.hasMoney(cost)) {
-                        fme.takeMoney(cost);
-                        handleTransaction(fme, upgradeId);
-                        faction.setUpgrade(upgradeId, currentFactionLevel + 1);
-                        redraw();
-                    }
+                    return;
                 }
+
+                EconomyParticipator economyParticipator = Conf.bankEnabled && upgradeConf.getBoolean("fupgrades.factionPaysForUpgradeCost", false) ? faction : fme;
+
+                if (Econ.modifyMoney(economyParticipator, -cost, TextUtil.parse(TL.UPGRADE_TOUPGRADE.toString(), upgradeId), TextUtil.parse(TL.UPGRADE_FORUPGRADE.toString(), upgradeId))) {
+                    handleTransaction(fme, upgradeId);
+                    faction.setUpgrade(upgradeId, currentFactionLevel + 1);
+                    redraw();
+                    return;
+                }
+                if (fme.hasMoney(cost)) {
+                    fme.takeMoney(cost);
+                    handleTransaction(fme, upgradeId);
+                    faction.setUpgrade(upgradeId, currentFactionLevel + 1);
+                    redraw();
+                    return;
+                }
+                fme.getPlayer().closeInventory();
+                fme.msg(TL.GENERIC_NOTENOUGHMONEY);
             }));
         }
     }
@@ -152,11 +158,10 @@ public class FactionUpgradeFrame extends SaberGUI {
         return faction;
     }
 
-    private ItemStack buildDummyItem() {
-        ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getConfigurationSection("fupgrades.MainMenu.DummyItem");
+    private ItemStack buildDummyItem(ConfigurationSection config) {
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
+        if (item != null && item.getItemMeta() != null) {
+            ItemMeta meta = item.getItemMeta();
             meta.setLore(CC.translate(config.getStringList("Lore")));
             meta.setDisplayName(CC.translate(config.getString("Name")));
             item.setItemMeta(meta);

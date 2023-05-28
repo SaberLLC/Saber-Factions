@@ -52,7 +52,7 @@ public class UpgradeManager {
         ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getConfigurationSection("fupgrades.MainMenu." + upgradeId + ".DisplayItem");
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         int level = f.getUpgrade(upgradeId);
-        if (item != null && item.hasItemMeta()) {
+        if (item != null) {
             ItemMeta meta = item.getItemMeta();
             meta.setLore(CC.translate(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{level}", String.valueOf(level)))));
             meta.setDisplayName(CC.translate(config.getString("Name")));
