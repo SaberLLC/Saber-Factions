@@ -206,6 +206,10 @@ public class MissionHandler implements Listener {
         if (section == null)
             return;
 
+        if(!section.getBoolean("enabled")) {
+            return;
+        }
+
         if (mission.getProgress() < section.getLong("Mission.Amount")) {
             return;
         }
