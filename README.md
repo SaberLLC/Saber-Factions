@@ -34,7 +34,7 @@ Some of our features include the following
 	<dependency>
 	    <groupId>com.github.SaberLLC</groupId>
 	    <artifactId>Saber-Factions</artifactId>
-	    <version>2.4.0-RC</version>
+	    <version>1.6.x-SNAPSHOT</version>
 	</dependency>
 ```
 ## Moving Forward
