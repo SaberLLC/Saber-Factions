@@ -16,6 +16,7 @@ Some of our features include the following
 * Command Cooldowns - Configurable Command Cooldowns for most "spam" commands. And so Much More to Come!
 * Faction Points - A point based currency that can be used for any aspect of factions gameplay!
 * Faction Shop - A shop that essentially lets players buy in-game items in exchange for faction points!
+* Faction Missions - An Expansive System that allows you to test your players with challenges!
 * Faction Discord Integration - A discord intergrated factions bot for each faction to have their own personalized discord bot within their faction!
 * Faction Audit - A full based logging system (GUI designed) to see every aspect of what happens in your faction!
 * Factions Check System - An automated check system that alerts players when to check walls/buffers!
@@ -43,7 +44,7 @@ We Plan on Releasing the latest and greatest factions/skyblock/prison plugins mi
 
 ## Support
 Have a problem, question, or concer? We encourage our community to join and express any inquiry you may have
-https://discord.saber.pw
+https://discord.gg/saber
 
 Look forward to a bright future and a journey with all of you!
 
