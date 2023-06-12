@@ -24,19 +24,19 @@ public class CornerTask extends BukkitRunnable {
             cancel();
             return;
         }
-        if (this.surrounding.isEmpty()) {
-            this.fPlayer.sendMessage(TL.COMMAND_CORNER_CLAIMED.format(this.amount));
-            cancel();
-            return;
+
+        while (!this.surrounding.isEmpty()) {
+            FLocation fLocation = this.surrounding.remove(0);
+            if (this.fPlayer.attemptClaim(this.fPlayer.getFaction(), fLocation, true)) {
+                ++amount;
+            } else {
+                this.fPlayer.sendMessage(TL.COMMAND_CORNER_FAIL_WITH_FEEDBACK.toString() + amount);
+                cancel();
+                return;
+            }
         }
-        FLocation fLocation = this.surrounding.remove(0);
-        if (FactionsPlugin.cachedRadiusClaim && this.fPlayer.attemptClaim(this.fPlayer.getFaction(), fLocation, true)) {
-            ++amount;
-        } else if (this.fPlayer.attemptClaim(this.fPlayer.getFaction(), fLocation, true)) {
-            ++amount;
-        } else {
-            this.fPlayer.sendMessage(TL.COMMAND_CORNER_FAIL_WITH_FEEDBACK.toString() + amount);
-            cancel();
-        }
+
+        this.fPlayer.sendMessage(TL.COMMAND_CORNER_CLAIMED.format(this.amount));
+        cancel();
     }
 }

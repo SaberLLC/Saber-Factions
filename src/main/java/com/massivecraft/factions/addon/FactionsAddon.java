@@ -7,6 +7,7 @@ import com.massivecraft.factions.util.Logger;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -15,91 +16,68 @@ import java.util.Set;
 
 public abstract class FactionsAddon {
 
-    //Adding our custom config impl to addons?
-
-    private String addonName;
-    private FactionsPlugin plugin;
+    private final String addonName;
+    private final FactionsPlugin plugin;
 
     public FactionsAddon(final FactionsPlugin plugin) {
-
         this.plugin = plugin;
         this.addonName = getClass().getName();
-
         enableAddon();
-
     }
 
     private void enableAddon() {
         onEnable();
-
-        if (!listenersToRegister().isEmpty()) {
-            for (Listener listener : listenersToRegister()) {
-                if (listener != null) {
-                    plugin.getServer().getPluginManager().registerEvents(listener, plugin);
-                }
-            }
-        }
-
-        if (!fCommandsToRegister().isEmpty()) {
-            for (FCommand fCommand : fCommandsToRegister()) {
-                if (fCommand != null) {
-                    plugin.cmdBase.addSubCommand(fCommand);
-                    FCmdRoot.instance.addVariableCommands();
-                    FCmdRoot.instance.rebuild();
-                }
-            }
-        }
-
-
+        registerListeners();
+        registerFCommands();
         Logger.print("Addon: " + getAddonName() + " loaded successfully!", Logger.PrefixType.DEFAULT);
     }
 
     public void disableAddon() {
-        if (!listenersToRegister().isEmpty()) {
-            for (Listener listener : listenersToRegister()) {
-                HandlerList.unregisterAll(listener);
-            }
-        }
-
+        unregisterListeners();
         onDisable();
-
     }
 
-
-    /**
-     * Method called when addon enabled.
-     */
     public abstract void onEnable();
 
-    /**
-     * Method called when addon disabled.
-     */
     public abstract void onDisable();
 
-    /**
-     * Method to define listeners you want to register. You don't need to register them.
-     *
-     * @return Set of listeners you want to register.
-     */
-    public abstract Set<Listener> listenersToRegister();
+    public Set<Listener> listenersToRegister() {
+        return Collections.emptySet();
+    }
 
-    /**
-     * Method to define FCommands you want to register. You don't need to register them.
-     *
-     * @return Set of commands you want to register.
-     */
-    public abstract Set<FCommand> fCommandsToRegister();
+    public Set<FCommand> fCommandsToRegister() {
+        return Collections.emptySet();
+    }
 
-    /**
-     * Addon name
-     *
-     * @return Addon name.
-     */
     public String getAddonName() {
         return addonName;
     }
 
     public FactionsPlugin getPlugin() {
         return plugin;
+    }
+
+    private void registerListeners() {
+        for (Listener listener : listenersToRegister()) {
+            if (listener != null) {
+                plugin.getServer().getPluginManager().registerEvents(listener, plugin);
+            }
+        }
+    }
+
+    private void unregisterListeners() {
+        for (Listener listener : listenersToRegister()) {
+            HandlerList.unregisterAll(listener);
+        }
+    }
+
+    private void registerFCommands() {
+        for (FCommand fCommand : fCommandsToRegister()) {
+            if (fCommand != null) {
+                plugin.cmdBase.addSubCommand(fCommand);
+                FCmdRoot.instance.addVariableCommands();
+                FCmdRoot.instance.rebuild();
+            }
+        }
     }
 }

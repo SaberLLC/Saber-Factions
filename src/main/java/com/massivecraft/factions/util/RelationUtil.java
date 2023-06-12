@@ -43,7 +43,7 @@ public class RelationUtil {
             ret = TextUtil.upperCaseFirst(ret);
         }
 
-        return "" + getColorOfThatToMe(that, me) + ret;
+        return getColorOfThatToMe(that, me) + ret;
     }
 
     public static String describeThatToMe(RelationParticipator that, RelationParticipator me) {

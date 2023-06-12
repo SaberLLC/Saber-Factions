@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayDeque;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Queue;
 
 /**
@@ -31,7 +32,7 @@ public class TNTFillTask extends BukkitRunnable {
     public TNTFillTask(CmdTntFill cmdTntFill, TNTProvider tntProvider, Collection<Block> dispensers, int count) {
         this.cmdTntFill = cmdTntFill;
         this.tntProvider = tntProvider;
-        this.dispensers = new ArrayDeque<>(dispensers);
+        this.dispensers = new LinkedList<>(dispensers);
         this.count = count;
         this.initialSize = dispensers.size();
     }
@@ -55,6 +56,13 @@ public class TNTFillTask extends BukkitRunnable {
         }
 
         int maxIters = Math.min(FILLS_PER_ITERATION, dispensers.size());
+        int availableTNT = tntProvider.getTnt();
+
+        if (availableTNT < count) {
+            tntProvider.sendMessage(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
+            cancel();
+            return;
+        }
 
         for (int i = 0; i < maxIters; i++) {
             Block block = dispensers.poll();
@@ -65,12 +73,6 @@ public class TNTFillTask extends BukkitRunnable {
             int canBeAdded = cmdTntFill.getAddable(dispenser.getInventory(), Material.TNT);
             if (canBeAdded <= 0) continue;
             int toAdd = Math.min(canBeAdded, count);
-
-            if (toAdd > tntProvider.getTnt()) {
-                tntProvider.sendMessage(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
-                cancel();
-                return;
-            }
 
             tntProvider.takeTnt(toAdd);
             dispenser.getInventory().addItem(new ItemStack(Material.TNT, toAdd));

@@ -20,14 +20,15 @@ public class WarmUpUtil {
         if (delay > 0) {
             if (player.isWarmingUp()) {
                 player.msg(TL.WARMUPS_ALREADY);
-            } else {
-                player.msg(translationKey.format(action, delay));
-                int id = Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-                    player.stopWarmup();
-                    runnable.run();
-                }, delay * 20).getTaskId();
-                player.addWarmup(warmup, id);
+                return;
             }
+
+            player.msg(translationKey.format(action, delay));
+            int id = Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+                player.stopWarmup();
+                runnable.run();
+            }, delay * 20).getTaskId();
+            player.addWarmup(warmup, id);
         } else {
             runnable.run();
         }

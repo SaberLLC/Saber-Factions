@@ -799,38 +799,26 @@ public class FactionsPlayerListener implements Listener {
     }
 
     @EventHandler
-    public void AsyncPlayerChatEvent(AsyncPlayerChatEvent e) {
-        Player p = e.getPlayer();
+    public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
+        Player player = event.getPlayer();
 
-        if (CmdFGlobal.toggled.contains(p.getUniqueId())) {
-            //they're muted, check status of Faction Chat
-            if (FPlayers.getInstance().getByPlayer(p).getFaction() == null) {
-                //they're muted, and not in a faction, cancel and return
-                e.setCancelled(true);
+        if (CmdFGlobal.toggled.contains(player.getUniqueId())) {
+            if (FPlayers.getInstance().getByPlayer(player).getFaction() == null ||
+                    !FPlayers.getInstance().getByPlayer(player).getChatMode().isAtLeast(ChatMode.ALLIANCE)) {
+                event.setCancelled(true);
                 return;
-            } else {
-                //are in a faction that's not Wilderness, SafeZone, or Warzone, check their chat status
-                if (!FPlayers.getInstance().getByPlayer(p).getChatMode().isAtLeast(ChatMode.ALLIANCE)) {
-                    //their Faction Chat Mode is not at-least a Alliance, cancel and return
-                    e.setCancelled(true);
-                    return;
-                }
             }
         }
 
-        //we made it this far, since we didn't return yet, we must have sent the chat event through
-        //iterate through all of recipients and check if they're muted, then remove them from the event list
+        Set<Player> mutedRecipients = new HashSet<>(event.getRecipients());
 
-        List<Player> l = new ArrayList<>(e.getRecipients());
-
-        for (int i = l.size() - 1; i >= 0; i--) { // going backwards in the list to prevent a ConcurrentModificationException
-            Player recipient = l.get(i);
-            if (recipient != null) {
-                if (CmdFGlobal.toggled.contains(recipient.getUniqueId())) {
-                    e.getRecipients().remove(recipient);
-                }
+        for (Player recipient : event.getRecipients()) {
+            if (CmdFGlobal.toggled.contains(recipient.getUniqueId())) {
+                mutedRecipients.remove(recipient);
             }
         }
+
+        event.getRecipients().retainAll(mutedRecipients);
     }
 
     @EventHandler

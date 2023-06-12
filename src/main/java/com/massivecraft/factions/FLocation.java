@@ -8,6 +8,7 @@ import com.massivecraft.factions.util.WorldUtil;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.Serializable;
@@ -59,7 +60,7 @@ public final class FLocation implements Serializable {
                             .build(new CacheLoader<Long, FLocation>() {
                                 @ParametersAreNonnullByDefault
                                 @Override
-                                public FLocation load(Long key) {
+                                public @NotNull FLocation load(Long key) {
                                     return new FLocation(world, (int) key.longValue(), (int) (key >> 32));
                                 }
                             })
@@ -195,30 +196,25 @@ public final class FLocation implements Serializable {
 
 
     public static boolean isOutsideWorldBorder(World world, int x, int z, int buffer) {
-        if (!WORLD_BORDER_SUPPORT) {
+        if (!WORLD_BORDER_SUPPORT || world.getWorldBorder().getSize() == 0) {
             return false;
         }
+
         WorldBorder border = world.getWorldBorder();
-        if (border.getSize() == 0) {
-            return false;
-        }
         Location center = border.getCenter();
-
         double size = border.getSize() / 2.0D;
-
         int bufferBlocks = buffer << 4;
-
-        double borderMinX = (center.getX() - size) + bufferBlocks;
-        double borderMinZ = (center.getZ() - size) + bufferBlocks;
-        double borderMaxX = (center.getX() + size) - bufferBlocks;
-        double borderMaxZ = (center.getZ() + size) - bufferBlocks;
+        double borderMinX = center.getX() - size + bufferBlocks;
+        double borderMinZ = center.getZ() - size + bufferBlocks;
+        double borderMaxX = center.getX() + size - bufferBlocks;
+        double borderMaxZ = center.getZ() + size - bufferBlocks;
 
         int chunkMinX = WorldUtil.chunkToBlock(x);
-        int chunkMaxX = chunkMinX | 15;
         int chunkMinZ = WorldUtil.chunkToBlock(z);
+        int chunkMaxX = chunkMinX | 15;
         int chunkMaxZ = chunkMinZ | 15;
 
-        return (chunkMinX >= borderMaxX) || (chunkMinZ >= borderMaxZ) || (chunkMaxX <= borderMinX) || (chunkMaxZ <= borderMinZ);
+        return chunkMinX >= borderMaxX || chunkMinZ >= borderMaxZ || chunkMaxX <= borderMinX || chunkMaxZ <= borderMinZ;
     }
 
     public boolean isOutsideWorldBorder(World world, int buffer) {
