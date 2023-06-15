@@ -95,6 +95,7 @@ public class AntiDupe implements Listener {
         return adjacentBlocks;
     }
 
+    // getDirection is not available in 1.8 API, so adding it here separately
     private Vector getDirection(BlockFace blockFace) {
         int modX = blockFace.getModX();
         int modY = blockFace.getModY();
