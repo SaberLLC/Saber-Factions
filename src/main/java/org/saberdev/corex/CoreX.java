@@ -169,10 +169,6 @@ public class CoreX {
             initializedFeatures.add(new AntiRedstoneOnTrapdoorCrash());
         }
 
-        if (handleFeatureRegistry("Anti-Bed-Crop-Dupe")) {
-            initializedFeatures.add(new AntiBedCropDupe());
-        }
-
         //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {
         //    FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ChunkBusterListener(), FactionsPlugin.getInstance());
         //    FactionsPlugin.getInstance().getCommand("chunkbuster").setExecutor(new CommandChunkbuster());

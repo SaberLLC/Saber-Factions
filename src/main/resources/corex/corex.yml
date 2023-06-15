@@ -45,7 +45,6 @@ Features:
   God-Apple-Cooldown: false #Denies players spam eating god apples
   Global-Gamemode: true #Allows ops to change worlds and keep their game mode
   Anti-Redstone-Trapdoor-Crash: true #Prevents a crash/lag method affecting 1.13 - 1.19.3
-  Anti-Bed-Crop-Dupe: true #Prevents players duping crops when placing beds inside protected land with crops
 
 AntiSpawnerMine:
   Radius: 20.0 # Radius that the player will be denied mining spawners when an enemy is near.
