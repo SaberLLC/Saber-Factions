@@ -1187,6 +1187,9 @@ public enum TL {
      */
     GENERIC_YOU("you"),
     GENERIC_YOURFACTION("your faction"),
+    GENERAL_ENABLED("Enabled"),
+    GENERAL_DISABLED("Disabled"),
+
     GENERIC_NOPERMISSION("You don't have permission to %1$s."),
     GENERIC_ACTION_NOPERMISSION("You don't have permission to use %1$s"),
     GENERIC_FPERM_NOPERMISSION("&7The faction leader does not allow you to &c%1$s."),

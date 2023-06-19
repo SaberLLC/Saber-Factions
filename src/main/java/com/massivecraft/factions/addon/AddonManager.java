@@ -19,74 +19,70 @@ public final class AddonManager {
 
     private static AddonManager addonManagerInstance;
 
-    private File addonFolder;
-    private File addonConfigFolder;
-    private FactionsPlugin plugin;
+    private final File addonFolder;
+    private final File addonConfigFolder;
+    private final FactionsPlugin plugin;
 
     private AddonManager(final FactionsPlugin plugin) {
-
         this.plugin = plugin;
-
-        addonFolder = new File(plugin.getDataFolder() + "/addons");
-
-        if (!addonFolder.exists()) {
-            addonFolder.mkdir();
-        }
-
-        addonConfigFolder = new File(plugin.getDataFolder() + "/configuration/addons");
-        if (!addonConfigFolder.exists()) {
-            addonConfigFolder.mkdir();
-        }
+        this.addonFolder = new File(plugin.getDataFolder(), "addons");
+        this.addonConfigFolder = new File(plugin.getDataFolder(), "configuration/addons");
+        createFoldersIfNeeded();
     }
 
-    public static AddonManager getAddonManagerInstance() {
+    public static synchronized AddonManager getAddonManagerInstance() {
         if (addonManagerInstance == null) {
             addonManagerInstance = new AddonManager(FactionsPlugin.getInstance());
         }
         return addonManagerInstance;
     }
 
-    private File[] loadAddonFiles() {
-        return addonFolder.listFiles(file -> !file.isDirectory() && file.getName().endsWith("jar"));
+    private void createFoldersIfNeeded() {
+        createFolderIfNotExists(addonFolder);
+        createFolderIfNotExists(addonConfigFolder);
     }
 
+    private void createFolderIfNotExists(File folder) {
+        if (!folder.exists() && !folder.mkdirs()) {
+            throw new RuntimeException("Failed to create folder: " + folder.getAbsolutePath());
+        }
+    }
+
+    private File[] loadAddonFiles() {
+        return addonFolder.listFiles(file -> file.isFile() && file.getName().endsWith(".jar"));
+    }
 
     public void loadAddons() {
         for (File addon : loadAddonFiles()) {
-            Class<?> addonMainClass = getAddonMainClass(addon);
+            Class<? extends FactionsAddon> addonMainClass = getAddonMainClass(addon);
             if (addonMainClass != null) {
-                Constructor<?> constructor;
-                FactionsAddon factionsAddon;
                 try {
-                    constructor = addonMainClass.getConstructor(FactionsPlugin.class);
-                    factionsAddon = (FactionsAddon) constructor.newInstance(plugin);
+                    Constructor<? extends FactionsAddon> constructor = addonMainClass.getConstructor(FactionsPlugin.class);
+                    FactionsAddon factionsAddon = constructor.newInstance(plugin);
                     FactionsPlugin.getInstance().getFactionsAddonHashMap().put(factionsAddon.getAddonName(), factionsAddon);
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
                     System.out.println("[Factions] Error instantiating addon: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }
     }
 
+    private Class<? extends FactionsAddon> getAddonMainClass(File addon) {
+        Class<? extends FactionsAddon> mainClass = null;
+        try (URLClassLoader child = new URLClassLoader(new URL[]{addon.toURI().toURL()}, getClass().getClassLoader());
+             JarFile jarFile = new JarFile(addon)) {
 
-    private Class<?> getAddonMainClass(final File addon) {
-        //Setup this so we go deep into directories
-        Class<?> mainClass = null;
-        try {
-            URLClassLoader child = new URLClassLoader(
-                    new URL[]{addon.toURI().toURL()},
-                    this.getClass().getClassLoader());
-            JarFile jarFile = new JarFile(addon);
             Enumeration<JarEntry> allEntries = jarFile.entries();
             while (allEntries.hasMoreElements()) {
                 JarEntry entry = allEntries.nextElement();
-                if (!entry.getName().endsWith(".class")) continue;
-                String className = entry.getName().replace(".class", "");
-                className = className.replace("/", ".");
+                if (!entry.getName().endsWith(".class")) {
+                    continue;
+                }
+                String className = entry.getName().replace(".class", "").replace("/", ".");
                 Class<?> clazz = child.loadClass(className);
-                if (clazz.getSuperclass().equals(FactionsAddon.class)) {
-                    mainClass = clazz;
+                if (FactionsAddon.class.isAssignableFrom(clazz)) {
+                    mainClass = clazz.asSubclass(FactionsAddon.class);
                     break;
                 }
             }
@@ -95,27 +91,5 @@ public final class AddonManager {
         }
         return mainClass;
     }
-    //private Class<?> getAddonMainClass(final File addon) {
-    //    Class<?> mainClass = null;
-    //    try (URLClassLoader child = new URLClassLoader(
-    //            new URL[]{addon.toURI().toURL()},
-    //            this.getClass().getClassLoader());
-    //         JarFile jarFile = new JarFile(addon)) {
-    //        Enumeration<JarEntry> allEntries = jarFile.entries();
-    //        while (allEntries.hasMoreElements() && mainClass == null) {
-    //            JarEntry entry = allEntries.nextElement();
-    //            if (!entry.getName().endsWith(".class")) continue;
-    //            String className = entry.getName().replace("/", ".").replace(".class", "");
-    //            try {
-    //                Class<?> clazz = child.loadClass(className);
-    //                if (clazz.getSuperclass().equals(FactionsAddon.class)) {
-    //                    mainClass = clazz;
-    //                }
-    //            } catch (ClassNotFoundException ignored) {} //continue to next entry
-    //        }
-    //    } catch (IOException exception) {
-    //        exception.printStackTrace();
-    //    }
-    //    return mainClass;
-    //}
 }
+

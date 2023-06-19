@@ -22,27 +22,21 @@ import org.bukkit.World;
 
 public abstract class SpiralTask implements Runnable {
 
-    // general task-related reference data
-    private final transient World world;
-    private final transient int limit;
-    private transient boolean readyToGo = false;
-    private transient int taskID = -1;
-    // values for the spiral pattern routine
-    private transient int x = 0;
-    private transient int z = 0;
-    private transient boolean isZLeg = false;
-    private transient boolean isNeg = false;
-    private transient int length = -1;
-    private transient int current = 0;
+    private final World world;
+    private final int limit;
+    private boolean readyToGo = false;
+    private int taskID = -1;
+    private int x = 0;
+    private int z = 0;
+    private int length = -1;
+    private int current = 0;
 
-    @SuppressWarnings("LeakingThisInConstructor")
     public SpiralTask(FLocation fLocation, int radius) {
-        // limit is determined based on spiral leg length for given radius; see insideRadius()
         this.limit = (radius - 1) * 2;
 
         this.world = Bukkit.getWorld(fLocation.getWorldName());
         if (this.world == null) {
-            Logger.print( "[SpiralTask] A valid world must be specified!", Logger.PrefixType.WARNING);
+            Logger.print("[SpiralTask] A valid world must be specified!", Logger.PrefixType.WARNING);
             this.stop();
             return;
         }
@@ -52,48 +46,26 @@ public abstract class SpiralTask implements Runnable {
 
         this.readyToGo = true;
 
-        // get this party started
-        this.setTaskID(Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), this, 2, 2).getTaskId());
+        this.setTaskID(Bukkit.getScheduler().runTaskTimer(FactionsPlugin.getInstance(), this, 2, 2).getTaskId());
     }
 
     private static long now() {
-        return System.currentTimeMillis();
+        return System.nanoTime();
     }
 
-    /*
-     * This is where the necessary work is done; you'll need to override this method with whatever you want
-     * done at each chunk in the spiral pattern.
-     * Return false if the entire task needs to be aborted, otherwise return true to continue.
-     */
     public abstract boolean work();
 
-    /*
-     * Returns an FLocation pointing at the current chunk X and Z values.
-     */
     public final FLocation currentFLocation() {
         return FLocation.wrap(world.getName(), x, z);
     }
 
-    /*
-     * Returns a Location pointing at the current chunk X and Z values.
-     * note that the Location is at the corner of the chunk, not the center.
-     */
     public final Location currentLocation() {
         return new Location(world, WorldUtil.chunkToBlock(x), 65.0, WorldUtil.chunkToBlock(z));
     }
 
-    /*
-     * Returns current chunk X and Z values.
-     */
     public final int getX() {
         return x;
     }
-
-
-
-    /*
-     * Below are the guts of the class, which you normally wouldn't need to mess with.
-     */
 
     public final int getZ() {
         return z;
@@ -111,65 +83,48 @@ public abstract class SpiralTask implements Runnable {
             return;
         }
 
-        // this is set so it only does one iteration at a time, no matter how frequently the timer fires
         readyToGo = false;
 
-        // make sure we're still inside the specified radius
         if (!this.insideRadius()) {
             return;
         }
 
-        // track this to keep one iteration from dragging on too long and possibly choking the system
         long loopStartTime = now();
 
-        // keep going until the task has been running for 20ms or more, then stop to take a breather
         while (now() < loopStartTime + 20) {
-            // run the primary task on the current X/Z coordinates
             if (!this.work()) {
                 this.finish();
                 return;
             }
 
-            // move on to next chunk in spiral
             if (!this.moveToNext()) {
                 return;
             }
         }
 
-        // ready for the next iteration to run
         readyToGo = true;
     }
 
-    // step through chunks in spiral pattern from center; returns false if we're done, otherwise returns true
     public final boolean moveToNext() {
         if (!this.valid()) {
             return false;
         }
 
-        // make sure we don't need to turn down the next leg of the spiral
         if (current < length) {
             current++;
-
-            // if we're outside the radius, we're done
             if (!this.insideRadius()) {
                 return false;
             }
-        } else {    // one leg/side of the spiral down...
+        } else {
             current = 0;
-            isZLeg ^= true;
-            // every second leg (between X and Z legs, negative or positive), length increases
-            if (isZLeg) {
-                isNeg ^= true;
-                length++;
-            }
+            length++;
         }
 
-        // move one chunk further in the appropriate direction
-        if (isZLeg) {
-            z += (isNeg) ? -1 : 1;
-        } else {
-            x += (isNeg) ? -1 : 1;
-        }
+        boolean isZLeg = length % 2 == 0;
+        boolean isNeg = length / 2 % 2 != 0;
+
+        z += (isZLeg ? (isNeg ? -1 : 1) : 0);
+        x += (isZLeg ? 0 : (isNeg ? -1 : 1));
 
         return true;
     }
@@ -182,24 +137,20 @@ public abstract class SpiralTask implements Runnable {
         return inside;
     }
 
-    // for successful completion
     public void finish() {
-//		FactionsPlugin.getInstance().log("SpiralTask successfully completed!");
         this.stop();
     }
 
-    // we're done, whether finished or cancelled
     public final void stop() {
         if (!this.valid()) {
             return;
         }
 
         readyToGo = false;
-        Bukkit.getServer().getScheduler().cancelTask(taskID);
+        Bukkit.getScheduler().cancelTask(taskID);
         taskID = -1;
     }
 
-    // is this task still valid/workable?
     public final boolean valid() {
         return taskID != -1;
     }

@@ -16,16 +16,16 @@ public class PlayerTNTProvider implements TNTProvider {
 
     @Override
     public int getTnt() {
+        PlayerInventory inventory = fPlayer.getPlayer().getInventory();
+        ItemStack[] contents = inventory.getContents();
         int result = 0;
-        PlayerInventory pi = fPlayer.getPlayer().getInventory();
-        ItemStack[] contents;
-        for (int length = (contents = pi.getContents()).length, i = 0; i < length; ++i) {
-            ItemStack is = contents[i];
-            if (is != null && is.getType() == Material.TNT) {
-                if (is.hasItemMeta() || is.getItemMeta().hasDisplayName() || is.getItemMeta().hasLore()) continue;
-                result += is.getAmount();
+
+        for (ItemStack item : contents) {
+            if (item != null && item.getType() == Material.TNT && !item.hasItemMeta() && !item.getItemMeta().hasDisplayName() && !item.getItemMeta().hasLore()) {
+                result += item.getAmount();
             }
         }
+
         return result;
     }
 
@@ -39,12 +39,19 @@ public class PlayerTNTProvider implements TNTProvider {
         Inventory inventory = fPlayer.getPlayer().getInventory();
         ItemStack item = new ItemStack(Material.TNT);
 
-        if (toRemove <= 0 || inventory == null || item == null) return;
-        for (int i = 0; i < inventory.getSize(); i++) {
-            ItemStack loopItem = inventory.getItem(i);
-            if (loopItem == null || !item.isSimilar(loopItem) || loopItem.hasItemMeta() || loopItem.getItemMeta().hasDisplayName() || loopItem.getItemMeta().hasLore())
+        if (toRemove <= 0 || inventory == null || item == null) {
+            return;
+        }
+
+        ItemStack[] contents = inventory.getContents();
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack loopItem = contents[i];
+            if (loopItem == null || !item.isSimilar(loopItem) || loopItem.hasItemMeta() || loopItem.getItemMeta().hasDisplayName() || loopItem.getItemMeta().hasLore()) {
                 continue;
-            if (toRemove <= 0) return;
+            }
+            if (toRemove <= 0) {
+                return;
+            }
             if (toRemove < loopItem.getAmount()) {
                 loopItem.setAmount(loopItem.getAmount() - toRemove);
                 return;

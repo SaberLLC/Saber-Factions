@@ -16,9 +16,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.Collection;
 import java.util.UnknownFormatConversionException;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class FactionsChatListener implements Listener {
 
@@ -35,102 +37,101 @@ public class FactionsChatListener implements Listener {
         String msg = event.getMessage();
         FPlayer me = FPlayers.getInstance().getByPlayer(talkingPlayer);
         ChatMode chat = me.getChatMode();
+        Faction myFaction = me.getFaction();
+        String nameAndTag = ChatColor.stripColor(me.getNameAndTag());
 
-        // Is the player entering a password for a warp?
         if (me.isEnteringPassword()) {
             event.setCancelled(true);
-            me.sendMessage(ChatColor.DARK_GRAY + CHAT_PATTERN.matcher(event.getMessage()).replaceAll("*"));
-            if (me.getFaction().isWarpPassword(me.getEnteringWarp(), event.getMessage())) {
+            String censoredMessage = ChatColor.DARK_GRAY + CHAT_PATTERN.matcher(msg).replaceAll("*");
+            me.sendMessage(censoredMessage);
+
+            if (myFaction.isWarpPassword(me.getEnteringWarp(), msg)) {
                 doWarmup(me.getEnteringWarp(), me);
             } else {
-                // Invalid Password
                 me.msg(TL.COMMAND_FWARP_INVALID_PASSWORD);
             }
+
             me.setEnteringPassword(false, "");
             return;
         }
 
-        //Is it a MOD chat
-        if (chat == ChatMode.MOD) {
-            Faction myFaction = me.getFaction();
+        if (chat == ChatMode.MOD && me.getRole().isAtLeast(Role.MODERATOR)) {
+            String modMessage = String.format(Conf.modChatFormat, nameAndTag, msg);
+            Collection<FPlayer> modPlayers = myFaction.getFPlayers().stream()
+                    .filter(fplayer -> fplayer.getRole().isAtLeast(Role.MODERATOR))
+                    .collect(Collectors.toList());
 
-            String message = String.format(Conf.modChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
-
-            //Send to all mods
-            if (me.getRole().isAtLeast(Role.MODERATOR)) {
-                // Iterates only through the factions' members so we enhance performance.
-                for (FPlayer fplayer : myFaction.getFPlayers()) {
-                    if (fplayer.getRole().isAtLeast(Role.MODERATOR)) {
-                        fplayer.sendMessage(message);
-                    } else if (fplayer.isSpyingChat() && me != fplayer) {
-                        fplayer.sendMessage("[MCspy]: " + message);
-                    }
-                }
-            } else {
-                // Just in case player gets demoted while in faction chat.
-                me.msg(TL.COMMAND_CHAT_MOD_ONLY);
-                event.setCancelled(true);
-                me.setChatMode(ChatMode.FACTION);
-                return;
+            for (FPlayer fplayer : modPlayers) {
+                fplayer.sendMessage(modMessage);
             }
 
+            Collection<FPlayer> spyingPlayers = myFaction.getFPlayers().stream()
+                    .filter(fplayer -> fplayer.isSpyingChat() && me != fplayer)
+                    .collect(Collectors.toList());
 
-            Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("Mod Chat: " + message));
+            for (FPlayer fplayer : spyingPlayers) {
+                fplayer.sendMessage("[MCspy]: " + modMessage);
+            }
 
+            Bukkit.getLogger().log(Level.INFO, "Mod Chat: " + modMessage);
             event.setCancelled(true);
         } else if (chat == ChatMode.FACTION) {
-            Faction myFaction = me.getFaction();
+            String factionMessage = String.format(Conf.factionChatFormat, me.describeTo(myFaction), msg);
+            myFaction.sendMessage(factionMessage);
 
-            String message = String.format(Conf.factionChatFormat, me.describeTo(myFaction), msg);
-            myFaction.sendMessage(message);
+            Collection<FPlayer> spyingPlayers = FPlayers.getInstance().getOnlinePlayers().stream()
+                    .filter(fplayer -> fplayer.isSpyingChat() && fplayer.getFaction() != myFaction && me != fplayer)
+                    .collect(Collectors.toList());
 
-            Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("FactionChat " + myFaction.getTag() + ": " + message));
-
-            //Send to any players who are spying chat
-            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                if (fplayer.isSpyingChat() && fplayer.getFaction() != myFaction && me != fplayer) {
-                    fplayer.sendMessage("[FCspy] " + myFaction.getTag() + ": " + message);
-                }
+            for (FPlayer fplayer : spyingPlayers) {
+                fplayer.sendMessage("[FCspy] " + myFaction.getTag() + ": " + factionMessage);
             }
+
+            Bukkit.getLogger().log(Level.INFO, "FactionChat " + myFaction.getTag() + ": " + factionMessage);
             event.setCancelled(true);
         } else if (chat == ChatMode.ALLIANCE) {
-            Faction myFaction = me.getFaction();
+            String allianceMessage = String.format(Conf.allianceChatFormat, nameAndTag, msg);
+            myFaction.sendMessage(allianceMessage);
 
-            String message = String.format(Conf.allianceChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
+            Collection<FPlayer> alliancePlayers = FPlayers.getInstance().getOnlinePlayers().stream()
+                    .filter(fplayer -> myFaction.getRelationTo(fplayer) == Relation.ALLY && !fplayer.isIgnoreAllianceChat())
+                    .collect(Collectors.toList());
 
-            //Send message to our own faction
-            myFaction.sendMessage(message);
-
-            //Send to all our allies
-            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                if (myFaction.getRelationTo(fplayer) == Relation.ALLY && !fplayer.isIgnoreAllianceChat()) {
-                    fplayer.sendMessage(message);
-                } else if (fplayer.isSpyingChat() && me != fplayer) {
-                    fplayer.sendMessage("[ACspy]: " + message);
-                }
+            for (FPlayer fplayer : alliancePlayers) {
+                fplayer.sendMessage(allianceMessage);
             }
 
-            Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("AllianceChat: " + message));
+            Collection<FPlayer> spyingPlayers = FPlayers.getInstance().getOnlinePlayers().stream()
+                    .filter(fplayer -> fplayer.isSpyingChat() && me != fplayer)
+                    .collect(Collectors.toList());
 
+            for (FPlayer fplayer : spyingPlayers) {
+                fplayer.sendMessage("[ACspy]: " + allianceMessage);
+            }
+
+            Bukkit.getLogger().log(Level.INFO, "AllianceChat: " + allianceMessage);
             event.setCancelled(true);
         } else if (chat == ChatMode.TRUCE) {
-            Faction myFaction = me.getFaction();
+            String truceMessage = String.format(Conf.truceChatFormat, nameAndTag, msg);
+            myFaction.sendMessage(truceMessage);
 
-            String message = String.format(Conf.truceChatFormat, ChatColor.stripColor(me.getNameAndTag()), msg);
+            Collection<FPlayer> trucePlayers = FPlayers.getInstance().getOnlinePlayers().stream()
+                    .filter(fplayer -> myFaction.getRelationTo(fplayer) == Relation.TRUCE)
+                    .collect(Collectors.toList());
 
-            //Send message to our own faction
-            myFaction.sendMessage(message);
-
-            //Send to all our truces
-            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                if (myFaction.getRelationTo(fplayer) == Relation.TRUCE) {
-                    fplayer.sendMessage(message);
-                } else if (fplayer.isSpyingChat() && fplayer != me) {
-                    fplayer.sendMessage("[TCspy]: " + message);
-                }
+            for (FPlayer fplayer : trucePlayers) {
+                fplayer.sendMessage(truceMessage);
             }
 
-            Bukkit.getLogger().log(Level.INFO, ChatColor.stripColor("TruceChat: " + message));
+            Collection<FPlayer> spyingPlayers = FPlayers.getInstance().getOnlinePlayers().stream()
+                    .filter(fplayer -> fplayer.isSpyingChat() && fplayer != me)
+                    .collect(Collectors.toList());
+
+            for (FPlayer fplayer : spyingPlayers) {
+                fplayer.sendMessage("[TCspy]: " + truceMessage);
+            }
+
+            Bukkit.getLogger().log(Level.INFO, "TruceChat: " + truceMessage);
             event.setCancelled(true);
         }
     }

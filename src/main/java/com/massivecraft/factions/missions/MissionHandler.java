@@ -32,39 +32,26 @@ import java.util.stream.Stream;
 
 public class MissionHandler implements Listener {
 
-    /**
-     * @author Driftay
-     */
-
     public static final String matchAnythingRegex = ".*";
 
     private static FactionsPlugin plugin;
     private static final Map<String, Map<String, BukkitTask>> deadlines = new HashMap<>();
 
-
     public MissionHandler(FactionsPlugin plugin) {
         MissionHandler.plugin = plugin;
-
 
         long deadlineMillis = plugin.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
 
         if (deadlineMillis > 0L) {
-
             long currentTimeMillis = System.currentTimeMillis();
 
-            Factions.getInstance().getAllFactions().forEach(faction -> {
-                faction.getMissions().forEach((name, mission) -> {
-
-                    long missionStartTimeMillis = mission.getStartTime();
-
-                    long timeTillDeadline = missionStartTimeMillis + deadlineMillis - currentTimeMillis;
-
-                    setDeadlineTask(mission, faction, timeTillDeadline);
-                });
-            });
+            Factions.getInstance().getAllFactions().forEach(faction -> faction.getMissions().forEach((name, mission) -> {
+                long missionStartTimeMillis = mission.getStartTime();
+                long timeTillDeadline = missionStartTimeMillis + deadlineMillis - currentTimeMillis;
+                setDeadlineTask(mission, faction, timeTillDeadline);
+            }));
         }
     }
-
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTame(EntityTameEvent event) {
@@ -169,21 +156,18 @@ public class MissionHandler implements Listener {
     public static void setDeadlineTask(Mission mission, Faction faction, long timeTillDeadline) {
         BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
             ConfigurationSection missionSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
-            if(mission.getProgress() < missionSection.getLong("Mission.Amount", 0L)) {
+            if (mission.getProgress() < missionSection.getLong("Mission.Amount", 0L)) {
                 faction.getMissions().remove(mission.getName());
                 faction.msg(TL.MISSION_MISSION_FAILED, CC.translate(missionSection.getString("Name")));
             }
 
             Map<String, BukkitTask> tasks = deadlines.get(faction.getId());
-
             if (tasks != null) {
                 tasks.remove(mission.getName());
             }
-
         }, timeTillDeadline / 50L);
 
-        deadlines.computeIfAbsent(faction.getId(), id -> new HashMap<>())
-                .put(mission.getName(), bukkitTask);
+        deadlines.computeIfAbsent(faction.getId(), id -> new HashMap<>()).put(mission.getName(), bukkitTask);
     }
 
     public static void handleMissionsOfType(FPlayer fPlayer, MissionType missionType, BiFunction<Mission, ConfigurationSection, Integer> missionConsumer) {
@@ -205,6 +189,10 @@ public class MissionHandler implements Listener {
     private static void checkIfDone(FPlayer fPlayer, Mission mission, @Nullable ConfigurationSection section) {
         if (section == null)
             return;
+
+        if (!section.getBoolean("enabled")) {
+            return;
+        }
 
         if (mission.getProgress() < section.getLong("Mission.Amount")) {
             return;

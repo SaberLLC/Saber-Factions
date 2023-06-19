@@ -197,6 +197,11 @@ public class MissionGUI implements FactionGUI {
         for (String missionName : configurationSection.getKeys(false)) {
             if (!missionName.equals("FillItem")) {
                 ConfigurationSection section = configurationSection.getConfigurationSection(missionName);
+
+                if(!section.getBoolean("enabled")) {
+                    continue;
+                }
+
                 int slot = section.getInt("Slot");
 
                 String material = section.getString("Material", "DIRT");

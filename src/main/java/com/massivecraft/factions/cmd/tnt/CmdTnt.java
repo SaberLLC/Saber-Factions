@@ -150,6 +150,8 @@ public class CmdTnt extends FCommand {
                         continue;
                     }
                     if (inv.getItem(i).getType() == Material.TNT) {
+                        if (inv.getItem(i).hasItemMeta() || inv.getItem(i).getItemMeta().hasDisplayName() || inv.getItem(i).getItemMeta().hasLore())
+                            continue;
                         invTnt += inv.getItem(i).getAmount();
                     }
                 }

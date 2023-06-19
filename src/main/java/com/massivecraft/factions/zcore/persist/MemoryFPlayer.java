@@ -1115,7 +1115,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             }
 
             if (!damage) {
-                msg(TL.COMMAND_FLY_CHANGE, fly ? "enabled" : "disabled");
+                msg(TL.COMMAND_FLY_CHANGE, fly ? TL.GENERAL_ENABLED.toString() : TL.GENERAL_DISABLED.toString());
             } else {
                 msg(TL.COMMAND_FLY_DAMAGE);
             }

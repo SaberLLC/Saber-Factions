@@ -28,6 +28,10 @@ public class CmdTntFill extends FCommand {
 
     private Map<Player, TNTFillTask> fillTaskMap;
 
+    private boolean tntFillEnabled;
+    private int maxTntFillRadius;
+    private int maxTntFillAmount;
+
     public CmdTntFill() {
         super();
         this.fillTaskMap = new WeakHashMap<>();
@@ -36,12 +40,17 @@ public class CmdTntFill extends FCommand {
         this.requiredArgs.add("radius");
         this.requiredArgs.add("amount");
 
+        FactionsPlugin plugin = FactionsPlugin.getInstance();
+        this.tntFillEnabled = plugin.getConfig().getBoolean("Tntfill.enabled");
+        this.maxTntFillRadius = plugin.getConfig().getInt("Tntfill.max-radius");
+        this.maxTntFillAmount = plugin.getConfig().getInt("Tntfill.max-amount");
+
         this.requirements = new CommandRequirements.Builder(Permission.TNTFILL).playerOnly().memberOnly().withAction(PermissableAction.TNTFILL).build();
     }
 
     @Override
     public void perform(CommandContext context) {
-        if (!FactionsPlugin.instance.getConfig().getBoolean("Tntfill.enabled")) {
+        if (!tntFillEnabled) {
             context.msg(TL.COMMAND_TNT_DISABLED_MSG);
             return;
         }
@@ -69,48 +78,51 @@ public class CmdTntFill extends FCommand {
             return;
         }
 
-        if (radius > FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius")) {
-            context.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-radius") + ""));
+        if (radius > maxTntFillRadius) {
+            context.msg(TL.COMMAND_TNTFILL_RADIUSMAX.toString().replace("{max}", String.valueOf(maxTntFillRadius)));
             return;
         }
-        if (amount > FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-amount")) {
-            context.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", FactionsPlugin.getInstance().getConfig().getInt("Tntfill.max-amount") + ""));
+        if (amount > maxTntFillAmount) {
+            context.msg(TL.COMMAND_TNTFILL_AMOUNTMAX.toString().replace("{max}", String.valueOf(maxTntFillAmount)));
             return;
         }
 
         // How many dispensers are we to fill in?
-
         Location start = context.player.getLocation();
         // Keep it on the stack for CPU saving.
         List<Dispenser> opDispensers = new ArrayList<>();
 
         Block startBlock = start.getBlock();
-        for (int x = -radius; x <= radius; x++)
-            for (int y = -radius; y <= radius; y++)
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
                     Block block = startBlock.getRelative(x, y, z);
-                    if (block == null) continue;
                     BlockState blockState = block.getState();
-                    if (!(blockState instanceof Dispenser)) continue;
-                    Dispenser dis = (Dispenser) blockState;
-                    // skip if we can't add anything
-                    if (isInvFull(dis.getInventory())) continue;
-                    opDispensers.add((Dispenser) blockState);
+                    if (blockState instanceof Dispenser) {
+                        Dispenser dispenser = (Dispenser) blockState;
+                        // skip if we can't add anything
+                        if (!isInvFull(dispenser.getInventory())) {
+                            opDispensers.add(dispenser);
+                        }
+                    }
                 }
+            }
+        }
+
         if (opDispensers.isEmpty()) {
-            context.fPlayer.msg(TL.COMMAND_TNTFILL_NODISPENSERS.toString().replace("{radius}", radius + ""));
+            context.fPlayer.msg(TL.COMMAND_TNTFILL_NODISPENSERS.toString().replace("{radius}", String.valueOf(radius)));
             return;
         }
-        int requiredTnt = (opDispensers.size() * amount);
+
+        int requiredTnt = opDispensers.size() * amount;
         int playerTnt = getTNTInside(context.player);
-        // if player does not have enough tnt, just take whatever he has and add it to the bank
-        // then use the bank as source. If bank < required abort.
 
         FactionTNTProvider factionTNTProvider = new FactionTNTProvider(context);
         PlayerTNTProvider playerTNTProvider = new PlayerTNTProvider(context.fPlayer);
 
         if (playerTnt < requiredTnt) {
-            if ((context.faction.getTnt() < (requiredTnt - playerTnt))) {
+            int factionTnt = context.faction.getTnt();
+            if (factionTnt < (requiredTnt - playerTnt)) {
                 context.fPlayer.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
                 return;
             }
@@ -122,7 +134,6 @@ public class CmdTntFill extends FCommand {
         } else {
             fillDispensers(context.player, playerTNTProvider, opDispensers, amount);
         }
-        //context.sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", requiredTnt + "").replace("{dispensers}", opDispensers.size() + ""));
     }
 
     private boolean hasRunningTask(Player player) {
@@ -137,19 +148,12 @@ public class CmdTntFill extends FCommand {
     }
 
     public int getAddable(Inventory inv, Material material) {
-        int output = 0;
-        int notempty = 0;
-        for (int i = 0; i < inv.getSize(); ++i) {
-            ItemStack is = inv.getItem(i);
-            if (is != null) {
-                ++notempty;
-                if (is.getType() == material) {
-                    int amount = is.getAmount();
-                    output += 64 - amount;
-                }
-            }
-        }
-        return output + (inv.getSize() - notempty) * 64;
+        int notempty = (int) Arrays.stream(inv.getContents()).filter(Objects::nonNull).count();
+        return Arrays.stream(inv.getContents())
+                .filter(Objects::nonNull)
+                .filter(item -> item.getType() == material)
+                .mapToInt(item -> 64 - item.getAmount())
+                .sum() + (inv.getSize() - notempty) * 64;
     }
 
     public boolean isInvFull(Inventory inv) {
@@ -157,22 +161,16 @@ public class CmdTntFill extends FCommand {
     }
 
     public int getTNTInside(Player p) {
-        int result = 0;
-        PlayerInventory pi = p.getInventory();
-        ItemStack[] contents;
-        for (int length = (contents = pi.getContents()).length, i = 0; i < length; ++i) {
-            ItemStack is = contents[i];
-            if (is != null && is.getType() == Material.TNT) {
-                if (is.hasItemMeta() || is.getItemMeta().hasDisplayName() || is.getItemMeta().hasLore()) continue;
-                result += is.getAmount();
-            }
-        }
-        return result;
+        return Arrays.stream(p.getInventory().getContents())
+                .filter(Objects::nonNull)
+                .filter(item -> item.getType() == Material.TNT)
+                .filter(item -> !item.hasItemMeta() || !item.getItemMeta().hasDisplayName() || !item.getItemMeta().hasLore())
+                .mapToInt(ItemStack::getAmount)
+                .sum();
     }
 
     @Override
     public TL getUsageTranslation() {
         return TL.COMMAND_TNTFILL_DESCRIPTION;
     }
-
 }
