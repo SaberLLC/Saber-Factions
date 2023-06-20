@@ -165,6 +165,10 @@ public class CoreX {
             initializedFeatures.add(new AntiMobFactionTerritory());
         }
 
+        if (handleFeatureRegistry("Anti-Redstone-Trapdoor-Crash")) {
+            initializedFeatures.add(new AntiRedstoneOnTrapdoorCrash());
+        }
+
         //if(getConfig().fetchBoolean("Features.Use-Chunkbusters")) {
         //    FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new ChunkBusterListener(), FactionsPlugin.getInstance());
         //    FactionsPlugin.getInstance().getCommand("chunkbuster").setExecutor(new CommandChunkbuster());

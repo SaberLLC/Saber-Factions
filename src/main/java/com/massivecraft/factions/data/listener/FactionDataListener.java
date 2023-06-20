@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * @Author: Driftay
@@ -22,18 +21,14 @@ public class FactionDataListener implements Listener {
     public void onFPlayerCreate(FPlayerJoinEvent e) {
         Faction faction = e.getFaction();
         if (e.getReason() == FPlayerJoinEvent.PlayerJoinReason.CREATE) {
-            Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(),
-                    (Runnable) new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            if (!FactionDataHelper.doesConfigurationExist(faction)) {
-                                FactionDataHelper.createConfiguration(faction);
-                                Bukkit.getLogger().info("[FactionData] Creating Faction Data for " + faction.getTag());
-                            }
-                            final FactionData data = new FactionData(faction);
-                            new FactionDataHelper(data);
-                        }
-                    });
+            Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
+                if (!FactionDataHelper.doesConfigurationExist(faction)) {
+                    FactionDataHelper.createConfiguration(faction);
+                    Bukkit.getLogger().info("[FactionData] Creating Faction Data for " + faction.getTag());
+                }
+                final FactionData data = new FactionData(faction);
+                new FactionDataHelper(data);
+            });
         }
     }
 
@@ -45,13 +40,9 @@ public class FactionDataListener implements Listener {
             return;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(),
-                (Runnable) new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        data.deleteFactionData(e.getFaction());
-                        data.remove();
-                    }
-                });
+        Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
+            data.deleteFactionData(e.getFaction());
+            data.remove();
+        });
     }
 }
