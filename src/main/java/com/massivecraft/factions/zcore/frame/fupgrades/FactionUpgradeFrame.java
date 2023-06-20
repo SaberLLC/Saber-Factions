@@ -35,66 +35,71 @@ public class FactionUpgradeFrame extends SaberGUI {
 
     @Override
     public void redraw() {
-
         ConfigurationSection config = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getConfigurationSection("fupgrades.MainMenu.DummyItem");
         if (config != null) {
             ItemStack dummy = buildDummyItem(config);
             for (Integer slot : config.getIntegerList("Slots")) {
                 this.setItem(slot, new InventoryItem(dummy));
             }
-
         }
 
         FPlayer fme = FPlayers.getInstance().getByPlayer(player);
-
         UpgradeManager upgradeManager = UpgradeManager.getInstance();
-        for (Map.Entry<String, Integer> upgrades : UpgradeManager.getInstance().getUpgrades().entrySet()) {
-            String upgradeId = upgrades.getKey();
+        YamlConfiguration upgradeConf = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig();
 
+        for (Map.Entry<String, Integer> upgrade : upgradeManager.getUpgrades().entrySet()) {
+            String upgradeId = upgrade.getKey();
             int currentFactionLevel = faction.getUpgrade(upgradeId);
-            int upgradeMaxLevel = upgrades.getValue();
+            int upgradeMaxLevel = upgrade.getValue();
 
+            int cost = upgradeConf.getInt("fupgrades.MainMenu." + upgradeId + ".Cost.level-" + (currentFactionLevel + 1));
 
             this.setItem(upgradeManager.getSlot(upgradeId), new InventoryItem(upgradeManager.buildAsset(faction, upgradeId)).click(ClickType.LEFT, () -> {
-                if (currentFactionLevel >= upgradeMaxLevel) return;
-
-                YamlConfiguration upgradeConf = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig();
-                int cost = upgradeConf.getInt("fupgrades.MainMenu." + upgradeId + ".Cost.level-" + (faction.getUpgrade(upgradeId) + 1));
-
-
-                if (upgradeConf.getBoolean("fupgrades.usePointsAsCurrency")) {
-                    if (faction.getPoints() >= cost) {
-                        faction.setPoints(faction.getPoints() - cost);
-                        fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, faction.getPoints());
-                        handleTransaction(fme, upgradeId);
-                        faction.setUpgrade(upgradeId, currentFactionLevel + 1);
-                        redraw();
-                    } else {
-                        fme.getPlayer().closeInventory();
-                        fme.msg(TL.COMMAND_UPGRADES_NOT_ENOUGH_POINTS);
-                    }
-                    return;
-                }
-
-                EconomyParticipator economyParticipator = Conf.bankEnabled && upgradeConf.getBoolean("fupgrades.factionPaysForUpgradeCost", false) ? faction : fme;
-
-                if (Econ.modifyMoney(economyParticipator, -cost, TextUtil.parse(TL.UPGRADE_TOUPGRADE.toString(), upgradeId), TextUtil.parse(TL.UPGRADE_FORUPGRADE.toString(), upgradeId))) {
-                    handleTransaction(fme, upgradeId);
-                    faction.setUpgrade(upgradeId, currentFactionLevel + 1);
-                    redraw();
-                    return;
-                }
-                if (fme.hasMoney(cost)) {
-                    fme.takeMoney(cost);
-                    handleTransaction(fme, upgradeId);
-                    faction.setUpgrade(upgradeId, currentFactionLevel + 1);
-                    redraw();
-                    return;
-                }
-                fme.getPlayer().closeInventory();
-                fme.msg(TL.GENERIC_NOTENOUGHMONEY);
+                handleUpgradeClick(fme, upgradeId, currentFactionLevel, upgradeMaxLevel, cost, upgradeConf);
             }));
         }
+    }
+
+    private void handleUpgradeClick(FPlayer fme, String upgradeId, int currentFactionLevel, int upgradeMaxLevel, int cost, YamlConfiguration upgradeConf) {
+        Faction faction = fme.getFaction();
+
+        if (currentFactionLevel >= upgradeMaxLevel) {
+            return;
+        }
+
+        if (upgradeConf.getBoolean("fupgrades.usePointsAsCurrency")) {
+            if (faction.getPoints() >= cost) {
+                faction.setPoints(faction.getPoints() - cost);
+                fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, faction.getPoints());
+                handleTransaction(fme, upgradeId);
+                faction.setUpgrade(upgradeId, currentFactionLevel + 1);
+                redraw();
+            } else {
+                fme.getPlayer().closeInventory();
+                fme.msg(TL.COMMAND_UPGRADES_NOT_ENOUGH_POINTS);
+            }
+            return;
+        }
+
+        EconomyParticipator economyParticipator = Conf.bankEnabled && upgradeConf.getBoolean("fupgrades.factionPaysForUpgradeCost", false) ? faction : fme;
+
+        if (Econ.modifyMoney(economyParticipator, -cost, TextUtil.parse(TL.UPGRADE_TOUPGRADE.toString(), upgradeId), TextUtil.parse(TL.UPGRADE_FORUPGRADE.toString(), upgradeId))) {
+            handleTransaction(fme, upgradeId);
+            faction.setUpgrade(upgradeId, currentFactionLevel + 1);
+            redraw();
+            return;
+        }
+
+        if (fme.hasMoney(cost)) {
+            fme.takeMoney(cost);
+            handleTransaction(fme, upgradeId);
+            faction.setUpgrade(upgradeId, currentFactionLevel + 1);
+            redraw();
+            return;
+        }
+
+        fme.getPlayer().closeInventory();
+        fme.msg(TL.GENERIC_NOTENOUGHMONEY);
     }
 
     private void handleTransaction(FPlayer fme, String upgradeId) {

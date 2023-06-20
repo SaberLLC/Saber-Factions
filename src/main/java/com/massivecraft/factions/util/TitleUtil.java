@@ -1,5 +1,6 @@
 package com.massivecraft.factions.util;
 
+import com.cryptomorin.xseries.messages.Titles;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
@@ -21,8 +22,9 @@ public class TitleUtil {
             String subTitle = parseAllPlaceholders(TextUtil.replace(config.getString("Title.Format.Subtitle"), "{Description}", faction.getDescription()).replace("{Faction}", faction.getColorTo(me) + faction.getTag()), faction, me.getPlayer());
 
             Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+
                 if (version != 8) {
-                    me.getPlayer().sendTitle(CC.translate(title), CC.translate(subTitle), config.getInt("Title.Options.FadeInTime"), config.getInt("Title.Options.ShowTime"), config.getInt("Title.Options.FadeOutTime"));
+                    Titles.sendTitle(me.getPlayer(), config.getInt("Title.Options.FadeInTime"), config.getInt("Title.Options.ShowTime"), config.getInt("Title.Options.FadeOutTime"), CC.translate(title), CC.translate(subTitle));
                 } else {
                     me.getPlayer().sendTitle(CC.translate(title), CC.translate(subTitle));
                 }

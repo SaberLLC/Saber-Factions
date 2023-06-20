@@ -64,7 +64,6 @@ public final class FLocation implements Serializable {
                                     return new FLocation(world, (int) key.longValue(), (int) (key >> 32));
                                 }
                             })
-
             ).get((long) x & 0xffffffffL | ((long) z & 0xffffffffL) << 32);
         } catch (ExecutionException e) {
             return new FLocation(world, x, z);

@@ -51,22 +51,18 @@ public abstract class MemoryFactions extends Factions {
 
     public Faction getBestTagMatch(String start) {
         start = start.toLowerCase();
-        int minLength = start.length();
         Faction bestMatch = null;
         int bestLengthDiff = Integer.MAX_VALUE;
 
         for (Faction faction : factions.values()) {
             String tag = ChatColor.stripColor(faction.getTag());
-            if (tag.length() < minLength) {
-                continue;
-            }
-
             String tagLower = tag.toLowerCase();
+
             if (!tagLower.startsWith(start)) {
                 continue;
             }
 
-            int lengthDiff = tag.length() - minLength;
+            int lengthDiff = tag.length() - start.length();
             if (lengthDiff == 0) {
                 return faction;
             }

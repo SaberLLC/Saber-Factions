@@ -878,17 +878,12 @@ public abstract class MemoryFPlayer implements FPlayer {
         int worldBuffer = plugin.getConfig().getInt("world-border.buffer", 0);
 
         if (Conf.worldGuardChecking && hasRegionsInChunk(flocation.getChunk())) {
-            // Checks for WorldGuard regions in the chunk attempting to be claimed
             error = TextUtil.parse(TL.CLAIM_PROTECTED.toString());
         } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
             error = TextUtil.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
-        } else if ((Conf.worldsNoClaiming.contains(flocation.getWorldName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoClaiming.contains(flocation.getWorldName()) && Conf.useWorldConfigurationsAsWhitelist)) {
+        } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName()) != Conf.useWorldConfigurationsAsWhitelist) {
             error = TextUtil.parse(TL.CLAIM_DISABLED.toString());
-        } else if (this.isAdminBypassing()) {
-            return true;
-        } else if (forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
-            return true;
-        } else if (forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
+        } else if (isAdminBypassing() || forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer()) || forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
             return true;
         } else if (currentFaction.getAccess(this, PermissableAction.TERRITORY) == Access.ALLOW && forFaction != currentFaction) {
             return true;
@@ -902,42 +897,27 @@ public abstract class MemoryFPlayer implements FPlayer {
             error = TextUtil.parse(TL.CLAIM_SAFEZONE.toString());
         } else if (currentFaction.isWarZone()) {
             error = TextUtil.parse(TL.CLAIM_WARZONE.toString());
-        } else if (plugin.getConfig().getBoolean("hcf.allow-overclaim", true) && ownedLand >= forFaction.getPowerRounded()) {
+        } else if (plugin.getConfig().getBoolean("hcf.allow-overclaim", true) && ownedLand >= forFaction.getPowerRounded() || Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal() || currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
             error = TextUtil.parse(TL.CLAIM_POWER.toString());
-        } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
-            error = TextUtil.parse(TL.CLAIM_LIMIT.toString());
-        } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
-            error = TextUtil.parse(TL.CLAIM_ALLY.toString());
-        } else if (Conf.claimsMustBeConnected && !this.isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
-            if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction) {
-                error = TextUtil.parse(TL.CLAIM_CONTIGIOUS.toString());
-            } else {
-                error = TextUtil.parse(TL.CLAIM_FACTIONCONTIGUOUS.toString());
-            }
+        } else if (Conf.claimsMustBeConnected && !isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
+            error = TextUtil.parse(Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction ? TL.CLAIM_CONTIGIOUS.toString() : TL.CLAIM_FACTIONCONTIGUOUS.toString());
         } else if (factionBuffer > 0 && Board.getInstance().hasFactionWithin(flocation, myFaction, factionBuffer)) {
             error = TextUtil.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
         } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
-            if (worldBuffer > 0) {
-                error = TextUtil.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer));
-            } else {
-                error = TextUtil.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
-            }
+            error = TextUtil.parse(worldBuffer > 0 ? TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer) : TL.CLAIM_OUTSIDEWORLDBORDER.toString());
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
                 error = TextUtil.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
             } else if (currentFaction.isPeaceful()) {
                 error = TextUtil.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
             } else if (!currentFaction.hasLandInflation()) {
-                // TODO more messages WARN current faction most importantly
                 error = TextUtil.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
             } else if (currentFaction.hasLandInflation() && !plugin.getConfig().getBoolean("hcf.allow-overclaim", true)) {
-                // deny over claim when it normally would be allowed.
                 error = TextUtil.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
             } else if (!Board.getInstance().isBorderLocation(flocation)) {
                 error = TextUtil.parse(TL.CLAIM_BORDER.toString());
             }
         }
-        // TODO: Add more else if statements.
 
         if (notifyFailure && error != null) {
             msg(error);
@@ -953,39 +933,21 @@ public abstract class MemoryFPlayer implements FPlayer {
         Faction targetFaction = Board.getInstance().getFactionAt(flocation);
 
         if (!targetFaction.equals(forFaction)) {
-            this.msg(TL.COMMAND_UNCLAIM_WRONGFACTIONOTHER);
+            msg(TL.COMMAND_UNCLAIM_WRONGFACTIONOTHER);
             return false;
         }
 
-        if (targetFaction.isSafeZone()) {
-            if (Permission.MANAGE_SAFE_ZONE.has(this.getPlayer())) {
-                Board.getInstance().removeAt(flocation);
-                this.msg(TL.COMMAND_UNCLAIM_SAFEZONE_SUCCESS);
-
-                if (Conf.logLandUnclaims) {
-                    Logger.print(TL.COMMAND_UNCLAIM_LOG.format(this.getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
-                }
-                return true;
-            } else {
-                this.msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
-                return false;
-            }
-        } else if (targetFaction.isWarZone()) {
-            if (Permission.MANAGE_WAR_ZONE.has(this.getPlayer())) {
-                Board.getInstance().removeAt(flocation);
-                this.msg(TL.COMMAND_UNCLAIM_WARZONE_SUCCESS);
-
-                if (Conf.logLandUnclaims) {
-                    Logger.print(TL.COMMAND_UNCLAIM_LOG.format(this.getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
-                }
-                return true;
-            } else {
-                this.msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
-                return false;
-            }
+        if (targetFaction.isSafeZone() && !Permission.MANAGE_SAFE_ZONE.has(getPlayer())) {
+            msg(TL.COMMAND_UNCLAIM_SAFEZONE_NOPERM);
+            return false;
         }
 
-        if (this.isAdminBypassing()) {
+        if (targetFaction.isWarZone() && !Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
+            msg(TL.COMMAND_UNCLAIM_WARZONE_NOPERM);
+            return false;
+        }
+
+        if (isAdminBypassing()) {
             LandUnclaimEvent unclaimEvent = new LandUnclaimEvent(flocation, targetFaction, this);
             Bukkit.getServer().getPluginManager().callEvent(unclaimEvent);
             if (unclaimEvent.isCancelled()) {
@@ -994,43 +956,43 @@ public abstract class MemoryFPlayer implements FPlayer {
 
             Board.getInstance().removeAt(flocation);
 
-            targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, this.describeTo(targetFaction, true));
-            this.msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
+            targetFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, describeTo(targetFaction, true));
+            msg(TL.COMMAND_UNCLAIM_UNCLAIMS);
 
             if (Conf.logLandUnclaims) {
-                Logger.print(TL.COMMAND_UNCLAIM_LOG.format(this.getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
+                Logger.print(TL.COMMAND_UNCLAIM_LOG.format(getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
             }
             return true;
         }
 
-        if (!this.hasFaction()) {
+        if (!hasFaction()) {
             if (notifyFailure) {
-                this.msg("You are not member of any faction.");
+                msg("You are not a member of any faction.");
             }
             return false;
         }
 
-
-        if (targetFaction.getAccess(this, PermissableAction.TERRITORY) == Access.DENY && this.getRole() != Role.LEADER) {
-            this.msg(TL.GENERIC_FPERM_NOPERMISSION, "unclaim");
+        if (targetFaction.getAccess(this, PermissableAction.TERRITORY) == Access.DENY && getRole() != Role.LEADER) {
+            msg(TL.GENERIC_FPERM_NOPERMISSION, "unclaim");
             return false;
         }
 
-        if (this.getFaction() != targetFaction) {
+        if (getFaction() != targetFaction) {
             if (notifyFailure) {
-                this.msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
+                msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
             }
             return false;
         }
 
         if (Conf.userSpawnerChunkSystem) {
             FastChunk fastChunk = new FastChunk(flocation);
-            if (this.getFaction().getSpawnerChunks().contains(fastChunk) && this.getFaction().getSpawnerChunks() != null) {
+            Set<FastChunk> spawnerChunks = getFaction().getSpawnerChunks();
+            if (spawnerChunks != null && spawnerChunks.contains(fastChunk)) {
                 if (Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
-                    this.getFaction().getSpawnerChunks().remove(fastChunk);
-                    this.msg(TL.SPAWNER_CHUNK_UNCLAIMED);
+                    spawnerChunks.remove(fastChunk);
+                    msg(TL.SPAWNER_CHUNK_UNCLAIMED);
                 } else if (ChunkReference.getSpawnerCount(flocation.getChunk()) > 0) {
-                    this.msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(flocation.getChunk()));
+                    msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(flocation.getChunk()));
                 }
                 return false;
             }
@@ -1043,10 +1005,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         if (Econ.shouldBeUsed()) {
-            double refund = Econ.calculateClaimRefund(this.getFaction().getLandRounded());
+            double refund = Econ.calculateClaimRefund(getFaction().getLandRounded());
 
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
-                if (!Econ.modifyMoney(this.getFaction(), refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
+                if (!Econ.modifyMoney(getFaction(), refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
                     return false;
                 }
             } else {
@@ -1058,10 +1020,10 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         Board.getInstance().removeAt(flocation);
 
-        this.msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, this.describeTo(this.getFaction(), true));
+        msg(TL.COMMAND_UNCLAIM_FACTIONUNCLAIMED, describeTo(getFaction(), true));
 
         if (Conf.logLandUnclaims) {
-            Logger.print(TL.COMMAND_UNCLAIM_LOG.format(this.getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
+            Logger.print(TL.COMMAND_UNCLAIM_LOG.format(getName(), flocation.getCoordString(), targetFaction.getTag()), Logger.PrefixType.DEFAULT);
         }
 
         return true;
@@ -1107,38 +1069,42 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void setFlying(boolean fly, boolean damage) {
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
-            Player player = getPlayer();
-            if (player != null) {
-                player.setAllowFlight(fly);
-                player.setFlying(fly);
-            }
-
-            if (!damage) {
-                msg(TL.COMMAND_FLY_CHANGE, fly ? TL.GENERAL_ENABLED.toString() : TL.GENERAL_DISABLED.toString());
-            } else {
-                msg(TL.COMMAND_FLY_DAMAGE);
-            }
-
-            // If leaving fly mode, don't let them take fall damage for x seconds.
-            if (!fly) {
-                int cooldown = FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown");
-
-                // If the value is 0 or lower, make them take fall damage.
-                // Otherwise, start a timer and have this cancel after a few seconds.
-                // Short task so we're just doing it in method. Not clean but eh.
-                if (cooldown > 0) {
-                    setTakeFallDamage(false);
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            setTakeFallDamage(true);
-                        }
-                    }.runTaskLater(FactionsPlugin.getInstance(), 20L * cooldown);
-                }
-            }
-            isFlying = fly;
+        if (!FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight")) {
+            return;
         }
+
+        Player player = getPlayer();
+        if (player == null) {
+            return;
+        }
+
+        player.setAllowFlight(fly);
+        player.setFlying(fly);
+
+        if (!damage) {
+            msg(TL.COMMAND_FLY_CHANGE, fly ? TL.GENERAL_ENABLED.toString() : TL.GENERAL_DISABLED.toString());
+        } else {
+            msg(TL.COMMAND_FLY_DAMAGE);
+        }
+
+        // If leaving fly mode, don't let them take fall damage for x seconds.
+        if (!fly) {
+            int cooldown = FactionsPlugin.getInstance().getConfig().getInt("fly-falldamage-cooldown");
+
+            // If the value is 0 or lower, make them take fall damage.
+            // Otherwise, start a timer and have this cancel after a few seconds.
+            if (cooldown > 0) {
+                setTakeFallDamage(false);
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        setTakeFallDamage(true);
+                    }
+                }.runTaskLater(FactionsPlugin.getInstance(), 20L * cooldown);
+            }
+        }
+
+        isFlying = fly;
     }
 
     public boolean isInFactionsChest() {
@@ -1322,31 +1288,35 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     @Override
     public void checkIfNearbyEnemies() {
-        Player me = this.getPlayer();
+        Player me = getPlayer();
 
-        if (me == null) return;
-        if (me.hasPermission("factions.fly.bypassnearbyenemycheck")) return;
+        if (me == null || me.hasPermission("factions.fly.bypassnearbyenemycheck")) return;
+
         int radius = Conf.stealthFlyCheckRadius;
-        for (Entity e : me.getNearbyEntities(radius, 255, radius)) {
-            if (e instanceof Player) {
-                Player eplayer = (((Player) e).getPlayer());
-                if (eplayer == null) continue;
-                if (eplayer.hasMetadata("NPC")) continue;
-                FPlayer efplayer = FPlayers.getInstance().getByPlayer(eplayer);
-                if (efplayer == null) continue;
-                if (!me.canSee(eplayer) || efplayer.isVanished()) continue;
-                if (this.getRelationTo(efplayer).equals(Relation.ENEMY) && !efplayer.isStealthEnabled()) {
-                    if (me.isFlying()) {
-                        setFlying(false);
-                        msg(TL.COMMAND_FLY_ENEMY_NEAR);
-                        Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));
-                    }
-                    this.enemiesNearby = true;
-                    return;
+        boolean foundEnemy = false;
+        for (Entity entity : me.getNearbyEntities(radius, 255, radius)) {
+            if (entity instanceof Player) {
+                Player enemyPlayer = ((Player) entity);
+                if (enemyPlayer.hasMetadata("NPC")) continue;
+                FPlayer enemyFPlayer = FPlayers.getInstance().getByPlayer(enemyPlayer);
+                if (enemyFPlayer == null || !me.canSee(enemyPlayer) || enemyFPlayer.isVanished()) continue;
+                if (getRelationTo(enemyFPlayer).equals(Relation.ENEMY) && !enemyFPlayer.isStealthEnabled()) {
+                    foundEnemy = true;
+                    break;
                 }
             }
         }
-        this.enemiesNearby = false;
+
+        if (foundEnemy) {
+            if (me.isFlying()) {
+                setFlying(false);
+                msg(TL.COMMAND_FLY_ENEMY_NEAR);
+                Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));
+            }
+            enemiesNearby = true;
+        } else {
+            enemiesNearby = false;
+        }
     }
 
     @Override

@@ -110,8 +110,9 @@ public abstract class FRelationCommand extends FCommand {
         FTeamWrapper.updatePrefixes(them);
     }
 
+
     private boolean hasMaxRelations(Faction us, Faction them, Relation targetRelation) {
-        int max = FactionsPlugin.getInstance().getConfig().getInt("max-relations." + targetRelation.toString(), -1);
+        int max = FactionsPlugin.getInstance().getConfig().getInt("max-relations." + targetRelation.name().toLowerCase(), -1);
         if (FactionsPlugin.getInstance().getConfig().getBoolean("max-relations.enabled", false)) {
             if (max == 0) {
                 us.msg(TL.COMMAND_RELATIONS_EXCEEDS_ME, max, targetRelation.getPluralTranslation());

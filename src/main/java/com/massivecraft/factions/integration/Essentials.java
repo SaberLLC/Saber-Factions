@@ -13,7 +13,7 @@ import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nullable;
 
-public class Essentials {
+public class  Essentials {
 
     private static IEssentials essentials;
 
@@ -44,15 +44,4 @@ public class Essentials {
         return essentials != null && player != null && essentials.getUser(player).isVanished();
     }
 
-    public static boolean isOverBalCap(EconomyParticipator participator, double amount) {
-        if (essentials == null) {
-            return false;
-        }
-
-        return amount > essentials.getSettings().getMaxMoney().doubleValue();
-    }
-
-    public static Plugin getEssentials() {
-        return essentials;
-    }
 }

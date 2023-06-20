@@ -130,11 +130,6 @@ public class CmdHome extends FCommand {
             return;
         }
 
-        // if Essentials teleport handling is enabled and available, pass the teleport off to it (for delay and cooldown)
-        if (Essentials.handleTeleport(context.player, context.faction.getHome())) {
-            return;
-        }
-
         context.doWarmUp(WarmUpUtil.Warmup.HOME, TL.WARMUPS_NOTIFY_TELEPORT, "Home", () -> {
             // Create a smoke effect
             if (Conf.homesTeleportCommandSmokeEffectEnabled) {

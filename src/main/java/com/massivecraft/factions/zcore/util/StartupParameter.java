@@ -40,8 +40,6 @@ public class StartupParameter {
         FactionsPlugin.getInstance().fileManager = new FileManager();
         FactionsPlugin.getInstance().fileManager.setupFiles();
 
-        Essentials.setup();
-
         FactionsPlugin.getInstance().fLogManager = new FLogManager();
 
         FPlayers.getInstance().load(playersLoaded -> Factions.getInstance().load(factionsLoaded -> {

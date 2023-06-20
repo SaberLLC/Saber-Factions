@@ -10,20 +10,23 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
+import java.util.concurrent.ConcurrentMap;
 
 public abstract class SaberGUI {
 
-    public static Set<String> allGUINames = new HashSet<>();
-    public static Map<UUID, SaberGUI> activeGUIs = new ConcurrentHashMap<>();
+    public static Set<String> allGUINames = ConcurrentHashMap.newKeySet();
+    public static ConcurrentMap<UUID, SaberGUI> activeGUIs = new ConcurrentHashMap<>();
+
     public SaberGUI parentGUI;
     protected String title;
     protected int size;
     protected Player player;
     protected Inventory inventory;
-    private Map<Integer, InventoryItem> inventoryItems;
+    private ConcurrentMap<Integer, InventoryItem> inventoryItems;
     private String owningPluginName;
     private Runnable closeRunnable;
 
@@ -32,12 +35,11 @@ public abstract class SaberGUI {
     }
 
     public SaberGUI(Player player, String title, int size, InventoryType type) {
-        this.inventoryItems = new HashMap<>();
+        this.inventoryItems = new ConcurrentHashMap<>();
         this.inventory = type == InventoryType.CHEST ? Bukkit.createInventory(null, size, title) : Bukkit.createInventory(null, type, title);
         this.player = player;
         this.size = size;
         this.title = title;
-        allGUINames.add(this.title);
     }
 
     public static SaberGUI getActiveGUI(UUID uuid) {
@@ -58,7 +60,6 @@ public abstract class SaberGUI {
         UUID id = this.player.getUniqueId();
         SaberGUI currentlyActive = activeGUIs.get(id);
         if (currentlyActive != null) {
-            /*Bukkit.getLogger().info("Closing already open menu first!");*/
             Bukkit.getScheduler().scheduleSyncDelayedTask(owning, () -> {
                 currentlyActive.close();
                 activeGUIs.put(id, this);
@@ -85,13 +86,12 @@ public abstract class SaberGUI {
         this.closeWithDelay(null);
     }
 
-    public void closeWithDelay(Consumer<Player> afterClose) {
+    public void closeWithDelay(java.util.function.Consumer<Player> afterClose) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> {
             this.player.closeInventory();
             if (afterClose != null) {
                 afterClose.accept(this.player);
             }
-
         }, 1L);
     }
 
@@ -103,7 +103,6 @@ public abstract class SaberGUI {
         if (this.closeRunnable != null) {
             this.closeRunnable.run();
         }
-
     }
 
     public void close() {
@@ -149,5 +148,5 @@ public abstract class SaberGUI {
     public Runnable getCloseRunnable() {
         return this.closeRunnable;
     }
-}
 
+}

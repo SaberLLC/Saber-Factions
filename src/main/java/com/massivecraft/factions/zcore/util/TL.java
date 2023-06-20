@@ -55,7 +55,7 @@ public enum TL {
     ACTIONS_NOPERMISSIONPAIN("It is painful to try to {action} in the territory of {faction}"),
     ACTIONS_OWNEDTERRITORYDENY("You cant do that in this territory, it is owned by {owners}"),
     ACTIONS_OWNEDTERRITORYPAINDENY("It is painful to try to {action} in this territory, it is owned by {owners}"),
-    ACTIONS_MUSTBE("Youmust be {role} to {action}."),
+    ACTIONS_MUSTBE("You must be {role} to {action}."),
     ACTIONS_NOSAMEROLE("{role} can't control each other..."),
     ACTIONS_NOFACTION("You are not member of any faction."),
 
