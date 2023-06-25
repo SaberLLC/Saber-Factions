@@ -98,16 +98,12 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        Bukkit.broadcastMessage("10");
-
-
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
         if (me.isAdminBypassing()) {
             return true;
         }
 
 
-        Bukkit.broadcastMessage("11");
 
         FLocation loc = FLocation.wrap(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
@@ -120,8 +116,6 @@ public class FactionsPlayerListener implements Listener {
             }
             return false;
         }
-
-        Bukkit.broadcastMessage("12");
 
 
         //if (me.getFaction() == otherFaction) return true;
@@ -172,9 +166,6 @@ public class FactionsPlayerListener implements Listener {
             return false;
         }
 
-        Bukkit.broadcastMessage("15");
-
-
         Relation rel = myFaction.getRelationTo(otherFaction);
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
@@ -183,9 +174,6 @@ public class FactionsPlayerListener implements Listener {
             }
             return false;
         }
-
-        Bukkit.broadcastMessage("16");
-
 
         Access access = otherFaction.getAccess(me, permissableAction);
         return CheckPlayerAccess(player, me, loc, otherFaction, access, permissableAction, false);
@@ -337,9 +325,6 @@ public class FactionsPlayerListener implements Listener {
                 return false;
             }
         }
-
-        Bukkit.broadcastMessage("20");
-
 
         // Approves any permission check if the player in question is a leader AND owns the faction.
         if (me.getRole().equals(Role.LEADER) && me.getFaction().equals(factionToCheck)) return true;
@@ -622,15 +607,10 @@ public class FactionsPlayerListener implements Listener {
         if (event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))
             return;
 
-        Bukkit.broadcastMessage("1");
-
         Block block = event.getClickedBlock();
         Player player = event.getPlayer();
 
         if (block == null) return;
-
-        Bukkit.broadcastMessage("2");
-
 
         XMaterial type = null;
         try {
@@ -641,17 +621,11 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        Bukkit.broadcastMessage("3");
-
 
         // Creeper Egg Bypass.
         if (Conf.allowCreeperEggingChests && block.getType() == Material.CHEST && type == XMaterial.CREEPER_SPAWN_EGG && event.getPlayer().isSneaking()) {
             return;
         }
-
-        Bukkit.broadcastMessage("4");
-
-
 
         // territoryBypasssProtectedMaterials totally bypass the protection system
         if (Conf.territoryBypassProtectedMaterials.contains(block.getType())) return;
@@ -664,9 +638,6 @@ public class FactionsPlayerListener implements Listener {
         //    }
         //}
 
-        Bukkit.broadcastMessage("5");
-
-
         if (GetPermissionFromUsableBlock(block.getType()) != null) {
             if (!canPlayerUseBlock(player, block, false)) {
                 event.setCancelled(true);
@@ -675,16 +646,10 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        Bukkit.broadcastMessage("6");
-
-
         if (type != null && !playerCanUseItemHere(player, block.getLocation(), event.getItem().getType(), false, PermissableAction.ITEM)) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
         }
-
-
-        Bukkit.broadcastMessage("7");
 
     }
 

@@ -3,6 +3,7 @@ package com.massivecraft.factions.addon;
 import com.massivecraft.factions.FactionsPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -54,35 +55,38 @@ public final class AddonManager {
 
     public void loadAddons() {
         for (File addon : loadAddonFiles()) {
-            Class<? extends FactionsAddon> addonMainClass = getAddonMainClass(addon);
+            Class<?> addonMainClass = getAddonMainClass(addon);
             if (addonMainClass != null) {
+                Constructor<?> constructor;
+                FactionsAddon factionsAddon;
                 try {
-                    Constructor<? extends FactionsAddon> constructor = addonMainClass.getConstructor(FactionsPlugin.class);
-                    FactionsAddon factionsAddon = constructor.newInstance(plugin);
+                    constructor = addonMainClass.getConstructor(FactionsPlugin.class);
+                    factionsAddon = (FactionsAddon) constructor.newInstance(plugin);
                     FactionsPlugin.getInstance().getFactionsAddonHashMap().put(factionsAddon.getAddonName(), factionsAddon);
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                    System.out.println("[Factions] Error instantiating addon: " + e.getMessage());
+                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                         InvocationTargetException e) {
                     e.printStackTrace();
+                    System.out.println("[Factions] Error instantiating addon: " + e.getMessage());
                 }
             }
         }
     }
 
-    private Class<? extends FactionsAddon> getAddonMainClass(File addon) {
-        Class<? extends FactionsAddon> mainClass = null;
-        try (URLClassLoader child = new URLClassLoader(new URL[]{addon.toURI().toURL()}, getClass().getClassLoader());
-             JarFile jarFile = new JarFile(addon)) {
-
+    private Class<?> getAddonMainClass(final File addon) {
+        //Setup this so we go deep into directories
+        Class<?> mainClass = null;
+        try {
+            URLClassLoader child = new URLClassLoader(new URL[]{addon.toURI().toURL()}, this.getClass().getClassLoader());
+            JarFile jarFile = new JarFile(addon);
             Enumeration<JarEntry> allEntries = jarFile.entries();
             while (allEntries.hasMoreElements()) {
                 JarEntry entry = allEntries.nextElement();
-                if (!entry.getName().endsWith(".class")) {
-                    continue;
-                }
-                String className = entry.getName().replace(".class", "").replace("/", ".");
+                if (!entry.getName().endsWith(".class")) continue;
+                String className = entry.getName().replace(".class", "");
+                className = className.replace("/", ".");
                 Class<?> clazz = child.loadClass(className);
-                if (FactionsAddon.class.isAssignableFrom(clazz)) {
-                    mainClass = clazz.asSubclass(FactionsAddon.class);
+                if (clazz.getSuperclass().equals(FactionsAddon.class)) {
+                    mainClass = clazz;
                     break;
                 }
             }

@@ -75,8 +75,6 @@ public abstract class FactionsAddon {
         for (FCommand fCommand : fCommandsToRegister()) {
             if (fCommand != null) {
                 plugin.cmdBase.addSubCommand(fCommand);
-                FCmdRoot.instance.addVariableCommands();
-                FCmdRoot.instance.rebuild();
             }
         }
     }

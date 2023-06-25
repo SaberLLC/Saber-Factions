@@ -213,10 +213,17 @@ public class FactionsPlugin extends MPlugin {
 
             this.asyncPlayerMap = new AsyncPlayerMap(this);
 
-
             this.setupPlaceholderAPI();
             factionsAddonHashMap = new HashMap<>();
             AddonManager.getAddonManagerInstance().loadAddons();
+
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                //To Add Addon Commands Into "Tab Completion Format"
+                if(factionsAddonHashMap.size() > 0) {
+                    FCmdRoot.instance.addVariableCommands();
+                    FCmdRoot.instance.rebuild();
+                }
+            }, 100);
 
             bannerManager = new BannerManager();
             bannerManager.onEnable(this);
