@@ -38,7 +38,7 @@ Features:
   Border-Patches: true #Various Border Patches, Useful for Most Factions Servers
   Anti-Explosion-Damage: false #Denies Players from Taking Damage To TNT
   Anti-Dragon-Egg-TP: true #Denies Dragon Egg Teleport
-  Enchanting-Lapis: true #Automatically places Lapis Lazuli into enchantment tables
+  Enchanting-Lapis: false #Automatically places Lapis Lazuli into enchantment tables
   Enemy-Spawner-Mine: false #Denies Players to Mine spawners if they are in {x} radius of an enemy
   Insta-Sponge-Break: true #Instantly Break Sponges
   Anti-Natural-Mobs: false #Denies all natural mob spawns

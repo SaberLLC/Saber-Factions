@@ -512,7 +512,7 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (me.isMapAutoUpdating()) {
-            if (!showTimes.containsKey(player.getUniqueId()) || (showTimes.get(player.getUniqueId()) < System.currentTimeMillis())) {
+            if (!showTimes.containsKey(player.getUniqueId()) || showTimes.get(player.getUniqueId()) < System.currentTimeMillis()) {
                 me.sendComponent(Board.getInstance().getMap(me, to, player.getLocation().getYaw()));
                 showTimes.put(player.getUniqueId(), System.currentTimeMillis() + FactionsPlugin.getInstance().getConfig().getInt("findfactionsexploit.cooldown"));
             }

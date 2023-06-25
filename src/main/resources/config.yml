@@ -18,7 +18,7 @@ debug: false
 # If you want to log when a player violates this (only happens on chunk enter, so it shouldn't be too spammy),
 #   set log to true, and it will be logged to console as "player tried to show a faction map too soon and triggered exploit blocker."
 findfactionsexploit:
-  cooldown: 2000 # in milliseconds. 2000 = 2 seconds.
+  cooldown: 500 # in milliseconds. 2000 = 2 seconds.
   log: false
 
 ### Hard Core Settings ###
