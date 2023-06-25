@@ -86,7 +86,7 @@ public class StartupParameter {
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, CheckTask.getInstance(), 0L, 1200L);
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimer(plugin, CheckTask.getInstance()::cleanupTask, 0L, 1260L);
 
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, WeeWooTask::new, 600L, 600L);
+               // FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, WeeWooTask::new, 600L, 600L);
             }
 
 
@@ -121,6 +121,8 @@ public class StartupParameter {
         territoryDenyUsageMaterials.add(XMaterial.BUCKET.parseMaterial());
         territoryDenyUsageMaterials.add(XMaterial.WATER_BUCKET.parseMaterial());
         territoryDenyUsageMaterials.add(XMaterial.LAVA_BUCKET.parseMaterial());
+        territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("BOAT").get().parseMaterial());
+        territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("MONSTER_EGG").get().parseMaterial());
 
         if (FactionsPlugin.getInstance().version != 7) {
             territoryDenyUsageMaterials.add(XMaterial.ARMOR_STAND.parseMaterial());

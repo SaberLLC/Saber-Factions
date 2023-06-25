@@ -1026,7 +1026,7 @@ public enum TL {
     COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
     COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
     COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
-    COMMAND_TOP_INVALID("Could not sort by %s. Try balance, online, members, power or land."),
+    COMMAND_TOP_INVALID("Could not sort by %s. Try money, online, members, power or land."),
 
     COMMAND_TNT_DISABLED_MSG("&cThis command is disabled!"),
     COMMAND_TNT_INVALID_NUM("The amount needs to be a number!"),

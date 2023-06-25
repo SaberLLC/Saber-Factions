@@ -48,7 +48,7 @@ public class CmdAllyFWarp extends FCommand {
             return;
         }
 
-        if (targetFaction.getRelationTo(context.faction).isAtLeast(Relation.TRUCE)) {
+        if (!targetFaction.getRelationTo(context.faction).isAtLeast(Relation.TRUCE)) {
             context.fPlayer.msg(TL.COMMAND_ALLYFWARP_MUSTBE);
             return;
         }

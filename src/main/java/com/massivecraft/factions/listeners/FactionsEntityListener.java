@@ -20,6 +20,7 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -332,7 +333,6 @@ public class FactionsEntityListener implements Listener {
     public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
         EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0d);
         if (!this.canDamagerHurtDamagee(sub, false)) event.setCancelled(true);
-
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -368,6 +368,7 @@ public class FactionsEntityListener implements Listener {
                 event.setIntensity(target, 0.0);  // affected entity list doesn't accept modification (so no iter.remove()), but this works
         }
     }
+
 
     public boolean isPlayerInSafeZone(Entity damagee) {
         if (!(damagee instanceof Player)) return false;
@@ -563,7 +564,7 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerShear(PlayerShearEntityEvent event) {
-        if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) event.getPlayer(), event.getEntity().getLocation(), "destroy", false)) {
+        if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getEntity().getLocation(), "destroy", false)) {
             event.setCancelled(true);
         }
     }

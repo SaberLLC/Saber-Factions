@@ -269,8 +269,8 @@ public class Conf {
     public static boolean pistonProtectionThroughDenyBuild = true;
     public static Set<Material> territoryProtectedMaterials = EnumSet.noneOf(Material.class);
     public static Set<Material> territoryDenyUsageMaterials = EnumSet.noneOf(Material.class);
-    public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
-    public static Set<Material> territoryDenyUsageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
+    //public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
+    //public static Set<Material> territoryDenyUsageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
     public static transient Set<EntityType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(EntityType.class);
     /// <summary>
     /// This defines a set of materials which should always be allowed to use, regardless of factions permissions.
@@ -560,15 +560,15 @@ public class Conf {
         territoryBypassProtectedMaterials.add(Material.TRAPPED_CHEST);
 
 
-        territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
-
-        territoryDenyUsageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
-        territoryDenyUsageMaterialsWhenOffline.add(Material.BUCKET);
-        territoryDenyUsageMaterialsWhenOffline.add(Material.WATER_BUCKET);
-        territoryDenyUsageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
-        if (FactionsPlugin.getInstance().version != 7) {
-            territoryDenyUsageMaterialsWhenOffline.add(Material.ARMOR_STAND);
-        }
+        //territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
+//
+        //territoryDenyUsageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
+        //territoryDenyUsageMaterialsWhenOffline.add(Material.BUCKET);
+        //territoryDenyUsageMaterialsWhenOffline.add(Material.WATER_BUCKET);
+        //territoryDenyUsageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
+        //if (FactionsPlugin.getInstance().version != 7) {
+        //    territoryDenyUsageMaterialsWhenOffline.add(Material.ARMOR_STAND);
+        //}
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
         safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
         safeZoneNerfedCreatureTypes.add(EntityType.CREEPER);

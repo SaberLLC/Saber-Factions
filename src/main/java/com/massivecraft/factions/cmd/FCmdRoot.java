@@ -149,7 +149,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdMissions cmdMissions = new CmdMissions();
     public CmdStrikes cmdStrikes = new CmdStrikes();
     public CmdCheck cmdCheck = new CmdCheck();
-    public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
+    //public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
     public CmdSpawnerLock cmdSpawnerLock = new CmdSpawnerLock();
     public CmdSetDiscord cmdSetDiscord = new CmdSetDiscord();
     public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
@@ -349,7 +349,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         //Check
         if (Conf.useCheckSystem && !checkEnabled) {
             this.addSubCommand(this.cmdCheck);
-            this.addSubCommand(this.cmdWeeWoo);
+           // this.addSubCommand(this.cmdWeeWoo);
             checkEnabled = true;
         }
 

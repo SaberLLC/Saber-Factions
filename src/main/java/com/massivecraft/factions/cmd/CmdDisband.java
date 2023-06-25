@@ -89,16 +89,16 @@ public class CmdDisband extends FCommand {
 
         // check for tnt before disbanding.
         if (!disbandMap.containsKey(context.player.getUniqueId().toString()) && faction.getTnt() > 0) {
-            context.msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", faction.getTnt() + ""));
+            context.msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", String.valueOf(faction.getTnt())));
             disbandMap.put(context.player.getUniqueId().toString(), faction.getId());
             Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> disbandMap.remove(context.player.getUniqueId().toString()), 200L);
         } else if (faction.getId().equals(disbandMap.get(context.player.getUniqueId().toString())) || faction.getTnt() == 0) {
             if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-disband-broadcast", true)) {
 
                 String yours_message = TL.COMMAND_DISBAND_BROADCAST_YOURS.toString()
-                        .replace("{claims}",faction.getAllClaims().size()+"");
+                        .replace("{claims}", String.valueOf(faction.getAllClaims().size()));
                 String notyours_message = TL.COMMAND_DISBAND_BROADCAST_NOTYOURS.toString()
-                        .replace("{claims}",faction.getAllClaims().size()+"");
+                        .replace("{claims}", String.valueOf(faction.getAllClaims().size()));
 
                 for (FPlayer follower : FPlayers.getInstance().getOnlinePlayers()) {
                     String amountString = context.sender instanceof ConsoleCommandSender ? TL.GENERIC_SERVERADMIN.toString() : context.fPlayer.describeTo(follower);

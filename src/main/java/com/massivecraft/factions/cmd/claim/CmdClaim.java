@@ -80,6 +80,7 @@ public class CmdClaim extends FCommand {
             if (!Permission.CLAIM_RADIUS.has(context.sender, true)) {
                 return;
             }
+
             new SpiralTask(FLocation.wrap(context.player), radius) {
                 private final int limit = Conf.radiusClaimFailureLimit - 1;
                 private int failCount = 0;
