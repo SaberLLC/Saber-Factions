@@ -42,7 +42,7 @@ public class FChestListener implements Listener {
     public void onPlayerClickInventory(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-        if (fPlayer == null || !fPlayer.getFaction().isNormal()) {
+        if (fPlayer == null || !fPlayer.getFaction().isNormal() && fPlayer.isInFactionsChest()) {
             player.closeInventory();
             player.sendMessage(CC.RedB + "(!) " + CC.Red + "You are no longer in your faction!");
             return;
