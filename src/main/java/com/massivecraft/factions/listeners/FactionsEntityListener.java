@@ -52,6 +52,9 @@ public class FactionsEntityListener implements Listener {
         }
 
         Player player = (Player) entity;
+
+        if(player.hasMetadata("NPC")) return;
+
         FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
         Faction faction = Board.getInstance().getFactionAt(FLocation.wrap(player.getLocation()));
 
