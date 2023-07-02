@@ -73,8 +73,7 @@ public class MissionGUI implements FactionGUI {
         ConfigurationSection configurationSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions");
         if (configurationSection == null) return;
 
-        if (plugin.getFileManager().getMissions().getConfig().getBoolean("Allow-Cancellation-Of-Missions")
-                && action == ClickType.RIGHT) {
+        if (plugin.getFileManager().getMissions().getConfig().getBoolean("Allow-Cancellation-Of-Missions") && action == ClickType.RIGHT && !fPlayer.getFaction().getMissions().isEmpty()) {
 
             int cost = FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getInt("CancelMissionCost");
 
@@ -89,8 +88,7 @@ public class MissionGUI implements FactionGUI {
                         fPlayer.msg(TL.COMMAND_UPGRADES_NOT_ENOUGH_POINTS);
                         return;
                     }
-                }
-                else {
+                } else {
                     EconomyParticipator payee = null;
 
                     if (Conf.bankEnabled && FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getBoolean("FactionPaysCancelMissionCost", false)) {
