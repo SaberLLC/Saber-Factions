@@ -298,9 +298,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdLowPower);
         this.addSubCommand(this.cmdTntFill);
         this.addSubCommand(this.cmdChest);
-        this.addSubCommand(this.cmdSetBanner);
-        this.addSubCommand(this.cmdTpBanner);
-        this.addSubCommand(this.cmdBanner);
         this.addSubCommand(this.cmdCorner);
         this.addSubCommand(this.cmdCornerList);
         this.addSubCommand(this.cmdFGlobal);
@@ -335,7 +332,13 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             }
         }, 200);
 
-        //Reserve
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Enabled")) {
+            this.addSubCommand(this.cmdSetBanner);
+            this.addSubCommand(this.cmdTpBanner);
+            this.addSubCommand(this.cmdBanner);
+        }
+
+            //Reserve
         if (Conf.useReserveSystem) {
             this.addSubCommand(this.cmdReserve);
         }

@@ -193,7 +193,6 @@ public class FactionsPlugin extends MPlugin {
             }
 
             for (Listener eventListener : new Listener[]{
-                    new BannerListener(),
                     new TributeInventoryHandler(),
                     new FactionsChatListener(),
                     new FactionsEntityListener(),
@@ -225,8 +224,11 @@ public class FactionsPlugin extends MPlugin {
                 }
             }, 100);
 
-            bannerManager = new BannerManager();
-            bannerManager.onEnable(this);
+            if (FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Enabled")) {
+                bannerManager = new BannerManager();
+                bannerManager.onEnable(this);
+                getServer().getPluginManager().registerEvents(new BannerListener(), this);
+            }
 
             this.getCommand(refCommand).setExecutor(cmdBase);
 
