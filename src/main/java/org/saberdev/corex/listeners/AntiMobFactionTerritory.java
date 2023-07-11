@@ -24,5 +24,4 @@ public class AntiMobFactionTerritory implements Listener {
             e.setCancelled(true);
         }
     }
-
 }

@@ -99,6 +99,8 @@ public interface FPlayer extends EconomyParticipator {
      */
     void login();
 
+    void logout(int kills, int deaths);
+
     /**
      * Caches the kills and deaths of a player.
      */

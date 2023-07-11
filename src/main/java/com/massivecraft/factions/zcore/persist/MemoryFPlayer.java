@@ -163,9 +163,16 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.deaths = getPlayer().getStatistic(Statistic.DEATHS);
     }
 
+    @Override
+    public void logout(int kills, int deaths) {
+        this.kills = kills;
+        this.deaths = deaths;
+    }
+
+    @Override
     public void logout() {
-        this.kills = getPlayer().getStatistic(Statistic.PLAYER_KILLS);
-        this.deaths = getPlayer().getStatistic(Statistic.DEATHS);
+        Player player = getPlayer();
+        logout(player.getStatistic(Statistic.PLAYER_KILLS), player.getStatistic(Statistic.DEATHS));
     }
 
     public int getCooldown(String cmd) {

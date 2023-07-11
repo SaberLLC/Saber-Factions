@@ -18,8 +18,11 @@ public class GlobalGamemode implements Listener {
             final Player p = e.getPlayer();
             if (gm == GameMode.CREATIVE) {
                 Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-                    if (p.getGameMode() != gm)
-                        p.setGameMode(gm);
+                    if (p.isOnline()) {
+                        if (p.getGameMode() != gm) {
+                            p.setGameMode(gm);
+                        }
+                    }
                 }, 2L);
             }
         }
