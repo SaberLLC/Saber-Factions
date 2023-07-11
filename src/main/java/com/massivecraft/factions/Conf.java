@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
@@ -456,99 +457,61 @@ public class Conf {
         territoryEnemyDenyCommands.add("etpa");
         territoryEnemyDenyCommands.add("etpask");
 
+        if (FactionsPlugin.getInstance().version >= 17) {
+            safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
+            safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
+            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+        } else if (FactionsPlugin.getInstance().version == 16) {
+            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
+        } else {
+            safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
+        }
 
-        //territoryDenySwitchMaterials.add(XMaterial.ACACIA_FENCE_GATE.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.BIRCH_FENCE_GATE.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_FENCE_GATE.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.JUNGLE_FENCE_GATE.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.OAK_FENCE_GATE.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.SPRUCE_FENCE_GATE.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.ACACIA_DOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.BIRCH_DOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_DOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.JUNGLE_DOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.OAK_DOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.SPRUCE_DOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.DISPENSER.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.CHEST.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.TRAPPED_CHEST.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.ACACIA_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.BIRCH_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.JUNGLE_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.OAK_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.SPRUCE_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.DROPPER.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.HOPPER.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.ITEM_FRAME.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.ACACIA_TRAPDOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.BIRCH_TRAPDOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_TRAPDOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.JUNGLE_TRAPDOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.OAK_TRAPDOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.SPRUCE_TRAPDOOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.LEVER.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.COMPARATOR.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.REPEATER.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.ACACIA_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.BIRCH_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.JUNGLE_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.OAK_BUTTON.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.SPRUCE_BUTTON.parseMaterial());
-//
-        //territoryDenySwitchMaterials.add(XMaterial.PURPLE_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.WHITE_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.MAGENTA_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.LIGHT_BLUE_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.CYAN_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.BLUE_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.BROWN_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.ORANGE_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.GREEN_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.RED_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.BLACK_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.GRAY_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.LIME_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.LIGHT_GRAY_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.PINK_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.YELLOW_SHULKER_BOX.parseMaterial());
-        //territoryDenySwitchMaterials.add(XMaterial.SHULKER_BOX.parseMaterial());
+        territoryDenyUsageMaterials.add(XMaterial.FLINT_AND_STEEL.parseMaterial());
+        if(FactionsPlugin.getInstance().version != 8) {
+            territoryDenyUsageMaterials.add(XMaterial.END_CRYSTAL.parseMaterial());
+        }
+        territoryDenyUsageMaterials.add(XMaterial.BUCKET.parseMaterial());
+        territoryDenyUsageMaterials.add(XMaterial.WATER_BUCKET.parseMaterial());
+        territoryDenyUsageMaterials.add(XMaterial.LAVA_BUCKET.parseMaterial());
 
-        // 1.14 Barrel is a container.
-        //territoryDenySwitchMaterials.add(XMaterial.BARREL.parseMaterial());
+        if(FactionsPlugin.getInstance().version == 8) {
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("BOAT").get().parseMaterial());
+        }
 
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.GOLDEN_APPLE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.APPLE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.ENCHANTED_GOLDEN_APPLE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_BEEF.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_MUTTON.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_CHICKEN.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_COD.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_PORKCHOP.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_RABBIT.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_SALMON.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.ENDER_PEARL.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.POTION.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.SPLASH_POTION.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CREEPER_SPAWN_EGG.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.BOW.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_HELMET.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_CHESTPLATE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_LEGGINGS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_BOOTS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_HELMET.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_CHESTPLATE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_LEGGINGS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_BOOTS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_HELMET.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_CHESTPLATE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_LEGGINGS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_BOOTS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_HELMET.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_CHESTPLATE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_LEGGINGS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_BOOTS.parseMaterial());
+        if(FactionsPlugin.getInstance().version >= 9) {
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("ACACIA_BOAT").get().parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("BIRCH_BOAT").get().parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("DARK_OAK_BOAT").get().parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("JUNGLE_BOAT").get().parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("OAK_BOAT").get().parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("SPRUCE_BOAT").get().parseMaterial());
+        }
+
+        if(FactionsPlugin.getInstance().version >= 19) {
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("MANGROVE_BOAT").get().parseMaterial());
+        }
+
+        if(FactionsPlugin.getInstance().version >= 20) {
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("BAMBOO_RAFT").get().parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("CHERRY_BOAT").get().parseMaterial());
+        }
+
+        if (FactionsPlugin.getInstance().version != 7) {
+            territoryDenyUsageMaterials.add(XMaterial.ARMOR_STAND.parseMaterial());
+        }
+
+        if (FactionsPlugin.getInstance().version >= 13) {
+            territoryDenyUsageMaterials.add(XMaterial.COD_BUCKET.parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.PUFFERFISH_BUCKET.parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.SALMON_BUCKET.parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.TROPICAL_FISH_BUCKET.parseMaterial());
+        }
+
+        if (FactionsPlugin.getInstance().version >= 17) {
+            territoryDenyUsageMaterials.add(XMaterial.AXOLOTL_BUCKET.parseMaterial());
+            territoryDenyUsageMaterials.add(XMaterial.POWDER_SNOW_BUCKET.parseMaterial());
+        }
 
 
         /// TODO: Consider removing this in a future release, as permissions works just fine now
@@ -560,15 +523,6 @@ public class Conf {
         territoryBypassProtectedMaterials.add(Material.TRAPPED_CHEST);
 
 
-        //territoryProtectedMaterialsWhenOffline.add(Material.BEACON);
-//
-        //territoryDenyUsageMaterialsWhenOffline.add(Material.FLINT_AND_STEEL);
-        //territoryDenyUsageMaterialsWhenOffline.add(Material.BUCKET);
-        //territoryDenyUsageMaterialsWhenOffline.add(Material.WATER_BUCKET);
-        //territoryDenyUsageMaterialsWhenOffline.add(Material.LAVA_BUCKET);
-        //if (FactionsPlugin.getInstance().version != 7) {
-        //    territoryDenyUsageMaterialsWhenOffline.add(Material.ARMOR_STAND);
-        //}
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);
         safeZoneNerfedCreatureTypes.add(EntityType.CAVE_SPIDER);
         safeZoneNerfedCreatureTypes.add(EntityType.CREEPER);
@@ -576,17 +530,7 @@ public class Conf {
         safeZoneNerfedCreatureTypes.add(EntityType.ENDERMAN);
         safeZoneNerfedCreatureTypes.add(EntityType.GHAST);
         safeZoneNerfedCreatureTypes.add(EntityType.MAGMA_CUBE);
-        //try {
-        //    safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
-        //} catch (IllegalArgumentException ex) {
-        //    if (FactionsPlugin.getInstance().mc117) {
-        //        safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
-        //        safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
-        //        safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
-        //    } else {
-        //        safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
-        //    }
-        //}
+
         safeZoneNerfedCreatureTypes.add(EntityType.SILVERFISH);
         safeZoneNerfedCreatureTypes.add(EntityType.SKELETON);
         safeZoneNerfedCreatureTypes.add(EntityType.SPIDER);

@@ -89,9 +89,6 @@ public class StartupParameter {
                // FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, WeeWooTask::new, 600L, 600L);
             }
 
-
-            populateConfSets();
-
             FactionsPlugin.getInstance().fLogManager.loadLogs(plugin);
 
             FactionsPlugin.getInstance().timerManager = new TimerManager(plugin);
@@ -101,46 +98,6 @@ public class StartupParameter {
             finish.run();
         }));
 
-    }
-
-    public static void populateConfSets() {
-        if (FactionsPlugin.getInstance().version >= 17) {
-            safeZoneNerfedCreatureTypes.add(EntityType.GLOW_SQUID);
-            safeZoneNerfedCreatureTypes.add(EntityType.AXOLOTL);
-            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
-        } else if (FactionsPlugin.getInstance().version == 16) {
-            safeZoneNerfedCreatureTypes.add(EntityType.ZOMBIFIED_PIGLIN);
-        } else {
-            safeZoneNerfedCreatureTypes.add(EntityType.valueOf("PIG_ZOMBIE"));
-        }
-
-        territoryDenyUsageMaterials.add(XMaterial.FLINT_AND_STEEL.parseMaterial());
-        if(FactionsPlugin.getInstance().version != 8) {
-            territoryDenyUsageMaterials.add(XMaterial.END_CRYSTAL.parseMaterial());
-        }
-        territoryDenyUsageMaterials.add(XMaterial.BUCKET.parseMaterial());
-        territoryDenyUsageMaterials.add(XMaterial.WATER_BUCKET.parseMaterial());
-        territoryDenyUsageMaterials.add(XMaterial.LAVA_BUCKET.parseMaterial());
-        territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("BOAT").get().parseMaterial());
-        territoryDenyUsageMaterials.add(XMaterial.matchXMaterial("MONSTER_EGG").get().parseMaterial());
-
-        if (FactionsPlugin.getInstance().version != 7) {
-            territoryDenyUsageMaterials.add(XMaterial.ARMOR_STAND.parseMaterial());
-        }
-
-        if (FactionsPlugin.getInstance().version >= 13) {
-            territoryDenyUsageMaterials.add(XMaterial.COD_BUCKET.parseMaterial());
-            territoryDenyUsageMaterials.add(XMaterial.PUFFERFISH_BUCKET.parseMaterial());
-            territoryDenyUsageMaterials.add(XMaterial.SALMON_BUCKET.parseMaterial());
-            territoryDenyUsageMaterials.add(XMaterial.TROPICAL_FISH_BUCKET.parseMaterial());
-        }
-
-        if (FactionsPlugin.getInstance().version >= 17) {
-            territoryDenyUsageMaterials.add(XMaterial.AXOLOTL_BUCKET.parseMaterial());
-            territoryDenyUsageMaterials.add(XMaterial.POWDER_SNOW_BUCKET.parseMaterial());
-        }
-
-        Conf.save();
     }
 
 

@@ -48,11 +48,11 @@ public class FactionWarpsFrame extends SaberGUI {
         return item;
     }
 
-    private void doWarmup(final String warp, FPlayer fme) {
+    private void doWarmup(final String warp, FPlayer fme, Faction faction) {
         WarmUpUtil.process(fme, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, () -> {
             Player player = Bukkit.getPlayer(fme.getPlayer().getUniqueId());
             if (player != null) {
-                player.teleport(fme.getFaction().getWarp(warp).getLocation());
+                player.teleport(faction.getWarp(warp).getLocation());
                 fme.msg(TL.COMMAND_FWARP_WARPED, warp);
             }
         }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 10));
@@ -96,7 +96,7 @@ public class FactionWarpsFrame extends SaberGUI {
 
                 if (!f.hasWarpPassword(warp.getKey())) {
                     if (transact(fplayer)) {
-                        doWarmup(warp.getKey(), fplayer);
+                        doWarmup(warp.getKey(), fplayer, this.f);
                     }
                 } else {
                     fplayer.setEnteringPassword(true, warp.getKey());
