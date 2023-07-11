@@ -444,11 +444,12 @@ public class FactionsPlayerListener implements Listener {
         CmdSeeChunk.seeChunkMap.remove(me.getPlayer().getName());
 
         // if player is waiting for fstuck teleport but leaves, remove
-        Integer stuck = FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
+        UUID playerId = player.getUniqueId();
+        Integer stuck = FactionsPlugin.getInstance().getStuckMap().remove(playerId);
 
         if (stuck != null) {
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
-            FactionsPlugin.instance.getTimers().remove(player.getUniqueId());
+            FactionsPlugin.instance.getTimers().remove(playerId);
         }
 
         Faction myFaction = me.getFaction();

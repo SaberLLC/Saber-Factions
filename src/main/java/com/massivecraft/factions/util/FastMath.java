@@ -11,7 +11,8 @@ public final class FastMath {
     private static final double BIG_ENOUGH_ROUND = BIG_ENOUGH_INT + 0.5;
 
     public static int floor(float x) {
-        return (int) (x + BIG_ENOUGH_FLOOR) - BIG_ENOUGH_INT;
+        int close = (int) x;
+        return x < close ? close - 1 : close;
     }
 
     public static int round(float x) {
