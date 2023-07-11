@@ -439,7 +439,7 @@ public class FactionsPlayerListener implements Listener {
         // and update their last login time to point to when the logged off, for auto-remove routine
         me.setLastLoginTime(System.currentTimeMillis());
 
-        me.logout(); // cache kills / deaths
+        me.logout(player.getStatistic(Statistic.PLAYER_KILLS), player.getStatistic(Statistic.DEATHS)); // cache kills / deaths
 
         CmdSeeChunk.seeChunkMap.remove(me.getPlayer().getName());
 
@@ -447,8 +447,8 @@ public class FactionsPlayerListener implements Listener {
         Integer stuck = FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
 
         if (stuck != null) {
-            FPlayers.getInstance().getByPlayer(me.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
-            FactionsPlugin.instance.getTimers().remove(me.getPlayer().getUniqueId());
+            FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
+            FactionsPlugin.instance.getTimers().remove(player.getUniqueId());
         }
 
         Faction myFaction = me.getFaction();
