@@ -11,7 +11,7 @@ public class AntiDeathClip implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDeathClipDamage(EntityDamageByEntityEvent e) {
-        if (e.getDamager().isDead() && e.getDamager() instanceof Player) {
+        if (e.getDamager() instanceof Player && e.getDamager().isDead()) {
             e.setCancelled(true);
         }
     }
