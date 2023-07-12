@@ -38,7 +38,8 @@ public class FactionsEntityListener implements Listener {
      * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
-    private static final Set<PotionEffectType> badPotionEffects = Stream.of(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER)
+    private static final Set<PotionEffectType> badPotionEffects = Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER)
+            .stream()
             .collect(Collectors.toCollection(() -> Collections.newSetFromMap(new IdentityHashMap<>())));
 
     private static final BlockFace[] FACES = new BlockFace[]{
