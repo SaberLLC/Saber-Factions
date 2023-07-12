@@ -80,7 +80,7 @@ public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer
         }
     }
 
-    public class Timer {
+    public static class Timer {
         private long startTime;
         private long count;
         private Object extraData;

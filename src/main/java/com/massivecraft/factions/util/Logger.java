@@ -24,7 +24,7 @@ public class Logger {
         WARNING(ChatColor.RED + "WARNING: "),
         NONE(""),
         DEFAULT(ChatColor.GOLD.toString()),
-        HEADLINE(ChatColor.GOLD + ""),
+        HEADLINE(String.valueOf(ChatColor.GOLD)),
         FAILED(ChatColor.RED + "FAILED: ");
 
         private final String prefix;

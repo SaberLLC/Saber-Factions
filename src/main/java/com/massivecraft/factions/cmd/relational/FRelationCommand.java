@@ -93,7 +93,7 @@ public abstract class FRelationCommand extends FCommand {
             // inform the other faction of your request
             them.msg(TL.COMMAND_RELATIONS_PROPOSAL_1, currentRelationColor + context.faction.getTag(), targetRelation.getColor() + targetRelation.getTranslation());
             them.msg(TL.COMMAND_RELATIONS_PROPOSAL_2, Conf.baseCommandAliases.get(0), targetRelation, context.faction.getTag());
-            context.faction.msg(TL.COMMAND_RELATIONS_PROPOSAL_SENT, currentRelationColor + them.getTag(), "" + targetRelation.getColor() + targetRelation);
+            context.faction.msg(TL.COMMAND_RELATIONS_PROPOSAL_SENT, currentRelationColor + them.getTag(), String.valueOf(targetRelation.getColor()) + targetRelation);
         }
 
         if (!targetRelation.isNeutral() && them.isPeaceful()) {

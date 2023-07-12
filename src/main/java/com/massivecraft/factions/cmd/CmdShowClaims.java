@@ -29,7 +29,7 @@ public class CmdShowClaims extends FCommand {
         ListMultimap<String, String> chunkMap = ArrayListMultimap.create();
         String format = TL.COMMAND_SHOWCLAIMS_CHUNKSFORMAT.toString();
         for (FLocation fLocation : context.faction.getAllClaims()) {
-            chunkMap.put(fLocation.getWorldName(), format.replace("{x}", fLocation.getX() + "").replace("{z}", fLocation.getZ() + ""));
+            chunkMap.put(fLocation.getWorldName(), format.replace("{x}", String.valueOf(fLocation.getX())).replace("{z}", String.valueOf(fLocation.getZ())));
         }
         for (String world : chunkMap.keySet()) {
             String message = TL.COMMAND_SHOWCLAIMS_FORMAT.toString().replace("{world}", world);

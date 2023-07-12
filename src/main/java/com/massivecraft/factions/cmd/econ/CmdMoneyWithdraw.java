@@ -59,7 +59,7 @@ public class CmdMoneyWithdraw extends FCommand {
 
         if (success && Conf.logMoneyTransactions) {
             Logger.printArgs(TL.COMMAND_MONEYWITHDRAW_WITHDRAW.toString(), Logger.PrefixType.WARNING, context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null));
-            FactionsPlugin.instance.logFactionEvent(faction, FLogType.BANK_EDIT, context.fPlayer.getName(), CC.RedB + "WITHDREW", amount + "");
+            FactionsPlugin.instance.logFactionEvent(faction, FLogType.BANK_EDIT, context.fPlayer.getName(), CC.RedB + "WITHDREW", String.valueOf(amount));
         }
     }
 

@@ -100,7 +100,7 @@ public class CmdTnt extends FCommand {
                 context.faction.addTnt(amount);
                 context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
                 FactionsPlugin.instance.getFlogManager().log(context.faction, FLogType.F_TNT, context.fPlayer.getName(), "DEPOSITED", amount + "x TNT");
-                context.fPlayer.sendMessage(CC.translate(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
+                context.fPlayer.sendMessage(CC.translate(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", String.valueOf(context.faction.getTnt())).replace("{maxAmount}", String.valueOf(context.faction.getTntBankLimit()))));
                 return;
 
             }
@@ -169,14 +169,14 @@ public class CmdTnt extends FCommand {
                 context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
                 FactionsPlugin.instance.getFlogManager().log(context.faction, FLogType.F_TNT, context.fPlayer.getName(), "DEPOSITED", invTnt + "x TNT");
 
-                context.fPlayer.sendMessage(CC.translate(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
+                context.fPlayer.sendMessage(CC.translate(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", String.valueOf(context.faction.getTnt())).replace("{maxAmount}", String.valueOf(context.faction.getTntBankLimit()))));
                 return;
 
             }
             context.msg(TL.GENERIC_ARGS_TOOFEW);
             context.msg(context.args.get(0).equalsIgnoreCase("take") || context.args.get(0).equalsIgnoreCase("t") ? TL.COMMAND_TNT_TAKE_DESCRIPTION : TL.COMMAND_TNT_ADD_DESCRIPTION);
         }
-        context.sendMessage(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + ""));
+        context.sendMessage(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", String.valueOf(context.faction.getTnt())).replace("{maxAmount}", String.valueOf(context.faction.getTntBankLimit())));
     }
 
     public boolean inventoryContains(Inventory inventory, ItemStack item) {

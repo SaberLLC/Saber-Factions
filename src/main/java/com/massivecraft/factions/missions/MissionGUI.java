@@ -271,7 +271,7 @@ public class MissionGUI implements FactionGUI {
             if (plugin.getFileManager().getMissions().getConfig().getBoolean("DenyMissionsMoreThenOnce") &&
                     // Check if the completed missions contain all the available missions,
                     // doing it this way since there might be completed missions that are no longer available
-                    fPlayer.getFaction().getCompletedMissions().containsAll(configurationSection.getKeys(false)
+                    new HashSet<>(fPlayer.getFaction().getCompletedMissions()).containsAll(configurationSection.getKeys(false)
                             .stream().filter(key -> !key.equals("FillItem")).collect(Collectors.toSet()))) {
                 material = plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Material");
                 displayName = plugin.getFileManager().getMissions().getConfig().getString("Randomization.Start-Item.Disallowed.Name");

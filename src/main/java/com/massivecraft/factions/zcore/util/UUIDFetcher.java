@@ -11,9 +11,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -21,57 +25,48 @@ import java.util.concurrent.Executors;
  * @author evilmidget38
  */
 
-public class UUIDFetcher {
+public final class UUIDFetcher {
 
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
     private static final double PROFILES_PER_REQUEST = 100;
-    private static final Executor THREAD_POOL = Executors.newFixedThreadPool(3);
+    private static final Executor POOL = Executors.newWorkStealingPool(3);
 
-    private static UUIDFetcher instance;
-
-    public static UUIDFetcher getInstance() {
-        if (instance == null) {
-            instance = new UUIDFetcher();
-        }
-        return instance;
-    }
-
-    public FetchingSession newSession(List<String> usernames) {
+    public FetchingSession newSession(Collection<String> usernames) {
         return new FetchingSession(usernames);
-    }
-
-    public UUID getUUID(String id) {
-        return UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
     }
 
     public static final class FetchingSession {
 
-        private final List<String> usernames;
-
         private static final JSONParser JSON_PARSER = new JSONParser();
 
-        public FetchingSession(List<String> usernames) {
+        private final List<String> usernames;
+
+        public FetchingSession(Collection<String> usernames) {
             this.usernames = new ArrayList<>(usernames);
         }
 
-        public CompletionStage<Map<String, UUID>> fetch() {
-            int size = this.usernames.size();
-            int requests = FastMath.ceil(size / PROFILES_PER_REQUEST);
+        private UUID format(String id) {
+            return UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
+        }
 
+        public CompletableFuture<Map<String, UUID>> fetch() {
             return CompletableFuture.supplyAsync(() -> {
-                Map<String, UUID> uuids = new HashMap<>();
+                int size = this.usernames.size();
+                int requests = FastMath.ceil(size / PROFILES_PER_REQUEST);
+
+                Map<String, UUID> uuids = new HashMap<>(requests);
                 for (int i = 0; i < requests; i++) {
-                    HttpURLConnection connection = null;
+                    HttpURLConnection connection;
                     try {
                         connection = createConnection();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    String body = JSONArray.toJSONString(this.usernames.subList(i * 100, Math.min((i + 1) * 100, size)));
+                    String body = JSONArray.toJSONString(this.usernames.size() == 1 ? this.usernames : this.usernames.subList(i * 100, Math.min((i + 1) * 100, size)));
                     try {
                         writeBody(connection, body);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                    } catch (IOException exception) {
+                        throw new RuntimeException(exception);
                     }
                     JSONArray array;
                     try {
@@ -81,10 +76,7 @@ public class UUIDFetcher {
                     }
                     for (Object profile : array) {
                         JSONObject jsonProfile = (JSONObject) profile;
-                        String id = (String) jsonProfile.get("id");
-                        String name = (String) jsonProfile.get("name");
-                        UUID uuid = UUIDFetcher.getInstance().getUUID(id);
-                        uuids.put(name, uuid);
+                        uuids.put((String) jsonProfile.get("name"), format((String) jsonProfile.get("id")));
                     }
                     if (i != requests - 1) {
                         try {
@@ -95,7 +87,7 @@ public class UUIDFetcher {
                     }
                 }
                 return uuids;
-            }, THREAD_POOL);
+            }, POOL);
         }
 
         private HttpURLConnection createConnection() throws IOException {

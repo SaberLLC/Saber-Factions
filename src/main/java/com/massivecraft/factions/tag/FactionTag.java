@@ -3,12 +3,10 @@ package com.massivecraft.factions.tag;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.FastMath;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
-import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 

@@ -9,19 +9,22 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayers;
 import com.massivecraft.factions.zcore.util.DiscUtil;
-import com.massivecraft.factions.zcore.util.UUIDFetcher;
-import org.bukkit.Bukkit;
+import com.massivecraft.factions.zcore.util.FastUUID;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
-import java.util.logging.Level;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 public class JSONFPlayers extends MemoryFPlayers {
+
+    private final Executor service = Executors.newSingleThreadExecutor();
+
     // Info on how to persist
     private Path path;
 
@@ -56,117 +59,82 @@ public class JSONFPlayers extends MemoryFPlayers {
         return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(data), sync);
     }
 
-    public void load(Consumer<Boolean> finish) {
-        this.loadCore(data -> {
-            if (data == null) {
-                Logger.print("No players loaded. Fresh start?", Logger.PrefixType.DEFAULT);
-                finish.accept(true);
-                return;
+    public CompletableFuture<Boolean> load() {
+        return loadCore().thenApply(players -> {
+            if (players == null || players.isEmpty()) {
+                Logger.print("No players loaded. Initial install?", Logger.PrefixType.WARNING);
+            } else {
+                this.fPlayers.clear();
+                this.fPlayers.putAll(players);
+                Logger.print("Loaded " + players.size() + " players into memory.", Logger.PrefixType.DEFAULT);
             }
-            this.fPlayers.clear();
-            this.fPlayers.putAll(data);
-            Logger.print("Loaded " + fPlayers.size() + " players", Logger.PrefixType.DEFAULT);
-            finish.accept(true);
+            return true;
         });
     }
 
-    private void loadCore(Consumer<Map<String, JSONFPlayer>> finish) {
-        if (Files.notExists(path)) {
-            finish.accept(new HashMap<>());
-            return;
-        }
-
-        String content = DiscUtil.readCatch(path);
-        if (content == null) {
-            finish.accept(null);
-            return;
-        }
-
-        Map<String, JSONFPlayer> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFPlayer>>(){}.getType());
-        if (data == null) {
-            finish.accept(null);
-            return;
-        }
-
-        Set<String> list = new HashSet<>();
-        Set<String> invalidList = new HashSet<>();
-        for (Entry<String, JSONFPlayer> entry : data.entrySet()) {
-            String key = entry.getKey();
-            entry.getValue().setId(key);
-            if (doesKeyNeedMigration(key)) {
-                if (isKeyValid(key)) {
-                    list.add(key);
-                } else {
-                    invalidList.add(key);
+    private CompletableFuture<Map<String, JSONFPlayer>> loadCore() {
+        return CompletableFuture.supplyAsync(() -> {
+            if (Files.notExists(this.path)) {
+                return new HashMap<>();
+            } else {
+                String content = DiscUtil.readCatch(this.path);
+                if (content == null) {
+                    return null;
                 }
-            }
-        }
 
-        if (list.isEmpty()) {
-            finish.accept(data);
-            return;
-        }
+                FactionsPlugin plugin = FactionsPlugin.getInstance();
+                Map<String, JSONFPlayer> data = plugin.getGson().fromJson(content, new TypeToken<Map<String, JSONFPlayer>>(){}.getType());
+                if (data == null) {
+                    return null;
+                }
 
-        Bukkit.getLogger().log(Level.INFO, "Factions is now updating players.json");
+                Set<String> relocations = new HashSet<>(data.size());
 
-        Path backup = path.getParent().resolve("players.json.old");
-        try {
-            Files.createFile(backup);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        saveCore(backup, data, true);
-        Bukkit.getLogger().log(Level.INFO, "Backed up your old data at " + backup.toAbsolutePath());
-
-        Bukkit.getLogger().log(Level.INFO, "Please wait while Factions converts " + list.size() + " old player names to UUID. This may take a while.");
-
-        UUIDFetcher.FetchingSession session = UUIDFetcher.getInstance().newSession(new ArrayList<>(list));
-
-        session.fetch()
-                .whenComplete((response, throwable) -> {
-                    Runnable action = () -> {
-                        if (throwable != null) {
-                            finish.accept(new HashMap<>());
-                            throwable.printStackTrace();
-                            return;
+                for (Entry<String, JSONFPlayer> entry : data.entrySet()) {
+                    String username = entry.getKey();
+                    if (doesKeyNeedMigration(username)) {
+                        if (isKeyValid(username)) {
+                            relocations.add(username);
+                        } else {
+                            Logger.print("Username: '" + username + "' is not valid. Skipping legacy conversion...");
                         }
-                        for (Map.Entry<String, UUID> entry : response.entrySet()) {
-                            String value = entry.getKey();
-                            String id = entry.getValue().toString();
-
-                            JSONFPlayer player = data.get(value);
-                            if (player == null) {
-                                invalidList.add(value);
-                                continue;
-                            }
-
-                            player.setId(id);
-
-                            data.remove(value);
-                            data.put(id, player);
-                        }
-                        if (!invalidList.isEmpty()) {
-                            for (String name : invalidList) {
-                                data.remove(name);
-                            }
-                            Bukkit.getLogger().log(Level.INFO, "While converting, invalid names were removed from storage.");
-                            Bukkit.getLogger().log(Level.INFO, "The following names were detected as being invalid: " + String.join(", ", invalidList));
-                        }
-                        saveCore(path, data, true);
-                        Bukkit.getLogger().log(Level.INFO, "Done converting players.json to UUID.");
-
-                        finish.accept(data);
-                    };
-                    if (Bukkit.isPrimaryThread()) {
-                        action.run();
-                    } else {
-                        Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), action);
                     }
-                });
+                }
+
+                if (!relocations.isEmpty()) {
+                    Logger.print(relocations.size() + " usernames require legacy conversion. This will only take a moment...");
+
+                    Path backup = this.path.getParent().resolve("players.json.old");
+                    try {
+                        if (Files.deleteIfExists(backup)) {
+                            Logger.print("An existing players.json.old backup was found and was replaced while legacy conversion occurs.");
+                        }
+                        Files.createFile(backup);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    saveCore(backup, data, true);
+                    Logger.print("Backup created for legacy players.json: " + backup.toAbsolutePath());
+
+                    Map<String, UUID> relocated = plugin.uuidFetcher().newSession(relocations).fetch().join();
+                    for (Entry<String, UUID> convertedUsername : relocated.entrySet()) {
+                        JSONFPlayer removed = data.remove(convertedUsername.getKey());
+                        if (removed != null) {
+                            String playerId = FastUUID.toString(convertedUsername.getValue());
+                            removed.setId(playerId);
+                            data.put(playerId, removed);
+                        }
+                    }
+                    saveCore(this.path, data, true);
+                    Logger.print("Players legacy conversion complete.");
+                }
+                return data;
+            }
+        }, this.service);
     }
 
     private boolean doesKeyNeedMigration(String key) {
-        return !PATTERN_UUID.matcher(key).matches() && isKeyValid(key);
+        return !PATTERN_UUID.matcher(key).matches();
     }
 
     private boolean isKeyValid(String key) {

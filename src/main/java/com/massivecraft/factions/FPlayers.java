@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.Set;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class FPlayers {
     protected static FPlayers instance = getFPlayersImpl();
@@ -35,5 +35,5 @@ public abstract class FPlayers {
 
     public abstract FPlayer getById(String string);
 
-    public abstract void load(Consumer<Boolean> finish);
+    public abstract CompletableFuture<Boolean> load();
 }

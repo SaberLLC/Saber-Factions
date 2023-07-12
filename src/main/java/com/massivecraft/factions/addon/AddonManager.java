@@ -75,9 +75,7 @@ public final class AddonManager {
     private Class<?> getAddonMainClass(final File addon) {
         //Setup this so we go deep into directories
         Class<?> mainClass = null;
-        try {
-            URLClassLoader child = new URLClassLoader(new URL[]{addon.toURI().toURL()}, this.getClass().getClassLoader());
-            JarFile jarFile = new JarFile(addon);
+        try (URLClassLoader child = new URLClassLoader(new URL[]{addon.toURI().toURL()}, this.getClass().getClassLoader()); JarFile jarFile = new JarFile(addon)) {
             Enumeration<JarEntry> allEntries = jarFile.entries();
             while (allEntries.hasMoreElements()) {
                 JarEntry entry = allEntries.nextElement();
@@ -90,10 +88,9 @@ public final class AddonManager {
                     break;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         return mainClass;
     }
 }
-

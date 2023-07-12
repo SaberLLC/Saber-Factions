@@ -40,7 +40,7 @@ public class CmdNear extends FCommand {
                 FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
                 if (context.faction == fplayer.getFaction()) {
                     double distance = context.player.getLocation().distance(player.getLocation());
-                    context.sendMessage(format.replace("{playername}", player.getDisplayName()).replace("{distance}", (int) distance + ""));
+                    context.sendMessage(format.replace("{playername}", player.getDisplayName()).replace("{distance}", String.valueOf((int) distance)));
                 }
             }
 

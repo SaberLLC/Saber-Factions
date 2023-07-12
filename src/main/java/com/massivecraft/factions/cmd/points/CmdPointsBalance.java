@@ -44,7 +44,7 @@ public class CmdPointsBalance extends FCommand {
 
         if (faction != context.faction && !context.fPlayer.isAdminBypassing()) return;
 
-        context.msg(TL.COMMAND_POINTS_SHOW_OTHER.toString().replace("{faction}", faction.getTag()).replace("{points}", faction.getPoints() + ""));
+        context.msg(TL.COMMAND_POINTS_SHOW_OTHER.toString().replace("{faction}", faction.getTag()).replace("{points}", String.valueOf(faction.getPoints())));
 
     }
 

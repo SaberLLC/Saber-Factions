@@ -9,7 +9,6 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -50,7 +49,7 @@ public class TNTFillTask extends BukkitRunnable {
     @Override
     public void run() {
         if (dispensers.isEmpty() || !tntProvider.isAvailable()) {
-            tntProvider.sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", (initialSize * count) + "").replace("{dispensers}", initialSize + ""));
+            tntProvider.sendMessage(TL.COMMAND_TNTFILL_SUCCESS.toString().replace("{amount}", String.valueOf(initialSize * count)).replace("{dispensers}", String.valueOf(initialSize)));
             cancel();
             return;
         }

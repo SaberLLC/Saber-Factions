@@ -41,6 +41,7 @@ import com.massivecraft.factions.zcore.frame.fupgrades.UpgradesListener;
 import com.massivecraft.factions.zcore.util.ShutdownParameter;
 import com.massivecraft.factions.zcore.util.StartupParameter;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import com.massivecraft.factions.zcore.util.UUIDFetcher;
 import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -108,6 +109,8 @@ public class FactionsPlugin extends MPlugin {
     private BannerManager bannerManager;
     public LunarClientWrapper lcWrapper;
 
+    private UUIDFetcher uuidFetcher;
+
     public FactionsPlugin() {
         instance = this;
     }
@@ -133,9 +136,12 @@ public class FactionsPlugin extends MPlugin {
         this.setAutoSave(val);
     }
 
+    public UUIDFetcher uuidFetcher() {
+        return this.uuidFetcher;
+    }
+
     @Override
     public void onEnable() {
-
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
             Logger.print("You are missing dependencies!", Logger.PrefixType.FAILED);
             Logger.print("Please verify [Vault] is installed!", Logger.PrefixType.FAILED);
@@ -143,6 +149,8 @@ public class FactionsPlugin extends MPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        this.uuidFetcher = new UUIDFetcher();
 
         this.version = Short.parseShort(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 

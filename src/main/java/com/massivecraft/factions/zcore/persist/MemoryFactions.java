@@ -10,14 +10,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class MemoryFactions extends Factions {
     public final Map<String, Faction> factions = new ConcurrentHashMap<>();
-    public int nextId = 1;
+    public final AtomicInteger nextId = new AtomicInteger(0);
 
-    public void load(Consumer<Boolean> success) {
+    public CompletableFuture<Boolean> load() {
         // Make sure the default neutral faction exists
 
         Faction wilderness = this.factions.computeIfAbsent("0", this::generateFactionObject);
@@ -32,7 +33,7 @@ public abstract class MemoryFactions extends Factions {
         warzone.setTag(TL.WARZONE.toString());
         warzone.setDescription(TL.WARZONE_DESCRIPTION.toString());
 
-        success.accept(true);
+        return CompletableFuture.completedFuture(true);
     }
 
     public Faction getFactionById(String id) {

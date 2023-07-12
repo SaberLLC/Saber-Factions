@@ -133,7 +133,7 @@ public class CmdConfig extends FCommand {
                 ChatColor newColor = null;
                 try {
                     newColor = ChatColor.valueOf(value.toString().toUpperCase());
-                } catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ignored) {
 
                 }
                 if (newColor == null) {
@@ -160,7 +160,7 @@ public class CmdConfig extends FCommand {
                     Material newMat = null;
                     try {
                         newMat = Material.valueOf(value.toString().toUpperCase());
-                    } catch (IllegalArgumentException ex) {
+                    } catch (IllegalArgumentException ignored) {
 
                     }
                     if (newMat == null) {

@@ -18,7 +18,6 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeManager;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -1218,7 +1217,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
             if (FactionsPlugin.getInstance().getConfig().getBoolean("faction-disband-broadcast")) {
                 String message = TL.COMMAND_DISBAND_BROADCAST_GENERIC.toString()
-                        .replace("{claims}", this.getAllClaims().size() + "");
+                        .replace("{claims}", String.valueOf(this.getAllClaims().size()));
                 for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers())
                     fplayer.msg(message, this.getTag(fplayer));
             }

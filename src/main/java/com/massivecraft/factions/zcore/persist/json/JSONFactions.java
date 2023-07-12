@@ -2,7 +2,6 @@ package com.massivecraft.factions.zcore.persist.json;
 
 import com.google.common.collect.Maps;
 import com.google.gson.reflect.TypeToken;
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
@@ -11,22 +10,27 @@ import com.massivecraft.factions.zcore.persist.MemoryFaction;
 import com.massivecraft.factions.zcore.persist.MemoryFactions;
 import com.massivecraft.factions.zcore.util.DiscUtil;
 import com.massivecraft.factions.zcore.util.FastUUID;
-import com.massivecraft.factions.zcore.util.UUIDFetcher;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class JSONFactions extends MemoryFactions {
+
+    private final Executor service = Executors.newSingleThreadExecutor();
+
     // Info on how to persist
     private final Path path;
 
     public JSONFactions() {
         this.path = FactionsPlugin.getInstance().getDataFolder().toPath().resolve("factions.json");
-        this.nextId = 1;
+        this.nextId.set(0);
     }
 
     // -------------------------------------------- //
@@ -53,137 +57,112 @@ public class JSONFactions extends MemoryFactions {
         return DiscUtil.writeCatch(target, FactionsPlugin.getInstance().getGson().toJson(entities), sync);
     }
 
-    public void load(Consumer<Boolean> success) {
-        this.loadCore(data -> super.load(aBoolean -> {
-            if (data == null){
-                Logger.print("No player factions loaded. Fresh start?", Logger.PrefixType.DEFAULT);
-                success.accept(true);
-                return;
+    public CompletableFuture<Boolean> load() {
+        return loadCore().toCompletableFuture().thenApply(factions -> {
+            this.factions.clear();
+            boolean success = super.load().join();
+            if (factions == null || factions.isEmpty()) {
+                Logger.print("No factions loaded. Initial install?", Logger.PrefixType.WARNING);
+            } else {
+                this.factions.putAll(factions);
+                Logger.print("Loaded " + factions.size() + " factions into memory.", Logger.PrefixType.DEFAULT);
             }
-            this.factions.putAll(data);
-            Logger.print("Loaded " + factions.size() + " Factions", Logger.PrefixType.DEFAULT);
-            success.accept(true);
-        }));
+            return success;
+        });
     }
 
-    private void loadCore(Consumer<Map<String, JSONFaction>> finish) {
-        if (Files.notExists(this.path)) {
-            finish.accept(new HashMap<>());
-            return;
-        }
-        String content = DiscUtil.readCatch(this.path);
-        if (content == null) {
-            finish.accept(null);
-            return;
-        }
-
-        Map<String, JSONFaction> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFaction>>(){}.getType());
-        if (data == null) {
-            finish.accept(null);
-            return;
-        }
-
-        this.nextId = 1;
-        // Do we have any names that need updating in claims or invites?
-
-        int needsUpdate = 0;
-        for (Entry<String, JSONFaction> entry : data.entrySet()) {
-            String id = entry.getKey();
-            Faction f = entry.getValue();
-            f.checkPerms();
-            f.setId(id);
-            this.updateNextIdForId(id);
-            needsUpdate += whichKeysNeedMigration(f.getInvites()).size();
-            for (Set<String> keys : f.getClaimOwnership().values()) {
-                needsUpdate += whichKeysNeedMigration(keys).size();
-            }
-        }
-
-        if (needsUpdate > 0) {
-            // We've got some converting to do!
-            Logger.print("Factions is now updating factions.json");
-
-            // First we'll make a backup, because god forbid anybody heed a
-            // warning
-            Path backup = this.path.getParent().resolve("factions.json.old");
-            try {
-                Files.createFile(backup);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            saveCore(backup, data, true);
-            Logger.print("Backed up your old data at " + backup.toAbsolutePath());
-
-            Logger.print("Please wait while Factions converts " + needsUpdate + " old player names to UUID. This may take a while.");
-
-            List<String> toMigrate = new ArrayList<>(needsUpdate);
-
-            for (Entry<String, JSONFaction> factionEntry : data.entrySet()) {
-                Faction faction = factionEntry.getValue();
-
-                //Add claims data for migration
-                Map<FLocation, Set<String>> claims = faction.getClaimOwnership();
-                for (Entry<FLocation, Set<String>> claimEntry : claims.entrySet()) {
-                    Set<String> owners = claimEntry.getValue();
-
-                    toMigrate.addAll(whichKeysNeedMigration(owners));
+    private CompletionStage<Map<String, JSONFaction>> loadCore() {
+        return CompletableFuture.supplyAsync(() -> {
+            if (Files.notExists(this.path)) {
+                return new HashMap<>();
+            } else {
+                String content = DiscUtil.readCatch(this.path);
+                if (content == null) {
+                    return null;
                 }
+                Map<String, JSONFaction> data = FactionsPlugin.getInstance().getGson().fromJson(content, new TypeToken<Map<String, JSONFaction>>(){}.getType());
+                if (data == null) {
+                    return null;
+                }
+                this.nextId.set(1);
 
-                //Add invite data for migration
-                Set<String> invites = faction.getInvites();
-                toMigrate.addAll(invites);
-            }
-            UUIDFetcher.getInstance().newSession(toMigrate)
-                    .fetch()
-                    .whenComplete((response, throwable) -> {
-                        if (throwable != null) {
-                            finish.accept(new HashMap<>());
-                            throwable.printStackTrace();
-                            return;
+                for (Entry<String, JSONFaction> entry : data.entrySet()) {
+                    String factionId = entry.getKey();
+                    Faction faction = entry.getValue();
+
+                    faction.checkPerms();
+
+                    if (!factionId.equals(faction.getId())) {
+                        Logger.print("Faction '" + faction.getTag() + "' experienced id change: " + faction.getId() + " -> " + factionId, Logger.PrefixType.WARNING);
+                    }
+
+                    faction.setId(factionId);
+
+                    updateNextIdForId(factionId);
+
+                    Set<String> relocation = relocation(faction);
+                    if (!relocation.isEmpty()) {
+                        Logger.print(faction.getTag() + "(" + faction.getId() + ") requires legacy conversion. This will only take a moment...");
+
+                        Path backup = this.path.getParent().resolve("factions.json.old");
+                        try {
+                            if (Files.deleteIfExists(backup)) {
+                                Logger.print("An existing factions.json.old backup was found and was replaced while legacy conversion occurs.");
+                            }
+                            Files.createFile(backup);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
+                        saveCore(backup, data, true);
+                        Logger.print("Backup created for legacy factions.json: " + backup.toAbsolutePath());
 
-                        for (Entry<String, UUID> conversionEntry : response.entrySet()) {
+                        Map<String, UUID> relocated = FactionsPlugin.getInstance().uuidFetcher().newSession(relocation).fetch().join();
+                        for (Entry<String, UUID> convertedUsername : relocated.entrySet()) {
+                            String username = convertedUsername.getKey();
+                            //this is disgusting, and we should replace faction ids & usernames with their proper data types
+                            String uuid = FastUUID.toString(convertedUsername.getValue());
 
-                            String username = conversionEntry.getKey();
-                            String uuid = FastUUID.toString(conversionEntry.getValue());
+                            //convert invites
+                            Set<String> invites = faction.getInvites();
+                            if (invites.remove(username)) {
+                                invites.add(uuid);
+                            }
 
-                            for (Entry<String, JSONFaction> factionEntry : data.entrySet()) {
-                                Faction faction = factionEntry.getValue();
-
-                                //Upsert migrated claim data
-                                Map<FLocation, Set<String>> claims = faction.getClaimOwnership();
-                                for (Entry<FLocation, Set<String>> claimEntry : claims.entrySet()) {
-                                    Set<String> owners = claimEntry.getValue();
-
-                                    owners.remove(username);
+                            //convert ownerships
+                            for (Set<String> owners : faction.getClaimOwnership().values()) {
+                                if (owners.remove(username)) {
                                     owners.add(uuid);
                                 }
-
-                                //Upsert migrated invite data
-                                faction.getInvites().remove(username);
-                                faction.getInvites().add(uuid);
                             }
                         }
-                        Logger.print("Done converting factions.json to UUID.");
-
                         saveCore(this.path, data, true);
-                        finish.accept(data);
-                    });
-            return;
-        }
-        finish.accept(data);
+                        Logger.print("Factions legacy conversion complete.");
+                    }
+                    return data;
+                }
+            }
+            return null;
+        }, this.service);
     }
 
-    private Set<String> whichKeysNeedMigration(Set<String> keys) {
-        Set<String> list = new HashSet<>(keys.size());
-        for (String value : keys) {
-            if (!JSONFPlayers.PATTERN_UUID.matcher(value).matches()) {
-               if (JSONFPlayers.PATTERN_USERNAME.matcher(value).matches()) {
-                   list.add(value);
-               }
+    private Set<String> relocation(Faction faction) {
+        Set<String> invites = faction.getInvites();
+        Collection<Set<String>> claims = faction.getClaimOwnership().values();
+        if (invites.isEmpty() && claims.isEmpty()) {
+            return Collections.emptySet();
+        }
+
+        Set<String> usernames = new HashSet<>(invites);
+        for (Set<String> value : claims) {
+            usernames.addAll(value);
+        }
+
+        for (String username : usernames) {
+            if (JSONFPlayers.PATTERN_USERNAME.matcher(username).matches() && !JSONFPlayers.PATTERN_UUID.matcher(username).matches()) {
+                usernames.add(username);
             }
         }
-        return list;
+        return usernames;
     }
 
     // -------------------------------------------- //
@@ -191,10 +170,15 @@ public class JSONFactions extends MemoryFactions {
     // -------------------------------------------- //
 
     public String getNextId() {
-        while (!isIdFree(this.nextId)) {
-            this.nextId++;
-        }
-        return Integer.toString(this.nextId);
+        int currentId;
+        int updatedId;
+
+        do {
+            currentId = this.nextId.get();
+            updatedId = currentId + 1;
+        } while (!isIdFree(updatedId) || !this.nextId.compareAndSet(currentId, updatedId));
+
+        return Integer.toString(updatedId);
     }
 
     public boolean isIdFree(String id) {
@@ -205,8 +189,8 @@ public class JSONFactions extends MemoryFactions {
         return this.isIdFree(Integer.toString(id));
     }
 
-    protected synchronized void updateNextIdForId(int id) {
-        if (this.nextId < id) this.nextId = id + 1;
+    protected void updateNextIdForId(final int id) {
+        this.nextId.updateAndGet(currentNextId -> Math.max(currentNextId, id + 1));
     }
 
     protected void updateNextIdForId(String id) {
@@ -232,7 +216,7 @@ public class JSONFactions extends MemoryFactions {
     @Override
     public void convertFrom(MemoryFactions old) {
         this.factions.putAll(Maps.transformValues(old.factions, arg0 -> new JSONFaction((MemoryFaction) arg0)));
-        this.nextId = old.nextId;
+        this.nextId.set(old.nextId.get());
         forceSave();
         Factions.instance = this;
     }

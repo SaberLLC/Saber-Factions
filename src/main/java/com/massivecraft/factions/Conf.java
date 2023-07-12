@@ -621,7 +621,6 @@ public class Conf {
     public enum Backend {
         JSON,
         //MYSQL,  TODO add MySQL storage
-        ;
     }
 }
 

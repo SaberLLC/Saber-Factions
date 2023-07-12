@@ -11,8 +11,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.function.Consumer;
 
 public abstract class MemoryFPlayers extends FPlayers {
 
@@ -55,7 +55,7 @@ public abstract class MemoryFPlayers extends FPlayers {
     @Override
     public abstract void forceSave();
 
-    public abstract void load(Consumer<Boolean> finish);
+    public abstract CompletableFuture<Boolean> load();
 
     @Override
     public FPlayer getByOfflinePlayer(OfflinePlayer player) {

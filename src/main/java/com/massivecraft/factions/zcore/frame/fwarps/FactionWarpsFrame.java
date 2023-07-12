@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class FactionWarpsFrame extends SaberGUI {
 
-    private ConfigurationSection section;;
+    private ConfigurationSection section;
     private Faction f;
 
     public FactionWarpsFrame(Player player, Faction f) {
