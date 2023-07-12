@@ -102,8 +102,9 @@ public class StartupParameter {
 
 
     public static void initReserves() {
-        FactionsPlugin.getInstance().reserveObjects = new ArrayList<>();
-        String path = Paths.get(FactionsPlugin.getInstance().getDataFolder().getAbsolutePath()).toAbsolutePath() + File.separator + "data" + File.separator + "reserves.json";
+        FactionsPlugin instance = FactionsPlugin.getInstance();
+        instance.reserveObjects = new ArrayList<>();
+        String path = Paths.get(instance.getDataFolder().getAbsolutePath()).toAbsolutePath() + File.separator + "data" + File.separator + "reserves.json";
         File file = new File(path);
         try {
             String json;
@@ -116,9 +117,9 @@ public class StartupParameter {
                 Files.write(Paths.get(path), "[]".getBytes());
                 json = "[]";
             }
-            FactionsPlugin.getInstance().reserveObjects = FactionsPlugin.getInstance().getGson().fromJson(json, new ListParameterizedType(ReserveObject.class));
-            if (FactionsPlugin.getInstance().reserveObjects == null)
-                FactionsPlugin.getInstance().reserveObjects = new ArrayList<>();
+            instance.reserveObjects = instance.getGson().fromJson(json, new ListParameterizedType(ReserveObject.class));
+            if (instance.reserveObjects == null)
+                instance.reserveObjects = new ArrayList<>();
         } catch (IOException exception) {
             exception.printStackTrace();
         }

@@ -42,10 +42,10 @@ public class TributeInventoryHandler implements Listener {
         if(fPlayer == null)
             return;
 
+        if (e.isCancelled()) return;
+
         if (!inventorySet.contains(inventory))
             return;
-
-        if (e.isCancelled()) return;
 
         Inventory clicked = e.getClickedInventory();
         Inventory clicker = e.getWhoClicked().getInventory();
@@ -77,11 +77,11 @@ public class TributeInventoryHandler implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e) {
-        Inventory inventory = e.getInventory();
-        if (!inventorySet.contains(inventory))
+        if (!(e.getPlayer() instanceof Player))
             return;
 
-        if (!(e.getPlayer() instanceof Player))
+        Inventory inventory = e.getInventory();
+        if (!inventorySet.contains(inventory))
             return;
 
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) e.getPlayer());
@@ -90,7 +90,6 @@ public class TributeInventoryHandler implements Listener {
         }
 
         ItemStack[] contents = inventory.getContents();
-
 
         MissionHandler.handleMissionsOfType(fPlayer, MissionType.TRIBUTE, (mission, section) -> {
             String item = section.getString("Mission.Item", MissionHandler.matchAnythingRegex);

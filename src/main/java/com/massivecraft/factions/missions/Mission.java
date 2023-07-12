@@ -15,7 +15,6 @@ public class Mission {
         this.name = name;
         this.type = type;
         this.startTime = startTime;
-
     }
 
     public void incrementProgress(long increment) {

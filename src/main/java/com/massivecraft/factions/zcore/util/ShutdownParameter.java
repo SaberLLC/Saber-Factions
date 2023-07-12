@@ -13,31 +13,33 @@ import java.nio.file.Paths;
 
 public class ShutdownParameter {
 
-    public static void initShutdown(FactionsPlugin plugin) {
+    public static void initShutdown() {
         Logger.print( "===== Shutdown Start =====", Logger.PrefixType.DEFAULT);
         Conf.saveSync();
-        FactionsPlugin.getInstance().getTimerManager().saveTimerData();
-        for(FactionsAddon factionsAddon : FactionsPlugin.getInstance().getFactionsAddonHashMap().values()) {
+        FactionsPlugin instance = FactionsPlugin.getInstance();
+        instance.getTimerManager().saveTimerData();
+        for(FactionsAddon factionsAddon : instance.getFactionsAddonHashMap().values()) {
             factionsAddon.disableAddon();
             Logger.print("Disabled " + factionsAddon.getAddonName() + " addon", Logger.PrefixType.DEFAULT);
         }
 
         FactionDataHelper.onDisable();
 
-        FactionsPlugin.getInstance().getFlogManager().saveLogs();
+        instance.getFlogManager().saveLogs();
         saveReserves();
 
     }
 
     public static void saveReserves() {
         try {
-            String path = Paths.get(FactionsPlugin.getInstance().getDataFolder().getAbsolutePath()).toAbsolutePath() + File.separator + "data" + File.separator + "reserves.json";
+            FactionsPlugin instance = FactionsPlugin.getInstance();
+            String path = Paths.get(instance.getDataFolder().getAbsolutePath()).toAbsolutePath() + File.separator + "data" + File.separator + "reserves.json";
             File file = new File(path);
             if (!file.exists()) {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             }
-            Files.write(Paths.get(file.getPath()), FactionsPlugin.getInstance().getGson().toJson(FactionsPlugin.getInstance().reserveObjects).getBytes());
+            Files.write(Paths.get(file.getPath()), instance.getGson().toJson(instance.reserveObjects).getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }

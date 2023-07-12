@@ -199,7 +199,7 @@ public class FactionsPlugin extends MPlugin {
                     new FactionsExploitListener(),
                     new FactionsBlockListener(),
                     new UpgradesListener(),
-                    new MissionHandler(this),
+                    new MissionHandler(),
                     new FChestListener(),
                     new MenuListener(),
                     new AntiChestListener()
@@ -308,7 +308,7 @@ public class FactionsPlugin extends MPlugin {
         }
 
         bannerManager.onDisable(this);
-        ShutdownParameter.initShutdown(this);
+        ShutdownParameter.initShutdown();
 
         super.onDisable();
     }

@@ -167,7 +167,7 @@ public abstract class MemoryBoard extends Board {
                 FLocation relative = flocation.getRelative(x, z);
                 Faction other = getFactionAt(relative);
 
-                if (other.isNormal() && other != faction) {
+                if (other != faction && other.isNormal()) {
                     return true;
                 }
             }

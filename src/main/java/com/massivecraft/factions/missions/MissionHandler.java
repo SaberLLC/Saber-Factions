@@ -33,15 +33,10 @@ import java.util.stream.Stream;
 public class MissionHandler implements Listener {
 
     public static final String matchAnythingRegex = ".*";
-
-    private static FactionsPlugin plugin;
     private static final Map<String, Map<String, BukkitTask>> deadlines = new HashMap<>();
 
-    public MissionHandler(FactionsPlugin plugin) {
-        MissionHandler.plugin = plugin;
-
-        long deadlineMillis = plugin.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
-
+    public MissionHandler() {
+        long deadlineMillis = FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
         if (deadlineMillis > 0L) {
             long currentTimeMillis = System.currentTimeMillis();
 
@@ -154,8 +149,9 @@ public class MissionHandler implements Listener {
     }
 
     public static void setDeadlineTask(Mission mission, Faction faction, long timeTillDeadline) {
-        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-            ConfigurationSection missionSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
+        FactionsPlugin instance = FactionsPlugin.getInstance();
+        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLaterAsynchronously(instance, () -> {
+            ConfigurationSection missionSection = instance.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
             if (mission.getProgress() < missionSection.getLong("Mission.Amount", 0L)) {
                 faction.getMissions().remove(mission.getName());
                 faction.msg(TL.MISSION_MISSION_FAILED, CC.translate(missionSection.getString("Name")));
@@ -172,11 +168,12 @@ public class MissionHandler implements Listener {
 
     public static void handleMissionsOfType(FPlayer fPlayer, MissionType missionType, BiFunction<Mission, ConfigurationSection, Integer> missionConsumer) {
         getMissionsOfType(fPlayer, missionType).forEach(mission -> {
-            ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
+            FactionsPlugin instance = FactionsPlugin.getInstance();
+            ConfigurationSection section = instance.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
             int missionResult = missionConsumer.apply(mission, section);
             if (missionResult > 0) {
                 mission.incrementProgress(missionResult);
-                checkIfDone(fPlayer, mission, section);
+                checkIfDone(instance, fPlayer, mission, section);
             }
         });
     }
@@ -186,7 +183,7 @@ public class MissionHandler implements Listener {
                 .filter(mission -> mission.getType() == missionType);
     }
 
-    private static void checkIfDone(FPlayer fPlayer, Mission mission, @Nullable ConfigurationSection section) {
+    private static void checkIfDone(FactionsPlugin instance, FPlayer fPlayer, Mission mission, @Nullable ConfigurationSection section) {
         if (section == null)
             return;
 
@@ -201,13 +198,13 @@ public class MissionHandler implements Listener {
         Faction faction = fPlayer.getFaction();
 
         for (String command : section.getConfigurationSection("Reward").getStringList("Commands")) {
-            FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.isNormal() ? faction.getFPlayerLeader().getName() : "none"));
+            instance.getServer().dispatchCommand(instance.getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.isNormal() ? faction.getFPlayerLeader().getName() : "none"));
         }
         faction.getMissions().remove(mission.getName());
         faction.msg(TL.MISSION_MISSION_FINISHED, CC.translate(section.getString("Name")));
         faction.getCompletedMissions().add(mission.getName());
 
-        long deadlineMillis = plugin.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
+        long deadlineMillis = instance.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
         Map<String, BukkitTask> tasks = deadlines.get(faction.getId());
         if (deadlineMillis > 0L && tasks != null) {
             BukkitTask bukkitTask = tasks.remove(mission.getName());
@@ -215,12 +212,12 @@ public class MissionHandler implements Listener {
                 bukkitTask.cancel();
             }
 
-            ConfigurationSection prestigeSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Prestige");
+            ConfigurationSection prestigeSection = instance.getFileManager().getMissions().getConfig().getConfigurationSection("Prestige");
             // Prestige
             if (prestigeSection != null && prestigeSection.getBoolean("Enabled", false)
-                    && plugin.getFileManager().getMissions().getConfig().getBoolean("DenyMissionsMoreThenOnce", false)) {
+                    && instance.getFileManager().getMissions().getConfig().getBoolean("DenyMissionsMoreThenOnce", false)) {
 
-                Set<String> availableMissions = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getKeys(false)
+                Set<String> availableMissions = instance.getFileManager().getMissions().getConfig().getConfigurationSection("Missions").getKeys(false)
                         .stream().filter(key -> !key.equals("FillItem")).collect(Collectors.toSet());
 
                 // Check if the player has already completed all the missions
@@ -231,7 +228,7 @@ public class MissionHandler implements Listener {
                     faction.msg(CC.translate(prestigeSection.getString("CongratulationMessage")));
 
                     for (String command : prestigeSection.getStringList("Reward.Commands")) {
-                        FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.isNormal() ? faction.getFPlayerLeader().getName() : "none"));
+                        instance.getServer().dispatchCommand(instance.getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.isNormal() ? faction.getFPlayerLeader().getName() : "none"));
                     }
                 }
             }

@@ -45,7 +45,7 @@ public abstract class GUIMenu {
     }
 
     public static int fitSlots(int size) {
-        return size <= 9 ? 9 : (size <= 18 ? 18 : (size <= 27 ? 27 : (size <= 36 ? 36 : (size <= 45 ? 45 : (54)))));
+        return ((size - 1) / 9 + 1) * 9;
     }
 
     public static Map<UUID, GUIMenu> getMenus() {
@@ -102,7 +102,7 @@ public abstract class GUIMenu {
         GUIMenu openMenu = menus.get(player.getUniqueId());
         if (openMenu != null) {
             player.closeInventory();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> {
+            Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> {
                 this.drawItems();
                 player.openInventory(this.menu);
                 menus.put(player.getUniqueId(), this);

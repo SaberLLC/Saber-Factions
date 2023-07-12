@@ -1,5 +1,6 @@
 package com.massivecraft.factions.listeners;
 
+import com.google.common.collect.Sets;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.PowerLossEvent;
 import com.massivecraft.factions.struct.Relation;
@@ -9,6 +10,7 @@ import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
 import org.bukkit.entity.minecart.ExplosiveMinecart;
 import org.bukkit.event.EventHandler;
@@ -28,6 +30,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 public class FactionsEntityListener implements Listener {
@@ -36,7 +40,15 @@ public class FactionsEntityListener implements Listener {
      * @author FactionsUUID Team - Modified By CmdrKittens
      */
 
-    private static final Set<PotionEffectType> badPotionEffects = new LinkedHashSet<>(Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER));
+    private static final Set<PotionEffectType> badPotionEffects = Arrays.asList(PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM, PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW, PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER)
+            .stream()
+            .collect(Collectors.toCollection(() -> Collections.newSetFromMap(new IdentityHashMap<>())));
+
+    private static final BlockFace[] FACES = new BlockFace[]{
+            BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP,
+            BlockFace.DOWN, BlockFace.EAST, BlockFace.WEST
+    };
+
     /**
      * Who can I hurt? I can never hurt members or allies. I can always hurt enemies. I can hurt neutrals as long as
      * they are outside their own territory.
@@ -292,15 +304,8 @@ public class FactionsEntityListener implements Listener {
 
             if (center.isLiquid()) {
                 // a single surrounding block in all 6 directions is broken if the material is weak enough
-                List<Block> targets = new ArrayList<>();
-                targets.add(center.getRelative(0, 0, 1));
-                targets.add(center.getRelative(0, 0, -1));
-                targets.add(center.getRelative(0, 1, 0));
-                targets.add(center.getRelative(0, -1, 0));
-                targets.add(center.getRelative(1, 0, 0));
-                targets.add(center.getRelative(-1, 0, 0));
-
-                for (Block target : targets) {
+                for (BlockFace face : FACES) {
+                    Block target = center.getRelative(face);
                     @SuppressWarnings("deprecation")
                     int id = target.getType().getId();
                     // ignore air, bedrock, water, lava, obsidian, enchanting table, etc.... too bad we can't get a blast resistance value through Bukkit yet

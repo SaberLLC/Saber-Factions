@@ -236,6 +236,37 @@ public final class TextUtil {
         return times > 0 ? s + repeat(s, times - 1) : "";
     }
 
+    public static boolean containsIgnoreCase(String input, String text) {
+        final int length = text.length();
+        if (length == 0) {
+            return true;
+        }
+
+        final char initial = text.charAt(0);
+        final char firstLo = Character.toLowerCase(initial);
+        final char firstUp = Character.toUpperCase(initial);
+
+        for (int i = input.length() - length; i >= 0; i--) {
+            final char ch = input.charAt(i);
+            if (ch != firstLo && ch != firstUp) {
+                continue;
+            }
+            if (input.regionMatches(true, i, text, 0, length)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean containsIgnoreCase(Collection<String> input, String text) {
+        for (String s : input) {
+            if (containsIgnoreCase(s, text)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // -------------------------------------------- //
     // Material name tools
     // -------------------------------------------- //

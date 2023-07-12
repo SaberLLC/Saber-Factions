@@ -107,7 +107,7 @@ public abstract class MCommand<T extends MPlugin> {
         // Is there a matching sub command?
         if (!args.isEmpty()) {
             for (MCommand<?> subCommand : this.subCommands) {
-                if (subCommand.aliases.contains(args.get(0).toLowerCase())) {
+                if (TextUtil.containsIgnoreCase(subCommand.aliases, args.get(0))) {
                     args.remove(0);
                     commandChain.add(this);
                     subCommand.execute(sender, args, commandChain);
@@ -116,11 +116,11 @@ public abstract class MCommand<T extends MPlugin> {
             }
         }
 
-        if (!validCall(this.sender, this.args)) {
+        if (!this.isEnabled()) {
             return;
         }
 
-        if (!this.isEnabled()) {
+        if (!validCall(this.sender, this.args)) {
             return;
         }
 
@@ -180,7 +180,7 @@ public abstract class MCommand<T extends MPlugin> {
             return false;
         }
 
-        if (args.size() > this.requiredArgs.size() + this.optionalArgs.size() && this.errorOnToManyArgs) {
+        if (this.errorOnToManyArgs && args.size() > this.requiredArgs.size() + this.optionalArgs.size()) {
             if (sender != null) {
                 // Get the too much string slice
                 List<String> theToMany = args.subList(this.requiredArgs.size() + this.optionalArgs.size(), args.size());
@@ -282,16 +282,18 @@ public abstract class MCommand<T extends MPlugin> {
     }
 
     public List<String> getToolTips(FPlayer player) {
-        List<String> lines = new ArrayList<>();
-        for (String s : p.getConfig().getStringList("tooltips.show")) {
+        List<String> original = p.getConfig().getStringList("tooltips.show");
+        List<String> lines = new ArrayList<>(original.size());
+        for (String s : original) {
             lines.add(CC.translate(replaceFPlayerTags(s, player)));
         }
         return lines;
     }
 
     public List<String> getToolTips(Faction faction) {
-        List<String> lines = new ArrayList<>();
-        for (String s : p.getConfig().getStringList("tooltips.list")) {
+        List<String> original = p.getConfig().getStringList("tooltips.list");
+        List<String> lines = new ArrayList<>(original.size());
+        for (String s : original) {
             lines.add(CC.translate(replaceFactionTags(s, faction)));
         }
         return lines;
