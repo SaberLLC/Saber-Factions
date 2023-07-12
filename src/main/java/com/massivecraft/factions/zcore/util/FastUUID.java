@@ -242,8 +242,6 @@ public final class FastUUID {
     @Nonnull
     public static UUID fromBytes(byte[] bytes) {
         ByteBuffer buffer = ByteBuffer.wrap(bytes).order(ByteOrder.BIG_ENDIAN);
-        long firstLong = buffer.getLong();
-        long secondLong = buffer.getLong();
-        return new UUID(firstLong, secondLong);
+        return new UUID(buffer.getLong(), buffer.getLong());
     }
 }

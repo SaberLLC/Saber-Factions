@@ -45,7 +45,7 @@ public class SmokeUtil {
 
     // Simple Cloud ========
     public static void spawnCloudSimple(Location location) {
-        for (int i = 0; i <= 8; i++) {
+        for (int i = 0; i < 9; i++) {
             spawnSingle(location, i);
         }
     }
@@ -58,8 +58,7 @@ public class SmokeUtil {
 
     // Random Cloud ========
     public static void spawnCloudRandom(Location location, float thickness) {
-        int singles = FastMath.floor(thickness * 9);
-        for (int i = 0; i < singles; i++) {
+        for (int i = 0; i < FastMath.floor(thickness * 9); i++) {
             spawnSingleRandom(location.clone());
         }
     }

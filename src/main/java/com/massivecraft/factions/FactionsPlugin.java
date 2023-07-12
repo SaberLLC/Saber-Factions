@@ -308,7 +308,7 @@ public class FactionsPlugin extends MPlugin {
         }
 
         bannerManager.onDisable(this);
-        ShutdownParameter.initShutdown(this);
+        ShutdownParameter.initShutdown();
 
         super.onDisable();
     }
