@@ -307,7 +307,10 @@ public class FactionsPlugin extends MPlugin {
             TextUtil.AUDIENCES.close();
         }
 
-        bannerManager.onDisable(this);
+        if(bannerManager != null) {
+            bannerManager.onDisable(this);
+        }
+
         ShutdownParameter.initShutdown(this);
 
         super.onDisable();
