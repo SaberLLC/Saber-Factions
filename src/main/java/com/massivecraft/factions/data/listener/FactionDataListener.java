@@ -11,6 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+import java.io.IOException;
+
 /**
  * @Author: Driftay
  * @Date: 2/11/2022 4:50 PM
@@ -23,11 +25,14 @@ public class FactionDataListener implements Listener {
         if (e.getReason() == FPlayerJoinEvent.PlayerJoinReason.CREATE) {
             Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
                 if (!FactionDataHelper.doesConfigurationExist(faction)) {
-                    FactionDataHelper.createConfiguration(faction);
+                    try {
+                        FactionDataHelper.createConfiguration(faction);
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     Bukkit.getLogger().info("[FactionData] Creating Faction Data for " + faction.getTag());
                 }
-                final FactionData data = new FactionData(faction);
-                new FactionDataHelper(data);
+                FactionDataHelper.addFactionData(new FactionData(faction));
             });
         }
     }
@@ -42,7 +47,6 @@ public class FactionDataListener implements Listener {
 
         Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
             data.deleteFactionData(e.getFaction());
-            data.remove();
         });
     }
 }

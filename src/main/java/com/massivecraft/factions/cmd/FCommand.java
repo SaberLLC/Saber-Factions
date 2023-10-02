@@ -158,7 +158,7 @@ public abstract class FCommand {
 
     public String replaceFPlayerTags(String s, FPlayer player) {
         if (s.contains("{balance}")) {
-            String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
+            String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : TL.NO_BALANCE_PLACEHOLDER_PARSED.toString();
             s = TextUtil.replace(s, "{balance}", balance);
         }
         if (s.contains("{lastSeen}")) {

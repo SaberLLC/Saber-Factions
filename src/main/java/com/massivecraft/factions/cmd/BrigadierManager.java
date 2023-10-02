@@ -16,81 +16,85 @@ import java.util.Map;
 
 public class BrigadierManager {
 
-    /**
-     * @author FactionsUUID Team - Modified By CmdrKittens
-     */
-
-    public Commodore commodore;
-    public LiteralArgumentBuilder<Object> brigadier = LiteralArgumentBuilder.literal("factions");
+    private final Commodore commodore;
+    private final LiteralArgumentBuilder<Object> brigadier;
 
     public BrigadierManager() {
         commodore = CommodoreProvider.getCommodore(FactionsPlugin.getInstance());
+        brigadier = LiteralArgumentBuilder.literal("factions");
     }
 
     public void build() {
         commodore.register(brigadier.build());
 
-        // Add factions children to f alias
+        // Register 'f' alias with all children of 'factions'
         LiteralArgumentBuilder<Object> fLiteral = LiteralArgumentBuilder.literal("f");
-        for (CommandNode<Object> node : brigadier.getArguments()) fLiteral.then(node);
+        for (CommandNode<Object> node : brigadier.getArguments()) {
+
+            fLiteral.then(node);
+        }
         commodore.register(fLiteral.build());
     }
 
     public void addSubCommand(FCommand subCommand) {
-        // Register brigadier to all command aliases
         for (String alias : subCommand.aliases) {
             LiteralArgumentBuilder<Object> literal = LiteralArgumentBuilder.literal(alias);
 
             if (subCommand.requirements.brigadier != null) {
-                // If the requirements explicitly provide a BrigadierProvider then use it
-                Class<? extends BrigadierProvider> brigadierProvider = subCommand.requirements.brigadier;
-                try {
-                    Constructor<? extends BrigadierProvider> constructor = brigadierProvider.getDeclaredConstructor();
-                    brigadier.then(constructor.newInstance().get(literal));
-                } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
-                         InvocationTargetException exception) {
-                    exception.printStackTrace();
-                }
+                registerUsingProvider(subCommand, literal);
             } else {
-                // Generate our own based on args - quite ugly
-
-                // We create an orderly stack of all args, required and optional, format them differently
-                List<RequiredArgumentBuilder<Object, ?>> stack = new ArrayList<>(subCommand.requiredArgs.size() + subCommand.optionalArgs.size());
-                for (String required : subCommand.requiredArgs) {
-                    // Simply add the arg name as required
-                    stack.add(RequiredArgumentBuilder.argument(required, StringArgumentType.word()));
-                }
-
-                for (Map.Entry<String, String> optionalEntry : subCommand.optionalArgs.entrySet()) {
-                    RequiredArgumentBuilder<Object, ?> optional;
-
-                    // Optional without default
-                    if (optionalEntry.getKey().equalsIgnoreCase(optionalEntry.getValue())) {
-                        optional = RequiredArgumentBuilder.argument(":" + optionalEntry.getKey(), StringArgumentType.word());
-                        // Optional with default, explain
-                    } else {
-                        optional = RequiredArgumentBuilder.argument(optionalEntry.getKey() + "|" + optionalEntry.getValue(), StringArgumentType.word());
-                    }
-
-                    stack.add(optional);
-                }
-
-                // Reverse the stack and apply .then()
-                RequiredArgumentBuilder<Object, ?> previous = null;
-                for (int i = stack.size() - 1; i >= 0; i--) {
-                    if (previous == null) {
-                        previous = stack.get(i);
-                    } else {
-                        previous = stack.get(i).then(previous);
-                    }
-                }
-
-                if (previous == null) {
-                    brigadier.then(literal);
-                } else {
-                    brigadier.then(literal.then(previous));
-                }
+                registerGeneratedBrigadier(subCommand, literal);
             }
         }
+    }
+
+    private void registerUsingProvider(FCommand subCommand, LiteralArgumentBuilder<Object> literal) {
+        Class<? extends BrigadierProvider> brigadierProvider = subCommand.requirements.brigadier;
+        try {
+            Constructor<? extends BrigadierProvider> constructor = brigadierProvider.getDeclaredConstructor();
+            brigadier.then(constructor.newInstance().get(literal));
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    private void registerGeneratedBrigadier(FCommand subCommand, LiteralArgumentBuilder<Object> literal) {
+        List<RequiredArgumentBuilder<Object, ?>> argsStack = generateArgsStack(subCommand);
+
+        RequiredArgumentBuilder<Object, ?> previous = null;
+        for (int i = argsStack.size() - 1; i >= 0; i--) {
+            if (previous == null) {
+                previous = argsStack.get(i);
+            } else {
+                previous = argsStack.get(i).then(previous);
+            }
+        }
+
+        if (previous == null) {
+            brigadier.then(literal);
+        } else {
+            brigadier.then(literal.then(previous));
+        }
+    }
+
+    private List<RequiredArgumentBuilder<Object, ?>> generateArgsStack(FCommand subCommand) {
+        List<RequiredArgumentBuilder<Object, ?>> stack = new ArrayList<>(subCommand.requiredArgs.size() + subCommand.optionalArgs.size());
+
+        for (String required : subCommand.requiredArgs) {
+            stack.add(RequiredArgumentBuilder.argument(required, StringArgumentType.word()));
+        }
+
+        for (Map.Entry<String, String> optionalEntry : subCommand.optionalArgs.entrySet()) {
+            RequiredArgumentBuilder<Object, ?> optional;
+            if (optionalEntry.getKey().equalsIgnoreCase(optionalEntry.getValue())) {
+                optional = RequiredArgumentBuilder.argument(":" + optionalEntry.getKey(), StringArgumentType.word());
+            } else {
+                optional = RequiredArgumentBuilder.argument(optionalEntry.getKey() + "|" + optionalEntry.getValue(), StringArgumentType.word());
+            }
+            stack.add(optional);
+        }
+
+        return stack;
     }
 }

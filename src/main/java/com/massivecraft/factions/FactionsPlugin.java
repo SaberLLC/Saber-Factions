@@ -218,7 +218,7 @@ public class FactionsPlugin extends MPlugin {
 
             Bukkit.getScheduler().runTaskLater(this, () -> {
                 //To Add Addon Commands Into "Tab Completion Format"
-                if(factionsAddonHashMap.size() > 0) {
+                if (factionsAddonHashMap.size() > 0) {
                     FCmdRoot.instance.addVariableCommands();
                     FCmdRoot.instance.rebuild();
                 }
@@ -299,6 +299,13 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onDisable() {
+
+        if (bannerManager != null) {
+            bannerManager.onDisable(this);
+        }
+
+        ShutdownParameter.initShutdown(this);
+
         if (this.AutoLeaveTask != null) {
             getServer().getScheduler().cancelTask(this.AutoLeaveTask);
             this.AutoLeaveTask = null;
@@ -306,9 +313,6 @@ public class FactionsPlugin extends MPlugin {
         if (TextUtil.AUDIENCES != null) {
             TextUtil.AUDIENCES.close();
         }
-
-        bannerManager.onDisable(this);
-        ShutdownParameter.initShutdown(this);
 
         super.onDisable();
     }

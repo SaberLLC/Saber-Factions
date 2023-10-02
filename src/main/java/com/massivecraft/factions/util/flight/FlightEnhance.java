@@ -6,6 +6,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
 import org.bukkit.GameMode;
+import org.bukkit.entity.Player;
 
 /**
  * SaberFactions - Developed by Driftay.
@@ -17,27 +18,38 @@ public class FlightEnhance implements Runnable {
     @Override
     public void run() {
         for (FPlayer player : FPlayers.getInstance().getOnlinePlayers()) {
-            if (player.isAdminBypassing()
-                    || player.getPlayer() == null
-                    || player.getPlayer().isOp()
-                    || player.getPlayer().getGameMode() == GameMode.CREATIVE
-                    || player.getPlayer().getGameMode() == GameMode.SPECTATOR) continue;
+            if (shouldSkipPlayer(player)) continue;
 
             FLocation fLocation = FLocation.wrap(player.getPlayer().getLocation());
-
             player.checkIfNearbyEnemies();
 
             if (!player.hasEnemiesNearby()) {
-                if (player.isFlying()) {
-                    if (!player.canFlyAtLocation(fLocation)) {
-                        player.setFlying(false, false);
-                    }
-                } else if (player.canFlyAtLocation()
-                        && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")
-                        && !FactionsEntityListener.combatList.contains(player.getPlayer().getUniqueId())) {
-                    player.setFlying(true);
-                }
+                handleFlightStatusForPlayer(player, fLocation);
             }
+        }
+    }
+
+    private boolean shouldSkipPlayer(FPlayer player) {
+        Player p = player.getPlayer();
+
+        return player.isAdminBypassing()
+                || p == null
+                || p.isOp()
+                || p.getGameMode() == GameMode.CREATIVE
+                || p.getGameMode() == GameMode.SPECTATOR;
+    }
+
+    private void handleFlightStatusForPlayer(FPlayer player, FLocation fLocation) {
+        if (player.isFlying() && !player.canFlyAtLocation(fLocation)) {
+            player.setFlying(false, false);
+            return;
+        }
+
+        if (!player.isFlying()
+                && player.canFlyAtLocation()
+                && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")
+                && !FactionsEntityListener.combatList.contains(player.getPlayer().getUniqueId())) {
+            player.setFlying(true);
         }
     }
 }

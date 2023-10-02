@@ -102,7 +102,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             case "player_group":
                 return FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fPlayer.getId())));
             case "player_balance":
-                return Econ.isSetup() ? Econ.getFriendlyBalance(fPlayer) : TL.ECON_OFF.format("balance");
+                return Econ.isSetup() ? Econ.getFriendlyBalance(fPlayer) : TL.ECON_OFF.format(TL.ECON_BALANCE_DESC.toString());
             case "player_power":
                 return String.valueOf(fPlayer.getPowerRounded());
             case "player_maxpower":
@@ -174,7 +174,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             case "faction_land_refund":
                 return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(faction.getLandRounded())) : TL.ECON_OFF.format("refund");
             case "faction_bank_balance":
-                return Econ.shouldBeUsed() ? Econ.insertCommas(faction.getFactionBalance()) : TL.ECON_OFF.format("balance");
+                return Econ.shouldBeUsed() ? Econ.insertCommas(faction.getFactionBalance()) : TL.ECON_OFF.format(TL.ECON_BALANCE_DESC.toString());
             case "faction_allies":
                 return String.valueOf(faction.getRelationCount(Relation.ALLY));
             case "faction_discord":

@@ -17,17 +17,6 @@ import org.bukkit.event.server.PluginDisableEvent;
 public class SaberGUIListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onCommandWhilstInventoryIsOpen(PlayerCommandPreprocessEvent event) {
-        SaberGUI active = SaberGUI.getActiveGUI(event.getPlayer().getUniqueId());
-        if (active != null) {
-            event.setCancelled(true);
-            event.setMessage("/null");
-            active.close();
-            event.getPlayer().sendMessage(TL.MACRO_DETECTED.toString());
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClick(InventoryClickEvent event) {
         SaberGUI active = SaberGUI.getActiveGUI(event.getWhoClicked().getUniqueId());
         if (active != null) {

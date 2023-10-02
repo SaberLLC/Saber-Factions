@@ -16,8 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer.TimerSubType, LogTimer.Timer>> {
-    private String factionId;
-    private String username;
+
+    private final String factionId;
+    private final String username;
 
     public LogTimer(String username, String factionId) {
         this.username = username;
@@ -25,35 +26,38 @@ public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer
     }
 
     public Map<LogTimer.TimerSubType, LogTimer.Timer> getCurrentTimersOrCreate(LogTimer.TimerType type) {
-        return this.computeIfAbsent(type, (m) -> new ConcurrentHashMap<>());
+        return this.computeIfAbsent(type, k -> new ConcurrentHashMap<>());
     }
 
     public LogTimer.Timer attemptLog(LogTimer.TimerType type, LogTimer.TimerSubType subType, long increment) {
-        return this.getCurrentTimersOrCreate(type).computeIfAbsent(subType, (e) -> new Timer(System.currentTimeMillis(), 0L, null)).increment(increment);
+        return this.getCurrentTimersOrCreate(type)
+                .computeIfAbsent(subType, k -> new Timer(System.currentTimeMillis(), 0L, null))
+                .increment(increment);
     }
 
     public void pushLogs(Faction faction, LogTimer.TimerType type) {
-        forEach((timerType, map) -> {
-            if (timerType == type) {
-                if (timerType == LogTimer.TimerType.SPAWNER_EDIT) {
-                    map.forEach((subTimer, timer) -> {
-                        Map<EntityType, AtomicInteger> entityCounts = new HashMap<>();
-                        Map<MaterialData, AtomicInteger> currentCounts = (Map) timer.getExtraData();
-                        if (currentCounts != null) {
-                            currentCounts.forEach((data, ints) -> {
-                                EntityType types = EntityType.fromId(data.getData());
-                                if (types == null) {
-                                    //Bukkit.getLogger().info("Unable to find EntityType for " + data.getData() + " for " + subTimer + " for fac " + factionId + "!");
-                                } else {
-                                    entityCounts.computeIfAbsent(types, (e) -> new AtomicInteger(0)).addAndGet(ints.get());
-                                }
-                            });
-                            entityCounts.forEach((entityType, count) -> FactionsPlugin.instance.getFlogManager().log(faction, FLogType.SPAWNER_EDIT, username, subTimer == TimerSubType.SPAWNER_BREAK ? "broke" : "placed", count.get() + "x", StringUtils.capitaliseAllWords(entityType.name().toLowerCase().replace("_", " "))));
-                        }
-                    });
-                }
+        Map<LogTimer.TimerSubType, LogTimer.Timer> specificTimer = get(type);
+        if (specificTimer == null || type != LogTimer.TimerType.SPAWNER_EDIT) return;
+
+        specificTimer.forEach((subTimer, timer) -> {
+            Map<EntityType, AtomicInteger> entityCounts = new HashMap<>();
+            Map<MaterialData, AtomicInteger> currentCounts = (Map) timer.getExtraData();
+
+            if (currentCounts != null) {
+                currentCounts.forEach((data, ints) -> {
+                    EntityType entityType = EntityType.fromId(data.getData());
+                    if (entityType != null) {
+                        entityCounts.computeIfAbsent(entityType, k -> new AtomicInteger())
+                                .addAndGet(ints.get());
+                    }
+                });
+
+                entityCounts.forEach((entityType, count) ->
+                        FactionsPlugin.instance.getFlogManager().log(faction, FLogType.SPAWNER_EDIT, username, subTimer == TimerSubType.SPAWNER_BREAK ? "broke" : "placed", count.get() + "x", StringUtils.capitaliseAllWords(entityType.name().toLowerCase().replace("_", " ")))
+                );
             }
         });
+
         remove(type);
     }
 
@@ -67,17 +71,11 @@ public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer
 
     public enum TimerSubType {
         SPAWNER_BREAK,
-        SPAWNER_PLACE;
-
-        TimerSubType() {
-        }
+        SPAWNER_PLACE
     }
 
     public enum TimerType {
-        SPAWNER_EDIT;
-
-        TimerType() {
-        }
+        SPAWNER_EDIT
     }
 
     public class Timer {

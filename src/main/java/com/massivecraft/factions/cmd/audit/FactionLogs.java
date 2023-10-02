@@ -4,38 +4,34 @@ package com.massivecraft.factions.cmd.audit;
  * @author Saser
  */
 
-import com.google.common.collect.Lists;
-import com.massivecraft.factions.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 public class FactionLogs {
-    public static transient SimpleDateFormat format = new SimpleDateFormat("MM/dd hh:mmaa"); //MM/dd hh:mmaa
-    private Map<FLogType, LinkedList<FactionLog>> mostRecentLogs = new ConcurrentHashMap<>();
+
+    public static final SimpleDateFormat FORMAT = new SimpleDateFormat("MM/dd hh:mmaa");
+
+    private final Map<FLogType, LinkedList<FactionLog>> mostRecentLogs = new ConcurrentHashMap<>();
 
     public FactionLogs() {
     }
 
     public void log(FLogType type, String... arguments) {
         if (type.getRequiredArgs() > arguments.length) {
-            Bukkit.getLogger().info("INVALID ARGUMENT COUNT MET: " + type.getRequiredArgs() + " REQUIRED: ");
-            Thread.dumpStack();
+            Bukkit.getLogger().warning("Invalid argument count met. Required: " + type.getRequiredArgs());
+            new Exception().printStackTrace();
         } else {
-            LinkedList<FactionLog> logs = mostRecentLogs.computeIfAbsent(type, (lists) -> new LinkedList<>());
-            logs.add(new FactionLog(System.currentTimeMillis(), Lists.newArrayList(arguments)));
+            LinkedList<FactionLog> logs = mostRecentLogs.computeIfAbsent(type, k -> new LinkedList<>());
+            logs.add(new FactionLog(System.currentTimeMillis(), Arrays.asList(arguments)));
             int maxLog = type == FLogType.F_TNT ? 200 : 60;
             if (logs.size() > maxLog) {
                 logs.pop();
             }
-
         }
     }
 
@@ -45,32 +41,16 @@ public class FactionLogs {
 
     public void checkExpired() {
         long duration = TimeUnit.DAYS.toMillis(7L);
-        List<FLogType> toRemove = Lists.newArrayList();
+        List<FLogType> toRemove = new LinkedList<>();
         mostRecentLogs.forEach((logType, logs) -> {
-            if (logs == null) {
+            if (logs == null || (logType != FLogType.F_TNT && logs.isEmpty())) {
                 toRemove.add(logType);
-            } else if (logType != FLogType.F_TNT) {
-                Iterator<FactionLog> iter = logs.iterator();
-                while (iter.hasNext()) {
-                    try {
-                        FactionLog log = iter.next();
-                        if (log == null || log.isExpired(duration)) {
-                            iter.remove();
-                        }
-                    } catch (Exception e) {
-                        Bukkit.getLogger().info("ERROR TRYING TO GET next FACTION LOG: " + e.getMessage());
-                        try {
-                            iter.remove();
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                }
-                if (logs.isEmpty())
-                    toRemove.add(logType);
+                return;
             }
+
+            logs.removeIf(log -> log == null || log.isExpired(duration));
         });
-        toRemove.forEach((rem) -> mostRecentLogs.remove(rem));
+        toRemove.forEach(mostRecentLogs::remove);
     }
 
     public Map<FLogType, LinkedList<FactionLog>> getMostRecentLogs() {
@@ -78,12 +58,12 @@ public class FactionLogs {
     }
 
     public static class FactionLog {
-        private long t;
-        private List<String> a;
+        private final long t;
+        private final List<String> a;
 
         public FactionLog(long t, List<String> a) {
             this.t = t;
-            this.a = a;
+            this.a = a != null ? new ArrayList<>(a) : new ArrayList<>();
         }
 
         public boolean isExpired(long duration) {
@@ -94,12 +74,9 @@ public class FactionLogs {
             String[] args = a.toArray(new String[0]);
             String timeFormat = "";
             if (timestamp) {
-                timeFormat = FactionLogs.format.format(t);
-                if (timeFormat.startsWith("0")) {
-                    timeFormat = timeFormat.substring(1);
-                }
+                timeFormat = FORMAT.format(new Date(t));
             }
-            return String.format(CC.translate(type.getMsg()), args) + (timestamp ? ChatColor.GRAY + " - " + timeFormat : "");
+            return String.format(ChatColor.translateAlternateColorCodes('&', type.getMsg()), (Object[]) args) + (timestamp ? ChatColor.GRAY + " - " + timeFormat : "");
         }
     }
 }

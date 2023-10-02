@@ -7,6 +7,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.util.TitleUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,23 +24,42 @@ import java.util.concurrent.ConcurrentHashMap;
  * Creation Date: 10/27/2020
  */
 public class AsyncPlayerMap implements Runnable, Listener {
-    private volatile Map<String, Player> players = new ConcurrentHashMap<>();
-    private volatile Map<String, Location> locations = new ConcurrentHashMap<>();
+
+    private final Map<String, Player> players = new ConcurrentHashMap<>();
+    private final Map<String, Location> locations = new ConcurrentHashMap<>();
+    private final Server server = Bukkit.getServer();
 
     public AsyncPlayerMap(Plugin bukkitPlugin) {
         Bukkit.getPluginManager().registerEvents(this, bukkitPlugin);
         Bukkit.getScheduler().runTaskTimer(bukkitPlugin, this, 20L, 20L);
     }
 
+    @Override
     public void run() {
-        for (Player pl : Bukkit.getServer().getOnlinePlayers()) {
-            if (pl.hasMetadata("showFactionTitle")) {
-                FPlayer fPlayer = FPlayers.getInstance().getByPlayer(pl);
-                Faction factionTo = Board.getInstance().getFactionAt(fPlayer.getLastStoodAt());
-                TitleUtil.sendFactionChangeTitle(fPlayer, factionTo);
-            }
-            this.locations.put(pl.getName(), pl.getLocation());
+        for (Player pl : server.getOnlinePlayers()) {
+            processPlayer(pl);
+            updateLocation(pl);
         }
+    }
+
+    private void processPlayer(Player pl) {
+        if (pl.hasMetadata("showFactionTitle")) {
+            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(pl);
+            Faction factionTo = Board.getInstance().getFactionAt(fPlayer.getLastStoodAt());
+            TitleUtil.sendFactionChangeTitle(fPlayer, factionTo);
+        }
+    }
+
+    private void updateLocation(Player pl) {
+        this.locations.put(pl.getName(), pl.getLocation());
+    }
+
+    public Map<String, Player> getPlayers() {
+        return this.players;
+    }
+
+    public Map<String, Location> getLocations() {
+        return this.locations;
     }
 
     @EventHandler
@@ -50,13 +70,5 @@ public class AsyncPlayerMap implements Runnable, Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) {
         this.players.remove(e.getPlayer().getName());
-    }
-
-    public Map<String, Player> getPlayers() {
-        return this.players;
-    }
-
-    public Map<String, Location> getLocations() {
-        return this.locations;
     }
 }

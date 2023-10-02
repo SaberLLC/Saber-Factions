@@ -4,77 +4,75 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.file.CustomFile;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Factions - Developed by Driftay.
- * All rights reserved 2020.
- * Creation Date: 4/4/2020
- */
 public class FileManager {
 
-    private CustomFile boosters = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "boosters.yml"));
-    private CustomFile timers = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "timers.yml"));
-    private CustomFile fperms = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "fperms.yml"));
-    private CustomFile upgrades = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "upgrades.yml"));
-    private CustomFile permissions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "data" + File.separator + "permissions.yml"));
-    private CustomFile corex = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "corex" + File.separator + "corex.yml"));
-    private CustomFile missions = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "missions.yml"));
-    private CustomFile banners = new CustomFile(new File(FactionsPlugin.getInstance().getDataFolder() + File.separator + "configuration" + File.separator + "banners.yml"));
+    private final Map<String, CustomFile> customFiles = new HashMap<>();
+
+    public FileManager() {
+        addCustomFile("boosters", "data");
+        addCustomFile("timers", "data");
+        addCustomFile("permissions", "data");
+        addCustomFile("corex", "corex");
+        addCustomFile("fperms", "configuration");
+        addCustomFile("upgrades", "configuration");
+        addCustomFile("missions", "configuration");
+        addCustomFile("banners", "configuration");
+    }
+
+    private void addCustomFile(String filename, String folder) {
+        String filePath = FactionsPlugin.getInstance().getDataFolder() + File.separator + folder + File.separator + filename + ".yml";
+        customFiles.put(filename, new CustomFile(new File(filePath)));
+    }
 
     public void setupFiles() {
-        boosters.setup(true, "data");
-        timers.setup(true, "data");
-        permissions.setup(true, "data");
-        corex.setup(true, "corex");
-        fperms.setup(true, "configuration");
-        upgrades.setup(true, "configuration");
-        missions.setup(true, "configuration");
-        banners.setup(true, "configuration");
+        customFiles.forEach((name, customFile) -> {
+            String folder = name.equals("corex") ? "corex" : (name.endsWith("s") ? "data" : "configuration");
+            customFile.setup(true, folder);
+        });
     }
-
 
     public void loadCustomFiles() {
-        boosters.loadFile();
-        timers.loadFile();
-        permissions.loadFile();
-        corex.loadFile();
-        fperms.loadFile();
-        upgrades.loadFile();
-        missions.loadFile();
-        banners.loadFile();
+        customFiles.values().forEach(CustomFile::loadFile);
     }
 
+    public CustomFile getCustomFile(String name) {
+        return customFiles.get(name);
+    }
 
+    // Individual getters, for direct access
     public CustomFile getBanners() {
-        return banners;
+        return getCustomFile("banners");
     }
 
     public CustomFile getUpgrades() {
-        return upgrades;
+        return getCustomFile("upgrades");
     }
 
     public CustomFile getMissions() {
-        return missions;
+        return getCustomFile("missions");
     }
 
     public CustomFile getFperms() {
-        return fperms;
+        return getCustomFile("fperms");
     }
 
     public CustomFile getTimers() {
-        return timers;
+        return getCustomFile("timers");
     }
 
     public CustomFile getBoosters() {
-        return boosters;
+        return getCustomFile("boosters");
     }
 
     public CustomFile getCoreX() {
-        return corex;
+        return getCustomFile("corex");
     }
 
     public CustomFile getPermissions() {
-        return permissions;
+        return getCustomFile("permissions");
     }
 
 }

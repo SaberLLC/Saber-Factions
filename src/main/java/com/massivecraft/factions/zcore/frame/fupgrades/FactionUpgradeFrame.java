@@ -49,7 +49,7 @@ public class FactionUpgradeFrame extends SaberGUI {
 
         for (Map.Entry<String, Integer> upgrade : upgradeManager.getUpgrades().entrySet()) {
             String upgradeId = upgrade.getKey();
-            if (upgradeManager.getSlot(upgradeId) <= -1) continue;
+            if (upgradeManager.getSlot(upgradeId) == -1) continue;
             int currentFactionLevel = faction.getUpgrade(upgradeId);
             int upgradeMaxLevel = upgrade.getValue();
 

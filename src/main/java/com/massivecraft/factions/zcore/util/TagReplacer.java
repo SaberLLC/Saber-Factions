@@ -192,7 +192,7 @@ public enum TagReplacer {
                 case PLAYER_GROUP:
                     return FactionsPlugin.getInstance().getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fp.getId())));
                 case PLAYER_BALANCE:
-                    return Econ.isSetup() ? Econ.getFriendlyBalance(fp) : TL.ECON_OFF.format("balance");
+                    return Econ.isSetup() ? Econ.getFriendlyBalance(fp) : TL.ECON_OFF.format(TL.ECON_BALANCE_DESC.toString());
                 case PLAYER_POWER:
                     return String.valueOf(fp.getPowerRounded());
                 case PLAYER_MAXPOWER:
@@ -253,9 +253,9 @@ public enum TagReplacer {
                 return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(fac.getLandRounded())) : minimal ? null : TL.ECON_OFF.format("refund");
             case BANK_BALANCE:
                 if (Econ.shouldBeUsed()) {
-                    return Conf.bankEnabled ? Econ.insertCommas(Econ.getFactionBalance(fac)) : minimal ? null : TL.ECON_OFF.format("balance");
+                    return Conf.bankEnabled ? Econ.insertCommas(Econ.getFactionBalance(fac)) : minimal ? null : TL.ECON_OFF.format(TL.ECON_BALANCE_DESC.toString());
                 }
-                return minimal ? null : TL.ECON_OFF.format("balance");
+                return minimal ? null : TL.ECON_OFF.format(TL.ECON_BALANCE_DESC.toString());
             case ALLIES_COUNT:
                 return String.valueOf(fac.getRelationCount(Relation.ALLY));
             case ENEMIES_COUNT:

@@ -1,52 +1,61 @@
 package com.massivecraft.factions.addon;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.util.Logger;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 
-import java.util.Collections;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.Set;
-
-/**
- * @author SavageLabs Team
- */
 
 public abstract class FactionsAddon {
 
     private final String addonName;
     private final FactionsPlugin plugin;
 
+    private File configFile;
+    private FileConfiguration config;
+
     public FactionsAddon(final FactionsPlugin plugin) {
         this.plugin = plugin;
-        this.addonName = getClass().getName();
-        enableAddon();
+        this.addonName = getFriendlyName();
     }
 
-    private void enableAddon() {
+    public void initializeAddon() {
+        loadConfig();
         onEnable();
         registerListeners();
         registerFCommands();
         Logger.print("Addon: " + getAddonName() + " loaded successfully!", Logger.PrefixType.DEFAULT);
     }
 
-    public void disableAddon() {
+    public void terminateAddon() {
         unregisterListeners();
         onDisable();
     }
 
-    public abstract void onEnable();
+    protected abstract void onEnable();
 
-    public abstract void onDisable();
+    protected abstract void onDisable();
 
-    public Set<Listener> listenersToRegister() {
-        return Collections.emptySet();
+    protected abstract String getFriendlyName();
+
+    protected Set<Listener> listenersToRegister() {
+        return new HashSet<>();
     }
 
-    public Set<FCommand> fCommandsToRegister() {
-        return Collections.emptySet();
+    protected Set<FCommand> fCommandsToRegister() {
+        return new HashSet<>();
     }
 
     public String getAddonName() {
@@ -77,5 +86,54 @@ public abstract class FactionsAddon {
                 plugin.cmdBase.addSubCommand(fCommand);
             }
         }
+    }
+
+    public void loadConfig() {
+        Path path = Paths.get(plugin.getDataFolder().toString(), "configuration/addons", getAddonName().toLowerCase() + ".yml");
+        configFile = path.toFile();
+
+        if (!Files.exists(path)) {
+            try {
+                exportConfig("/" + getAddonName().toLowerCase() + ".yml");
+            } catch (Exception e) {
+                Logger.print("Error transferring config for " + getAddonName() + ": " + e.getMessage(), Logger.PrefixType.FAILED);
+                e.printStackTrace();
+            }
+        }
+        config = YamlConfiguration.loadConfiguration(configFile);
+    }
+
+    private void exportConfig(String resourceName) throws Exception {
+        try (InputStream stream = this.getClass().getResourceAsStream(resourceName);
+             OutputStream resStreamOut = Files.newOutputStream(Paths.get(plugin.getDataFolder().toString(), "configuration/addons", resourceName.toLowerCase()))) {
+
+            if (stream == null) {
+                throw new Exception("Cannot get resource \"" + resourceName + "\" from Jar file.");
+            }
+
+            byte[] buffer = new byte[4096];
+            int readBytes;
+            while ((readBytes = stream.read(buffer)) > 0) {
+                resStreamOut.write(buffer, 0, readBytes);
+            }
+            Logger.print(getAddonName() + " config file successfully transferred!", Logger.PrefixType.DEFAULT);
+        }
+    }
+
+    public void saveConfig() {
+        if (config == null || configFile == null) return;
+        try {
+            getConfig().save(configFile);
+        } catch (IOException e) {
+            Logger.print("Error saving config for " + getAddonName() + ": " + e.getMessage(), Logger.PrefixType.FAILED);
+            e.printStackTrace();
+        }
+    }
+
+    public FileConfiguration getConfig() {
+        if (config == null) {
+            loadConfig();
+        }
+        return config;
     }
 }

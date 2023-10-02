@@ -63,9 +63,9 @@ public enum FactionTag implements Tag {
     LAND_REFUND("{land-refund}", (fac) -> Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("refund")),
     BANK_BALANCE("{faction-balance}", (fac) -> {
         if (Econ.shouldBeUsed()) {
-            return Conf.bankEnabled ? Econ.insertCommas(Econ.getFactionBalance(fac)) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance");
+            return Conf.bankEnabled ? Econ.insertCommas(Econ.getFactionBalance(fac)) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format(TL.ECON_BALANCE_DESC.toString());
         }
-        return Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance");
+        return Tag.isMinimalShow() ? null : TL.ECON_OFF.format(TL.ECON_BALANCE_DESC.toString());
     }),
     TNT_BALANCE("{tnt-balance}", (fac) -> {
         if (FactionsPlugin.instance.getConfig().getBoolean("ftnt.Enabled")) {

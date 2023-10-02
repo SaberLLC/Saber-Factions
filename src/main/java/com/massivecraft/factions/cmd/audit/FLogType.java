@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
 
 /**
  * @author Saser
@@ -24,16 +25,23 @@ public enum FLogType {
     RANK_EDIT("&e%s&7 set &e%s&7 to %s", 3),
     F_TNT("&e%s&7 %s &e%s", 3);
 
-    private String msg;
-    private int requiredArgs;
+    private final String msg;
+    private final int requiredArgs;
+
+    // Cached for better performance
+    private static final Configuration CONFIG = FactionsPlugin.getInstance().getConfig();
 
     FLogType(String msg, int requiredArgs) {
         this.msg = msg;
         this.requiredArgs = requiredArgs;
     }
 
+    private String getConfigString(String pathSuffix) {
+        return CONFIG.getString("faudit-gui." + pathSuffix + "." + name().toLowerCase());
+    }
+
     public String getDisplayName() {
-        return CC.translate(FactionsPlugin.getInstance().getConfig().getString("faudit-gui.names." + name().toLowerCase()));
+        return CC.translate(getConfigString("names"));
     }
 
     @Override
@@ -42,11 +50,11 @@ public enum FLogType {
     }
 
     public int getSlot() {
-        return FactionsPlugin.getInstance().getConfig().getInt("faudit-gui.slots." + name().toLowerCase());
+        return CONFIG.getInt("faudit-gui.slots." + name().toLowerCase());
     }
 
     public Material getMaterial() {
-        return XMaterial.matchXMaterial(FactionsPlugin.getInstance().getConfig().getString("faudit-gui.materials." + name().toLowerCase())).get().parseMaterial();
+        return XMaterial.matchXMaterial(getConfigString("materials")).get().parseMaterial();
     }
 
     public String getMsg() {

@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class FactionData {
 
+    private static final String FACTION_DATA_PATH = "/faction-data/";
+
     private final String factionID;
     private final String factionTag;
     private Map<String, Object> map;
@@ -30,6 +32,15 @@ public class FactionData {
         this.saving = false;
     }
 
+    /**
+     * Generates the path for the faction file.
+     *
+     * @return The path as a string.
+     */
+    private String getFactionFilePath() {
+        return FactionsPlugin.getInstance().getDataFolder() + FACTION_DATA_PATH + factionID + ".yml";
+    }
+
     public void addStoredValue(String key, Object value) {
         this.map.put(key, value);
     }
@@ -39,9 +50,7 @@ public class FactionData {
     }
 
     public YamlConfiguration getConfiguration() {
-        return YamlConfiguration
-                .loadConfiguration(new File(FactionsPlugin.getInstance().getDataFolder()
-                        + "/faction-data/" + factionID + ".yml"));
+        return YamlConfiguration.loadConfiguration(new File(getFactionFilePath()));
     }
 
     public Object getStoredValue(String key) {
@@ -80,10 +89,8 @@ public class FactionData {
         return this.map.computeIfAbsent(key, k -> getConfiguration().get(k));
     }
 
-
     public void deleteFactionData(Faction faction) {
-        File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data/"
-                + this.factionID + ".yml");
+        File file = new File(getFactionFilePath());
 
         if(file.delete()) {
             Logger.print("Deleting faction-data for faction " + faction.getTag(), Logger.PrefixType.DEFAULT);
@@ -97,15 +104,12 @@ public class FactionData {
             return;
         }
         this.saving = true;
-        File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data/"
-                + this.factionID + ".yml");
+        File file = new File(getFactionFilePath());
         YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
         Bukkit.getLogger().info("[FactionData] Saving " + this.factionTag + "'s Data to the disk");
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
-            configuration.set(key, value);
-        }
+
+        map.forEach(configuration::set);
+
         try {
             configuration.save(file);
         } catch (IOException e) {
@@ -115,10 +119,6 @@ public class FactionData {
         }
     }
 
-    @Deprecated
-    public void remove() {
-        FactionDataHelper.getData().remove(this);
-    }
 
     public String getFactionID() {
         return factionID;
@@ -130,7 +130,6 @@ public class FactionData {
 
     public void removeSafely() {
         this.save();
-        this.remove();
     }
 
     @Override

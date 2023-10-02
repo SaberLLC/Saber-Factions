@@ -15,62 +15,84 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class FAuditMenu extends GUIMenu {
+
     private final Player player;
-    private boolean showTimestamps = true;
     private final Faction faction;
+    private boolean showTimestamps = true;
 
     public FAuditMenu(Player player, Faction faction) {
         super("Faction Logs", 18);
-        this.faction = faction;
         this.player = player;
+        this.faction = faction;
     }
 
+    @Override
     public void drawItems() {
+        FactionLogs logs = FactionsPlugin.instance.getFlogManager().getFactionLogMap().get(faction.getId());
+        if (logs == null) logs = new FactionLogs();
+
         for (FLogType type : FLogType.values()) {
             if (type.getSlot() == -1) continue;
+
             if (type != FLogType.F_TNT || FactionsPlugin.getInstance().getConfig().getBoolean("f-points.Enabled")) {
-                FactionLogs logs = FactionsPlugin.instance.getFlogManager().getFactionLogMap().get(faction.getId());
-                if (logs == null) logs = new FactionLogs();
                 LinkedList<FactionLogs.FactionLog> recentLogs = logs.getMostRecentLogs().get(type);
-                if (recentLogs == null) recentLogs = Lists.newLinkedList();
-                List<String> lore = Lists.newArrayList("", CC.GreenB + "Recent Logs " + CC.Green + "(" + CC.GreenB + recentLogs.size() + CC.Green + ")");
-                int added = 0;
-                Iterator<FactionLogs.FactionLog> backwars = recentLogs.descendingIterator();
-                int logsPerPage = 20;
-                while (backwars.hasNext()) {
-                    FactionLogs.FactionLog log = backwars.next();
-                    if (added >= logsPerPage) break;
-                    String length = log.getLogLine(type, showTimestamps);
-                    lore.add(" " + CC.Yellow + length);
-                    ++added;
-                }
-                int logSize = recentLogs.size();
-                int logsLeft = logSize - logsPerPage;
-                if (logsLeft > 0) lore.add(CC.YellowB + logsLeft + CC.Yellow + " more logs...");
-                lore.add("");
-                if (logsLeft > 0) lore.add(CC.Yellow + "Left-Click " + CC.Gray + "to view more logs");
-                lore.add(CC.Yellow + "Right-Click " + CC.Gray + "to toggle timestamps");
-                setItem(type.getSlot(), (new ClickableItemStack((new ItemBuilder(type.getMaterial())).name(type.getDisplayName()).lore(lore).build())).setClickCallback((click) -> {
-                    click.setCancelled(true);
-                    if (click.getClick() == ClickType.RIGHT) {
-                        showTimestamps = !showTimestamps;
-                        drawItems();
-                    } else {
-                        if (logsLeft <= 0) {
-                            player.sendMessage(CC.Red + "No extra logs to load.");
-                            return;
-                        }
-                        Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> (new FAuditLogMenu(player, faction, type)).open(player));
-                    }
-                }));
+                if (recentLogs == null) recentLogs = new LinkedList<>();
+
+                List<String> lore = buildLoreForItem(type, recentLogs);
+                setItem(type.getSlot(), buildClickableItem(type, lore));
             }
         }
+    }
+
+    private List<String> buildLoreForItem(FLogType type, LinkedList<FactionLogs.FactionLog> recentLogs) {
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        lore.add(CC.GreenB + "Recent Logs " + CC.Green + "(" + CC.GreenB + recentLogs.size() + CC.Green + ")");
+
+        int logsPerPage = 20;
+        Iterator<FactionLogs.FactionLog> backwards = recentLogs.descendingIterator();
+        while (backwards.hasNext() && lore.size() < logsPerPage) {
+            String logLine = backwards.next().getLogLine(type, showTimestamps);
+            lore.add(" " + CC.Yellow + logLine);
+        }
+
+        int logsLeft = recentLogs.size() - logsPerPage;
+        if (logsLeft > 0) {
+            lore.add(CC.YellowB + logsLeft + CC.Yellow + " more logs...");
+            lore.add("");
+            lore.add(CC.Yellow + "Left-Click " + CC.Gray + "to view more logs");
+        }
+        lore.add(CC.Yellow + "Right-Click " + CC.Gray + "to toggle timestamps");
+
+        return lore;
+    }
+
+    private ClickableItemStack buildClickableItem(FLogType type, List<String> lore) {
+        ItemStack item = new ItemBuilder(type.getMaterial()).name(type.getDisplayName()).lore(lore).build();
+
+        return new ClickableItemStack(item).setClickCallback(click -> {
+            click.setCancelled(true);
+            if (click.getClick() == ClickType.RIGHT) {
+                showTimestamps = !showTimestamps;
+                drawItems();
+            } else {
+                int logsLeft = lore.size() - 20;  // 20 is the logsPerPage as used earlier
+                if (logsLeft <= 0) {
+                    player.sendMessage(CC.Red + "No extra logs to load.");
+                    return;
+                }
+                Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance,
+                        () -> new FAuditLogMenu(player, faction, type).open(player));
+            }
+        });
     }
 
     static class FAuditLogMenu extends GUIMenu {

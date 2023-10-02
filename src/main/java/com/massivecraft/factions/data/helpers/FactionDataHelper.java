@@ -11,10 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @Author: Driftay
@@ -22,55 +19,58 @@ import java.util.Objects;
  */
 public class FactionDataHelper {
 
-    private static List<FactionData> data;
+    private static final String FACTION_DATA_PATH = "/faction-data/";
+    private static List<FactionData> data = new ArrayList<>();
+
 
     public static void init() {
         FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new FactionDataListener(), FactionsPlugin.getInstance());
         new FactionDataDeploymentTask().runTaskTimerAsynchronously(FactionsPlugin.getInstance(), 20, 20);
-        data = new ArrayList<>();
-        File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data");
-        if (!file.exists()) {
-            file.mkdir();
+
+        File directory = getFactionDirectory();
+        if (!directory.exists()) {
+            directory.mkdir();
         }
     }
 
     public static void onDisable() {
-        for (int i = FactionDataHelper.data.size() - 1; i >= 0; i--) {
-            FactionData data = FactionDataHelper.data.get(i);
-            data.removeSafely();
+        for (FactionData dataItem : data) {
+            dataItem.removeSafely();
         }
     }
 
-    public FactionDataHelper(FactionData data) {
-        FactionDataHelper.data.add(data);
+    public static File getFactionFile(Faction faction) {
+        return new File(FactionsPlugin.getInstance().getDataFolder(), FACTION_DATA_PATH + faction.getId() + ".yml");
     }
 
+    public static File getFactionDirectory() {
+        return new File(FactionsPlugin.getInstance().getDataFolder() + FACTION_DATA_PATH);
+    }
 
-    public static void createConfiguration(Faction faction) {
-        File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data/"
-                + faction.getId() + ".yml");
-        try {
+    public static void createConfiguration(Faction faction) throws IOException {
+        File file = getFactionFile(faction);
+        if (!file.exists()) {
             file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    public static void setConfigValue(Faction faction, String key, Object value) {
-        File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data/"
-                + faction.getId() + ".yml");
+    public static void addFactionData(FactionData factionData) {
+        data.add(factionData);
+    }
+
+    public static void removeFactionData(FactionData factionData) {
+        data.remove(factionData);
+    }
+
+    public static void setConfigValue(Faction faction, String key, Object value) throws IOException {
+        File file = getFactionFile(faction);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set(key, value);
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        config.save(file);
     }
 
     public static YamlConfiguration getConfiguration(Faction faction) {
-        File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data/"
-                + faction.getId() + ".yml");
+        File file = getFactionFile(faction);
         if (!file.exists()) {
             return null;
         }
@@ -78,54 +78,31 @@ public class FactionDataHelper {
     }
 
     public static List<File> getAllFactionFiles() {
-        List<File> files = Lists.newArrayList();
-        Collections.addAll(files, Objects.requireNonNull(new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data/")
-                .listFiles()));
-        return files;
+        File directory = getFactionDirectory();
+        File[] files = Objects.requireNonNull(directory.listFiles());
+        return new ArrayList<>(Arrays.asList(files));
     }
 
-    public static int removeDataFromFiles(String path) {
+    public static int removeDataFromFiles(String path) throws IOException {
         int count = 0;
-        for (File file : new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data/")
-                .listFiles()) {
+        for (File file : Objects.requireNonNull(getFactionDirectory().listFiles())) {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             config.set(path, null);
-            try {
-                config.save(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            config.save(file);
             count++;
         }
         return count;
     }
 
-    public static File getFile(Faction faction) {
-        File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data/"
-                + faction.getId() + ".yml");
-        if (!file.exists()) {
-            return null;
-        }
-        return file;
-    }
-
     public static boolean doesConfigurationExist(Faction faction) {
-        File file = new File(FactionsPlugin.getInstance().getDataFolder() + "/faction-data/"
-                + faction.getId() + ".yml");
-        return file.exists();
-    }
-
-    public static List<FactionData> getData() {
-        return data;
+        return getFactionFile(faction).exists();
     }
 
     public static FactionData findFactionData(String factionID) {
-        for (FactionData data : FactionDataHelper.data) {
-            if (data.getFactionID().equals(factionID)) {
-                return data;
-            }
-        }
-        return null;
+        return data.stream()
+                .filter(d -> d.getFactionID().equals(factionID))
+                .findFirst()
+                .orElse(null);
     }
 
     public static FactionData findFactionData(Faction faction) {
@@ -133,6 +110,6 @@ public class FactionDataHelper {
     }
 
     public static String getFactionIDFromFile(File file) {
-        return Factions.getInstance().getFactionById(file.getName().substring(0, file.getName().indexOf("."))).getId();
+        return Factions.getInstance().getFactionById(file.getName().replace(".yml", "")).getId();
     }
 }

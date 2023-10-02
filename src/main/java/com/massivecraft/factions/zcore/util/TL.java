@@ -1231,6 +1231,8 @@ public enum TL {
     GRACE_DISABLED_PLACEHOLDER("Disabled"),
     MACRO_DETECTED("&c&l[!] &cNo sir!"),
 
+    NO_BALANCE_PLACEHOLDER_PARSED("no balance"),
+
     ROLE_LIST("&eTry using &arecruit, normal, moderator, coleader"),
 
 
@@ -1310,6 +1312,7 @@ public enum TL {
 
     ECON_OFF("no %s"), // no balance, no value, no refund, etc
     ECON_FORMAT("###,###.###"),
+    ECON_BALANCE_DESC("balance"),
     ECON_MONEYTRASFERREDFROM("%1$s was transferred from %2$s to %3$s."),
     ECON_PERSONGAVEMONEYTO("%1$s gave %2$s to %3$s."),
     ECON_PERSONTOOKMONEYFROM("%1$s took %2$s from %3$s."),

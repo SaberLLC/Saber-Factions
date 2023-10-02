@@ -18,7 +18,7 @@ public class ShutdownParameter {
         Conf.saveSync();
         FactionsPlugin.getInstance().getTimerManager().saveTimerData();
         for(FactionsAddon factionsAddon : FactionsPlugin.getInstance().getFactionsAddonHashMap().values()) {
-            factionsAddon.disableAddon();
+            factionsAddon.terminateAddon();
             Logger.print("Disabled " + factionsAddon.getAddonName() + " addon", Logger.PrefixType.DEFAULT);
         }
 

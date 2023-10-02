@@ -29,7 +29,7 @@ public enum PlayerTag implements Tag {
         String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - fp.getLastLoginTime(), true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
         return fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (System.currentTimeMillis() - fp.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
     }),
-    PLAYER_BALANCE("{balance}", (fp) -> Econ.isSetup() ? Econ.getFriendlyBalance(fp) : (Tag.isMinimalShow() ? null : TL.ECON_OFF.format("balance"))),
+    PLAYER_BALANCE("{balance}", (fp) -> Econ.isSetup() ? Econ.getFriendlyBalance(fp) : (Tag.isMinimalShow() ? null : TL.ECON_OFF.format(TL.ECON_BALANCE_DESC.toString()))),
     PLAYER_POWER("{player-power}", (fp) -> String.valueOf(fp.getPowerRounded())),
     ROLE("{player-role}", FPlayer::getRolePrefix),
     PLAYER_MAXPOWER("{player-maxpower}", (fp) -> String.valueOf(fp.getPowerMaxRounded())),

@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Factions - Developed by Driftay.
@@ -19,7 +20,7 @@ public class CustomFile {
 
     private File file;
     private YamlConfiguration fileConfig;
-    private HashMap<String, Object> cachedObjects = new HashMap<>();
+    private final HashMap<String, Object> cachedObjects = new HashMap<>();
 
     public CustomFile(File file) {
         this.file = file;
@@ -27,58 +28,53 @@ public class CustomFile {
     }
 
     public void setup(boolean loadFromProject, String inFolder) {
-        if (!getFile().exists()) {
+        if (!file.exists()) {
+            FactionsPlugin pluginInstance = FactionsPlugin.getInstance();
+            String resourcePath = inFolder.isEmpty() ? file.getName() : inFolder + "/" + file.getName();
+
             if (loadFromProject) {
-                if (!inFolder.equalsIgnoreCase("")) {
-                    FactionsPlugin.getInstance().saveResource(inFolder + "/" + file.getName(), false);
-                } else {
-                    FactionsPlugin.getInstance().saveResource(file.getName(), false);
-                }
+                pluginInstance.saveResource(resourcePath, false);
             } else {
                 try {
-                    getFile().createNewFile();
+                    file.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-        loadFile();
-        // Add default values for missing config options
-        InputStream resource;
-        if (!inFolder.equalsIgnoreCase("")) {
-            resource = FactionsPlugin.getInstance().getResource(inFolder + "/" + file.getName());
-        } else {
-            resource = FactionsPlugin.getInstance().getResource(file.getName());
-        }
 
-        if(resource == null)
-            return;
-        YamlConfiguration defaultConf = YamlConfiguration.loadConfiguration(new InputStreamReader(resource));
-        getConfig().setDefaults(defaultConf);
-        getConfig().options().copyDefaults(true);
-        try {
-            getConfig().save(getFile());
-            loadFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+        loadFile();
+
+        // Add default values for missing config options
+        InputStream resource = FactionsPlugin.getInstance().getResource(inFolder.isEmpty() ? file.getName() : inFolder + "/" + file.getName());
+
+        if (resource != null) {
+            YamlConfiguration defaultConf = YamlConfiguration.loadConfiguration(new InputStreamReader(resource));
+            fileConfig.setDefaults(defaultConf);
+            fileConfig.options().copyDefaults(true);
+            saveFile();
         }
     }
 
     public void loadFile() {
         this.fileConfig = YamlConfiguration.loadConfiguration(file);
-        this.cachedObjects.clear(); // remove cached objects
+        this.cachedObjects.clear();
     }
 
     public void saveFile() {
         try {
-            getConfig().save(file);
+            fileConfig.save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public YamlConfiguration getConfig() {
+        return fileConfig;
+    }
+
     public boolean containsKey(String key) {
-        return getCachedObjects().containsKey(key) || getConfig().contains(key);
+        return cachedObjects.containsKey(key) || fileConfig.contains(key);
     }
 
     public String fetchString(String key) {
@@ -101,63 +97,40 @@ public class CustomFile {
         return (boolean) getObj(key, dataTypes.BOOLEAN);
     }
 
-    public Object getObj(String key, Enum<dataTypes> data) {
-        //check for cache first
-
-        if (getCachedObjects().containsKey(key)) {
-            return getCachedObjects().get(key);
-        }
-
-        if (data.equals(dataTypes.STRING)) {
-            String d = getConfig().getString(key);
-            this.cachedObjects.put(key, d);
-            return d;
-        }
-
-        if (data.equals(dataTypes.DOUBLE)) {
-            double d = getConfig().getDouble(key);
-            this.cachedObjects.put(key, d);
-            return d;
-        }
-
-        if (data.equals(dataTypes.INT)) {
-            int d = getConfig().getInt(key);
-            this.cachedObjects.put(key, d);
-            return d;
-        }
-
-        if (data.equals(dataTypes.BOOLEAN)) {
-            boolean d = getConfig().getBoolean(key);
-            this.cachedObjects.put(key, d);
-            return d;
-        }
-
-        if (data.equals(dataTypes.STRINGLIST)) {
-            List<String> d = getConfig().getStringList(key);
-            this.cachedObjects.put(key, d);
-            return d;
-        }
-        return null;
+    public Map<String, Object> fetchMap(String key) {
+        return (Map<String, Object>) getObj(key, dataTypes.MAP);
     }
 
-    public HashMap<String, Object> getCachedObjects() {
-        return cachedObjects;
-    }
 
-    public File getFile() {
-        return file;
-    }
+    private Object getObj(String key, dataTypes data) {
+        if (cachedObjects.containsKey(key)) {
+            return cachedObjects.get(key);
+        }
 
-    public void setFile(File file) {
-        this.file = file;
-    }
+        Object result;
 
-    public void setFileConfig(YamlConfiguration fileConfig) {
-        this.fileConfig = fileConfig;
-    }
+        switch (data) {
+            case STRING:
+                result = fileConfig.getString(key);
+                break;
+            case DOUBLE:
+                result = fileConfig.getDouble(key);
+                break;
+            case INT:
+                result = fileConfig.getInt(key);
+                break;
+            case BOOLEAN:
+                result = fileConfig.getBoolean(key);
+                break;
+            case STRINGLIST:
+                result = fileConfig.getStringList(key);
+                break;
+            default:
+                return null;
+        }
 
-    public YamlConfiguration getConfig() {
-        return fileConfig;
+        cachedObjects.put(key, result);
+        return result;
     }
 
     public enum dataTypes {
