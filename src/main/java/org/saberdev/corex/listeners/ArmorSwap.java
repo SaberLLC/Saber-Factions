@@ -2,9 +2,11 @@ package org.saberdev.corex.listeners;
 
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -14,75 +16,71 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.saberdev.corex.CoreX;
 
 public class ArmorSwap implements Listener {
-
-    public boolean isArmor(Material material) {
-        String matName = material.toString().toLowerCase();
-        return material != null
-                && material != Material.AIR
-                && (matName.contains("helmet")
-                || matName.contains("chestplate")
-                || matName.contains("leggings")
-                || matName.contains("boots"));
+    public boolean isArmor(Material m) {
+        String n = m.toString().toLowerCase();
+        if (m == null || m == Material.AIR)
+            return false;
+        return (n.contains("helmet") || n.contains("chestplate") || n.contains("leggings") || n.contains("boots"));
     }
 
-    public void equipArmor(Player player, ItemStack item) {
-        if(item == null || item.getType() == Material.AIR) return;
-
-        String name = item.getType().toString().toLowerCase();
+    public void equipArmor(Player player, ItemStack is) {
+        if (is == null || is.getType() == Material.AIR)
+            return;
+        String n = is.getType().toString().toLowerCase();
         PlayerInventory inv = player.getInventory();
-
-        ItemStack oldArmor = null;
-
-        if(name.contains("helmet")) {
-            oldArmor = inv.getHelmet();
-            inv.setHelmet(item);
-        } else if(name.contains("chestplate")) {
-            oldArmor = inv.getChestplate();
-            inv.setChestplate(item);
-        } else if(name.contains("leggings")) {
-            oldArmor = inv.getLeggings();
-            inv.setLeggings(item);
-        } else if(name.contains("boots")) {
-            oldArmor = inv.getBoots();
-            inv.setBoots(item);
+        if (n.contains("helmet")) {
+            ItemStack old = inv.getHelmet();
+            inv.setHelmet(is);
+            inv.removeItem(is);
+            if (old != null && old.getType() != Material.AIR)
+                inv.setItemInHand(old);
+        } else if (n.contains("chestplate")) {
+            ItemStack old = inv.getChestplate();
+            inv.setChestplate(is);
+            inv.removeItem(is);
+            if (old != null && old.getType() != Material.AIR)
+                inv.setItemInHand(old);
+        } else if (n.contains("leggings")) {
+            ItemStack old = inv.getLeggings();
+            inv.setLeggings(is);
+            inv.removeItem(is);
+            if (old != null && old.getType() != Material.AIR)
+                inv.setItemInHand(old);
+        } else if (n.contains("boots")) {
+            ItemStack old = inv.getBoots();
+            inv.setBoots(is);
+            inv.removeItem(is);
+            if (old != null && old.getType() != Material.AIR)
+                inv.setItemInHand(old);
         }
-
-        if (oldArmor != null && oldArmor.getType() != Material.AIR) {
-            inv.setItemInHand(oldArmor);
-        } else {
-            inv.setItemInHand(new ItemStack(Material.AIR));
-        }
-
         player.updateInventory();
     }
 
-    @EventHandler
-    public void onArmorSwap(PlayerInteractEvent e) {
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR) {
-            if (e.getPlayer().getItemInHand() == null || !isArmor(e.getPlayer().getItemInHand().getType()))
-                return;
-
-            if (e.hasBlock()
-                    && (e.getClickedBlock().getState() instanceof org.bukkit.block.Chest
-                    || e.getClickedBlock().getState() instanceof org.bukkit.block.Dispenser
-                    || e.getClickedBlock().getState() instanceof org.bukkit.block.Dropper
-                    || e.getClickedBlock().getState() instanceof org.bukkit.block.Furnace
-                    || e.getClickedBlock().getState() instanceof org.bukkit.block.Hopper
-                    || e.getClickedBlock().getType() == Material.GOLD_BLOCK
-                    || e.getClickedBlock().getType() == Material.IRON_BLOCK))
-                return;
-            Player player = e.getPlayer();
-            if (player.hasMetadata("lastArmorSwap")) {
-                long dif = System.currentTimeMillis() - player.getMetadata("lastArmorSwap").get(0).asLong();
-                if (dif < CoreX.getConfig().getConfig().getLong("Armor-Swap-Cooldown")) return;
-            }
-
-            if (e.isCancelled() && player.hasMetadata("noArmorSwap")) return;
-            e.setCancelled(true);
-            e.setUseInteractedBlock(Event.Result.DENY);
-            e.setUseItemInHand(Event.Result.DENY);
-            player.setMetadata("lastArmorSwap", new FixedMetadataValue(FactionsPlugin.getInstance(), System.currentTimeMillis()));
-            equipArmor(player, e.getItem());
-        }
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerInteract(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
+        if (e.getPlayer().getItemInHand() == null || !isArmor(e.getPlayer().getItemInHand().getType()))
+            return;
+        if (e.hasBlock() && (e
+                .getClickedBlock().getState() instanceof org.bukkit.block.Chest || e
+                .getClickedBlock().getState() instanceof org.bukkit.block.Dispenser || e
+                .getClickedBlock().getState() instanceof org.bukkit.block.Dropper || e
+                .getClickedBlock().getState() instanceof org.bukkit.block.Furnace || e
+                .getClickedBlock().getState() instanceof org.bukkit.block.Hopper || e
+                .getClickedBlock().getType() == Material.GOLD_BLOCK || e
+                .getClickedBlock().getType() == Material.IRON_BLOCK))
+            return;
+        String worldName = e.getPlayer().getWorld().getName();
+        Player p = e.getPlayer();
+        if (p.hasMetadata("lastArmorSwap") && System.currentTimeMillis() - p.getMetadata("lastArmorSwap").get(0).asLong() <= 12L)
+            return;
+        if (e.isCancelled() && p.hasMetadata("noArmorSwap"))
+            return;
+        e.setCancelled(true);
+        e.setUseInteractedBlock(Event.Result.DENY);
+        e.setUseItemInHand(Event.Result.DENY);
+        p.setMetadata("lastArmorSwap", new FixedMetadataValue(FactionsPlugin.getInstance(), System.currentTimeMillis()));
+        equipArmor(p, e.getItem());
     }
 }

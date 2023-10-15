@@ -29,30 +29,47 @@ public class CustomFile {
 
     public void setup(boolean loadFromProject, String inFolder) {
         if (!file.exists()) {
-            FactionsPlugin pluginInstance = FactionsPlugin.getInstance();
-            String resourcePath = inFolder.isEmpty() ? file.getName() : inFolder + "/" + file.getName();
-
             if (loadFromProject) {
-                pluginInstance.saveResource(resourcePath, false);
+                String resourcePath = !inFolder.isEmpty() ? inFolder + "/" + file.getName() : file.getName();
+                FactionsPlugin.getInstance().saveResource(resourcePath, false);
             } else {
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                createNewFile();
             }
         }
-
         loadFile();
 
-        // Add default values for missing config options
-        InputStream resource = FactionsPlugin.getInstance().getResource(inFolder.isEmpty() ? file.getName() : inFolder + "/" + file.getName());
+        InputStream resource = getResource(inFolder);
+        if (resource == null) return;
 
-        if (resource != null) {
-            YamlConfiguration defaultConf = YamlConfiguration.loadConfiguration(new InputStreamReader(resource));
-            fileConfig.setDefaults(defaultConf);
-            fileConfig.options().copyDefaults(true);
-            saveFile();
+        setConfigDefaultsFromResource(resource);
+        saveConfigAndReload();
+    }
+
+    private void createNewFile() {
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private InputStream getResource(String inFolder) {
+        String resourcePath = !inFolder.isEmpty() ? inFolder + "/" + file.getName() : file.getName();
+        return FactionsPlugin.getInstance().getResource(resourcePath);
+    }
+
+    private void setConfigDefaultsFromResource(InputStream resource) {
+        YamlConfiguration defaultConf = YamlConfiguration.loadConfiguration(new InputStreamReader(resource));
+        getConfig().setDefaults(defaultConf);
+        getConfig().options().copyDefaults(true);
+    }
+
+    private void saveConfigAndReload() {
+        try {
+            getConfig().save(file);
+            loadFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

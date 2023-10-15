@@ -1100,14 +1100,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
-        Set<FPlayer> ret = new HashSet<>(this.getSize());
-        Set<FPlayer> onlinePlayers = FPlayers.getInstance().getOnlinePlayers();
+        Set<FPlayer> ret = new HashSet<>();
 
-        for (FPlayer fplayer : this.fplayers) {
-            if (online == onlinePlayers.contains(fplayer)) {
-                ret.add(fplayer);
-            }
-        }
+        for (FPlayer fplayer : fplayers)
+            if (fplayer.isOnline() == online) ret.add(fplayer);
+
         return ret;
     }
 

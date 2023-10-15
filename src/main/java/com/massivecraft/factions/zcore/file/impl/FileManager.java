@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.file.impl;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.file.CustomFile;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.util.HashMap;
@@ -9,70 +10,78 @@ import java.util.Map;
 
 public class FileManager {
 
-    private final Map<String, CustomFile> customFiles = new HashMap<>();
+    private final File dataFolder = FactionsPlugin.getInstance().getDataFolder();
+    private Map<String, CustomFile> customFiles;
 
     public FileManager() {
-        addCustomFile("boosters", "data");
-        addCustomFile("timers", "data");
-        addCustomFile("permissions", "data");
-        addCustomFile("corex", "corex");
-        addCustomFile("fperms", "configuration");
-        addCustomFile("upgrades", "configuration");
-        addCustomFile("missions", "configuration");
-        addCustomFile("banners", "configuration");
+        initFiles();
     }
 
-    private void addCustomFile(String filename, String folder) {
-        String filePath = FactionsPlugin.getInstance().getDataFolder() + File.separator + folder + File.separator + filename + ".yml";
-        customFiles.put(filename, new CustomFile(new File(filePath)));
+    private void initFiles() {
+        customFiles = new HashMap<>();
+
+        customFiles.put("boosters", new CustomFile(getFile("data", "boosters.yml")));
+        customFiles.put("timers", new CustomFile(getFile("data", "timers.yml")));
+        customFiles.put("fperms", new CustomFile(getFile("configuration", "fperms.yml")));
+        customFiles.put("upgrades", new CustomFile(getFile("configuration", "upgrades.yml")));
+        customFiles.put("permissions", new CustomFile(getFile("data", "permissions.yml")));
+        customFiles.put("corex", new CustomFile(getFile("corex", "corex.yml")));
+        customFiles.put("missions", new CustomFile(getFile("configuration", "missions.yml")));
+        customFiles.put("banners", new CustomFile(getFile("configuration", "banners.yml")));
+    }
+
+    private File getFile(String folder, String fileName) {
+        return new File(dataFolder + File.separator + folder + File.separator + fileName);
     }
 
     public void setupFiles() {
-        customFiles.forEach((name, customFile) -> {
-            String folder = name.equals("corex") ? "corex" : (name.endsWith("s") ? "data" : "configuration");
-            customFile.setup(true, folder);
-        });
+        customFiles.get("boosters").setup(true, "data");
+        customFiles.get("timers").setup(true, "data");
+        customFiles.get("permissions").setup(true, "data");
+        customFiles.get("corex").setup(true, "corex");
+        customFiles.get("fperms").setup(true, "configuration");
+        customFiles.get("upgrades").setup(true, "configuration");
+        customFiles.get("missions").setup(true, "configuration");
+        customFiles.get("banners").setup(true, "configuration");
     }
 
     public void loadCustomFiles() {
         customFiles.values().forEach(CustomFile::loadFile);
     }
 
-    public CustomFile getCustomFile(String name) {
-        return customFiles.get(name);
-    }
-
-    // Individual getters, for direct access
-    public CustomFile getBanners() {
-        return getCustomFile("banners");
-    }
-
-    public CustomFile getUpgrades() {
-        return getCustomFile("upgrades");
-    }
-
-    public CustomFile getMissions() {
-        return getCustomFile("missions");
-    }
-
-    public CustomFile getFperms() {
-        return getCustomFile("fperms");
-    }
-
-    public CustomFile getTimers() {
-        return getCustomFile("timers");
+    public CustomFile getFileByKey(String key) {
+        return customFiles.getOrDefault(key, null);
     }
 
     public CustomFile getBoosters() {
-        return getCustomFile("boosters");
+        return getFileByKey("boosters");
     }
 
-    public CustomFile getCoreX() {
-        return getCustomFile("corex");
+    public CustomFile getTimers() {
+        return getFileByKey("timers");
+    }
+
+    public CustomFile getFperms() {
+        return getFileByKey("fperms");
+    }
+
+    public CustomFile getUpgrades() {
+        return getFileByKey("upgrades");
     }
 
     public CustomFile getPermissions() {
-        return getCustomFile("permissions");
+        return getFileByKey("permissions");
     }
 
+    public CustomFile getCoreX() {
+        return getFileByKey("corex");
+    }
+
+    public CustomFile getMissions() {
+        return getFileByKey("missions");
+    }
+
+    public CustomFile getBanners() {
+        return getFileByKey("banners");
+    }
 }

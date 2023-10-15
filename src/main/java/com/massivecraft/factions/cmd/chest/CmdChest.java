@@ -14,7 +14,6 @@ public class CmdChest extends FCommand {
     /**
      * @author Illyria Team
      */
-
     public CmdChest() {
         this.aliases.addAll(Aliases.chest);
 
@@ -27,13 +26,11 @@ public class CmdChest extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-
-
         if (!FactionsPlugin.getInstance().getConfig().getBoolean("fchest.Enabled")) {
             context.msg(TL.GENERIC_DISABLED, "Faction Chests");
             return;
         }
-        // This permission check is way too explicit but it's clean
+        // This permission check is way too explicit, but it's clean
         context.fPlayer.setInFactionsChest(true);
         context.player.openInventory(context.faction.getChestInventory());
     }
