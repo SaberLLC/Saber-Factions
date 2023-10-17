@@ -53,7 +53,7 @@ public class FactionUpgradeFrame extends SaberGUI {
             int currentFactionLevel = faction.getUpgrade(upgradeId);
             int upgradeMaxLevel = upgrade.getValue();
 
-            int cost = upgradeConf.getInt("fupgrades.MainMenu." + upgradeId + ".Cost.level-" + (currentFactionLevel + 1));
+            long cost = upgradeConf.getLong("fupgrades.MainMenu." + upgradeId + ".Cost.level-" + (currentFactionLevel + 1));
 
             this.setItem(upgradeManager.getSlot(upgradeId), new InventoryItem(upgradeManager.buildAsset(faction, upgradeId)).click(ClickType.LEFT, () -> {
                 handleUpgradeClick(fme, upgradeId, currentFactionLevel, upgradeMaxLevel, cost, upgradeConf);
@@ -61,7 +61,7 @@ public class FactionUpgradeFrame extends SaberGUI {
         }
     }
 
-    private void handleUpgradeClick(FPlayer fme, String upgradeId, int currentFactionLevel, int upgradeMaxLevel, int cost, YamlConfiguration upgradeConf) {
+    private void handleUpgradeClick(FPlayer fme, String upgradeId, int currentFactionLevel, int upgradeMaxLevel, long cost, YamlConfiguration upgradeConf) {
         Faction faction = fme.getFaction();
 
         if (currentFactionLevel >= upgradeMaxLevel) {
@@ -70,7 +70,7 @@ public class FactionUpgradeFrame extends SaberGUI {
 
         if (upgradeConf.getBoolean("fupgrades.usePointsAsCurrency")) {
             if (faction.getPoints() >= cost) {
-                faction.setPoints(faction.getPoints() - cost);
+                faction.setPoints((int) (faction.getPoints() - cost));
                 fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, faction.getPoints());
                 handleTransaction(fme, upgradeId);
                 faction.setUpgrade(upgradeId, currentFactionLevel + 1);

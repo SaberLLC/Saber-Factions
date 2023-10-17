@@ -255,9 +255,9 @@ public interface FPlayer extends EconomyParticipator {
 
     int getDeaths();
 
-    boolean takeMoney(int amt);
+    boolean takeMoney(long amt);
 
-    boolean hasMoney(int amt);
+    boolean hasMoney(long amt);
 
     //Fplayer specific friendly fire.
     boolean hasFriendlyFire();

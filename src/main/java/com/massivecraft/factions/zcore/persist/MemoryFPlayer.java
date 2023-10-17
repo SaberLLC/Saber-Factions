@@ -1504,7 +1504,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     @Override
-    public boolean hasMoney(int amt) {
+    public boolean hasMoney(long amt) {
         Economy econ = FactionsPlugin.getInstance().getEcon();
         if (econ.getBalance(getPlayer()) >= amt) {
             return true;
@@ -1521,7 +1521,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     @Override
-    public boolean takeMoney(int amt) {
+    public boolean takeMoney(long amt) {
         if (hasMoney(amt)) {
             Economy econ = FactionsPlugin.getInstance().getEcon();
             if (econ.withdrawPlayer(getPlayer(), amt).transactionSuccess()) {
