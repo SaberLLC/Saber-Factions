@@ -1,17 +1,14 @@
 package com.massivecraft.factions.zcore.util;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.lunarclient.bukkitapi.LunarClientAPI;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.audit.FLogManager;
 import com.massivecraft.factions.cmd.check.CheckTask;
-import com.massivecraft.factions.cmd.check.WeeWooTask;
 import com.massivecraft.factions.cmd.reserve.ListParameterizedType;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.data.helpers.FactionDataHelper;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.integration.LunarClientWrapper;
 import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.util.Logger;
@@ -19,7 +16,6 @@ import com.massivecraft.factions.util.Metrics;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.Plugin;
 import org.saberdev.corex.CoreX;
 
@@ -28,9 +24,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import static com.massivecraft.factions.Conf.safeZoneNerfedCreatureTypes;
-import static com.massivecraft.factions.Conf.territoryDenyUsageMaterials;
 
 public class StartupParameter {
 
