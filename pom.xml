@@ -77,7 +77,7 @@
                             <shadedPattern>com.massivecraft.factions.shade.com.darkblade12</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>de.tr7zw</pattern>
+                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.nbtapi</shadedPattern>
                         </relocation>
                     </relocations>
@@ -115,8 +115,8 @@
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
-            <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.11.3</version>
+            <artifactId>item-nbt-api</artifactId>
+            <version>2.12.2</version>
             <scope>compile</scope>
         </dependency>
 
@@ -136,7 +136,7 @@
         <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
-            <version>9.4.0</version>
+            <version>9.8.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -250,7 +250,7 @@
         <dependency>
             <groupId>net.ess3</groupId>
             <artifactId>EssentialsX</artifactId>
-            <version>2.16.0</version>
+            <version>2.18.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -418,11 +418,6 @@
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
-        </repository>
-        <repository>
-            <id>codemc-repo</id>
-            <url>https://repo.codemc.org/repository/maven-public/</url>
-            <layout>default</layout>
         </repository>
         <repository>
             <id>central</id>
