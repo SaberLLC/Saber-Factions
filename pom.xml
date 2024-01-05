@@ -77,7 +77,7 @@
                             <shadedPattern>com.massivecraft.factions.shade.com.darkblade12</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>de.tr7zw</pattern>
+                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.nbtapi</shadedPattern>
                         </relocation>
                     </relocations>
@@ -115,8 +115,8 @@
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
-            <artifactId>item-nbt-api-plugin</artifactId>
-            <version>2.11.3</version>
+            <artifactId>item-nbt-api</artifactId>
+            <version>2.12.2</version>
             <scope>compile</scope>
         </dependency>
 
