@@ -18,6 +18,7 @@ import com.massivecraft.factions.cmd.banner.struct.BannerManager;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
+import com.massivecraft.factions.data.helpers.FactionDataHelper;
 import com.massivecraft.factions.integration.LunarClientWrapper;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.listeners.vspecific.ChorusFruitListener;
@@ -187,6 +188,7 @@ public class FactionsPlugin extends MPlugin {
                 Bukkit.getPluginManager().registerEvents(new ChorusFruitListener(), this);
             }
 
+            FactionDataHelper.init();
 
             if (version > 8) {
                 Bukkit.getPluginManager().registerEvents(new MissionHandlerModern(), this);
@@ -227,7 +229,7 @@ public class FactionsPlugin extends MPlugin {
             if (FactionsPlugin.getInstance().getConfig().getBoolean("fbanners.Enabled")) {
                 bannerManager = new BannerManager();
                 bannerManager.onEnable(this);
-                getServer().getPluginManager().registerEvents(new BannerListener(), this);
+                //getServer().getPluginManager().registerEvents(new BannerListener(), this);
             }
 
             this.getCommand(refCommand).setExecutor(cmdBase);

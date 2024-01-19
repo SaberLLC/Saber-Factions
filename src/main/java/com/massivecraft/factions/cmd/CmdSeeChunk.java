@@ -12,8 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import xyz.xenondevs.particle.ParticleBuilder;
-import xyz.xenondevs.particle.ParticleEffect;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -25,8 +23,8 @@ public class CmdSeeChunk extends FCommand {
     //Used a hashmap cuz imma make a particle selection gui later, will store it where the boolean is rn.
     public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
     Long interval;
-    private boolean useParticles;
-    private final ParticleEffect effect = ParticleEffect.REDSTONE;
+    //private boolean useParticles;
+    //private final ParticleEffect effect = ParticleEffect.REDSTONE;
 
     private int taskID = -1;
 
@@ -48,7 +46,7 @@ public class CmdSeeChunk extends FCommand {
 
         aliases.addAll(Aliases.seeChunk);
 
-        this.useParticles = FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.particles", true);
+        //this.useParticles = FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.particles", true);
         interval = FactionsPlugin.getInstance().getConfig().getLong("see-chunk.interval", 10L);
 
         this.requirements = new CommandRequirements.Builder(Permission.SEECHUNK)
@@ -122,11 +120,11 @@ public class CmdSeeChunk extends FCommand {
             if (block.getType() != Material.AIR) {
                 continue;
             }
-            if (useParticles) {
-                new ParticleBuilder(this.effect, block.getLocation().add(0.5, 0, 0.5)).setColor(Color.RED).display(player);
-            } else {
+            //if (useParticles) {
+            //    new ParticleBuilder(this.effect, block.getLocation().add(0.5, 0, 0.5)).setColor(Color.RED).display(player);
+            //} else {
                 VisualizeUtil.addLocation(player, block.getLocation(), y % 5 == 0 ? this.redstoneLamp : this.blackStainedGlass);
-            }
+           // }
         }
     }
 

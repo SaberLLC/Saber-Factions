@@ -45,8 +45,6 @@ public class FactionDataListener implements Listener {
             return;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
-            data.deleteFactionData(e.getFaction());
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> data.deleteFactionData(e.getFaction()));
     }
 }

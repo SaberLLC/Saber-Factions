@@ -4,6 +4,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.data.FactionData;
 import com.massivecraft.factions.data.helpers.FactionDataHelper;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
@@ -18,10 +19,16 @@ public class FactionDataDeploymentTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        for(Faction faction : Factions.getInstance().getAllFactions()) {
-            if(cachedList.contains(faction)) continue;
-            if(faction.isSystemFaction()) continue;
-            final FactionData data = new FactionData(faction);
+        for (Faction faction : Factions.getInstance().getAllFactions()) {
+            if (faction.isSystemFaction()) continue;
+
+            // Check if FactionData for the faction already exists in the list
+            FactionData existingData = FactionDataHelper.findFactionData(faction);
+            if (existingData != null) {
+                continue;  // Skip adding data for this faction if it already exists
+            }
+
+            FactionData data = new FactionData(faction);
             FactionDataHelper.addFactionData(data);
             cachedList.add(faction);
         }

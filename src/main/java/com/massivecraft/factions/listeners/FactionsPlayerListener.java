@@ -50,7 +50,7 @@ public class FactionsPlayerListener implements Listener {
      */
 
     // Holds the next time a player can have a map shown.
-    private HashMap<UUID, Long> showTimes = new HashMap<>();
+    private final HashMap<UUID, Long> showTimes = new HashMap<>();
 
     public FactionsPlayerListener() {
         for (Player player : FactionsPlugin.getInstance().getServer().getOnlinePlayers()) initPlayer(player);
@@ -76,7 +76,7 @@ public class FactionsPlayerListener implements Listener {
             int cornerChunkZ = WorldUtil.blockToChunk((int) cornerZ);
 
             int borderChunk = WorldUtil.blockToChunk(borderSize);
-            
+
             String worldName = world.getName();
 
             corners.add(FLocation.wrap(worldName, cornerChunkX, cornerChunkZ));
@@ -85,6 +85,7 @@ public class FactionsPlayerListener implements Listener {
             corners.add(FLocation.wrap(worldName, cornerChunkX + borderChunk, cornerChunkZ + borderChunk));
         }
     }
+
     public static Boolean isSystemFaction(Faction faction) {
         return faction.isSafeZone() ||
                 faction.isWarZone() ||
@@ -125,17 +126,12 @@ public class FactionsPlayerListener implements Listener {
         }
 
 
-
-        if (otherFaction.hasPlayersOnline()) {
-            if (!Conf.territoryDenyUsageMaterials.contains(material)) {
-                return true; // Item isn't one we're preventing for online factions.
-            }
+        if (!Conf.territoryDenyUsageMaterials.contains(material)) {
+            return true; // Item isn't one we're preventing for online factions.
         }
 
-
-
         if (otherFaction.isWilderness()) {
-            if (!Conf.wildernessDenyUsage || ((Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)) ) {
+            if (!Conf.wildernessDenyUsage || ((Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (!Conf.worldsNoWildernessProtection.contains(location.getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist))) {
                 return true; // This is not faction territory. Use whatever you like here.
             }
 
@@ -194,8 +190,8 @@ public class FactionsPlayerListener implements Listener {
         // no door/chest/whatever protection in wilderness, war zones, or safe zones
         if (otherFaction.isSystemFaction()) return true;
         if (myFaction.isWilderness()) {
-            if(block.getType().name().contains("PLATE")) {
-                if(!Cooldown.isOnCooldown(player, "plateMessage")) {
+            if (block.getType().name().contains("PLATE")) {
+                if (!Cooldown.isOnCooldown(player, "plateMessage")) {
                     Cooldown.setCooldown(player, "plateMessage", 3);
                 } else {
                     return false;
@@ -415,12 +411,12 @@ public class FactionsPlayerListener implements Listener {
 
         if (me.isSpyingChat() && !player.hasPermission(Permission.CHATSPY.node)) {
             me.setSpyingChat(false);
-            Logger.printArgs( "Found %s spying chat without permission on login. Disabled their chat spying.", Logger.PrefixType.DEFAULT, player.getName());
+            Logger.printArgs("Found %s spying chat without permission on login. Disabled their chat spying.", Logger.PrefixType.DEFAULT, player.getName());
         }
 
         if (me.isAdminBypassing() && !player.hasPermission(Permission.BYPASS.node)) {
             me.setIsAdminBypassing(false);
-            Logger.printArgs( "Found %s on admin Bypass without permission on login. Disabled it for them.", Logger.PrefixType.DEFAULT, player.getName());
+            Logger.printArgs("Found %s on admin Bypass without permission on login. Disabled it for them.", Logger.PrefixType.DEFAULT, player.getName());
         }
 
         me.setAutoLeave(!player.hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
@@ -469,7 +465,7 @@ public class FactionsPlayerListener implements Listener {
         Player player = event.getPlayer();
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
 
-        if(!ChunkReference.isSameBlock(event)) {
+        if (!ChunkReference.isSameBlock(event)) {
             VisualizeUtil.clear(event.getPlayer());
             if (me.isWarmingUp()) {
                 me.clearWarmup();
@@ -477,7 +473,7 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        if(ChunkReference.isSameChunk(event)) {
+        if (ChunkReference.isSameChunk(event)) {
             return;
         }
 
@@ -487,7 +483,7 @@ public class FactionsPlayerListener implements Listener {
 
         me.setLastStoodAt(to);
 
-        if(player.getGameMode() != GameMode.SPECTATOR) { //To Disable Roam Plugins w/AutoClaim On
+        if (player.getGameMode() != GameMode.SPECTATOR) { //To Disable Roam Plugins w/AutoClaim On
             if (me.getAutoClaimFor() != null) {
                 me.attemptClaim(me.getAutoClaimFor(), to, true);
             } else if (me.getAutoUnclaimFor() != null) {
@@ -503,7 +499,7 @@ public class FactionsPlayerListener implements Listener {
         if (changedFaction) {
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerEnteredFactionEvent(factionTo, factionFrom, me));
             if (me.hasNotificationsEnabled() && FactionsPlugin.getInstance().getConfig().getBoolean("Title.Show-Title")) {
-                if(FactionsPlugin.getInstance().getConfig().getBoolean("Title.Cached")) {
+                if (FactionsPlugin.getInstance().getConfig().getBoolean("Title.Cached")) {
                     player.setMetadata("showFactionTitle", new FixedMetadataValue(FactionsPlugin.getInstance(), true));
                 } else {
                     TitleUtil.sendFactionChangeTitle(me, factionTo);
@@ -604,26 +600,19 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        Material type;
         if (event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))
             return;
-
         Block block = event.getClickedBlock();
         Player player = event.getPlayer();
-
-        if (block == null) return;
-
-        XMaterial type = null;
-        try {
-            type = event.getItem() == null ? null : XMaterial.matchXMaterial(event.getItem());
-        } catch (IllegalArgumentException exception) {
-            if (event.getItem() != null) {
-                FactionsPlugin.getInstance().getLogger().info("Cannot find valid material for: " + event.getItem().getType().name());
-            }
+        if (block == null)
+            return;
+        if (event.getItem() != null) {
+            type = XMaterial.matchXMaterial(event.getItem().getType().toString()).get().parseMaterial();
+        } else {
+            type = null;
         }
-
-
-        // Creeper Egg Bypass.
-        if (Conf.allowCreeperEggingChests && block.getType() == Material.CHEST && type == XMaterial.CREEPER_SPAWN_EGG && event.getPlayer().isSneaking()) {
+        if (Conf.allowCreeperEggingChests && block.getType() == Material.CHEST && type == XMaterial.CREEPER_SPAWN_EGG.parseMaterial() && event.getPlayer().isSneaking()) {
             return;
         }
 
@@ -650,7 +639,6 @@ public class FactionsPlayerListener implements Listener {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);
         }
-
     }
 
     @EventHandler
@@ -686,7 +674,7 @@ public class FactionsPlayerListener implements Listener {
         if (Conf.homesEnabled &&
                 Conf.homesTeleportToOnDeath &&
                 home != null &&
-                (Conf.homesRespawnFromNoPowerLossWorlds || ( (!Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist) ) )) {
+                (Conf.homesRespawnFromNoPowerLossWorlds || ((!Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()) && !Conf.useWorldConfigurationsAsWhitelist) || (Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()) && Conf.useWorldConfigurationsAsWhitelist)))) {
             event.setRespawnLocation(home);
         }
     }

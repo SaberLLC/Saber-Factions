@@ -608,6 +608,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.power = Math.max(Math.min(this.power + delta, this.getPowerMax()), this.getPowerMin());
     }
 
+    public void alterPowerIgnoringMaxAndMin(double delta) {
+        this.power = this.power + delta;
+    }
+
     public double getPowerMax() {
         if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
             return 0.0;
@@ -621,6 +625,11 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
         return Conf.powerPlayerMin + this.powerBoost;
     }
+
+    public void setPower(double power) {
+        this.power = power;
+    }
+
 
     public int getPowerRounded() {
         if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
@@ -1016,8 +1025,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             double refund = Econ.calculateClaimRefund(getFaction().getLandRounded());
 
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
-                if (!Econ.modifyMoney(getFaction(), refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
-                    return false;
+                if (Econ.depositFactionBalance(this.getFaction(), refund)) {
+                    this.getFaction().msg(TL.COMMAND_MONEY_GAINED, CC.translate("&aYour faction"), moneyString(refund), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString());
                 }
             } else {
                 if (!Econ.modifyMoney(this, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {

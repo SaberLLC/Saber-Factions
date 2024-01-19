@@ -22,8 +22,17 @@ public class FactionDataHelper {
     private static final String FACTION_DATA_PATH = "/faction-data/";
     private static List<FactionData> data = new ArrayList<>();
 
+    public static List<FactionData> getData() {
+        return data;
+    }
 
     public static void init() {
+        for(Faction faction : Factions.getInstance().getAllFactions()) {
+            if(faction.isSystemFaction()) continue;
+            FactionData data = new FactionData(faction);
+            FactionDataHelper.addFactionData(data);
+        }
+
         FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new FactionDataListener(), FactionsPlugin.getInstance());
         new FactionDataDeploymentTask().runTaskTimerAsynchronously(FactionsPlugin.getInstance(), 20, 20);
 
@@ -47,6 +56,8 @@ public class FactionDataHelper {
         return new File(FactionsPlugin.getInstance().getDataFolder() + FACTION_DATA_PATH);
     }
 
+
+
     public static void createConfiguration(Faction faction) throws IOException {
         File file = getFactionFile(faction);
         if (!file.exists()) {
@@ -67,6 +78,14 @@ public class FactionDataHelper {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set(key, value);
         config.save(file);
+    }
+
+    public static void setDefaultConfigValue(Faction faction, String key, Object value) throws IOException {
+        FactionData factionData = findFactionData(faction);
+        if (factionData != null) {
+            factionData.setDefaultPath(key, value);
+            factionData.save(); // Assuming you have an async save method in FactionData
+        }
     }
 
     public static YamlConfiguration getConfiguration(Faction faction) {

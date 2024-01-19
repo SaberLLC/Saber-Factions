@@ -121,7 +121,7 @@ public class CmdTntFill extends FCommand {
         PlayerTNTProvider playerTNTProvider = new PlayerTNTProvider(context.fPlayer);
 
         if (playerTnt < requiredTnt) {
-            int factionTnt = context.faction.getTnt();
+            long factionTnt = context.faction.getTnt();
             if (factionTnt < (requiredTnt - playerTnt)) {
                 context.fPlayer.msg(TL.COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT.toString());
                 return;

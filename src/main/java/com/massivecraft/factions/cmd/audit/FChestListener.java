@@ -70,8 +70,7 @@ public class FChestListener implements Listener {
 
         if (event.getView().getTitle().equalsIgnoreCase(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"))) && !event.getClick().isShiftClick()) {
             if (currentItemType != Material.AIR) {
-                if (factionChestInventory == null || !factionChestInventory.contains(currentItem)) {
-                    event.setCancelled(true);
+                if ((factionChestInventory == null || !factionChestInventory.contains(currentItem)) && clickedInventory == factionChestInventory) {                    event.setCancelled(true);
                     player.sendMessage(CC.RedB + "(!) That item no longer exists!");
                     Bukkit.getLogger().info("[FactionChest] " + player.getName() + " tried to remove " + currentItem + " from /f chest when it didn't contain! Items: " + (factionChestInventory == null ? "none" : Arrays.toString(factionChestInventory.getContents())));
                     player.closeInventory();
