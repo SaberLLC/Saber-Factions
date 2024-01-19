@@ -71,7 +71,7 @@ public class Conf {
     public static boolean factionOnlyChat = true;
     // Configuration on the Faction tag in chat messages.
     public static boolean chatTagEnabled = true;
-    public static transient boolean chatTagHandledByAnotherPlugin = false;
+    public static boolean chatTagHandledByAnotherPlugin = false;
     public static boolean chatTagRelationColored = true;
     public static List<String> blacklistedFactionNames = new ArrayList<>();
     public static String allowedFactionNameCharacters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -281,9 +281,11 @@ public class Conf {
 
     public static boolean enableClickToClaim = true;
 
-    //public static Set<Material> territoryCancelAndAllowItemUseMaterial = new HashSet<>();
-    //public static Set<Material> territoryDenySwitchMaterials = new HashSet<>();
+   // public static Set<Material> territoryCancelAndAllowItemUseMaterial = new HashSet<>();
+    public static Set<Material> territoryDenySwitchMaterials = new HashSet<>();
     public static boolean allowCreeperEggingChests = true;
+
+
 
     // Economy settings
     public static boolean econEnabled = false;
@@ -513,14 +515,103 @@ public class Conf {
             territoryDenyUsageMaterials.add(XMaterial.POWDER_SNOW_BUCKET.parseMaterial());
         }
 
+        territoryDenySwitchMaterials.add(XMaterial.ACACIA_FENCE_GATE.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.BIRCH_FENCE_GATE.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_FENCE_GATE.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.JUNGLE_FENCE_GATE.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.OAK_FENCE_GATE.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.SPRUCE_FENCE_GATE.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.ACACIA_DOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.BIRCH_DOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_DOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.JUNGLE_DOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.OAK_DOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.SPRUCE_DOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.DISPENSER.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.CHEST.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.TRAPPED_CHEST.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.ACACIA_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.BIRCH_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.JUNGLE_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.OAK_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.SPRUCE_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.DROPPER.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.HOPPER.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.ITEM_FRAME.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.ACACIA_TRAPDOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.BIRCH_TRAPDOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_TRAPDOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.JUNGLE_TRAPDOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.OAK_TRAPDOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.SPRUCE_TRAPDOOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.LEVER.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.COMPARATOR.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.REPEATER.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.ACACIA_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.BIRCH_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.DARK_OAK_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.JUNGLE_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.OAK_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.SPRUCE_BUTTON.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.PURPLE_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.WHITE_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.MAGENTA_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.LIGHT_BLUE_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.CYAN_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.BLUE_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.BROWN_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.ORANGE_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.GREEN_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.RED_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.BLACK_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.GRAY_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.LIME_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.LIGHT_GRAY_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.PINK_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.YELLOW_SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.SHULKER_BOX.parseMaterial());
+        territoryDenySwitchMaterials.add(XMaterial.BARREL.parseMaterial());
+
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.GOLDEN_APPLE.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.APPLE.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.ENCHANTED_GOLDEN_APPLE.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_BEEF.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_MUTTON.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_CHICKEN.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_COD.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_PORKCHOP.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_RABBIT.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_SALMON.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.ENDER_PEARL.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.POTION.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.SPLASH_POTION.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CREEPER_SPAWN_EGG.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.BOW.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_HELMET.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_CHESTPLATE.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_LEGGINGS.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_BOOTS.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_HELMET.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_CHESTPLATE.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_LEGGINGS.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_BOOTS.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_HELMET.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_CHESTPLATE.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_LEGGINGS.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_BOOTS.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_HELMET.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_CHESTPLATE.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_LEGGINGS.parseMaterial());
+        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_BOOTS.parseMaterial());
 
         /// TODO: Consider removing this in a future release, as permissions works just fine now
         territoryProtectedMaterials.add(Material.BEACON);
 
         // Config is not loading if value is empty ???
-        territoryBypassProtectedMaterials.add(Material.COOKIE);
-        territoryBypassProtectedMaterials.add(Material.CHEST);
-        territoryBypassProtectedMaterials.add(Material.TRAPPED_CHEST);
+        territoryBypassProtectedMaterials.add(XMaterial.COOKIE.parseMaterial());
+        territoryBypassProtectedMaterials.add(XMaterial.CHEST.parseMaterial());
+        territoryBypassProtectedMaterials.add(XMaterial.TRAPPED_CHEST.parseMaterial());
 
 
         safeZoneNerfedCreatureTypes.add(EntityType.BLAZE);

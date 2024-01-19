@@ -12,7 +12,7 @@ public class FactionTNTProvider implements TNTProvider {
 
     @Override
     public int getTnt() {
-        return context.faction.getTnt();
+        return (int) context.faction.getTnt();
     }
 
     @Override

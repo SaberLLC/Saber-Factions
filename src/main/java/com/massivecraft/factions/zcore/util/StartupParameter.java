@@ -79,9 +79,6 @@ public class StartupParameter {
             FactionsPlugin.cachedRadiusClaim = Conf.useRadiusClaimSystem;
 
             CoreX.init();
-
-            FactionDataHelper.init();
-
             if (Conf.useCheckSystem) {
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, CheckTask.getInstance(), 0L, 1200L);
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimer(plugin, CheckTask.getInstance()::cleanupTask, 0L, 1260L);

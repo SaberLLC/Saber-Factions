@@ -42,9 +42,9 @@ public interface Faction extends EconomyParticipator {
 
     void setWarpsLimit(int limit);
 
-    int getTntBankLimit();
+    long getTntBankLimit();
 
-    void setTntBankLimit(int limit);
+    void setTntBankLimit(long limit);
 
     int getWallCheckMinutes();
 
@@ -192,9 +192,9 @@ public interface Faction extends EconomyParticipator {
 
     ItemStack getBanner();
 
-    int getTnt();
+    long getTnt();
 
-    void setTnt(int amount);
+    void setTnt(long amount);
 
     String getRule(int index);
 

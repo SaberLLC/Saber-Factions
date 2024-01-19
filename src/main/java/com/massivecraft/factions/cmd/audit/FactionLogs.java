@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FactionLogs {
 
-    public static final SimpleDateFormat FORMAT = new SimpleDateFormat("MM/dd hh:mmaa");
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("MM/dd hh:mmaa");
 
     private final Map<FLogType, LinkedList<FactionLog>> mostRecentLogs = new ConcurrentHashMap<>();
 
@@ -23,8 +23,7 @@ public class FactionLogs {
 
     public void log(FLogType type, String... arguments) {
         if (type.getRequiredArgs() > arguments.length) {
-            Bukkit.getLogger().warning("Invalid argument count met. Required: " + type.getRequiredArgs());
-            new Exception().printStackTrace();
+            logWarning("Invalid argument count met. Required: " + type.getRequiredArgs());
         } else {
             LinkedList<FactionLog> logs = mostRecentLogs.computeIfAbsent(type, k -> new LinkedList<>());
             logs.add(new FactionLog(System.currentTimeMillis(), Arrays.asList(arguments)));
@@ -36,7 +35,7 @@ public class FactionLogs {
     }
 
     public boolean isEmpty() {
-        return this.mostRecentLogs.isEmpty();
+        return mostRecentLogs.isEmpty();
     }
 
     public void checkExpired() {
@@ -57,26 +56,29 @@ public class FactionLogs {
         return mostRecentLogs;
     }
 
-    public static class FactionLog {
-        private final long t;
-        private final List<String> a;
+    private static void logWarning(String message) {
+        Bukkit.getLogger().warning(message);
+        new Exception().printStackTrace();
+    }
 
-        public FactionLog(long t, List<String> a) {
-            this.t = t;
-            this.a = a != null ? new ArrayList<>(a) : new ArrayList<>();
+    public static class FactionLog {
+        private final long timestamp;
+        private final List<String> arguments;
+
+        public FactionLog(long timestamp, List<String> arguments) {
+            this.timestamp = timestamp;
+            this.arguments = (arguments != null) ? new ArrayList<>(arguments) : new ArrayList<>();
         }
 
         public boolean isExpired(long duration) {
-            return System.currentTimeMillis() - t >= duration;
+            return System.currentTimeMillis() - timestamp >= duration;
         }
 
-        public String getLogLine(FLogType type, boolean timestamp) {
-            String[] args = a.toArray(new String[0]);
-            String timeFormat = "";
-            if (timestamp) {
-                timeFormat = FORMAT.format(new Date(t));
-            }
-            return String.format(ChatColor.translateAlternateColorCodes('&', type.getMsg()), (Object[]) args) + (timestamp ? ChatColor.GRAY + " - " + timeFormat : "");
+        public String getLogLine(FLogType type, boolean includeTimestamp) {
+            String[] args = arguments.toArray(new String[0]);
+            String timeFormat = includeTimestamp ? FORMAT.format(new Date(timestamp)) : "";
+            return String.format(ChatColor.translateAlternateColorCodes('&', type.getMsg()), (Object[]) args)
+                    + (includeTimestamp ? ChatColor.GRAY + " - " + timeFormat : "");
         }
     }
 }

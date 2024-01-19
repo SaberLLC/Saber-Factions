@@ -6,7 +6,7 @@ import com.massivecraft.factions.cmd.banner.struct.FactionBanner;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
-import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

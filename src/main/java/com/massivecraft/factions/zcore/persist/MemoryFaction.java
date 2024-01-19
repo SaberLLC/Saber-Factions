@@ -35,7 +35,7 @@ import java.util.function.Predicate;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public HashMap<Integer, String> rules = new HashMap<>();
-    public int tnt;
+    public long tnt;
     public Location checkpoint;
     public LazyLocation vault;
     public HashMap<String, Integer> upgrades = new HashMap<>();
@@ -80,7 +80,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private Map<UUID, Integer> playerWallCheckCount;
     private Map<UUID, Integer> playerBufferCheckCount;
     private boolean weeWoo;
-    private int tntBankSize;
+    private long tntBankSize;
     private int warpLimit;
     private double reinforcedArmor;
     private List<String> completedMissions;
@@ -458,11 +458,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         tnt -= amt;
     }
 
-    public int getTnt() {
+    public long getTnt() {
         return tnt;
     }
 
-    public void setTnt(int amt) {
+    public void setTnt(long amt) {
         tnt = amt;
     }
 
@@ -537,15 +537,15 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     @Override
-    public int getTntBankLimit() {
+    public long getTntBankLimit() {
         if (tntBankSize == 0) {
-            return FactionsPlugin.getInstance().getConfig().getInt("ftnt.Bank-Limit");
+            return FactionsPlugin.getInstance().getConfig().getLong("ftnt.Bank-Limit");
         }
         return tntBankSize;
     }
 
     @Override
-    public void setTntBankLimit(int newLimit) {
+    public void setTntBankLimit(long newLimit) {
         tntBankSize = newLimit;
     }
 

@@ -30,6 +30,7 @@ public class FactionData {
         this.factionID = faction.getId();
         this.map = new HashMap<>();
         this.saving = false;
+        this.load();
     }
 
     /**
@@ -42,7 +43,14 @@ public class FactionData {
     }
 
     public void addStoredValue(String key, Object value) {
-        this.map.put(key, value);
+        if (key != null && value != null) {
+            if (!this.map.containsKey(key)) {
+                this.map.put(key, value);
+            }
+        } else {
+            // Handle null key or value, you may choose to log a warning or throw an exception
+            System.out.println("Warning: Attempted to add null key or value.");
+        }
     }
 
     public boolean isSaving() {
@@ -67,7 +75,7 @@ public class FactionData {
 
     public boolean hasValue(String key) {
         boolean value = hasConfigValue(key) || hasStoredValue(key);
-        if(!value) {
+        if (!value) {
             setDefaultPath(key, null);
         }
         return value;
@@ -85,14 +93,17 @@ public class FactionData {
         this.map = map;
     }
 
-    public Object getValue(String key) {
-        return this.map.computeIfAbsent(key, k -> getConfiguration().get(k));
+    public Object getValue(String key, Object defaultValue) {
+        return this.map.computeIfAbsent(key, k -> {
+            Object value = getConfiguration().get(k);
+            return (value != null) ? value : defaultValue;
+        });
     }
 
     public void deleteFactionData(Faction faction) {
         File file = new File(getFactionFilePath());
 
-        if(file.delete()) {
+        if (file.delete()) {
             Logger.print("Deleting faction-data for faction " + faction.getTag(), Logger.PrefixType.DEFAULT);
         } else {
             Logger.print("Failed to delete faction-data for faction " + faction.getTag(), Logger.PrefixType.WARNING);
@@ -100,7 +111,7 @@ public class FactionData {
     }
 
     public void save() {
-        if(this.isSaving()) {
+        if (this.isSaving()) {
             return;
         }
         this.saving = true;
@@ -119,6 +130,15 @@ public class FactionData {
         }
     }
 
+    public void load() {
+        File file = new File(getFactionFilePath());
+        YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+
+        // Load values from the configuration into the map
+        for (String key : configuration.getKeys(false)) {
+            map.put(key, configuration.get(key));
+        }
+    }
 
     public String getFactionID() {
         return factionID;
