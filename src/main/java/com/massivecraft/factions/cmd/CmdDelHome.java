@@ -2,9 +2,11 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.event.FactionDelHomeEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 
 /**
  * Factions - Developed by Driftay.
@@ -34,6 +36,12 @@ public class CmdDelHome extends FCommand {
         if (!context.faction.hasHome()) {
             context.msg(TL.COMMAND_HOME_NOHOME.toString());
             context.msg(FactionsPlugin.getInstance().cmdBase.cmdSethome.getUsageTemplate(context));
+            return;
+        }
+
+        FactionDelHomeEvent delHomeEvent = new FactionDelHomeEvent(context.faction);
+        Bukkit.getPluginManager().callEvent(delHomeEvent);
+        if (delHomeEvent.isCancelled()) {
             return;
         }
 

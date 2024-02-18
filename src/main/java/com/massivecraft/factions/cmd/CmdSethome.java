@@ -1,10 +1,12 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.event.FactionSetHomeEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 
 public class CmdSethome extends FCommand {
 
@@ -33,6 +35,13 @@ public class CmdSethome extends FCommand {
 
             Faction faction = context.argAsFaction(0, context.faction);
             if (faction == null) {
+                return;
+            }
+
+            // trigger the faction set home event (cancellable)
+            FactionSetHomeEvent setHomeEvent = new FactionSetHomeEvent(faction);
+            Bukkit.getPluginManager().callEvent(setHomeEvent);
+            if (setHomeEvent.isCancelled()) {
                 return;
             }
 
