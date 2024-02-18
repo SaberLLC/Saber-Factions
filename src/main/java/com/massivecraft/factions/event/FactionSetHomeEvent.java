@@ -1,6 +1,8 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
@@ -8,21 +10,21 @@ import org.bukkit.event.Event;
 /**
  * Event called when a Faction sets their home.
  */
-public class FactionSetHomeEvent extends FactionEvent implements Cancellable {
+public class FactionSetHomeEvent extends FactionPlayerEvent implements Cancellable {
 
     /**
      * @author NewZ_AZ
      */
-    private final Player sender;
+    private final Location location;
     private boolean cancelled;
 
-    public FactionSetHomeEvent(Player sender, Faction faction) {
-        super(faction);
-        this.sender = sender;
+    public FactionSetHomeEvent(Faction faction, FPlayer fPlayer, Location location) {
+        super(faction, fPlayer);
+        this.location = location;
     }
 
-    public Player getPlayer() {
-        return sender;
+    public Location getLocation() {
+        return location;
     }
 
     @Override

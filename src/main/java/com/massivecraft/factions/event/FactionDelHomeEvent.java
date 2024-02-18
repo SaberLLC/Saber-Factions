@@ -1,5 +1,6 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -7,22 +8,15 @@ import org.bukkit.event.Cancellable;
 /**
  * Event called when a Faction deletes their home.
  */
-public class FactionDelHomeEvent extends FactionEvent implements Cancellable {
+public class FactionDelHomeEvent extends FactionPlayerEvent implements Cancellable {
 
     /**
      * @author NewZ_AZ
      */
-
-    private final Player sender;
     private boolean cancelled;
 
-    public FactionDelHomeEvent(Player sender, Faction faction) {
-        super(faction);
-        this.sender = sender;
-    }
-
-    public Player getPlayer() {
-        return sender;
+    public FactionDelHomeEvent(Faction faction, FPlayer fPlayer) {
+        super(faction, fPlayer);
     }
 
     @Override

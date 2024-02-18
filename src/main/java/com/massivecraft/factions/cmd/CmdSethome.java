@@ -39,7 +39,7 @@ public class CmdSethome extends FCommand {
             }
 
             // trigger the faction set home event (cancellable)
-            FactionSetHomeEvent setHomeEvent = new FactionSetHomeEvent(context.player, faction);
+            FactionSetHomeEvent setHomeEvent = new FactionSetHomeEvent(faction, context.fPlayer, context.player.getLocation());
             Bukkit.getPluginManager().callEvent(setHomeEvent);
             if (setHomeEvent.isCancelled()) {
                 return;
