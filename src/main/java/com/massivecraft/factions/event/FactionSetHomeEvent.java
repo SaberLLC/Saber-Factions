@@ -16,7 +16,7 @@ public class FactionSetHomeEvent extends FactionPlayerEvent implements Cancellab
      * @author NewZ_AZ
      */
     private final Location location;
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     public FactionSetHomeEvent(Faction faction, FPlayer fPlayer, Location location) {
         super(faction, fPlayer);

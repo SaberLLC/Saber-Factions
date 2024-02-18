@@ -13,7 +13,7 @@ public class FactionDelHomeEvent extends FactionPlayerEvent implements Cancellab
     /**
      * @author NewZ_AZ
      */
-    private boolean cancelled;
+    private boolean cancelled = false;
 
     public FactionDelHomeEvent(Faction faction, FPlayer fPlayer) {
         super(faction, fPlayer);
