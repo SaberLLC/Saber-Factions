@@ -40,7 +40,7 @@ public class CmdDelHome extends FCommand {
         }
 
         FactionDelHomeEvent delHomeEvent = new FactionDelHomeEvent(context.faction, context.fPlayer);
-        Bukkit.getPluginManager().callEvent(delHomeEvent);
+        Bukkit.getServer().getPluginManager().callEvent(delHomeEvent);
         if (delHomeEvent.isCancelled()) {
             return;
         }

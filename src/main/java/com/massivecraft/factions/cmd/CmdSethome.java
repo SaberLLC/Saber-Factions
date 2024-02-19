@@ -27,55 +27,53 @@ public class CmdSethome extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
-            if (!Conf.homesEnabled) {
-                context.msg(TL.COMMAND_SETHOME_DISABLED);
+        if (!Conf.homesEnabled) {
+            context.msg(TL.COMMAND_SETHOME_DISABLED);
+            return;
+        }
+
+        Faction faction = context.argAsFaction(0, context.faction);
+        if (faction == null) {
+            return;
+        }
+
+        // trigger the faction set home event (cancellable)
+        FactionSetHomeEvent setHomeEvent = new FactionSetHomeEvent(faction, context.fPlayer, context.player.getLocation());
+        Bukkit.getServer().getPluginManager().callEvent(setHomeEvent);
+        if (setHomeEvent.isCancelled()) {
+            return;
+        }
+
+        // Can the player set the faction home HERE?
+        if (!Permission.BYPASS.has(context.player) &&
+                Conf.homesMustBeInClaimedTerritory &&
+                Board.getInstance().getFactionAt(FLocation.wrap(context.player)) != faction) {
+            context.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
+            return;
+        }
+
+        if (!context.args.isEmpty()) {
+            Faction target = context.argAsFaction(0);
+            if (target == null) return;
+            context.faction = target;
+            if (target.getAccess(context.fPlayer, PermissableAction.SETHOME) != Access.ALLOW) {
+                context.fPlayer.msg(TL.GENERIC_FPERM_NOPERMISSION, "set faction home");
                 return;
             }
+        }
 
-            Faction faction = context.argAsFaction(0, context.faction);
-            if (faction == null) {
-                return;
-            }
+        // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+        if (!context.payForCommand(Conf.econCostSethome, TL.COMMAND_SETHOME_TOSET, TL.COMMAND_SETHOME_FORSET)) {
+            return;
+        }
 
-            // trigger the faction set home event (cancellable)
-            FactionSetHomeEvent setHomeEvent = new FactionSetHomeEvent(faction, context.fPlayer, context.player.getLocation());
-            Bukkit.getPluginManager().callEvent(setHomeEvent);
-            if (setHomeEvent.isCancelled()) {
-                return;
-            }
+        faction.setHome(context.player.getLocation());
 
-            // Can the player set the faction home HERE?
-            if (!Permission.BYPASS.has(context.player) &&
-                    Conf.homesMustBeInClaimedTerritory &&
-                    Board.getInstance().getFactionAt(FLocation.wrap(context.player)) != faction) {
-                context.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
-                return;
-            }
-
-            if (!context.args.isEmpty()) {
-                Faction target = context.argAsFaction(0);
-                if (target == null) return;
-                context.faction = target;
-                if (target.getAccess(context.fPlayer, PermissableAction.SETHOME) != Access.ALLOW) {
-                    context.fPlayer.msg(TL.GENERIC_FPERM_NOPERMISSION, "set faction home");
-                    return;
-                }
-            }
-
-            // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-            if (!context.payForCommand(Conf.econCostSethome, TL.COMMAND_SETHOME_TOSET, TL.COMMAND_SETHOME_FORSET)) {
-                return;
-            }
-
-            faction.setHome(context.player.getLocation());
-
-            faction.msg(TL.COMMAND_SETHOME_SET, context.fPlayer.describeTo(context.faction, true));
-            faction.sendMessage(FactionsPlugin.getInstance().cmdBase.cmdHome.getUsageTemplate(context));
-            if (faction != context.faction) {
-                context.msg(TL.COMMAND_SETHOME_SETOTHER, faction.getTag(context.fPlayer));
-            }
-        });
+        faction.msg(TL.COMMAND_SETHOME_SET, context.fPlayer.describeTo(context.faction, true));
+        faction.sendMessage(FactionsPlugin.getInstance().cmdBase.cmdHome.getUsageTemplate(context));
+        if (faction != context.faction) {
+            context.msg(TL.COMMAND_SETHOME_SETOTHER, faction.getTag(context.fPlayer));
+        }
     }
 
     @Override
