@@ -451,6 +451,7 @@ public enum TL {
     COMMAND_DISBAND_CONFIRM("&c&l[!]&7 Your Faction has&c {tnt} &7tnt left in the bank, it will be &clost&7 if the faction is &cdisbanded&7. Type&c /f disband &7again within &c10&7 seconds to&c disband&7."),
     COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
 
+    COMMAND_FLY_NEED_UPGRADE("&c&l[!]&7 You need to upgrade your faction to use this feature."),
     COMMAND_FLY_DISABLED("&c&l[!]&7 Sorry, Faction flight is &cdisabled &7on this server."),
     COMMAND_FLY_DESCRIPTION("Enter or leave Faction flight mode"),
     COMMAND_FLY_CHANGE("&c&l[!]&7 Faction flight has been &c%1$s&7."),

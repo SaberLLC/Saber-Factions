@@ -14,6 +14,7 @@ fupgrades:
     - "Fall-Damage"
     - "SpawnerChunks"
     - "EXP"
+    - "Fly"
     - "Power"
     - "Redstone"
     - "Spawners"
@@ -198,6 +199,21 @@ fupgrades:
           - ''
           - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         Slot: 23
+    Fly: #When your faction has this upgrade members don't need permission factions.fly to fly in their claims
+      Max-Level: 1
+      Cost:
+        level-1: 1000000
+      DisplayItem:
+        Name: '&c&lF Fly'
+        Type: FEATHER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
+        Texture: '' #Hash of skull here from minecraft-heads.com
+        Lore:
+          - '&7&oAllows &e&ofly&7&o in &c&oclaims&7&o.'
+          - ''
+          - '&4&l* &cCost: &f$1,000,000'
+          - ''
+          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
+        Slot: 25
     Spawners:
       Max-Level: 3
       Spawner-Boost:
