@@ -1009,9 +1009,10 @@ public abstract class MemoryFPlayer implements FPlayer {
                     msg(TL.SPAWNER_CHUNK_UNCLAIMED);
                 } else if (ChunkReference.getSpawnerCount(flocation.getChunk()) > 0) {
                     msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(flocation.getChunk()));
+                    return false;
                 }
                 getFaction().setSpawnerChunks(spawnerChunks);
-                return false;
+                return true;
             }
         }
 
