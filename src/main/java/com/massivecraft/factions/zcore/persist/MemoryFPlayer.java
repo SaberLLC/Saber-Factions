@@ -820,6 +820,14 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         // Am I the last one in the faction?
         if (myFaction.getFPlayers().size() == 1) {
+            if(Conf.userSpawnerChunkSystem && !Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
+                for(FastChunk fastChunk : myFaction.getSpawnerChunks()) {
+                    if(ChunkReference.getSpawnerCount(fastChunk.getChunk()) > 0) {
+                        this.msg(TL.COMMAND_DISBAND_SPAWNERS_SPAWNER_CHUNKS_FOUND.toString().replace("{faction}", myFaction.getTag()));
+                        return;
+                    }
+                }
+            }
             // Transfer all money
             if (Econ.shouldBeUsed())
                 Econ.transferMoney(this, myFaction, this, myFaction.getFactionBalance());

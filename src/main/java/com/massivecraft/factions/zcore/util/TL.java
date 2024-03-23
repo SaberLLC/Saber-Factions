@@ -441,6 +441,7 @@ public enum TL {
     COMMAND_DESCRIPTION_DESCRIPTION("Change the faction description"),
 
     COMMAND_DISBAND_IMMUTABLE("&c&l[!]&7 &7You &ccannot&7 disband &2Wilderness&7,&e SafeZone&7, or &4WarZone."),
+    COMMAND_DISBAND_SPAWNERS_SPAWNER_CHUNKS_FOUND("&cYou may not disband a faction while there are spawners in your spawnerchunks."),
     COMMAND_DISBAND_TOO_YOUNG("&c&l[!] &7Your Faction is too young to withdraw money like this!"),
     COMMAND_DISBAND_MARKEDPERMANENT("&c&l[!]&7 This faction is designated as&c permanent&7, so you cannot disband it."),
     COMMAND_DISBAND_BROADCAST_YOURS("&c&l[!]&7 &c%1$s&7 disbanded your &cfaction."),
@@ -542,6 +543,7 @@ public enum TL {
     COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
     COMMAND_INVITE_BANNED("&c&l[!]&7 &7%1$s &cis banned &7from your Faction. &cNot &7sending an invite."),
     COMMAND_INVITE_NOT_IN_ROSTER("&c&l[!] &b%s &7is not in your factions roster!"),
+
 
     COMMAND_JOIN_CANNOTFORCE("&c&l[!]&7 You&c do not&7 have permission to &cmove other players&7 into a faction."),
     COMMAND_JOIN_SYSTEMFACTION("&c&l[!]&7 Players may only join &cnormal factions&7. This is a &c&lsystem faction&7."),

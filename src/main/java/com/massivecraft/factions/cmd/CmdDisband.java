@@ -4,7 +4,9 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.util.ChunkReference;
 import com.massivecraft.factions.util.Cooldown;
+import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fdisband.FDisbandFrame;
@@ -54,6 +56,15 @@ public class CmdDisband extends FCommand {
         if (faction.isPermanent()) {
             context.msg(TL.COMMAND_DISBAND_MARKEDPERMANENT.toString());
             return;
+        }
+
+        if(Conf.userSpawnerChunkSystem && !Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
+            for(FastChunk fastChunk : faction.getSpawnerChunks()) {
+                if(ChunkReference.getSpawnerCount(fastChunk.getChunk()) > 0) {
+                    context.msg(TL.COMMAND_DISBAND_SPAWNERS_SPAWNER_CHUNKS_FOUND.toString().replace("{faction}", faction.getTag()));
+                    return;
+                }
+            }
         }
 
         if (context.player == null) {
