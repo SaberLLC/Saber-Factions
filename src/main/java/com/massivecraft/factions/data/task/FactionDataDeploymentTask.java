@@ -4,7 +4,6 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.data.FactionData;
 import com.massivecraft.factions.data.helpers.FactionDataHelper;
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;

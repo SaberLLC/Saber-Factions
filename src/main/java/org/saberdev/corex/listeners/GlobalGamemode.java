@@ -9,11 +9,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import java.util.Objects;
+
 public class GlobalGamemode implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent e) {
-        if (!e.getFrom().getWorld().equals(e.getTo().getWorld())) {
+        if (!Objects.equals(e.getFrom().getWorld(), Objects.requireNonNull(e.getTo()).getWorld())) {
             final GameMode gm = e.getPlayer().getGameMode();
             final Player p = e.getPlayer();
             if (gm == GameMode.CREATIVE) {

@@ -14,13 +14,13 @@ import java.util.*;
 public class Conf {
 
     // Region Style
-    public static final transient String DYNMAP_STYLE_LINE_COLOR = "#00FF00";
-    public static final transient double DYNMAP_STYLE_LINE_OPACITY = 0.8D;
-    public static final transient int DYNMAP_STYLE_LINE_WEIGHT = 3;
-    public static final transient String DYNMAP_STYLE_FILL_COLOR = "#00FF00";
-    public static final transient double DYNMAP_STYLE_FILL_OPACITY = 0.35D;
-    public static final transient String DYNMAP_STYLE_HOME_MARKER = "greenflag";
-    public static final transient boolean DYNMAP_STYLE_BOOST = false;
+    public static final String DYNMAP_STYLE_LINE_COLOR = "#00FF00";
+    public static final double DYNMAP_STYLE_LINE_OPACITY = 0.8D;
+    public static final int DYNMAP_STYLE_LINE_WEIGHT = 3;
+    public static final String DYNMAP_STYLE_FILL_COLOR = "#00FF00";
+    public static final double DYNMAP_STYLE_FILL_OPACITY = 0.35D;
+    public static final String DYNMAP_STYLE_HOME_MARKER = "greenflag";
+    public static final boolean DYNMAP_STYLE_BOOST = false;
     public static List<String> baseCommandAliases = new ArrayList<>();
     public static String serverTimeZone = "EST";
     public static boolean allowNoSlashCommand = true;
@@ -272,7 +272,7 @@ public class Conf {
     public static Set<Material> territoryDenyUsageMaterials = EnumSet.noneOf(Material.class);
     //public static Set<Material> territoryProtectedMaterialsWhenOffline = EnumSet.noneOf(Material.class);
     //public static Set<Material> territoryDenyUsageMaterialsWhenOffline = EnumSet.noneOf(Material.class);
-    public static transient Set<EntityType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(EntityType.class);
+    public static Set<EntityType> safeZoneNerfedCreatureTypes = EnumSet.noneOf(EntityType.class);
     /// <summary>
     /// This defines a set of materials which should always be allowed to use, regardless of factions permissions.
     /// Useful for HCF features.
@@ -281,7 +281,7 @@ public class Conf {
 
     public static boolean enableClickToClaim = true;
 
-   // public static Set<Material> territoryCancelAndAllowItemUseMaterial = new HashSet<>();
+    public static Set<Material> territoryCancelAndAllowItemUseMaterial = new HashSet<>();
     public static Set<Material> territoryDenySwitchMaterials = new HashSet<>();
     public static boolean allowCreeperEggingChests = true;
 
@@ -407,7 +407,7 @@ public class Conf {
     // Taller and wider for "bigger f map"
     public static int mapHeight = 17;
     public static int mapWidth = 49;
-    public static transient char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
+    public static char[] mapKeyChrs = "\\/#$%=&^ABCDEFGHJKLMNOPQRSTUVWXYZ1234567890abcdeghjmnopqrsuvwxyz?".toCharArray();
 
 
     //Cooldown for /f logout in seconds
@@ -425,7 +425,7 @@ public class Conf {
     public static HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
     public static HashSet<PermissableAction> lockedPermissions = new HashSet<>();
 
-    private static transient Conf i = new Conf();
+    private static final Conf i = new Conf();
 
     static {
         lockedPermissions.add(PermissableAction.CHEST);
@@ -573,37 +573,37 @@ public class Conf {
         territoryDenySwitchMaterials.add(XMaterial.SHULKER_BOX.parseMaterial());
         territoryDenySwitchMaterials.add(XMaterial.BARREL.parseMaterial());
 
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.GOLDEN_APPLE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.APPLE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.ENCHANTED_GOLDEN_APPLE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_BEEF.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_MUTTON.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_CHICKEN.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_COD.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_PORKCHOP.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_RABBIT.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_SALMON.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.ENDER_PEARL.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.POTION.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.SPLASH_POTION.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CREEPER_SPAWN_EGG.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.BOW.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_HELMET.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_CHESTPLATE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_LEGGINGS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_BOOTS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_HELMET.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_CHESTPLATE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_LEGGINGS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_BOOTS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_HELMET.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_CHESTPLATE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_LEGGINGS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_BOOTS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_HELMET.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_CHESTPLATE.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_LEGGINGS.parseMaterial());
-        //territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_BOOTS.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.GOLDEN_APPLE.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.APPLE.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.ENCHANTED_GOLDEN_APPLE.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_BEEF.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_MUTTON.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_CHICKEN.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_COD.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_PORKCHOP.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_RABBIT.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.COOKED_SALMON.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.ENDER_PEARL.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.POTION.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.SPLASH_POTION.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.CREEPER_SPAWN_EGG.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.BOW.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_HELMET.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_CHESTPLATE.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_LEGGINGS.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.DIAMOND_BOOTS.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_HELMET.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_CHESTPLATE.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_LEGGINGS.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.IRON_BOOTS.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_HELMET.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_CHESTPLATE.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_LEGGINGS.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.LEATHER_BOOTS.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_HELMET.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_CHESTPLATE.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_LEGGINGS.parseMaterial());
+        territoryCancelAndAllowItemUseMaterial.add(XMaterial.CHAINMAIL_BOOTS.parseMaterial());
 
         /// TODO: Consider removing this in a future release, as permissions works just fine now
         territoryProtectedMaterials.add(Material.BEACON);
@@ -656,7 +656,6 @@ public class Conf {
     public enum Backend {
         JSON,
         //MYSQL,  TODO add MySQL storage
-        ;
     }
 }
 

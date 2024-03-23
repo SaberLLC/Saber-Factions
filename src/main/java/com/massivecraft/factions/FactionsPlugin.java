@@ -13,7 +13,6 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.audit.FChestListener;
 import com.massivecraft.factions.cmd.audit.FLogManager;
 import com.massivecraft.factions.cmd.audit.FLogType;
-import com.massivecraft.factions.cmd.banner.listener.BannerListener;
 import com.massivecraft.factions.cmd.banner.struct.BannerManager;
 import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
@@ -81,7 +80,7 @@ public class FactionsPlugin extends MPlugin {
     public static boolean cachedRadiusClaim;
     public static Permission perms = null;
     private Map<String, FactionsAddon> factionsAddonHashMap;
-    private HashMap<Faction, String> shieldStatMap = new HashMap<>();
+    private final HashMap<Faction, String> shieldStatMap = new HashMap<>();
 
     // This plugin sets the boolean true when fully enabled.
     // Plugins can check this boolean while hooking in have

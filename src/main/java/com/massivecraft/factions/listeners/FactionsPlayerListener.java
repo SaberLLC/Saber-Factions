@@ -104,8 +104,6 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-
-
         FLocation loc = FLocation.wrap(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
         Faction myFaction = me.getFaction();
@@ -349,6 +347,10 @@ public class FactionsPlayerListener implements Listener {
                 || material.name().startsWith("FENCE_GATE")) return PermissableAction.DOOR;
         if (material.name().contains("SHULKER_BOX")
                 || material.name().equals("SMOKER")
+                || material.name().equals("COMPOSTER")
+                || material.name().equals("LOOM")
+                || material.name().equals("CARTOGRAPHY_TABLE")
+                || material.name().equals("GRINDSTONE")
                 || material.name().equals("FLOWER_POT")
                 || material.name().startsWith("POTTED_")
                 || material.name().endsWith("ANVIL")
@@ -612,29 +614,19 @@ public class FactionsPlayerListener implements Listener {
         } else {
             type = null;
         }
-        if (Conf.allowCreeperEggingChests && block.getType() == Material.CHEST && type == XMaterial.CREEPER_SPAWN_EGG.parseMaterial() && event.getPlayer().isSneaking()) {
+        if (Conf.allowCreeperEggingChests && (block.getType() == XMaterial.CHEST.parseMaterial() || block.getType() == XMaterial.TRAPPED_CHEST.parseMaterial()) && type == XMaterial.CREEPER_SPAWN_EGG.parseMaterial() && event.getPlayer().isSneaking())
+            return;
+        if (Conf.territoryBypassProtectedMaterials.contains(block.getType()))
+            return;
+        if (type != null && !Conf.territoryDenySwitchMaterials.contains(block.getType()) &&
+                Conf.territoryCancelAndAllowItemUseMaterial.contains(type))
+            return;
+        if (GetPermissionFromUsableBlock(block.getType()) != null &&
+                !canPlayerUseBlock(player, block, false)) {
+            event.setCancelled(true);
+            event.setUseInteractedBlock(Event.Result.DENY);
             return;
         }
-
-        // territoryBypasssProtectedMaterials totally bypass the protection system
-        if (Conf.territoryBypassProtectedMaterials.contains(block.getType())) return;
-        // Do type null checks so if XMaterial has a parsing issue and fills null as a value it will not bypass.
-        // territoryCancelAndAllowItemUseMaterial bypass the protection system but only if they're not clicking on territoryDenySwitchMaterials
-        // if they're clicking on territoryDenySwitchMaterials, let the protection system handle the permissions
-        //if (type != null && !Conf.territoryDenySwitchMaterials.contains(block.getType())) {
-        //    if (Conf.territoryCancelAndAllowItemUseMaterial.contains(event.getPlayer().getItemInHand().getType()) && !Conf.territoryDenySwitchMaterials.contains(block.getType())) {
-        //        return;
-        //    }
-        //}
-
-        if (GetPermissionFromUsableBlock(block.getType()) != null) {
-            if (!canPlayerUseBlock(player, block, false)) {
-                event.setCancelled(true);
-                event.setUseInteractedBlock(Event.Result.DENY);
-                return;
-            }
-        }
-
         if (type != null && !playerCanUseItemHere(player, block.getLocation(), event.getItem().getType(), false, PermissableAction.ITEM)) {
             event.setCancelled(true);
             event.setUseInteractedBlock(Event.Result.DENY);

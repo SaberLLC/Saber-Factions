@@ -37,8 +37,10 @@ public class AsyncPlayerMap implements Runnable, Listener {
     @Override
     public void run() {
         for (Player pl : server.getOnlinePlayers()) {
-            processPlayer(pl);
-            updateLocation(pl);
+            if(pl.isOnline()) {
+                processPlayer(pl);
+                updateLocation(pl);
+            }
         }
     }
 

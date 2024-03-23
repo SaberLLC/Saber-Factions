@@ -18,7 +18,6 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
-import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeManager;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;

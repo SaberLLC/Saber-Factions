@@ -189,7 +189,7 @@ public enum TL {
     COMMAND_ALTKICK_NOTMEMBER("&c&l[!] &7This player is not a member of your faction."),
 
     COMMAND_ALTS_LIST_NOALTS("&c&l[!] &7%s does not have any alts in their faction!"),
-    COMMAND_AUTOHELP_HELPFOR("Help for command \""),
+    COMMAND_AUTOHELP_HELPFOR("Help for command"),
     COMMAND_HOME_OTHER_NOTSET("&c&l[!] &7%s does not have their faction home set!"),
     COMMAND_HOME_TELEPORT_OTHER("&c&l[!] &7You have teleported to %s's faction home!"),
     COMMAND_SHOP_DESCRIPTION("opens shop gui"),
@@ -1349,6 +1349,15 @@ public enum TL {
     ROLE_MODERATOR("moderator"),
     ROLE_NORMAL("normal member"),
     ROLE_RECRUIT("recruit"),
+
+    /**
+     * Factions Top.
+     */
+
+    FACTIONS_TOP_POSITION_FORMAT("#{position}"),
+    FACTIONS_TOP_POSITION_INVALID("N/A"),
+    FACTIONS_TOP_WORTH_INVALID("$0.00"),
+
 
     /**
      * Region types.

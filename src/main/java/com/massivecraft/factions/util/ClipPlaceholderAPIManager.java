@@ -227,7 +227,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 Faction factionAtLocation = Board.getInstance().getFactionAt(FLocation.wrap(player.getLocation()));
                 return factionAtLocation != null ? factionAtLocation.getTag() : Factions.getInstance().getWilderness().getTag();
         }
-        //If its not hardcoded lets try to grab it anyways
+        //If it's not hardcoded lets try to grab it anyway
         boolean targetFaction = false;
         Object target = fPlayer;
         String stripped = "";

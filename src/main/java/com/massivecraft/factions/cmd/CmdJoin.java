@@ -4,7 +4,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Logger;
-import com.massivecraft.factions.zcore.frame.fupgrades.UpgradeManager;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 
