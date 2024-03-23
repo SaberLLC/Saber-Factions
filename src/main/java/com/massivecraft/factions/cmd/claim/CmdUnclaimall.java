@@ -10,6 +10,8 @@ import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.ChunkReference;
+import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -37,6 +39,7 @@ public class CmdUnclaimall extends FCommand {
     @Override
     public void perform(CommandContext context) {
         Faction target = context.faction;
+
         if (context.args.size() == 1) {
             target = context.argAsFaction(0);
             if (target == null) {
@@ -54,12 +57,21 @@ public class CmdUnclaimall extends FCommand {
             if (Conf.logLandUnclaims)
                 Logger.print(TL.COMMAND_UNCLAIMALL_LOG.format(context.fPlayer.getName(), context.faction.getTag()), Logger.PrefixType.DEFAULT);
             return;
-
         }
+
         if (Econ.shouldBeUsed()) {
             double refund = Econ.calculateTotalLandRefund(target.getLandRounded());
             if (!Econ.modifyMoney(target, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
                 return;
+            }
+        }
+
+        if(Conf.userSpawnerChunkSystem && !Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
+            for(FastChunk fastChunk : target.getSpawnerChunks()) {
+                if(ChunkReference.getSpawnerCount(fastChunk.getChunk()) > 0) {
+                    context.msg(TL.COMMAND_UNCLAIMALL_SPAWNERS_IN_CHUNK.toString().replace("{faction}", target.getTag()));
+                    return;
+                }
             }
         }
 

@@ -893,6 +893,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         int factionBuffer = plugin.getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = plugin.getConfig().getInt("world-border.buffer", 0);
 
+
         if (Conf.worldGuardChecking && hasRegionsInChunk(flocation.getChunk())) {
             error = TextUtil.parse(TL.CLAIM_PROTECTED.toString());
         } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
@@ -1413,7 +1414,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return false;
         }
 
-        // if economy is enabled and they're not on the bypass list, make sure they can pay
+        // if economy is enabled, and they're not on the bypass list, make sure they can pay
         boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone() && (Conf.econCostClaimWilderness != 0.0);
         double cost = 0.0;
         EconomyParticipator payee = null;

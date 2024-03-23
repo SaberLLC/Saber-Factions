@@ -1073,6 +1073,7 @@ public enum TL {
     COMMAND_UNCLAIM_DESCRIPTION("Unclaim the land where you are standing"),
     COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS("&c&l[!] &7You may not unclaim a spawnerchunk whilst there are still spawners in it! &eSpawner Count: %1$s"),
 
+    COMMAND_UNCLAIMALL_SPAWNERS_IN_CHUNK("&cYou may not unclaim a spawnerchunk whilst there are still spawners in it!"),
     COMMAND_UNCLAIMALL_TOUNCLAIM("to unclaim all faction land"),
     COMMAND_UNCLAIMALL_FORUNCLAIM("for unclaiming all faction land"),
     COMMAND_UNCLAIMALL_UNCLAIMED("%1$s unclaimed ALL of your faction's land."),
