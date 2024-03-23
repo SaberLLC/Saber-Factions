@@ -14,13 +14,13 @@ import java.util.*;
 public class Conf {
 
     // Region Style
-    public static final String DYNMAP_STYLE_LINE_COLOR = "#00FF00";
-    public static final double DYNMAP_STYLE_LINE_OPACITY = 0.8D;
-    public static final int DYNMAP_STYLE_LINE_WEIGHT = 3;
-    public static final String DYNMAP_STYLE_FILL_COLOR = "#00FF00";
-    public static final double DYNMAP_STYLE_FILL_OPACITY = 0.35D;
-    public static final String DYNMAP_STYLE_HOME_MARKER = "greenflag";
-    public static final boolean DYNMAP_STYLE_BOOST = false;
+    public static transient String DYNMAP_STYLE_LINE_COLOR = "#00FF00";
+    public static transient double DYNMAP_STYLE_LINE_OPACITY = 0.8D;
+    public static transient int DYNMAP_STYLE_LINE_WEIGHT = 3;
+    public static transient String DYNMAP_STYLE_FILL_COLOR = "#00FF00";
+    public static transient double DYNMAP_STYLE_FILL_OPACITY = 0.35D;
+    public static transient String DYNMAP_STYLE_HOME_MARKER = "greenflag";
+    public static transient boolean DYNMAP_STYLE_BOOST = false;
     public static List<String> baseCommandAliases = new ArrayList<>();
     public static String serverTimeZone = "EST";
     public static boolean allowNoSlashCommand = true;
