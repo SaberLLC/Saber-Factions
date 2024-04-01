@@ -467,17 +467,18 @@ public class FactionsPlayerListener implements Listener {
         Player player = event.getPlayer();
         FPlayer me = FPlayers.getInstance().getByPlayer(player);
 
-        if (!ChunkReference.isSameBlock(event)) {
-            VisualizeUtil.clear(event.getPlayer());
-            if (me.isWarmingUp()) {
-                me.clearWarmup();
-                me.msg(TL.WARMUPS_CANCELLED);
-            }
+        if (ChunkReference.isSameBlock(event))
+            return;
+
+        if (me.isWarmingUp()) {
+            me.clearWarmup();
+            me.msg(TL.WARMUPS_CANCELLED);
         }
 
-        if (ChunkReference.isSameChunk(event)) {
+        if (ChunkReference.isSameChunk(event))
             return;
-        }
+
+        VisualizeUtil.clear(event.getPlayer());
 
         // Did we change coord?
         FLocation from = me.getLastStoodAt();
