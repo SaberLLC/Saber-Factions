@@ -36,12 +36,6 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
         return "drtshock";
     }
 
-    // Since we are registering this expansion from the dependency, this can be null
-    @Override
-    public String getPlugin() {
-        return null;
-    }
-
     // Return the plugin version since this expansion is bundled with the dependency
     @Override
     public String getVersion() {
@@ -144,7 +138,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return fPlayer.hasFaction() ? String.valueOf(faction.getStrikes()) : "0";
             case "faction_peaceful":
                 return faction.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
-            case "faction_tntbank_balance":
+            case "faction_tntbank_balance": case "faction_tnt_balance":
                 return String.valueOf(faction.getTnt());
             case "faction_tnt_max_balance":
                 return FactionTag.TNT_MAX.replace(FactionTag.TNT_MAX.getTag(), faction);
