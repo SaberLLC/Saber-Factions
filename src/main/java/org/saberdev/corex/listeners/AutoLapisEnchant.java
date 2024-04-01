@@ -1,9 +1,6 @@
 package org.saberdev.corex.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.ItemBuilder;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;

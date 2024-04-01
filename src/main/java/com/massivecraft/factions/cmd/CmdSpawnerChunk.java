@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
@@ -29,16 +30,24 @@ public class CmdSpawnerChunk extends FCommand {
         Location location = context.player.getLocation();
         FLocation fLocation = FLocation.wrap(location);
         FastChunk fastChunk = new FastChunk(fLocation);
-        if (fac.getSpawnerChunkCount() < fac.getAllowedSpawnerChunks()) {
-            if (context.fPlayer.attemptClaim(fac, FLocation.wrap(context.player.getLocation()), true)) {
-                if (fac.getSpawnerChunks().add(fastChunk)) {
-                    context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_CLAIM_SUCCESSFUL);
-                } else {
-                    context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_ALREADY_CHUNK);
-                }
-            }
-        } else {
+
+        if (fac.getSpawnerChunkCount() >= fac.getAllowedSpawnerChunks()) {
             context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_PAST_LIMIT, fac.getAllowedSpawnerChunks());
+            return;
+        }
+
+        boolean success = false;
+        if (Board.getInstance().getFactionAt(fLocation) == fac ||
+                context.fPlayer.attemptClaim(fac, FLocation.wrap(context.player.getLocation()), true)) {
+            if (fac.getSpawnerChunks().add(fastChunk)) {
+                success = true;
+            }
+        }
+
+        if (success) {
+            context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_CLAIM_SUCCESSFUL);
+        } else {
+            context.fPlayer.msg(TL.COMMAND_SPAWNERCHUNK_ALREADY_CHUNK);
         }
     }
 

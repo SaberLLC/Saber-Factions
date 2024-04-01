@@ -20,7 +20,6 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.hanging.HangingBreakEvent.RemoveCause;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -117,10 +116,6 @@ public class FactionsEntityListener implements Listener {
                 Entity damageee = sub.getEntity();
                 Entity damager = sub.getDamager();
 
-                if (damageee == null || damager == null) {
-                    return;
-                }
-
                 if (damageee instanceof Player) {
                     if (damager instanceof Player) {
                         FPlayer fdamager = FPlayers.getInstance().getByPlayer((Player) damager);
@@ -131,7 +126,6 @@ public class FactionsEntityListener implements Listener {
                             return;
                         }
                     } else {
-
                         // this triggers if damageee is a player and damager is  mob ( so like if a skeleton hits u )
                         if (damager instanceof Projectile) {
                             // this will trigger if the damager is a projectile

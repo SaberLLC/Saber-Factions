@@ -7,7 +7,6 @@ import com.massivecraft.factions.cmd.audit.CmdAudit;
 import com.massivecraft.factions.cmd.banner.CmdBanner;
 import com.massivecraft.factions.cmd.banner.CmdTpBanner;
 import com.massivecraft.factions.cmd.check.CmdCheck;
-import com.massivecraft.factions.cmd.check.CmdWeeWoo;
 import com.massivecraft.factions.cmd.chest.CmdChest;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.drain.CmdDrain;

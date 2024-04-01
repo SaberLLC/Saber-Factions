@@ -2,7 +2,6 @@ package org.saberdev.corex.listeners;
 
 import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -13,7 +12,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.saberdev.corex.CoreX;
 
 public class ArmorSwap implements Listener {
     public boolean isArmor(Material m) {

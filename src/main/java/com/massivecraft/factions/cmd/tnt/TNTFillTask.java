@@ -9,7 +9,6 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;

@@ -2,7 +2,6 @@ package com.massivecraft.factions.zcore.file.impl;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.file.CustomFile;
-import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.util.HashMap;

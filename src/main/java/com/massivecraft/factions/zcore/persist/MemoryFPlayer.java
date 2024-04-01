@@ -820,6 +820,14 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         // Am I the last one in the faction?
         if (myFaction.getFPlayers().size() == 1) {
+            if(Conf.userSpawnerChunkSystem && !Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
+                for(FastChunk fastChunk : myFaction.getSpawnerChunks()) {
+                    if(ChunkReference.getSpawnerCount(fastChunk.getChunk()) > 0) {
+                        this.msg(TL.COMMAND_DISBAND_SPAWNERS_SPAWNER_CHUNKS_FOUND.toString().replace("{faction}", myFaction.getTag()));
+                        return;
+                    }
+                }
+            }
             // Transfer all money
             if (Econ.shouldBeUsed())
                 Econ.transferMoney(this, myFaction, this, myFaction.getFactionBalance());
@@ -892,6 +900,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         int ownedLand = forFaction.getLandRounded();
         int factionBuffer = plugin.getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = plugin.getConfig().getInt("world-border.buffer", 0);
+
 
         if (Conf.worldGuardChecking && hasRegionsInChunk(flocation.getChunk())) {
             error = TextUtil.parse(TL.CLAIM_PROTECTED.toString());
@@ -1009,9 +1018,10 @@ public abstract class MemoryFPlayer implements FPlayer {
                     msg(TL.SPAWNER_CHUNK_UNCLAIMED);
                 } else if (ChunkReference.getSpawnerCount(flocation.getChunk()) > 0) {
                     msg(TL.COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS, ChunkReference.getSpawnerCount(flocation.getChunk()));
+                    return false;
                 }
                 getFaction().setSpawnerChunks(spawnerChunks);
-                return false;
+                return true;
             }
         }
 
@@ -1412,7 +1422,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             return false;
         }
 
-        // if economy is enabled and they're not on the bypass list, make sure they can pay
+        // if economy is enabled, and they're not on the bypass list, make sure they can pay
         boolean mustPay = Econ.shouldBeUsed() && !this.isAdminBypassing() && !forFaction.isSafeZone() && !forFaction.isWarZone() && (Conf.econCostClaimWilderness != 0.0);
         double cost = 0.0;
         EconomyParticipator payee = null;

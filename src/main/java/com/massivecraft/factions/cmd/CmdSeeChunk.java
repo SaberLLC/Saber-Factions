@@ -13,7 +13,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;

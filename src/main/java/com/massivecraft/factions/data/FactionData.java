@@ -2,7 +2,6 @@ package com.massivecraft.factions.data;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.data.helpers.FactionDataHelper;
 import com.massivecraft.factions.util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;

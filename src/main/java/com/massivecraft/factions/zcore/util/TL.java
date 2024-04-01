@@ -189,7 +189,7 @@ public enum TL {
     COMMAND_ALTKICK_NOTMEMBER("&c&l[!] &7This player is not a member of your faction."),
 
     COMMAND_ALTS_LIST_NOALTS("&c&l[!] &7%s does not have any alts in their faction!"),
-    COMMAND_AUTOHELP_HELPFOR("Help for command \""),
+    COMMAND_AUTOHELP_HELPFOR("Help for command"),
     COMMAND_HOME_OTHER_NOTSET("&c&l[!] &7%s does not have their faction home set!"),
     COMMAND_HOME_TELEPORT_OTHER("&c&l[!] &7You have teleported to %s's faction home!"),
     COMMAND_SHOP_DESCRIPTION("opens shop gui"),
@@ -441,6 +441,7 @@ public enum TL {
     COMMAND_DESCRIPTION_DESCRIPTION("Change the faction description"),
 
     COMMAND_DISBAND_IMMUTABLE("&c&l[!]&7 &7You &ccannot&7 disband &2Wilderness&7,&e SafeZone&7, or &4WarZone."),
+    COMMAND_DISBAND_SPAWNERS_SPAWNER_CHUNKS_FOUND("&cYou may not disband a faction while there are spawners in your spawnerchunks."),
     COMMAND_DISBAND_TOO_YOUNG("&c&l[!] &7Your Faction is too young to withdraw money like this!"),
     COMMAND_DISBAND_MARKEDPERMANENT("&c&l[!]&7 This faction is designated as&c permanent&7, so you cannot disband it."),
     COMMAND_DISBAND_BROADCAST_YOURS("&c&l[!]&7 &c%1$s&7 disbanded your &cfaction."),
@@ -543,6 +544,7 @@ public enum TL {
     COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
     COMMAND_INVITE_BANNED("&c&l[!]&7 &7%1$s &cis banned &7from your Faction. &cNot &7sending an invite."),
     COMMAND_INVITE_NOT_IN_ROSTER("&c&l[!] &b%s &7is not in your factions roster!"),
+
 
     COMMAND_JOIN_CANNOTFORCE("&c&l[!]&7 You&c do not&7 have permission to &cmove other players&7 into a faction."),
     COMMAND_JOIN_SYSTEMFACTION("&c&l[!]&7 Players may only join &cnormal factions&7. This is a &c&lsystem faction&7."),
@@ -1074,6 +1076,7 @@ public enum TL {
     COMMAND_UNCLAIM_DESCRIPTION("Unclaim the land where you are standing"),
     COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS("&c&l[!] &7You may not unclaim a spawnerchunk whilst there are still spawners in it! &eSpawner Count: %1$s"),
 
+    COMMAND_UNCLAIMALL_SPAWNERS_IN_CHUNK("&cYou may not unclaim a spawnerchunk whilst there are still spawners in it!"),
     COMMAND_UNCLAIMALL_TOUNCLAIM("to unclaim all faction land"),
     COMMAND_UNCLAIMALL_FORUNCLAIM("for unclaiming all faction land"),
     COMMAND_UNCLAIMALL_UNCLAIMED("%1$s unclaimed ALL of your faction's land."),
@@ -1350,6 +1353,15 @@ public enum TL {
     ROLE_MODERATOR("moderator"),
     ROLE_NORMAL("normal member"),
     ROLE_RECRUIT("recruit"),
+
+    /**
+     * Factions Top.
+     */
+
+    FACTIONS_TOP_POSITION_FORMAT("#{position}"),
+    FACTIONS_TOP_POSITION_INVALID("N/A"),
+    FACTIONS_TOP_WORTH_INVALID("$0.00"),
+
 
     /**
      * Region types.

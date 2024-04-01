@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 public class FactionsBlockListener implements Listener {
 
-    private long placeTimer = TimeUnit.SECONDS.toMillis(15L);
+    private final long placeTimer = TimeUnit.SECONDS.toMillis(15L);
 
     public static boolean canBuildWG(Location location) {
         WorldGuardBridge worldGuardBridge = WorldGuardBridge.getInstance();
