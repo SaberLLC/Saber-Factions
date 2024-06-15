@@ -6,7 +6,7 @@ import com.massivecraft.factions.cmd.banner.struct.FactionBanner;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBT;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -24,6 +24,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Map;
 
 public class BannerListener implements Listener {
     private List<String> bannerAllowedWorlds = FactionsPlugin.getInstance().getFileManager().getBanners().fetchStringList("Banners.allowedWorldNames");
@@ -31,7 +32,6 @@ public class BannerListener implements Listener {
     public List<String> getBannerAllowedWorlds() {
         return this.bannerAllowedWorlds;
     }
-
 
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
@@ -60,25 +60,25 @@ public class BannerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent e) {
-        if (e.getPlayer().hasMetadata("bannerTp") && e.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN)
-            e.getPlayer().removeMetadata("bannerTp", FactionsPlugin.getInstance());
+        final Player player = e.getPlayer();
+        if (player.hasMetadata("bannerTp") && e.getCause() == PlayerTeleportEvent.TeleportCause.PLUGIN)
+            player.removeMetadata("bannerTp", FactionsPlugin.getInstance());
     }
 
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent event) {
-        ItemStack item = event.getItem();
-        if (item != null && item.getType().name().contains("BANNER") && (
-                new NBTItem(item)).hasTag("WarBanner")) {
-            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                Block placingOn = event.getClickedBlock().getRelative(event.getBlockFace());
-                if (placingOn.getType() != Material.AIR) {
-                    event.setCancelled(true);
-                    return;
-                }
+        final ItemStack item = event.getItem();
+        if (!isWarBanner(item))
+            return;
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Block placingOn = event.getClickedBlock().getRelative(event.getBlockFace());
+            if (placingOn.getType() != Material.AIR) {
+                event.setCancelled(true);
+                return;
             }
-            event.setUseItemInHand(Event.Result.ALLOW);
         }
+        event.setUseItemInHand(Event.Result.ALLOW);
     }
 
 
@@ -86,62 +86,70 @@ public class BannerListener implements Listener {
     public void onBannerPlace(BlockPlaceEvent e) {
         if (FactionsPlugin.getInstance().version == 7) return;
 
-        Player player = e.getPlayer();
-        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-        Faction fac = fPlayer.getFaction();
-        ItemStack item = e.getItemInHand();
+        final Player player = e.getPlayer();
+        final FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+        final Faction fac = fPlayer.getFaction();
+        final ItemStack item = e.getItemInHand();
 
-        if (item != null && item.getType().name().contains("BANNER")) {
-            NBTItem nbtItem = new NBTItem(item);
-            if (nbtItem.hasTag("WarBanner")) {
-                if (fPlayer.getFaction().isWilderness()) {
-                    fPlayer.msg(TL.WARBANNER_NOFACTION);
-                    e.setCancelled(true);
-                    return;
-                }
+        if (!isWarBanner(item))
+            return;
 
-                Block placedOn = e.getBlockPlaced();
-                if (!getBannerAllowedWorlds().contains(placedOn.getWorld().getName())) {
-                    fPlayer.msg(TL.FACTION_BANNER_CANNOT_PLACE);
-                    return;
-                }
+        if (fPlayer.getFaction().isWilderness()) {
+            fPlayer.msg(TL.WARBANNER_NOFACTION);
+            e.setCancelled(true);
+            return;
+        }
 
-                Location placedLoc = e.getBlockPlaced().getLocation();
-                FLocation fplacedLoc = FLocation.wrap(placedLoc);
-                if (Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && FactionsPlugin.getInstance().getFileManager().getBanners().fetchBoolean("Banners.placeable-warzone") || fPlayer.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY &&FactionsPlugin.getInstance().getFileManager().getBanners().fetchBoolean("Banners.placeable-enemy")) {
+        Block placedOn = e.getBlockPlaced();
+        if (!getBannerAllowedWorlds().contains(placedOn.getWorld().getName())) {
+            fPlayer.msg(TL.FACTION_BANNER_CANNOT_PLACE);
+            e.setCancelled(true);
+            return;
+        }
 
-                    Location playerLoc = e.getPlayer().getLocation();
-                    if (playerLoc.getBlockX() != placedOn.getX() || playerLoc.getBlockZ() != placedOn.getZ() ||
-                            Math.abs(playerLoc.getBlockY() - placedOn.getY()) > 1) {
-                        fPlayer.msg(TL.FACTION_BANNER_MUST_PLACE);
-                        return;
-                    }
+        Location placedLoc = placedOn.getLocation();
+        FLocation fplacedLoc = FLocation.wrap(placedLoc);
+        if (Board.getInstance().getFactionAt(fplacedLoc).isWarZone() && FactionsPlugin.getInstance().getFileManager().getBanners().fetchBoolean("Banners.placeable-warzone") || fPlayer.getFaction().getRelationTo(Board.getInstance().getFactionAt(fplacedLoc)) == Relation.ENEMY && FactionsPlugin.getInstance().getFileManager().getBanners().fetchBoolean("Banners.placeable-enemy")) {
 
-                    BannerManager manager = FactionsPlugin.getInstance().getBannerManager();
-                    FactionBanner banner = manager.getFactionBannerMap().get(fac.getId());
-                    if (banner != null && !banner.hasExpired()) {
-                        fPlayer.msg(TL.FACTION_BANNER_ALREADY_PLACED_1);
-                        fPlayer.msg(TL.FACTION_BANNER_ALREADY_PLACED_2, banner.getSecondsLeft());
-                        return;
-                    }
+            Location playerLoc = player.getLocation();
+            if (playerLoc.getBlockX() != placedOn.getX() || playerLoc.getBlockZ() != placedOn.getZ() ||
+                    Math.abs(playerLoc.getBlockY() - placedOn.getY()) > 1) {
+                fPlayer.msg(TL.FACTION_BANNER_MUST_PLACE);
+                return;
+            }
 
-                    Material type = placedOn.getType();
-                    if (type == Material.AIR || type.name().contains("BANNER") && (placedOn.getRelative(BlockFace.UP).getType() == Material.AIR || placedOn.getY() == 255)) {
-                        e.getPlayer().sendMessage(CC.DarkPurpleB + "(!) " + CC.DarkPurple + "You have placed a Faction Banner!");
-                        e.getPlayer().sendMessage(CC.Gray + "Faction Members have " + FactionBanner.secondCooldown + "s to teleport to it using " + CC.LightPurple + "/f assist");
-                        banner = FactionsPlugin.getInstance().getBannerManager().getFactionBannerMap().computeIfAbsent(fac.getId(), e1 -> new FactionBanner());
-                        banner.removeBanner();
-                        banner.placeBanner(fac, e.getPlayer(), placedOn.getLocation());
-                        e.setCancelled(false);
-                    } else {
-                        e.getPlayer().sendMessage(CC.RedB + "(!) " + CC.Red + "You must place your /f banner in an valid location!");
-                        e.setCancelled(true);
-                    }
-                }
+            BannerManager manager = FactionsPlugin.getInstance().getBannerManager();
+            Map<String, FactionBanner> bannerMap = manager.getFactionBannerMap();
+            FactionBanner banner = bannerMap.get(fac.getId());
+
+            if (banner != null && !banner.hasExpired()) {
+                fPlayer.msg(TL.FACTION_BANNER_ALREADY_PLACED_1);
+                fPlayer.msg(TL.FACTION_BANNER_ALREADY_PLACED_2, banner.getSecondsLeft());
+                return;
+            }
+
+            Material type = placedOn.getType();
+            String typeString = type.name().toUpperCase();
+            if (typeString.contains("AIR") || typeString.contains("BANNER") && (placedOn.getRelative(BlockFace.UP).getType() == Material.AIR || placedOn.getY() == 255)) {
+                player.sendMessage(CC.DarkPurpleB + "(!) " + CC.DarkPurple + "You have placed a Faction Banner!");
+                player.sendMessage(CC.Gray + "Faction Members have " + FactionBanner.secondCooldown + "s to teleport to it using " + CC.LightPurple + "/f assist");
+                banner = bannerMap.computeIfAbsent(fac.getId(), elseMake -> new FactionBanner());
+                banner.removeBanner();
+                banner.placeBanner(fac, player, placedLoc);
+                e.setCancelled(false);
             } else {
-                fPlayer.msg(TL.WARBANNER_INVALIDLOC);
+                player.sendMessage(CC.RedB + "(!) " + CC.Red + "You must place your /f banner in an valid location!");
                 e.setCancelled(true);
             }
+        } else {
+            fPlayer.msg(TL.WARBANNER_INVALIDLOC);
+            e.setCancelled(true);
         }
+    }
+
+    private boolean isWarBanner(ItemStack itemStack) {
+        return itemStack != null && itemStack.getType().name().contains("BANNER") && NBT.get(itemStack, nbt -> {
+            return nbt.hasTag("WarBanner");
+        });
     }
 }

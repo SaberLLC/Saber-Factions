@@ -9,7 +9,9 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBT;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -44,18 +46,17 @@ public class CmdBanner extends FCommand {
 
 
     private ItemStack buildFactionBanner(Faction fac) {
+        final FileConfiguration config = FactionsPlugin.getInstance().getConfig();
         ItemStack warBanner = fac.getBanner();
         ItemMeta warmeta = warBanner.getItemMeta();
-        warmeta.setDisplayName(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fbanners.Item.Name")));
-        warmeta.setLore(CC.translate(FactionsPlugin.getInstance().getConfig().getStringList("fbanners.Item.Lore")));
+        warmeta.setDisplayName(CC.translate(config.getString("fbanners.Item.Name")));
+        warmeta.setLore(CC.translate(config.getStringList("fbanners.Item.Lore")));
         warBanner.setItemMeta(warmeta);
-        NBTItem nbtItem = new NBTItem(warBanner);
-        nbtItem.setBoolean("WarBanner", true);
-        return nbtItem.getItem();
+        NBT.modify(warBanner, nbt -> {
+            nbt.setBoolean("WarBanner", true);
+        });
+        return warBanner;
     }
-
-
-
 
     @Override
     public TL getUsageTranslation() {
