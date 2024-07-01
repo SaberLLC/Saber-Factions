@@ -138,7 +138,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return fPlayer.hasFaction() ? String.valueOf(faction.getStrikes()) : "0";
             case "faction_peaceful":
                 return faction.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
-            case "faction_tntbank_balance":
+            case "faction_tntbank_balance": case "faction_tnt_balance":
                 return String.valueOf(faction.getTnt());
             case "faction_tnt_max_balance":
                 return FactionTag.TNT_MAX.replace(FactionTag.TNT_MAX.getTag(), faction);
