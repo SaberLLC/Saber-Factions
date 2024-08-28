@@ -15,10 +15,11 @@ import java.util.UUID;
 public class CmdFly extends FCommand {
 
     public static final boolean fly = FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight");
+    private static final boolean flyNeedsUpgrade = FactionsPlugin.getInstance().getConfig().getBoolean("ffly.need-faction-upgrade");
     public static List<UUID> falseList = new ArrayList<>();
 
     /**
-     * @author FactionsUUID Team - Modified By CmdrKittens
+     * @author FactionsUUID Team - Modified By CmdrKittens and vSKAH
      */
 
 
@@ -56,6 +57,12 @@ public class CmdFly extends FCommand {
             falseList.add(context.fPlayer.getPlayer().getUniqueId());
             return;
         }
+
+        if (flyNeedsUpgrade && context.faction.getUpgrade("Fly") == 0 && !context.fPlayer.isAdminBypassing()) {
+            context.msg(TL.COMMAND_FLY_NEED_UPGRADE);
+            return;
+        }
+
         // Do checks if true
         if (!flyTest(context, notify)) {
             return;
