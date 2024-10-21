@@ -51,11 +51,6 @@ public class FScoreboard {
     public static void init(FPlayer fplayer) {
         FScoreboard fboard = new FScoreboard(fplayer);
         fscoreboards.put(fplayer, fboard);
-
-        if (fplayer.hasFaction()) {
-            FTeamWrapper.applyUpdates(fplayer.getFaction());
-        }
-        FTeamWrapper.track(fboard);
     }
 
     public static void remove(FPlayer fplayer, Player player) {
@@ -68,7 +63,6 @@ public class FScoreboard {
                 }
             }
             fboard.removed = true;
-            FTeamWrapper.untrack(fboard);
         }
     }
 
@@ -80,11 +74,11 @@ public class FScoreboard {
         return fscoreboards.get(FPlayers.getInstance().getByPlayer(player));
     }
 
-    protected FPlayer getFPlayer() {
+    public FPlayer getFPlayer() {
         return fplayer;
     }
 
-    protected Scoreboard getScoreboard() {
+    public Scoreboard getScoreboard() {
         return scoreboard;
     }
 

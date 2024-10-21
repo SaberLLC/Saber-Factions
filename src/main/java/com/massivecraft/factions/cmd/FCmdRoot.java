@@ -378,8 +378,10 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         //Lunar Apollo-Bukkit depend
         final Plugin apolloPlugin = pluginManager.getPlugin("Apollo-Bukkit");
         if (apolloPlugin != null) {
-            apolloEnabled = apolloPlugin.isEnabled();
+            apolloEnabled = apolloPlugin.isEnabled() && Conf.enableApolloIntegration;
+            System.out.println("Apollo Enabled: " + apolloEnabled);
             if (apolloEnabled) {
+                System.out.println("Register rally command");
                 this.addSubCommand(this.cmdRally);
             }
         }

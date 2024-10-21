@@ -224,7 +224,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             oldFaction.removeFPlayer(this);
         }
         if (alt) faction.addAltPlayer(this);
-        else faction.addFPlayer(this);
+        else
+            faction.addFPlayer(this);
         this.factionId = faction.getId();
     }
 
@@ -419,7 +420,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         // clean up any territory ownership in old faction, if there is one
         if (factionId != null && Factions.getInstance().isValidFactionId(this.getFactionId())) {
             Faction currentFaction = this.getFaction();
-
             currentFaction.removeFPlayer(this);
             if (currentFaction.isNormal()) {
                 currentFaction.clearClaimOwnership(this);

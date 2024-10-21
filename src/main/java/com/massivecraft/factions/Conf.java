@@ -23,7 +23,6 @@ public class Conf {
     public static transient boolean DYNMAP_STYLE_BOOST = false;
     public static List<String> baseCommandAliases = new ArrayList<>();
     public static String serverTimeZone = "EST";
-    public static boolean allowNoSlashCommand = true;
 
     // Colors
     public static ChatColor colorMember = ChatColor.GREEN;
@@ -36,6 +35,7 @@ public class Conf {
     public static ChatColor colorSafezone = ChatColor.GOLD;
     public static ChatColor colorWar = ChatColor.DARK_RED;
     // Power
+    public static boolean enableApolloIntegration = false;
     public static double powerPlayerMax = 10.0;
     public static double powerPlayerMin = -10.0;
     public static double powerPlayerStarting = 0.0;

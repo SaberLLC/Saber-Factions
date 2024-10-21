@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd;
 
 import com.lunarclient.apollo.Apollo;
+import com.lunarclient.apollo.BukkitApollo;
 import com.lunarclient.apollo.common.location.ApolloBlockLocation;
 import com.lunarclient.apollo.module.waypoint.Waypoint;
 import com.lunarclient.apollo.module.waypoint.WaypointModule;
@@ -15,9 +16,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.awt.*;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class CmdRally extends FCommand {
 
@@ -37,7 +35,6 @@ public class CmdRally extends FCommand {
     public void perform(CommandContext commandContext) {
         Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
             if (commandContext == null || commandContext.player == null) return;
-
             final Faction faction = commandContext.faction;
             if (faction == null || faction.isSystemFaction()) {
                 commandContext.msg(TL.COMMAND_RALLY_NEED_FACTION);
@@ -53,24 +50,15 @@ public class CmdRally extends FCommand {
         final Player player = sender.getPlayer();
         final Location location = player.getLocation();
 
-        Set<UUID> members = faction.getFPlayers().stream()
-                .map(FPlayer::getPlayer).filter(Player::isOnline)
-                .map(Player::getUniqueId).collect(Collectors.toSet());
+        String waypointName = "F-Rally " + faction.getTag();
 
-        Recipients waypointReceivers = Recipients.of(
-                Apollo.getPlayerManager().getPlayers().stream()
-                        .filter(apolloPlayers -> members.contains(apolloPlayers.getUniqueId()))
-                        .collect(Collectors.toList())
-        );
+        Recipients recipients = faction.getFactionMembersRecipients();
+        if (recipients == null) return;
 
-        WAYPOINT_MODULE.displayWaypoint(waypointReceivers, Waypoint.builder()
-                .name("FRally")
-                .location(ApolloBlockLocation.builder()
-                        .world(location.getWorld().getName())
-                        .x(location.getBlockX())
-                        .y(location.getBlockY())
-                        .z(location.getBlockZ())
-                        .build())
+        WAYPOINT_MODULE.removeWaypoint(faction.getFactionMembersRecipients(), waypointName);
+        WAYPOINT_MODULE.displayWaypoint(faction.getFactionMembersRecipients(), Waypoint.builder()
+                .name(waypointName)
+                .location(BukkitApollo.toApolloBlockLocation(location))
                 .color(Color.GREEN)
                 .hidden(false).build());
     }

@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.FactionRenameEvent;
-import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Cooldown;
@@ -95,7 +94,7 @@ public class CmdTag extends FCommand {
                         fplayer.msg(TL.COMMAND_TAG_CHANGED, context.fPlayer.getColorTo(faction) + oldtag, context.faction.getTag(faction));
                     }
                 }
-                FTeamWrapper.updatePrefixes(context.faction);
+                //VanillaFTeamWrapper.updatePrefixes(context.faction);
             });
         });
     }
