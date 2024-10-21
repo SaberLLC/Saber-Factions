@@ -28,6 +28,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -162,7 +164,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdSetTnt cmdSetTnt = new CmdSetTnt();
     public CmdCornerList cmdCornerList = new CmdCornerList();
     public CmdAutoUnclaim cmdAutoUnclaim = new CmdAutoUnclaim();
-    //public CmdRally cmdRally = new CmdRally();
+    public CmdRally cmdRally = new CmdRally();
     public CmdSetRelation cmdSetRelation = new CmdSetRelation();
     public CmdInvite cmdInvite = new CmdInvite();
     public CmdJoin cmdJoin = new CmdJoin();
@@ -184,6 +186,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public Boolean fFlyEnabled = false;
     public Boolean fPayPalEnabled = false;
     public Boolean coreProtectEnabled = false;
+    public Boolean apolloEnabled = false;
     public Boolean internalFTOPEnabled = false;
     public Boolean fWildEnabled = false;
     public Boolean fAuditEnabled = false;
@@ -307,7 +310,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdSetTnt);
         this.addSubCommand(this.cmdUnclaimfill);
         this.addSubCommand(this.cmdAutoUnclaim);
-        //this.addSubCommand(this.cmdRally);
         this.addSubCommand(this.cmdSetRelation);
         this.addSubCommand(this.cmdSetDiscord);
         this.addSubCommand(this.cmdSeeDiscord);
@@ -320,12 +322,12 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
      */
     public void addVariableCommands() {
 
-        if(FactionsPlugin.getInstance().getFileManager().getRoster().fetchBoolean("use-roster-system")) {
+        if (FactionsPlugin.getInstance().getFileManager().getRoster().fetchBoolean("use-roster-system")) {
             this.addSubCommand(this.cmdRoster);
         }
 
         Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-            if(FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
+            if (FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
                 this.getSubCommands().remove(this.cmdInvite);
                 this.getSubCommands().remove(this.cmdJoin);
                 this.getSubCommands().remove(this.cmdKick);
@@ -350,7 +352,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             checkEnabled = true;
         }
 
-        if(FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.Enabled")) {
             this.addSubCommand(this.cmdSeeChunk);
         }
 
@@ -363,12 +365,23 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         //    FactionsPlugin.getInstance().log("CoreProtect not found, disabling Inspect");
         //}
         //FTOP
-        if ((Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null) && !internalFTOPEnabled) {
-            Logger.print( "Found FactionsTop plugin. Disabling our own /f top command.", Logger.PrefixType.DEFAULT);
+        final PluginManager pluginManager = Bukkit.getServer().getPluginManager();
+
+        if ((pluginManager.getPlugin("FactionsTop") != null || pluginManager.getPlugin("SavageFTOP") != null || pluginManager.getPlugin("SaberFTOP") != null) && !internalFTOPEnabled) {
+            Logger.print("Found FactionsTop plugin. Disabling our own /f top command.", Logger.PrefixType.DEFAULT);
         } else {
-            Logger.print( "Internal Factions Top Being Used. NOTE: Very Basic", Logger.PrefixType.DEFAULT);
+            Logger.print("Internal Factions Top Being Used. NOTE: Very Basic", Logger.PrefixType.DEFAULT);
             this.addSubCommand(this.cmdTop);
             internalFTOPEnabled = true;
+        }
+
+        //Lunar Apollo-Bukkit depend
+        final Plugin apolloPlugin = pluginManager.getPlugin("Apollo-Bukkit");
+        if (apolloPlugin != null) {
+            apolloEnabled = apolloPlugin.isEnabled();
+            if (apolloEnabled) {
+                this.addSubCommand(this.cmdRally);
+            }
         }
 
         if (Conf.useAuditSystem) {

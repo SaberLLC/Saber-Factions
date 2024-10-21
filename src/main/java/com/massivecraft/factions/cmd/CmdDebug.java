@@ -23,6 +23,7 @@ public class CmdDebug extends FCommand {
         Logger.print("Is Beta Version: " + (FactionsPlugin.getInstance().getDescription().getFullName().contains("BETA") ? "True" : "False"), Logger.PrefixType.DEBUG);
         Logger.print("Players Online: " + Bukkit.getOnlinePlayers().size(), Logger.PrefixType.DEBUG);
         Logger.print("------Command------", Logger.PrefixType.DEBUG);
+        Logger.print("Apollo is Enabled: " + FCmdRoot.instance.apolloEnabled, Logger.PrefixType.DEBUG);
         Logger.print("Discord Commands: " + FCmdRoot.instance.discordEnabled, Logger.PrefixType.DEBUG);
         Logger.print("Check/WeeWoo Commands: " + FCmdRoot.instance.checkEnabled, Logger.PrefixType.DEBUG);
         Logger.print("Mission Command: " + FCmdRoot.instance.missionsEnabled, Logger.PrefixType.DEBUG);
