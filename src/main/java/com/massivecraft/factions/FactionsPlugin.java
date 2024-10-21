@@ -6,6 +6,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.massivecraft.factions.addon.AddonManager;
 import com.massivecraft.factions.addon.FactionsAddon;
+import com.massivecraft.factions.apollo.core.RecipientsUpdaterListener;
+import com.massivecraft.factions.apollo.fteam.ApolloFTeam;
+import com.massivecraft.factions.apollo.fteam.ApolloFTeamTask;
 import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCmdRoot;
@@ -222,6 +225,11 @@ public class FactionsPlugin extends MPlugin {
             this.getCommand(refCommand).setExecutor(cmdBase);
             if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 
+            if (FCmdRoot.instance.apolloEnabled) {
+                new ApolloFTeam();
+                Bukkit.getPluginManager().registerEvents(new RecipientsUpdaterListener(), this);
+                Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ApolloFTeamTask(), 100, 100);
+            }
 
             this.postEnable();
             this.loadSuccessful = true;
