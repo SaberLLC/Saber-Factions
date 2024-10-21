@@ -826,6 +826,8 @@ public enum TL {
 
     FACTION_RALLY_MESSAGE("&e&l[!] &7%1$s's coords are &e%2$s, %3$s, %4$s"),
     COMMAND_RALLY_DESCRIPTION("Send a Rally Message/Waypoint To Faction Members"),
+    COMMAND_RALLY_NEED_FACTION("&c&l[!] &7You must be in a faction to use this command."),
+
 
     COMMAND_RELATIONS_ALLTHENOPE("&c&l[!]&7 &cNope!You can't."),
     COMMAND_RELATIONS_MORENOPE("&c&l[!]&7 &cNope!&7You can't declare a relation to &cyourself"),

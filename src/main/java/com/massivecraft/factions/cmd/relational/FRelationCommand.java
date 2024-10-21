@@ -9,7 +9,6 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.FactionRelationEvent;
 import com.massivecraft.factions.event.FactionRelationWishEvent;
-import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -105,9 +104,6 @@ public abstract class FRelationCommand extends FCommand {
             them.msg(TL.COMMAND_RELATIONS_PEACEFULOTHER);
             context.faction.msg(TL.COMMAND_RELATIONS_PEACEFUL);
         }
-
-        FTeamWrapper.updatePrefixes(context.faction);
-        FTeamWrapper.updatePrefixes(them);
     }
 
 

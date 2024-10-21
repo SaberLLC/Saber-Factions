@@ -1,5 +1,7 @@
 package com.massivecraft.factions.zcore.persist;
 
+import com.lunarclient.apollo.Apollo;
+import com.lunarclient.apollo.recipients.Recipients;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.roster.struct.RosterPlayer;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
@@ -9,7 +11,6 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.missions.Mission;
-import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -19,6 +20,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.FastUUID;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
@@ -32,6 +34,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public HashMap<Integer, String> rules = new HashMap<>();
@@ -90,6 +93,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private int allowedSpawnerChunks;
     private Set<FastChunk> spawnerChunks;
     private boolean protectedfac = true;
+
+    private boolean currentlyUpdateRecipients = false;
+    private transient Recipients recipients;
 
 
     // -------------------------------------------- //
@@ -421,7 +427,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             }
         }
         Factions.getInstance().removeFaction(this.getId());
-        FTeamWrapper.applyUpdates(this);
+        //VanillaFTeamWrapper.applyUpdates(this);
     }
 
     public boolean isBanned(FPlayer player) {
@@ -1098,6 +1104,28 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         // return a shallow copy of the FPlayer list, to prevent tampering and
         // concurrency issues
         return new HashSet<>(fplayers);
+    }
+
+    public void updateFactionMembersRecipients() {
+        if (currentlyUpdateRecipients)
+            return;
+        currentlyUpdateRecipients = true;
+        Bukkit.getScheduler().runTaskLaterAsynchronously(FactionsPlugin.getInstance(), () ->
+        {
+            Set<UUID> user = getFPlayers().stream()
+                    .filter(FPlayer::isOnline)
+                    .map(fPlayer -> FastUUID.parseUUID(fPlayer.getId()))
+                    .collect(Collectors.toSet());
+            recipients = Recipients.of(Apollo.getPlayerManager().getPlayers().stream()
+                    .filter(apolloPlayer -> user.contains(apolloPlayer.getUniqueId()))
+                    .collect(Collectors.toList()));
+            currentlyUpdateRecipients = false;
+        }, 40L);
+    }
+
+    public Recipients getFactionMembersRecipients() {
+        if (recipients != null) return recipients;
+        return null;
     }
 
     public Set<FPlayer> getAltPlayers() {

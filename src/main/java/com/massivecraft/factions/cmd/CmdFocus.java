@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -40,12 +39,12 @@ public class CmdFocus extends FCommand {
         if ((context.faction.getFocused() != null) && (context.faction.getFocused().equalsIgnoreCase(target.getName()))) {
             context.faction.setFocused(null);
             context.faction.msg(TL.COMMAND_FOCUS_NO_LONGER, target.getName());
-            FTeamWrapper.updatePrefixes(target.getFaction());
+            //VanillaFTeamWrapper.updatePrefixes(target.getFaction());
             return;
         }
         context.faction.msg(TL.COMMAND_FOCUS_FOCUSING, target.getName());
         context.faction.setFocused(target.getName());
-        FTeamWrapper.updatePrefixes(target.getFaction());
+        //VanillaFTeamWrapper.updatePrefixes(target.getFaction());
     }
 
     public TL getUsageTranslation() {

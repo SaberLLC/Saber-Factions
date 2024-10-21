@@ -27,7 +27,7 @@ public class GappleCooldown implements Listener {
                 int remainSec = (int) (remaining / 1000L);
                 e.getPlayer().sendMessage(CC.translate(TL.GOD_APPLE_COOLDOWN.toString().replace("{seconds}", TimeUtil.formatSeconds(remainSec))));
             } else {
-                Cooldown.setCooldown(e.getPlayer(), "godAppleCooldown", CoreX.getConfig().fetchInt("Cooldowns.God_Apple"));
+                Cooldown.setCooldown(e.getPlayer(), "godAppleCooldown", CoreX.getConfig().fetchInt("Cooldowns.God_Apple"), Material.GOLDEN_APPLE);
             }
         }
     }

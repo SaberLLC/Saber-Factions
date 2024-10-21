@@ -37,7 +37,7 @@ public class EnderPearlCooldown implements Listener {
             int remainingSeconds = (int) (remaining / 1000L);
             player.sendMessage(CC.translate(TL.ENDER_PEARL_COOLDOWN.toString().replace("{seconds}", TimeUtil.formatSeconds(remainingSeconds))));
         } else {
-            Cooldown.setCooldown(player, "enderPearlCooldown", CoreX.getConfig().fetchInt("Cooldowns.EnderPearl"));
+            Cooldown.setCooldown(player, "enderPearlCooldown", CoreX.getConfig().fetchInt("Cooldowns.EnderPearl"), Material.ENDER_PEARL);
         }
     }
 }

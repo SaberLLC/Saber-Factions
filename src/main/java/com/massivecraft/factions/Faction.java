@@ -1,5 +1,6 @@
 package com.massivecraft.factions;
 
+import com.lunarclient.apollo.recipients.Recipients;
 import com.massivecraft.factions.cmd.roster.struct.RosterPlayer;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
@@ -27,9 +28,10 @@ public interface Faction extends EconomyParticipator {
 
     //ROSTER
     Set<RosterPlayer> getRoster();
-    int getRosterKicks();
-    void setRosterKicks(int kicks);
 
+    int getRosterKicks();
+
+    void setRosterKicks(int kicks);
 
 
     double getFactionBalance();
@@ -368,6 +370,10 @@ public interface Faction extends EconomyParticipator {
     int getSize();
 
     Set<FPlayer> getFPlayers();
+
+    void updateFactionMembersRecipients();
+
+    Recipients getFactionMembersRecipients();
 
     Set<FPlayer> getFPlayersWhereOnline(boolean online);
 

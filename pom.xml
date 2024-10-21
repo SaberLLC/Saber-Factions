@@ -66,10 +66,6 @@
                             <shadedPattern>com.massivecraft.factions.shade.particlelib</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>net.kyori</pattern>
-                            <shadedPattern>com.massivecraft.factions.shade.net.kyori</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>com.darkblade12</pattern>
                             <shadedPattern>com.massivecraft.factions.shade.com.darkblade12</shadedPattern>
                         </relocation>
@@ -104,6 +100,19 @@
             <version>0.9.12</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.lunarclient</groupId>
+            <artifactId>apollo-api</artifactId>
+            <version>1.1.5</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.lunarclient</groupId>
+            <artifactId>apollo-extra-adventure4</artifactId>
+            <version>1.1.5</version>
+        </dependency>
+
         <dependency>
             <groupId>com.github.Driftay</groupId>
             <artifactId>WorldGuard-Bridge</artifactId>
@@ -390,6 +399,10 @@
     </dependencies>
 
     <repositories>
+        <repository>
+            <id>lunarclient</id>
+            <url>https://repo.lunarclient.dev</url>
+        </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>

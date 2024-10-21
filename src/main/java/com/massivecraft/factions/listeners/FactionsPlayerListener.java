@@ -7,10 +7,7 @@ import com.massivecraft.factions.cmd.CmdSeeChunk;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
-import com.massivecraft.factions.event.FPlayerJoinEvent;
-import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
-import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
@@ -185,7 +182,7 @@ public class FactionsPlayerListener implements Listener {
         if (myFaction.isWilderness()) {
             if (block.getType().name().contains("PLATE")) {
                 if (!Cooldown.isOnCooldown(player, "plateMessage")) {
-                    Cooldown.setCooldown(player, "plateMessage", 3);
+                    Cooldown.setCooldown(player, "plateMessage", 3, null);
                 } else {
                     return false;
                 }
@@ -770,15 +767,6 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    final public void onFactionJoin(FPlayerJoinEvent event) {
-        FTeamWrapper.applyUpdatesLater(event.getFaction());
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onFactionLeave(FPlayerLeaveEvent event) {
-        FTeamWrapper.applyUpdatesLater(event.getFaction());
-    }
 
     public Set<FLocation> getCorners() {
         return corners;
