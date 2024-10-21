@@ -93,7 +93,7 @@ public class CmdDrain extends FCommand {
         }
 
         FactionsPlugin.getInstance().getEcon().depositPlayer(context.player, calculatedAmount);
-        Cooldown.setCooldown(context.faction, "drainCooldown", Conf.factionDrainCooldown);
+        Cooldown.setCooldown(context.faction, "drainCooldown", Conf.factionDrainCooldown, null);
     }
 
     @Override

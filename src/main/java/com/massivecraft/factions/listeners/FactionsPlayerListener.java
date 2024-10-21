@@ -185,7 +185,7 @@ public class FactionsPlayerListener implements Listener {
         if (myFaction.isWilderness()) {
             if (block.getType().name().contains("PLATE")) {
                 if (!Cooldown.isOnCooldown(player, "plateMessage")) {
-                    Cooldown.setCooldown(player, "plateMessage", 3);
+                    Cooldown.setCooldown(player, "plateMessage", 3, null);
                 } else {
                     return false;
                 }

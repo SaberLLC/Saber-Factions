@@ -10,6 +10,7 @@ import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
 
@@ -85,7 +86,7 @@ public class CmdTag extends FCommand {
                 for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
                     if (fplayer.getFactionId().equals(context.faction.getId())) {
                         fplayer.msg(TL.COMMAND_TAG_FACTION, context.fPlayer.describeTo(context.faction, true), context.faction.getTag(context.faction));
-                        Cooldown.setCooldown(fplayer.getPlayer(), "tagCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-tag"));
+                        Cooldown.setCooldown(fplayer.getPlayer(), "tagCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-tag"), Material.NAME_TAG);
                         continue;
                     }
                     // Broadcast the tag change (if applicable)

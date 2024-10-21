@@ -84,7 +84,7 @@ public class CmdDisband extends FCommand {
 
         broadcastDisband(context, faction);
         faction.disband(context.player, PlayerDisbandReason.COMMAND);
-        Cooldown.setCooldown(context.fPlayer.getPlayer(), "disbandCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-disband"));
+        Cooldown.setCooldown(context.fPlayer.getPlayer(), "disbandCooldown", FactionsPlugin.getInstance().getConfig().getInt("fcooldowns.f-disband"), null);
     }
 
     private boolean hasDisbandPermission(CommandContext context, Faction faction) {
