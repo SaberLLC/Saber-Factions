@@ -3,7 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.claim.*;
-import com.massivecraft.factions.cmd.drain.CmdDrain;
+import com.massivecraft.factions.cmd.econ.CmdDrain;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
 import com.massivecraft.factions.cmd.relational.*;
 import com.massivecraft.factions.cmd.reserve.CmdReserve;
@@ -136,12 +136,17 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdKick cmdKick = new CmdKick();
     public CmdAllyFWarp cmdAllyFWarp = new CmdAllyFWarp();
 
-
     //Variables to know if we already set up certain sub commands
-    public Boolean discordEnabled = false;
-    public Boolean invSeeEnabled = false;
-    public Boolean fFlyEnabled = false;
-    public Boolean fStrikes = false;
+    public boolean invSeeEnabled = false;
+    public boolean fFlyEnabled = false;
+    public boolean fStrikesEnabled = false;
+    public boolean reserveEnabled = false;
+    public boolean moneyEnabled = false;
+    public boolean seeChunkEnabled = false;
+    public boolean factionDrainEnabled = false;
+    public boolean friendlyFireEnabled = false;
+    public boolean rallyEnabled = false;
+    public boolean warpsEnabled = false;
 
     public FCmdRoot() {
         super();
@@ -149,14 +154,12 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
         if (CommodoreProvider.isSupported()) brigadierManager = new BrigadierManager();
 
-
         this.getAliases().addAll(Conf.baseCommandAliases);
         this.getAliases().removeAll(Collections.<String>singletonList(null));
 
         this.setHelpShort("The faction base command");
         this.getHelpLong().add(TextUtil.parseTags("<i>This command contains all faction stuff."));
 
-        this.addSubCommand(this.cmdAllyFWarp);
         this.addSubCommand(this.cmdAdmin);
         this.addSubCommand(this.cmdAutoClaim);
         this.addSubCommand(this.cmdBoom);
@@ -202,7 +205,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdStatus);
         this.addSubCommand(this.cmdStealth);
         this.addSubCommand(this.cmdStuck);
-        //this.addSubCommand(this.cmdLogout);
         this.addSubCommand(this.cmdTag);
         this.addSubCommand(this.cmdTitle);
         this.addSubCommand(this.cmdPlayerTitleToggle);
@@ -211,9 +213,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdWarunclaimall);
         this.addSubCommand(this.cmdShowInvites);
         this.addSubCommand(this.cmdAnnounce);
-        this.addSubCommand(this.cmdFWarp);
-        this.addSubCommand(this.cmdSetFWarp);
-        this.addSubCommand(this.cmdDelFWarp);
         this.addSubCommand(this.cmdModifyPower);
         this.addSubCommand(this.cmdLogins);
         this.addSubCommand(this.cmdClaimFill);
@@ -241,10 +240,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdCorner);
         this.addSubCommand(this.cmdCornerList);
         this.addSubCommand(this.cmdFGlobal);
-        this.addSubCommand(this.cmdDrain);
         this.addSubCommand(this.cmdLookup);
         this.addSubCommand(this.cmdNotifications);
-        this.addSubCommand(this.cmdFriendlyFire);
         this.addSubCommand(this.cmdSetPower);
         this.addSubCommand(this.cmdSetTnt);
         this.addSubCommand(this.cmdUnclaimfill);
@@ -262,32 +259,39 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public void addVariableCommands() {
 
         //Reserve
-        if (Conf.useReserveSystem) {
+        if (Conf.useReserveSystem && !reserveEnabled) {
             this.addSubCommand(this.cmdReserve);
+            reserveEnabled = true;
         }
 
-        if (Conf.econEnabled || Conf.bankEnabled) {
+        if ((Conf.econEnabled || Conf.bankEnabled) && !moneyEnabled) {
             this.addSubCommand(this.cmdMoney);
+            moneyEnabled = true;
         }
 
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.Enabled")) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.Enabled") && !seeChunkEnabled) {
             this.addSubCommand(this.cmdSeeChunk);
+            seeChunkEnabled = true;
         }
 
-        //FTOP
-        final PluginManager pluginManager = Bukkit.getServer().getPluginManager();
-        if ((pluginManager.getPlugin("FactionsTop") != null || pluginManager.getPlugin("SavageFTOP") != null || pluginManager.getPlugin("SaberFTOP") != null)) {
-            Logger.print("Found FactionsTop plugin.", Logger.PrefixType.DEFAULT);
+        if (Conf.factionsDrainEnabled && !factionDrainEnabled) {
+            this.addSubCommand(this.cmdDrain);
+            factionDrainEnabled = true;
         }
 
+        if (Conf.friendlyFireFPlayersCommand && !friendlyFireEnabled) {
+            this.addSubCommand(this.cmdFriendlyFire);
+            friendlyFireEnabled = true;
+        }
         //Lunar Apollo-Bukkit depend
-        if (Conf.enableApolloIntegration) {
+        if (Conf.enableApolloIntegration && !rallyEnabled) {
             this.addSubCommand(this.cmdRally);
+            rallyEnabled = true;
         }
 
-        if (Conf.useStrikeSystem) {
+        if (Conf.useStrikeSystem && !fStrikesEnabled) {
             this.addSubCommand(this.cmdStrikes);
-            fStrikes = true;
+            fStrikesEnabled = true;
         }
 
         if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled", false) && !invSeeEnabled) {
@@ -298,6 +302,14 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", true) && !fFlyEnabled) {
             this.addSubCommand(this.cmdFly);
             fFlyEnabled = true;
+        }
+
+        if (FactionsPlugin.getInstance().getConfig().getInt("max-warps", -1) > 0 && !warpsEnabled) {
+            this.addSubCommand(this.cmdFWarp);
+            this.addSubCommand(this.cmdSetFWarp);
+            this.addSubCommand(this.cmdDelFWarp);
+            this.addSubCommand(this.cmdAllyFWarp);
+            warpsEnabled = true;
         }
     }
 

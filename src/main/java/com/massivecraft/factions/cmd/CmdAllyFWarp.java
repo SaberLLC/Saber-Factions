@@ -36,7 +36,7 @@ public class CmdAllyFWarp extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (context.args.size() == 0) {
+        if (context.args.isEmpty()) {
             context.fPlayer.msg(TL.COMMAND_ALLYFWARP_USAGE);
             return;
         }

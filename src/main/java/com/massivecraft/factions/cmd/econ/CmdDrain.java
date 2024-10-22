@@ -1,4 +1,4 @@
-package com.massivecraft.factions.cmd.drain;
+package com.massivecraft.factions.cmd.econ;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
@@ -36,10 +36,6 @@ public class CmdDrain extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!Conf.factionsDrainEnabled) {
-            context.fPlayer.msg(TL.GENERIC_DISABLED, "Factions Drain");
-            return;
-        }
         if(Cooldown.isOnCooldown(context.player, "drainCooldown")) {
             long remaining = context.player.getMetadata("drainCooldown").get(0).asLong() - System.currentTimeMillis();
             int remainSec = (int) (remaining / 1000L);

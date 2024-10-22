@@ -43,10 +43,11 @@ portals:
   # Example: put ALLY to allow ALLY and MEMBER to be able to create portals.
   minimum-relation: MEMBER # If typed incorrectly, defaults to NEUTRAL.
 
-### Hard Core Settings ###
-
-# Warps
+######################################################
+#################### WARPS Features ####################
+######################################################
 # What should be the max amount of warps that a Faction can set?
+# If you want to disable warps, set this to 0, and the warp command will be disabled.
 max-warps: 5
 
 # This is the cost section for warps.
@@ -306,7 +307,6 @@ help:
     - '&c/f upgrades &8- &7Upgrade various perks in your faction.'
     - '&c/f tnt add/take &f<amount> &8- &7Faction Based TNT Bank.'
     - '&c/f tntfill &f<radius> <amount> &8- &7Tnt fill integrated into the tntbank!'
-    - '&c/f version &8- &7Display current faction version.'
     - '&7&m--------------------&r &e/f help 3 &7&m-----------------------'
   '3':
     - '&7&m----------------------------------------------------'

@@ -406,7 +406,7 @@ public class FactionsPlayerListener implements Listener {
         me.setAutoLeave(!player.hasPermission(Permission.AUTO_LEAVE_BYPASS.node));
         me.setTakeFallDamage(true);
 
-        if (FCmdRoot.instance.fFlyEnabled && me.isFlying()) {
+        if (me.isFlying()) {
             me.setFlying(false);
         }
     }
@@ -635,7 +635,7 @@ public class FactionsPlayerListener implements Listener {
         me.setLastStoodAt(to);
 
         // Check the location they're teleporting to and check if they can fly there.
-        if (FCmdRoot.instance.fFlyEnabled && !me.isAdminBypassing()) {
+        if (!me.isAdminBypassing()) {
             boolean canFly = me.canFlyAtLocation(to);
             if (me.isFlying() && !canFly) {
                 me.setFlying(false, false);

@@ -402,7 +402,7 @@ public abstract class MemoryBoard extends Board {
             Collection<FLocation> fLocations = factionToLandMap.removeAll(factionId);
             for (FPlayer fPlayer : FPlayers.getInstance().getOnlinePlayers()) {
                 if (fLocations.contains(fPlayer.getLastStoodAt())) {
-                    if (FCmdRoot.instance.fFlyEnabled && !fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
+                    if (!fPlayer.isAdminBypassing() && fPlayer.isFlying()) {
                         fPlayer.setFlying(false);
                     }
                     if (fPlayer.isWarmingUp()) {

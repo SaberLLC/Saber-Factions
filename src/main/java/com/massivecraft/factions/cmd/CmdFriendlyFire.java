@@ -23,11 +23,6 @@ public class CmdFriendlyFire extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (!Conf.friendlyFireFPlayersCommand) {
-            context.msg(TL.GENERIC_DISABLED, "friendly fire");
-            return;
-        }
-
         if (context.fPlayer.hasFriendlyFire()) {
             context.fPlayer.setFriendlyFire(false);
             context.msg(TL.COMMAND_FRIENDLY_FIRE_TOGGLE_OFF);
