@@ -11,10 +11,9 @@ public class Aliases {
      * @author DroppingAnvil
      */
 
-    public static ArrayList<String> allyfwarp = new ArrayList<>(Arrays.asList("allywarp", "allyfwarp", "warpally", "awarp"));
+    public static ArrayList<String> allyfwarp = new ArrayList<>(Arrays.asList("allywarp", "awarp"));
     public static ArrayList<String> friendlyFire = new ArrayList<>(Arrays.asList("friendlyfire", "ff"));
     public static ArrayList<String> notifications = new ArrayList<>(Arrays.asList("notifications", "notis"));
-    public static ArrayList<String> check = new ArrayList<>(Collections.singletonList("check"));
     public static ArrayList<String> claim_auto = new ArrayList<>(Collections.singletonList("autoclaim"));
     public static ArrayList<String> claim_claim = new ArrayList<>(Collections.singletonList("claim"));
     public static ArrayList<String> claim_at = new ArrayList<>(Collections.singletonList("claimat"));
@@ -23,10 +22,10 @@ public class Aliases {
     public static ArrayList<String> claim_corner = new ArrayList<>(Collections.singletonList("corner"));
     public static ArrayList<String> corner_list = new ArrayList<>(Arrays.asList("clist", "cornerlist"));
     public static ArrayList<String> delfHome = new ArrayList<>(Arrays.asList("delhome", "deletehome"));
-    public static ArrayList<String> unclaim_all_safe = new ArrayList<>(Arrays.asList("safeunclaimall", "safedeclaimall"));
+    public static ArrayList<String> unclaim_all_safe = new ArrayList<>(Collections.singletonList("safezoneunclaimall"));
     public static ArrayList<String> unclaim_unclaim = new ArrayList<>(Arrays.asList("unclaim", "declaim"));
     public static ArrayList<String> unclaim_all_unsafe = new ArrayList<>(Arrays.asList("unclaimall", "declaimall"));
-    public static ArrayList<String> unclaim_all_war = new ArrayList<>(Arrays.asList("warunclaimall", "wardeclaimall"));
+    public static ArrayList<String> unclaim_all_war = new ArrayList<>(Collections.singletonList("warzoneunclaimall"));
     public static ArrayList<String> money_money = new ArrayList<>(Arrays.asList("money", "bank"));
     public static ArrayList<String> money_balance = new ArrayList<>(Arrays.asList("b", "balance"));
     public static ArrayList<String> money_deposit = new ArrayList<>(Arrays.asList("d", "deposit"));
@@ -34,7 +33,7 @@ public class Aliases {
     public static ArrayList<String> money_transfer_Fp = new ArrayList<>(Collections.singletonList("fp"));
     public static ArrayList<String> money_transfer_Pf = new ArrayList<>(Collections.singletonList("pf"));
     public static ArrayList<String> money_withdraw = new ArrayList<>(Arrays.asList("w", "withdraw"));
-    public static ArrayList<String> rally = new ArrayList<>(Collections.singletonList("rally"));
+    public static ArrayList<String> rally = new ArrayList<>(Arrays.asList("rally", "fwaypoint"));
     public static ArrayList<String> relation_ally = new ArrayList<>(Collections.singletonList("ally"));
     public static ArrayList<String> relation_enemy = new ArrayList<>(Collections.singletonList("enemy"));
     public static ArrayList<String> relation_neutral = new ArrayList<>(Collections.singletonList("neutral"));
@@ -48,10 +47,10 @@ public class Aliases {
     public static ArrayList<String> admin = new ArrayList<>(Arrays.asList("admin", "setadmin", "leader", "setleader"));
     public static ArrayList<String> ahome = new ArrayList<>(Collections.singletonList("ahome"));
     public static ArrayList<String> announce = new ArrayList<>(Arrays.asList("ann", "announce"));
-    public static ArrayList<String> help = new ArrayList<>(Arrays.asList("help", "h", "?"));
+    public static ArrayList<String> help = new ArrayList<>(Collections.singletonList("help"));
     public static ArrayList<String> ban_ban = new ArrayList<>(Collections.singletonList("ban"));
     public static ArrayList<String> ban_banlist = new ArrayList<>(Arrays.asList("banlist", "bans", "banl"));
-    public static ArrayList<String> boom = new ArrayList<>(Arrays.asList("noboom", "explosions", "toggleexplosions"));
+    public static ArrayList<String> boom = new ArrayList<>(Collections.singletonList("toggleexplosions"));
     public static ArrayList<String> bypass = new ArrayList<>(Collections.singletonList("bypass"));
     public static ArrayList<String> chat = new ArrayList<>(Arrays.asList("chat", "c"));
     public static ArrayList<String> chatspy = new ArrayList<>(Collections.singletonList("chatspy"));
@@ -60,7 +59,7 @@ public class Aliases {
     public static ArrayList<String> coords = new ArrayList<>(Arrays.asList("coords", "coord"));
     public static ArrayList<String> create = new ArrayList<>(Collections.singletonList("create"));
     public static ArrayList<String> deinvite = new ArrayList<>(Arrays.asList("deinvite", "deinv"));
-    public static ArrayList<String> deletefwarp = new ArrayList<>(Arrays.asList("delwarp", "dw", "deletewarp"));
+    public static ArrayList<String> deletefwarp = new ArrayList<>(Arrays.asList("delwarp", "deletewarp"));
     public static ArrayList<String> description = new ArrayList<>(Arrays.asList("desc", "description"));
     public static ArrayList<String> disband = new ArrayList<>(Collections.singletonList("disband"));
     public static ArrayList<String> drain = new ArrayList<>(Collections.singletonList("drain"));
@@ -68,7 +67,7 @@ public class Aliases {
     public static ArrayList<String> fly = new ArrayList<>(Collections.singletonList("fly"));
     public static ArrayList<String> warp = new ArrayList<>(Arrays.asList("warp", "warps"));
     public static ArrayList<String> home = new ArrayList<>(Collections.singletonList("home"));
-    public static ArrayList<String> invsee = new ArrayList<>(Arrays.asList("invsee", "inventorysee"));
+    public static ArrayList<String> invsee = new ArrayList<>(Collections.singletonList("invsee"));
     public static ArrayList<String> invite = new ArrayList<>(Arrays.asList("invite", "inv"));
     public static ArrayList<String> join = new ArrayList<>(Collections.singletonList("join"));
     public static ArrayList<String> kick = new ArrayList<>(Collections.singletonList("kick"));
@@ -95,9 +94,9 @@ public class Aliases {
     public static ArrayList<String> power_power = new ArrayList<>(Arrays.asList("pow", "power"));
     public static ArrayList<String> power_boost = new ArrayList<>(Collections.singletonList("powerboost"));
     public static ArrayList<String> reload = new ArrayList<>(Collections.singletonList("reload"));
-    public static ArrayList<String> rules = new ArrayList<>(Arrays.asList("r", "rule", "rules"));
+    public static ArrayList<String> rules = new ArrayList<>(Arrays.asList("rule", "rules"));
     public static ArrayList<String> saveAll = new ArrayList<>(Arrays.asList("save", "saveall"));
-    public static ArrayList<String> setPower = new ArrayList<>(Arrays.asList("setpower", "sp"));
+    public static ArrayList<String> setPower = new ArrayList<>(Arrays.asList("setpower"));
     public static ArrayList<String> setTnt = new ArrayList<>(Arrays.asList("settnt", "st"));
     public static ArrayList<String> seeChunk = new ArrayList<>(Arrays.asList("sc", "seechunk"));
     public static ArrayList<String> discord_see = new ArrayList<>(Collections.singletonList("seediscord"));
@@ -116,12 +115,12 @@ public class Aliases {
     public static ArrayList<String> strikes_info = new ArrayList<>(Collections.singletonList("info"));
     public static ArrayList<String> strikes_set = new ArrayList<>(Collections.singletonList("set"));
     public static ArrayList<String> strikes_take = new ArrayList<>(Collections.singletonList("take"));
-    public static ArrayList<String> stuck = new ArrayList<>(Arrays.asList("stuck", "halp!"));
+    public static ArrayList<String> stuck = new ArrayList<>(Collections.singletonList("stuck"));
     public static ArrayList<String> tag = new ArrayList<>(Arrays.asList("tag", "rename"));
     public static ArrayList<String> title = new ArrayList<>(Collections.singletonList("title"));
     public static ArrayList<String> toggleAllianceChat = new ArrayList<>(Arrays.asList("tac", "ac", "togglealliancechat"));
     public static ArrayList<String> unban = new ArrayList<>(Collections.singletonList("unban"));
-    public static ArrayList<String> upgrades = new ArrayList<>(Arrays.asList("upgrades", "upgrade"));
+    public static ArrayList<String> upgrades = new ArrayList<>(Collections.singletonList("upgrade"));
     private static final transient Aliases i = new Aliases();
 
     public static void load() {
