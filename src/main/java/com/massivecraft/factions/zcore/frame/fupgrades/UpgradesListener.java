@@ -3,15 +3,10 @@ package com.massivecraft.factions.zcore.frame.fupgrades;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.util.FastMath;
-import com.massivecraft.factions.util.Logger;
-import com.massivecraft.factions.zcore.frame.fupgrades.provider.stackers.RoseStackerProvider;
-import com.massivecraft.factions.zcore.frame.fupgrades.provider.stackers.WildStackerProvider;
-import org.bukkit.Bukkit;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,10 +15,8 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.SpawnerSpawnEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.material.Crops;
-import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.Set;
@@ -36,22 +29,8 @@ public class UpgradesListener implements Listener {
      * @author Illyria Team, Atilt
      */
 
-    private WildStackerProvider wildStackerProvider;
-    private RoseStackerProvider roseStackerProvider;
-
     private Material sugarCaneMaterial;
     private Set<Material> cropMaterials;
-
-    public void init() {
-        Plugin wildStacker = Bukkit.getPluginManager().getPlugin("WildStacker");
-        if (wildStacker != null) {
-            this.wildStackerProvider = new WildStackerProvider();
-        }
-        Plugin roseStacker = Bukkit.getPluginManager().getPlugin("RoseStacker");
-        if (roseStacker != null) {
-            this.roseStackerProvider = new RoseStackerProvider();
-        }
-    }
 
     @EventHandler
     public void onDeath(EntityDeathEvent e) {
@@ -72,28 +51,6 @@ public class UpgradesListener implements Listener {
     private void spawnMoreExp(EntityDeathEvent e, double multiplier) {
         double newExp = e.getDroppedExp() * multiplier;
         e.setDroppedExp((int) newExp);
-    }
-
-    @EventHandler
-    public void onSpawn(SpawnerSpawnEvent e) {
-        FLocation floc = FLocation.wrap(e.getLocation());
-        Faction factionAtLoc = Board.getInstance().getFactionAt(floc);
-        if (!factionAtLoc.isWilderness()) {
-            int level = factionAtLoc.getUpgrade("Spawners");
-            if (level == 0) return;
-            this.lowerSpawnerDelay(e, FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.Spawners.Spawner-Boost.level-" + level));
-        }
-    }
-
-    private void lowerSpawnerDelay(SpawnerSpawnEvent e, double multiplier) {
-        CreatureSpawner spawner = e.getSpawner();
-        int delay = spawner.getDelay() - FastMath.round(e.getSpawner().getDelay() * multiplier);
-
-        if (this.wildStackerProvider != null && !this.wildStackerProvider.setDelay(spawner, delay)) {
-            Logger.print("Unable obtain WildStacker instance. Plugin found: " + (Bukkit.getPluginManager().getPlugin(this.wildStackerProvider.pluginName()) != null), Logger.PrefixType.FAILED);
-        } else if (this.roseStackerProvider != null && !this.roseStackerProvider.setDelay(spawner.getBlock(), delay)) {
-            Logger.print("Missing expected spawner at: " + spawner.getX() + ", " + spawner.getY() + ", " + spawner.getZ(), Logger.PrefixType.FAILED);
-        }
     }
 
     @EventHandler

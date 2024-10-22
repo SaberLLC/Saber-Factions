@@ -42,14 +42,11 @@ public enum PermissableAction {
     SETWARP("setwarp"),
     WARP("warp"),
     FLY("fly"),
-    VAULT("vault"),
     TNTBANK("tntbank"),
     TNTFILL("tntfill"),
     WITHDRAW("withdraw"),
     CHEST("chest"),
-    AUDIT("audit"),
-    CHECK("check"),
-    SPAWNER("spawner");
+    CHECK("check");
 
     private String name;
 

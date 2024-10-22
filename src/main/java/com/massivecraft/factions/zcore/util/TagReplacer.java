@@ -3,7 +3,6 @@ package com.massivecraft.factions.zcore.util;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.util.timer.TimerManager;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,7 +26,6 @@ public enum TagReplacer {
     ENEMIES_LIST(TagType.FANCY, "{enemies-list}"),
     TRUCES_LIST(TagType.FANCY, "{truces-list}"),
     OFFLINE_LIST(TagType.FANCY, "{offline-list}"),
-    ALTS(TagType.FANCY, "{alts}"),
 
     /**
      * Player variables, require a player
@@ -70,7 +68,6 @@ public enum TagReplacer {
     ALLIES_COUNT(TagType.FACTION, "{allies}"),
     ENEMIES_COUNT(TagType.FACTION, "{enemies}"),
     TRUCES_COUNT(TagType.FACTION, "{truces}"),
-    ALT_COUNT(TagType.FACTION, "{alt-count}"),
     ONLINE_COUNT(TagType.FACTION, "{online}"),
     OFFLINE_COUNT(TagType.FACTION, "{offline}"),
     FACTION_SIZE(TagType.FACTION, "{members}"),
@@ -78,17 +75,13 @@ public enum TagReplacer {
     FACTION_DEATHS(TagType.FACTION, "{faction-deaths}"),
     FACTION_BANCOUNT(TagType.FACTION, "{faction-bancount}"),
     FACTION_STRIKES(TagType.FACTION, "{strikes}"),
-    FACTION_POINTS(TagType.FACTION, "{faction-points}"),
-    SHIELD(TagType.FACTION, "{shield}"),
 
 
     /**
      * General variables, require no faction or player
      */
-    GRACE_TIMER(TagType.GENERAL, "{grace-time}"),
     MAX_WARPS(TagType.GENERAL, "{max-warps}"),
     MAX_ALLIES(TagType.GENERAL, "{max-allies}"),
-    MAX_ALTS(TagType.GENERAL, "{max-alts}"),
     MAX_ENEMIES(TagType.GENERAL, "{max-enemies}"),
     MAX_TRUCES(TagType.GENERAL, "{max-truces}"),
     FACTIONLESS(TagType.GENERAL, "{factionless}"),
@@ -131,8 +124,6 @@ public enum TagReplacer {
      */
     private String getValue() {
         switch (this) {
-            case GRACE_TIMER:
-                return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
             case TOTAL_ONLINE:
                 return String.valueOf(Bukkit.getOnlinePlayers().size());
             case FACTIONLESS:
@@ -140,11 +131,6 @@ public enum TagReplacer {
             case MAX_ALLIES:
                 if (FactionsPlugin.getInstance().getConfig().getBoolean("max-relations.enabled", true)) {
                     return String.valueOf(FactionsPlugin.getInstance().getConfig().getInt("max-relations.ally", 10));
-                }
-                return TL.GENERIC_INFINITY.toString();
-            case MAX_ALTS:
-                if (FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled")) {
-                    return String.valueOf(Conf.factionAltMemberLimit);
                 }
                 return TL.GENERIC_INFINITY.toString();
             case MAX_ENEMIES:
@@ -245,8 +231,6 @@ public enum TagReplacer {
                 return fac.hasHome() ? String.valueOf(fac.getHome().getBlockY()) : minimal ? null : "{ig}";
             case HOME_Z:
                 return fac.hasHome() ? String.valueOf(fac.getHome().getBlockZ()) : minimal ? null : "{ig}";
-            case SHIELD:
-                return FactionsPlugin.getInstance().getShieldStatMap().get(fac);
             case LAND_VALUE:
                 return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLandRounded())) : minimal ? null : TL.ECON_OFF.format("value");
             case LAND_REFUND:
@@ -262,8 +246,6 @@ public enum TagReplacer {
                 return String.valueOf(fac.getRelationCount(Relation.ENEMY));
             case TRUCES_COUNT:
                 return String.valueOf(fac.getRelationCount(Relation.TRUCE));
-            case ALT_COUNT:
-                return String.valueOf(fac.getAltPlayers().size());
             case ONLINE_COUNT:
                 if (fp != null && fp.isOnline()) {
                     return String.valueOf(fac.getFPlayersWhereOnline(true, fp).size());
@@ -283,8 +265,6 @@ public enum TagReplacer {
                 return String.valueOf(fac.getBannedPlayers().size());
             case FACTION_STRIKES:
                 return String.valueOf(fac.getStrikes());
-            case FACTION_POINTS:
-                return String.valueOf(fac.getPoints());
             case RAW_TAG:
                 return ChatColor.stripColor(fac.getTag());
             default:

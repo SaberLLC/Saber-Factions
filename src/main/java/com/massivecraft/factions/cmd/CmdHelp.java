@@ -126,7 +126,6 @@ public class CmdHelp extends FCommand {
         pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdMod.getUsageTemplate(context));
         pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdAdmin.getUsageTemplate(context));
         pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdTitle.getUsageTemplate(context));
-        pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdSB.getUsageTemplate(context));
         pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdSeeChunk.getUsageTemplate(context));
         pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdStatus.getUsageTemplate(context));
         pageLines.add(TextUtil.parse(TL.COMMAND_HELP_PLAYERTITLES.toString()));

@@ -5,10 +5,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFGlobal;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
 import com.massivecraft.factions.cmd.FCmdRoot;
-import com.massivecraft.factions.cmd.logout.LogoutHandler;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
-import com.massivecraft.factions.scoreboards.FScoreboard;
-import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -29,7 +26,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -390,12 +386,6 @@ public class FactionsPlayerListener implements Listener {
             if (me.isOnline()) me.getFaction().sendUnreadAnnouncements(me);
         }, 33L);
 
-        if (FactionsPlugin.instance.getConfig().getBoolean("scoreboard.default-enabled", false)) {
-            FScoreboard.init(me);
-            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar());
-            FScoreboard.get(me).setSidebarVisibility(me.showScoreboard());
-        }
-
         Faction myFaction = me.getFaction();
         if (!myFaction.isWilderness()) {
             for (FPlayer other : myFaction.getFPlayersWhereOnline(true)) {
@@ -453,7 +443,6 @@ public class FactionsPlayerListener implements Listener {
 
         }
 
-        FScoreboard.remove(me, event.getPlayer());
         ((MemoryFPlayers) FPlayers.getInstance()).removeOnlinePlayer(player);
     }
 
@@ -590,13 +579,6 @@ public class FactionsPlayerListener implements Listener {
     }
 
     @EventHandler
-    public void onClose(InventoryCloseEvent e) {
-        FPlayer fme = FPlayers.getInstance().getById(e.getPlayer().getUniqueId().toString());
-        if (fme.isInVault()) fme.setInVault(false);
-        if (fme.isInFactionsChest()) fme.setInFactionsChest(false);
-    }
-
-    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Material type;
         if (event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))
@@ -689,19 +671,6 @@ public class FactionsPlayerListener implements Listener {
         }
     }
 
-
-    @EventHandler
-    public void onDamage(EntityDamageEvent e) {
-        if (e.getEntity() instanceof Player) {
-            Player player = (Player) e.getEntity();
-            LogoutHandler handler = LogoutHandler.getByName(player.getName());
-            if (handler.isLogoutActive(player)) {
-                handler.cancelLogout(player);
-                player.sendMessage(String.valueOf(TL.COMMAND_LOGOUT_DAMAGE_TAKEN));
-            }
-        }
-    }
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onTeleportChange(PlayerTeleportEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
@@ -717,18 +686,6 @@ public class FactionsPlayerListener implements Listener {
             } else if (me.isAutoFlying() && !me.isFlying() && canFly) {
                 me.setFlying(true);
             }
-        }
-    }
-
-    @EventHandler
-    public void onTeleport(PlayerTeleportEvent e) {
-        Player player = e.getPlayer();
-
-        if (player == null) return;
-        LogoutHandler handler = LogoutHandler.getByName(player.getName());
-        if (handler.isLogoutActive(player)) {
-            handler.cancelLogout(player);
-            player.sendMessage(String.valueOf(TL.COMMAND_LOGOUT_TELEPORTED));
         }
     }
 
@@ -795,9 +752,4 @@ public class FactionsPlayerListener implements Listener {
         event.getRecipients().retainAll(mutedRecipients);
     }
 
-    @EventHandler
-    public void onDisconnect(PlayerQuitEvent e) {
-        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(e.getPlayer());
-        if (fPlayer.isInFactionsChest()) fPlayer.setInFactionsChest(false);
-    }
 }

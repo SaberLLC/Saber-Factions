@@ -16,7 +16,6 @@ public class ShutdownParameter {
     public static void initShutdown(FactionsPlugin plugin) {
         Logger.print( "===== Shutdown Start =====", Logger.PrefixType.DEFAULT);
         Conf.saveSync();
-        plugin.getTimerManager().saveTimerData();
         for(FactionsAddon factionsAddon : plugin.getFactionsAddonHashMap().values()) {
             factionsAddon.terminateAddon();
             Logger.print("Disabled " + factionsAddon.getAddonName() + " addon", Logger.PrefixType.DEFAULT);
@@ -24,7 +23,6 @@ public class ShutdownParameter {
 
         FactionDataHelper.onDisable();
 
-        plugin.getFlogManager().saveLogs();
         saveReserves(plugin);
     }
 

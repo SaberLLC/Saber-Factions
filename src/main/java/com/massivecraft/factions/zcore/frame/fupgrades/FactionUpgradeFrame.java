@@ -53,8 +53,7 @@ public class FactionUpgradeFrame extends SaberGUI {
             int currentFactionLevel = faction.getUpgrade(upgradeId);
             int upgradeMaxLevel = upgrade.getValue();
 
-            long cost = upgradeConf.getLong("fupgrades.MainMenu." + upgradeId + ".Cost.level-" + (currentFactionLevel + 1));
-
+            long cost = upgradeConf.getLong("fupgrades.MainMenu." + upgradeId + ".Cost.level-" + (currentFactionLevel + 1), -1);
             this.setItem(upgradeManager.getSlot(upgradeId), new InventoryItem(upgradeManager.buildAsset(faction, upgradeId)).click(ClickType.LEFT, () -> {
                 handleUpgradeClick(fme, upgradeId, currentFactionLevel, upgradeMaxLevel, cost, upgradeConf);
             }));
@@ -68,17 +67,9 @@ public class FactionUpgradeFrame extends SaberGUI {
             return;
         }
 
-        if (upgradeConf.getBoolean("fupgrades.usePointsAsCurrency")) {
-            if (faction.getPoints() >= cost) {
-                faction.setPoints((int) (faction.getPoints() - cost));
-                fme.msg(TL.COMMAND_UPGRADES_POINTS_TAKEN, cost, faction.getPoints());
-                handleTransaction(fme, upgradeId);
-                faction.setUpgrade(upgradeId, currentFactionLevel + 1);
-                redraw();
-            } else {
-                fme.getPlayer().closeInventory();
-                fme.msg(TL.COMMAND_UPGRADES_NOT_ENOUGH_POINTS);
-            }
+        if (cost == -1)
+        {
+            fme.msg(TL.COMMAND_UPGRADES_LEVEL_ERROR, upgradeId, currentFactionLevel);
             return;
         }
 
@@ -106,9 +97,6 @@ public class FactionUpgradeFrame extends SaberGUI {
     private void handleTransaction(FPlayer fme, String upgradeId) {
         Faction fac = fme.getFaction();
         switch (upgradeId) {
-            case "Chest":
-                updateChests(fac);
-                break;
             case "Power":
                 updateFactionPowerBoost(fac);
                 break;
@@ -118,11 +106,6 @@ public class FactionUpgradeFrame extends SaberGUI {
             case "Warps":
                 updateWarps(fac);
                 break;
-            case "SpawnerChunks":
-                if (Conf.allowSpawnerChunksUpgrade) {
-                    updateSpawnerChunks(fac);
-                    break;
-                }
         }
     }
 
@@ -132,26 +115,10 @@ public class FactionUpgradeFrame extends SaberGUI {
         faction.setWarpsLimit(size);
     }
 
-    private void updateSpawnerChunks(Faction faction) {
-        int level = faction.getUpgrade("SpawnerChunks");
-        int size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.SpawnerChunks.chunk-limit.level-" + (level + 1));
-        faction.setAllowedSpawnerChunks(size);
-    }
-
     private void updateTNT(Faction faction) {
         int level = faction.getUpgrade("TNT");
         int size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.TNT.tnt-limit.level-" + (level + 1));
         faction.setTntBankLimit(size);
-    }
-
-    private void updateChests(Faction faction) {
-        String invName = CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"));
-        for (Player player : faction.getOnlinePlayers()) {
-            if (player.getOpenInventory().getTitle().equalsIgnoreCase(invName)) player.closeInventory();
-        }
-        int level = faction.getUpgrade("Chest");
-        int size = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-" + (level + 1));
-        faction.setChestSize(size * 9);
     }
 
     private void updateFactionPowerBoost(Faction f) {

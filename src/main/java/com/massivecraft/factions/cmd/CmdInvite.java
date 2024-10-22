@@ -3,7 +3,6 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -69,7 +68,6 @@ public class CmdInvite extends FCommand {
             TextUtil.AUDIENCES.player(target.getPlayer()).sendMessage(message);
         }
         context.faction.msg(TL.COMMAND_INVITE_INVITED, context.fPlayer.describeTo(context.faction, true), target.describeTo(context.faction));
-        FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.INVITES, context.fPlayer.getName(), CC.Green + "invited", target.getName());
     }
 
     @Override

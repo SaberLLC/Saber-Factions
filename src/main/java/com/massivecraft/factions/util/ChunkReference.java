@@ -13,27 +13,6 @@ import java.util.Objects;
 
 public class ChunkReference {
 
-    public static Map<EntityType, Integer> getSpawners(Chunk chunk) {
-        Map<EntityType, Integer> spawners = new EnumMap<>(EntityType.class);
-        for (BlockState state : chunk.getTileEntities()) {
-            if (state instanceof CreatureSpawner) {
-                CreatureSpawner spawner = (CreatureSpawner) state;
-                spawners.merge(spawner.getSpawnedType(), 1, Integer::sum);
-            }
-        }
-        return spawners;
-    }
-
-    public static int getSpawnerCount(Chunk chunk) {
-        int i = 0;
-        for (BlockState state : chunk.getTileEntities()) {
-            if (state instanceof CreatureSpawner) {
-                i++;
-            }
-        }
-        return i;
-    }
-
     public static boolean isSameChunk(PlayerMoveEvent event) {
         return isSameChunk(event.getFrom(), event.getTo());
     }

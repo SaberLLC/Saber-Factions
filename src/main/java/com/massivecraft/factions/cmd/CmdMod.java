@@ -4,7 +4,6 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
@@ -52,10 +51,6 @@ public class CmdMod extends FCommand {
             return;
         }
 
-        if (you.isAlt()) {
-            return;
-        }
-
         if (context.fPlayer != null && !context.fPlayer.getRole().isAtLeast(Role.COLEADER) && !permAny) {
             context.msg(TL.COMMAND_MOD_NOTADMIN);
             return;
@@ -81,8 +76,6 @@ public class CmdMod extends FCommand {
             setRole(you, Role.MODERATOR);
             targetFaction.msg(TL.COMMAND_MOD_PROMOTED, you.describeTo(targetFaction, true));
             context.msg(TL.COMMAND_MOD_PROMOTES, you.describeTo(context.fPlayer, true));
-            FactionsPlugin.instance.getFlogManager().log(targetFaction, FLogType.RANK_EDIT, context.fPlayer.getName(), you.getName(), ChatColor.LIGHT_PURPLE + "Mod");
-
         }
     }
 

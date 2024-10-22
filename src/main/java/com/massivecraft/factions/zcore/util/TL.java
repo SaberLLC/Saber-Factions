@@ -55,9 +55,6 @@ public enum TL {
     ACTIONS_NOPERMISSIONPAIN("It is painful to try to {action} in the territory of {faction}"),
     ACTIONS_OWNEDTERRITORYDENY("You cant do that in this territory, it is owned by {owners}"),
     ACTIONS_OWNEDTERRITORYPAINDENY("It is painful to try to {action} in this territory, it is owned by {owners}"),
-    ACTIONS_MUSTBE("You must be {role} to {action}."),
-    ACTIONS_NOSAMEROLE("{role} can't control each other..."),
-    ACTIONS_NOFACTION("You are not member of any faction."),
 
     ACTION_DENIED_SAFEZONE("You can't use %1$s in safezone!"),
     ACTION_DENIED_WARZONE("You can't use %1$s in warzone!"),
@@ -131,12 +128,8 @@ public enum TL {
 
     COMMAND_CONTEXT_ADMINISTER_DIF_FACTION("&c[!] %1$s is not in the same faction as you."),
     COMMAND_CONTEXT_ADMINISTER_ADMIN_REQUIRED("&c[!] Only the faction admin can do that."),
-    COMMAND_CONTEXT_ADMINISTER_SAME_RANK_CONTROL("&c[!] Moderators can't control each other..."),
-    COMMAND_CONTEXT_ADMINISTER_MOD_REQUIRED("&c[!] You must be a faction moderator to do that."),
 
     COMMAND_UPGRADES_DESCRIPTION("&cOpen the Upgrades Menu"),
-    COMMAND_UPGRADES_POINTS_TAKEN("&cFaction upgrade purchased for &e%1$s points! &cNew Point Balance: &e%2$s"),
-    COMMAND_UPGRADES_NOT_ENOUGH_POINTS("&cYour faction does not have enough points to purchase this upgrade!"),
     COMMAND_UPGRADES_DISABLED("&c[!] &7Faction Upgrades are &cdisabled&7."),
     COMMAND_UPGRADES_LEVEL_ERROR("&c[!] &7Faction Upgrade &e%1$s &7of level &e%2$s &7led to an invalid value&7."),
     UPGRADE_TOUPGRADE("to buy the %1$s upgrade"),
@@ -168,11 +161,6 @@ public enum TL {
     COMMAND_AHOME_TARGET("You were sent to your f home."),
 
     COMMAND_ANNOUNCE_DESCRIPTION("Announce a message to players in faction."),
-    COMMAND_ALTS_DESCRIPTION("Faction Alts Commands"),
-
-    COMMAND_ALTS_LIST_DESCRIPTION("List all alts in your faction"),
-
-    ANTI_SPAWNER_MINE_PLAYERS_NEAR("&c&l[!] &7You may not break spawners while enemies are near!"),
 
     COMMAND_AUTOCLAIM_ENABLED("&c&l[!] &7Now &cauto-claiming&7 land for %1$s."),
     COMMAND_AUTOCLAIM_DISABLED("&c&l[!] Auto-claiming&7 of land is now &cdisabled."),
@@ -185,19 +173,9 @@ public enum TL {
     COMMAND_AUTOUNCLAIM_OTHERFACTION("&cYou can't unclaim land for &d%1$s&c."),
     COMMAND_AUTOUNCLAIM_DESCRIPTION("Auto-unclaim land as you walk around"),
 
-
-    COMMAND_ALTINVITE_DESCRIPTION("Invite Alts to your faction."),
-    COMMAND_ALTKICK_DESCRIPTION("Kick alts from your faction"),
-    COMMAND_ALTKICK_NOTALT("&c&l[!] &7Player is not an alt."),
-    COMMAND_ALTKICK_NOTMEMBER("&c&l[!] &7This player is not a member of your faction."),
-
-    COMMAND_ALTS_LIST_NOALTS("&c&l[!] &7%s does not have any alts in their faction!"),
     COMMAND_AUTOHELP_HELPFOR("Help for command"),
     COMMAND_HOME_OTHER_NOTSET("&c&l[!] &7%s does not have their faction home set!"),
     COMMAND_HOME_TELEPORT_OTHER("&c&l[!] &7You have teleported to %s's faction home!"),
-    COMMAND_SHOP_DESCRIPTION("opens shop gui"),
-    COMMAND_SHOP_NO_FACTION("&c&l[!] &7You must be in a faction to perform this command!"),
-
 
     COMMAND_BAN_DESCRIPTION("Ban players from joining your Faction."),
     COMMAND_BAN_TARGET("&c&l[!] &7You were &cbanned &7from &c%1$s"), // banned player perspective
@@ -218,53 +196,18 @@ public enum TL {
     COMMAND_BOOM_ENABLED("&c&l[!] &c%1$s&7 has&c %2$s&7 explosions in your faction's territory."),
     COMMAND_BOOM_DESCRIPTION("Toggle explosions (peaceful factions only)"),
 
-    COMMAND_GIVEBOOSTER_INVALID_DURATION("&c&l[!] &b%1$s &7is not a valid duration!"),
-    COMMAND_GIVEBOOSTER_INVALID_BOOSTER("&c&l[!] &b%1$s &7is not a valid booster! &ePlease use: EXP, MOB, MCMMO."),
-    COMMAND_GIVEBOOSTER_INVALID_MULTIPLIER("&c&l[!] &b%1$s &7is not a valid multiplier!"),
-    COMMAND_GIVEBOOSTER_BOOSTER_GIVEN("&a&l[!] &7You have given a booster to &b%1$s&7."),
-    COMMAND_GIVEBOOSTER_DESCRIPTION("Give a Player a Faction Booster"),
-
-    COMMAND_SANDBOTS_DESCRIPTION("The ability to spawn sandbots in"),
-
     COMMAND_SET_BASE_REGION_FAILED("&cPlease wait {time} minutes before resetting your base region."),
     COMMAND_SET_BASE_REGION_SUCCESS("&aSaved {claims} connected claims in a 50x50 radius as your faction's base region."),
     COMMAND_SET_BASE_REGION_DESCRIPTION("Set base region for faction"),
     COMMAND_SET_BASE_REGION_RESET("&aYour factions Base Region has been successfully cleared"),
     COMMAND_SET_BASE_REGION_MAX_REGIONS("&c&l[!] &7Your faction already has set their base region &e%1$s&7/&e%2$s times!"),
-    COMMAND_SET_BASE_REGION_GRACE("&c&l[!] &7You may not set your base region whilst &cgrace is disabled&7!"),
     COMMAND_SET_BASE_REGION_NOT_CLAIMS("&c&l[!] &7You must be in &eyour own claims &7to use this command!"),
-
-    COMMAND_BOOSTER_NONE_ACTIVE("&c&l[!] &7Your faction does not have any boosters active!"),
-    COMMAND_BOOSTER_DESCRIPTION("View All Active Factions Boosters"),
-
-    BOOSTER_CANNOT_USE_WILDERNESS("&c&l[!] &7You may not use a faction booster whilst in wilderness!"),
-    BOOSTER_OVER_CAP_LIMIT("&c&l[!] &7You may not use boosters with over a 10x multiplier!"),
-    BOOSTER_MULTIPLE_RUNNING("&c&l[!] &7You can only apply the same {multiplier}x while your booster is active."),
-    BOOSTER_ALREADY_ACTIVE("&c&l[!] Your faction already has this booster activated by {player} for another {time-left}!"),
-    BOOSTER_TITLE_COMMAND("&e&lCurrent Active Faction Boosters&e:"),
-    BOOSTER_ACTIVE_PHRASE("&6&l* &e&l{multiplier}x {boosterType} &6started by &e&l{player} &6expires in &e&l{time-left}&6!"),
-    BOOSTER_EXPIRED("&c&l[!] &e&l{multiplier}x {boosterType} &ffrom &e&l{player} &fhas &c&lEXPIRED&7!"),
-    BOOSTER_REMINDER_EXP("&a&l+ {multiplier}x EXP &a({player}''s Faction Booster &7[{time-left}]&a)"),
-    BOOSTER_REMINDER_MCMMO("&a&l+ {multiplier}x mcMMO &a({player}''s Faction Booster &7[{time-left}]&a)"),
 
     COMMAND_BYPASS_ENABLE("&e&l[!] &eYou have enabled admin bypass mode. You will be able to build or destroy anywhere."),
     COMMAND_BYPASS_ENABLELOG(" has ENABLED admin bypass mode."),
     COMMAND_BYPASS_DISABLE("&c&l[!] &cYou have disabled admin bypass mode."),
     COMMAND_BYPASS_DISABLELOG(" has DISABLED admin bypass mode."),
     COMMAND_BYPASS_DESCRIPTION("Enable admin bypass mode"),
-
-    COMMAND_BANNER_DESCRIPTION("Turn a held banner into a war banner"),
-    BANNER_CANNOT_BREAK("&c&l[!] &7You may not break a faction banner!"),
-    COMMAND_BANNER_NOBANNER("&c&l[!] &cPlease set a banner using /f setbanner"),
-    COMMAND_BANNER_NOTENOUGHMONEY("&c&l[!] &7You do&c not&7 have enough money"),
-    COMMAND_BANNER_MONEYTAKE("&c&l[!] $&c{amount} &7has been taken from your account."),
-    COMMAND_BANNER_SUCCESS("&c&l[!] &7You have created a &c&lWarBanner!"),
-    COMMAND_BANNER_DISABLED("&c&l[!] &7Buying&c warbanners&7 is &cdisabled!"),
-
-    COMMAND_TPBANNER_NOTSET("&c&l[!] &7Your faction &cdoes not &7have a &c&lWarBanner &7placed!"),
-    COMMAND_TPBANNER_SUCCESS("&c&l[!] &cTeleporting &7to your factions's &c&lWarBanner"),
-    COMMAND_TPBANNER_DESCRIPTION("Teleport to your faction banner"),
-
 
     COMMAND_CHAT_DISABLED("&c&l[!] &7The built in chat channels are &cdisabled &7on this server."),
     COMMAND_CHAT_INVALIDMODE("&c&l[!] &cUnrecognised &7chat mode. Please enter either '&da&7','&af&7','&6m&7' or '&fp&7'"),
@@ -302,8 +245,6 @@ public enum TL {
     COMMAND_CLAIMLINE_ABOVEMAX("&c&l[!]&7 The &cmaximum&7 limit for claim line is &c%s&7."),
     COMMAND_CLAIMLINE_NOTVALID("&c&l[!]&7 &c%s&7 is not a &ccardinal &7direction. You may use &cnorth&7, &ceast&7, &csouth &7or &cwest&7."),
 
-    CHEST_ITEM_DENIED_TRANSFER("&c&l[!] &7You may not transfer &b%1$s &7into your factions chest!"),
-
     COMMAND_CONFIG_NOEXIST("&c&l[!]&7 No configuration setting \"&c%1$s&7\" exists."),
     COMMAND_CONFIG_SET_TRUE("\" option set to true (enabled)."),
     COMMAND_CONFIG_SET_FALSE("\" option set to false (disabled)."),
@@ -333,14 +274,6 @@ public enum TL {
 
     COMMAND_COORDS_MESSAGE("&c&l[!] &7{player}&7's coords are &c{x}&7,&c{y}&7,&c{z}&7 in &c{world}"),
     COMMAND_COORDS_DESCRIPTION("broadcast your coords to your faction"),
-
-    COMMAND_CHECKPOINT_DISABLED("&c&l[!]&7 You &ccannot&7 use checkpoint while its&c disabled&7!"),
-    COMMAND_CHECKPOINT_SET("&c&l[!]&7 You have &cset&7 the &cfaction checkpoint&7 at your &cLocation&7."),
-    COMMAND_CHECKPOINT_GO("&c&l[!]&7 &cTeleporting&7 to &cfaction checkpoint"),
-    COMMAND_CHECKPOINT_INVALIDLOCATION("&c&l[!]&7 &cInvalid Location!&7 You can &cset&7 checkpoints in &cyour claims&7 or &2wilderness&7."),
-    COMMAND_CHECKPOINT_NOT_SET("&c&l[!]&7 You have to &cset &7the &cfaction checkpoint&7 first."),
-    COMMAND_CHECKPOINT_CLAIMED("&c&l[!]&7 Your current &cfaction checkpoint&7 is claimed, set a &cnew &7one!"),
-    COMMAND_CHECKPOINT_DESCRIPTION("Set or go to your faction checkpoint!"),
 
     COMMAND_CREATE_ALREADY_RESERVED("&c&l[!] &7This faction tag has already been reserved!"),
     COMMAND_CREATE_MUSTLEAVE("&c&l[!]&7 You must &cleave &7your &ccurrent faction &7first."),
@@ -380,48 +313,15 @@ public enum TL {
     CHECK_PLAYER_LORE_LINE("&bPlayer: &f%1$s"),
     CHECK_HISTORY_GUI_ICON("&bCheck history"),
     CHECK_MUST_BE_ATLEAST_COLEADER("&cYou must be atleast &dCo Leader &cto access &fcheck settings"),
-    WEE_WOO_MESSAGE("&c&lFaction WeeWoo&7 » We Are Being Raided!"),
-    COMMAND_WEEWOO_STARTED("&c&lFaction WeeWoo&7 » &aWeewoo started by %1$s"),
-    COMMAND_WEEWOO_STOPPED("&c&lFaction WeeWoo&7 » &aWeewoo stopped by %1$s"),
-    COMMAND_WEEWOO_ALREADY_STARTED("&cWeewoo already started"),
-    COMMAND_WEEWOO_ALREADY_STOPPED("&cWeewoo already stopped"),
-    COMMAND_WEEWOO_DESCRIPTION("notifies all faction members you are being raided"),
     CHECK_LEADERBOARD_HEADER("&8---- Check Leaderboard ----"),
     CHECK_LEADERBOARD_LINE("&f%1$s. &d%2$s: &f%3$s (%4$s Buffer, %5$s Walls)"),
     CHECK_LEADERBOARD_NO_DATA("&8No data"),
-    COMMAND_DISCORD_DESCRIPTION("Link your Discord account"),
     COMMAND_DEBUG_DESCRIPTION("Print debugging info to console"),
     COMMAND_DEBUG_PRINTED("&c&l[!]&7 Debug info has been printed to console"),
-
-    //DISCORD
-    COMMAND_INVITE_BOT("&c&l[!] Click Here To Invite The Discord Bot To Your Factions Discord"),
-    WEEWOO_ALREADY_STARTED_DISCORD("Weewoo already started"),
-    WEEWOO_ALREADY_STARTED_INGAME("&cWeewoo already started"),
-    WEEWOO_STARTED_DISCORD("Weewoo started by %1$s"),
-    WEEWOO_ALREADY_STOPPED_DISCORD("Weewoo already stopped"),
-    WEEWOO_STOPPED_DISCORD("Weewoo stopped by %1$s"),
-    INVITE_BOT_USAGE("Gets the invite for the Discord bot"),
-    SET_GUILD_ID_USAGE("Sets the guild id for the faction"),
-    SET_GUILD_ID_SUCCESS("&aSuccesfully set guild id"),
-    SET_GUILD_ID_INVALID_ID("&cInvalid guild id (is the bot in the guild?)"),
-    SET_GUILD_ID_UNABLE_TO_MESSAGE_GUILD_OWNER("&cUnable to message guild owner"),
-    SET_GUILD_ID_TIMED_OUT_MINECRAFT("&cTimed out"),
-    SET_GUILD_ID_TIMED_OUT_DISCORD("Timed out"),
-    SET_GUILD_ID_GUILD_ALREADY_LINKED("&cThat guild is already linked to a faction"),
-    SET_GUILD_ID_RESET_ID("&c&l[!] &7You have reset your guild id!"),
-    SET_GUILD_ID_PMING_OWNER("&aNow Direct messaging the Discord server owner to approve the link, times out in 15 seconds."),
-    CANT_FORCE_SET_GUILD_ID("&cYou cannot forcefully set guild ids for other guilds."),
-    DISCORD_LINK_REQUIRED("&c&l[!] You cannot do this while your Discord is not linked! Link your account by using /f discord link"),
-    DISCORD_LINK_SUCCESS("Your account has been linked!"),
-    DISCORD_CODE_SENT("&c&l[!]&7 Your code is &f%1$s &7please send this to the SaberFactions bot on Discord"),
-    DISCORD_ALREADY_LINKED("&c&l[!]&7 Your account is already linked to &f%1$s"),
-    DISCORD_CODE_INVALID_KEY("That code is invalid, verify the code is correct."),
-    DISCORD_CODE_INVALID_FORMAT("If you are submitting a code please only type the code. Example message: 0000"),
 
     GOD_APPLE_COOLDOWN("&c&l[!] &cYou may eat another god apple again in &b{seconds} seconds&c!"),
     ENDER_PEARL_COOLDOWN("&c&l[!] &cYou may enderpearl again in &b{seconds} seconds&c!"),
     VEHICLE_TELEPORT_BLOCK("&c&l[!] You cannot teleport while you are inside a vehicle"),
-
 
     COMMAND_DEINVITE_CANDEINVITE("&c&l[!]&7 Players you can &cdeinvite: "),
     COMMAND_DEINVITE_CLICKTODEINVITE("&c&l[!]&7 Click to &crevoke&7 invite for &c%1$s"),
@@ -444,7 +344,6 @@ public enum TL {
     COMMAND_DESCRIPTION_DESCRIPTION("Change the faction description"),
 
     COMMAND_DISBAND_IMMUTABLE("&c&l[!]&7 &7You &ccannot&7 disband &2Wilderness&7,&e SafeZone&7, or &4WarZone."),
-    COMMAND_DISBAND_SPAWNERS_SPAWNER_CHUNKS_FOUND("&cYou may not disband a faction while there are spawners in your spawnerchunks."),
     COMMAND_DISBAND_TOO_YOUNG("&c&l[!] &7Your Faction is too young to withdraw money like this!"),
     COMMAND_DISBAND_MARKEDPERMANENT("&c&l[!]&7 This faction is designated as&c permanent&7, so you cannot disband it."),
     COMMAND_DISBAND_BROADCAST_YOURS("&c&l[!]&7 &c%1$s&7 disbanded your &cfaction."),
@@ -466,11 +365,6 @@ public enum TL {
     COMMAND_FLY_CHECK_ENEMY("&c&l[!]&7 Cannot fly here, an enemy is &cnearby&7."),
     COMMAND_FLY_NO_EPEARL("&c&l[!] &7You &ccannot&7 throw enderpearls while flying!"),
     COMMAND_FLY_AUTO("&eFaction auto flight &d%1$s"),
-
-    COMMAND_FOCUS_SAMEFACTION("&c[!] You may not focus players in your faction!"),
-    COMMAND_FOCUS_FOCUSING("&c&l[!] &7Your faction is now focusing &c%s"),
-    COMMAND_FOCUS_NO_LONGER("&c&l[!] &7Your faction is no longer focusing &c%s"),
-    COMMAND_FOCUS_DESCRIPTION("Focus a Specific Player"),
 
     COMMAND_FRIENDLY_FIRE_DESCRIPTION("Toggle friendly fire for yourself."),
     COMMAND_FRIENDLY_FIRE_TOGGLE_OFF("&c[!] &7You have toggled friendly fire &4off&7!"),
@@ -496,20 +390,7 @@ public enum TL {
     COMMAND_FWARP_PASSWORD_REQUIRED("&c&l[!]&c Warp Password:"),
     COMMAND_FWARP_PASSWORD_TIMEOUT("&c&l[!]&7 Warp password &ccanceled"),
 
-    COMMAND_GRACE_TIME_REMAINING("&c&lGracePeriod &8» &cTime Remaining: &b%1$s"),
-    COMMAND_GRACE_DISABLED_NO_FORMAT("&c[!] &7Grace is disabled! Explosions are allowed!"),
-    COMMAND_GRACE_ENABLED_FORMAT("&c&lGracePeriod &8» &7Grace Period Has Now &aStarted&7! &cTime Remaining: &b%1$s"),
-    COMMAND_GRACE_DISABLED_FORMAT("&c&lGracePeriod &8» &7Grace Period Has Now &cEnded&7! &cExplosions are now enabled!"),
-    COMMAND_GRACE_DESCRIPTION("Toggles Grace Period on/off"),
-    COMMAND_GRACE_ENABLED_PLACEMENT("&cYou cannot place &e%s &cwhile grace period is active!"),
-
     COMMAND_HINT_PERMISSION("&aYou can manage your factions permissions using &7/f perms"),
-
-    COMMAND_SPAWNERCHUNK_CLAIM_SUCCESSFUL("&a[!] &7You have successfully claimed a &espawner chunk &7for your faction."),
-    COMMAND_SPAWNERCHUNK_ALREADY_CHUNK("&c&l[!] &7This chunk is already a spawnerchunk!"),
-    COMMAND_SPAWNERCHUNK_PAST_LIMIT("&c&l[!] &cYou have exceeded your max spawnerchunk limit! &7Limit: &f%1$s"),
-    SPAWNER_CHUNK_UNCLAIMED("&aYou have unclaimed a spawnerchunk!"),
-    COMMAND_SPAWNERCHUNK_DESCRIPTION("Claim a spawnerchunk"),
 
     COMMAND_HOME_DISABLED("&c&l[!]&7 Sorry, Faction homes are &cdisabled on this server."),
     COMMAND_HOME_TELEPORTDISABLED("&c&l[!]&7 Sorry, the ability to &cteleport &7to Faction homes is &cdisabled &7on this server."),
@@ -546,14 +427,12 @@ public enum TL {
     COMMAND_INVITE_ALREADYINVITED("&c&l[!]&7 &c%1$s&7 has already been invited"),
     COMMAND_INVITE_DESCRIPTION("Invite a player to your faction"),
     COMMAND_INVITE_BANNED("&c&l[!]&7 &7%1$s &cis banned &7from your Faction. &cNot &7sending an invite."),
-    COMMAND_INVITE_NOT_IN_ROSTER("&c&l[!] &b%s &7is not in your factions roster!"),
 
 
     COMMAND_JOIN_CANNOTFORCE("&c&l[!]&7 You&c do not&7 have permission to &cmove other players&7 into a faction."),
     COMMAND_JOIN_SYSTEMFACTION("&c&l[!]&7 Players may only join &cnormal factions&7. This is a &c&lsystem faction&7."),
     COMMAND_JOIN_ALREADYMEMBER("&c&l[!]&7 &c%1$s %2$s already a member of&c %3$s"),
     COMMAND_JOIN_ATLIMIT_MEMBERS(" &c&l[!]&7 The faction &c%1$s &7is at the limit of&c %2$d&7 members, so&c %3$s&7 cannot currently join."),
-    COMMAND_JOIN_ATLIMIT_ALTS(" &c&l[!]&7 The faction &c{faction} &7is at the limit of&c {limit}&7 alts, so&c {at}&7 cannot currently join."),
     COMMAND_JOIN_INOTHERFACTION("&c&l[!]&7 &c%1$s &7must leave&c %2$s &7current faction first."),
     COMMAND_JOIN_NEGATIVEPOWER("&c&l[!]&7 &c%1$s &7cannot join a faction with a &cnegative power&7 level."),
     COMMAND_JOIN_REQUIRESINVITATION("&c&l[!]&7 This faction &crequires&7 an invitation."),
@@ -567,13 +446,6 @@ public enum TL {
     COMMAND_JOIN_MOVEDLOG("&c&l[!]&7 &c%1$s &7moved the player&c %2$s &7into the faction&c %3$s&7."),
     COMMAND_JOIN_DESCRIPTION("&a&l» &7Join a faction"),
     COMMAND_JOIN_BANNED("&c&l[!]&7 You are &cbanned &7from &c%1$s."),
-    COMMAND_JOIN_NOT_IN_ROSTER("&c&l[!] &7You cannot join this faction, you're not on their roster!"),
-    COMMAND_JOIN_ROSTER_JOIN_COOLDOWN("&c&l[!] &7You are currently on cooldown from joining this faction!"),
-    COMMAND_JOIN_ROSTER_JOIN_NO_ROOM_ONLINE("&c&l[!] &7All of the players in this faction are online!"),
-    COMMAND_JOIN_ROSTER_JOIN_NO_ROOM_FULL("&c&l[!] &7This faction is currently full of players!"),
-    COMMAND_JOIN_ROSTER_JOIN_NO_REPLACEMENT_FOUND("&c&l[!] &7There was no valid replacement found in this faction!"),
-
-
 
     COMMAND_KICK_CANDIDATES("&c&l[!]&7 Players you can kick: "),
     COMMAND_KICK_CLICKTOKICK("Click to kick "),
@@ -594,7 +466,6 @@ public enum TL {
     COMMAND_LIST_FORLIST("for listing the factions"),
     COMMAND_LIST_ONLINEFACTIONLESS("Online factionless: "),
     COMMAND_LIST_DESCRIPTION("&a&l» &7See a list of the factions"),
-
 
     COMMAND_SPAM_ENABLED("&c&l[!]&7 Factions Anti-Spam is now&a enabled"),
     COMMAND_SPAM_DISABLED("&c&l[!]&7 Factions Anti-Spam in now&c disabled"),
@@ -653,11 +524,6 @@ public enum TL {
     COMMAND_COLEADER_PROMOTED("&c&l[!]&7 You have &cpromoted &7%1$s to &ccoleader."),
     COMMAND_COLEADER_DESCRIPTION("Give or revoke coleader rights"),
 
-    COMMAND_CONVERTCONFIG_DESCRIPTION("Convert your SavageFactions config to SaberFactions"),
-    COMMAND_CONVERTCONFIG_SUCCESS("&cConfiguration successfully converted"),
-    COMMAND_CONVERTCONFIG_FAIL("&cConfiguration conversion failed!"),
-    COMMAND_CONVERTCONFIG_FAILCONFIGMISSING("&cPlease ensure you have placed SavageFactions files in a folder called SavageFactions"),
-
     COMMAND_MODIFYPOWER_ADDED("&c&l[!]&7 Added &c%1$f &7power to &c%2$s. &7New total rounded power: &c%3$d"),
     COMMAND_MODIFYPOWER_DESCRIPTION("Modify the power of a faction/player"),
 
@@ -709,8 +575,6 @@ public enum TL {
     COMMAND_OWNER_ADDED("&c&l[!]&7 You have added &c%1$s&7 to the &cowner list&7 for this claimed land."),
     COMMAND_OWNER_DESCRIPTION("Set ownership of claimed land"),
 
-    COMMAND_KILLHOLOGRAMS_DESCRIPTION("Kill holograms in a radius, admin command"),
-
     COMMAND_OWNERLIST_DISABLED("&c&l[!]&7 &cSorry, &7but owned areas are &cdisabled&7 on this server."),//dup->
     COMMAND_OWNERLIST_WRONGFACTION("&c&l[!]&7 This land &cis not&7 claimed by your faction."),//eq
     COMMAND_OWNERLIST_NOTCLAIMED("&c&l[!]&7 This land is not claimed by any faction, thus no owners."),//eq
@@ -729,20 +593,6 @@ public enum TL {
     COMMAND_DISCORDSEE_FACTION_DISCORD("&c&l[!] &b%1$s's &7faction has their discord link set to &b%2$s&7."),
     COMMAND_DISCORDSEE_DESCRIPTION("&c&l[!] &7View a specific factions discord link with &b/f discord <faction>&b."),
 
-
-    PAYPALSEE_PLAYER_PAYPAL("&c&l[!] &7You're factions paypal is: &b%1$s&7."),
-    COMMAND_PAYPAL_NOTSET("&c&l[!] &7Your faction does not have their paypal set!"),
-    COMMAND_PAYPALSET_ADMIN_SUCCESSFUL("&c&l[!] &7You have set &b%1$s's &7paypal to &b%2$s&7."),
-    COMMAND_PAYPALSET_ADMIN_FAILED("&c&l[!] &b%1$s &7is not an email!"),
-    COMMAND_PAYPALSET_NOTEMAIL("&c&l[!] &b%1$s &7is not an email!"),
-    COMMAND_PAYPALSET_DESCRIPTION("&c&l[!] &7Set the email of your faction to claim rewards."),
-    COMMAND_PAYPALSEE_DESCRIPTION("&c&l[!] &7View a specific factions paypal email with &b/f <seepaypal/getpaypal> <faction>&b."),
-    COMMAND_PAYPALSET_CREATED("&c&l[!] &7Make sure to type &b/f <paypal/setpaypal> <email>&7!"),
-    COMMAND_PAYPALSET_SUCCESSFUL("&c&l[!] &7Successfully set your factions email - &b%1$s&7."),
-    COMMAND_PAYPALSEE_FACTION_PAYPAL("&c&l[!] &b%1$s's &7faction has their paypal set to &b%2$s&7."),
-    COMMAND_PAYPALSEE_FACTION_NOTSET("&c&l[!] &b%1$s's &7paypal has not yet been set!"),
-    COMMAND_PAYPALSEE_FACTION_NOFACTION("&c&l[!] &b%1$s &7does not have a faction!"),
-
     COMMAND_PEACEFUL_DESCRIPTION("&c&l[!]&7Set a faction to peaceful"),
     COMMAND_PEACEFUL_YOURS("&c&l[!]&7%1$s has %2$s your faction"),
     COMMAND_PEACEFUL_OTHER("&c&l[!]&7%s has %s the faction '%s'."),
@@ -757,25 +607,6 @@ public enum TL {
     COMMAND_PERM_TOP("RCT MEM OFF ALLY TRUCE NEUT ENEMY"),
     COMMAND_PERM_LOCKED("&cThis permission has been locked by the server"),
     COMMAND_PERM_EDIT_ONLY_MENU("&c&l[!] &cYou mat not edit permissions via command!"),
-
-
-    COMMAND_POINTS_SHOW_DESCRIPTION("See the point balance of factions"),
-    COMMAND_POINTS_SHOW_WILDERNESS("&c&l[!] &7You may not check the point balance of wilderness!"),
-    COMMAND_POINTS_SHOW_OWN("&c&l[!] &7Your faction has &e%1$s &7points."),
-    COMMAND_POINTS_SHOW_OTHER("&c&l[!] &e{faction} &7has a point balance of &b{points}&7."),
-    COMMAND_POINTS_FAILURE("&c&l[!] &c{faction} does not exist."),
-    COMMAND_POINTS_SUCCESSFUL("&c&l[!] &7You have added &e%1$s &7points to &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
-    COMMAND_POINTS_INSUFFICIENT("&c&l[!] &7You may not add/set/remove a negative number of points to a faction!"),
-    COMMAND_POINTS_DESCRIPTION("General Command For Faction Points"),
-
-    COMMAND_ADDPOINTS_DESCRIPTION("Add Points to Faction"),
-
-
-    COMMAND_REMOVEPOINTS_SUCCESSFUL("&c&l[!] &7You have taken &e%1$s &7points from &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
-    COMMAND_REMOVEPOINTS_DESCRIPTION("Remove Points from a Faction"),
-
-    COMMAND_SETPOINTS_SUCCESSFUL("&c&l[!] &7You have set &e%1$s &7points to &b%2$s&7. &b%2$s's &7New Point Balance: &e%3$s"),
-    COMMAND_SETPOINTS_DESCRIPTION("Set Points of a Faction"),
 
     COMMAND_SET_RELATION_SUCCESS("&c&l[!] &7You have set a relation of &e%1$s &7between &b%2$s and &b%3$s&7."),
     COMMAND_SET_RELATION_DESCRIPTION("Set the relation of 2 factions."),
@@ -853,40 +684,12 @@ public enum TL {
     COMMAND_RESERVE_SUCCESS("&a&l[!] &7You have reserved the faction &a%1$s &7for player &a%2$s"),
     COMMAND_RESERVE_ALREADYRESERVED("&c&l[!] &7The faction &b%1$s &7has already been reserved!"),
 
-    COMMAND_ROSTERADD_INVALIDROLE("&c&l[!] &7Please enter a valid role: &ecoleader, mod, member, recruit"),
-    COMMAND_ROSTERADD_ALREADY_MEMBER("&c&l[!] &7This player is already in your roster!"),
-    COMMAND_ROSTERADD_FULL("&c&l[!] &7Your roster is currently full!"),
-    COMMAND_ROSTERADD_NOT_FOUND("&c&l[!] &7That player cannot be found!"),
-    COMMAND_ROSTERADD_PLAYER_ADDED("&a&l[!] &7You have added &e%1$s &7to your roster with the role &a%2$s&7!"),
-    COMMAND_ROSTERADD_CANNOT_ADD_SELF("&a&l[!] &7You cannot add yourself to the roster!"),
-    COMMAND_ROSTERADD_DESCRIPTION("Add users to your roster"),
-
-
-    COMMAND_ROSTERREMOVE_NOT_FOUND("&c&l[!] &7That player cannot be found!"),
-    COMMAND_ROSTERREMOVE_NOT_IN_ROSTER("&c&l[!] &7That player is not in your factions roster!"),
-    COMMAND_ROSTERREMOVE_CANNOT_REMOVE_SELF("&a&l[!] &7You cannot remove yourself from the roster!"),
-    COMMAND_ROSTEREMOVE_PLAYER_REMOVED("&a&l[!] &7You have removed &e%1$s &7from your roster!"),
-    COMMAND_ROSTERREMOVE_DESCRIPTION("Remove users from your roster"),
-
-    COMMAND_ROSTERREMOVE_MAX_KICKS_REACHED("&c&l[!] &7Your faction has reached the maximum amount of roster kicks! &e%1$d&f/&e%2$d"),
-
-    COMMAND_ROSTER_DESCRIPTION("General roster usage for your faction"),
-
-
-
     COMMAND_SAFEUNCLAIMALL_DESCRIPTION("Unclaim all safezone land"),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMED("&c&l[!]&7 You unclaimed&c ALL&7 safe zone land."),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG("&c&l[!]&7 &c%1$s&7 unclaimed all safe zones."),
 
     COMMAND_SAVEALL_SUCCESS("&c&l[!]&7 &cFactions saved to disk!"),
     COMMAND_SAVEALL_DESCRIPTION("Save all data to disk"),
-
-    COMMAND_SCOREBOARD_DESCRIPTION("Scoreboardy things"),
-
-    COMMAND_SETBANNER_SUCCESS("&c&l[!] &7Banner Pattern Set!"),
-    COMMAND_SETBANNER_NOTBANNER("&c&l[!] &7The item is &cnot&7 a banner!"),
-    COMMAND_SETBANNER_DESCRIPTION("set banner pattern for your faction"),
-
 
     COMMAND_SETDEFAULTROLE_DESCRIPTION("/f defaultrole <role> - set your Faction's default role."),
     COMMAND_SETDEFAULTROLE_NOTTHATROLE("&c&l[!]&7 You cannot set the default to admin."),
@@ -913,17 +716,7 @@ public enum TL {
 
 
     COMMAND_SETPOWER_SUCCESS("&aSet power for &e%s &ato &b%d"),
-    COMMAND_SETPOWER_DESCRIPTION("set current playing power for player"),
-
-    COMMAND_SETMAXVAULTS_DESCRIPTION("Set max vaults for a Faction."),
-    COMMAND_SETMAXVAULTS_SUCCESS("&aSet max vaults for &e%s &ato &b%d"),
-    COMMAND_ONCOOOLDOWN("&c&l[!] &7You cannot use this command for another &b%1$s &7seconds."),
-
-    COMMAND_SHIELD_DESCRIPTION("Use of shield selection guis"),
-
-    COMMAND_SPAWNER_LOCK_TOGGLED("&c&l[!] &7You have set placement of spawners to %1$s"),
-    COMMAND_SPAWNER_LOCK_DESCRIPTION("enable/disable placement of spawners"),
-    COMMAND_SPAWNER_LOCK_CANNOT_PLACE("&c&l[!] &7Placement of spawners has been temporarily disabled!"),
+    COMMAND_SETPOWER_DESCRIPTION("set current,  playing power for player"),
 
     COMMAND_STRIKES_CHANGED("&c&l[!] &7You have set &c%1$s's &7strikes to &c%2$s"),
     COMMAND_STRIKES_INFO("&c&l[!] &7%1$s has %2$s strikes"),
@@ -934,36 +727,6 @@ public enum TL {
     COMMAND_STRIKETAKE_DESCRIPTION("Take a strike from a faction"),
     COMMAND_STRIKESET_DESCRIPTION("Set a faction's strikes explicitly."),
     COMMAND_STRIKESINFO_DESCRIPTION("Get a faction's strikes"),
-
-    SHOP_NOT_ENOUGH_POINTS("&c&l[!] &7Your faction does not have enough points to purchase this!"),
-    SHOP_ERROR_DURING_PURCHASE("&c&l[!] &7There was an error while trying to give items please check your inventory! Purchase was not completed!"),
-    SHOP_BOUGHT_BROADCAST_FACTION("\n&c&l[!] &e&lFactionShop » &b{player} &7bought &b{item}&7 for &b{cost} &7points!\n"),
-
-
-    COMMAND_VIEWCHEST_DESCRIPTION("view a factions chest/pv"),
-
-    COMMAND_VAULT_DESCRIPTION("Open your placed faction vault!"),
-    COMMAND_VAULT_INVALID("&c&l[!]&7 Your vault was either&c claimed&7, &cbroken&7, or has&c not been&7 placed yet."),
-    COMMAND_VAULT_OPENING("&c&l[!]&7 Opening faction vault."),
-    COMMAND_VAULT_NO_HOPPER("&c&l[!] &7You cannot place a hopper near a vault!"),
-
-    COMMAND_GETVAULT_ALREADYSET("&c&l[!]&7 Vault has already been set!"),
-    COMMAND_GETVAULT_ALREADYHAVE("&c&l[!]&7 You already have a vault in your inventory!"),
-    COMMAND_GETVAULT_CHESTNEAR("&c&l[!]&7 &7There is a chest or hopper &cnearby"),
-    COMMAND_GETVAULT_SUCCESS("&cSucessfully set vault."),
-    COMMAND_GETVAULT_INVALIDLOCATION("&cVault can only be placed in faction land!"),
-    COMMAND_GETVAULT_DESCRIPTION("Get the faction vault item!"),
-    COMMAND_GETVAULT_RECEIVE("&cYou have recieved a faction vault!"),
-    COMMAND_GETVAULT_NOMONEY("&cYou do not have enough money"),
-    COMMAND_GETVAULT_MONEYTAKE("&c{amount} has been taken from your account"),
-
-    COMMAND_LOGOUT_KICK_MESSAGE("&2You have safely logged out!"),
-    COMMAND_LOGOUT_ACTIVE("&c&l[!] &7You are already logging out!"),
-    COMMAND_LOGOUT_LOGGING("&c&l[!] &7You are logging out. Please wait &b%1$s &7seconds."),
-    COMMAND_LOGOUT_DESCRIPTION("logout safely from the server"),
-    COMMAND_LOGOUT_MOVED("&c&l[!] &7Your logout was cancelled because you moved!"),
-    COMMAND_LOGOUT_DAMAGE_TAKEN("&c&l[!] &7Your logout was cancelled because you were damaged!"),
-    COMMAND_LOGOUT_TELEPORTED("&c&l[!] &7Your logout was cancelled because you teleported!"),
 
     COMMAND_NOTIFICATIONS_TOGGLED_ON("&c&l[!] &7You will &anow see &7claimed land notifications!"),
     COMMAND_NOTIFICATIONS_TOGGLED_OFF("&c&l[!] &7You will &cno longer see &7claimed land notifications!"),
@@ -1003,9 +766,6 @@ public enum TL {
     COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
     COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
     COMMAND_SHOWINVITES_DESCRIPTION("Show pending faction invites"),
-
-    COMMAND_ALTS_LIST_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
-    COMMAND_ALTS_DEINVITE_DESCRIPTION("Base command for revoking alt invitations"),
 
     COMMAND_SEECHUNK_DESCRIPTION("Show chunk boundaries"),
     COMMAND_SEECHUNK_TOGGLE("&eSeechunk &d%1$s"),
@@ -1054,14 +814,6 @@ public enum TL {
     COMMAND_TOGGLEALLIANCECHAT_IGNORE("Alliance chat is now ignored"),
     COMMAND_TOGGLEALLIANCECHAT_UNIGNORE("Alliance chat is no longer ignored"),
 
-    COMMAND_TOGGLESB_DISABLED("You can't toggle scoreboards while they are disabled."),
-
-
-    COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
-    COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
-    COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
-    COMMAND_TOP_INVALID("Could not sort by %s. Try money, online, members, power or land."),
-
     COMMAND_TNT_DISABLED_MSG("&cThis command is disabled!"),
     COMMAND_TNT_INVALID_NUM("The amount needs to be a number!"),
     COMMAND_TNT_WIDTHDRAW_NOTENOUGH_TNT("&cNot enough tnt in bank."),
@@ -1105,9 +857,7 @@ public enum TL {
     COMMAND_UNCLAIM_FORUNCLAIM("for unclaiming this land"),
     COMMAND_UNCLAIM_FACTIONUNCLAIMED("%1$s unclaimed some land."),
     COMMAND_UNCLAIM_DESCRIPTION("Unclaim the land where you are standing"),
-    COMMAND_UNCLAIM_SPAWNERCHUNK_SPAWNERS("&c&l[!] &7You may not unclaim a spawnerchunk whilst there are still spawners in it! &eSpawner Count: %1$s"),
 
-    COMMAND_UNCLAIMALL_SPAWNERS_IN_CHUNK("&cYou may not unclaim a spawnerchunk whilst there are still spawners in it!"),
     COMMAND_UNCLAIMALL_TOUNCLAIM("to unclaim all faction land"),
     COMMAND_UNCLAIMALL_FORUNCLAIM("for unclaiming all faction land"),
     COMMAND_UNCLAIMALL_UNCLAIMED("%1$s unclaimed ALL of your faction's land."),
@@ -1132,18 +882,12 @@ public enum TL {
     COMMAND_WARUNCLAIMALL_SUCCESS("You unclaimed ALL war zone land."),
     COMMAND_WARUNCLAIMALL_LOG("%1$s unclaimed all war zones."),
 
-
     COMMAND_DRAIN_DESCRIPTION("The ability to obtain all the money in faction members balances."),
     COMMAND_DRAIN_ROLE_DRAINED_AMOUNT("&c&l[!] &fYou have drained members with %1$s Role for &b%2$s."),
     COMMAND_DRAIN_NO_PLAYERS("&c&l[!] &cYou cannot drain a faction with no other members!"),
     COMMAND_DRAIN_RECIEVED_AMOUNT("&c&l[!] &fYou have drained all of your faction members for &b%1$s."),
     COMMAND_DRAIN_INVALID_AMOUNT("&c&l[!] &fYou cannot drain a faction with no worth."),
     COMMAND_DRAIN_COOLDOWN("&c&l[!] &cYou may use /f drain again in &b{seconds} seconds&c!"),
-
-    COMMAND_WILD_DESCRIPTION("Teleport to a random location"),
-    COMMAND_WILD_SUCCESS("&c&l[!] &7Teleporting..."),
-    COMMAND_WILD_WORLD_NOT_ALLOWED("&c&l[!] &7You may not use &e/f wild &7in this world!"),
-    COMMAND_WILD_FAILED("&c&l[!] &7No Location Found... Please Try Again!"),
 
     COMMAND_RULES_DISABLED_MSG("&cThis command is disabled!"),
     COMMAND_RULES_DESCRIPTION("set/remove/add rules!"),
@@ -1210,14 +954,6 @@ public enum TL {
     CLAIM_YOUAREHERE("You are here"),
     CLAIM_NO_TERRITORY_PERM("You do not have permission from your faction leader to do this!"),
 
-
-    FACTION_BANNER_CANNOT_DESTROY_1("&c&l[!] &cYou cannot destroy %1$s's banner!"),
-    FACTION_BANNER_CANNOT_DESTROY_2("&7It will despawn in: %1$ss!"),
-    FACTION_BANNER_CANNOT_PLACE("&c&l[!] &cYou cannot place Faction Banners ion this world!"),
-    FACTION_BANNER_MUST_PLACE("&c&l[!] &cYou must place Faction Banners directly beneath you"),
-    FACTION_BANNER_ALREADY_PLACED_1("&c&l[!] &cYour faction already has an active /f banner placed!"),
-    FACTION_BANNER_ALREADY_PLACED_2("&7You can place a new /f banner in: %1$ss!"),
-
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */
@@ -1264,47 +1000,19 @@ public enum TL {
     GENERIC_YOUMUSTBE("&cYour must be atleast %1$s to do this!"),
     GENERIC_MEMBERONLY("&cYou must be in a faction to do this!"),
     GENERIC_WORLDGUARD("&cThis area is worldguard protected."),
-    GRACE_DISABLED_PLACEHOLDER("Disabled"),
     MACRO_DETECTED("&c&l[!] &cNo sir!"),
 
     NO_BALANCE_PLACEHOLDER_PARSED("no balance"),
 
     ROLE_LIST("&eTry using &arecruit, normal, moderator, coleader"),
 
-    // MISSION_CREATED_COOLDOWN("&c&l[!] &7Due to your immediate faction creation, you may not start missions for &b%1$s minutes&7!"),
-    MISSION_MISSION_STARTED("&f%1$s &dstarted the %2$s &fmission"),
-    MISSION_ALREAD_COMPLETED("&c&l[!] &7You may not restart a mission you have already completed"),
-    MISSION_MISSION_ACTIVE("&c&l[!] &7This mission is currently active!"),
-    MISSION_MISSION_MAX_ALLOWED("&c&l[!] &7You may not have more than &b%1$s &7missions active at once."),
-    MISSION_MISSION_ALL_COMPLETED("&c&l[!] &7Your faction has completed all available missions."),
-    MISSION_MISSION_FINISHED("&c&l[!] &7Your faction has successfully completed %1$s &7mission!"),
-    MISSION_MISSION_FAILED("&c&l[!] &7Your faction has failed %1$s &cmission!"),
-    COMMAND_MISSION_DESCRIPTION("Opens missions gui"),
-    MISSION_MISSION_CANCELLED("&c&l[!] &7You have cancelled your factions current mission!"),
-    MISSION_TRIBUTE_ITEM_DENIED_TRANSFER("&c&l[!] &7There are no tribute missions that accept &b%1$s&7."),
-    MISSION_RANDOM_MODE_DENIED("&c&l[!] &7Please select the %1$s&7 item to have a random mission assigned."),
-    MISSION_CANCEL_POINTS_TAKEN("&cFaction Mission cancelled for &e%1$s points! &cNew Point Balance: &e%2$s"),
-    MISSION_CANCEL_NOT_ENOUGH_POINTS("&cYour faction does not have enough points to cancel this mission!"),
-    MISSION_TOCANCEL("to cancel this mission."),
-    MISSION_FORCANCEL("for cancelling this mission."),
-
-
     // F Global \\
-
 
     PLAYER_NOT_FOUND("&c&l[!] &b%1$s &7is either not online or not in your faction!"),
     INVALID_PLAYER("&c&l[!] &b{player} &7is not online!"),
     INVALID_WORLD("&c&l[!] &b{world} &7is not a world!"),
     PLACEHOLDER_ROLE_NAME("None"),
     PLACEHOLDER_CUSTOM_FACTION("{faction} "),
-
-    SPAWNER_CHUNK_PLACE_DENIED_WILDERNESS("&c&l[!] &7You may not place spawners in wilderness!"),
-    SPAWNER_CHUNK_PLACE_DENIED_NOT_SPAWNERCHUNK("&c&l[!] &7You may not place spawners in this chunk. Only Spawner Chunks!"),
-
-
-    WARBANNER_NOFACTION("&cYou need a faction to use a warbanner!"),
-    WARBANNER_COOLDOWN("&cThe warbanner is on cooldown for your faction!"),
-    WARBANNER_INVALIDLOC("&cYou can only use warbanners in enemy land or the warzone"),
 
     /**
      * ASCII compass (for chat map)
@@ -1334,7 +1042,6 @@ public enum TL {
     ECON_PERSONGAVEMONEYTO("%1$s gave %2$s to %3$s."),
     ECON_PERSONTOOKMONEYFROM("%1$s took %2$s from %3$s."),
     ECON_DISABLED("Factions econ is disabled."),
-    ECON_OVER_BAL_CAP("&4The amount &e%s &4is over Essentials' balance cap."),
     ECON_MONEYLOST("&c&l[!] %s &7lost &c%s &7%s."),
     ECON_CANTAFFORD("&c%s &7can't afford &c%s&7 %s."),
     ECON_UNABLETOTRANSFER("&7Unable to transfer &c%s&7 to &c%s&7 from &c%s&7."),
@@ -1420,10 +1127,6 @@ public enum TL {
     PLAYER_PVP_NEUTRALFAIL("You can't hurt %s in their own territory unless you declare them as an enemy."),
     PLAYER_PVP_TRIED("%s tried to hurt you."),
 
-    SHIELD_CURRENTLY_ENABLE("&a&lCurrently Protected"),
-    SHIELD_NOT_SET("&c&lNot Set"),
-    SHIELD_CURRENTLY_NOT_ENABLED("&c&lCurrently Unprotected"),
-
     /**
      * Strings lying around in other bits of the plugins
      */
@@ -1440,7 +1143,6 @@ public enum TL {
     WARZONE_DESCRIPTION("warzone-description", "Not the safest place to be."),
     SAFEZONE("safezone", "&6Safezone"),
     SAFEZONE_DESCRIPTION("safezone-description", "Free from pvp and monsters."),
-    TOGGLE_SB("toggle-sb", "You now have scoreboards set to {value}"),
     FACTION_LEAVE("faction-leave", "Leaving %1$s&r, Entering %2$s&r"),
     FACTIONS_ANNOUNCEMENT_TOP("faction-announcement-top", "&d--Unread Faction Announcements--"),
     FACTIONS_ANNOUNCEMENT_BOTTOM("faction-announcement-bottom", "&d--Unread Faction Announcements--"),

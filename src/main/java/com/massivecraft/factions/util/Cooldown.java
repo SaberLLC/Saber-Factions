@@ -5,20 +5,17 @@ import com.lunarclient.apollo.common.icon.ItemStackIcon;
 import com.lunarclient.apollo.module.cooldown.CooldownModule;
 import com.lunarclient.apollo.player.ApolloPlayer;
 import com.lunarclient.apollo.recipients.Recipients;
+import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.FCmdRoot;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import java.time.Duration;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -32,7 +29,7 @@ public class Cooldown {
     private static final long MILLIS_IN_SECOND = TimeUnit.SECONDS.toMillis(1);
 
     private static com.lunarclient.apollo.module.cooldown.Cooldown buildCooldown(String name, int seconds, Material apolloPreview) {
-        if (!FCmdRoot.instance.apolloEnabled || apolloPreview == null)
+        if (!Conf.enableApolloIntegration || apolloPreview == null)
             return null;
 
         return com.lunarclient.apollo.module.cooldown.Cooldown.builder()
@@ -61,7 +58,7 @@ public class Cooldown {
     public static void setCooldown(Faction faction, String name, int seconds, Material apolloPreview) {
         Set<FPlayer> appliedToPlayers = setCooldown(faction, name, seconds);
 
-        if (!FCmdRoot.instance.apolloEnabled || apolloPreview == null)
+        if (!Conf.enableApolloIntegration || apolloPreview == null)
             return;
 
         final CooldownModule cooldownModule = Apollo.getModuleManager().getModule(CooldownModule.class);
@@ -91,11 +88,12 @@ public class Cooldown {
      */
     private static Set<FPlayer> setCooldown(Faction fac, String name, int seconds) {
         long expiration = System.currentTimeMillis() + seconds * MILLIS_IN_SECOND;
-        Set<FPlayer> fPlayers = fac.getFPlayersWhereOnline(true);
-        for (FPlayer fPlayer : fPlayers) {
+        Set<FPlayer> fPlayers = new HashSet<>();
+        for (FPlayer fPlayer : fac.getFPlayersWhereOnline(true)) {
             Player player = fPlayer.getPlayer();
             if (player == null) continue;
             player.setMetadata(name, new FixedMetadataValue(FactionsPlugin.getInstance(), expiration));
+            fPlayers.add(fPlayer);
         }
         return fPlayers;
     }

@@ -16,8 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class FCommand {
@@ -62,7 +60,7 @@ public abstract class FCommand {
     public abstract void perform(CommandContext context);
 
     public void execute(CommandContext context) {
-        if (context.args.size() > 0) {
+        if (!context.args.isEmpty()) {
             for (FCommand subCommand : subCommands) {
                 if (subCommand.aliases.contains(context.args.get(0).toLowerCase())) {
                     context.args.remove(0);

@@ -33,6 +33,7 @@ public class CmdCheck extends FCommand {
                 .playerOnly()
                 .withAction(PermissableAction.CHECK)
                 .memberOnly()
+
                 .build());
     }
 

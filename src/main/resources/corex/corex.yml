@@ -23,33 +23,20 @@ Features:
   Blocked-Enchantments: false #Denies Specific Enchantments Whilst Being In Enchantment Table
   Anti-Block-Placement: true #Configurable List Below For Specific Blocks You Do NOT want your players placing
   Anti-Baby-Zombies: true #Denies Baby Zombies and Pig Zombies from Spawning
-  Anti-Mob-Movement: false #Configurable List Provided Below of which mobs you DO NOT want to move
-  Anti-Mob-Targeting: false #Denies Mob Targeting
-  Iron-Golem-Health: true #Configurable Amount of Health an Iron Golem can spawn in with
   Water-Proof-Blazes: true #Denies Water Damage To Blazes (Useful for most Factions Servers)
   Anti-Book-Quill-Crash: true #Denies Players to be able to do book and quill crashes
   Anti-Chicken: true #Denies chickens from being hatched from eggs and spawning via eggs
   Anti-Dupe: true #Multiple general dupe patches, more to be added soon
   Anti-Death-Clip: true #Denies damage being dealt from dead players
-  Anti-Natural-Spawn-Faction: false #Denies Natural Mob Spawn ONLY IN Faction Territory (Warzone and Safezone Excluded)
   Anti-Nether-Roof: true #Denies Pistons breaching the nether roof.
   Anti-Piston-Glitch: false #Denies Automatic Piston Farms
-  Anti-Wilderness-Spawner: false #Denies Spawners From Spawning in Wilderness
-  Auto-Respawn: false #Automatically Respawn on Death
   Book-Disenchant: false #Left-Click and enchantment table, to remove all the enchantments off of an item
   Border-Patches: true #Various Border Patches, Useful for Most Factions Servers
   Anti-Explosion-Damage: false #Denies Players from Taking Damage To TNT
-  Anti-Dragon-Egg-TP: true #Denies Dragon Egg Teleport
   Enchanting-Lapis: false #Automatically places Lapis Lazuli into enchantment tables
-  Enemy-Spawner-Mine: false #Denies Players to Mine spawners if they are in {x} radius of an enemy
   Insta-Sponge-Break: true #Instantly Break Sponges
-  Anti-Natural-Mobs: false #Denies all natural mob spawns
   God-Apple-Cooldown: false #Denies players spam eating god apples
-  Global-Gamemode: true #Allows ops to change worlds and keep their game mode
   Anti-Redstone-Trapdoor-Crash: true #Prevents a crash/lag method affecting 1.13 - 1.19.3
-
-AntiSpawnerMine:
-  Radius: 20.0 # Radius that the player will be denied mining spawners when an enemy is near.
 
 Cooldowns:
   EnderPearl: 15 #Amount of time in seconds
@@ -66,20 +53,7 @@ Armor-Swap-Cooldown: 500 #This is in Milliseconds - 500 = .5 seconds
 Denied-Blocks: #List Here A Bunch OF Blocks You Do NOT Want Players To Place
   - 'BEDROCK'
 
-Anti-Mob-Movement:
-  Mob-List:
-    - 'CREEPER'
-    - 'BLAZE'
-
-Anti-Mob-Targeting:
-  Mob-List:
-    - 'CREEPER'
-    - 'BLAZE'
-
 Anti-Loot-Steal:
   Protected-Time: 45 #This Time Is In Seconds
   Disabled-Worlds:
     - "some_world_name"
-
-
-

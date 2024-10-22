@@ -64,21 +64,6 @@ public interface FPlayer extends EconomyParticipator {
      */
     void setTitlesEnabled(Boolean b);
 
-    /**
-     * Used to determine if a player is in their faction's chest
-     *
-     * @return if player is in their faction's as a boolean
-     */
-    boolean isInFactionsChest();
-
-    /**
-     * Set if the player is inside of their faction's chest
-     */
-    void setInFactionsChest(boolean b);
-
-    boolean isAlt();
-
-    void setAlt(boolean alt);
 
     /**
      * Used to know if stealth is toggled on or off
@@ -118,7 +103,7 @@ public interface FPlayer extends EconomyParticipator {
      *
      * @param faction faction to set.
      */
-    void setFaction(Faction faction, boolean alt);
+    void setFaction(Faction faction);
 
     /**
      * Gets the faction ID of the player.
@@ -192,10 +177,6 @@ public interface FPlayer extends EconomyParticipator {
     boolean isSpyingChat();
 
     void setSpyingChat(boolean chatSpying);
-
-    boolean showScoreboard();
-
-    void setShowScoreboard(boolean show);
 
     // FIELD: account
     String getAccountId();
@@ -383,10 +364,6 @@ public interface FPlayer extends EconomyParticipator {
     boolean attemptClaim(Faction forFaction, FLocation location, boolean notifyFailure);
 
     boolean attemptUnclaim(Faction forFaction, FLocation flocation, boolean notifyFailure);
-
-    boolean isInVault();
-
-    void setInVault(boolean status);
 
     void msg(String str, Object... args);
 

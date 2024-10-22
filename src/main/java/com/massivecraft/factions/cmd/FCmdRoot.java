@@ -2,24 +2,17 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.alts.CmdAlts;
-import com.massivecraft.factions.cmd.audit.CmdAudit;
 import com.massivecraft.factions.cmd.check.CmdCheck;
-import com.massivecraft.factions.cmd.chest.CmdChest;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.drain.CmdDrain;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
-import com.massivecraft.factions.cmd.grace.CmdGrace;
-import com.massivecraft.factions.cmd.points.CmdPoints;
 import com.massivecraft.factions.cmd.relational.*;
 import com.massivecraft.factions.cmd.reserve.CmdReserve;
 import com.massivecraft.factions.cmd.roles.CmdDemote;
 import com.massivecraft.factions.cmd.roles.CmdPromote;
-import com.massivecraft.factions.cmd.roster.CmdRoster;
 import com.massivecraft.factions.cmd.tnt.CmdSetTnt;
 import com.massivecraft.factions.cmd.tnt.CmdTnt;
 import com.massivecraft.factions.cmd.tnt.CmdTntFill;
-import com.massivecraft.factions.missions.CmdMissions;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -28,7 +21,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
@@ -55,8 +47,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdDeinvite cmdDeinvite = new CmdDeinvite();
     public CmdDescription cmdDescription = new CmdDescription();
     public CmdDisband cmdDisband = new CmdDisband();
-    public CmdFocus cmdFocus = new CmdFocus();
-    public CmdGrace cmdGrace = new CmdGrace();
     public CmdHelp cmdHelp = new CmdHelp();
     public CmdHome cmdHome = new CmdHome();
     public CmdLeave cmdLeave = new CmdLeave();
@@ -93,20 +83,15 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
     public CmdVersion cmdVersion = new CmdVersion();
     public CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
-    public CmdSB cmdSB = new CmdSB();
     public CmdShowInvites cmdShowInvites = new CmdShowInvites();
     public CmdAnnounce cmdAnnounce = new CmdAnnounce();
-    public CmdPaypalSet cmdPaypalSet = new CmdPaypalSet();
-    public CmdPaypalSee cmdPaypalSee = new CmdPaypalSee();
     public CmdSeeChunk cmdSeeChunk = new CmdSeeChunk();
-    public CmdConvert cmdConvert = new CmdConvert();
     public CmdFWarp cmdFWarp = new CmdFWarp();
     public CmdSetFWarp cmdSetFWarp = new CmdSetFWarp();
     public CmdDelFWarp cmdDelFWarp = new CmdDelFWarp();
     public CmdModifyPower cmdModifyPower = new CmdModifyPower();
     public CmdLogins cmdLogins = new CmdLogins();
     public CmdClaimLine cmdClaimLine = new CmdClaimLine();
-    public CmdTop cmdTop = new CmdTop();
     public CmdAHome cmdAHome = new CmdAHome();
     public CmdPerm cmdPerm = new CmdPerm();
     public CmdPromote cmdPromote = new CmdPromote();
@@ -118,49 +103,33 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdUnban cmdUnban = new CmdUnban();
     public CmdBanlist cmdbanlist = new CmdBanlist();
     public CmdRules cmdRules = new CmdRules();
-    public CmdCheckpoint cmdCheckpoint = new CmdCheckpoint();
     public CmdTnt cmdTnt = new CmdTnt();
     public CmdNear cmdNear = new CmdNear();
     public CmdUpgrades cmdUpgrades = new CmdUpgrades();
-    public CmdVault cmdVault = new CmdVault();
-    public CmdGetVault cmdGetVault = new CmdGetVault();
     public CmdFly cmdFly = new CmdFly();
     public CmdColeader cmdColeader = new CmdColeader();
-    //public CmdBanner cmdBanner = new CmdBanner();
-    //public CmdTpBanner cmdTpBanner = new CmdTpBanner();
     public CmdUnclaimfill cmdUnclaimfill = new CmdUnclaimfill();
-    public CmdKillHolograms cmdKillHolograms = new CmdKillHolograms();
     //public CmdInspect cmdInspect = new CmdInspect();
     public CmdCoords cmdCoords = new CmdCoords();
     public CmdShowClaims cmdShowClaims = new CmdShowClaims();
     public CmdLowPower cmdLowPower = new CmdLowPower();
     public CmdTntFill cmdTntFill = new CmdTntFill();
-    public CmdChest cmdChest = new CmdChest();
-    public CmdAlts cmdAlts = new CmdAlts();
     public CmdCorner cmdCorner = new CmdCorner();
     public CmdInventorySee cmdInventorySee = new CmdInventorySee();
     public CmdFGlobal cmdFGlobal = new CmdFGlobal();
-    public CmdViewChest cmdViewChest = new CmdViewChest();
-    public CmdPoints cmdPoints = new CmdPoints();
-    //public CmdLogout cmdLogout = new CmdLogout();
-    public CmdMissions cmdMissions = new CmdMissions();
     public CmdStrikes cmdStrikes = new CmdStrikes();
     public CmdCheck cmdCheck = new CmdCheck();
-    //public CmdWeeWoo cmdWeeWoo = new CmdWeeWoo();
-    public CmdSpawnerLock cmdSpawnerLock = new CmdSpawnerLock();
     public CmdSetDiscord cmdSetDiscord = new CmdSetDiscord();
     public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
     public CmdDebug cmdDebug = new CmdDebug();
     public CmdDrain cmdDrain = new CmdDrain();
     public CmdLookup cmdLookup = new CmdLookup();
-    public CmdAudit cmdAudit = new CmdAudit();
     public CmdReserve cmdReserve = new CmdReserve();
     public CmdDelHome cmdDelHome = new CmdDelHome();
     public CmdClaimFill cmdClaimFill = new CmdClaimFill();
     public CmdNotifications cmdNotifications = new CmdNotifications();
     public CmdFriendlyFire cmdFriendlyFire = new CmdFriendlyFire();
     public CmdSetPower cmdSetPower = new CmdSetPower();
-    public CmdSpawnerChunk cmdSpawnerChunk = new CmdSpawnerChunk();
     public CmdSetTnt cmdSetTnt = new CmdSetTnt();
     public CmdCornerList cmdCornerList = new CmdCornerList();
     public CmdAutoUnclaim cmdAutoUnclaim = new CmdAutoUnclaim();
@@ -170,26 +139,13 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdJoin cmdJoin = new CmdJoin();
     public CmdKick cmdKick = new CmdKick();
     public CmdAllyFWarp cmdAllyFWarp = new CmdAllyFWarp();
-    public CmdRoster cmdRoster = new CmdRoster();
 
 
     //Variables to know if we already set up certain sub commands
     public Boolean discordEnabled = false;
     public Boolean checkEnabled = false;
-    public Boolean missionsEnabled = false;
-    public Boolean fShopEnabled = false;
     public Boolean invSeeEnabled = false;
-    public Boolean fPointsEnabled = false;
-    public Boolean fAltsEnabled = false;
-    public Boolean fGraceEnabled = false;
-    public Boolean fFocusEnabled = false;
     public Boolean fFlyEnabled = false;
-    public Boolean fPayPalEnabled = false;
-    public Boolean coreProtectEnabled = false;
-    public Boolean apolloEnabled = false;
-    public Boolean internalFTOPEnabled = false;
-    public Boolean fWildEnabled = false;
-    public Boolean fAuditEnabled = false;
     public Boolean fStrikes = false;
 
     public FCmdRoot() {
@@ -230,7 +186,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdLock);
         this.addSubCommand(this.cmdMap);
         this.addSubCommand(this.cmdMod);
-        this.addSubCommand(this.cmdMoney);
+
         this.addSubCommand(this.cmdOpen);
         this.addSubCommand(this.cmdOwner);
         this.addSubCommand(this.cmdOwnerList);
@@ -259,10 +215,8 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdUnclaimall);
         this.addSubCommand(this.cmdVersion);
         this.addSubCommand(this.cmdWarunclaimall);
-        this.addSubCommand(this.cmdSB);
         this.addSubCommand(this.cmdShowInvites);
         this.addSubCommand(this.cmdAnnounce);
-        this.addSubCommand(this.cmdConvert);
         this.addSubCommand(this.cmdFWarp);
         this.addSubCommand(this.cmdSetFWarp);
         this.addSubCommand(this.cmdDelFWarp);
@@ -282,26 +236,17 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdUnban);
         this.addSubCommand(this.cmdbanlist);
         this.addSubCommand(this.cmdRules);
-        this.addSubCommand(this.cmdCheckpoint);
         this.addSubCommand(this.cmdTnt);
         this.addSubCommand(this.cmdNear);
         this.addSubCommand(this.cmdUpgrades);
-        this.addSubCommand(this.cmdVault);
-        this.addSubCommand(this.cmdGetVault);
         this.addSubCommand(this.cmdColeader);
-        //this.addSubCommand(this.cmdBanner);
-        //this.addSubCommand(this.cmdTpBanner);
-        this.addSubCommand(this.cmdKillHolograms);
         this.addSubCommand(this.cmdCoords);
         this.addSubCommand(this.cmdShowClaims);
         this.addSubCommand(this.cmdLowPower);
         this.addSubCommand(this.cmdTntFill);
-        this.addSubCommand(this.cmdChest);
         this.addSubCommand(this.cmdCorner);
         this.addSubCommand(this.cmdCornerList);
         this.addSubCommand(this.cmdFGlobal);
-        this.addSubCommand(this.cmdViewChest);
-        this.addSubCommand(this.cmdSpawnerLock);
         this.addSubCommand(this.cmdDrain);
         this.addSubCommand(this.cmdLookup);
         this.addSubCommand(this.cmdNotifications);
@@ -322,34 +267,19 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
      */
     public void addVariableCommands() {
 
-        if (FactionsPlugin.getInstance().getFileManager().getRoster().fetchBoolean("use-roster-system")) {
-            this.addSubCommand(this.cmdRoster);
-        }
-
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-            if (FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
-                this.getSubCommands().remove(this.cmdInvite);
-                this.getSubCommands().remove(this.cmdJoin);
-                this.getSubCommands().remove(this.cmdKick);
-            }
-        }, 200);
-
         //Reserve
         if (Conf.useReserveSystem) {
             this.addSubCommand(this.cmdReserve);
         }
 
-        //PayPal
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled", false) && !fPayPalEnabled) {
-            this.addSubCommand(this.cmdPaypalSet);
-            this.addSubCommand(this.cmdPaypalSee);
-            fPayPalEnabled = true;
-        }
         //Check
         if (Conf.useCheckSystem && !checkEnabled) {
             this.addSubCommand(this.cmdCheck);
-            // this.addSubCommand(this.cmdWeeWoo);
             checkEnabled = true;
+        }
+
+        if (Conf.econEnabled || Conf.bankEnabled) {
+            this.addSubCommand(this.cmdMoney);
         }
 
         if (FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.Enabled")) {
@@ -365,30 +295,15 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         //    FactionsPlugin.getInstance().log("CoreProtect not found, disabling Inspect");
         //}
         //FTOP
-        final PluginManager pluginManager = Bukkit.getServer().getPluginManager();
 
-        if ((pluginManager.getPlugin("FactionsTop") != null || pluginManager.getPlugin("SavageFTOP") != null || pluginManager.getPlugin("SaberFTOP") != null) && !internalFTOPEnabled) {
+        final PluginManager pluginManager = Bukkit.getServer().getPluginManager();
+        if ((pluginManager.getPlugin("FactionsTop") != null || pluginManager.getPlugin("SavageFTOP") != null || pluginManager.getPlugin("SaberFTOP") != null)) {
             Logger.print("Found FactionsTop plugin. Disabling our own /f top command.", Logger.PrefixType.DEFAULT);
-        } else {
-            Logger.print("Internal Factions Top Being Used. NOTE: Very Basic", Logger.PrefixType.DEFAULT);
-            this.addSubCommand(this.cmdTop);
-            internalFTOPEnabled = true;
         }
 
         //Lunar Apollo-Bukkit depend
-        final Plugin apolloPlugin = pluginManager.getPlugin("Apollo-Bukkit");
-        if (apolloPlugin != null) {
-            apolloEnabled = apolloPlugin.isEnabled() && Conf.enableApolloIntegration;
-            System.out.println("Apollo Enabled: " + apolloEnabled);
-            if (apolloEnabled) {
-                System.out.println("Register rally command");
-                this.addSubCommand(this.cmdRally);
-            }
-        }
-
-        if (Conf.useAuditSystem) {
-            this.addSubCommand(cmdAudit);
-            fAuditEnabled = true;
+        if (Conf.enableApolloIntegration) {
+            this.addSubCommand(this.cmdRally);
         }
 
         if (Conf.useStrikeSystem) {
@@ -396,34 +311,12 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             fStrikes = true;
         }
 
-        if (Conf.userSpawnerChunkSystem) {
-            this.addSubCommand(this.cmdSpawnerChunk);
-        }
 
-        if (FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getBoolean("Missions-Enabled", false) && !missionsEnabled) {
-            this.addSubCommand(this.cmdMissions);
-            missionsEnabled = true;
-        }
         if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled", false) && !invSeeEnabled) {
             this.addSubCommand(this.cmdInventorySee);
             invSeeEnabled = true;
         }
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-points.Enabled", false) && !fPointsEnabled) {
-            this.addSubCommand(this.cmdPoints);
-            fPointsEnabled = true;
-        }
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Enabled", false) && !fAltsEnabled) {
-            this.addSubCommand(this.cmdAlts);
-            fAltsEnabled = true;
-        }
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-grace.Enabled", false) && !fGraceEnabled) {
-            this.addSubCommand(this.cmdGrace);
-            fGraceEnabled = true;
-        }
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("ffocus.Enabled") && !fFocusEnabled) {
-            addSubCommand(this.cmdFocus);
-            fFocusEnabled = true;
-        }
+
         if (FactionsPlugin.getInstance().getConfig().getBoolean("enable-faction-flight", true) && !fFlyEnabled) {
             this.addSubCommand(this.cmdFly);
             fFlyEnabled = true;

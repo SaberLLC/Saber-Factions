@@ -2,15 +2,12 @@ package com.massivecraft.factions.zcore.util;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.Aliases;
-import com.massivecraft.factions.cmd.audit.FLogManager;
 import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.reserve.ListParameterizedType;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.Metrics;
-import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
 import org.bukkit.plugin.Plugin;
 import org.saberdev.corex.CoreX;
@@ -29,8 +26,6 @@ public class StartupParameter {
         FactionsPlugin.getInstance().fileManager = new FileManager();
         FactionsPlugin.getInstance().fileManager.setupFiles();
 
-        FactionsPlugin.getInstance().fLogManager = new FLogManager();
-
         FPlayers.getInstance().load(playersLoaded -> Factions.getInstance().load(factionsLoaded -> {
             for (FPlayer fPlayer : FPlayers.getInstance().getAllFPlayers()) {
                 Faction faction = Factions.getInstance().getFactionById(fPlayer.getFactionId());
@@ -39,11 +34,7 @@ public class StartupParameter {
                     fPlayer.resetFactionData(false);
                     continue;
                 }
-                if (fPlayer.isAlt()) {
-                    faction.addAltPlayer(fPlayer);
-                } else {
-                    faction.addFPlayer(fPlayer);
-                }
+                faction.addFPlayer(fPlayer);
             }
 
             Factions.getInstance().getAllFactions().forEach(Faction::refreshFPlayers);
@@ -52,9 +43,6 @@ public class StartupParameter {
             Board.getInstance().clean();
 
             Aliases.load();
-            EngineDynmap.getInstance().init();
-
-            FactionsPlugin.getInstance().hookedPlayervaults = setupPlayerVaults();
 
             Econ.setup();
 
@@ -66,15 +54,7 @@ public class StartupParameter {
             if (Conf.useCheckSystem) {
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, CheckTask.getInstance(), 0L, 1200L);
                 FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimer(plugin, CheckTask.getInstance()::cleanupTask, 0L, 1260L);
-
-                // FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, WeeWooTask::new, 600L, 600L);
             }
-
-            FactionsPlugin.getInstance().fLogManager.loadLogs(plugin);
-
-            FactionsPlugin.getInstance().timerManager = new TimerManager(plugin);
-            FactionsPlugin.getInstance().timerManager.reloadTimerData();
-            Logger.print("Loaded " + FactionsPlugin.getInstance().timerManager.getTimers().size() + " timers into list!", Logger.PrefixType.DEFAULT);
 
             finish.run();
         }));
@@ -103,11 +83,5 @@ public class StartupParameter {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-    }
-
-
-    public static boolean setupPlayerVaults() {
-        Plugin plugin = FactionsPlugin.getInstance().getServer().getPluginManager().getPlugin("PlayerVaults");
-        return plugin != null && plugin.isEnabled();
     }
 }

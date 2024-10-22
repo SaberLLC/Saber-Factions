@@ -2,7 +2,6 @@ package com.massivecraft.factions.zcore.fperms.gui;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.SaberGUI;
@@ -82,8 +81,6 @@ public class PermissableActionFrame extends SaberGUI {
                     Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.name()) + " for faction " + fplayer.getTag(), Logger.PrefixType.DEFAULT);
                 }
 
-                FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), color + access.getInlinedName(access), action.name().toUpperCase(), perm.name());
-
                 redraw();
 
             }).click(ClickType.RIGHT, () -> {
@@ -100,8 +97,6 @@ public class PermissableActionFrame extends SaberGUI {
                 }
                 // Closing and opening resets the cursor.
                 // fplayer.getPlayer().closeInventory();
-                FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), color + access.getInlinedName(access), action.name().toUpperCase(), perm.name());
-
                 redraw();
             }));
         }

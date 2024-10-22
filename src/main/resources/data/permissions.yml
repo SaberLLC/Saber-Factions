@@ -15,10 +15,8 @@ factions:
   ownershipbypass: OWNERSHIP_BYPASS #Bypass F Owner Claims
   admin: #Ability to Give Leadership of a Faction
     any: ADMIN_ANY #Ability to give admin of a faction to anyone in any faction
-  alts: ALTS #Access to F Alts
   ahome: AHOME #Ability to teleport to any (player specific) faction home.
   announce: ANNOUNCE #Ability to use F Announce
-  audit: AUDIT #Ability to use F Audit
   autoclaim: AUTOCLAIM #Ability to use F AutoClaim
   autoleavebypass: AUTO_LEAVE_BYPASS #Ability to bypass the AutoLeaveTask (Will not be kicked for being afk too long)
   ban: BAN #Ability to use F Ban
@@ -51,9 +49,7 @@ factions:
     ally: FLY_ALLY #Ability to fly in Ally Territory
     truce: FLY_TRUCE #Ability to fly in Truce Territory
     neutral: FLY_NEUTRAL #Ability to fly in Neutral Territory
-  focus: FOCUS #Ability to use F Focus (Scoreboard Must Be Enabled For This To Work)
   globalchat: GLOBALCHAT #Ability to toggle seeing global chat for specific players
-  grace: GRACE #Ability to toggle F Grace
   help: HELP #Ability to use F Help
   home: HOME #Ability to use F Home
   invite: INVITE #Ability to use F Invite
@@ -66,7 +62,6 @@ factions:
   leave: LEAVE #Ability to use F Leave
   list: LIST #Ability to use F List
   lock: LOCK #Ability to Lock Factions
-  lockspawners: LOCKSPAWNERS #Ability to Disable Placement of Spawners
   logout: LOGOUT #Ability to use F Logout
   lookup: LOOKUP #Ability to use F Lookup
   map: MAP #Ability to use F Map
@@ -76,7 +71,6 @@ factions:
   notifications: NOTIFICATIONS #Ability to use F Notifications
   coleader: #Ability to use F Coleader
     any: COLEADER_ANY #Ability to CoLeader anyone regardless of rank
-  missions: MISSIONS #Ability to use F Missions
   modifypower: MODIFY_POWER #Ability to modify power of factions or players
   money: #Ability to use F Money base command
     balance: #Ability to use F Money Bal
@@ -94,15 +88,11 @@ factions:
   owner: OWNER #Ability to use F Owner
   ownerlist: OWNERLIST #Ability to use F Ownerlist
   reserve: RESERVE #Ability to Reserve Factions For Players
-  setguild: SET_GUILD #Ability to set guilds for your faction
   setpeaceful: SET_PEACEFUL #Ability to set a faction to peaceful
   setpermanent: SET_PERMANENT #Ability to set a faction to permanent
   setpermanentpower: SET_PERMANENTPOWER #Ability to set a faction to never lose power
   showinvites: SHOW_INVITES #Ability to use F ShowInvites
-  paypal: PAYPAL #Ability to use F Paypal
-  setpaypal: PAYPALSET #Ability to use F SetPaypal
   permissions: PERMISSIONS #Ability to use F Perms
-  points: POINTS #Ability to use F Points
   powerboost: POWERBOOST #Ability to boost the power of any player or faction.
   power: #Ability to use F Power
     any: POWER_ANY #Ability to see power of any faction
@@ -128,28 +118,13 @@ factions:
   unclaim: UNCLAIM #Ability to use F Unclaim
   unclaimall: UNCLAIM_ALL #Ability to use F Unclaimall
   version: VERSION #Ability to use F Version
-  scoreboard: SCOREBOARD #Ability to use F Scoreboard
   seechunk: SEECHUNK #Ability to use F Seechunk
   setwarp: SETWARP #Ability to use F SetWarp
-  shop: SHOP #Ability to use F Shop
   top: TOP #Ability to use F Top
-  viewchest: VIEWCHEST #Ability to use F ViewChest
-  addpoints: ADDPOINTS #Ability to add points to faction
-  removepoints: REMOVEPOINTS #Ability too remove points from a faction
-  setpoints: SETPOINTS #Ability to set a factions points
-  vault: VAULT #Ability to use F Vault
-  getvault: GETVAULT #Ability to use F GetVault
-  setmaxvaults: SETMAXVAULTS #Ability to set mx vaults via command
   rules: RULES #Ability to use F Rules
-  checkpoint: CHECKPOINT #Ability to use F Checkpoint
   upgrades: UPGRADES #Ability to use F Upgrades
-  banner: BANNER #Ability to use F Banner
-  tpbanner: TPBANNER #Ability to use F TpBanner
-  killholos: KILLHOLOS #Ability to kill all named entities
   inspect: INSPECT #Ability to use F Inspect (CoreProtect Required)
   tntfill: TNTFILL #Ability to use F TNTFILL
   coords: COORD #Ability to use F Coords
   showclaims: SHOWCLAIMS #Ability to use F Showclaims
   warp: WARP #Ability to use F Warp
-  wild: WILD #Ability to use F Wild
-  chest: CHEST #Ability to use F Chest

@@ -35,7 +35,7 @@ public class WarmUpUtil {
     }
 
     public enum Warmup {
-        HOME, WARP, FLIGHT, BANNER, CHECKPOINT, WILD
+        HOME, WARP, FLIGHT;
     }
 
 }

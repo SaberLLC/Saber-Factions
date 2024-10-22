@@ -113,86 +113,6 @@ tooltips:
     - "&6&l* &eLast Seen:&7 {lastSeen}"
     - "&6&l* &ePower: &7{player-power}/{player-maxpower}"
 
-# Configuration section for Scoreboards
-# This will allow you to completely customize how your scoreboards look.
-# Make sure that no lines are duplicates of each other otherwise only the first will display.
-# Use &0-9a-f for colors and include messages in "quotes"
-scoreboard:
-
-  # send faction change message as well when scoreboard is up?
-  also-send-chat: true
-  # How long do we want scoreboards to stay if set temporarily.
-  expiration: 7
-
-  # FInfo scoreboard is displayed when a player walks into a new Faction's territory.
-  # Scoreboard disappears after <expiration> seconds.
-  # Things to be replaced in this:
-  # {power} - faction's power. {chunks} - total claimed chunks. {members} - total members.
-  # {online} - online members. {leader} - faction's leader. {open} - shows either true or false if open.
-  # {raidable} - true if the faction can be claimed over, otherwise false.
-  # {warps} - the number of warps that a faction has set.
-  # The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
-  # Commenting this section out will cause the info to appear in chat as the plugin originally did.
-  finfo-enabled: false
-
-  # SUPPORTS PLACEHOLDERS
-  finfo:
-    - "&6Power"
-    - "{power}"
-    - "&3Members"
-    - "{online}/{members}"
-    - "&4Leader"
-    - "{leader}"
-    - "&bTerritory"
-    - "{chunks}"
-
-  # Default board that will always show up if a player wants it to.
-  # This can show any arbitrary text, or you can use a lot of variables to replace things.
-  # Replace {name} - player's name. {faction} - player's faction title, faction-less if none.
-  # {totalOnline} - total players on the server. {balance} - player's balance.
-  # {maxPower} - player's max power.
-  # {powerBoost} - player's powerboost.
-
-  ######################################################
-  ##################### SCOREBOARD #####################
-  ######################################################
-  default-enabled: false # This is to enable or disable the scoreboard: false = Disabled
-  default-title: "&cSaberFactions" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
-  default-update-interval: 2 # in seconds.
-  # This will show faction prefixes colored based on relation on name-tags and in the tab.
-  #   The scoreboard needs to be enabled for this to work.
-  default-prefixes: true
-  # SUPPORTS PLACEHOLDERS
-  default:
-    - "&7&m--------------------------"
-    - "&4&lFaction Info &8»"
-    - " &8» &cLeader&7: &f{leader}"
-    - " &8» &cMembers&7: &f{online}&7/&f{members}"
-    - " &8» &cPower&7: &f{power}&7/&f{maxPower}"
-    - "&m"
-    - "&4&lFaction Stats &8»"
-    - " &8» &cDeaths&7: &f{faction-deaths}"
-    - " &8» &cBalance&7: &f{faction-balance}"
-    - ""
-    - " &8» &cYour Balance&7: &f{balance}"
-    - "&7&m---------------------------"
-
-  #Formatted ONLY When A User is NOT in a Faction
-  factionless-enabled: true
-  factionless:
-    - "&7&m--------------------------"
-    - "&4&lInformation &8»"
-    - " &8» &cPlayer&7: &f{name}"
-    - " &8» &cRank&7: &f{group}"
-    - " &8» &cBalance&7: &f${balance}"
-    - "&m"
-    - "&4&lServer Info &8» "
-    - " &8» &cFaction: &fN/A"
-    - " &8» &cOnline Players&7: &f{total-online}"
-    - "&7&m---------------------------"
-
-
-
 # Configuration section for warmups.
 # Warmup times are in seconds - if a value of 0 is set, there is no warmup.
 warmups:
@@ -202,12 +122,6 @@ warmups:
   f-warp: 10
   # Delay for /f fly
   f-fly: 0
-  #Delay for /f checkpoint's teleport
-  f-checkpoint: 10
-  #Delay for /f tpbanner
-  f-banner: 10
-  #Delay for /f wild
-  f-wild: 5
 
 ######################################################
 #################### HCF Features ####################
@@ -289,14 +203,12 @@ show:
   - '&4* &cDescription: &f{description}'
   - '&4* &cLand / Power / Max Power: &f{chunks} &8/ &f{power} &8/ &f{maxPower}'
   - '&4* &cFaction Strikes: &f{strikes}'
-  - '&4* &cFaction Points: &f{faction-points}'
   - '&4* &cFounded: &f{create-date}'
   - '&4* &cBalance: &f{faction-balance}'
   - '&4* &cAllies: &a{allies-list}'
   - '&4* &cEnemies: &4{enemies-list}'
   - '&4* &cOnline Members: &8[&f{online}/{members}&8] &a{online-list}'
   - '&4* &cOffline Members: &8[&f{offline}/{members}&8] &a{offline-list}'
-  - '&4* &cAlts: &f{alts}'
   - '&4* &cBans: &f{faction-bancount}'
   - '&8&m----------------------------------------'
 # For a /f show that does not display fancy messages that are essentially empty, use minimal-show
@@ -393,29 +305,20 @@ help:
     - '&c/f setwarp &8- &7Set a warp.'
     - '&c/f perms &8- &7Change what players can do in your claims.'
     - '&c/f upgrades &8- &7Upgrade various perks in your faction.'
-    - '&c/f checkpoint &8- &7Set a faction checkpoint.'
     - '&c/f tnt add/take &f<amount> &8- &7Faction Based TNT Bank.'
     - '&c/f tntfill &f<radius> <amount> &8- &7Tnt fill integrated into the tntbank!'
-    - '&c/f chest &8- &7Open a virtual faction chest! '
     - '&c/f version &8- &7Display current faction version.'
     - '&7&m--------------------&r &e/f help 3 &7&m-----------------------'
   '3':
     - '&7&m----------------------------------------------------'
     - '&6&lFactions Help &8- &f(3/3)               '
     - '&7&m----------------------------------------------------'
-    - '&c/f shop &8- &7Open Shop GUI.'
     - '&c/f check &8- &7Manage All Check Settings.'
-    - '&c/f weewoo &8- &7Alert all faction members you are being raided.'
-    - '&c/f missions &8- &7Open/Manage all mission/objectives to complete!'
-    - '&c/f alts &8- &7Manage All Alts via commands.'
     - '&c/f corner &8- &7Use this command in a corner chunk, to claim your entire buffer.'
-    - '&c/f logout &8- &7Safetly logout, hcf style.'
     - '&c/f global &8- &7toggle public chat off and only allow faction based chats.'
-    - '&c/f points &8- &7Check your factions points.'
     - '&c/f invsee &8- &7Check a faction members inventory.'
     - '&c/f stealth &8- &7Go into stealth mode to not disable enemies flight.'
     - '&c/f notifications &8- &7Disable or enable faction claim notifications.'
-    - '&c/f wild &8- &7Teleport to a random location is a specific radius.'
     - '&7&m--------------------&r &e/f help &7&m-----------------------'
 
 ############################################################
@@ -482,14 +385,6 @@ f-check:
 
 ############################################################
 # +------------------------------------------------------+ #
-# |              Faction Invisibility                    | #
-# +------------------------------------------------------+ #
-############################################################
-#This option is to see if another faction member can see their faction members that have the invisible potion effect
-See-Invisible-Faction-Members: false #ONLY WHEN SCOREBOARD IS ENABLED
-
-############################################################
-# +------------------------------------------------------+ #
 # |              Faction Inventory See                   | #
 # +------------------------------------------------------+ #
 ############################################################
@@ -497,16 +392,6 @@ See-Invisible-Faction-Members: false #ONLY WHEN SCOREBOARD IS ENABLED
 f-inventory-see:
   Enabled: true
   see-armor-contents: true
-
-############################################################
-# +------------------------------------------------------+ #
-# |                Faction Alt Accounts                  | #
-# +------------------------------------------------------+ #
-############################################################
-#Faction Alts for extra power, sand printing, afking spawners
-f-alts:
-  Enabled: true
-  Have-Power: true
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -541,24 +426,6 @@ ftnt:
 ############################################################
 #This option allows factions to set their discord link to their specific faction
 fdiscord:
-  Enabled: true
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction PayPal                      | #
-# +------------------------------------------------------+ #
-############################################################
-#This option allows factions to set their paypal link to their specific faction
-fpaypal:
-  Enabled: true
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Checkpoints                 | #
-# +------------------------------------------------------+ #
-############################################################
-#This option is for a quick fast and in a hurry teleport to raids etc.
-checkpoints:
   Enabled: true
 
 ############################################################
@@ -617,146 +484,6 @@ f-disband-gui:
     Name: ' '
     Lore:
       - ' '
-
-############################################################
-# +------------------------------------------------------+ #
-# |                Faction GracePeriod                   | #
-# +------------------------------------------------------+ #
-############################################################
-#This option will deny all explosions
-f-grace:
-  Enabled: true
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Points                      | #
-# +------------------------------------------------------+ #
-############################################################
-f-points:
-  Enabled: true
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Focus                       | #
-# +------------------------------------------------------+ #
-############################################################
-#Note This will ONLY work if you have the Scoreboard Enabled!
-ffocus:
-  Enabled: true
-  Prefix: '&7»&b'
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Vault                       | #
-# +------------------------------------------------------+ #
-############################################################
-#Faction Vaults are a placeable chest that can be accessed
-#While maintaining that factor it can still be raided by other factions.
-fvault:
-  Enabled: true
-  No-Hoppers-near-vault: true
-  Price: 5000
-  Item:
-    Name: '&e&l*&f&l*&e&l* &c&lFaction Vault &7(Place) &e&l*&f&l*&e&l*'
-    Lore:
-      - '&7Place this vault in your Faction claim, You will'
-      - '&7then be able to access it.'
-      - ''
-      - '&c&lNote: &7Once you have placed your'
-      - '&7faction vault, Access it by doing /f vault.'
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Chest                       | #
-# +------------------------------------------------------+ #
-############################################################
-#Faction Chests are a virtual chest based system that cannot be raided
-#Used for storing items that equate to high value of the faction.
-fchest:
-  Enabled: true
-  Default-Size: 1 #In Rows
-  Inventory-Title: '&2&lFaction Chest'
-  Items-Not-Allowed:
-    - 'MOB_SPAWNER'
-    - 'COOKIE'
-  # Chest size upgrades can be configured in the upgrades section of config
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Faction Banners                     | #
-# +------------------------------------------------------+ #
-############################################################
-fbanners:
-  Enabled: true
-  Item:
-    Name: '&c&l*&f&l*&c&l* &c&lWar Banner &7(Place) &c&l*&f&l*&c&l*'
-    Lore:
-      - '&7Place this banner in the &nWarzone.&7 This'
-      - '&7will create a &nWarp Point&7 for your faction members.'
-      - ''
-      - '&e&lEffects'
-      - '&e&l* &fStrength II'
-      - '&e&l* &fSpeed II'
-  Banner-Cost: 5000 #The amount charged to change a banner into a War Banner
-  Banner-Time: 60 #IN SECONDS - This is how long the banner will last.
-  Banner-Place-Cooldown: 300
-  Banner-Effect-Radius: 16
-  Effects:
-    - INCREASE_DAMAGE:2
-    - SPEED:2
-  BannerHolo: '&c{Faction}''s War Banner'
-  Placeable:
-    Warzone: false
-    Enemy: true
-
-############################################################
-# +------------------------------------------------------+ #
-# |                   Faction Audit                      | #
-# +------------------------------------------------------+ #
-############################################################
-faudit-gui:
-  slots:
-    invites: 0
-    bans: 1
-    chunk_claims: 2
-    perm_edit_defaults: 3
-    bank_edit: 4
-    fchest_edit: 5
-    relation_change: 6
-    ftag_edit: 7
-    fdesc_edit: 8
-    role_perm_edit: 9
-    spawner_edit: 10
-    rank_edit: 11
-    f_tnt: 12
-  names:
-    invites: '&a&lRoster Edits'
-    bans: '&a&lPlayer Bans'
-    chunk_claims: '&a&lClaim Edits'
-    perm_edit_defaults: '&a&lDefault Perm Edits'
-    bank_edit: '&a&lMoney Edits'
-    fchest_edit: '&a&lChest Edits'
-    relation_change: '&a&lRelation Edits'
-    ftag_edit: '&a&lTag Edits'
-    fdesc_edit: '&a&lDesc Edits'
-    role_perm_edit: '&a&lPromotional Edits'
-    spawner_edit: '&a&lSpawner Edits'
-    rank_edit: '&a&lRank Edits'
-    f_tnt: '&a&lTnt Edits'
-  materials:
-    invites: WRITABLE_BOOK
-    bans: ANVIL
-    chunk_claims: WOODEN_AXE
-    perm_edit_defaults: WRITTEN_BOOK
-    bank_edit: GOLD_INGOT
-    fchest_edit: CHEST
-    relation_change: GOLDEN_SWORD
-    ftag_edit: NAME_TAG
-    fdesc_edit: PAPER
-    role_perm_edit: WRITTEN_BOOK
-    spawner_edit: SPAWNER
-    rank_edit: GOLDEN_HELMET
-    f_tnt: TNT
 
 ############################################################
 # +------------------------------------------------------+ #
@@ -831,7 +558,6 @@ Tntfill:
 #  - {enemies-list} : Lists each faction enemy with tooltips
 #  - {online-list}  : Lists all online members with tooltips
 #  - {offline-list} : Lists all offline members with tooltips
-#  - {alts} : List all alts online or offline
 #  - {truces-list}  : Lists each faction truce with tooltips
 #  - {factionless-total}  : Count of all factionless players online
 
@@ -886,7 +612,6 @@ Tntfill:
 # - {action-access-color} : Access color
 
 # General variables. Can be used anywhere.
-# - {grace-time}  : Time of Grace Period
 # - {total-online}  : Total # of players on the server
 # - {max-warps}     : Max # of warps a faction can set
 # - {max-allies}    : Max # of allies a faction can have

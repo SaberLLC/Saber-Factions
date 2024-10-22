@@ -5,13 +5,10 @@ import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.LandUnclaimAllEvent;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.ChunkReference;
-import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -66,23 +63,12 @@ public class CmdUnclaimall extends FCommand {
             }
         }
 
-        if(Conf.userSpawnerChunkSystem && !Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
-            for(FastChunk fastChunk : target.getSpawnerChunks()) {
-                if(ChunkReference.getSpawnerCount(fastChunk.getChunk()) > 0) {
-                    context.msg(TL.COMMAND_UNCLAIMALL_SPAWNERS_IN_CHUNK.toString().replace("{faction}", target.getTag()));
-                    return;
-                }
-            }
-        }
-
         LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(target, context.fPlayer);
         Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent), 1);
         if (unclaimAllEvent.isCancelled()) {
             return;
         }
-        int unclaimed = target.getAllClaims().size();
         Board.getInstance().unclaimAll(target.getId());
-        FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.RedB + "UNCLAIMED", String.valueOf(unclaimed), FLocation.wrap(context.fPlayer.getPlayer().getLocation()).formatXAndZ(","));
         FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
 
             context.faction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, context.fPlayer.describeTo(context.faction, true));

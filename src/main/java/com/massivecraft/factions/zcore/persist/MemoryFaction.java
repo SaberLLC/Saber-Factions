@@ -3,14 +3,12 @@ package com.massivecraft.factions.zcore.persist;
 import com.lunarclient.apollo.Apollo;
 import com.lunarclient.apollo.recipients.Recipients;
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.cmd.roster.struct.RosterPlayer;
 import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -28,8 +26,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,8 +35,6 @@ import java.util.stream.Collectors;
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public HashMap<Integer, String> rules = new HashMap<>();
     public long tnt;
-    public Location checkpoint;
-    public LazyLocation vault;
     public HashMap<String, Integer> upgrades = new HashMap<>();
     protected String id = null;
     protected boolean peacefulExplosionsEnabled;
@@ -55,43 +49,28 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient long lastPlayerLoggedOffTime;
     protected double money;
     protected double powerBoost;
-    protected String paypal;
     protected Map<String, Relation> relationWish = new HashMap<>();
     protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<>();
     protected transient Set<FPlayer> fplayers = new HashSet<>();
-    protected transient Set<FPlayer> alts = new HashSet<>();
     protected Set<String> invites = new HashSet<>();
-    protected Set<String> altinvites = new HashSet<>();
     protected HashMap<String, List<String>> announcements = new HashMap<>();
-    protected Set<RosterPlayer> roster = new HashSet<>();
     protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<>();
     protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
-    protected int maxVaults;
     protected Role defaultRole;
     protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
-    protected String player;
     protected String discord;
-    Inventory chest;
-    Map<String, Object> bannerSerialized;
     private long lastDeath;
     private int strikes = 0;
-    private int points = 0;
 
-    private int rosterKicks = 0;
-    private Map<String, Mission> missions = new ConcurrentHashMap<>();
     private int wallCheckMinutes;
     private int bufferCheckMinutes;
     private Map<Long, String> checks;
     private Map<UUID, Integer> playerWallCheckCount;
     private Map<UUID, Integer> playerBufferCheckCount;
-    private boolean weeWoo;
     private long tntBankSize;
     private int warpLimit;
     private double reinforcedArmor;
-    private List<String> completedMissions;
-    private int allowedSpawnerChunks;
-    private Set<FastChunk> spawnerChunks;
     private boolean protectedfac = true;
 
     private boolean currentlyUpdateRecipients = false;
@@ -115,20 +94,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.permanent = false;
         this.money = 0.0;
         this.powerBoost = 0.0;
-        this.missions = new ConcurrentHashMap<>();
         this.foundedDate = System.currentTimeMillis();
-        this.maxVaults = Conf.defaultMaxVaults;
         this.defaultRole = Role.RECRUIT;
         this.wallCheckMinutes = 0;
         this.bufferCheckMinutes = 0;
-        this.weeWoo = false;
 
         this.checks = new ConcurrentHashMap<>();
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
-        this.completedMissions = new ArrayList<>();
-        allowedSpawnerChunks = Conf.allowedSpawnerChunks;
-        spawnerChunks = new HashSet<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -146,30 +119,18 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         lastPlayerLoggedOffTime = old.lastPlayerLoggedOffTime;
         money = old.money;
         powerBoost = old.powerBoost;
-        missions = new ConcurrentHashMap<>();
-        this.completedMissions = new ArrayList<>();
         relationWish = old.relationWish;
         claimOwnership = old.claimOwnership;
         fplayers = new HashSet<>();
-        alts = new HashSet<>();
         invites = old.invites;
-        roster = old.roster;
         announcements = old.announcements;
         this.defaultRole = Role.NORMAL;
         this.wallCheckMinutes = 0;
         this.bufferCheckMinutes = 0;
-        this.weeWoo = false;
         this.checks = new ConcurrentHashMap<>();
-        allowedSpawnerChunks = Conf.allowedSpawnerChunks;
-        spawnerChunks = new HashSet<>();
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
         resetPerms(); // Reset on new Faction so it has default values.
-    }
-
-    @Override
-    public Set<RosterPlayer> getRoster() {
-        return roster;
     }
 
     public boolean isProtected() {
@@ -178,47 +139,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setProtected(boolean protectedfac) {
         this.protectedfac = protectedfac;
-    }
-
-    public int getSpawnerChunkCount() {
-        return this.spawnerChunks.size();
-    }
-
-    public void clearSpawnerChunks() {
-        this.spawnerChunks.clear();
-    }
-
-    public int getAllowedSpawnerChunks() {
-        return this.allowedSpawnerChunks;
-    }
-
-    public void setAllowedSpawnerChunks(int chunks) {
-        this.allowedSpawnerChunks = chunks;
-    }
-
-    public Set<FastChunk> getSpawnerChunks() {
-        return this.spawnerChunks;
-    }
-
-    public void setSpawnerChunks(Set<FastChunk> spawnerChunks) {
-        this.spawnerChunks = spawnerChunks;
-    }
-
-
-    public int getRosterKicks() {
-        return rosterKicks;
-    }
-
-    public void setRosterKicks(int rosterKicks) {
-        this.rosterKicks = rosterKicks;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     public int getStrikes() {
@@ -288,14 +208,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.discord = link;
     }
 
-    public String getPaypal() {
-        return this.paypal;
-    }
-
-    public void paypalSet(String paypal) {
-        this.paypal = paypal;
-    }
-
     public boolean hasWarpPassword(String warp) {
         return warpPasswords.containsKey(warp.toLowerCase());
     }
@@ -308,36 +220,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         warps.clear();
     }
 
-    public int getMaxVaults() {
-        return this.maxVaults;
-    }
-
-    public void setMaxVaults(int value) {
-        this.maxVaults = value;
-    }
-
-    public String getFocused() {
-        return this.player;
-    }
-
-    public void setFocused(String fp) {
-        this.player = fp;
-    }
-
     public Set<String> getInvites() {
         return invites;
-    }
-
-    public Set<String> getAltInvites() {
-        return altinvites;
-    }
-
-    public void deinviteAlt(FPlayer fplayer) {
-        altinvites.remove(fplayer.getId());
-    }
-
-    public void deinviteAllAlts() {
-        altinvites.clear();
     }
 
     public String getId() {
@@ -352,21 +236,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.invites.add(fplayer.getId());
     }
 
-    public void altInvite(FPlayer fplayer) {
-        this.altinvites.add(fplayer.getId());
-    }
-
     public void deinvite(FPlayer fplayer) {
         this.invites.remove(fplayer.getId());
-        this.altinvites.remove(fplayer.getId());
     }
 
-    public boolean altInvited(FPlayer fplayer) {
-        return this.altinvites.contains(fplayer.getId());
-    }
 
     public boolean isInvited(FPlayer fplayer) {
-        return this.invites.contains(fplayer.getId()) || this.altinvites.contains(fplayer.getId());
+        return this.invites.contains(fplayer.getId());
     }
 
     public void ban(FPlayer target, FPlayer banner) {
@@ -401,9 +277,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         // Send FPlayerLeaveEvent for each player in the faction and reset their Discord settings
         for (FPlayer fplayer : this.getFPlayers()) {
-            if (fplayer.isInFactionsChest()) {
-                fplayer.getPlayer().closeInventory();
-            }
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, this, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
         }
 
@@ -479,62 +352,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         tnt = amt;
     }
 
-    public Location getVault() {
-        if (vault == null) {
-            return null;
-        }
-        return vault.getLocation();
-    }
-
-    public void setVault(Location vaultLocation) {
-        if (vaultLocation == null) {
-            vault = null;
-            return;
-        }
-        vault = new LazyLocation(vaultLocation);
-    }
-
     public int getUpgrade(String upgradeName) {
         return upgrades.getOrDefault(upgradeName, 0);
     }
-
-    @Override
-    public Inventory getChestInventory() {
-        if (chest == null) {
-            this.chest = Bukkit.createInventory(null, getChestSize(), CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
-            return chest;
-        }
-        return chest;
-    }
-
-    private int getChestSize() {
-        int size = FactionsPlugin.getInstance().getConfig().getInt("fchest.Default-Size");
-        int chestUpgrade = getUpgrade("Chest");
-        if (chestUpgrade > 0) {
-            int upgradedSize = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-" + chestUpgrade, -1);
-            if (upgradedSize > -1) {
-                size = upgradedSize;
-            } else {
-                FactionsPlugin.getInstance().getLogger().severe(TextUtil.parse(TL.COMMAND_UPGRADES_LEVEL_ERROR.toString(), "CHEST", chestUpgrade));
-            }
-        }
-        return size * 9;
-    }
-
-
-    @Override
-    public void setChestSize(int chestSize) {
-        ItemStack[] contents = this.getChestInventory().getContents();
-        chest = Bukkit.createInventory(null, chestSize, CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
-        chest.setContents(contents);
-    }
-
-
-    @Override
-    public void setBannerPattern(ItemStack banner) {
-        bannerSerialized = banner.serialize();
-    }
-
 
     @Override
     public int getWarpsLimit() {
@@ -572,14 +392,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         reinforcedArmor = newPercent;
     }
 
-    @Override
-    public ItemStack getBanner() {
-        if (bannerSerialized == null) {
-            return null;
-        }
-        return ItemStack.deserialize(bannerSerialized);
-    }
-
     public void setUpgrade(String upgrade, int level) {
         upgrades.put(upgrade, level);
     }
@@ -610,22 +422,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Map<UUID, Integer> getPlayerWallCheckCount() {
         return this.playerWallCheckCount;
-    }
-
-    public boolean isWeeWoo() {
-        return this.weeWoo;
-    }
-
-    public void setWeeWoo(boolean weeWoo) {
-        this.weeWoo = weeWoo;
-    }
-
-    public Location getCheckpoint() {
-        return checkpoint;
-    }
-
-    public void setCheckpoint(Location location) {
-        checkpoint = location;
     }
 
     public void clearRules() {
@@ -1018,12 +814,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public double getPower() {
         if (this.hasPermanentPower()) return this.getPermanentPower();
         double ret = 0;
-        for (FPlayer fplayer : fplayers) ret += fplayer.getPower();
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
-            for (FPlayer fplayer : alts) {
-                ret += fplayer.getPower();
-            }
-        }
+        for (FPlayer fplayer : fplayers)
+            ret += fplayer.getPower();
         if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
             ret = Conf.powerFactionMax;
         }
@@ -1034,7 +826,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (this.hasPermanentPower()) return this.getPermanentPower();
         double ret = 0;
         for (FPlayer fplayer : fplayers) ret += fplayer.getPowerMax();
-        for (FPlayer fplayer : alts) ret += fplayer.getPowerMax();
         if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) ret = Conf.powerFactionMax;
         return ret + this.powerBoost;
     }
@@ -1066,15 +857,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // maintain the reference list of FPlayers in this faction
     public void refreshFPlayers() {
         fplayers.clear();
-        alts.clear();
         if (this.isPlayerFreeType()) return;
         for (FPlayer fplayer : FPlayers.getInstance().getAllFPlayers()) {
             if (fplayer.getFactionId().equalsIgnoreCase(id)) {
-                if (fplayer.isAlt()) {
-                    alts.add(fplayer);
-                } else {
-                    fplayers.add(fplayer);
-                }
+                fplayers.add(fplayer);
             }
         }
     }
@@ -1088,16 +874,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
 
-    public boolean addAltPlayer(FPlayer fplayer) {
-        return !this.isPlayerFreeType() && alts.add(fplayer);
-    }
-
-    public boolean removeAltPlayer(FPlayer fplayer) {
-        return !this.isPlayerFreeType() && alts.remove(fplayer);
-    }
-
     public int getSize() {
-        return fplayers.size() + alts.size();
+        return fplayers.size();
     }
 
     public Set<FPlayer> getFPlayers() {
@@ -1126,12 +904,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public Recipients getFactionMembersRecipients() {
         if (recipients != null) return recipients;
         return null;
-    }
-
-    public Set<FPlayer> getAltPlayers() {
-        // return a shallow copy of the FPlayer list, to prevent tampering and
-        // concurrency issues
-        return new HashSet<>(alts);
     }
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
@@ -1196,7 +968,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         ArrayList<Player> ret = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-            if (fplayer.getFaction() == this && !fplayer.isAlt()) {
+            if (fplayer.getFaction() == this) {
                 ret.add(player);
             }
         }
@@ -1296,17 +1068,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return claimOwnership;
     }
 
-
-    @Override
-    public Map<String, Mission> getMissions() {
-        return this.missions;
-    }
-
-    @Override
-    public List<String> getCompletedMissions() {
-        return this.completedMissions;
-    }
-
     public void clearAllClaimOwnership() {
         claimOwnership.clear();
     }
@@ -1400,15 +1161,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         // Clean the board
         ((MemoryBoard) Board.getInstance()).clean(id);
         for (FPlayer fPlayer : fplayers) fPlayer.resetFactionData(false);
-        for (FPlayer fPlayer : alts) fPlayer.resetFactionData(false);
 
-        try {
-            if (FactionsPlugin.getInstance() != null && FactionsPlugin.getInstance().getFlogManager() != null && FactionsPlugin.getInstance().getFlogManager().getFactionLogMap() != null) {
-                FactionsPlugin.getInstance().getFlogManager().getFactionLogMap().remove(this.getId());
-            }
-        } catch (Exception exception) {
-            // empty catch block
-        }
     }
 
     public Set<FLocation> getAllClaims() {

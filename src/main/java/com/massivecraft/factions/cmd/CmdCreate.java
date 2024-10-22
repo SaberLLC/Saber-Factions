@@ -105,7 +105,7 @@ public class CmdCreate extends FCommand {
         Bukkit.getServer().getPluginManager().callEvent(joinEvent);
         // join event cannot be cancelled, or you'll have an empty faction
         // finish setting up the FPlayer
-        context.fPlayer.setFaction(faction, false);
+        context.fPlayer.setFaction(faction);
         // We should consider adding the role just AFTER joining the faction.
         // That way we don't have to mess up deleting more stuff.
         // And prevent the user from being returned to NORMAL after deleting his old faction.
@@ -121,8 +121,6 @@ public class CmdCreate extends FCommand {
         if (Conf.econEnabled) Econ.setBalance(faction.getAccountId(), Conf.econFactionStartingBalance);
         if (Conf.logFactionCreate)
             Logger.print(context.fPlayer.getName() + TL.COMMAND_CREATE_CREATEDLOG + tag, Logger.PrefixType.DEFAULT);
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("fpaypal.Enabled"))
-            context.msg(TL.COMMAND_PAYPALSET_CREATED);
         if(Conf.allFactionsPeaceful) {
             faction.setPeaceful(true);
             faction.setPeacefulExplosionsEnabled(false);

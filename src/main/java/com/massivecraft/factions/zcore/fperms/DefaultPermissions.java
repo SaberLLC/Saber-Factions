@@ -28,15 +28,11 @@ public class DefaultPermissions {
     public boolean setwarp;
     public boolean warp;
     public boolean fly;
-    public boolean vault;
     public boolean tntbank;
     public boolean tntfill;
     public boolean withdraw;
-    public boolean chest;
-    public boolean audit;
     public boolean check;
     public boolean drain;
-    public boolean spawner;
 
     public DefaultPermissions() {
     }
@@ -62,15 +58,11 @@ public class DefaultPermissions {
         this.setwarp = def;
         this.warp = def;
         this.fly = def;
-        this.vault = def;
         this.tntbank = def;
         this.tntfill = def;
         this.withdraw = def;
-        this.chest = def;
-        this.audit = def;
         this.check = def;
         this.drain = def;
-        this.spawner = def;
     }
 
     public DefaultPermissions(boolean canBan,
@@ -87,21 +79,17 @@ public class DefaultPermissions {
                               boolean canItems,
                               boolean canSethome,
                               boolean canTerritory,
-                              boolean canAudit,
                               boolean canHome,
                               boolean canDisband,
                               boolean canPromote,
                               boolean canSetwarp,
                               boolean canWarp,
                               boolean canFly,
-                              boolean canVault,
                               boolean canTntbank,
                               boolean canTntfill,
                               boolean canWithdraw,
-                              boolean canChest,
                               boolean canCheck,
-                              boolean canDrain,
-                              boolean canSpawners) {
+                              boolean canDrain) {
         this.ban = canBan;
         this.build = canBuild;
         this.destroy = canDestory;
@@ -122,15 +110,11 @@ public class DefaultPermissions {
         this.setwarp = canSetwarp;
         this.warp = canWarp;
         this.fly = canFly;
-        this.vault = canVault;
         this.tntbank = canTntbank;
         this.tntfill = canTntfill;
         this.withdraw = canWithdraw;
-        this.chest = canChest;
-        this.audit = canAudit;
         this.check = canCheck;
         this.drain = canDrain;
-        this.spawner = canSpawners;
     }
 
     @Deprecated
@@ -155,15 +139,11 @@ public class DefaultPermissions {
         else if (Objects.equals(name, "setwarp")) return this.setwarp;
         else if (Objects.equals(name, "warp")) return this.warp;
         else if (Objects.equals(name, "fly")) return this.fly;
-        else if (Objects.equals(name, "vault")) return this.vault;
         else if (Objects.equals(name, "tntbank")) return this.tntbank;
         else if (Objects.equals(name, "tntfill")) return this.tntfill;
         else if (Objects.equals(name, "withdraw")) return this.withdraw;
-        else if (Objects.equals(name, "chest")) return this.chest;
-        else if (Objects.equals(name, "audit")) return this.audit;
         else if (Objects.equals(name, "check")) return this.check;
         else if (Objects.equals(name, "drain")) return this.drain;
-        else if (Objects.equals(name, "spawner")) return this.spawner;
         else return false;
     }
 }

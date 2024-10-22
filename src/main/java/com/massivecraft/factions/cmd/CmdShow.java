@@ -31,14 +31,12 @@ public class CmdShow extends FCommand {
         defaults.add("&4* &cDescription: &f{description}");
         defaults.add("&4* &cLand / Power / Max Power: &f{chunks} &8/ &f{power} &8/ &f{maxPower}");
         defaults.add("&4* &cFaction Strikes: &f{strikes}");
-        defaults.add("&4* &cFaction Points: &f{faction-points}");
         defaults.add("&4* &cFounded: &f{create-date}");
         defaults.add("&4* &cBalance: &f{faction-balance}");
         defaults.add("&4* &cAllies: &a{allies-list}");
         defaults.add("&4* &cEnemies: &4{enemies-list}");
         defaults.add("&4* &cOnline Members: &8[&f{online}/{members}&8] &a{online-list}");
         defaults.add("&4* &cOffline Members: &8[&f{offline}/{members}&8] &a{offline-list}");
-        defaults.add("&4* &cAlts: &f{alts}");
         defaults.add("&4* &cBans: &f{faction-bancount}");
         defaults.add("&8&m----------------------------------------");
 

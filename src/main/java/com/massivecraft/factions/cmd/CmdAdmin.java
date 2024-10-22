@@ -4,7 +4,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
@@ -56,10 +55,6 @@ public class CmdAdmin extends FCommand {
             return;
         }
 
-        if (fyou.isAlt()) {
-            return;
-        }
-
         // only perform a FPlayerJoinEvent when newLeader isn't actually in the faction
         if (fyou.getFaction() != targetFaction) {
             FPlayerJoinEvent event = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), targetFaction, FPlayerJoinEvent.PlayerJoinReason.LEADER);
@@ -85,8 +80,6 @@ public class CmdAdmin extends FCommand {
         }
         setRole(fyou, Role.LEADER);
         context.msg(TL.COMMAND_ADMIN_PROMOTES, fyou.describeTo(context.fPlayer, true));
-
-        FactionsPlugin.instance.getFlogManager().log(targetFaction, FLogType.RANK_EDIT, context.fPlayer.getName(), fyou.getName(), ChatColor.RED + "Admin");
 
         // Inform all players
         if (FactionsPlugin.instance.getConfig().getBoolean("faction-leader-broadcast")) {

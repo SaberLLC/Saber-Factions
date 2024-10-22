@@ -7,7 +7,6 @@ import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -111,7 +110,6 @@ public abstract class MemoryBoard extends Board {
         if (faction != null && faction.isNormal()) {
             faction.clearAllClaimOwnership();
             faction.clearWarps();
-            faction.clearSpawnerChunks();
         }
         clean(factionId);
     }
@@ -321,28 +319,15 @@ public abstract class MemoryBoard extends Board {
                     int incremented = ++charIdx;
                     char assigned = territories.computeIfAbsent(factionFound.getTag(), c -> Conf.mapKeyChrs[(incremented) % Conf.mapKeyChrs.length]);
 
-                    if (Conf.userSpawnerChunkSystem && factionFound.getSpawnerChunks().contains(found.toFastChunk())) {
-                        row.append(
-                                Component.text(assigned)
-                                        .color(TextUtil.kyoriColor(Conf.spawnerChunkColor))
-                                        .hoverEvent(
-                                                HoverEvent.showText(Component.text(toolTip(factionFound, fPlayer) + CC.Reset + CC.Blue + " " + Conf.spawnerChunkString)))
-                                        .clickEvent(
-                                                ClickEvent.runCommand("/f show " + factionFound.getTag())
-                                        )
-
-                        );
-                    } else {
-                        row.append(
-                                Component.text(assigned)
-                                        .color(TextUtil.kyoriColor(factionFound.getColorTo(fPlayer.getFaction())))
-                                        .hoverEvent(
-                                                HoverEvent.showText(Component.text(toolTip(factionFound, fPlayer))))
-                                        .clickEvent(
-                                                ClickEvent.runCommand("/f show " + factionFound.getTag())
-                                        )
-                        );
-                    }
+                    row.append(
+                            Component.text(assigned)
+                                    .color(TextUtil.kyoriColor(factionFound.getColorTo(fPlayer.getFaction())))
+                                    .hoverEvent(
+                                            HoverEvent.showText(Component.text(toolTip(factionFound, fPlayer))))
+                                    .clickEvent(
+                                            ClickEvent.runCommand("/f show " + factionFound.getTag())
+                                    )
+                    );
                     continue;
                 }
                 row.append(
@@ -375,6 +360,7 @@ public abstract class MemoryBoard extends Board {
     private String toolTip(Faction faction, FPlayer to) {
         return faction.describeTo(to);
     }
+
     public abstract void convertFrom(MemoryBoard old);
 
     public static class MemoryBoardMap extends HashMap<FLocation, String> {

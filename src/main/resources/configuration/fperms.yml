@@ -75,20 +75,16 @@ fperm-gui:
       sethome: HOPPER
       withdraw: SUNFLOWER
       territory: SIGN
-      audit: EMERALD
       promote: DIAMOND
       setwarp: COMPASS
       warp: ENDER_PEARL
       ban: ANVIL
       disband: BARRIER
       fly: FEATHER
-      vault: END_PORTAL_FRAME
       tntbank: BEACON
       tntfill: TNT
-      chest: ENDER_CHEST
       check: WATCH
       drain: BUCKET
-      spawner: MOB_SPAWNER
       home: ENDER_EYE
     Descriptions:
       build: '&7Grants users access to build.'
@@ -105,20 +101,17 @@ fperm-gui:
       sethome: '&7Grant users access to use /f sethome.'
       withdraw: '&7Grant users access to use /f withdraw.'
       territory: '&7Grant users access to manage claims.'
-      audit: '&7Grant users access to use /f audit.'
       promote: '&7Grant users access to use /f <promote/demote>.'
       setwarp: '&7Grant users access to use /f setwarp.'
       warp: '&7Grant users access to use /f warp.'
       ban: '&7Grant users access to use /f ban.'
       disband: '&7Grant users access to use /f disband.'
       fly: '&7Grant users access to use /f fly.'
-      vault: '&7Grant users access to use /f vault.'
       tntbank: '&7Grant users access to manage /f tnt virtual bank.'
       tntfill: '&7Grant users access to use /f tntfill.'
       chest: '&7Grant users access to use /f chest.'
       check: '&7Grant users access to manage /f check system.'
       drain: '&7Grant users access to use /f drain.'
-      spawner: '&7Grant users access to manage spawners.'
       home: '&7Grant users access to use /f home.'
     slots:
       # Uses same format as above to inform the player of clicked relation
@@ -140,19 +133,15 @@ fperm-gui:
       sethome: 23
       withdraw: 24
       territory: 25
-      audit: 28
       promote: 29
       setwarp: 30
       warp: 31
       ban: 32
       disband: 33
       fly: 34
-      vault: 40
       tntbank: 39
       tntfill: 41
-      chest: 42
       check: 50
-      spawner: 38
       drain: 49
       home: 48
     # {action} Action name eg: Setwarp, Kick

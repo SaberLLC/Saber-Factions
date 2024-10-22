@@ -5,6 +5,8 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.listeners.FactionsEntityListener;
+import com.massivecraft.factions.zcore.frame.fupgrades.FactionUpgradeFrame;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -14,6 +16,12 @@ import org.bukkit.entity.Player;
  * Creation Date: 9/15/2020
  */
 public class FlightEnhance implements Runnable {
+
+    private final boolean autoEnable;
+
+    public FlightEnhance(boolean autoEnable) {
+        this.autoEnable = autoEnable;
+    }
 
     @Override
     public void run() {
@@ -31,7 +39,6 @@ public class FlightEnhance implements Runnable {
 
     private boolean shouldSkipPlayer(FPlayer player) {
         Player p = player.getPlayer();
-
         return player.isAdminBypassing()
                 || p == null
                 || p.isOp()
@@ -46,8 +53,7 @@ public class FlightEnhance implements Runnable {
         }
 
         if (!player.isFlying()
-                && player.canFlyAtLocation()
-                && FactionsPlugin.getInstance().getConfig().getBoolean("ffly.AutoEnable")
+                && player.canFlyAtLocation() && autoEnable
                 && !FactionsEntityListener.combatList.contains(player.getPlayer().getUniqueId())) {
             player.setFlying(true);
         }

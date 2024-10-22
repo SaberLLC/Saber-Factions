@@ -1,15 +1,12 @@
 package com.massivecraft.factions;
 
 import com.lunarclient.apollo.recipients.Recipients;
-import com.massivecraft.factions.cmd.roster.struct.RosterPlayer;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
-import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.struct.BanInfo;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -17,22 +14,11 @@ import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public interface Faction extends EconomyParticipator {
-
-
-    //ROSTER
-    Set<RosterPlayer> getRoster();
-
-    int getRosterKicks();
-
-    void setRosterKicks(int kicks);
-
 
     double getFactionBalance();
 
@@ -70,43 +56,9 @@ public interface Faction extends EconomyParticipator {
 
     Map<UUID, Integer> getPlayerWallCheckCount();
 
-    boolean isWeeWoo();
-
-    void setWeeWoo(boolean weeWoo);
-
-    boolean altInvited(FPlayer fplayer);
-
-    Map<String, Mission> getMissions();
-
-    List<String> getCompletedMissions();
-
-    Set<FastChunk> getSpawnerChunks();
-
-    void setSpawnerChunks(Set<FastChunk> fastChunks);
-
-    void clearSpawnerChunks();
-
-    int getSpawnerChunkCount();
-
-    int getAllowedSpawnerChunks();
-
-    void setAllowedSpawnerChunks(int chunks);
-
     boolean isProtected();
 
     void setProtected(boolean b);
-
-    void deinviteAlt(FPlayer alt);
-
-    void deinviteAllAlts();
-
-    void altInvite(FPlayer fplayer);
-
-    boolean addAltPlayer(FPlayer fplayer);
-
-    boolean removeAltPlayer(FPlayer fplayer);
-
-    Set<FPlayer> getAltPlayers();
 
     HashMap<String, List<String>> getAnnouncements();
 
@@ -128,10 +80,6 @@ public interface Faction extends EconomyParticipator {
 
     void clearWarps();
 
-    int getMaxVaults();
-
-    void setMaxVaults(int value);
-
     void addAnnouncement(FPlayer fPlayer, String msg);
 
     void sendUnreadAnnouncements(FPlayer fPlayer);
@@ -139,10 +87,6 @@ public interface Faction extends EconomyParticipator {
     void removeAnnouncements(FPlayer fPlayer);
 
     Set<String> getInvites();
-
-    String getFocused();
-
-    void setFocused(String setFocused);
 
     String getId();
 
@@ -159,10 +103,6 @@ public interface Faction extends EconomyParticipator {
     boolean isInvited(FPlayer fplayer);
 
     void ban(FPlayer target, FPlayer banner);
-
-    int getPoints();
-
-    void setPoints(int points);
 
     int getStrikes();
 
@@ -182,25 +122,9 @@ public interface Faction extends EconomyParticipator {
 
     void clearRules();
 
-    Location getCheckpoint();
-
-    void setCheckpoint(Location location);
-
     void addTnt(int amt);
 
     void takeTnt(int amt);
-
-    Location getVault();
-
-    void setVault(Location vaultLocation);
-
-    Inventory getChestInventory();
-
-    void setChestSize(int chestSize);
-
-    void setBannerPattern(ItemStack banner);
-
-    ItemStack getBanner();
 
     long getTnt();
 
@@ -447,11 +371,4 @@ public interface Faction extends EconomyParticipator {
 
     Set<FLocation> getAllClaims();
 
-    String getPaypal();
-
-    void paypalSet(String paypal);
-
-    // -------------------------------
-    // Shields
-    // -------------------------------
 }

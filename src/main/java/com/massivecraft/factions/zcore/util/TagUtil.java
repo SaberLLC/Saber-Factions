@@ -108,10 +108,6 @@ public class TagUtil {
         if (FactionsPlugin.getInstance().isClipPlaceholderAPIHooked() && player.isOnline()) {
             line = PlaceholderAPI.setPlaceholders(player, line);
         }
-
-        if (FactionsPlugin.getInstance().isMVdWPlaceholderAPIHooked() && player.isOnline()) {
-            line = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, line);
-        }
         return line;
     }
 
@@ -234,27 +230,6 @@ public class TagUtil {
                 }
                 lines.add(currentOffline.build());
                 return firstOffline && minimal ? null : lines; // we must return here and not outside the switch
-            case ALTS:
-                TextComponent.Builder alts = TextUtil.parseFancy(prefix);
-                boolean firstAlt = true;
-                for (FPlayer p : target.getAltPlayers()) {
-                    String name = p.getName();
-                    ChatColor color;
-
-                    if (p.isOnline()) {
-                        color = ChatColor.GREEN;
-                    } else {
-                        color = ChatColor.RED;
-                    }
-
-                    alts.append(Component.text(firstAlt ? name : ", " + name).hoverEvent(HoverEvent.showText(Component.text(tipPlayerSingular(p)).color(TextUtil.kyoriColor(color)))));
-                    firstAlt = false;
-                    if (SERIALIZER.toJson(alts.build()).length() > ARBITRARY_LIMIT) {
-                        lines.add(alts.build());
-                    }
-                }
-                lines.add(alts.build());
-                return firstAlt && minimal ? null : lines;
             default:
                 break;
         }

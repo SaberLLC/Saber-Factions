@@ -13,25 +13,16 @@ import com.massivecraft.factions.cmd.CmdAutoHelp;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.FCmdRoot;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.cmd.audit.FChestListener;
-import com.massivecraft.factions.cmd.audit.FLogManager;
-import com.massivecraft.factions.cmd.audit.FLogType;
-import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.data.helpers.FactionDataHelper;
 import com.massivecraft.factions.listeners.*;
-import com.massivecraft.factions.listeners.vspecific.ChorusFruitListener;
-import com.massivecraft.factions.missions.MissionHandler;
-import com.massivecraft.factions.missions.TributeInventoryHandler;
-import com.massivecraft.factions.missions.impl.MissionHandlerModern;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.adapters.*;
 import com.massivecraft.factions.util.flight.FlightEnhance;
 import com.massivecraft.factions.util.flight.stuct.AsyncPlayerMap;
-import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.CommandVisibility;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
@@ -55,6 +46,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
@@ -81,7 +73,6 @@ public class FactionsPlugin extends MPlugin {
 
     public static Permission perms = null;
     private Map<String, FactionsAddon> factionsAddonHashMap;
-    private final HashMap<Faction, String> shieldStatMap = new HashMap<>();
 
     // This plugin sets the boolean true when fully enabled.
     // Plugins can check this boolean while hooking in have
@@ -93,17 +84,12 @@ public class FactionsPlugin extends MPlugin {
     public FCmdRoot cmdBase;
     public CmdAutoHelp cmdAutoHelp;
     public short version;
-    public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
-    public boolean hookedPlayervaults;
-    public FLogManager fLogManager;
     public List<ReserveObject> reserveObjects;
     public FileManager fileManager;
-    public TimerManager timerManager;
     private FactionsPlayerListener factionsPlayerListener;
     private boolean locked = false;
     private Integer AutoLeaveTask = null;
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
-    private boolean mvdwPlaceholderAPIManager = false;
 
     public FactionsPlugin() {
         instance = this;
@@ -133,9 +119,11 @@ public class FactionsPlugin extends MPlugin {
     @Override
     public void onEnable() {
 
-        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+        final PluginManager pluginManager = Bukkit.getPluginManager();
+
+        if (pluginManager.getPlugin("Vault") == null && pluginManager.getPlugin("Apollo-Bukkit") != null) {
             Logger.print("You are missing dependencies!", Logger.PrefixType.FAILED);
-            Logger.print("Please verify [Vault] is installed!", Logger.PrefixType.FAILED);
+            Logger.print("Please verify [Vault] AND [Apollo-Bukkit] is installed!", Logger.PrefixType.FAILED);
             Conf.save();
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -153,7 +141,7 @@ public class FactionsPlugin extends MPlugin {
 
         StartupParameter.initData(this, () -> {
             if (getConfig().getBoolean("enable-faction-flight", true)) {
-                Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), new FlightEnhance(), 30L, 30L);
+                Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), new FlightEnhance(getConfig().getBoolean("ffly.AutoEnable", false)), 30L, 30L);
             }
 
             VersionProtocol.printVerionInfo();
@@ -176,37 +164,17 @@ public class FactionsPlugin extends MPlugin {
             Bukkit.getPluginManager().registerEvents(new SaberGUIListener(), this);
             Bukkit.getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
-            if (Conf.userSpawnerChunkSystem) {
-                Bukkit.getPluginManager().registerEvents(new SpawnerChunkListener(), this);
-            }
-
-            if (FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
-                Bukkit.getPluginManager().registerEvents(new ChorusFruitListener(), this);
-            }
-
             FactionDataHelper.init();
 
-            if (version > 8) {
-                Bukkit.getPluginManager().registerEvents(new MissionHandlerModern(), this);
-            }
-
             for (Listener eventListener : new Listener[]{
-                    new TributeInventoryHandler(),
                     new FactionsChatListener(),
                     new FactionsEntityListener(),
                     new FactionsExploitListener(),
                     new FactionsBlockListener(),
                     new UpgradesListener(),
-                    new MissionHandler(this),
-                    new FChestListener(),
                     new MenuListener(),
-                    new AntiChestListener()
             })
                 Bukkit.getPluginManager().registerEvents(eventListener, this);
-
-            if (Conf.useGraceSystem) {
-                Bukkit.getPluginManager().registerEvents(timerManager.graceTimer, this);
-            }
 
             new AsyncPlayerMap(this);
 
@@ -216,7 +184,7 @@ public class FactionsPlugin extends MPlugin {
 
             Bukkit.getScheduler().runTaskLater(this, () -> {
                 //To Add Addon Commands Into "Tab Completion Format"
-                if (factionsAddonHashMap.size() > 0) {
+                if (!factionsAddonHashMap.isEmpty()) {
                     FCmdRoot.instance.addVariableCommands();
                     FCmdRoot.instance.rebuild();
                 }
@@ -225,7 +193,7 @@ public class FactionsPlugin extends MPlugin {
             this.getCommand(refCommand).setExecutor(cmdBase);
             if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
 
-            if (FCmdRoot.instance.apolloEnabled) {
+            if (Conf.enableApolloIntegration) {
                 new ApolloFTeam();
                 Bukkit.getPluginManager().registerEvents(new RecipientsUpdaterListener(), this);
                 Bukkit.getScheduler().runTaskTimerAsynchronously(this, new ApolloFTeamTask(), 100, 100);
@@ -252,17 +220,8 @@ public class FactionsPlugin extends MPlugin {
             PlaceholderApi = false;
         }
 
-        Plugin mvdw = Bukkit.getPluginManager().getPlugin("MVdWPlaceholderAPI");
-        if (mvdw != null && mvdw.isEnabled()) {
-            this.mvdwPlaceholderAPIManager = true;
-            Logger.print("Found MVdWPlaceholderAPI. Adding hooks.", Logger.PrefixType.DEFAULT);
-        }
     }
 
-
-    public HashMap<Faction, String> getShieldStatMap() {
-        return shieldStatMap;
-    }
 
     public Map<String, FactionsAddon> getFactionsAddonHashMap() {
         return factionsAddonHashMap;
@@ -270,10 +229,6 @@ public class FactionsPlugin extends MPlugin {
 
     public boolean isClipPlaceholderAPIHooked() {
         return this.clipPlaceholderAPIManager != null;
-    }
-
-    public boolean isMVdWPlaceholderAPIHooked() {
-        return this.mvdwPlaceholderAPIManager;
     }
 
     private void setupPermissions() {
@@ -291,8 +246,6 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onDisable() {
-
-
         ShutdownParameter.initShutdown(this);
 
         if (this.AutoLeaveTask != null) {
@@ -411,28 +364,13 @@ public class FactionsPlugin extends MPlugin {
         Conf.chatTagHandledByAnotherPlugin = notByFactions;
     }
 
-    public FLogManager getFlogManager() {
-        return fLogManager;
-    }
-
-    public void logFactionEvent(Faction faction, FLogType type, String... arguments) {
-        this.fLogManager.log(faction, type, arguments);
-    }
-
-
     public List<ReserveObject> getFactionReserves() {
         return this.reserveObjects;
     }
 
-
     public String getPrimaryGroup(OfflinePlayer player) {
         return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
     }
-
-    public TimerManager getTimerManager() {
-        return timerManager;
-    }
-
 
     public FactionsPlayerListener getFactionsPlayerListener() {
         return this.factionsPlayerListener;

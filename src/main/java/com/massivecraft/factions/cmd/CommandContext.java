@@ -48,8 +48,6 @@ public class CommandContext {
         sender.sendMessage(TextUtil.parse(translation.toString(), args));
     }
 
-
-
     public void sendMessage(String msg) {
         sender.sendMessage(msg);
     }

@@ -56,7 +56,6 @@ public enum FactionTag implements Tag {
     ANNOUNCEMENT("{announcement}", (fac) -> {
         return String.valueOf(fac.getAnnouncements());
     }),
-    SHIELD("{shield}", (fac) -> FactionsPlugin.getInstance().getShieldStatMap().get(fac)),
     PEACEFUL("{peaceful}", (fac) -> fac.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : ""),
     PERMANENT("permanent", (fac) -> fac.isPermanent() ? "permanent" : "{notPermanent}"), // no braces needed
     LAND_VALUE("{land-value}", (fac) -> Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLandRounded())) : Tag.isMinimalShow() ? null : TL.ECON_OFF.format("value")),
@@ -102,7 +101,6 @@ public enum FactionTag implements Tag {
         }
     }),
     FACTION_STRIKES("{faction-strikes}", (fac) -> String.valueOf(fac.getStrikes())),
-    FACTION_POINTS("{faction-points}", (fac) -> String.valueOf(fac.getPoints())),
     FACTION_SIZE("{members}", (fac) -> String.valueOf(fac.getFPlayers().size())),
     FACTION_KILLS("{faction-kills}", (fac) -> String.valueOf(fac.getKills())),
     FACTION_DEATHS("{faction-deaths}", (fac) -> String.valueOf(fac.getDeaths())),

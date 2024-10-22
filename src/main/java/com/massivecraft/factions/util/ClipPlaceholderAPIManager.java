@@ -5,7 +5,6 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.tag.FactionTag;
 import com.massivecraft.factions.tag.Tag;
-import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -132,8 +131,6 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return TL.sdf.format(faction.getFoundedDate());
             case "faction_joining":
                 return (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
-            case "faction_alt_count":
-                return String.valueOf(faction.getAltPlayers().size());
             case "faction_strikes":
                 return fPlayer.hasFaction() ? String.valueOf(faction.getStrikes()) : "0";
             case "faction_peaceful":
@@ -142,8 +139,6 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(faction.getTnt());
             case "faction_tnt_max_balance":
                 return FactionTag.TNT_MAX.replace(FactionTag.TNT_MAX.getTag(), faction);
-            case "faction_points":
-                return fPlayer.hasFaction() ? String.valueOf(faction.getPoints()) : "0";
             case "faction_powerboost":
                 double powerBoost = faction.getPowerBoost();
                 return (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString()) + powerBoost + ")";
@@ -207,16 +202,8 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(faction.getKills());
             case "faction_deaths":
                 return String.valueOf(faction.getDeaths());
-            case "faction_maxvaults":
-                return String.valueOf(faction.getMaxVaults());
             case "faction_relation_color":
                 return fPlayer.getColorTo(faction).toString();
-            case "grace_time":
-                if (FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() >= 0) {
-                    return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
-                } else {
-                    return TL.GRACE_DISABLED_PLACEHOLDER.toString();
-                }
             case "faction_name_at_location":
                 Faction factionAtLocation = Board.getInstance().getFactionAt(FLocation.wrap(player.getLocation()));
                 return factionAtLocation != null ? factionAtLocation.getTag() : Factions.getInstance().getWilderness().getTag();

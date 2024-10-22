@@ -3,9 +3,9 @@ prefix: SaberFactions
 version: ${project.version}
 api-version: 1.13
 main: com.massivecraft.factions.FactionsPlugin
-authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, DroppingAnvil, Driftay, SaberDev, Callum, Atilt]
+authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, DroppingAnvil, Driftay, SaberDev, Callum, Atilt, vSKAH]
 depend: [Vault, Apollo-Bukkit]
-softdepend: [CoreProtect, PlayerVaults, PlaceholderAPI, MVdWPlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, AuthMe, Vault, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, dynmap, WildStacker, Multiverse-Core, MultiWorld]
+softdepend: [CoreProtect,PlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, Multiverse-Core, MultiWorld]
 commands:
   factions:
     description: Reference command for Factions.
@@ -17,18 +17,14 @@ permissions:
       factions.reserve: true
       factions.kit.mod: true
       factions.config: true
-      factions.convert: true
       factions.lock: true
       factions.reload: true
       factions.save: true
       factions.modifypower: true
       factions.ahome: true
-      factions.setmaxvaults: true
-      factions.convertconfig: true
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
-      factions.convertconfig: true
       factions.kit.admin: true
   factions.kit.mod:
     description: All faction permissions but configuration and persistance.
@@ -70,17 +66,11 @@ permissions:
       factions.corner.list: true
       factions.notifications: true
       factions.check: true
-      factions.audit: true
       factions.drain: true
-      factions.wild: true
-      factions.missions: true
       factions.tntfill: true
-      factions.shop: true
       factions.permissions: true
       factions.setdiscord: true
       factions.discord: true
-      factions.paypal: true
-      factions.setpaypal: true
       factions.admin: true
       factions.autoclaim: true
       factions.promote: true
@@ -117,27 +107,17 @@ permissions:
       factions.version: true
       factions.unclaim: true
       factions.unclaimall: true
-      factions.scoreboard: true
       factions.showinvites: true
       factions.seechunk: true
       factions.monitorlogins: true
-      factions.top: true
       factions.togglealliancechat: true
       factions.mapheight: true
       factions.ban: true
       factions.fly: true
       factions.tnt: true
-      factions.checkpoint: true
       factions.rules: true
       factions.setwarp: true
       factions.warp: true
-      factions.banner: true
-      factions.vault: true
-      factions.getvault: true
-  factions.sandbots:
-    description: gives players access to use sandbot commands
-  factions.shield:
-    description: gives players access to use shield commands
   factions.check:
     description: give players access to use check commands
   factions.admin:
@@ -148,16 +128,8 @@ permissions:
     description: ability to change/modify strike counts
   factions.spam:
     description: ability to toggle spam commands on and off
-  factions.viewchest:
-    description: ability to view a factions chest/pv
-  factions.grace:
-    description: gives ability to toggle grace period on and off
   factions.invsee:
     description: Allows players to use the inventory see command
-  factions.missions:
-    description: Allows players to use missions command
-  factions.alts:
-    description: Allows players to use the alts command
   factions.announce:
     description: announce things to the peasants
   factions.autoclaim:
@@ -178,8 +150,6 @@ permissions:
     description: claim land in a large radius
   factions.config:
     description: change a conf.json setting
-  factions.convert:
-    description: change a backend storage
   factions.create:
     description: create a new faction
   factions.deinvite:
@@ -218,8 +188,6 @@ permissions:
     description: see a list of the factions
   factions.lock:
     description: lock all write stuff
-  factions.lockspawners:
-    description: toggle placement of spawners
   factions.managesafezone:
     description: claim land as a safe zone and build/destroy within safe zones
   factions.managewarzone:
@@ -283,8 +251,6 @@ permissions:
     description: set permanent power for a faction
   factions.stuck:
     description: teleports player outside a faction
-  factions.setpaypal:
-    description: set paypal to faction
   factions.power:
     description: show player power info
   factions.power.any:
@@ -317,8 +283,6 @@ permissions:
     description: unclaim the land where you are standing
   factions.unclaimall:
     description: unclaim all of your factions land
-  factions.scoreboard:
-    description: ability to toggle scoreboards
   factions.showinvites:
     description: show pending invites to your faction
   factions.seechunk:
@@ -343,10 +307,6 @@ permissions:
     description: Ability to send players to their faction home.
   factions.autoleavebypass:
     description: Bypass autoleave.
-  factions.vault:
-    description: Access faction vault.
-  factions.setmaxvault:
-    description: Set a faction's max vaults.
   factions.mapheight:
     description: Set your /f map height.
   factions.ban:
@@ -355,37 +315,19 @@ permissions:
     description: Allow use of /f fly
   factions.rules:
     description: add/remove/set rules for your own faction.
-  factions.checkpoint:
-    description: set or go to faction checkpoint
   factions.tnt:
     description: add/take from faction bank
   factions.near:
     description: get nearby faction members
   factions.upgrades:
     description: open upgrade menu
-  factions.getvault:
-    description: get faction vault item
   factions.coleader:
     description: promote member to co leader
-  factions.tpbanner:
-    description: teleport to banner
-  factions.banner:
-    description: create banner
-  factions.killholos:
-    description: kill invisible holograms
   factions.stealth:
     description: Enter faction stealth mode
-  factions.focus:
-    description: Focus a certain player in another faction
   factions.coords:
     description: broadcast your coords to the player
-  factions.chest:
-    description: Open virtual shared faction chest
   factions.claimat:
     description: click to claim permission node for /f map
-  factions.paypal.viewall:
-    description: View other factions' paypal ID
-  factions.paypal:
-    description: Set/view your own faction's paypal.
   factions.showclaims:
     description: View all you faction claims.

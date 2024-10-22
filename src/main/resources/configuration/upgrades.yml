@@ -8,20 +8,16 @@
 
 fupgrades:
   Enabled: true
-  usePointsAsCurrency: false
   enabledUpgrade:
     - "Crops"
     - "Fall-Damage"
-    - "SpawnerChunks"
     - "EXP"
     - "Power"
     - "Redstone"
-    - "Spawners"
     - "DamageReduct"
     - "DamageIncrease"
     - "TNT"
     - "Warps"
-    - "Chest"
     - "Members"
     - "Armor"
     - "Fly"
@@ -93,36 +89,6 @@ fupgrades:
           - ''
           - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         Slot: 14
-    SpawnerChunks:
-      Max-Level: 3
-      chunk-limit:
-        level-1: 2
-        level-2: 3
-        level-3: 4
-      Cost:
-        level-1: 2000000
-        level-2: 4000000
-        level-3: 6000000
-      DisplayItem:
-        Name: '&e&lSpawner Chunk Limit'
-        Type: END_PORTAL_FRAME #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
-        Texture: '' #Hash of skull here from minecraft-heads.com
-        Lore:
-          - '&7&oIncreased Spawner &e&oChunk&7&o claims&7&o.'
-          - '&7&oYour current level is &e&l&o{level}'
-          - ''
-          - '&c&lIncrements'
-          - '&4&l* &cLevel 1: &f2'
-          - '&4&l* &cLevel 2: &f3'
-          - '&4&l* &cLevel 3: &f4'
-          - '&f'
-          - '&c&lCosts'
-          - '&4&l* &cLevel 1: &f$2,000,000'
-          - '&4&l* &cLevel 2: &f$4,000,000'
-          - '&4&l* &cLevel 3: &f$6,000,000'
-          - ''
-          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
-        Slot: 12
     EXP:
       Max-Level: 3
       EXP-Boost:
@@ -215,37 +181,6 @@ fupgrades:
           - ''
           - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         Slot: 25
-    Spawners:
-      Max-Level: 3
-      Spawner-Boost:
-        # This is a Percentage so .10 means 10% lowered spawner delay!
-        level-1: 0.10
-        level-2: 0.20
-        level-3: 0.30
-      Cost:
-        level-1: 1000000
-        level-2: 2000000
-        level-3: 3000000
-      DisplayItem:
-        Name: '&c&lSpawn Rate'
-        Type: MOB_SPAWNER #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
-        Texture: '' #Hash of skull here from minecraft-heads.com
-        Lore:
-          - '&c&oDecreased&7&o mob spawner delay in &a&oclaims&7&o.'
-          - '&7&oYour current level is &e&l&o{level}'
-          - ''
-          - '&c&lDecreased Spawner Delay'
-          - '&4&l* &cLevel 1: &f0.10%'
-          - '&4&l* &cLevel 2: &f0.20%'
-          - '&4&l* &cLevel 3: &f0.30%'
-          - '&f'
-          - '&c&lCosts'
-          - '&4&l* &cLevel 1: &f$1,000,000'
-          - '&4&l* &cLevel 2: &f$2,000,000'
-          - '&4&l* &cLevel 3: &f$3,000,000'
-          - ''
-          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
-        Slot: 30
     DamageReduct:
       Max-Level: 3
       DamageReductPercent:
@@ -366,37 +301,6 @@ fupgrades:
           - ''
           - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
         Slot: 24
-    Chest:
-      Max-Level: 3
-      Chest-Size:
-        # This is rows
-        level-1: 2
-        level-2: 3
-        level-3: 4
-      Cost:
-        level-1: 1000000
-        level-2: 2000000
-        level-3: 3000000
-      DisplayItem:
-        Name: '&c&lFaction Chest'
-        Type: CHEST #MUST BE PLAYER_HEAD FOR TEXTURE TO WORK!
-        Texture: '' #Hash of skull here from minecraft-heads.com
-        Lore:
-          - '&a&oIncreased&7&o Faction Chest Size.'
-          - '&7&oYour current level is &e&l&o{level}'
-          - ''
-          - '&c&lFaction Chest Size'
-          - '&4&l* &cLevel 1: &f2 Rows'
-          - '&4&l* &cLevel 2: &f3 Rows'
-          - '&4&l* &cLevel 3: &f4 Rows'
-          - '&f'
-          - '&c&lCosts'
-          - '&4&l* &cLevel 1: &f$1,000,000'
-          - '&4&l* &cLevel 2: &f$2,000,000'
-          - '&4&l* &cLevel 3: &f$3,000,000'
-          - ''
-          - '&7&o(( Tip: &f&oleft-click&7&o to &c&oupgrade&7&o ))'
-        Slot: 20
     Members:
       Max-Level: 3
       Members-Limit:

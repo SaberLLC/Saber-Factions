@@ -27,12 +27,14 @@ public class  Essentials {
 
     // return false if feature is disabled or Essentials isn't available
     public static boolean handleTeleport(Player player, Location loc) {
+        System.out.println("Essentials.handleTeleport");
         if (!Conf.homesTeleportCommandEssentialsIntegration || essentials == null) return false;
-
+        System.out.println("Essentials.handleTeleport 2");
         Teleport teleport = essentials.getUser(player).getTeleport();
         Trade trade = new Trade(Conf.econCostHome, essentials);
         try {
             teleport.teleport(loc, trade);
+            System.out.println("Essentials.handleTeleport 3");
         } catch (Exception e) {
             player.sendMessage(ChatColor.RED + e.getMessage());
         }
