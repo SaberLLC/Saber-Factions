@@ -43,7 +43,7 @@ import static com.massivecraft.factions.integration.Econ.moneyString;
  */
 
 public abstract class MemoryFPlayer implements FPlayer {
-    public boolean enemiesNearby = false;
+    protected transient boolean enemiesNearby = false;
     protected HashMap<String, Long> commandCooldown = new HashMap<>();
     protected String factionId;
     protected Role role;
@@ -58,18 +58,21 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean ignoreAllianceChat = false;
     protected String id;
     protected String name;
-    protected boolean monitorJoins;
+    protected boolean monitorJoins = false;
     protected boolean spyingChat = false;
     protected WarmUpUtil.Warmup warmup;
-    protected int warmupTask;
-    protected boolean isAdminBypassing = false;
     protected int kills, deaths;
     protected boolean willAutoLeave = true;
     protected int mapHeight = 8; // default to old value
     protected boolean isFlying = false;
     protected boolean isAutoFlying = false;
-    protected boolean enteringPassword = false;
-    protected String enteringPasswordWarp = "";
+    protected boolean isStealthEnabled = false;
+    protected boolean notificationsEnabled = false;
+    protected boolean titlesEnabled = true;
+    protected boolean friendlyFire = false;
+
+    protected transient boolean enteringPassword = false;
+    protected transient String enteringPasswordWarp = "";
     protected transient FLocation lastStoodAt = FLocation.empty(); // Where did this player stand the last time we checked?
     protected transient boolean mapAutoUpdating;
     protected transient Faction autoClaimFor;
@@ -77,10 +80,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean loginPvpDisabled;
     protected transient long lastFrostwalkerMessage;
     protected transient boolean shouldTakeFallDamage = true;
-    protected boolean isStealthEnabled = false;
-    protected boolean notificationsEnabled = false;
-    protected boolean titlesEnabled = true;
-    boolean friendlyFire = false;
+    protected transient int warmupTask;
+    protected transient boolean isAdminBypassing = false;
 
     public MemoryFPlayer() {
     }
