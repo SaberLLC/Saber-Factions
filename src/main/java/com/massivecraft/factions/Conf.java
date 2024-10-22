@@ -78,7 +78,6 @@ public class Conf {
     public static String modChatFormat = ChatColor.RED + "%s:" + ChatColor.WHITE + " %s";
     public static int stealthFlyCheckRadius = 32;
     public static int factionBufferSize = 20;
-    public static boolean useCheckSystem = true;
     public static boolean noEnderpearlsInFly = false;
     public static boolean broadcastDescriptionChanges = false;
     public static boolean broadcastTagChanges = false;
@@ -109,9 +108,6 @@ public class Conf {
     public static int factionDrainCooldown = 60;
     //RESERVE
     public static boolean useReserveSystem = true;
-
-    //INSPECT
-    public static boolean useInspectSystem = true;
 
     //GUI's
     public static boolean useDisbandGUI = true;

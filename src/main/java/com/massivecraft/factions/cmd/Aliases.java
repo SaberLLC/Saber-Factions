@@ -59,7 +59,6 @@ public class Aliases {
     public static ArrayList<String> config = new ArrayList<>(Collections.singletonList("config"));
     public static ArrayList<String> coords = new ArrayList<>(Arrays.asList("coords", "coord"));
     public static ArrayList<String> create = new ArrayList<>(Collections.singletonList("create"));
-    public static ArrayList<String> debug = new ArrayList<>(Collections.singletonList("debug"));
     public static ArrayList<String> deinvite = new ArrayList<>(Arrays.asList("deinvite", "deinv"));
     public static ArrayList<String> deletefwarp = new ArrayList<>(Arrays.asList("delwarp", "dw", "deletewarp"));
     public static ArrayList<String> description = new ArrayList<>(Arrays.asList("desc", "description"));
@@ -69,7 +68,6 @@ public class Aliases {
     public static ArrayList<String> fly = new ArrayList<>(Collections.singletonList("fly"));
     public static ArrayList<String> warp = new ArrayList<>(Arrays.asList("warp", "warps"));
     public static ArrayList<String> home = new ArrayList<>(Collections.singletonList("home"));
-    public static ArrayList<String> inspect = new ArrayList<>(Arrays.asList("inspect", "ins"));
     public static ArrayList<String> invsee = new ArrayList<>(Arrays.asList("invsee", "inventorysee"));
     public static ArrayList<String> invite = new ArrayList<>(Arrays.asList("invite", "inv"));
     public static ArrayList<String> join = new ArrayList<>(Collections.singletonList("join"));
@@ -124,7 +122,6 @@ public class Aliases {
     public static ArrayList<String> toggleAllianceChat = new ArrayList<>(Arrays.asList("tac", "ac", "togglealliancechat"));
     public static ArrayList<String> unban = new ArrayList<>(Collections.singletonList("unban"));
     public static ArrayList<String> upgrades = new ArrayList<>(Arrays.asList("upgrades", "upgrade"));
-    public static ArrayList<String> vault = new ArrayList<>(Collections.singletonList("vault"));
     private static final transient Aliases i = new Aliases();
 
     public static void load() {

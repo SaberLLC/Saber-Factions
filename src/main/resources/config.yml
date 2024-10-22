@@ -273,7 +273,6 @@ help:
     - '&c/f tag &f<name> &8- &7Change your faction name.'
     - '&c/f join &f<name> &8- &7Join to the faction.'
     - '&c/f list &8- &7List all factions.'
-    - '&c/f top &8- &7View the richest factions.'
     - '&c/f map &8- &7Map of the surrounding area, click chunks to claim.'
     - '&c/f sethome &8- &7Set your faction home.'
     - '&c/f home &8- &7Go to your faction home.'
@@ -313,7 +312,6 @@ help:
     - '&7&m----------------------------------------------------'
     - '&6&lFactions Help &8- &f(3/3)               '
     - '&7&m----------------------------------------------------'
-    - '&c/f check &8- &7Manage All Check Settings.'
     - '&c/f corner &8- &7Use this command in a corner chunk, to claim your entire buffer.'
     - '&c/f global &8- &7toggle public chat off and only allow faction based chats.'
     - '&c/f invsee &8- &7Check a faction members inventory.'
@@ -364,24 +362,6 @@ faction-creation-broadcast: true #Disabling this will not make faction creation 
 faction-disband-broadcast: true #Disabling this will not make faction disband broadcasts appear in chat.
 faction-open-broadcast: true #Disabling this will not make faction open broadcasts appear in chat.
 faction-leader-broadcast: true #Disabling this will not make leader changes appear in chat.
-
-############################################################
-# +------------------------------------------------------+ #
-# |                Faction Check System                   |#
-# +------------------------------------------------------+ #
-############################################################
-#Everything else from display names to lore's, is managed by lang.yml, so edit it there
-f-check:
-  gui-rows: 3 #Rows for the check gui
-  wall-check:
-    Type: COBBLESTONE
-    slot: 10
-  buffer-check:
-    Type: OBSIDIAN
-    slot: 16
-  history:
-    Type: BOOK
-    slot: 13
 
 ############################################################
 # +------------------------------------------------------+ #

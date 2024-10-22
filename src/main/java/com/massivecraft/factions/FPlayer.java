@@ -249,13 +249,6 @@ public interface FPlayer extends EconomyParticipator {
 
     void setFriendlyFire(boolean status);
 
-    //inspect Stuff
-
-    boolean isInspectMode();
-
-    void setInspectMode(boolean status);
-
-
     // Fly Checks
 
     Boolean canflyinWilderness();

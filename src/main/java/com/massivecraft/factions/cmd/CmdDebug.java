@@ -26,7 +26,6 @@ public class CmdDebug extends FCommand {
         Logger.print("------Command------", Logger.PrefixType.DEBUG);
         Logger.print("Apollo is Enabled: " + Conf.enableApolloIntegration, Logger.PrefixType.DEBUG);
         Logger.print("Discord Commands: " + FCmdRoot.instance.discordEnabled, Logger.PrefixType.DEBUG);
-        Logger.print("Check Commands: " + FCmdRoot.instance.checkEnabled, Logger.PrefixType.DEBUG);
         Logger.print("Inventory See Command: " + FCmdRoot.instance.invSeeEnabled, Logger.PrefixType.DEBUG);
         Logger.print("Fly Command: " + FCmdRoot.instance.fFlyEnabled, Logger.PrefixType.DEBUG);
         Logger.print("----End Command----", Logger.PrefixType.DEBUG);

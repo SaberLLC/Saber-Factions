@@ -204,7 +204,6 @@ public class CmdHelp extends FCommand {
         pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdLock.getUsageTemplate(context));
         pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdReload.getUsageTemplate(context));
         pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdSaveAll.getUsageTemplate(context));
-        pageLines.add(FactionsPlugin.getInstance().cmdBase.cmdVersion.getUsageTemplate(context));
         helpPages.add(pageLines);
     }
 

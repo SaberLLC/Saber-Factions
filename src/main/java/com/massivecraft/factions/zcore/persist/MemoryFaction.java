@@ -63,11 +63,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private long lastDeath;
     private int strikes = 0;
 
-    private int wallCheckMinutes;
-    private int bufferCheckMinutes;
-    private Map<Long, String> checks;
-    private Map<UUID, Integer> playerWallCheckCount;
-    private Map<UUID, Integer> playerBufferCheckCount;
     private long tntBankSize;
     private int warpLimit;
     private double reinforcedArmor;
@@ -96,12 +91,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.powerBoost = 0.0;
         this.foundedDate = System.currentTimeMillis();
         this.defaultRole = Role.RECRUIT;
-        this.wallCheckMinutes = 0;
-        this.bufferCheckMinutes = 0;
 
-        this.checks = new ConcurrentHashMap<>();
-        this.playerWallCheckCount = new ConcurrentHashMap<>();
-        this.playerBufferCheckCount = new ConcurrentHashMap<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -125,11 +115,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         invites = old.invites;
         announcements = old.announcements;
         this.defaultRole = Role.NORMAL;
-        this.wallCheckMinutes = 0;
-        this.bufferCheckMinutes = 0;
-        this.checks = new ConcurrentHashMap<>();
-        this.playerWallCheckCount = new ConcurrentHashMap<>();
-        this.playerBufferCheckCount = new ConcurrentHashMap<>();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -394,34 +379,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setUpgrade(String upgrade, int level) {
         upgrades.put(upgrade, level);
-    }
-
-    public int getWallCheckMinutes() {
-        return this.wallCheckMinutes;
-    }
-
-    public void setWallCheckMinutes(int wallCheckMinutes) {
-        this.wallCheckMinutes = wallCheckMinutes;
-    }
-
-    public int getBufferCheckMinutes() {
-        return this.bufferCheckMinutes;
-    }
-
-    public void setBufferCheckMinutes(int bufferCheckMinutes) {
-        this.bufferCheckMinutes = bufferCheckMinutes;
-    }
-
-    public Map<Long, String> getChecks() {
-        return this.checks;
-    }
-
-    public Map<UUID, Integer> getPlayerBufferCheckCount() {
-        return this.playerBufferCheckCount;
-    }
-
-    public Map<UUID, Integer> getPlayerWallCheckCount() {
-        return this.playerWallCheckCount;
     }
 
     public void clearRules() {

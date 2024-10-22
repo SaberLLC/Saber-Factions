@@ -65,7 +65,6 @@ permissions:
     children:
       factions.corner.list: true
       factions.notifications: true
-      factions.check: true
       factions.drain: true
       factions.tntfill: true
       factions.permissions: true
@@ -118,8 +117,6 @@ permissions:
       factions.rules: true
       factions.setwarp: true
       factions.warp: true
-  factions.check:
-    description: give players access to use check commands
   factions.admin:
     description: hand over your admin rights
   factions.admin.any:

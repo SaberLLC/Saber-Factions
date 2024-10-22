@@ -31,7 +31,6 @@ public class DefaultPermissions {
     public boolean tntbank;
     public boolean tntfill;
     public boolean withdraw;
-    public boolean check;
     public boolean drain;
 
     public DefaultPermissions() {
@@ -61,7 +60,6 @@ public class DefaultPermissions {
         this.tntbank = def;
         this.tntfill = def;
         this.withdraw = def;
-        this.check = def;
         this.drain = def;
     }
 
@@ -88,7 +86,6 @@ public class DefaultPermissions {
                               boolean canTntbank,
                               boolean canTntfill,
                               boolean canWithdraw,
-                              boolean canCheck,
                               boolean canDrain) {
         this.ban = canBan;
         this.build = canBuild;
@@ -113,7 +110,6 @@ public class DefaultPermissions {
         this.tntbank = canTntbank;
         this.tntfill = canTntfill;
         this.withdraw = canWithdraw;
-        this.check = canCheck;
         this.drain = canDrain;
     }
 
@@ -142,7 +138,6 @@ public class DefaultPermissions {
         else if (Objects.equals(name, "tntbank")) return this.tntbank;
         else if (Objects.equals(name, "tntfill")) return this.tntfill;
         else if (Objects.equals(name, "withdraw")) return this.withdraw;
-        else if (Objects.equals(name, "check")) return this.check;
         else if (Objects.equals(name, "drain")) return this.drain;
         else return false;
     }

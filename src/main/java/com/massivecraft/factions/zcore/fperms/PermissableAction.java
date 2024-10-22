@@ -45,8 +45,7 @@ public enum PermissableAction {
     TNTBANK("tntbank"),
     TNTFILL("tntfill"),
     WITHDRAW("withdraw"),
-    CHEST("chest"),
-    CHECK("check");
+    CHEST("chest");
 
     private String name;
 

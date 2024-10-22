@@ -293,29 +293,6 @@ public enum TL {
     COMMAND_DELHOME_DESCRIPTION("delete home of your faction"),
 
 
-    COMMAND_CHECK_DESCRIPTION("manage your factions check system!"),
-    CHECK_BUFFERS_CHECK("\n &c&lFaction Walls&7 » &bCheck Your Buffers! \n"),
-    CHECK_WALLS_CHECK("\n &c&lFaction Walls&7 » &bCheck Your Walls! \n"),
-    CHECK_ALREADY_CHECKED("&c&lFaction Settings&7 » &bWalls have already been checked"),
-    CHECK_NO_CHECKS("&c&lFaction Walls&7 » &bNothing to Check!"),
-    CHECK_WALLS_MARKED_CHECKED("&c&lFaction Walls&7 » &aMarked walls as checked"),
-    CHECK_BUFFERS_MARKED_CHECKED("&c&lFaction Walls&7 » &aMarked buffers as checked"),
-    CHECK_HISTORY_GUI_TITLE("&aCheck History"),
-    CHECK_SETTINGS_GUI_TITLE("&a&lManage Check Settings"),
-    CHECK_WALL_CHECK_GUI_ICON("&a&lWall Check Settings"),
-    CHECK_BUFFER_CHECK_GUI_ICON("&a&lBuffer Check Settings"),
-    CHECK_CHECK_LORE_LINE("&bCheck: &a%1$s"),
-    CHECK_WALLS_CHECKED_GUI_ICON("&aWalls checked"),
-    CHECK_BUFFERS_CHECKED_GUI_ICON("&aBuffers checked"),
-    CHECK_WALLS_UNCHECKED_GUI_ICON("&cWalls unchecked"),
-    CHECK_BUFFERS_UNCHECKED_GUI_ICON("&cBuffers unchecked"),
-    CHECK_TIME_LORE_LINE("&bTime: &f%1$s"),
-    CHECK_PLAYER_LORE_LINE("&bPlayer: &f%1$s"),
-    CHECK_HISTORY_GUI_ICON("&bCheck history"),
-    CHECK_MUST_BE_ATLEAST_COLEADER("&cYou must be atleast &dCo Leader &cto access &fcheck settings"),
-    CHECK_LEADERBOARD_HEADER("&8---- Check Leaderboard ----"),
-    CHECK_LEADERBOARD_LINE("&f%1$s. &d%2$s: &f%3$s (%4$s Buffer, %5$s Walls)"),
-    CHECK_LEADERBOARD_NO_DATA("&8No data"),
     COMMAND_DEBUG_DESCRIPTION("Print debugging info to console"),
     COMMAND_DEBUG_PRINTED("&c&l[!]&7 Debug info has been printed to console"),
 
@@ -405,16 +382,6 @@ public enum TL {
     COMMAND_HOME_BLOCKED("&c&l[!] You may not teleport to a home that is claimed by &b%1$s"),
 
     COMMAND_INVENTORYSEE_DESCRIPTION("View a faction members inventory"),
-
-    COMMAND_INSPECT_DISABLED_MSG("&c&l[!]&7 Inspect mode is now &cdisabled."),
-    COMMAND_INSPECT_DISABLED_NOFAC("&c&l[!]&7 Inspect mode is now &cdisabled,&7 because you &cdo not have a faction!"),
-    COMMAND_INSPECT_ENABLED("&c&l[!]&7 Inspect mode is now &aEnabled."),
-    COMMAND_INSPECT_HEADER("&c&m---&7Inspect Data&c&m---&c//&7x:{x},y:{y},z:{z}"),
-    COMMAND_INSPECT_ROW("&c{time} &7// &c{action} &7// &c{player} &7// &c{block-type}"),
-    COMMAND_INSPECT_NODATA("&c&l[!]&7 &7No Data was found!"),
-    COMMAND_INSPECT_NOTINCLAIM("&c&l[!]&7 &7You can &conly&7 inspect in &cyour &7claims!"),
-    COMMAND_INSPECT_BYPASS("&c&l[!]&7 Inspecting in &cbypass&7 mode"),
-    COMMAND_INSPECT_DESCRIPTION("Inspect blocks!"),
 
     COMMAND_INVITE_TOINVITE("to invite someone"),
     COMMAND_INVITE_FORINVITE("for inviting someone"),
@@ -873,10 +840,6 @@ public enum TL {
     COMMAND_UNCLAIMFILL_TOOMUCHFAIL("&cAborting unclaim fill after %d failures"),
     COMMAND_UNCLAIMFILL_UNCLAIMED("%1$s&e unclaimed %d claims of your faction's land around %s."),
     COMMAND_UNCLAIMFILL_BYPASSCOMPLETE("&eUnclaimed %d claims."),
-
-    COMMAND_VERSION_NAME("&c&l[!]&7 &c&k||| &r&4SaberFactions&7 &c&k|||&r &c» &7By Driftay"),
-    COMMAND_VERSION_VERSION("&7Version &c» &7%1$s"),
-    COMMAND_VERSION_DESCRIPTION("Show plugin and translation version information"),
 
     COMMAND_WARUNCLAIMALL_DESCRIPTION("Unclaim all warzone land"),
     COMMAND_WARUNCLAIMALL_SUCCESS("You unclaimed ALL war zone land."),

@@ -2,14 +2,12 @@ package com.massivecraft.factions.zcore.util;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.Aliases;
-import com.massivecraft.factions.cmd.check.CheckTask;
 import com.massivecraft.factions.cmd.reserve.ListParameterizedType;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.Metrics;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
-import org.bukkit.plugin.Plugin;
 import org.saberdev.corex.CoreX;
 
 import java.io.File;
@@ -51,11 +49,6 @@ public class StartupParameter {
             FactionsPlugin.cachedRadiusClaim = Conf.useRadiusClaimSystem;
 
             CoreX.init();
-            if (Conf.useCheckSystem) {
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, CheckTask.getInstance(), 0L, 1200L);
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimer(plugin, CheckTask.getInstance()::cleanupTask, 0L, 1260L);
-            }
-
             finish.run();
         }));
 

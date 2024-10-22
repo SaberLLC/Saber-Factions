@@ -23,7 +23,6 @@ factions:
   bypass: BYPASS #Ability to use F Bypass
   chat: CHAT #Ability to Cycle through Faction Based Chats
   chatspy: CHATSPY #Ability to spy on other Faction Chats
-  check: CHECK #Ability to use F Check
   claim: #Ability to Claim
     line: CLAIM_LINE #Ability to Claim a Line of Claims
     radius: CLAIM_RADIUS #Ability to claim multiple chunks with f claim
@@ -123,7 +122,6 @@ factions:
   top: TOP #Ability to use F Top
   rules: RULES #Ability to use F Rules
   upgrades: UPGRADES #Ability to use F Upgrades
-  inspect: INSPECT #Ability to use F Inspect (CoreProtect Required)
   tntfill: TNTFILL #Ability to use F TNTFILL
   coords: COORD #Ability to use F Coords
   showclaims: SHOWCLAIMS #Ability to use F Showclaims

@@ -83,7 +83,6 @@ fperm-gui:
       fly: FEATHER
       tntbank: BEACON
       tntfill: TNT
-      check: WATCH
       drain: BUCKET
       home: ENDER_EYE
     Descriptions:
@@ -110,7 +109,6 @@ fperm-gui:
       tntbank: '&7Grant users access to manage /f tnt virtual bank.'
       tntfill: '&7Grant users access to use /f tntfill.'
       chest: '&7Grant users access to use /f chest.'
-      check: '&7Grant users access to manage /f check system.'
       drain: '&7Grant users access to use /f drain.'
       home: '&7Grant users access to use /f home.'
     slots:
@@ -141,7 +139,6 @@ fperm-gui:
       fly: 34
       tntbank: 39
       tntfill: 41
-      check: 50
       drain: 49
       home: 48
     # {action} Action name eg: Setwarp, Kick

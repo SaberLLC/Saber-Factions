@@ -188,11 +188,6 @@ public class FactionsEntityListener implements Listener {
                     combatList.add(damagee.getUniqueId());
                     Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
                     cancelFFly((Player) damageee);
-                    FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damageee);
-                    if (fplayer.isInspectMode()) {
-                        fplayer.setInspectMode(false);
-                        fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
-                    }
                 }
                 if (damager instanceof Player) {
                     cancelFStuckTeleport((Player) damager);
@@ -202,11 +197,6 @@ public class FactionsEntityListener implements Listener {
                     Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(finalDamager.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
 
                     cancelFFly((Player) damager);
-                    FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
-                    if (fplayer.isInspectMode()) {
-                        fplayer.setInspectMode(false);
-                        fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
-                    }
                 }
             } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
                 // Players can not take any damage in a Safe Zone

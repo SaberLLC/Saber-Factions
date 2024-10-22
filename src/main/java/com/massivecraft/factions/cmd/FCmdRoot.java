@@ -2,7 +2,6 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.cmd.check.CmdCheck;
 import com.massivecraft.factions.cmd.claim.*;
 import com.massivecraft.factions.cmd.drain.CmdDrain;
 import com.massivecraft.factions.cmd.econ.CmdMoney;
@@ -81,7 +80,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdToggleAllianceChat cmdToggleAllianceChat = new CmdToggleAllianceChat();
     public CmdUnclaim cmdUnclaim = new CmdUnclaim();
     public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
-    public CmdVersion cmdVersion = new CmdVersion();
     public CmdWarunclaimall cmdWarunclaimall = new CmdWarunclaimall();
     public CmdShowInvites cmdShowInvites = new CmdShowInvites();
     public CmdAnnounce cmdAnnounce = new CmdAnnounce();
@@ -109,7 +107,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdFly cmdFly = new CmdFly();
     public CmdColeader cmdColeader = new CmdColeader();
     public CmdUnclaimfill cmdUnclaimfill = new CmdUnclaimfill();
-    //public CmdInspect cmdInspect = new CmdInspect();
     public CmdCoords cmdCoords = new CmdCoords();
     public CmdShowClaims cmdShowClaims = new CmdShowClaims();
     public CmdLowPower cmdLowPower = new CmdLowPower();
@@ -118,7 +115,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdInventorySee cmdInventorySee = new CmdInventorySee();
     public CmdFGlobal cmdFGlobal = new CmdFGlobal();
     public CmdStrikes cmdStrikes = new CmdStrikes();
-    public CmdCheck cmdCheck = new CmdCheck();
     public CmdSetDiscord cmdSetDiscord = new CmdSetDiscord();
     public CmdSeeDiscord cmdSeeDiscord = new CmdSeeDiscord();
     public CmdDebug cmdDebug = new CmdDebug();
@@ -143,7 +139,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
 
     //Variables to know if we already set up certain sub commands
     public Boolean discordEnabled = false;
-    public Boolean checkEnabled = false;
     public Boolean invSeeEnabled = false;
     public Boolean fFlyEnabled = false;
     public Boolean fStrikes = false;
@@ -213,7 +208,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdPlayerTitleToggle);
         this.addSubCommand(this.cmdUnclaim);
         this.addSubCommand(this.cmdUnclaimall);
-        this.addSubCommand(this.cmdVersion);
         this.addSubCommand(this.cmdWarunclaimall);
         this.addSubCommand(this.cmdShowInvites);
         this.addSubCommand(this.cmdAnnounce);
@@ -272,12 +266,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             this.addSubCommand(this.cmdReserve);
         }
 
-        //Check
-        if (Conf.useCheckSystem && !checkEnabled) {
-            this.addSubCommand(this.cmdCheck);
-            checkEnabled = true;
-        }
-
         if (Conf.econEnabled || Conf.bankEnabled) {
             this.addSubCommand(this.cmdMoney);
         }
@@ -286,19 +274,10 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             this.addSubCommand(this.cmdSeeChunk);
         }
 
-        //CoreProtect
-        //if (Bukkit.getServer().getPluginManager().getPlugin("CoreProtect") != null && !coreProtectEnabled) {
-        //    FactionsPlugin.getInstance().log("Found CoreProtect, enabling Inspect");
-        //    this.addSubCommand(this.cmdInspect);
-        //    coreProtectEnabled = true;
-        //} else {
-        //    FactionsPlugin.getInstance().log("CoreProtect not found, disabling Inspect");
-        //}
         //FTOP
-
         final PluginManager pluginManager = Bukkit.getServer().getPluginManager();
         if ((pluginManager.getPlugin("FactionsTop") != null || pluginManager.getPlugin("SavageFTOP") != null || pluginManager.getPlugin("SaberFTOP") != null)) {
-            Logger.print("Found FactionsTop plugin. Disabling our own /f top command.", Logger.PrefixType.DEFAULT);
+            Logger.print("Found FactionsTop plugin.", Logger.PrefixType.DEFAULT);
         }
 
         //Lunar Apollo-Bukkit depend
@@ -310,7 +289,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             this.addSubCommand(this.cmdStrikes);
             fStrikes = true;
         }
-
 
         if (FactionsPlugin.getInstance().getConfig().getBoolean("f-inventory-see.Enabled", false) && !invSeeEnabled) {
             this.addSubCommand(this.cmdInventorySee);

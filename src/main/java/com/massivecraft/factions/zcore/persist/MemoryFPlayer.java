@@ -81,7 +81,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean notificationsEnabled = false;
     protected boolean titlesEnabled = true;
     protected boolean seeingChunk = false;
-    boolean inspectMode = false;
     boolean friendlyFire = false;
 
     public MemoryFPlayer() {
@@ -1281,16 +1280,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setFriendlyFire(boolean status) {
         friendlyFire = status;
-    }
-
-    @Override
-    public boolean isInspectMode() {
-        return inspectMode;
-    }
-
-    @Override
-    public void setInspectMode(boolean status) {
-        inspectMode = status;
     }
 
     public boolean attemptClaim(Faction forFaction, FLocation flocation, boolean notifyFailure) {
