@@ -1,17 +1,18 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.util.WorldUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import io.papermc.lib.PaperLib;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class CmdStuck extends FCommand {
 
@@ -87,10 +88,7 @@ public class CmdStuck extends FCommand {
                                 context.msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
                                 FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
                                 FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
-                                if (!Essentials.handleTeleport(player, tp)) {
-                                    player.teleport(tp);
-                                    Logger.print("/f stuck used regular teleport, not essentials!", Logger.PrefixType.DEFAULT);
-                                }
+                                PaperLib.teleportAsync(player, tp, PlayerTeleportEvent.TeleportCause.PLUGIN);
                                 this.stop();
                                 return false;
                             }

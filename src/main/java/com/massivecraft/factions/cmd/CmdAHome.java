@@ -4,6 +4,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import io.papermc.lib.PaperLib;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class CmdAHome extends FCommand {
@@ -33,9 +34,12 @@ public class CmdAHome extends FCommand {
         if (target.isOnline()) {
             Faction faction = target.getFaction();
             if (faction.hasHome()) {
-                target.getPlayer().teleport(faction.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
-                context.msg(TL.COMMAND_AHOME_SUCCESS, target.getName());
-                target.msg(TL.COMMAND_AHOME_TARGET);
+                PaperLib.teleportAsync( target.getPlayer(), faction.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN).thenAccept(success -> {
+                    if (success) {
+                        context.msg(TL.COMMAND_AHOME_SUCCESS, target.getName());
+                        target.msg(TL.COMMAND_AHOME_TARGET);
+                    }
+                });
             } else {
                 context.msg(TL.COMMAND_AHOME_NOHOME, target.getName());
             }

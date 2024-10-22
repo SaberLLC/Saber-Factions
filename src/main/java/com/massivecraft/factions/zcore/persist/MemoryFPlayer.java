@@ -8,7 +8,6 @@ import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
@@ -25,6 +24,7 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.text.DecimalFormat;
@@ -331,10 +331,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public boolean isAdminBypassing() {
         return this.isAdminBypassing;
-    }
-
-    public boolean isVanished() {
-        return Essentials.isVanished(getPlayer());
     }
 
     public void setIsAdminBypassing(boolean val) {
@@ -1203,7 +1199,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             }
 
             FPlayer enemyFPlayer = FPlayers.getInstance().getByPlayer(enemyPlayer);
-            if (enemyFPlayer == null || !me.canSee(enemyPlayer) || enemyFPlayer.isVanished()) {
+            if (enemyFPlayer == null || !enemyPlayer.hasPotionEffect(PotionEffectType.INVISIBILITY)) {
                 continue; // Skip invalid or vanished players
             }
 

@@ -6,6 +6,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.util.TL;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -52,7 +53,11 @@ public class FactionWarpsFrame extends SaberGUI {
         WarmUpUtil.process(fme, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, () -> {
             Player player = Bukkit.getPlayer(fme.getPlayer().getUniqueId());
             if (player != null) {
-                player.teleport(faction.getWarp(warp).getLocation());
+                PaperLib.teleportAsync(player, faction.getWarp(warp).getLocation()).thenAccept(success -> {
+                    if (success) {
+                        fme.msg(TL.COMMAND_FWARP_WARPED, warp);
+                    }
+                });
                 fme.msg(TL.COMMAND_FWARP_WARPED, warp);
             }
         }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 10));

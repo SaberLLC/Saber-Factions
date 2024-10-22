@@ -8,6 +8,7 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.Collection;
 import java.util.UnknownFormatConversionException;
@@ -189,9 +191,9 @@ public class FactionsChatListener implements Listener {
                     listeningPlayer.sendMessage(String.format(yourFormat, talkingPlayer.getDisplayName(), msg));
                 } catch (UnknownFormatConversionException ex) {
                     Conf.chatTagInsertIndex = 0;
-                    Logger.print( "Critical error in chat message formatting!", Logger.PrefixType.FAILED);
-                    Logger.print( "NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.", Logger.PrefixType.FAILED);
-                    Logger.print( "For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration", Logger.PrefixType.FAILED);
+                    Logger.print("Critical error in chat message formatting!", Logger.PrefixType.FAILED);
+                    Logger.print("NOTE: This has been automatically fixed right now by setting chatTagInsertIndex to 0.", Logger.PrefixType.FAILED);
+                    Logger.print("For a more proper fix, please read this regarding chat configuration: http://massivecraft.com/plugins/factions/config#Chat_configuration", Logger.PrefixType.FAILED);
                     return;
                 }
             }
@@ -208,8 +210,11 @@ public class FactionsChatListener implements Listener {
         WarmUpUtil.process(fme, WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warp, () -> {
             Player player = Bukkit.getPlayer(fme.getPlayer().getUniqueId());
             if (player != null) {
-                player.teleport(fme.getFaction().getWarp(warp).getLocation());
-                fme.msg(TL.COMMAND_FWARP_WARPED, warp);
+                PaperLib.teleportAsync(player, fme.getFaction().getWarp(warp).getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN).thenAccept(success -> {
+                    if (success) {
+                        fme.msg(TL.COMMAND_FWARP_WARPED, warp);
+                    }
+                });
             }
         }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 10));
     }

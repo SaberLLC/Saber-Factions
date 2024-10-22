@@ -33,13 +33,12 @@ import com.massivecraft.factions.zcore.frame.fupgrades.UpgradesListener;
 import com.massivecraft.factions.zcore.util.ShutdownParameter;
 import com.massivecraft.factions.zcore.util.StartupParameter;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import io.papermc.lib.PaperLib;
+import io.papermc.lib.environments.Environment;
 import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -118,6 +117,15 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onEnable() {
+
+        Environment env = PaperLib.getEnvironment();
+        if (!env.isImanity()) {
+            Logger.print("This fork of Factions need the server Running on ImanitySpigot 3", Logger.PrefixType.FAILED);
+            Logger.print("Please verify you are using Imanity!", Logger.PrefixType.FAILED);
+            Conf.save();
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
         final PluginManager pluginManager = Bukkit.getPluginManager();
 

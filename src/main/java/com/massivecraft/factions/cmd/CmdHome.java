@@ -9,6 +9,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.SmokeUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -139,7 +140,7 @@ public class CmdHome extends FCommand {
                 smokeLocations.add(context.faction.getHome().clone().add(0, 1, 0));
                 SmokeUtil.spawnCloudRandom(smokeLocations, Conf.homesTeleportCommandSmokeEffectThickness);
             }
-            context.player.teleport(context.faction.getHome());
+            PaperLib.teleportAsync(context.player, context.faction.getHome());
         }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-home", 15));
     }
 

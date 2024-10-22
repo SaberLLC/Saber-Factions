@@ -10,6 +10,7 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fwarps.FactionWarpsFrame;
 import com.massivecraft.factions.zcore.util.TL;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -84,8 +85,11 @@ public class CmdAllyFWarp extends FCommand {
                 context.doWarmUp(WarmUpUtil.Warmup.WARP, TL.WARMUPS_NOTIFY_TELEPORT, warpName, () -> {
                     Player player = Bukkit.getPlayer(uuid);
                     if (player != null) {
-                        player.teleport(targetFaction.getWarp(warpName).getLocation());
-                        fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
+                        PaperLib.teleportAsync(player, targetFaction.getWarp(warpName).getLocation()).thenAccept(success -> {
+                            if (success) {
+                                fPlayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
+                            }
+                        });
                     }
                 }, FactionsPlugin.getInstance().getConfig().getLong("warmups.f-warp", 10));
             } else {
