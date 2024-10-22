@@ -26,7 +26,7 @@ public class Conf {
     public static ChatColor colorSafezone = ChatColor.GOLD;
     public static ChatColor colorWar = ChatColor.DARK_RED;
     // Power
-    public static boolean enableApolloIntegration = false;
+    public static boolean enableApolloIntegration = true;
     public static double powerPlayerMax = 10.0;
     public static double powerPlayerMin = -10.0;
     public static double powerPlayerStarting = 0.0;

@@ -43,12 +43,14 @@ public class RecipientsUpdaterListener implements Listener {
 
     @EventHandler
     private void onPlayerJoinFaction(FPlayerJoinEvent event) {
+        if (event.isCancelled()) return;
         Faction faction = event.getFaction();
         updateRecipientsFromFactionEvent(faction);
     }
 
     @EventHandler
     private void onPlayerLeaveFaction(FPlayerLeaveEvent event) {
+        if (event.isCancelled()) return;
         Faction faction = event.getFaction();
         Recipients recipients = faction.getFactionMembersRecipients();
         if (recipients != null) ApolloFTeam.TEAM_MODULE.resetTeamMembers(recipients);

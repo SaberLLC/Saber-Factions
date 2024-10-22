@@ -40,8 +40,6 @@ import java.util.*;
  */
 
 public abstract class MemoryFPlayer implements FPlayer {
-    protected transient boolean enemiesNearby = false;
-    protected HashMap<String, Long> commandCooldown = new HashMap<>();
     protected String factionId;
     protected Role role;
     protected String title;
@@ -68,6 +66,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean titlesEnabled = true;
     protected boolean friendlyFire = false;
 
+    protected transient boolean enemiesNearby = false;
     protected transient boolean enteringPassword = false;
     protected transient String enteringPasswordWarp = "";
     protected transient FLocation lastStoodAt = FLocation.empty(); // Where did this player stand the last time we checked?
@@ -160,31 +159,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         Player player = getPlayer();
         logout(player.getStatistic(Statistic.PLAYER_KILLS), player.getStatistic(Statistic.DEATHS));
     }
-
-    public int getCooldown(String cmd) {
-        int seconds = 0;
-        if (this.getPlayer().isOp())
-            return 0;
-        if (commandCooldown.containsKey(cmd))
-            seconds = (int) ((this.commandCooldown.get(cmd) - System.currentTimeMillis()) / 1000);
-        return seconds;
-    }
-
-    public void setCooldown(String cmd, long cooldown) {
-        if (this.getPlayer().isOp())
-            return;
-
-        this.commandCooldown.put(cmd, cooldown);
-    }
-
-    public boolean isCooldownEnded(String cmd) {
-        if (this.getPlayer().isOp())
-            return true;
-        if (!commandCooldown.containsKey(cmd))
-            return true;
-        else return commandCooldown.containsKey(cmd) && commandCooldown.get(cmd) <= System.currentTimeMillis();
-    }
-
 
     public Faction getFaction() {
         if (this.factionId == null) {

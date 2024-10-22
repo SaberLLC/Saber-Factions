@@ -859,12 +859,15 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public Recipients getFactionMembersRecipients() {
-        if (recipients != null) return recipients;
-        return null;
+        if (recipients == null) {
+            updateFactionMembersRecipients();
+            return null;
+        }
+        return recipients;
     }
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
-        Set<FPlayer> ret = new HashSet<>();
+        Set<FPlayer> ret = new HashSet<>(fplayers.size());
 
         for (FPlayer fplayer : fplayers)
             if (fplayer.isOnline() == online) ret.add(fplayer);
@@ -873,7 +876,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online, FPlayer viewer) {
-        Set<FPlayer> ret = new HashSet<>();
+        Set<FPlayer> ret = new HashSet<>(fplayers.size());
         if (!this.isNormal()) return ret;
         for (FPlayer viewed : fplayers) {
             // Add if their online status is what we want
@@ -922,7 +925,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (isPlayerFreeType()) {
             return new ArrayList<>(0);
         }
-        ArrayList<Player> ret = new ArrayList<>();
+        ArrayList<Player> ret = new ArrayList<>(fplayers.size());
         for (Player player : Bukkit.getOnlinePlayers()) {
             FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
             if (fplayer.getFaction() == this) {
