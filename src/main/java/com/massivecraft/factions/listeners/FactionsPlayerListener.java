@@ -424,7 +424,7 @@ public class FactionsPlayerListener implements Listener {
 
         me.logout(player.getStatistic(Statistic.PLAYER_KILLS), player.getStatistic(Statistic.DEATHS)); // cache kills / deaths
 
-        CmdSeeChunk.seeChunkMap.remove(me.getPlayer().getName());
+        CmdSeeChunk.seeChunkSet.remove(me.getPlayer().getName());
 
         // if player is waiting for fstuck teleport but leaves, remove
         Integer stuck = FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());

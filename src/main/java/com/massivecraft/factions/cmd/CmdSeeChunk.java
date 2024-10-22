@@ -13,40 +13,29 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class CmdSeeChunk extends FCommand {
 
     //Used a hashmap cuz imma make a particle selection gui later, will store it where the boolean is rn.
-    public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
-    Long interval;
-    //private boolean useParticles;
-    //private final ParticleEffect effect = ParticleEffect.REDSTONE;
-
-    private int taskID = -1;
-
+    public static Set<String> seeChunkSet = new HashSet<>();
 
     //I remade it cause of people getting mad that I had the same seechunk as drtshock
+    private final Material redstoneLamp;
+    private final Material blackStainedGlass;
+    private static final int[][] OFFSETS = new int[][]{{0, 0}, {15, 0}, {0, 15}, {15, 15}};
 
-    private Material air;
-    private Material redstoneLamp;
-    private Material blackStainedGlass;
-
-    private static final int[][] OFFSETS = new int[][] {{0, 0}, {15, 0}, {0, 15}, {15, 15}};
-
+    private final long updateInterval;
+    private int taskID = -1;
 
     public CmdSeeChunk() {
         super();
-        air = XMaterial.AIR.parseMaterial();
         redstoneLamp = XMaterial.REDSTONE_LAMP.parseMaterial();
         blackStainedGlass = XMaterial.BLACK_STAINED_GLASS.parseMaterial();
 
         getAliases().addAll(Aliases.seeChunk);
 
-        //this.useParticles = FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.particles", true);
-        interval = FactionsPlugin.getInstance().getConfig().getLong("see-chunk.interval", 10L);
+        updateInterval = FactionsPlugin.getInstance().getConfig().getLong("see-chunk.interval", 15L);
 
         this.setRequirements(new CommandRequirements.Builder(Permission.SEECHUNK)
                 .playerOnly()
@@ -56,10 +45,10 @@ public class CmdSeeChunk extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (seeChunkMap.remove(context.player.getName()) != null) {
+        if (seeChunkSet.remove(context.player.getName())) {
             context.msg(TL.COMMAND_SEECHUNK_DISABLED);
         } else {
-            seeChunkMap.put(context.player.getName(), true);
+            seeChunkSet.add(context.player.getName());
             context.msg(TL.COMMAND_SEECHUNK_ENABLED);
             manageTask();
         }
@@ -67,7 +56,7 @@ public class CmdSeeChunk extends FCommand {
 
     private void manageTask() {
         if (taskID != -1) {
-            if (seeChunkMap.isEmpty()) {
+            if (seeChunkSet.isEmpty()) {
                 Bukkit.getScheduler().cancelTask(taskID);
                 taskID = -1;
             }
@@ -78,11 +67,10 @@ public class CmdSeeChunk extends FCommand {
 
     private void startTask() {
         taskID = Bukkit.getScheduler().runTaskTimer(FactionsPlugin.getInstance(), () -> {
-            Iterator<Map.Entry<String, Boolean>> iterator = seeChunkMap.entrySet().iterator();
+            Iterator<String> iterator = seeChunkSet.iterator();
 
             while (iterator.hasNext()) {
-                Map.Entry<String, Boolean> entry = iterator.next();
-                Player player = Bukkit.getPlayer(entry.getKey());
+                Player player = Bukkit.getPlayer(iterator.next());
 
                 if (player == null || !player.isOnline()) {
                     iterator.remove();
@@ -91,7 +79,7 @@ public class CmdSeeChunk extends FCommand {
                 showBorders(player);
             }
             manageTask();
-        }, 0, interval).getTaskId();
+        }, 0, updateInterval).getTaskId();
     }
 
     private void showBorders(Player me) {
@@ -119,11 +107,7 @@ public class CmdSeeChunk extends FCommand {
             if (block.getType() != Material.AIR) {
                 continue;
             }
-            //if (useParticles) {
-            //    new ParticleBuilder(this.effect, block.getLocation().add(0.5, 0, 0.5)).setColor(Color.RED).display(player);
-            //} else {
-                VisualizeUtil.addLocation(player, block.getLocation(), y % 5 == 0 ? this.redstoneLamp : this.blackStainedGlass);
-           // }
+            VisualizeUtil.addLocation(player, block.getLocation(), y % 5 == 0 ? this.redstoneLamp : this.blackStainedGlass);
         }
     }
 

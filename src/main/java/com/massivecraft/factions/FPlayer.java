@@ -400,10 +400,6 @@ public interface FPlayer extends EconomyParticipator {
 
     boolean canFlyAtLocation(FLocation location);
 
-    boolean isSeeingChunk();
-
-    void setSeeingChunk(boolean seeingChunk);
-
     boolean isEnteringPassword();
 
     void setEnteringPassword(boolean toggle, String warp);

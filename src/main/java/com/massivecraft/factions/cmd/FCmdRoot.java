@@ -12,15 +12,13 @@ import com.massivecraft.factions.cmd.roles.CmdPromote;
 import com.massivecraft.factions.cmd.tnt.CmdSetTnt;
 import com.massivecraft.factions.cmd.tnt.CmdTnt;
 import com.massivecraft.factions.cmd.tnt.CmdTntFill;
-import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import lombok.Getter;
 import me.lucko.commodore.CommodoreProvider;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.PluginManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -137,16 +135,16 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdAllyFWarp cmdAllyFWarp = new CmdAllyFWarp();
 
     //Variables to know if we already set up certain sub commands
-    public boolean invSeeEnabled = false;
-    public boolean fFlyEnabled = false;
-    public boolean fStrikesEnabled = false;
-    public boolean reserveEnabled = false;
-    public boolean moneyEnabled = false;
-    public boolean seeChunkEnabled = false;
-    public boolean factionDrainEnabled = false;
-    public boolean friendlyFireEnabled = false;
-    public boolean rallyEnabled = false;
-    public boolean warpsEnabled = false;
+    private @Getter boolean invSeeEnabled = false;
+    private @Getter boolean fFlyEnabled = false;
+    private @Getter boolean fStrikesEnabled = false;
+    private @Getter boolean reserveEnabled = false;
+    private @Getter boolean moneyEnabled = false;
+    private @Getter boolean seeChunkEnabled = false;
+    private @Getter boolean factionDrainEnabled = false;
+    private @Getter boolean friendlyFireEnabled = false;
+    private @Getter boolean rallyEnabled = false;
+    private @Getter boolean warpsEnabled = false;
 
     public FCmdRoot() {
         super();
@@ -269,7 +267,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             moneyEnabled = true;
         }
 
-        if (FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.Enabled") && !seeChunkEnabled) {
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("see-chunk.enabled") && !seeChunkEnabled) {
             this.addSubCommand(this.cmdSeeChunk);
             seeChunkEnabled = true;
         }

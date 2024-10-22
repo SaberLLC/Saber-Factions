@@ -80,7 +80,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean isStealthEnabled = false;
     protected boolean notificationsEnabled = false;
     protected boolean titlesEnabled = true;
-    protected boolean seeingChunk = false;
     boolean friendlyFire = false;
 
     public MemoryFPlayer() {
@@ -1073,15 +1072,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setTakeFallDamage(boolean fallDamage) {
         this.shouldTakeFallDamage = fallDamage;
     }
-
-    public boolean isSeeingChunk() {
-        return seeingChunk;
-    }
-
-    public void setSeeingChunk(boolean seeingChunk) {
-        this.seeingChunk = seeingChunk;
-    }
-
 
     public boolean isEnteringPassword() {
         return enteringPassword;
