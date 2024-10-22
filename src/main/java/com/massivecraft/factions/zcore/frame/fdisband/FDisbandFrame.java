@@ -29,7 +29,7 @@ public class FDisbandFrame extends SaberGUI {
     private final FileConfiguration config;
 
     public FDisbandFrame(Player player) {
-        super(player, CC.translate(FactionsPlugin.getInstance().getConfig().getString("f-disband-gui.title")), 9);
+        super(player, CC.colorString(FactionsPlugin.getInstance().getConfig().getString("f-disband-gui.title")), 9);
         this.config = FactionsPlugin.getInstance().getConfig();
     }
 
@@ -41,10 +41,10 @@ public class FDisbandFrame extends SaberGUI {
         if (meta != null) {
             List<String> lore = new ArrayList<>();
             for (String s : confirmConfig.getStringList("Lore")) {
-                lore.add(CC.translate(s).replace("{faction}", faction.getTag()));
+                lore.add(CC.colorString(s).replace("{faction}", faction.getTag()));
             }
             meta.setLore(lore);
-            meta.setDisplayName(CC.translate(Objects.requireNonNull(confirmConfig.getString("Name"))));
+            meta.setDisplayName(CC.colorString(Objects.requireNonNull(confirmConfig.getString("Name"))));
             item.setItemMeta(meta);
         }
 
@@ -57,8 +57,8 @@ public class FDisbandFrame extends SaberGUI {
         ItemMeta meta = item.getItemMeta();
 
         if (meta != null) {
-            meta.setLore(CC.translate(denyConfig.getStringList("Lore")));
-            meta.setDisplayName(CC.translate(denyConfig.getString("Name")));
+            meta.setLore(CC.colorString(denyConfig.getStringList("Lore")));
+            meta.setDisplayName(CC.colorString(denyConfig.getString("Name")));
             item.setItemMeta(meta);
         }
 
@@ -78,7 +78,7 @@ public class FDisbandFrame extends SaberGUI {
     private ItemStack createSeparatorItem() {
         ItemStack separatorItem = XMaterial.matchXMaterial(config.getString("f-disband-gui.separation-item.Type")).get().parseItem();
         ItemMeta separatorMeta = separatorItem.getItemMeta();
-        separatorMeta.setDisplayName(CC.translate(config.getString("f-disband-gui.separation-item.Name")));
+        separatorMeta.setDisplayName(CC.colorString(config.getString("f-disband-gui.separation-item.Name")));
         List<String> separatorLore = config.getStringList("f-disband-gui.separation-item.Lore");
         if (separatorMeta.getLore() != null) {
             separatorMeta.getLore().clear();
@@ -86,7 +86,7 @@ public class FDisbandFrame extends SaberGUI {
         if (separatorLore != null) {
             List<String> lore = new ArrayList<>();
             for (String loreEntry : separatorLore) {
-                lore.add(CC.translate(loreEntry));
+                lore.add(CC.colorString(loreEntry));
             }
             separatorMeta.setLore(lore);
         }

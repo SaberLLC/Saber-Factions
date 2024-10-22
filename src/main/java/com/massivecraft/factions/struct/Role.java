@@ -154,7 +154,7 @@ public enum Role implements Permissable {
     }
 
     public String replacePlaceholders(String string) {
-        string = CC.translate(string);
+        string = CC.colorString(string);
 
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 

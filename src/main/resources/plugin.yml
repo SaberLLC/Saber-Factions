@@ -1,11 +1,11 @@
 name: Factions
-prefix: SaberFactions
+prefix: SK-Factions
 version: ${project.version}
 api-version: 1.13
 main: com.massivecraft.factions.FactionsPlugin
 authors: [Olof Larsson, Brett Flannigan, drtshock, ProSavage, DroppingAnvil, Driftay, SaberDev, Callum, Atilt, vSKAH]
 depend: [Vault, Apollo-Bukkit]
-softdepend: [CoreProtect,PlaceholderAPI, PermissionsEx, Permissions, Essentials, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, Multiverse-Core, MultiWorld]
+softdepend: [PlaceholderAPI, LuckPerms, Permissions, EssentialsChat, HeroChat, iChat, LocalAreaChat, LWC, nChat, ChatManager, CAPI, Spout, WorldEdit, WorldGuard, AuthDB, CaptureThePoints, CombatTag, Multiverse-Core, MultiWorld]
 commands:
   factions:
     description: Reference command for Factions.

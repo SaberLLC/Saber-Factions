@@ -167,7 +167,7 @@ public class CommandContext {
         if (player == null || fPlayer.hasFaction()) {
             return true;
         }
-        sendMessage("You are not a member of any faction.");
+        sendMessage(TL.COMMAND_SHOW_NOFACTION_SELF.toString());
         return false;
     }
 

@@ -190,7 +190,7 @@ public final class TextUtil {
     // -------------------------------------------- //
 
     public static String parseColorBukkit(String string) {
-        return CC.translate(string);
+        return CC.colorString(string);
     }
 
     public static String parseColor(String string) {

@@ -38,11 +38,11 @@ public class CmdRules extends FCommand {
             HashMap<Integer, String> rules = context.faction.getRulesMap();
             if (rules.size() == 0) {
                 List<String> ruleList = FactionsPlugin.getInstance().getConfig().getStringList("frules.default-rules");
-                context.sendMessage(CC.translate(ruleList));
+                context.sendMessage(CC.colorString(ruleList));
 
             } else {
                 for (int i = 0; i <= rules.size() - 1; i++) {
-                    context.sendMessage(CC.translate(rules.get(i)));
+                    context.sendMessage(CC.colorString(rules.get(i)));
                 }
             }
 

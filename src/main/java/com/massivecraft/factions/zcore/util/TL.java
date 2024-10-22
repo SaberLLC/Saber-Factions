@@ -1133,7 +1133,7 @@ public enum TL {
     public static SimpleDateFormat sdf;
     private static YamlConfiguration LANG;
     private String path;
-    private String def;
+    private final String def;
 
     public static final TL[] VALUES = values();
 
@@ -1181,7 +1181,7 @@ public enum TL {
 
     @Override
     public String toString() {
-        return CC.translate(LANG.getString(this.path, def)) + (this == TITLE ? " " : "");
+        return CC.colorString(LANG.getString(this.path, def)) + (this == TITLE ? " " : "");
     }
 
     public String format(Object... args) {

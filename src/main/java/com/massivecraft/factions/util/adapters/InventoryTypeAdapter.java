@@ -22,6 +22,6 @@ public class InventoryTypeAdapter implements JsonSerializer<Inventory>, JsonDese
     @Override
     public Inventory deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) {
         JsonObject object = jsonElement.getAsJsonObject();
-        return InventoryUtil.fromBase64(object.get("contents").getAsString(), CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
+        return InventoryUtil.fromBase64(object.get("contents").getAsString(), CC.colorString(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
     }
 }

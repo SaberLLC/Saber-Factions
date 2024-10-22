@@ -75,7 +75,7 @@ public class InventoryUtil {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
-            Inventory inventory = Bukkit.createInventory(null, dataInput.readInt(), CC.translate(invName));
+            Inventory inventory = Bukkit.createInventory(null, dataInput.readInt(), CC.colorString(invName));
 
             // Read the serialized inventory
             for (int i = 0; i < inventory.getSize(); i++) {

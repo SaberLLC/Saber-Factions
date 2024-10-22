@@ -136,7 +136,7 @@ public enum FancyTag implements Tag {
             if (string == null) {
                 continue;
             }
-            lines.add(CC.translate(string));
+            lines.add(CC.colorString(string));
         }
         return lines;
     }
@@ -167,7 +167,7 @@ public enum FancyTag implements Tag {
             if (string == null) {
                 continue;
             }
-            lines.add(CC.translate(string));
+            lines.add(CC.colorString(string));
         }
         return lines;
     }

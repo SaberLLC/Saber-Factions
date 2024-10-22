@@ -53,7 +53,7 @@ public class CmdCornerList extends FCommand {
 
         for(FLocation fLocation : FactionsPlugin.getInstance().getFactionsPlayerListener().getCorners()) {
             if(fLocation.getWorld() == world) {
-                ret.add(Component.text(CC.translate("&2Faction At &e" + fLocation.getX() + ", &e" + fLocation.getZ() + ": &r" + Board.getInstance().getFactionAt(fLocation).getTag())));
+                ret.add(Component.text(CC.colorString("&2Faction At &e" + fLocation.getX() + ", &e" + fLocation.getZ() + ": &r" + Board.getInstance().getFactionAt(fLocation).getTag())));
             }
         }
         fme.sendComponent(ret);

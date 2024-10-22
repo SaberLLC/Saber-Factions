@@ -52,7 +52,7 @@ public class MPluginSecretPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(PlayerLoginEvent event) {
         if (Conf.usePreStartupKickSystem && !FactionsPlugin.canPlayersJoin()) {
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, CC.translate(TL.PRE_JOIN_KICK_MESSAGE.toString()));
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, CC.colorString(TL.PRE_JOIN_KICK_MESSAGE.toString()));
             return;
         }
         if (!FactionsPlugin.startupFinished) {

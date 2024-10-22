@@ -27,7 +27,7 @@ public class PermissableActionFrame extends SaberGUI {
     private Permissable perm;
 
     public PermissableActionFrame(Player player, Faction f, Permissable perm) {
-        super(player, CC.translate(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.name")).replace("{faction}", f.getTag())), FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getInt("fperm-gui.action.rows") * 9);
+        super(player, CC.colorString(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.name")).replace("{faction}", f.getTag())), FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getInt("fperm-gui.action.rows") * 9);
         this.perm = perm;
     }
 
@@ -37,8 +37,8 @@ public class PermissableActionFrame extends SaberGUI {
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setLore(CC.translate(config.getStringList("Lore")));
-            meta.setDisplayName(CC.translate(config.getString("Name")));
+            meta.setLore(CC.colorString(config.getStringList("Lore")));
+            meta.setDisplayName(CC.colorString(config.getString("Name")));
             item.setItemMeta(meta);
         }
         return item;
@@ -49,8 +49,8 @@ public class PermissableActionFrame extends SaberGUI {
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setLore(CC.translate(config.getStringList("Lore")));
-            meta.setDisplayName(CC.translate(config.getString("Name")));
+            meta.setLore(CC.colorString(config.getStringList("Lore")));
+            meta.setDisplayName(CC.colorString(config.getString("Name")));
             item.setItemMeta(meta);
         }
         return item;
@@ -71,7 +71,7 @@ public class PermissableActionFrame extends SaberGUI {
 
             this.setItem(action.getSlot(), new InventoryItem(action.buildAsset(fplayer, perm)).click(ClickType.LEFT, () -> {
                 Access access = Access.ALLOW;
-                String color = CC.translate(access.getColor() + "&l");
+                String color = CC.colorString(access.getColor() + "&l");
 
                 boolean success = fplayer.getFaction().setPermission(perm, action, access);
 
@@ -85,7 +85,7 @@ public class PermissableActionFrame extends SaberGUI {
 
             }).click(ClickType.RIGHT, () -> {
                 Access access = Access.DENY;
-                String color = CC.translate(access.getColor() + "&l");
+                String color = CC.colorString(access.getColor() + "&l");
 
                 boolean success = fplayer.getFaction().setPermission(perm, action, access);
 

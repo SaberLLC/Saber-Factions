@@ -14,6 +14,7 @@ import com.lunarclient.apollo.module.team.TeamMember;
 import com.lunarclient.apollo.module.team.TeamModule;
 import com.lunarclient.apollo.recipients.Recipients;
 import com.massivecraft.factions.*;
+import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -26,7 +27,8 @@ import java.util.List;
 public class ApolloFTeam implements Listener {
 
     public static final TeamModule TEAM_MODULE = Apollo.getModuleManager().getModule(TeamModule.class);
-    private static ApolloFTeam instance;
+    private @Getter
+    static ApolloFTeam instance;
 
     public ApolloFTeam() {
         instance = this;
@@ -37,8 +39,7 @@ public class ApolloFTeam implements Listener {
         if (location.getWorld() == null) return null;
         return TeamMember.builder()
                 .playerUuid(player.getUniqueId())
-                .displayName(Component.text().content(player.getName()).build())
-                .markerColor(Color.RED)
+                .markerColor(Color.WHITE)
                 .location(BukkitApollo.toApolloLocation(player.getLocation()))
                 .build();
     }
@@ -61,9 +62,5 @@ public class ApolloFTeam implements Listener {
             if (teamMember != null) teamMembers.add(teamMember);
         }
         TEAM_MODULE.updateTeamMembers(recipients, teamMembers);
-    }
-
-    public static ApolloFTeam getInstance() {
-        return instance;
     }
 }

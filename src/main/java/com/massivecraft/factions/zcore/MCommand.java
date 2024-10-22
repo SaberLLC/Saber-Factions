@@ -284,7 +284,7 @@ public abstract class MCommand<T extends MPlugin> {
     public List<String> getToolTips(FPlayer player) {
         List<String> lines = new ArrayList<>();
         for (String s : p.getConfig().getStringList("tooltips.show")) {
-            lines.add(CC.translate(replaceFPlayerTags(s, player)));
+            lines.add(CC.colorString(replaceFPlayerTags(s, player)));
         }
         return lines;
     }
@@ -292,7 +292,7 @@ public abstract class MCommand<T extends MPlugin> {
     public List<String> getToolTips(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String s : p.getConfig().getStringList("tooltips.list")) {
-            lines.add(CC.translate(replaceFactionTags(s, faction)));
+            lines.add(CC.colorString(replaceFactionTags(s, faction)));
         }
         return lines;
     }

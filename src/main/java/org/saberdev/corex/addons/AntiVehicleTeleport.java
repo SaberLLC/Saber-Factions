@@ -16,7 +16,7 @@ public class AntiVehicleTeleport implements Listener {
         Player player = e.getPlayer();
         if(player.getVehicle() == null) return;
         if (player.isInsideVehicle()) {
-            player.sendMessage(CC.translate(TL.VEHICLE_TELEPORT_BLOCK.toString()));
+            player.sendMessage(CC.colorString(TL.VEHICLE_TELEPORT_BLOCK.toString()));
             e.setCancelled(true);
         }
     }

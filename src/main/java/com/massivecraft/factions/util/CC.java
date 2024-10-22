@@ -94,12 +94,12 @@ public class CC {
     }
 
     public static String prefix(char color) {
-        return translate("&" + color + "&l<!> &" + color);
+        return colorString("&" + color + "&l<!> &" + color);
     }
 
-    public static String translate(char altColorChar, String textToTranslate) {
-        StringBuilder sb = new StringBuilder(textToTranslate.length());
+    public static String colorString(char altColorChar, String textToTranslate) {
         int len = textToTranslate.length();
+        StringBuilder sb = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
             char c = textToTranslate.charAt(i);
             if (c == altColorChar && (VALID_MASK & (1L << textToTranslate.charAt(i + 1))) != 0) {
@@ -113,14 +113,14 @@ public class CC {
         return sb.toString();
     }
 
-    public static String translate(String textToTranslate) {
-        return translate('&', textToTranslate);
+    public static String colorString(String textToTranslate) {
+        return colorString('&', textToTranslate);
     }
 
-    public static List<String> translate(List<String> lore) {
+    public static List<String> colorString(List<String> lore) {
         List<String> colored = new ArrayList<>(lore.size());
         for (String line : lore) {
-            colored.add(translate(line));
+            colored.add(colorString(line));
         }
         return colored;
     }

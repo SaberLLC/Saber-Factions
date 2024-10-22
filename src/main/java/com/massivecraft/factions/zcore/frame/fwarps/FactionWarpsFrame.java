@@ -23,7 +23,7 @@ public class FactionWarpsFrame extends SaberGUI {
     private Faction f;
 
     public FactionWarpsFrame(Player player, Faction f) {
-        super(player, CC.translate(FactionsPlugin.getInstance().getConfig().getString("fwarp-gui.name").replace("{faction}", f.getTag())),FactionsPlugin.getInstance().getConfig().getInt("fwarp-gui.rows", 3) * 9);
+        super(player, CC.colorString(FactionsPlugin.getInstance().getConfig().getString("fwarp-gui.name").replace("{faction}", f.getTag())),FactionsPlugin.getInstance().getConfig().getInt("fwarp-gui.rows", 3) * 9);
         this.section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fwarp-gui");
         this.f = f;
     }
@@ -33,8 +33,8 @@ public class FactionWarpsFrame extends SaberGUI {
         final ConfigurationSection config = this.section.getConfigurationSection("warp-item");
         final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         final ItemMeta meta = item.getItemMeta();
-        meta.setLore(CC.translate(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{warp-protected}", faction.hasWarpPassword(warp.getKey()) ? "Enabled" : "Disabled"), new Placeholder("{warp-cost}", FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) ? Integer.toString(FactionsPlugin.getInstance().getConfig().getInt("warp-cost.warp", 5)) : "Disabled"))));
-        meta.setDisplayName(CC.translate(config.getString("Name").replace("{warp}", warp.getKey())));
+        meta.setLore(CC.colorString(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{warp-protected}", faction.hasWarpPassword(warp.getKey()) ? "Enabled" : "Disabled"), new Placeholder("{warp-cost}", FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) ? Integer.toString(FactionsPlugin.getInstance().getConfig().getInt("warp-cost.warp", 5)) : "Disabled"))));
+        meta.setDisplayName(CC.colorString(config.getString("Name").replace("{warp}", warp.getKey())));
         item.setItemMeta(meta);
         return item;
     }
@@ -43,8 +43,8 @@ public class FactionWarpsFrame extends SaberGUI {
         final ConfigurationSection config = this.section.getConfigurationSection("dummy-item");
         final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         final ItemMeta meta = item.getItemMeta();
-        meta.setLore(CC.translate(config.getStringList("Lore")));
-        meta.setDisplayName(CC.translate(config.getString("Name")));
+        meta.setLore(CC.colorString(config.getStringList("Lore")));
+        meta.setDisplayName(CC.colorString(config.getString("Name")));
         item.setItemMeta(meta);
         return item;
     }

@@ -95,7 +95,7 @@ public enum PermissableAction {
     }
 
     public String getDescription() {
-        return CC.translate(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.Descriptions." + this.name.toLowerCase()));
+        return CC.colorString(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.Descriptions." + this.name.toLowerCase()));
     }
 
     public int getSlot() {
@@ -121,7 +121,7 @@ public enum PermissableAction {
         ItemStack item = XMaterial.matchXMaterial(section.getString("Materials." + this.name)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(CC.translate(section.getString("placeholder-item.name").replace("{action}", this.name)));
+        meta.setDisplayName(CC.colorString(section.getString("placeholder-item.name").replace("{action}", this.name)));
         List<String> lore = section.getStringList("placeholder-item.lore");
 
         Placeholder.replacePlaceholders(lore,
@@ -129,7 +129,7 @@ public enum PermissableAction {
                 new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
                 new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
 
-        meta.setLore(CC.translate(lore));
+        meta.setLore(CC.colorString(lore));
         item.setItemMeta(meta);
         return item;
     }

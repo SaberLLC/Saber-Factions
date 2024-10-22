@@ -245,7 +245,7 @@ public class TagUtil {
     private static List<String> tipFaction(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
-            lines.add(CC.translate(TagUtil.parsePlain(faction, line)));
+            lines.add(CC.colorString(TagUtil.parsePlain(faction, line)));
         }
         return lines;
     }
@@ -253,7 +253,7 @@ public class TagUtil {
     private static String tipFactionSingular(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
-            lines.add(CC.translate(TagUtil.parsePlain(faction, line)));
+            lines.add(CC.colorString(TagUtil.parsePlain(faction, line)));
         }
         return String.join("\n", lines);
     }
@@ -267,7 +267,7 @@ public class TagUtil {
     private static List<String> tipPlayer(FPlayer fplayer) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
-            lines.add(CC.translate(TagUtil.parsePlain(fplayer, line)));
+            lines.add(CC.colorString(TagUtil.parsePlain(fplayer, line)));
         }
         return lines;
     }
@@ -275,7 +275,7 @@ public class TagUtil {
     private static String tipPlayerSingular(FPlayer fplayer) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
-            lines.add(CC.translate(TagUtil.parsePlain(fplayer, line)));
+            lines.add(CC.colorString(TagUtil.parsePlain(fplayer, line)));
         }
         return String.join("\n", lines);
     }

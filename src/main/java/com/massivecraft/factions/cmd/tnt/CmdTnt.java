@@ -98,7 +98,7 @@ public class CmdTnt extends FCommand {
 
                 context.faction.addTnt(amount);
                 context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
-                context.fPlayer.sendMessage(CC.translate(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
+                context.fPlayer.sendMessage(CC.colorString(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
                 return;
 
             }
@@ -165,7 +165,7 @@ public class CmdTnt extends FCommand {
                 context.faction.addTnt(invTnt);
                 context.msg(TL.COMMAND_TNT_DEPOSIT_SUCCESS);
 
-                context.fPlayer.sendMessage(CC.translate(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
+                context.fPlayer.sendMessage(CC.colorString(TL.COMMAND_TNT_AMOUNT.toString().replace("{amount}", context.faction.getTnt() + "").replace("{maxAmount}", context.faction.getTntBankLimit() + "")));
                 return;
 
             }

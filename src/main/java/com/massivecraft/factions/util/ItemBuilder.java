@@ -30,7 +30,7 @@ public class ItemBuilder {
     public static List<String> color(List<String> string) {
         List<String> colored = new ArrayList<>(string.size());
         for (String line : string) {
-            colored.add(CC.translate(line));
+            colored.add(CC.colorString(line));
         }
         return colored;
     }
@@ -44,7 +44,7 @@ public class ItemBuilder {
         if (lore != null) {
             ArrayList<String> arrayList = new ArrayList<>(lore.length);
             for (String line : lore) {
-                arrayList.add(CC.translate(line));
+                arrayList.add(CC.colorString(line));
             }
             this.meta.setLore(arrayList);
         }
@@ -57,7 +57,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder name(String name) {
-        this.meta.setDisplayName(CC.translate(name));
+        this.meta.setDisplayName(CC.colorString(name));
         return this;
     }
 
@@ -84,7 +84,7 @@ public class ItemBuilder {
 
     public ItemBuilder addLineToLore(String line) {
         List<String> lore = this.meta.getLore();
-        lore.add(CC.translate(line));
+        lore.add(CC.colorString(line));
         this.meta.setLore(lore);
         return this;
     }

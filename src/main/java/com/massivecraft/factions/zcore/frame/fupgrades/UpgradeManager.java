@@ -54,8 +54,8 @@ public class UpgradeManager {
         int level = f.getUpgrade(upgradeId);
         if (item != null) {
             ItemMeta meta = item.getItemMeta();
-            meta.setLore(CC.translate(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{level}", String.valueOf(level)))));
-            meta.setDisplayName(CC.translate(config.getString("Name")));
+            meta.setLore(CC.colorString(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{level}", String.valueOf(level)))));
+            meta.setDisplayName(CC.colorString(config.getString("Name")));
             item.setItemMeta(meta);
             if (XMaterial.matchXMaterial(item) == XMaterial.PLAYER_HEAD && config.isSet("Texture")) {
                 SkullMeta skullMeta = (SkullMeta) meta;
