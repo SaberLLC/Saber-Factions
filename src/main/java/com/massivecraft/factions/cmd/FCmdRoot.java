@@ -324,13 +324,17 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             this.addSubCommand(this.cmdRoster);
         }
 
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-            if(FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
-                this.getSubCommands().remove(this.cmdInvite);
-                this.getSubCommands().remove(this.cmdJoin);
-                this.getSubCommands().remove(this.cmdKick);
-            }
-        }, 200);
+        Bukkit.getGlobalRegionScheduler().runDelayed(
+            FactionsPlugin.getInstance(),
+            scheduledTask -> {
+                if (FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
+                    this.getSubCommands().remove(this.cmdInvite);
+                    this.getSubCommands().remove(this.cmdJoin);
+                    this.getSubCommands().remove(this.cmdKick);
+                }
+            },
+            200L // 200 ticks = 10 seconds
+        );        
 
         //Reserve
         if (Conf.useReserveSystem) {
