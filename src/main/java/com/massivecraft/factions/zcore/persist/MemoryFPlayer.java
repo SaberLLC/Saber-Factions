@@ -2,6 +2,8 @@ package com.massivecraft.factions.zcore.persist;
 
 import cc.javajobs.wgbridge.WorldGuardBridge;
 import cc.javajobs.wgbridge.infrastructure.struct.WGRegionSet;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
+
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.event.*;
@@ -69,7 +71,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean spyingChat = false;
     protected boolean showScoreboard = true;
     protected WarmUpUtil.Warmup warmup;
-    protected int warmupTask;
     protected boolean isAdminBypassing = false;
     protected int kills, deaths;
     protected boolean willAutoLeave = true;
@@ -86,6 +87,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected transient boolean loginPvpDisabled;
     protected transient long lastFrostwalkerMessage;
     protected transient boolean shouldTakeFallDamage = true;
+    protected transient ScheduledTask warmupTask;
+    protected transient ScheduledTask warmupScheduledTask; // Folia change
     protected boolean isStealthEnabled = false;
     protected boolean notificationsEnabled;
     protected boolean titlesEnabled = true;
@@ -699,13 +702,17 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         double delta = millisPassed * Conf.powerPerMinute / 60000; // millisPerMinute : 60 * 1000
         if (Bukkit.getPluginManager().getPlugin("FactionsPlugin") != null) {
-            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> {
-                PowerRegenEvent powerRegenEvent = new PowerRegenEvent(getFaction(), this, delta);
-                Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent);
-                if (!powerRegenEvent.isCancelled()) {
-                    this.alterPower(powerRegenEvent.getDelta());
-                }
-            });
+            Bukkit.getGlobalRegionScheduler().runDelayed(
+                FactionsPlugin.getInstance(),
+                scheduledTask -> {
+                    PowerRegenEvent powerRegenEvent = new PowerRegenEvent(getFaction(), this, delta);
+                    Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent);
+                    if (!powerRegenEvent.isCancelled()) {
+                        this.alterPower(powerRegenEvent.getDelta());
+                    }
+                },
+                0L
+            );            
         } else {
             this.alterPower(delta);
         }
@@ -845,10 +852,28 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         if (myFaction.isNormal()) {
-            for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true))
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> fplayer.msg(TL.LEAVE_LEFT, this.describeTo(fplayer, true), myFaction.describeTo(fplayer)));
-            if (Conf.logFactionLeave)
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> Logger.print(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()), Logger.PrefixType.DEFAULT));
+            for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true)) {
+                // Replace runTaskAsynchronously with runDelayed on the AsyncScheduler
+                Bukkit.getAsyncScheduler().runDelayed(
+                    FactionsPlugin.instance,
+                    scheduledTask -> {
+                        fplayer.msg(TL.LEAVE_LEFT, this.describeTo(fplayer, true), myFaction.describeTo(fplayer));
+                    },
+                    0L,
+                    java.util.concurrent.TimeUnit.MILLISECONDS
+                );
+            }
+            
+            if (Conf.logFactionLeave) {
+                Bukkit.getAsyncScheduler().runDelayed(
+                    FactionsPlugin.instance,
+                    scheduledTask -> {
+                        Logger.print(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()), Logger.PrefixType.DEFAULT);
+                    },
+                    0L,
+                    java.util.concurrent.TimeUnit.MILLISECONDS
+                );
+            }            
         }
         myFaction.removeAnnouncements(this);
         if (this.isAlt()) {
@@ -879,9 +904,18 @@ public abstract class MemoryFPlayer implements FPlayer {
 
             Factions.getInstance().removeFaction(myFaction.getId());
             if (Conf.logFactionDisband)
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance,
-                        () -> Logger.print(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(),
-                                this.getName()).replace("{claims}", myFaction.getAllClaims().size() + ""), Logger.PrefixType.DEFAULT));
+            Bukkit.getAsyncScheduler().runDelayed(
+                FactionsPlugin.instance,
+                scheduledTask -> {
+                    Logger.print(
+                        TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(), this.getName())
+                            .replace("{claims}", myFaction.getAllClaims().size() + ""),
+                        Logger.PrefixType.DEFAULT
+                    );
+                },
+                0L,
+                java.util.concurrent.TimeUnit.MILLISECONDS
+            );            
         }
     }
 
@@ -1295,8 +1329,11 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     @Override
     public void clearWarmup() {
-        if (warmup != null) {
-            Bukkit.getScheduler().cancelTask(warmupTask);
+        // Folia change:
+        // Instead of cancelTask(warmupTask), we cancel the ScheduledTask if it exists
+        if (warmup != null && warmupScheduledTask != null && !warmupScheduledTask.isCancelled()) {
+            warmupScheduledTask.cancel();
+            warmupScheduledTask = null;
             this.stopWarmup();
         }
     }
@@ -1317,10 +1354,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     @Override
-    public void addWarmup(WarmUpUtil.Warmup warmup, int taskId) {
+    public void addWarmup(WarmUpUtil.Warmup warmup, ScheduledTask taskId) {
         if (this.warmup != null) this.clearWarmup();
         this.warmup = warmup;
-        this.warmupTask = taskId;
+        this.warmupScheduledTask = taskId;
     }
 
     @Override
@@ -1511,14 +1548,39 @@ public abstract class MemoryFPlayer implements FPlayer {
             informTheseFPlayers.add(this);
             informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
             for (FPlayer fp : informTheseFPlayers) {
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp)));
+                Bukkit.getAsyncScheduler().runDelayed(
+                    FactionsPlugin.instance,
+                    scheduledTask -> {
+                        fp.msg(
+                            TL.CLAIM_CLAIMED,
+                            this.describeTo(fp, true),
+                            forFaction.describeTo(fp),
+                            currentFaction.describeTo(fp)
+                        );
+                    },
+                    0L,  // zero delay
+                    java.util.concurrent.TimeUnit.MILLISECONDS
+                );                
             }
         }
 
         Board.getInstance().setFactionAt(forFaction, flocation);
 
         if (Conf.logLandClaims) {
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> Logger.printArgs(TL.CLAIM_CLAIMEDLOG.toString(), Logger.PrefixType.DEFAULT, this.getName(), flocation.getCoordString(), forFaction.getTag()));
+            Bukkit.getAsyncScheduler().runDelayed(
+                FactionsPlugin.instance,
+                scheduledTask -> {
+                    Logger.printArgs(
+                        TL.CLAIM_CLAIMEDLOG.toString(),
+                        Logger.PrefixType.DEFAULT,
+                        this.getName(),
+                        flocation.getCoordString(),
+                        forFaction.getTag()
+                    );
+                },
+                0L,
+                java.util.concurrent.TimeUnit.MILLISECONDS
+            );            
         }
 
         return true;

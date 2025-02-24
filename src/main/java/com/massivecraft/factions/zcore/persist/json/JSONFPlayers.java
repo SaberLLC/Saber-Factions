@@ -160,7 +160,11 @@ public class JSONFPlayers extends MemoryFPlayers {
                     if (Bukkit.isPrimaryThread()) {
                         action.run();
                     } else {
-                        Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), action);
+                        Bukkit.getGlobalRegionScheduler().runDelayed(
+                            FactionsPlugin.getInstance(),
+                            scheduledTask -> action.run(),
+                            1L
+                        );                        
                     }
                 });
     }

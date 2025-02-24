@@ -131,8 +131,15 @@ public enum TagReplacer {
      */
     private String getValue() {
         switch (this) {
-            case GRACE_TIMER:
-                return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
+            case GRACE_TIMER: {
+                // Safely check the TimerManager and graceTimer
+                TimerManager tm = FactionsPlugin.getInstance().getTimerManager();
+                if (tm == null || tm.graceTimer == null) {
+                    return "N/A"; 
+                }
+                long remaining = tm.graceTimer.getRemaining();
+                return String.valueOf(TimerManager.getRemaining(remaining, true));
+            }
             case TOTAL_ONLINE:
                 return String.valueOf(Bukkit.getOnlinePlayers().size());
             case FACTIONLESS:

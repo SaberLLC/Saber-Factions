@@ -12,6 +12,7 @@ import com.massivecraft.factions.zcore.util.PermUtil;
 import com.massivecraft.factions.zcore.util.Persist;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask; // Folia
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -29,7 +30,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-
 public abstract class MPlugin extends JavaPlugin {
 
     // Some utils
@@ -38,24 +38,20 @@ public abstract class MPlugin extends JavaPlugin {
 
     public String refCommand = "";
     //holds f stuck taskids
-    public Map<UUID, Integer> stuckMap = new HashMap<>();
-    // These are not supposed to be used directly.
-    // They are loaded and used through the TextUtil instance for the plugin.
-    public Map<String, String> rawTags = new LinkedHashMap<>();
-    protected boolean loadSuccessful = false;
-    private Integer saveTask = null;
-    private boolean autoSave = true;
+    public transient Map<UUID, ScheduledTask> stuckMap = new HashMap<>();
+    public Map<UUID, Long> timers = new HashMap<>();
 
-    // Our stored base commands
+    // Base commands
     private final Map<String, MCommand<?>> baseCommands = new HashMap<>();
 
-    private static final Pattern ARGUMENT_DELIMITER = Pattern.compile("\\s+");
-    // holds f stuck start times
-    private final Map<UUID, Long> timers = new HashMap<>();
+    // Instead of Integer for saveTask, store a ScheduledTask
+    private transient ScheduledTask saveTask = null;
 
-    // -------------------------------------------- //
-    // ENABLE
-    // -------------------------------------------- //
+    private boolean loadSuccessful = false;
+    private boolean autoSave = true;
+
+    private static final Pattern ARGUMENT_DELIMITER = Pattern.compile("\\s+");
+
     private long timeEnableStart;
 
     public boolean getAutoSave() {
@@ -83,37 +79,49 @@ public abstract class MPlugin extends JavaPlugin {
 
         TextUtil.init();
 
-        // attempt to get first command defined in plugin.yml as reference command, if any commands are defined in there
-        // reference command will be used to prevent "unknown command" console messages
+        // attempt to get first command defined in plugin.yml as reference command, if any commands are defined
         try {
             Map<String, Map<String, Object>> refCmd = this.getDescription().getCommands();
             if (refCmd != null && !refCmd.isEmpty()) {
                 this.refCommand = (String) (refCmd.keySet().toArray()[0]);
             }
-        } catch (ClassCastException ignored) {
-        }
+        } catch (ClassCastException ignored) {}
 
-        // Create and register player command listener
-        // Listeners
+        // Register a secret player listener
         Bukkit.getPluginManager().registerEvents(new MPluginSecretPlayerListener(this), this);
 
         // Register recurring tasks
         if (this.saveTask == null && Conf.saveToFileEveryXMinutes > 0.0) {
-            long saveTicks = (long) (1200.0 * Conf.saveToFileEveryXMinutes);
-            this.saveTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, new SaveTask(this), saveTicks, saveTicks).getTaskId();
+            // Convert minutes to ticks, then to ms for Folia
+            long saveTicks = (long) (1200.0 * Conf.saveToFileEveryXMinutes); 
+            long saveMs = saveTicks * 50L; // 1 tick = 50 ms
+
+            // Use AsyncScheduler for asynchronous repeating tasks
+            this.saveTask = Bukkit.getAsyncScheduler().runAtFixedRate(
+                this,
+                scheduledTask -> {
+                    new SaveTask(this).run();
+                },
+                saveMs, // initial delay in ms
+                saveMs, // repeat period in ms
+                java.util.concurrent.TimeUnit.MILLISECONDS
+            );
         }
+
         loadLang();
         loadSuccessful = true;
         return true;
     }
 
     public void postEnable() {
-        Logger.print("=== ENABLE DONE (Took " + DecimalFormat.getInstance().format((System.nanoTime() - timeEnableStart) / 1_000_000.0D) + "ms) ===", Logger.PrefixType.DEFAULT);
+        Logger.print("=== ENABLE DONE (Took " 
+            + DecimalFormat.getInstance().format((System.nanoTime() - timeEnableStart) / 1_000_000.0D) 
+            + "ms) ===", 
+            Logger.PrefixType.DEFAULT);
     }
 
     public void loadLang() {
         Path langPath = Paths.get(getDataFolder().getPath(), "lang.yml");
-
         InputStream defaultLangStream = this.getResource("lang.yml");
         if (defaultLangStream == null) {
             getLogger().severe("[Factions] Couldn't load default language file from resources.");
@@ -175,9 +183,11 @@ public abstract class MPlugin extends JavaPlugin {
         }
     }
 
+    @Override
     public void onDisable() {
-        if (saveTask != null) {
-            this.getServer().getScheduler().cancelTask(saveTask);
+        // If we had a repeating task, cancel it
+        if (saveTask != null && !saveTask.isCancelled()) {
+            saveTask.cancel();
             saveTask = null;
         }
         // only save data if plugin actually loaded successfully
@@ -187,45 +197,36 @@ public abstract class MPlugin extends JavaPlugin {
             Board.getInstance().forceSave();
         }
         ((MemoryFPlayers) FPlayers.getInstance()).wipeOnlinePlayers();
-
         Logger.print("Shutdown Successful!", Logger.PrefixType.DEFAULT);
     }
 
-    // -------------------------------------------- //
-    // Some inits...
-    // You are supposed to override these in the plugin if you aren't satisfied with the defaults
-    // The goal is that you always will be satisfied though.
-    // -------------------------------------------- //
+    public void preAutoSave() {
+    }
+
+    public void postAutoSave() {
+    }
 
     public void suicide() {
         Logger.print("Plugin Suicide Initiating!", Logger.PrefixType.DEFAULT);
         this.getServer().getPluginManager().disablePlugin(this);
     }
 
-    // -------------------------------------------- //
-    // LANG AND TAGS
-    // -------------------------------------------- //
-
     public abstract Gson getGson();
 
-
-    // -------------------------------------------- //
-    // COMMAND HANDLING
-    // -------------------------------------------- //
-
-    // can be overridden by FactionsPlugin method, to provide option
     public boolean logPlayerCommands() {
         return true;
     }
 
+    // Command handling
     public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
         return handleCommand(sender, commandString, testOnly, false);
     }
 
     public boolean handleCommand(final CommandSender sender, String commandString, boolean testOnly, boolean async) {
-        commandString = ARGUMENT_DELIMITER.matcher((commandString.startsWith("/") ? commandString.substring(1) : commandString)).replaceAll(" ");
+        commandString = commandString.startsWith("/") ? commandString.substring(1) : commandString;
+        commandString = commandString.trim().replaceAll("\\s+", " ");
 
-        String[] arguments = ARGUMENT_DELIMITER.split(commandString);
+        String[] arguments = commandString.split("\\s+");
         MCommand<?> command = this.baseCommands.get(arguments[0]);
         if (command == null) {
             return false;
@@ -236,7 +237,7 @@ public abstract class MPlugin extends JavaPlugin {
 
         List<String> args = Arrays.asList(arguments).subList(1, arguments.length);
         if (async) {
-            Bukkit.getScheduler().runTaskAsynchronously(this, () -> command.execute(sender, args));
+            Bukkit.getAsyncScheduler().runDelayed(this, scheduledTask -> command.execute(sender, args), 0L, java.util.concurrent.TimeUnit.MILLISECONDS);
         } else {
             command.execute(sender, args);
         }
@@ -247,18 +248,7 @@ public abstract class MPlugin extends JavaPlugin {
         return this.handleCommand(sender, commandString, false);
     }
 
-    // -------------------------------------------- //
-    // HOOKS
-    // -------------------------------------------- //
-    public void preAutoSave() {
-
-    }
-
-    public void postAutoSave() {
-
-    }
-
-    public Map<UUID, Integer> getStuckMap() {
+    public Map<UUID, ScheduledTask> getStuckMap() {
         return this.stuckMap;
     }
 
@@ -266,4 +256,7 @@ public abstract class MPlugin extends JavaPlugin {
         return this.timers;
     }
 
+    public List<MCommand<?>> getBaseCommandsList() {
+        return new ArrayList<>(this.baseCommands.values());
+    }
 }
