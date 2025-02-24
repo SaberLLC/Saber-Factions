@@ -2,6 +2,7 @@ package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.serializable.InventoryItem;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask; // Folia
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,6 +16,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Consumer;
 
 public abstract class SaberGUI {
 
@@ -36,7 +38,9 @@ public abstract class SaberGUI {
 
     public SaberGUI(Player player, String title, int size, InventoryType type) {
         this.inventoryItems = new ConcurrentHashMap<>();
-        this.inventory = type == InventoryType.CHEST ? Bukkit.createInventory(null, size, title) : Bukkit.createInventory(null, type, title);
+        this.inventory = (type == InventoryType.CHEST)
+            ? Bukkit.createInventory(null, size, title)
+            : Bukkit.createInventory(null, type, title);
         this.player = player;
         this.size = size;
         this.title = title;
@@ -59,13 +63,15 @@ public abstract class SaberGUI {
         this.owningPluginName = owning.getName();
         UUID id = this.player.getUniqueId();
         SaberGUI currentlyActive = activeGUIs.get(id);
+
         if (currentlyActive != null) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(owning, () -> {
+            // Folia: replace scheduleSyncDelayedTask with runDelayed on the GlobalRegionScheduler
+            Bukkit.getGlobalRegionScheduler().runDelayed(owning, scheduledTask -> {
                 currentlyActive.close();
                 activeGUIs.put(id, this);
                 this.redraw();
                 this.player.openInventory(this.inventory);
-            });
+            }, 0L);
         } else {
             activeGUIs.put(id, this);
             this.redraw();
@@ -86,8 +92,9 @@ public abstract class SaberGUI {
         this.closeWithDelay(null);
     }
 
-    public void closeWithDelay(java.util.function.Consumer<Player> afterClose) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> {
+    public void closeWithDelay(Consumer<Player> afterClose) {
+        // Folia: 1 tick = 1L. Synchronous
+        Bukkit.getGlobalRegionScheduler().runDelayed(FactionsPlugin.getInstance(), scheduledTask -> {
             this.player.closeInventory();
             if (afterClose != null) {
                 afterClose.accept(this.player);
@@ -96,7 +103,7 @@ public abstract class SaberGUI {
     }
 
     public void setItem(int slot, ItemStack item, Runnable runnable) {
-        this.setItem(slot, (new InventoryItem(item)).click(runnable));
+        this.setItem(slot, new InventoryItem(item).click(runnable));
     }
 
     public void onInventoryClose() {
@@ -148,5 +155,4 @@ public abstract class SaberGUI {
     public Runnable getCloseRunnable() {
         return this.closeRunnable;
     }
-
 }

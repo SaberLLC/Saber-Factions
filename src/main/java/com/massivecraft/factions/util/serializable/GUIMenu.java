@@ -68,7 +68,7 @@ public abstract class GUIMenu {
     }
 
     public void setItem(int slot, ClickableItemStack item) {
-        this.menu.setItem(slot, item);
+        this.menu.setItem(slot, item.getItemStack());
         this.menuItems.put(slot, item);
     }
 
@@ -102,11 +102,15 @@ public abstract class GUIMenu {
         GUIMenu openMenu = menus.get(player.getUniqueId());
         if (openMenu != null) {
             player.closeInventory();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> {
-                this.drawItems();
-                player.openInventory(this.menu);
-                menus.put(player.getUniqueId(), this);
-            }, 1L);
+            Bukkit.getGlobalRegionScheduler().runDelayed(
+                FactionsPlugin.instance,
+                scheduledTask -> {
+                    this.drawItems();
+                    player.openInventory(this.menu);
+                    menus.put(player.getUniqueId(), this);
+                },
+                1L // 1 tick delay
+            );            
         } else {
             this.drawItems();
             player.openInventory(this.menu);

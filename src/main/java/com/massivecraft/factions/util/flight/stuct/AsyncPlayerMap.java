@@ -31,7 +31,15 @@ public class AsyncPlayerMap implements Runnable, Listener {
 
     public AsyncPlayerMap(Plugin bukkitPlugin) {
         Bukkit.getPluginManager().registerEvents(this, bukkitPlugin);
-        Bukkit.getScheduler().runTaskTimer(bukkitPlugin, this, 20L, 20L);
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(
+        bukkitPlugin,
+        scheduledTask -> {
+            this.run(); // call your Runnable's run method
+        },
+        20L,  // initial delay in ticks
+        20L   // period in ticks
+    );
+
     }
 
     @Override

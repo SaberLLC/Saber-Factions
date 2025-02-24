@@ -5,21 +5,13 @@ import com.massivecraft.factions.FactionsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 
 
 /*
  * reference diagram, task should move in this pattern out from chunk 0 in the center.
- *  8 [>][>][>][>][>] etc.
- * [^][6][>][>][>][>][>][6]
- * [^][^][4][>][>][>][4][v]
- * [^][^][^][2][>][2][v][v]
- * [^][^][^][^][0][v][v][v]
- * [^][^][^][1][1][v][v][v]
- * [^][^][3][<][<][3][v][v]
- * [^][5][<][<][<][<][5][v]
- * [7][<][<][<][<][<][<][7]
+ * ...
  */
-
 
 public abstract class SpiralTask implements Runnable {
 
@@ -27,7 +19,10 @@ public abstract class SpiralTask implements Runnable {
     private final transient World world;
     private final transient int limit;
     private transient boolean readyToGo = false;
-    private transient int taskID = -1;
+
+    // Instead of storing an int taskID, store a ScheduledTask
+    private transient ScheduledTask scheduledTask;
+
     // values for the spiral pattern routine
     private transient int x = 0;
     private transient int z = 0;
@@ -43,84 +38,76 @@ public abstract class SpiralTask implements Runnable {
 
         this.world = Bukkit.getWorld(fLocation.getWorldName());
         if (this.world == null) {
-            Logger.print( "[SpiralTask] A valid world must be specified!", Logger.PrefixType.WARNING);
+            Logger.print("[SpiralTask] A valid world must be specified!", Logger.PrefixType.WARNING);
             this.stop();
             return;
         }
         this.x = fLocation.getIntX();
         this.z = fLocation.getIntZ();
-
         this.readyToGo = true;
 
-        // get this party started
-        this.setTaskID(Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), this, 2, 2).getTaskId());
+        // Start a repeating synchronous task every 2 ticks on the main thread
+        this.scheduledTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(
+            FactionsPlugin.getInstance(),
+            task -> SpiralTask.this.run(),
+            2L,  // initial delay in ticks
+            2L   // period in ticks
+        );
     }
 
     private static long now() {
         return System.currentTimeMillis();
     }
 
-    /*
-     * This is where the necessary work is done; you'll need to override this method with whatever you want
-     * done at each chunk in the spiral pattern.
-     * Return false if the entire task needs to be aborted, otherwise return true to continue.
+    /**
+     * The actual work to be done at each chunk. Return false if the entire task needs to be aborted,
+     * otherwise return true to continue.
      */
     public abstract boolean work();
 
-    /*
+    /**
      * Returns an FLocation pointing at the current chunk X and Z values.
      */
     public final FLocation currentFLocation() {
         return FLocation.wrap(world.getName(), x, z);
     }
 
-    /*
+    /**
      * Returns a Location pointing at the current chunk X and Z values.
-     * note that the Location is at the corner of the chunk, not the center.
+     * Note that the Location is at the corner of the chunk, not the center.
      */
     public final Location currentLocation() {
         return new Location(world, WorldUtil.chunkToBlock(x), 65.0, WorldUtil.chunkToBlock(z));
     }
 
-    /*
-     * Returns current chunk X and Z values.
-     */
     public final int getX() {
         return x;
     }
 
-
-
-    /*
-     * Below are the guts of the class, which you normally wouldn't need to mess with.
-     */
-
     public final int getZ() {
         return z;
     }
-    public final void setTaskID(int ID) {
-        if (ID == -1) {
-            this.stop();
-        }
-        taskID = ID;
-    }
+
+    /**
+     * The main loop, called repeatedly on the main thread every 2 ticks.
+     */
+    @Override
     public final void run() {
         if (!this.valid() || !readyToGo) {
             return;
         }
 
-        // this is set so it only does one iteration at a time, no matter how frequently the timer fires
         readyToGo = false;
 
-        // make sure we're still inside the specified radius
+        // Check if we're still inside the specified radius
         if (!this.insideRadius()) {
             return;
         }
 
-        // track this to keep one iteration from dragging on too long and possibly choking the system
+        // Keep track of loop start time
         long loopStartTime = now();
 
-        // keep going until the task has been running for 20ms or more, then stop to take a breather
+        // Work until 20ms have passed, then stop to avoid choking the server
         while (now() < loopStartTime + 20) {
             // run the primary task on the current X/Z coordinates
             if (!this.work()) {
@@ -134,28 +121,27 @@ public abstract class SpiralTask implements Runnable {
             }
         }
 
-        // ready for the next iteration to run
         readyToGo = true;
     }
 
-    // step through chunks in spiral pattern from center; returns false if we're done, otherwise returns true
+    /**
+     * Move to the next chunk in the spiral pattern. Returns false if we're done, otherwise true.
+     */
     public final boolean moveToNext() {
         if (!this.valid()) {
             return false;
         }
 
-        // make sure we don't need to turn down the next leg of the spiral
+        // check if we need to turn down the next leg
         if (current < length) {
             current++;
-
-            // if we're outside the radius, we're done
             if (!this.insideRadius()) {
                 return false;
             }
-        } else {    // one leg/side of the spiral down...
+        } else {
             current = 0;
             isZLeg ^= true;
-            // every second leg (between X and Z legs, negative or positive), length increases
+            // every second leg, length increases
             if (isZLeg) {
                 isNeg ^= true;
                 length++;
@@ -171,6 +157,10 @@ public abstract class SpiralTask implements Runnable {
 
         return true;
     }
+
+    /**
+     * Check if we're still inside the radius. If not, finish.
+     */
     public final boolean insideRadius() {
         boolean inside = current < limit;
         if (!inside) {
@@ -179,25 +169,32 @@ public abstract class SpiralTask implements Runnable {
         return inside;
     }
 
-    // for successful completion
+    /**
+     * Called when we successfully complete the spiral.
+     */
     public void finish() {
-//		FactionsPlugin.getInstance().log("SpiralTask successfully completed!");
+        //FactionsPlugin.getInstance().log("SpiralTask successfully completed!");
         this.stop();
     }
 
-    // we're done, whether finished or cancelled
+    /**
+     * Stop the task, whether we finished or got canceled.
+     */
     public final void stop() {
         if (!this.valid()) {
             return;
         }
-
         readyToGo = false;
-        Bukkit.getServer().getScheduler().cancelTask(taskID);
-        taskID = -1;
+        if (scheduledTask != null && !scheduledTask.isCancelled()) {
+            scheduledTask.cancel();
+        }
+        scheduledTask = null;
     }
 
-    // is this task still valid/workable?
+    /**
+     * Return whether this task is still valid/workable.
+     */
     public final boolean valid() {
-        return taskID != -1;
+        return scheduledTask != null && !scheduledTask.isCancelled();
     }
 }

@@ -3,6 +3,7 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask; // Folia import
 import org.bukkit.Bukkit;
 
 public class WarmUpUtil {
@@ -16,7 +17,14 @@ public class WarmUpUtil {
      *                       <p>
      *                       note: for translations: %s = action, %d = delay
      */
-    public static void process(final FPlayer player, Warmup warmup, TL translationKey, String action, final Runnable runnable, long delay) {
+    public static void process(
+        final FPlayer player,
+        Warmup warmup,
+        TL translationKey,
+        String action,
+        final Runnable runnable,
+        long delay
+    ) {
         if (delay > 0) {
             if (player.isWarmingUp()) {
                 player.msg(TL.WARMUPS_ALREADY);
@@ -24,12 +32,23 @@ public class WarmUpUtil {
             }
 
             player.msg(translationKey.format(action, delay));
-            int id = Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-                player.stopWarmup();
-                runnable.run();
-            }, delay * 20).getTaskId();
-            player.addWarmup(warmup, id);
+
+            // Convert seconds to ticks => delay * 20
+            // Then schedule a synchronous one-off task on the main thread
+            ScheduledTask scheduledTask = Bukkit.getGlobalRegionScheduler().runDelayed(
+                FactionsPlugin.getInstance(),
+                task -> {
+                    player.stopWarmup();
+                    runnable.run();
+                },
+                delay * 20L
+            );
+
+            // This requires that FPlayer#addWarmup(...) accepts a ScheduledTask
+            player.addWarmup(warmup, scheduledTask);
+
         } else {
+            // If no delay, run immediately
             runnable.run();
         }
     }
@@ -37,5 +56,4 @@ public class WarmUpUtil {
     public enum Warmup {
         HOME, WARP, FLIGHT, BANNER, CHECKPOINT, WILD
     }
-
 }
