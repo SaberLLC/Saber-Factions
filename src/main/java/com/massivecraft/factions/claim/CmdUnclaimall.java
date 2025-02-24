@@ -1,0 +1,122 @@
+package com.massivecraft.factions.cmd.claim;
+
+import com.massivecraft.factions.*;
+import com.massivecraft.factions.cmd.Aliases;
+import com.massivecraft.factions.cmd.CommandContext;
+import com.massivecraft.factions.cmd.CommandRequirements;
+import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.cmd.audit.FLogType;
+import com.massivecraft.factions.event.LandUnclaimAllEvent;
+import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.ChunkReference;
+import com.massivecraft.factions.util.FastChunk;
+import com.massivecraft.factions.util.Logger;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
+
+public class CmdUnclaimall extends FCommand {
+
+    /**
+     * @author FactionsUUID Team - Modified By CmdrKittens
+     */
+
+    //TODO: Add UnclaimAll Confirmation GUI
+    public CmdUnclaimall() {
+        this.getAliases().addAll(Aliases.unclaim_all_unsafe);
+
+        this.getOptionalArgs().put("faction", "yours");
+
+        this.setRequirements(new CommandRequirements.Builder(Permission.UNCLAIM_ALL)
+                .playerOnly()
+                .memberOnly()
+                .withAction(PermissableAction.TERRITORY) //TODO: Add Unclaimall PermissableAction
+                .build());
+    }
+
+    @Override
+    public void perform(CommandContext context) {
+        Faction target = context.faction;
+    
+        if (context.args.size() == 1) {
+            target = context.argAsFaction(0);
+            if (target == null) {
+                context.msg(TL.GENERIC_NOFACTION_FOUND);
+                return;
+            }
+    
+            if (!context.fPlayer.isAdminBypassing()) {
+                context.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", target.getTag()).replace("{action}", "unclaimall land"));
+                return;
+            }
+    
+            Board.getInstance().unclaimAll(target.getId());
+            context.faction.msg(TL.COMMAND_UNCLAIMALL_LOG, context.fPlayer.describeTo(target, true), target.getTag());
+            if (Conf.logLandUnclaims) {
+                Logger.print(TL.COMMAND_UNCLAIMALL_LOG.format(context.fPlayer.getName(), context.faction.getTag()), Logger.PrefixType.DEFAULT);
+            }
+            return;
+        }
+    
+        // If using economy, handle refunds
+        if (Econ.shouldBeUsed()) {
+            double refund = Econ.calculateTotalLandRefund(target.getLandRounded());
+            if (!Econ.modifyMoney(target, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
+                return;
+            }
+        }
+    
+        // If using the spawner chunk system, ensure no spawners are present
+        if (Conf.userSpawnerChunkSystem && !Conf.allowUnclaimSpawnerChunksWithSpawnersInChunk) {
+            for (FastChunk fastChunk : target.getSpawnerChunks()) {
+                if (ChunkReference.getSpawnerCount(fastChunk.getChunk()) > 0) {
+                    context.msg(TL.COMMAND_UNCLAIMALL_SPAWNERS_IN_CHUNK.toString().replace("{faction}", target.getTag()));
+                    return;
+                }
+            }
+        }
+    
+        LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(target, context.fPlayer);
+    
+        // Old: scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> { ... }, 1);
+        // New: runDelayed on the GlobalRegionScheduler
+        Bukkit.getGlobalRegionScheduler().runDelayed(FactionsPlugin.getInstance(), scheduledTask -> {
+            Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent);
+        }, 1L); // 1 tick delay
+    
+        if (unclaimAllEvent.isCancelled()) {
+            return;
+        }
+    
+        int unclaimed = target.getAllClaims().size();
+        Board.getInstance().unclaimAll(target.getId());
+        FactionsPlugin.instance.logFactionEvent(
+            context.faction,
+            FLogType.CHUNK_CLAIMS,
+            context.fPlayer.getName(),
+            CC.RedB + "UNCLAIMED",
+            String.valueOf(unclaimed),
+            FLocation.wrap(context.fPlayer.getPlayer().getLocation()).formatXAndZ(",")
+        );
+    
+        // Old: runTaskAsynchronously(...)
+        // New: runDelayed on the AsyncScheduler with zero delay
+        Bukkit.getAsyncScheduler().runDelayed(FactionsPlugin.instance, scheduledTask -> {
+            context.faction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, context.fPlayer.describeTo(context.faction, true));
+    
+            if (Conf.logLandUnclaims) {
+                Logger.print(TL.COMMAND_UNCLAIMALL_LOG.format(context.fPlayer.getName(), context.faction.getTag()), Logger.PrefixType.DEFAULT);
+            }
+        }, 0L, java.util.concurrent.TimeUnit.MILLISECONDS);
+    }
+    
+
+    @Override
+    public TL getUsageTranslation() {
+        return TL.COMMAND_UNCLAIMALL_DESCRIPTION;
+    }
+
+}
+
