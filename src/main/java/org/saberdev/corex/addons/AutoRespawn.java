@@ -15,10 +15,10 @@ public class AutoRespawn implements Listener {
     @EventHandler
     private void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+        Bukkit.getGlobalRegionScheduler().runDelayed(FactionsPlugin.getInstance(), scheduledTask -> {
             if (player.isOnline()) {
                 player.spigot().respawn();
             }
-        }, 2L);
+        }, 2L);        
     }
 }

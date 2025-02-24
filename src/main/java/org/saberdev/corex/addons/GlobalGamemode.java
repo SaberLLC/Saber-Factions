@@ -22,13 +22,15 @@ public class GlobalGamemode implements Listener {
             final GameMode gm = e.getPlayer().getGameMode();
             final Player p = e.getPlayer();
             if (gm == GameMode.CREATIVE) {
-                Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-                    if (p.isOnline()) {
-                        if (p.getGameMode() != gm) {
+                Bukkit.getGlobalRegionScheduler().runDelayed(
+                    FactionsPlugin.getInstance(),
+                    scheduledTask -> {
+                        if (p.isOnline() && p.getGameMode() != gm) {
                             p.setGameMode(gm);
                         }
-                    }
-                }, 2L);
+                    },
+                    2L // 2-tick delay
+                );                
             }
         }
     }

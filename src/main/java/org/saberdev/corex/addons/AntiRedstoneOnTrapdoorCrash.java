@@ -2,6 +2,8 @@ package org.saberdev.corex.addons;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Logger;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -10,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.saberdev.corex.CoreAddon;
+import java.util.concurrent.TimeUnit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +25,20 @@ public class AntiRedstoneOnTrapdoorCrash implements Listener {
 
     public AntiRedstoneOnTrapdoorCrash() {
         FactionsPlugin plugin = FactionsPlugin.getInstance();
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-            cooldowns.clear();
-            trapdoorPoweredByRedstoneCounts.clear();
-        }, 6000L, 6000L);
+        // 6000 ticks -> 300000 ms
+        long delayMs = 6000L * 50L;
+        long periodMs = 6000L * 50L;
+
+        Bukkit.getAsyncScheduler().runAtFixedRate(
+            plugin,
+            scheduledTask -> {
+                cooldowns.clear();
+                trapdoorPoweredByRedstoneCounts.clear();
+            },
+            delayMs,      // initial delay in ms
+            periodMs,     // repeat period in ms
+            TimeUnit.MILLISECONDS
+        );
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
