@@ -98,11 +98,13 @@ public class CmdAdmin extends FCommand {
     }
 
     private void setRole(FPlayer fp, Role r) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, () -> fp.setRole(r));
+        Bukkit.getGlobalRegionScheduler().execute(FactionsPlugin.instance, () -> {
+            fp.setRole(r);
+        });
     }
 
     private void promoteNewLeader(Faction f) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, (Runnable) f::promoteNewLeader);
+        Bukkit.getGlobalRegionScheduler().execute(FactionsPlugin.instance, f::promoteNewLeader);
     }
 
     public TL getUsageTranslation() {

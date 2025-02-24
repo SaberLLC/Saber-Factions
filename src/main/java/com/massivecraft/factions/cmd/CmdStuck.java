@@ -7,6 +7,7 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.util.WorldUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask; // Folia
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,15 +16,9 @@ import org.bukkit.entity.Player;
 
 public class CmdStuck extends FCommand {
 
-    /**
-     * @author FactionsUUID Team - Modified By CmdrKittens
-     */
-
     public CmdStuck() {
         super();
         this.getAliases().addAll(Aliases.stuck);
-
-
         this.setRequirements(new CommandRequirements.Builder(Permission.STUCK)
                 .playerOnly()
                 .build());
@@ -42,28 +37,32 @@ public class CmdStuck extends FCommand {
             return;
         }
 
-
+        // Already stuck waiting?
         if (FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
             long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
             String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
             context.msg(TL.COMMAND_STUCK_EXISTS, time);
         } else {
-
-            // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
-            if (!context.payForCommand(Conf.econCostStuck, TL.COMMAND_STUCK_TOSTUCK.format(context.fPlayer.getName()), TL.COMMAND_STUCK_FORSTUCK.format(context.fPlayer.getName()))) {
+            // If there's a cost, make them pay (unless bypass)
+            if (!context.payForCommand(
+                    Conf.econCostStuck,
+                    TL.COMMAND_STUCK_TOSTUCK.format(context.fPlayer.getName()),
+                    TL.COMMAND_STUCK_FORSTUCK.format(context.fPlayer.getName())
+            )) {
                 return;
             }
 
-            final int id = Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), new Runnable() {
-
-                @Override
-                public void run() {
+            // Schedule a delayed synchronous task using Folia’s GlobalRegionScheduler
+            ScheduledTask scheduledTask = Bukkit.getGlobalRegionScheduler().runDelayed(
+                FactionsPlugin.getInstance(),
+                (task) -> {
+                    // If they're no longer in the stuck map, do nothing
                     if (!FactionsPlugin.getInstance().getStuckMap().containsKey(player.getUniqueId())) {
                         return;
                     }
 
-                    // check for world difference or radius exceeding
-                    final World world = chunk.getWorld();
+                    // Check for world difference or radius
+                    World world = chunk.getWorld();
                     if (world.getUID() != player.getWorld().getUID() || sentAt.distance(player.getLocation()) > radius) {
                         context.msg(TL.COMMAND_STUCK_OUTSIDE.format(radius));
                         FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
@@ -72,39 +71,47 @@ public class CmdStuck extends FCommand {
                     }
 
                     final Board board = Board.getInstance();
-                    // spiral task to find nearest wilderness chunk
+                    // Use a SpiralTask to find the nearest wilderness chunk
                     new SpiralTask(FLocation.wrap(context.player), radius * 2) {
                         @Override
                         public boolean work() {
                             FLocation chunk = currentFLocation();
                             Faction faction = board.getFactionAt(chunk);
                             int buffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0);
+
                             if (faction.isWilderness() && !chunk.isOutsideWorldBorder(buffer)) {
                                 int cx = WorldUtil.chunkToBlock(chunk.getIntX());
                                 int cz = WorldUtil.chunkToBlock(chunk.getIntZ());
                                 int y = world.getHighestBlockYAt(cx, cz);
                                 Location tp = new Location(world, cx, y, cz);
+
                                 context.msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
                                 FactionsPlugin.getInstance().getTimers().remove(player.getUniqueId());
                                 FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
+
+                                // Attempt Essentials, otherwise normal teleport
                                 if (!Essentials.handleTeleport(player, tp)) {
                                     player.teleport(tp);
                                     Logger.print("/f stuck used regular teleport, not essentials!", Logger.PrefixType.DEFAULT);
                                 }
                                 this.stop();
-                                return false;
+                                return false; // stops the spiral
                             }
-                            return true;
+                            return true; // keep searching
                         }
                     };
-                }
-            }, delay * 20).getTaskId();
+                },
+                delay * 20L // convert seconds to ticks
+            );
 
+            // track the time in the timers map
             FactionsPlugin.getInstance().getTimers().put(player.getUniqueId(), System.currentTimeMillis() + (delay * 1000));
             long wait = FactionsPlugin.getInstance().getTimers().get(player.getUniqueId()) - System.currentTimeMillis();
             String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
             context.msg(TL.COMMAND_STUCK_START, time);
-            FactionsPlugin.getInstance().getStuckMap().put(player.getUniqueId(), id);
+
+            // store the ScheduledTask in the stuck map
+            FactionsPlugin.getInstance().getStuckMap().put(player.getUniqueId(), scheduledTask);
         }
     }
 
@@ -113,4 +120,3 @@ public class CmdStuck extends FCommand {
         return TL.COMMAND_STUCK_DESCRIPTION;
     }
 }
-

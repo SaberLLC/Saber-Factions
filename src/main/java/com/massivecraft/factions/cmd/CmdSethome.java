@@ -1,5 +1,7 @@
 package com.massivecraft.factions.cmd;
 
+import org.bukkit.Bukkit;
+
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -25,7 +27,8 @@ public class CmdSethome extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
+        // Replace runTaskAsynchronously(...) with an AsyncScheduler call
+        Bukkit.getAsyncScheduler().runDelayed(FactionsPlugin.instance, scheduledTask -> {
             if (!Conf.homesEnabled) {
                 context.msg(TL.COMMAND_SETHOME_DISABLED);
                 return;
@@ -36,14 +39,15 @@ public class CmdSethome extends FCommand {
                 return;
             }
 
-            // Can the player set the faction home HERE?
-            if (!Permission.BYPASS.has(context.player) &&
-                    Conf.homesMustBeInClaimedTerritory &&
-                    Board.getInstance().getFactionAt(FLocation.wrap(context.player)) != faction) {
+            // Check territory ownership
+            if (!Permission.BYPASS.has(context.player)
+                && Conf.homesMustBeInClaimedTerritory
+                && Board.getInstance().getFactionAt(FLocation.wrap(context.player)) != faction) {
                 context.msg(TL.COMMAND_SETHOME_NOTCLAIMED);
                 return;
             }
 
+            // If they typed a faction argument, do additional checks
             if (!context.args.isEmpty()) {
                 Faction target = context.argAsFaction(0);
                 if (target == null) return;
@@ -54,11 +58,12 @@ public class CmdSethome extends FCommand {
                 }
             }
 
-            // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
+            // If economy is enabled, handle any costs
             if (!context.payForCommand(Conf.econCostSethome, TL.COMMAND_SETHOME_TOSET, TL.COMMAND_SETHOME_FORSET)) {
                 return;
             }
 
+            // Actually set the home
             faction.setHome(context.player.getLocation());
 
             faction.msg(TL.COMMAND_SETHOME_SET, context.fPlayer.describeTo(context.faction, true));
@@ -66,7 +71,8 @@ public class CmdSethome extends FCommand {
             if (faction != context.faction) {
                 context.msg(TL.COMMAND_SETHOME_SETOTHER, faction.getTag(context.fPlayer));
             }
-        });
+
+        }, 0L, java.util.concurrent.TimeUnit.MILLISECONDS); // zero delay => immediate async
     }
 
     @Override

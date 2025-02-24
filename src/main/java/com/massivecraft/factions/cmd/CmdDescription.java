@@ -32,30 +32,45 @@ public class CmdDescription extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
+        // Replace runTaskAsynchronously with runDelayed on the AsyncScheduler:
+        Bukkit.getAsyncScheduler().runDelayed(FactionsPlugin.instance, scheduledTask -> {
+            // This block runs asynchronously
+    
             // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
             if (!context.payForCommand(Conf.econCostDesc, TL.COMMAND_DESCRIPTION_TOCHANGE, TL.COMMAND_DESCRIPTION_FORCHANGE)) {
                 return;
             }
-
-            // since "&" color tags seem to work even through plain old FPlayer.sendMessage() for some reason, we need to break those up
-            // And replace all the % because it messes with string formatting and this is a easy way around that.
-            String desc = TextUtil.implode(context.args, " ").replaceAll("%", "").replaceAll("(&([a-f0-9klmnor]))", "& $2");
+    
+            // Clean up special chars in the description
+            String desc = TextUtil.implode(context.args, " ")
+                .replaceAll("%", "")
+                .replaceAll("(&([a-f0-9klmnor]))", "& $2");
             context.faction.setDescription(desc);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.FDESC_EDIT, context.fPlayer.getName(), desc));
+    
+            // Now schedule the sync part on the main thread
+            Bukkit.getGlobalRegionScheduler().runDelayed(FactionsPlugin.instance, syncTask -> {
+                FactionsPlugin.instance.logFactionEvent(
+                    context.faction,
+                    FLogType.FDESC_EDIT,
+                    context.fPlayer.getName(),
+                    desc
+                );
+            }, 0L); // 0 ticks = immediate sync call
+    
             if (!Conf.broadcastDescriptionChanges) {
                 context.msg(TL.COMMAND_DESCRIPTION_CHANGED, context.faction.describeTo(context.fPlayer));
                 context.sendMessage(context.faction.getDescription());
                 return;
             }
-
+    
             // Broadcast the description to everyone
             for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
                 fplayer.msg(TL.COMMAND_DESCRIPTION_CHANGES, context.faction.describeTo(fplayer));
-                fplayer.sendMessage(context.faction.getDescription());  // players can inject "&" or "`" or "<i>" or whatever in their description; &k is particularly interesting looking
+                fplayer.sendMessage(context.faction.getDescription());
             }
-        });
+        }, 0L, java.util.concurrent.TimeUnit.MILLISECONDS);
     }
+    
 
     @Override
     public TL getUsageTranslation() {

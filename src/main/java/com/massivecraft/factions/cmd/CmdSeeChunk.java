@@ -7,6 +7,9 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.FastMath;
 import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.util.TL;
+
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -65,34 +68,46 @@ public class CmdSeeChunk extends FCommand {
         }
     }
 
+    // Instead of storing an int taskID, store a ScheduledTask
+    private transient ScheduledTask scheduledTask = null;
+
     private void manageTask() {
-        if (taskID != -1) {
+        // If we already have a running task, check if we need to cancel it
+        if (scheduledTask != null && !scheduledTask.isCancelled()) {
+            // If there's nothing to process, cancel
             if (seeChunkMap.isEmpty()) {
-                Bukkit.getScheduler().cancelTask(taskID);
-                taskID = -1;
+                scheduledTask.cancel();
+                scheduledTask = null;
             }
         } else {
+            // Otherwise, no task is running; start it
             startTask();
         }
     }
 
     private void startTask() {
-        taskID = Bukkit.getScheduler().runTaskTimer(FactionsPlugin.getInstance(), () -> {
-            Iterator<Map.Entry<String, Boolean>> iterator = seeChunkMap.entrySet().iterator();
-
-            while (iterator.hasNext()) {
-                Map.Entry<String, Boolean> entry = iterator.next();
-                Player player = Bukkit.getPlayer(entry.getKey());
-
-                if (player == null || !player.isOnline()) {
-                    iterator.remove();
-                    continue;
+        scheduledTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(
+            FactionsPlugin.getInstance(),
+            scheduledTask -> {
+                Iterator<Map.Entry<String, Boolean>> iterator = seeChunkMap.entrySet().iterator();
+    
+                while (iterator.hasNext()) {
+                    Map.Entry<String, Boolean> entry = iterator.next();
+                    Player player = Bukkit.getPlayer(entry.getKey());
+    
+                    if (player == null || !player.isOnline()) {
+                        iterator.remove();
+                        continue;
+                    }
+                    showBorders(player);
                 }
-                showBorders(player);
-            }
-            manageTask();
-        }, 0, interval).getTaskId();
+                manageTask(); // You’ll likely update manageTask() to check scheduledTask
+            },
+            0L,       // initial delay in ticks
+            interval  // repeat period in ticks
+        );
     }
+    
 
     private void showBorders(Player me) {
         World world = me.getWorld();

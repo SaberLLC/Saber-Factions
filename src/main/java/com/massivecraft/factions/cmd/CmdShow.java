@@ -49,27 +49,28 @@ public class CmdShow extends FCommand {
                 .build());
     }
 
-    @Override
     public void perform(CommandContext context) {
         Faction faction = context.faction;
         if (context.argIsSet(0)) faction = context.argAsFaction(0);
         if (faction == null) return;
-
-        if (context.fPlayer != null && !context.player.getPlayer().hasPermission("factions.show.bypassexempt")
+    
+        if (context.fPlayer != null
+                && !context.player.getPlayer().hasPermission("factions.show.bypassexempt")
                 && FactionsPlugin.getInstance().getConfig().getStringList("show-exempt").contains(faction.getTag())) {
             context.msg(TL.COMMAND_SHOW_EXEMPT);
             return;
         }
-
+    
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
         if (!context.payForCommand(Conf.econCostShow, TL.COMMAND_SHOW_TOSHOW, TL.COMMAND_SHOW_FORSHOW)) {
             return;
         }
-
+    
         List<String> show = FactionsPlugin.getInstance().getConfig().getStringList("show");
-        if (show.isEmpty())
+        if (show.isEmpty()) {
             show = defaults;
-
+        }
+    
         if (!faction.isNormal()) {
             String tag = faction.getTag(context.fPlayer);
             // send header and that's all
@@ -81,43 +82,56 @@ public class CmdShow extends FCommand {
             }
             return; // we only show header for non-normal factions
         }
-
+    
         List<Component> fancy = new ArrayList<>(16);
         List<String> finalShow = show;
         Faction finalFaction = faction;
-        Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
+    
+        // Replace runTaskAsynchronously with an AsyncScheduler call
+        Bukkit.getAsyncScheduler().runDelayed(FactionsPlugin.getInstance(), scheduledTask -> {
             for (String raw : finalShow) {
-                String parsed = FactionsPlugin.getInstance().getConfig().getBoolean("relational-show", true) ? TagUtil.parsePlain(finalFaction, context.fPlayer, raw) : TagUtil.parsePlain(finalFaction, raw); // use relations
+                String parsed = FactionsPlugin.getInstance().getConfig().getBoolean("relational-show", true)
+                    ? TagUtil.parsePlain(finalFaction, context.fPlayer, raw)
+                    : TagUtil.parsePlain(finalFaction, raw); // use relations
+    
                 if (parsed == null) {
                     continue; // Due to minimal f show.
                 }
-
+    
                 if (context.fPlayer != null) {
                     parsed = TagUtil.parsePlaceholders(context.fPlayer.getPlayer(), parsed);
                 }
-
+    
                 if (TagUtil.hasFancy(parsed)) {
                     List<Component> localFancy = TagUtil.parseFancy(finalFaction, context.fPlayer, parsed);
-                    if (localFancy != null)
+                    if (localFancy != null) {
                         fancy.addAll(localFancy);
+                    }
                     continue;
                 }
+    
                 if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
                     if (parsed.contains("{ig}")) {
                         // replaces all variables with no home TL
                         parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME;
                     }
                     if (parsed.contains("%")) {
-                        parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+                        // Just in case it got in there before we disallowed it.
+                        parsed = parsed.replaceAll("%", "");
                     }
-
+    
                     parsed = TextUtil.parse(parsed);
                     Component localFancy = TextUtil.parseFancy(parsed).build();
                     fancy.add(localFancy);
                 }
             }
-            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> context.sendComponent(fancy));
-        });
+    
+            // Now schedule the sync part on the main thread
+            Bukkit.getGlobalRegionScheduler().runDelayed(FactionsPlugin.getInstance(), syncTask -> {
+                context.sendComponent(fancy);
+            }, 0L); // 0 ticks => immediate sync call
+    
+        }, 0L, java.util.concurrent.TimeUnit.MILLISECONDS); // 0 ms => run async immediately
     }
 
     @Override

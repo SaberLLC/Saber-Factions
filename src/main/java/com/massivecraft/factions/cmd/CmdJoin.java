@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 
 import java.util.Comparator;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class CmdJoin extends FCommand {
 
@@ -27,7 +28,7 @@ public class CmdJoin extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
+        Bukkit.getAsyncScheduler().runDelayed(FactionsPlugin.instance, scheduledTask -> {
 
             Faction faction = context.argAsFaction(0);
             if (faction == null) return;
@@ -135,52 +136,56 @@ public class CmdJoin extends FCommand {
                 }
             }
 
-            FactionsPlugin.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> {
-                FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
-                Bukkit.getServer().getPluginManager().callEvent(joinEvent);
-                if (joinEvent.isCancelled()) {
-                    return;
-                }
-
-                if (samePlayer && !context.payForCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString(), TL.COMMAND_JOIN_FORJOIN.toString())) {
-                    return;
-                }
-
-                context.msg(TL.COMMAND_JOIN_SUCCESS, fplayer.describeTo(context.fPlayer, true), faction.getTag(context.fPlayer));
-
-                if (!samePlayer) {
-                    fplayer.msg(TL.COMMAND_JOIN_MOVED, context.fPlayer.describeTo(fplayer, true), faction.getTag(fplayer));
-                }
-
-                faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
-
-                fplayer.resetFactionData();
-
-                if (faction.altInvited(fplayer)) {
-                    fplayer.setAlt(true);
-                    fplayer.setFaction(faction, true);
-                } else {
-                    fplayer.setFaction(faction, false);
-                }
-
-                faction.deinvite(fplayer);
-
-                if (!useRoster || fplayer.isAdminBypassing()) {
-                    context.fPlayer.setRole(faction.getDefaultRole());
-                } else {
-                    RosterPlayer rosterPlayer = RosterPlayerManager.getRosterPlayerFromUUID(context.player.getUniqueId(), faction);
-                    context.fPlayer.setRole(rosterPlayer.getRole());
-                }
-
-                if (Conf.logFactionJoin) {
-                    if (samePlayer) {
-                        Logger.printArgs(TL.COMMAND_JOIN_JOINEDLOG.toString(), Logger.PrefixType.DEFAULT, fplayer.getName(), faction.getTag());
-                    } else {
-                        Logger.printArgs(TL.COMMAND_JOIN_MOVEDLOG.toString(), Logger.PrefixType.DEFAULT, context.fPlayer.getName(), fplayer.getName(), faction.getTag());
+            Bukkit.getGlobalRegionScheduler().runDelayed(
+                FactionsPlugin.getInstance(),
+                task -> {
+                    FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
+                    Bukkit.getServer().getPluginManager().callEvent(joinEvent);
+                    if (joinEvent.isCancelled()) {
+                        return;
                     }
-                }
-            });
-        });
+            
+                    if (samePlayer && !context.payForCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString(), TL.COMMAND_JOIN_FORJOIN.toString())) {
+                        return;
+                    }
+            
+                    context.msg(TL.COMMAND_JOIN_SUCCESS, fplayer.describeTo(context.fPlayer, true), faction.getTag(context.fPlayer));
+            
+                    if (!samePlayer) {
+                        fplayer.msg(TL.COMMAND_JOIN_MOVED, context.fPlayer.describeTo(fplayer, true), faction.getTag(fplayer));
+                    }
+            
+                    faction.msg(TL.COMMAND_JOIN_JOINED, fplayer.describeTo(faction, true));
+            
+                    fplayer.resetFactionData();
+            
+                    if (faction.altInvited(fplayer)) {
+                        fplayer.setAlt(true);
+                        fplayer.setFaction(faction, true);
+                    } else {
+                        fplayer.setFaction(faction, false);
+                    }
+            
+                    faction.deinvite(fplayer);
+            
+                    if (!useRoster || fplayer.isAdminBypassing()) {
+                        context.fPlayer.setRole(faction.getDefaultRole());
+                    } else {
+                        RosterPlayer rosterPlayer = RosterPlayerManager.getRosterPlayerFromUUID(context.player.getUniqueId(), faction);
+                        context.fPlayer.setRole(rosterPlayer.getRole());
+                    }
+            
+                    if (Conf.logFactionJoin) {
+                        if (samePlayer) {
+                            Logger.printArgs(TL.COMMAND_JOIN_JOINEDLOG.toString(), Logger.PrefixType.DEFAULT, fplayer.getName(), faction.getTag());
+                        } else {
+                            Logger.printArgs(TL.COMMAND_JOIN_MOVEDLOG.toString(), Logger.PrefixType.DEFAULT, context.fPlayer.getName(), fplayer.getName(), faction.getTag());
+                        }
+                    }
+                },
+                0L  // 0 ticks => next server tick
+            );
+        }, 0L, TimeUnit.MILLISECONDS);
     }
 
     private int getFactionMemberLimit(Faction faction) {

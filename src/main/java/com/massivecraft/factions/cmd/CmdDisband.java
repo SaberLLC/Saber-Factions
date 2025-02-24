@@ -104,7 +104,13 @@ public class CmdDisband extends FCommand {
         if (!disbandMap.containsKey(context.player.getUniqueId().toString()) && faction.getTnt() > 0) {
             context.msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", String.valueOf(faction.getTnt())));
             disbandMap.put(context.player.getUniqueId().toString(), faction.getId());
-            Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> disbandMap.remove(context.player.getUniqueId().toString()), 200L);
+            Bukkit.getGlobalRegionScheduler().runDelayed(
+            FactionsPlugin.getInstance(),
+            scheduledTask -> {
+                disbandMap.remove(context.player.getUniqueId().toString());
+            },
+            200L // 200 ticks = 10 seconds
+        );
         } else if (!disbandMap.containsKey(context.player.getUniqueId().toString())) {
             new FDisbandFrame(context.player).openGUI(FactionsPlugin.getInstance());
         }

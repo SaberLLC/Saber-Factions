@@ -10,6 +10,10 @@ import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
+
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public class CmdDeinvite extends FCommand {
@@ -32,7 +36,7 @@ public class CmdDeinvite extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
+        Bukkit.getAsyncScheduler().runDelayed(FactionsPlugin.instance, scheduledTask -> {
 
 
             FPlayer you = context.argAsBestFPlayerMatch(0);
@@ -58,7 +62,7 @@ public class CmdDeinvite extends FCommand {
             you.msg(TL.COMMAND_DEINVITE_REVOKED, context.fPlayer.describeTo(you), context.faction.describeTo(you));
 
             context.faction.msg(TL.COMMAND_DEINVITE_REVOKES, context.fPlayer.describeTo(context.faction), you.describeTo(context.faction));
-        });
+        }, 0L, TimeUnit.MILLISECONDS);
     }
 
     @Override

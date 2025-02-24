@@ -11,6 +11,8 @@ import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 public class CmdMod extends FCommand {
@@ -87,7 +89,10 @@ public class CmdMod extends FCommand {
     }
 
     private void setRole(FPlayer fp, Role r) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, () -> fp.setRole(r));
+        Bukkit.getGlobalRegionScheduler().execute(FactionsPlugin.instance, () -> {
+        fp.setRole(r);
+    });
+
     }
 
     @Override
