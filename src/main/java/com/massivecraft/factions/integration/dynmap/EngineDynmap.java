@@ -128,24 +128,29 @@ public class EngineDynmap {
         }
 
         // Shedule non thread safe sync at the end!
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(FactionsPlugin.getInstance(), () -> {
-            final Map<String, TempMarker> homes = createHomes();
-            final Map<String, TempAreaMarker> areas = createAreas();
-            final Map<String, Set<String>> playerSets = createPlayersets();
-
-            if (!updateCore()) {
-                return;
-            }
-
-            // createLayer() is thread safe but it makes use of fields set in updateCore() so we must have it after.
-            if (!updateLayer(createLayer())) {
-                return;
-            }
-
-            updateHomes(homes);
-            updateAreas(areas);
-            updatePlayersets(playerSets);
-        }, 100L, 100L);
+        Bukkit.getGlobalRegionScheduler().runAtFixedRate(
+            FactionsPlugin.getInstance(),
+            scheduledTask -> {
+                final Map<String, TempMarker> homes = createHomes();
+                final Map<String, TempAreaMarker> areas = createAreas();
+                final Map<String, Set<String>> playerSets = createPlayersets();
+        
+                if (!updateCore()) {
+                    return;
+                }
+        
+                // createLayer() is thread-safe but depends on fields set by updateCore(), so do it after.
+                if (!updateLayer(createLayer())) {
+                    return;
+                }
+        
+                updateHomes(homes);
+                updateAreas(areas);
+                updatePlayersets(playerSets);
+            },
+            100L, // initial delay (ticks)
+            100L  // period (ticks)
+        );        
     }
 
     // -------------------------------------------- //

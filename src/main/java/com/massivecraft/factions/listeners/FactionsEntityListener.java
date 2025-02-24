@@ -183,10 +183,20 @@ public class FactionsEntityListener implements Listener {
                     //this one should trigger if something other than a player takes damage
                     if (damager instanceof Player) return;
                 }
-                if (damageee != null && damageee instanceof Player) {
+                if (damageee instanceof Player) {
                     cancelFStuckTeleport((Player) damageee);
-                    combatList.add(damagee.getUniqueId());
-                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
+                    combatList.add(damageee.getUniqueId());
+                
+                    // Old: runTaskLater(...)
+                    // New: runDelayed on the GlobalRegionScheduler
+                    Bukkit.getGlobalRegionScheduler().runDelayed(
+                        FactionsPlugin.instance,
+                        scheduledTask -> {
+                            combatList.remove(damageee.getUniqueId());
+                        },
+                        20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown")
+                    );
+                
                     cancelFFly((Player) damageee);
                     FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damageee);
                     if (fplayer.isInspectMode()) {
@@ -194,20 +204,28 @@ public class FactionsEntityListener implements Listener {
                         fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
                     }
                 }
+                
                 if (damager instanceof Player) {
                     cancelFStuckTeleport((Player) damager);
                     combatList.add(damager.getUniqueId());
-
-                    Entity finalDamager = damager;
-                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(finalDamager.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
-
+                
+                    // Store damager in a final variable if needed
+                    final Entity finalDamager = damager;
+                    Bukkit.getGlobalRegionScheduler().runDelayed(
+                        FactionsPlugin.instance,
+                        scheduledTask -> {
+                            combatList.remove(finalDamager.getUniqueId());
+                        },
+                        20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown")
+                    );
+                
                     cancelFFly((Player) damager);
                     FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
                     if (fplayer.isInspectMode()) {
                         fplayer.setInspectMode(false);
                         fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
                     }
-                }
+                }                
             } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
                 // Players can not take any damage in a Safe Zone
                 event.setCancelled(true);

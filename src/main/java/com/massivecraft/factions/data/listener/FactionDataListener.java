@@ -23,26 +23,39 @@ public class FactionDataListener implements Listener {
     public void onFPlayerCreate(FPlayerJoinEvent e) {
         Faction faction = e.getFaction();
         if (e.getReason() == FPlayerJoinEvent.PlayerJoinReason.CREATE) {
-            Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
-                if (!FactionDataHelper.doesConfigurationExist(faction)) {
-                    FactionDataHelper.createConfiguration(faction);
-                    Bukkit.getLogger().info("[FactionData] Creating Faction Data for " + faction.getTag());
-                }
-                FactionDataHelper.addFactionData(new FactionData(faction));
-            });
+            // Instead of runTaskAsynchronously
+            Bukkit.getAsyncScheduler().runDelayed(
+                FactionsPlugin.getInstance(),
+                scheduledTask -> {
+                    if (!FactionDataHelper.doesConfigurationExist(faction)) {
+                        FactionDataHelper.createConfiguration(faction);
+                        Bukkit.getLogger().info("[FactionData] Creating Faction Data for " + faction.getTag());
+                    }
+                    FactionDataHelper.addFactionData(new FactionData(faction));
+                },
+                0L, // zero delay
+                java.util.concurrent.TimeUnit.MILLISECONDS
+            );
         }
     }
+    
 
     @EventHandler(priority = EventPriority.LOW)
     public void onFactionDisband(FactionDisbandEvent e) {
         FactionData data = FactionDataHelper.findFactionData(e.getFaction());
         if (data == null) return;
-        Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
-            try {
-                data.deleteFactionData(e.getFaction());
-            } catch (Exception ex) {
-                Bukkit.getLogger().severe("Error deleting faction data: " + ex.getMessage());
-            }
-        });
-    }
+    
+        Bukkit.getAsyncScheduler().runDelayed(
+            FactionsPlugin.getInstance(),
+            scheduledTask -> {
+                try {
+                    data.deleteFactionData(e.getFaction());
+                } catch (Exception ex) {
+                    Bukkit.getLogger().severe("Error deleting faction data: " + ex.getMessage());
+                }
+            },
+            0L,
+            java.util.concurrent.TimeUnit.MILLISECONDS
+        );
+    }    
 }

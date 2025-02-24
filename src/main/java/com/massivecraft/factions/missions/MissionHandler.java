@@ -19,7 +19,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -30,12 +29,15 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
+import java.util.concurrent.TimeUnit;
+
 public class MissionHandler implements Listener {
 
     public static final String matchAnythingRegex = ".*";
 
     private static FactionsPlugin plugin;
-    private static final Map<String, Map<String, BukkitTask>> deadlines = new HashMap<>();
+    private transient static final Map<String, Map<String, ScheduledTask>> deadlines = new HashMap<>();
 
     public MissionHandler(FactionsPlugin plugin) {
         MissionHandler.plugin = plugin;
@@ -152,23 +154,36 @@ public class MissionHandler implements Listener {
             return XMaterial.matchXMaterial(e.getItem().getType()).toString().matches(item) ? 1 : -1;
         });
     }
-
+    
     public static void setDeadlineTask(Mission mission, Faction faction, long timeTillDeadline) {
-        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
-            ConfigurationSection missionSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
-            if (mission.getProgress() < missionSection.getLong("Mission.Amount", 0L)) {
-                faction.getMissions().remove(mission.getName());
-                faction.msg(TL.MISSION_MISSION_FAILED, CC.translate(missionSection.getString("Name")));
-            }
-
-            Map<String, BukkitTask> tasks = deadlines.get(faction.getId());
-            if (tasks != null) {
-                tasks.remove(mission.getName());
-            }
-        }, timeTillDeadline / 50L);
-
-        deadlines.computeIfAbsent(faction.getId(), id -> new HashMap<>()).put(mission.getName(), bukkitTask);
+        // timeTillDeadline is presumably in ms. No need to /50 if it's already ms-based.
+        // If you originally used ticks, multiply by 50 to convert ticks -> ms.
+    
+        ScheduledTask scheduledTask = Bukkit.getAsyncScheduler().runDelayed(
+            plugin,
+            scheduledTaskObj -> {
+                // The code you want to run asynchronously:
+                ConfigurationSection missionSection = plugin.getFileManager().getMissions().getConfig()
+                    .getConfigurationSection("Missions." + mission.getName());
+                if (mission.getProgress() < missionSection.getLong("Mission.Amount", 0L)) {
+                    faction.getMissions().remove(mission.getName());
+                    faction.msg(TL.MISSION_MISSION_FAILED, CC.translate(missionSection.getString("Name")));
+                }
+    
+                Map<String, ScheduledTask> tasks = deadlines.get(faction.getId());
+                if (tasks != null) {
+                    tasks.remove(mission.getName());
+                }
+            },
+            timeTillDeadline,        // The delay in milliseconds
+            TimeUnit.MILLISECONDS
+        );
+    
+        // Store the ScheduledTask instead of BukkitTask
+        deadlines.computeIfAbsent(faction.getId(), id -> new HashMap<>())
+                 .put(mission.getName(), scheduledTask);
     }
+    
 
     public static void handleMissionsOfType(FPlayer fPlayer, MissionType missionType, BiFunction<Mission, ConfigurationSection, Integer> missionConsumer) {
         getMissionsOfType(fPlayer, missionType).forEach(mission -> {
@@ -208,9 +223,9 @@ public class MissionHandler implements Listener {
         faction.getCompletedMissions().add(mission.getName());
 
         long deadlineMillis = plugin.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
-        Map<String, BukkitTask> tasks = deadlines.get(faction.getId());
+        Map<String, ScheduledTask> tasks = deadlines.get(faction.getId());
         if (deadlineMillis > 0L && tasks != null) {
-            BukkitTask bukkitTask = tasks.remove(mission.getName());
+            ScheduledTask bukkitTask = tasks.remove(mission.getName());
             if (bukkitTask != null) {
                 bukkitTask.cancel();
             }

@@ -38,6 +38,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.metadata.FixedMetadataValue;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask; // Folia
 
 import java.util.*;
 
@@ -389,9 +390,15 @@ public class FactionsPlayerListener implements Listener {
 
         me.login(); // set kills / deaths
 
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> {
-            if (me.isOnline()) me.getFaction().sendUnreadAnnouncements(me);
-        }, 33L);
+        Bukkit.getGlobalRegionScheduler().runDelayed(
+            FactionsPlugin.instance,
+            scheduledTask -> {
+                if (me.isOnline()) {
+                    me.getFaction().sendUnreadAnnouncements(me);
+                }
+            },
+            33L
+        );        
 
         if (FactionsPlugin.instance.getConfig().getBoolean("scoreboard.default-enabled", false)) {
             FScoreboard.init(me);
@@ -440,7 +447,7 @@ public class FactionsPlayerListener implements Listener {
         CmdSeeChunk.seeChunkMap.remove(me.getPlayer().getName());
 
         // if player is waiting for fstuck teleport but leaves, remove
-        Integer stuck = FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
+        ScheduledTask stuck = FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
 
         if (stuck != null) {
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);

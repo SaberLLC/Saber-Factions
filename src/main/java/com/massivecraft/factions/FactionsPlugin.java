@@ -24,7 +24,12 @@ import com.massivecraft.factions.missions.TributeInventoryHandler;
 import com.massivecraft.factions.missions.impl.MissionHandlerModern;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.*;
+import com.massivecraft.factions.util.ClipPlaceholderAPIManager;
+import com.massivecraft.factions.util.AutoLeaveTask;
+import com.massivecraft.factions.util.Logger;
+import com.massivecraft.factions.util.LazyLocation;
+import com.massivecraft.factions.util.ReflectionUtils;
+import com.massivecraft.factions.util.VersionProtocol;
 import com.massivecraft.factions.util.adapters.*;
 import com.massivecraft.factions.util.flight.FlightEnhance;
 import com.massivecraft.factions.util.flight.stuct.AsyncPlayerMap;
@@ -39,6 +44,7 @@ import com.massivecraft.factions.zcore.frame.fupgrades.UpgradesListener;
 import com.massivecraft.factions.zcore.util.ShutdownParameter;
 import com.massivecraft.factions.zcore.util.StartupParameter;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import me.lucko.commodore.CommodoreProvider;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -57,32 +63,44 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-
+/**
+ * Main plugin class for SaberFactions (Folia-compatible version).
+ */
 public class FactionsPlugin extends MPlugin {
 
+    // track if load was successful
+    private boolean loadSuccessful;
+    public boolean isLoadSuccessful() {
+        return loadSuccessful;
+    }
+    public void setLoadSuccessful(boolean loadSuccessful) {
+        this.loadSuccessful = loadSuccessful;
+    }
+
     public static FactionsPlugin instance;
-    private final Gson gsonSerializer = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-            .registerTypeAdapter(new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
-            }.getType(), new PermissionsMapTypeAdapter())
+
+    private final Gson gsonSerializer = new GsonBuilder()
+            .setPrettyPrinting()
+            .disableHtmlEscaping()
+            .enableComplexMapKeySerialization()
+            .excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
+            .registerTypeAdapter(new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {}.getType(), new PermissionsMapTypeAdapter())
             .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
-            .registerTypeAdapter(new TypeToken<Map<FLocation, Set<String>>>() {
-            }.getType(), new MapFLocToStringSetTypeAdapter())
+            .registerTypeAdapter(new TypeToken<Map<FLocation, Set<String>>>() {}.getType(), new MapFLocToStringSetTypeAdapter())
             .registerTypeAdapter(Inventory.class, new InventoryTypeAdapter())
             .registerTypeAdapter(ReserveObject.class, new ReserveAdapter())
             .registerTypeAdapter(Location.class, new LocationTypeAdapter())
             .registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY)
             .create();
 
-    //TODO REDO
+    // Some static references
     public static boolean cachedRadiusClaim;
-
     public static Permission perms = null;
+
+    // plugin fields
     private Map<String, FactionsAddon> factionsAddonHashMap;
     private final HashMap<Faction, String> shieldStatMap = new HashMap<>();
 
-    // This plugin sets the boolean true when fully enabled.
-    // Plugins can check this boolean while hooking in have
-    // a green light to use the api.
     public static boolean startupFinished = false;
     public boolean PlaceholderApi;
 
@@ -95,10 +113,18 @@ public class FactionsPlugin extends MPlugin {
     public FLogManager fLogManager;
     public List<ReserveObject> reserveObjects;
     public FileManager fileManager;
+
+    /**
+     * The TimerManager. Could be null if something fails or never gets assigned.
+     */
     public TimerManager timerManager;
+
     private FactionsPlayerListener factionsPlayerListener;
     private boolean locked = false;
-    private Integer AutoLeaveTask = null;
+
+    // For auto-leave repeating task in Folia
+    private transient ScheduledTask autoLeaveTask = null;
+
     private ClipPlaceholderAPIManager clipPlaceholderAPIManager;
     private boolean mvdwPlaceholderAPIManager = false;
 
@@ -130,6 +156,7 @@ public class FactionsPlugin extends MPlugin {
     @Override
     public void onEnable() {
 
+        // Check for Vault
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
             Logger.print("You are missing dependencies!", Logger.PrefixType.FAILED);
             Logger.print("Please verify [Vault] is installed!", Logger.PrefixType.FAILED);
@@ -138,28 +165,39 @@ public class FactionsPlugin extends MPlugin {
             return;
         }
 
+        // version check
         this.version = Short.parseShort(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
 
         if (!preEnable()) {
-            this.loadSuccessful = false;
+            this.setLoadSuccessful(false);
             return;
         }
 
-        // Load Conf from disk
+        // Load config from disk
         Conf.load();
 
+        // Load data (Board, Factions, FPlayers) asynchronously
         StartupParameter.initData(this, () -> {
+
+            // If faction flight is enabled, schedule the repeating flight check in Folia
             if (getConfig().getBoolean("enable-faction-flight", true)) {
-                Bukkit.getServer().getScheduler().runTaskTimer(FactionsPlugin.getInstance(), new FlightEnhance(), 30L, 30L);
+                Bukkit.getGlobalRegionScheduler().runAtFixedRate(
+                    this,
+                    scheduledTask -> new FlightEnhance().run(),
+                    30L,  // initial delay
+                    30L   // period
+                );
             }
 
             VersionProtocol.printVerionInfo();
-            // Add Base Commands
+
+            // Setup commands
             this.cmdBase = new FCmdRoot();
             this.cmdAutoHelp = new CmdAutoHelp();
 
             setupPermissions();
 
+            // Optionally load WorldGuard bridging
             if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
                 Plugin plugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
                 if (plugin != null) {
@@ -167,9 +205,10 @@ public class FactionsPlugin extends MPlugin {
                 }
             }
 
-            // start up task which runs the autoLeaveAfterDaysOfInactivity routine
+            // Start auto-leave repeating task if needed
             startAutoLeaveTask(false);
 
+            // Register event listeners
             Bukkit.getPluginManager().registerEvents(new SaberGUIListener(), this);
             Bukkit.getPluginManager().registerEvents(factionsPlayerListener = new FactionsPlayerListener(), this);
 
@@ -177,16 +216,18 @@ public class FactionsPlugin extends MPlugin {
                 Bukkit.getPluginManager().registerEvents(new SpawnerChunkListener(), this);
             }
 
-            if (FactionsPlugin.getInstance().getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
+            if (getConfig().getBoolean("disable-chorus-teleport-in-territory") && this.version > 8) {
                 Bukkit.getPluginManager().registerEvents(new ChorusFruitListener(), this);
             }
 
             FactionDataHelper.init();
 
+            // If we are on MC 1.9+ ...
             if (version > 8) {
                 Bukkit.getPluginManager().registerEvents(new MissionHandlerModern(), this);
             }
 
+            // Additional event listeners
             for (Listener eventListener : new Listener[]{
                     new TributeInventoryHandler(),
                     new FactionsChatListener(),
@@ -198,34 +239,42 @@ public class FactionsPlugin extends MPlugin {
                     new FChestListener(),
                     new MenuListener(),
                     new AntiChestListener()
-            })
+            }) {
                 Bukkit.getPluginManager().registerEvents(eventListener, this);
+            }
 
+            // If grace system is used, register the graceTimer if available
             if (Conf.useGraceSystem) {
-                Bukkit.getPluginManager().registerEvents(timerManager.graceTimer, this);
+                if (timerManager != null && timerManager.graceTimer != null) {
+                    Bukkit.getPluginManager().registerEvents(timerManager.graceTimer, this);
+                } else {
+                    Logger.print("Grace system is enabled, but TimerManager or graceTimer is null. Skipping graceTimer listener registration.", Logger.PrefixType.WARNING);
+                }
             }
 
             new AsyncPlayerMap(this);
 
-            this.setupPlaceholderAPI();
+            setupPlaceholderAPI();
+
             factionsAddonHashMap = new HashMap<>();
             AddonManager.getAddonManagerInstance().loadAddons();
 
-            Bukkit.getScheduler().runTaskLater(this, () -> {
-                //To Add Addon Commands Into "Tab Completion Format"
-                if (factionsAddonHashMap.size() > 0) {
+            // Folia runDelayed for 100 ticks, to do any post-load tasks like tab completion building
+            Bukkit.getGlobalRegionScheduler().runDelayed(this, scheduledTask -> {
+                if (!factionsAddonHashMap.isEmpty()) {
                     FCmdRoot.instance.addVariableCommands();
                     FCmdRoot.instance.rebuild();
                 }
-            }, 100);
+            }, 100L);
 
+            // Register command executor
             this.getCommand(refCommand).setExecutor(cmdBase);
-            if (!CommodoreProvider.isSupported()) this.getCommand(refCommand).setTabCompleter(this);
-
+            if (!CommodoreProvider.isSupported()) {
+                this.getCommand(refCommand).setTabCompleter(this);
+            }
 
             this.postEnable();
-            this.loadSuccessful = true;
-            // Set startup finished to true. to give plugins hooking in a greenlight
+            this.setLoadSuccessful(true);
             FactionsPlugin.startupFinished = true;
         });
     }
@@ -251,7 +300,6 @@ public class FactionsPlugin extends MPlugin {
         }
     }
 
-
     public HashMap<Faction, String> getShieldStatMap() {
         return shieldStatMap;
     }
@@ -271,9 +319,10 @@ public class FactionsPlugin extends MPlugin {
     private void setupPermissions() {
         try {
             RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
-            if (rsp != null) perms = rsp.getProvider();
-        } catch (NoClassDefFoundError ignored) {
-        }
+            if (rsp != null) {
+                perms = rsp.getProvider();
+            }
+        } catch (NoClassDefFoundError ignored) {}
     }
 
     @Override
@@ -283,14 +332,15 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onDisable() {
-
-
+        // Attempt to safely shut down
         ShutdownParameter.initShutdown(this);
 
-        if (this.AutoLeaveTask != null) {
-            getServer().getScheduler().cancelTask(this.AutoLeaveTask);
-            this.AutoLeaveTask = null;
+        // Cancel any Folia repeating tasks for auto-leave
+        if (this.autoLeaveTask != null && !this.autoLeaveTask.isCancelled()) {
+            this.autoLeaveTask.cancel();
+            this.autoLeaveTask = null;
         }
+
         if (TextUtil.AUDIENCES != null) {
             TextUtil.AUDIENCES.close();
         }
@@ -298,17 +348,29 @@ public class FactionsPlugin extends MPlugin {
         super.onDisable();
     }
 
+    /**
+     * Start or restart the auto-leave repeating task in Folia
+     *
+     * @param restartIfRunning whether to forcibly restart if a task is already running
+     */
     public void startAutoLeaveTask(boolean restartIfRunning) {
-        if (AutoLeaveTask != null) {
+        // If there's already a scheduled task
+        if (autoLeaveTask != null && !autoLeaveTask.isCancelled()) {
             if (!restartIfRunning) return;
-            this.getServer().getScheduler().cancelTask(AutoLeaveTask);
+            autoLeaveTask.cancel();
+            autoLeaveTask = null;
         }
 
-        if (Conf.useAutoLeaveAndDisbandSystem) {
-            if (Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0) {
-                long ticks = (long) (20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
-                AutoLeaveTask = getServer().getScheduler().scheduleSyncRepeatingTask(this, new AutoLeaveTask(), ticks, ticks);
-            }
+        if (Conf.useAutoLeaveAndDisbandSystem && Conf.autoLeaveRoutineRunsEveryXMinutes > 0.0) {
+            long ticks = (long) (20 * 60 * Conf.autoLeaveRoutineRunsEveryXMinutes);
+
+            // Folia repeating task
+            autoLeaveTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(
+                this,
+                scheduledTask -> new AutoLeaveTask().run(),
+                ticks,
+                ticks
+            );
         }
     }
 
@@ -317,12 +379,10 @@ public class FactionsPlugin extends MPlugin {
         Conf.save();
     }
 
-
     public Economy getEcon() {
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        return rsp.getProvider();
+        return rsp != null ? rsp.getProvider() : null;
     }
-
 
     @Override
     public boolean logPlayerCommands() {
@@ -331,76 +391,17 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public boolean handleCommand(CommandSender sender, String commandString, boolean testOnly) {
-        return sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender) || super.handleCommand(sender, commandString, testOnly);
+        // If a player is prevented from using a command
+        if (sender instanceof Player && FactionsPlayerListener.preventCommand(commandString, (Player) sender)) {
+            return true;
+        }
+        return super.handleCommand(sender, commandString, testOnly);
     }
 
-
-    // This method must stay for < 1.12 versions
+    // For older MC versions fallback
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        // Must be a LinkedList to prevent UnsupportedOperationException.
-        List<String> argsList = new LinkedList<>(Arrays.asList(args));
-        CommandContext context = new CommandContext(sender, argsList, alias);
-        List<FCommand> commandsList = cmdBase.getSubCommands();
-        FCommand commandsEx = cmdBase;
-        List<String> completions = new ArrayList<>();
-        // Check for "" first arg because spigot is mangled.
-        if (context.args.get(0).equals("")) {
-            for (FCommand subCommand : commandsEx.getSubCommands()) {
-                if (subCommand.getRequirements().isPlayerOnly() && sender.hasPermission(subCommand.getRequirements().getPermission().node) && subCommand.getVisibility() != CommandVisibility.INVISIBLE)
-                    completions.addAll(subCommand.getAliases());
-            }
-            return completions;
-        } else if (context.args.size() == 1) {
-            for (; !commandsList.isEmpty() && !context.args.isEmpty(); context.args.remove(0)) {
-                String cmdName = context.args.get(0).toLowerCase();
-                boolean toggle = false;
-                for (FCommand fCommand : commandsList) {
-                    for (String s : fCommand.getAliases()) {
-                        if (s.startsWith(cmdName)) {
-                            commandsList = fCommand.getSubCommands();
-                            completions.addAll(fCommand.getAliases());
-                            toggle = true;
-                            break;
-                        }
-                    }
-                    if (toggle) break;
-                }
-            }
-            String lastArg = args[args.length - 1].toLowerCase();
-            List<String> filteredCompletions = new ArrayList<>(completions.size());
-            for (String completion : completions) {
-                if (completion.toLowerCase().startsWith(lastArg)) {
-                    filteredCompletions.add(completion);
-                }
-            }
-            return filteredCompletions;
-        } else {
-            String lastArg = args[args.length - 1].toLowerCase();
-            for (Role value : Role.VALUES) completions.add(value.nicename);
-            for (Relation value : Relation.VALUES) completions.add(value.nicename);
-            // The stream and foreach from the old implementation looped 2 times, by looping all players -> filtered -> looped filter and added -> filtered AGAIN at the end.
-            // This loops them once and just adds, because we are filtering the arguments at the end anyways
-            for (Player player : Bukkit.getServer().getOnlinePlayers()) completions.add(player.getName());
-            for (Faction faction : Factions.getInstance().getAllFactions())
-                completions.add(ChatColor.stripColor(faction.getTag()));
-            List<String> filteredCompletions = new ArrayList<>(completions.size());
-            for (String completion : completions) {
-                if (completion.toLowerCase().startsWith(lastArg)) {
-                    filteredCompletions.add(completion);
-                }
-            }
-            return filteredCompletions;
-        }
-    }
-
-    // -------------------------------------------- //
-    // Functions for other plugins to hook into
-    // -------------------------------------------- //
-
-    // If another plugin is handling insertion of chat tags, this should be used to notify Factions
-    public void handleFactionTagExternally(boolean notByFactions) {
-        Conf.chatTagHandledByAnotherPlugin = notByFactions;
+        return super.onTabComplete(sender, command, alias, args);
     }
 
     public FLogManager getFlogManager() {
@@ -411,11 +412,9 @@ public class FactionsPlugin extends MPlugin {
         this.fLogManager.log(faction, type, arguments);
     }
 
-
     public List<ReserveObject> getFactionReserves() {
         return this.reserveObjects;
     }
-
 
     public String getPrimaryGroup(OfflinePlayer player) {
         return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
@@ -424,7 +423,6 @@ public class FactionsPlugin extends MPlugin {
     public TimerManager getTimerManager() {
         return timerManager;
     }
-
 
     public FactionsPlayerListener getFactionsPlayerListener() {
         return this.factionsPlayerListener;

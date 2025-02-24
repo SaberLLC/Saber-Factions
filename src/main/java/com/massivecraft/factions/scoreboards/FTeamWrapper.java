@@ -43,11 +43,11 @@ public class FTeamWrapper {
             return;
 
         if (updating.add(faction)) {
-            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> {
+            Bukkit.getGlobalRegionScheduler().runDelayed(FactionsPlugin.getInstance(), scheduledTask -> {
                 updating.remove(faction);
                 applyUpdates(faction);
-            });
-        }
+            }, 0L);
+        }            
     }
 
     public static void applyUpdates(Faction faction) {

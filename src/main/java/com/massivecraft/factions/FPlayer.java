@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 
 import java.util.List;
 
@@ -457,7 +458,7 @@ public interface FPlayer extends EconomyParticipator {
 
     WarmUpUtil.Warmup getWarmupType();
 
-    void addWarmup(WarmUpUtil.Warmup warmup, int taskId);
+    void addWarmup(WarmUpUtil.Warmup warmup, ScheduledTask taskId);
 
     void stopWarmup();
 

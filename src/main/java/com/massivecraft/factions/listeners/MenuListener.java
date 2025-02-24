@@ -37,7 +37,7 @@ public class MenuListener implements Listener {
             if (item == null) return;
             if (event.getRawSlot() >= event.getInventory().getSize()) return;
             ClickableItemStack found = menu.getMenuItems().get(event.getRawSlot());
-            if (found != null && found.getType() == item.getType() && found.getDurability() == item.getDurability()) {
+            if (found != null && found.getItemStack().getType() == item.getType() && found.getItemStack().getDurability() == item.getDurability()) {
                 if (found.getItemCallback() == null) {
                     return;
                 }

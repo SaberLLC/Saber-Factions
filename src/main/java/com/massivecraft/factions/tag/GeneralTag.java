@@ -12,22 +12,31 @@ import java.util.function.Supplier;
 public enum GeneralTag implements Tag {
 
     /**
-     * @author FactionsUUID Team - Modified By CmdrKittens
+     * Grace timer is safely checked to avoid NPE if timerManager or graceTimer is null
      */
-    GRACE_TIMER("{grace-time}", () -> String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true))),
+    GRACE_TIMER("{grace-time}", () -> {
+        // Safely handle null TimerManager or null graceTimer
+        TimerManager timerManager = FactionsPlugin.getInstance().getTimerManager();
+        if (timerManager != null && timerManager.graceTimer != null) {
+            long remaining = timerManager.graceTimer.getRemaining();
+            return String.valueOf(TimerManager.getRemaining(remaining, true));
+        }
+        // If timer or manager is null, return a fallback string
+        return TL.GRACE_DISABLED_PLACEHOLDER.toString();
+    }),
+
     MAX_WARPS("{max-warps}", () -> String.valueOf(FactionsPlugin.getInstance().getConfig().getInt("max-warps", 5))),
     MAX_ALLIES("{max-allies}", () -> getRelation("ally")),
     MAX_ENEMIES("{max-enemies}", () -> getRelation("enemy")),
     MAX_TRUCES("{max-truces}", () -> getRelation("truce")),
     FACTIONLESS("{factionless}", () -> String.valueOf(FPlayers.getInstance().getOnlinePlayers().stream().filter(p -> !p.hasFaction()).count())),
     FACTIONLESS_TOTAL("{factionless-total}", () -> String.valueOf(FPlayers.getInstance().getAllFPlayers().stream().filter(p -> !p.hasFaction()).count())),
-    TOTAL_ONLINE("{total-online}", () -> String.valueOf(Bukkit.getOnlinePlayers().size())),
-    ;
+    TOTAL_ONLINE("{total-online}", () -> String.valueOf(Bukkit.getOnlinePlayers().size()));
 
     private final String tag;
     private final Supplier<String> supplier;
 
-    public static GeneralTag[] VALUES = values();
+    public static final GeneralTag[] VALUES = values();
 
     GeneralTag(String tag, Supplier<String> supplier) {
         this.tag = tag;

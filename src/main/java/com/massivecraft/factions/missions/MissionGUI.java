@@ -11,6 +11,9 @@ import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,7 +24,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -38,8 +40,8 @@ public class MissionGUI implements FactionGUI {
     private final Inventory inventory;
     private final Map<Integer, String> slots;
 
-    BukkitTask updateItemsTask = null;
-    BukkitTask cancelTask = null;
+    private transient ScheduledTask updateItemsTask = null;
+    private transient ScheduledTask cancelTask = null;
 
 
     public MissionGUI(FactionsPlugin plugin, FPlayer fPlayer) {
@@ -51,18 +53,24 @@ public class MissionGUI implements FactionGUI {
 
     @Override
     public void onClose(HumanEntity player) {
-        //onClose is called every time a related inventory instance is closed.
-        //This means that every time we use openInventory to show the inventory once again
-        //the inventory technically closes and opens up once again, triggering this event each time.
-        if (cancelTask != null)
+        // onClose is called every time this inventory is closed.
+        if (cancelTask != null && !cancelTask.isCancelled()) {
             cancelTask.cancel();
-        //Because of what's mentioned before, we check on the next tick if the inventory that the player
-        //is currently viewing is the same as this GUI, if it isn't, the updateItemsTask gets cancelled
-        cancelTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if(player.getOpenInventory().getTopInventory() != inventory)
-                if (updateItemsTask != null)
-                    updateItemsTask.cancel();
-        }, 1);
+        }
+
+        // Folia: schedule a 1-tick delay on the main thread
+        cancelTask = Bukkit.getGlobalRegionScheduler().runDelayed(
+            plugin,
+            scheduledTask -> {
+                // If the player's open inventory isn't this inventory, cancel the repeating update task
+                if (player.getOpenInventory().getTopInventory() != inventory) {
+                    if (updateItemsTask != null && !updateItemsTask.isCancelled()) {
+                        updateItemsTask.cancel();
+                    }
+                }
+            },
+            1L
+        );
     }
 
 
@@ -244,8 +252,14 @@ public class MissionGUI implements FactionGUI {
                                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeTillDeadline)))));
 
 
-                        if(updateItemsTask == null)
-                            updateItemsTask = Bukkit.getScheduler().runTaskTimer(plugin, this::updateGUI, 20L, 20L);
+                        if (updateItemsTask == null || updateItemsTask.isCancelled()) {
+                            updateItemsTask = Bukkit.getGlobalRegionScheduler().runAtFixedRate(
+                                plugin,
+                                scheduledTask -> updateGUI(),
+                                20L,
+                                20L
+                            );
+                        }
                     }
 
                     if (plugin.getFileManager().getMissions().getConfig().getBoolean("Allow-Cancellation-Of-Missions")) {
