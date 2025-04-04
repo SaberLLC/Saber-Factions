@@ -18,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -26,15 +27,25 @@ import java.util.Arrays;
 
 public class FChestListener implements Listener {
 
+
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent e) {
-
         Player player = (Player) e.getWhoClicked();
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         if (!fPlayer.isInFactionsChest()) return;
         if (e.isCancelled()) return;
         e.setCancelled(true);
         e.getWhoClicked().sendMessage(CC.RedB + "(!) " + CC.Red + "You cannot drag items while viewing a /f chest!");
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent e) {
+        Player player = (Player) e.getPlayer();
+        FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
+        Faction fac = fPlayer.getFaction();
+        if (fac.isWilderness()) return;
+        if (fPlayer.isInFactionsChest())
+            fPlayer.setInFactionsChest(false);
     }
 
 
@@ -70,7 +81,8 @@ public class FChestListener implements Listener {
 
         if (event.getView().getTitle().equalsIgnoreCase(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"))) && !event.getClick().isShiftClick()) {
             if (currentItemType != Material.AIR) {
-                if ((factionChestInventory == null || !factionChestInventory.contains(currentItem)) && clickedInventory == factionChestInventory) {                    event.setCancelled(true);
+                if ((factionChestInventory == null || !factionChestInventory.contains(currentItem)) && clickedInventory == factionChestInventory) {
+                    event.setCancelled(true);
                     player.sendMessage(CC.RedB + "(!) That item no longer exists!");
                     Bukkit.getLogger().info("[FactionChest] " + player.getName() + " tried to remove " + currentItem + " from /f chest when it didn't contain! Items: " + (factionChestInventory == null ? "none" : Arrays.toString(factionChestInventory.getContents())));
                     player.closeInventory();

@@ -4,6 +4,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 public class CmdSpawnerLock extends FCommand {
 
@@ -22,7 +23,7 @@ public class CmdSpawnerLock extends FCommand {
     @Override
     public void perform(CommandContext context) {
         Conf.spawnerLock = !Conf.spawnerLock;
-        context.msg(TL.COMMAND_SPAWNER_LOCK_TOGGLED, Conf.spawnerLock ? CC.translate("&4Disabled") : CC.translate("&aEnabled"));
+        context.msg(TL.COMMAND_SPAWNER_LOCK_TOGGLED, Conf.spawnerLock ? TextUtil.parse("&4Disabled") : TextUtil.parse("&aEnabled"));
     }
 
     @Override

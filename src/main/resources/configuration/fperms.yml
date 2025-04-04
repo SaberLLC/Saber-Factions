@@ -82,7 +82,6 @@ fperm-gui:
       ban: ANVIL
       disband: BARRIER
       fly: FEATHER
-      vault: END_PORTAL_FRAME
       tntbank: BEACON
       tntfill: TNT
       chest: ENDER_CHEST
@@ -112,7 +111,6 @@ fperm-gui:
       ban: '&7Grant users access to use /f ban.'
       disband: '&7Grant users access to use /f disband.'
       fly: '&7Grant users access to use /f fly.'
-      vault: '&7Grant users access to use /f vault.'
       tntbank: '&7Grant users access to manage /f tnt virtual bank.'
       tntfill: '&7Grant users access to use /f tntfill.'
       chest: '&7Grant users access to use /f chest.'

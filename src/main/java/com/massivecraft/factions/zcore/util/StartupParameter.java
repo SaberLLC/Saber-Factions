@@ -54,8 +54,6 @@ public class StartupParameter {
             Aliases.load();
             EngineDynmap.getInstance().init();
 
-            FactionsPlugin.getInstance().hookedPlayervaults = setupPlayerVaults();
-
             Econ.setup();
 
             initReserves();
@@ -106,8 +104,4 @@ public class StartupParameter {
     }
 
 
-    public static boolean setupPlayerVaults() {
-        Plugin plugin = FactionsPlugin.getInstance().getServer().getPluginManager().getPlugin("PlayerVaults");
-        return plugin != null && plugin.isEnabled();
-    }
 }

@@ -28,7 +28,6 @@ public class DefaultPermissions {
     public boolean setwarp;
     public boolean warp;
     public boolean fly;
-    public boolean vault;
     public boolean tntbank;
     public boolean tntfill;
     public boolean withdraw;
@@ -62,7 +61,6 @@ public class DefaultPermissions {
         this.setwarp = def;
         this.warp = def;
         this.fly = def;
-        this.vault = def;
         this.tntbank = def;
         this.tntfill = def;
         this.withdraw = def;
@@ -94,7 +92,6 @@ public class DefaultPermissions {
                               boolean canSetwarp,
                               boolean canWarp,
                               boolean canFly,
-                              boolean canVault,
                               boolean canTntbank,
                               boolean canTntfill,
                               boolean canWithdraw,
@@ -122,7 +119,6 @@ public class DefaultPermissions {
         this.setwarp = canSetwarp;
         this.warp = canWarp;
         this.fly = canFly;
-        this.vault = canVault;
         this.tntbank = canTntbank;
         this.tntfill = canTntfill;
         this.withdraw = canWithdraw;
@@ -155,7 +151,6 @@ public class DefaultPermissions {
         else if (Objects.equals(name, "setwarp")) return this.setwarp;
         else if (Objects.equals(name, "warp")) return this.warp;
         else if (Objects.equals(name, "fly")) return this.fly;
-        else if (Objects.equals(name, "vault")) return this.vault;
         else if (Objects.equals(name, "tntbank")) return this.tntbank;
         else if (Objects.equals(name, "tntfill")) return this.tntfill;
         else if (Objects.equals(name, "withdraw")) return this.withdraw;

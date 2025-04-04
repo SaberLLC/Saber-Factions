@@ -6,6 +6,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -52,7 +53,7 @@ public class MPluginSecretPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(PlayerLoginEvent event) {
         if (Conf.usePreStartupKickSystem && !FactionsPlugin.canPlayersJoin()) {
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, CC.translate(TL.PRE_JOIN_KICK_MESSAGE.toString()));
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, TextUtil.parse(TL.PRE_JOIN_KICK_MESSAGE.toString()));
             return;
         }
         if (!FactionsPlugin.startupFinished) {

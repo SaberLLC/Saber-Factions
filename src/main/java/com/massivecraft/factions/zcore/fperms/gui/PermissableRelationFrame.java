@@ -10,6 +10,7 @@ import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.SaberGUI;
 import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.fperms.Permissable;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -27,7 +28,7 @@ public class PermissableRelationFrame extends SaberGUI {
 
 
     public PermissableRelationFrame(Player player, Faction faction) {
-        super(player, CC.translate(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", faction.getTag())), FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getInt("fperm-gui.relation.rows") * 9);
+        super(player, TextUtil.parse(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", faction.getTag())), FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getInt("fperm-gui.relation.rows") * 9);
     }
 
     private ItemStack buildAsset(String loc, String relation) {
@@ -38,7 +39,7 @@ public class PermissableRelationFrame extends SaberGUI {
         ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString(loc)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(CC.translate(
+            meta.setDisplayName(TextUtil.parse(
                     FactionsPlugin
                             .getInstance()
                             .getFileManager()
@@ -57,8 +58,8 @@ public class PermissableRelationFrame extends SaberGUI {
         ItemMeta meta = item.getItemMeta();
         // So u can set it to air.
         if (meta != null) {
-            meta.setLore(CC.translate(config.getStringList("Lore")));
-            meta.setDisplayName(CC.translate(config.getString("Name")));
+            meta.setLore(TextUtil.parse(config.getStringList("Lore")));
+            meta.setDisplayName(TextUtil.parse(config.getString("Name")));
             item.setItemMeta(meta);
         }
         return item;

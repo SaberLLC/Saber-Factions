@@ -1,8 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
-import com.google.common.reflect.TypeToken;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.CC;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
@@ -24,6 +22,7 @@ public final class TextUtil {
 
     private static final Map<String, String> TAGS = new HashMap<>();
     private static final Map<String, String> RAW_TAGS = new LinkedHashMap<>();
+
     private static final Map<ChatColor, Color> CHATCOLOR_TO_COLOR = new EnumMap<ChatColor, Color>(ChatColor.class) {{
         put(ChatColor.BLACK, new Color(0));
         put(ChatColor.DARK_BLUE, new Color(170));
@@ -42,6 +41,8 @@ public final class TextUtil {
         put(ChatColor.YELLOW, new Color(16777045));
         put(ChatColor.WHITE, new Color(16777215));
     }};
+
+
     private static final Map<ChatColor, TextColor> BUKKIT_TO_KYORI = new EnumMap<>(ChatColor.class);
 
     private static final String[] COLOR_TAGS = new String[]{
@@ -83,6 +84,9 @@ public final class TextUtil {
             "`y",
             "`w"
     };
+
+    private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
+
 
     private static final String[] BUKKIT_RAW_COLORS = new String[]{
             "",
@@ -143,6 +147,14 @@ public final class TextUtil {
         return parseTags(parseColor(str));
     }
 
+    public static List<String> parse(List<String> strings) {
+        List<String> parsedStrings = new ArrayList<>();
+        for (String str : strings) {
+            parsedStrings.add(parse(str));
+        }
+        return parsedStrings;
+    }
+
     public static String parse(String str, Object... args) {
         return String.format(parse(str), args);
     }
@@ -190,25 +202,44 @@ public final class TextUtil {
     // -------------------------------------------- //
 
     public static String parseColorBukkit(String string) {
-        return CC.translate(string);
+        // Directly translate Bukkit color codes
+        return StringUtils.replaceEach(string, COLOR_TAGS_SHORT_HAND, BUKKIT_RAW_COLORS);
     }
+
 
     public static String parseColor(String string) {
-        return parseColorTags(parseColorAcc(parseColorBukkit(string)));
+        string = parseHexColors(string);
+        string = string.replace("&", "\u00A7");
+        string = parseColorTags(parseColorAcc(string));
+        return string;
     }
 
-    @Deprecated
-    public static String parseColorAmp(String string) {
-        return parseColorBukkit(string);
-    }
-
-    public static String parseColorAcc(String string) {
-        return StringUtils.replaceEach(string, COLOR_TAGS_SHORT_HAND, BUKKIT_RAW_COLORS);
+    private static String parseHexColors(String string) {
+        Matcher matcher = HEX_COLOR_PATTERN.matcher(string);
+        StringBuffer buffer = new StringBuffer();
+        while (matcher.find()) {
+            String hex = matcher.group(1);
+            matcher.appendReplacement(buffer, "\u00A7x"
+                    + "\u00A7" + hex.charAt(0) + "\u00A7" + hex.charAt(1)
+                    + "\u00A7" + hex.charAt(2) + "\u00A7" + hex.charAt(3)
+                    + "\u00A7" + hex.charAt(4) + "\u00A7" + hex.charAt(5));
+        }
+        matcher.appendTail(buffer);
+        return buffer.toString();
     }
 
     public static String parseColorTags(String string) {
         return StringUtils.replaceEach(string, COLOR_TAGS, BUKKIT_RAW_COLORS);
     }
+
+    public static String parseColorAcc(String string) {
+        return StringUtils.replaceEach(string, COLOR_TAGS_SHORT_HAND, BUKKIT_RAW_COLORS);
+    }
+    @Deprecated
+    public static String parseColorAmp(String string) {
+        return parseColorBukkit(string);
+    }
+
 
     public static String replace(String string, String search, String replacement) {
         return FastUUID.JDK_9 ? string.replace(search, replacement) : StringUtils.replace(string, search, replacement);

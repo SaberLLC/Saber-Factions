@@ -488,7 +488,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void setTitle(CommandSender sender, String title) {
         // Check if the setter has it.
         if (sender.hasPermission(Permission.TITLE_COLOR.node))
-            title = CC.translate(title);
+            title = TextUtil.parse(title);
         this.title = title;
     }
 
@@ -1046,7 +1046,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
                 if (Econ.depositFactionBalance(this.getFaction(), refund)) {
-                    this.getFaction().msg(TL.COMMAND_MONEY_GAINED, CC.translate("&aYour faction"), moneyString(refund), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString());
+                    this.getFaction().msg(TL.COMMAND_MONEY_GAINED, TextUtil.parse("&aYour faction"), moneyString(refund), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString());
                 }
             } else {
                 if (!Econ.modifyMoney(this, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {
@@ -1485,9 +1485,9 @@ public abstract class MemoryFPlayer implements FPlayer {
                 }
             } else {
                 if (Econ.withdrawFactionBalance(this.getFaction(), cost)) {
-                    this.getFaction().msg("<h>%s<i> lost <h>%s<i> %s.", CC.translate("&aYour faction"), moneyString(cost), TL.CLAIM_FORCLAIM.toString());
+                    this.getFaction().msg("<h>%s<i> lost <h>%s<i> %s.", TextUtil.parse("&aYour faction"), moneyString(cost), TL.CLAIM_FORCLAIM.toString());
                 } else {
-                    this.getFaction().msg("<h>%s<i> can't afford <h>%s<i> %s.", CC.translate("&aYour faction"), moneyString(cost), TL.CLAIM_TOCLAIM.toString());
+                    this.getFaction().msg("<h>%s<i> can't afford <h>%s<i> %s.", TextUtil.parse("&aYour faction"), moneyString(cost), TL.CLAIM_TOCLAIM.toString());
                     return false;
                 }
             }
@@ -1500,7 +1500,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                 Econ.modifyMoney(payee, Conf.econOverclaimRewardMultiplier, TL.CLAIM_TOOVERCLAIM.toString(), TL.CLAIM_FOROVERCLAIM.toString());
             } else if (Conf.econOverclaimRewardMultiplier > 0.0) {
                 Econ.depositFactionBalance(this.getFaction(), Conf.econOverclaimRewardMultiplier);
-                this.getFaction().msg(TL.COMMAND_MONEY_GAINED, CC.translate("&aYour faction"), Conf.econOverclaimRewardMultiplier, TL.CLAIM_FOROVERCLAIM.toString());
+                this.getFaction().msg(TL.COMMAND_MONEY_GAINED, TextUtil.parse("&aYour faction"), Conf.econOverclaimRewardMultiplier, TL.CLAIM_FOROVERCLAIM.toString());
             }
         }
 

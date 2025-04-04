@@ -14,6 +14,7 @@ import com.massivecraft.factions.util.ItemBuilder;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -147,7 +148,7 @@ public class FactionsBlockListener implements Listener {
         if (isSpawner) {
             if (Conf.spawnerLock) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage(CC.translate(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
+                event.getPlayer().sendMessage(TextUtil.parse(TL.COMMAND_SPAWNER_LOCK_CANNOT_PLACE.toString()));
             }
         }
     }
@@ -200,85 +201,6 @@ public class FactionsBlockListener implements Listener {
             event.setCancelled(true);
     }
 
-
-    @EventHandler
-    public void onVaultPlace(BlockPlaceEvent e) {
-
-        if (e.getItemInHand().getType() == Material.CHEST) {
-
-            ItemStack vault = new ItemBuilder(Material.CHEST)
-                    .amount(1).name(FactionsPlugin.instance.getConfig().getString("fvault.Item.Name"))
-                    .lore(FactionsPlugin.instance.getConfig().getStringList("fvault.Item.Lore"))
-                    .build();
-
-            if (e.getItemInHand().isSimilar(vault)) {
-                FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
-                if (fme.getFaction().getVault() != null) {
-                    fme.msg(TL.COMMAND_GETVAULT_ALREADYSET);
-                    e.setCancelled(true);
-                    return;
-                }
-                FLocation flocation = FLocation.wrap(e.getBlockPlaced().getLocation());
-                if (Board.getInstance().getFactionAt(flocation) != fme.getFaction()) {
-                    fme.msg(TL.COMMAND_GETVAULT_INVALIDLOCATION);
-                    e.setCancelled(true);
-                    return;
-                }
-                Block start = e.getBlockPlaced();
-                int radius = 1;
-                for (double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++) {
-                    for (double y = start.getLocation().getY() - radius; y <= start.getLocation().getY() + radius; y++) {
-                        for (double z = start.getLocation().getZ() - radius; z <= start.getLocation().getZ() + radius; z++) {
-                            Location blockLoc = new Location(e.getPlayer().getWorld(), x, y, z);
-                            if (blockLoc.getX() == start.getLocation().getX() && blockLoc.getY() == start.getLocation().getY() && blockLoc.getZ() == start.getLocation().getZ()) {
-                                continue;
-                            }
-                            Material blockMaterial = blockLoc.getBlock().getType();
-                            if (blockMaterial == Material.CHEST || (FactionsPlugin.instance.getConfig().getBoolean("fvault.No-Hoppers-near-vault") && blockMaterial == Material.HOPPER)) {
-                                e.setCancelled(true);
-                                fme.msg(TL.COMMAND_GETVAULT_CHESTNEAR);
-                                return;
-                            }
-                        }
-                    }
-                }
-                fme.msg(TL.COMMAND_GETVAULT_SUCCESS);
-                fme.getFaction().setVault(e.getBlockPlaced().getLocation());
-
-            }
-        }
-    }
-
-    @EventHandler
-    public void onHopperPlace(BlockPlaceEvent e) {
-
-        if (e.getItemInHand().getType() != Material.HOPPER && !FactionsPlugin.instance.getConfig().getBoolean("fvault.No-Hoppers-near-vault"))
-            return;
-        Faction factionAt = Board.getInstance().getFactionAt(FLocation.wrap(e.getBlockPlaced().getLocation()));
-        if (factionAt.isWilderness() || factionAt.getVault() == null) return;
-        FPlayer fme = FPlayers.getInstance().getByPlayer(e.getPlayer());
-        Block start = e.getBlockPlaced();
-        int radius = 1;
-        for (double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++) {
-            for (double y = start.getLocation().getY() - radius; y <= start.getLocation().getY() + radius; y++) {
-                for (double z = start.getLocation().getZ() - radius; z <= start.getLocation().getZ() + radius; z++) {
-                    Location blockLoc = new Location(e.getPlayer().getWorld(), x, y, z);
-                    if (blockLoc.getX() == start.getLocation().getX() && blockLoc.getY() == start.getLocation().getY() && blockLoc.getZ() == start.getLocation().getZ()) {
-                        continue;
-                    }
-
-                    if (blockLoc.getBlock().getType() == XMaterial.CHEST.parseMaterial()) {
-                        if (factionAt.getVault().equals(blockLoc)) {
-                            e.setCancelled(true);
-                            fme.msg(TL.COMMAND_VAULT_NO_HOPPER);
-                            return;
-                        }
-                    }
-                }
-            }
-        }
-
-    }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {

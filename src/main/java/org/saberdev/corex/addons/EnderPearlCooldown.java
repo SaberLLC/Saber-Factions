@@ -4,6 +4,7 @@ import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.TimeUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,7 +36,7 @@ public class EnderPearlCooldown implements Listener {
             event.setCancelled(true);
             long remaining = player.getMetadata("enderPearlCooldown").get(0).asLong() - System.currentTimeMillis();
             int remainingSeconds = (int) (remaining / 1000L);
-            player.sendMessage(CC.translate(TL.ENDER_PEARL_COOLDOWN.toString().replace("{seconds}", TimeUtil.formatSeconds(remainingSeconds))));
+            player.sendMessage(TextUtil.parse(TL.ENDER_PEARL_COOLDOWN.toString().replace("{seconds}", TimeUtil.formatSeconds(remainingSeconds))));
         } else {
             Cooldown.setCooldown(player, "enderPearlCooldown", CoreX.getConfig().fetchInt("Cooldowns.EnderPearl"));
         }

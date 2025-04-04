@@ -72,7 +72,7 @@ public interface FPlayer extends EconomyParticipator {
     boolean isInFactionsChest();
 
     /**
-     * Set if the player is inside of their faction's chest
+     * Set if the player is inside their faction's chest
      */
     void setInFactionsChest(boolean b);
 
@@ -166,14 +166,6 @@ public interface FPlayer extends EconomyParticipator {
     Faction getAutoClaimFor();
 
     void setAutoClaimFor(Faction faction);
-
-    boolean isAutoSafeClaimEnabled();
-
-    void setIsAutoSafeClaimEnabled(boolean enabled);
-
-    boolean isAutoWarClaimEnabled();
-
-    void setIsAutoWarClaimEnabled(boolean enabled);
 
     boolean isAdminBypassing();
 
@@ -383,10 +375,6 @@ public interface FPlayer extends EconomyParticipator {
     boolean attemptClaim(Faction forFaction, FLocation location, boolean notifyFailure);
 
     boolean attemptUnclaim(Faction forFaction, FLocation flocation, boolean notifyFailure);
-
-    boolean isInVault();
-
-    void setInVault(boolean status);
 
     void msg(String str, Object... args);
 

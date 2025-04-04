@@ -15,6 +15,7 @@ import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.TimeUtil;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 /**
  * @author Saser
@@ -43,7 +44,7 @@ public class CmdDrain extends FCommand {
         if(Cooldown.isOnCooldown(context.player, "drainCooldown")) {
             long remaining = context.player.getMetadata("drainCooldown").get(0).asLong() - System.currentTimeMillis();
             int remainSec = (int) (remaining / 1000L);
-            context.msg(CC.translate(TL.COMMAND_DRAIN_COOLDOWN.toString().replace("{seconds}", TimeUtil.formatSeconds(remainSec))));
+            context.msg(TextUtil.parse(TL.COMMAND_DRAIN_COOLDOWN.toString().replace("{seconds}", TimeUtil.formatSeconds(remainSec))));
             return;
         }
 

@@ -128,13 +128,13 @@ public abstract class FCommand {
 
     public List<String> getToolTips(FPlayer player) {
         return FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show").stream()
-                .map(s -> CC.translate(replaceFPlayerTags(s, player)))
+                .map(s -> TextUtil.parse(replaceFPlayerTags(s, player)))
                 .collect(Collectors.toList());
     }
 
     public List<String> getToolTips(Faction faction) {
         return FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list").stream()
-                .map(s -> CC.translate(replaceFactionTags(s, faction)))
+                .map(s -> TextUtil.parse(replaceFactionTags(s, faction)))
                 .collect(Collectors.toList());
     }
 
@@ -184,7 +184,7 @@ public abstract class FCommand {
     }
 
     public String getUsageTemplate(CommandContext context, boolean addShortHelp) {
-        StringBuilder ret = new StringBuilder(CC.translate(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString()));
+        StringBuilder ret = new StringBuilder(TextUtil.parse(TL.COMMAND_USEAGE_TEMPLATE_COLOR.toString()));
         ret.append('/');
 
         context.commandChain.forEach(fc -> {

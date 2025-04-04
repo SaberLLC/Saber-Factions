@@ -31,19 +31,33 @@ public enum FancyTag implements Tag {
         List<Component> Components = new ArrayList<>();
         TextComponent.Builder currentOnline = TextUtil.parseFancy(prefix);
         boolean firstOnline = true;
+
         for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
             if (fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
-                continue; // skip
+                continue; // skip invisible players
             }
             String name = p.getNameAndTitle();
+
+            // Ensure hover text is constructed properly
+            List<String> hoverLines = tipPlayer(p, gm);
+            if (hoverLines.isEmpty()) {
+                hoverLines.add("No additional info available.");
+            }
+
+            Component hoverText = Component.text(String.join("\n", hoverLines));
             currentOnline.append(Component.text(firstOnline ? name : ", " + name))
-                            .hoverEvent(HoverEvent.showText(Component.text(String.join("\n", tipPlayer(p, gm))))).color(TextUtil.kyoriColor(fme.getColorTo(p)));
+                    .hoverEvent(HoverEvent.showText(hoverText))
+                    .color(TextUtil.kyoriColor(fme.getColorTo(p)));
+
             firstOnline = false;
+
+            // Ensure ARBITRARY_LIMIT logic does not break hover data
             if (TagUtil.SERIALIZER.toJson(currentOnline.build()).length() > ARBITRARY_LIMIT) {
                 Components.add(currentOnline.build());
                 currentOnline = TextUtil.toFancy("");
             }
         }
+
         Components.add(currentOnline.build());
         return firstOnline && Tag.isMinimalShow() ? null : Components;
     }),
@@ -136,7 +150,7 @@ public enum FancyTag implements Tag {
             if (string == null) {
                 continue;
             }
-            lines.add(CC.translate(string));
+            lines.add(TextUtil.parse(string));
         }
         return lines;
     }
@@ -167,7 +181,7 @@ public enum FancyTag implements Tag {
             if (string == null) {
                 continue;
             }
-            lines.add(CC.translate(string));
+            lines.add(TextUtil.parse(string));
         }
         return lines;
     }

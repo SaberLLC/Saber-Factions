@@ -395,9 +395,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         // Send FPlayerLeaveEvent for each player in the faction and reset their Discord settings
         for (FPlayer fplayer : this.getFPlayers()) {
-            if (fplayer.isInFactionsChest()) {
-                fplayer.getPlayer().closeInventory();
-            }
             Bukkit.getServer().getPluginManager().callEvent(new FPlayerLeaveEvent(fplayer, this, FPlayerLeaveEvent.PlayerLeaveReason.DISBAND));
         }
 
@@ -492,10 +489,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return upgrades.getOrDefault(upgradeName, 0);
     }
 
-    @Override
     public Inventory getChestInventory() {
         if (chest == null) {
-            this.chest = Bukkit.createInventory(null, getChestSize(), CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
+            this.chest = Bukkit.createInventory(null, getChestSize(), TextUtil.parse(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
             return chest;
         }
         return chest;
@@ -516,18 +512,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
 
-    @Override
+
     public void setChestSize(int chestSize) {
         ItemStack[] contents = this.getChestInventory().getContents();
-        chest = Bukkit.createInventory(null, chestSize, CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
+        chest = Bukkit.createInventory(null, chestSize, TextUtil.parse(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
         chest.setContents(contents);
     }
 
 
-    @Override
-    public void setBannerPattern(ItemStack banner) {
-        bannerSerialized = banner.serialize();
-    }
 
 
     @Override
@@ -566,13 +558,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         reinforcedArmor = newPercent;
     }
 
-    @Override
-    public ItemStack getBanner() {
-        if (bannerSerialized == null) {
-            return null;
-        }
-        return ItemStack.deserialize(bannerSerialized);
-    }
 
     public void setUpgrade(String upgrade, int level) {
         upgrades.put(upgrade, level);

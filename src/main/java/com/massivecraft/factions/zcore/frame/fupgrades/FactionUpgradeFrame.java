@@ -28,7 +28,7 @@ public class FactionUpgradeFrame extends SaberGUI {
     private Faction faction;
 
     public FactionUpgradeFrame(Player player, Faction faction) {
-        super(player, CC.translate(FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig()
+        super(player, TextUtil.parse(FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig()
                 .getString("fupgrades.MainMenu.Title").replace("{faction}", faction.getTag())), FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Rows", 5) * 9);
         this.faction = faction;
     }
@@ -168,8 +168,8 @@ public class FactionUpgradeFrame extends SaberGUI {
         ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         if (item != null && item.getItemMeta() != null) {
             ItemMeta meta = item.getItemMeta();
-            meta.setLore(CC.translate(config.getStringList("Lore")));
-            meta.setDisplayName(CC.translate(config.getString("Name")));
+            meta.setLore(TextUtil.parse(config.getStringList("Lore")));
+            meta.setDisplayName(TextUtil.parse(config.getString("Name")));
             item.setItemMeta(meta);
         }
         return item;

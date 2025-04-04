@@ -6,6 +6,7 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -22,7 +23,7 @@ public class FactionWarpsFrame extends SaberGUI {
     private Faction f;
 
     public FactionWarpsFrame(Player player, Faction f) {
-        super(player, CC.translate(FactionsPlugin.getInstance().getConfig().getString("fwarp-gui.name").replace("{faction}", f.getTag())),FactionsPlugin.getInstance().getConfig().getInt("fwarp-gui.rows", 3) * 9);
+        super(player, TextUtil.parse(FactionsPlugin.getInstance().getConfig().getString("fwarp-gui.name").replace("{faction}", f.getTag())),FactionsPlugin.getInstance().getConfig().getInt("fwarp-gui.rows", 3) * 9);
         this.section = FactionsPlugin.getInstance().getConfig().getConfigurationSection("fwarp-gui");
         this.f = f;
     }
@@ -32,8 +33,8 @@ public class FactionWarpsFrame extends SaberGUI {
         final ConfigurationSection config = this.section.getConfigurationSection("warp-item");
         final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         final ItemMeta meta = item.getItemMeta();
-        meta.setLore(CC.translate(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{warp-protected}", faction.hasWarpPassword(warp.getKey()) ? "Enabled" : "Disabled"), new Placeholder("{warp-cost}", FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) ? Integer.toString(FactionsPlugin.getInstance().getConfig().getInt("warp-cost.warp", 5)) : "Disabled"))));
-        meta.setDisplayName(CC.translate(config.getString("Name").replace("{warp}", warp.getKey())));
+        meta.setLore(TextUtil.parse(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{warp-protected}", faction.hasWarpPassword(warp.getKey()) ? "Enabled" : "Disabled"), new Placeholder("{warp-cost}", FactionsPlugin.getInstance().getConfig().getBoolean("warp-cost.enabled", false) ? Integer.toString(FactionsPlugin.getInstance().getConfig().getInt("warp-cost.warp", 5)) : "Disabled"))));
+        meta.setDisplayName(TextUtil.parse(config.getString("Name").replace("{warp}", warp.getKey())));
         item.setItemMeta(meta);
         return item;
     }
@@ -42,8 +43,8 @@ public class FactionWarpsFrame extends SaberGUI {
         final ConfigurationSection config = this.section.getConfigurationSection("dummy-item");
         final ItemStack item = XMaterial.matchXMaterial(config.getString("Type")).get().parseItem();
         final ItemMeta meta = item.getItemMeta();
-        meta.setLore(CC.translate(config.getStringList("Lore")));
-        meta.setDisplayName(CC.translate(config.getString("Name")));
+        meta.setLore(TextUtil.parse(config.getStringList("Lore")));
+        meta.setDisplayName(TextUtil.parse(config.getString("Name")));
         item.setItemMeta(meta);
         return item;
     }

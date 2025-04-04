@@ -5,6 +5,7 @@ import com.massivecraft.factions.util.Logger;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
@@ -124,7 +125,7 @@ public final class AddonManager {
                 String className = entry.getName().replace(".class", "");
                 className = className.replace("/", ".");
                 Class<?> clazz = child.loadClass(className);
-                if (clazz.getSuperclass().equals(FactionsAddon.class)) {
+                if (FactionsAddon.class.isAssignableFrom(clazz) && !Modifier.isAbstract(clazz.getModifiers())) {
                     mainClass = clazz;
                     break;
                 }

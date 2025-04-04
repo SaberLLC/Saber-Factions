@@ -158,7 +158,7 @@ public class MissionHandler implements Listener {
             ConfigurationSection missionSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
             if (mission.getProgress() < missionSection.getLong("Mission.Amount", 0L)) {
                 faction.getMissions().remove(mission.getName());
-                faction.msg(TL.MISSION_MISSION_FAILED, CC.translate(missionSection.getString("Name")));
+                faction.msg(TL.MISSION_MISSION_FAILED, TextUtil.parse(missionSection.getString("Name")));
             }
 
             Map<String, BukkitTask> tasks = deadlines.get(faction.getId());
@@ -204,7 +204,7 @@ public class MissionHandler implements Listener {
             FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.isNormal() ? faction.getFPlayerLeader().getName() : "none"));
         }
         faction.getMissions().remove(mission.getName());
-        faction.msg(TL.MISSION_MISSION_FINISHED, CC.translate(section.getString("Name")));
+        faction.msg(TL.MISSION_MISSION_FINISHED, TextUtil.parse(section.getString("Name")));
         faction.getCompletedMissions().add(mission.getName());
 
         long deadlineMillis = plugin.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
@@ -228,7 +228,7 @@ public class MissionHandler implements Listener {
 
                     faction.getCompletedMissions().removeAll(availableMissions);
 
-                    faction.msg(CC.translate(prestigeSection.getString("CongratulationMessage")));
+                    faction.msg(TextUtil.parse(prestigeSection.getString("CongratulationMessage")));
 
                     for (String command : prestigeSection.getStringList("Reward.Commands")) {
                         FactionsPlugin.getInstance().getServer().dispatchCommand(FactionsPlugin.getInstance().getServer().getConsoleSender(), TextUtil.replace(TextUtil.replace(TextUtil.replace(command, "%faction%", faction.getTag()), "%player%", fPlayer.getPlayer().getName()), "%leader%", faction.isNormal() ? faction.getFPlayerLeader().getName() : "none"));

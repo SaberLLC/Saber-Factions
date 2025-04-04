@@ -1,7 +1,6 @@
 package org.saberdev.corex.addons;
 
 import com.cryptomorin.xseries.XMaterial;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,24 +8,18 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.saberdev.corex.CoreAddon;
 import org.saberdev.corex.CoreX;
 
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.List;
 
 @CoreAddon(configVariable = "Anti-Block-Placemen")
 public class AntiBlockPlace implements Listener {
 
-    private final Set<Material> deniedMatList = EnumSet.noneOf(Material.class);
+    private final List<String> deniedMatList = CoreX.getConfig().fetchStringList("Denied-Blocks");
 
-    public AntiBlockPlace() {
-        for (String attempt : CoreX.getConfig().fetchStringList("Denied-Blocks")) {
-            XMaterial.matchXMaterial(attempt).map(XMaterial::parseMaterial).ifPresent(deniedMatList::add);
-        }
-    }
 
     @EventHandler
     public void onDeniedPlace(BlockPlaceEvent e) {
         Player player = e.getPlayer();
-        if(!player.isOp() && deniedMatList.contains(e.getBlockPlaced().getType())) {
+        if(!player.isOp() && deniedMatList.contains(XMaterial.matchXMaterial(e.getBlockPlaced().getType().name()).get().name())) {
             e.setCancelled(true);
         }
     }

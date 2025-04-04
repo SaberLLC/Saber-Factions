@@ -3,6 +3,7 @@ package org.saberdev.corex.addons;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,7 +64,7 @@ public class AntiLootSteal implements Listener {
                 event.setCancelled(true);
                 if (!player.hasMetadata("antiLoot_nextWarning") || player.getMetadata("antiLoot_nextWarning").get(0).asLong() < System.currentTimeMillis()) {
                     player.setMetadata("antiLoot_nextWarning", new FixedMetadataValue(FactionsPlugin.getInstance(), System.currentTimeMillis() + 10000L));
-                    player.sendMessage(CC.translate(TL.ANTI_LOOT_PICKUP_FAILED.toString().replace("{seconds}", String.valueOf((pickupDelayInMiliseconds - timeDifference) / 1000L))));
+                    player.sendMessage(TextUtil.parse(TL.ANTI_LOOT_PICKUP_FAILED.toString().replace("{seconds}", String.valueOf((pickupDelayInMiliseconds - timeDifference) / 1000L))));
                 }
             }
         }

@@ -35,7 +35,6 @@ public class CmdViewChest extends FCommand {
         if (faction == null) {
             return;
         }
-        context.player.openInventory(faction.getChestInventory());
     }
 
     @Override

@@ -91,7 +91,6 @@ public class FactionsPlugin extends MPlugin {
     public CmdAutoHelp cmdAutoHelp;
     public short version;
     public List<String> itemList = getConfig().getStringList("fchest.Items-Not-Allowed");
-    public boolean hookedPlayervaults;
     public FLogManager fLogManager;
     public List<ReserveObject> reserveObjects;
     public FileManager fileManager;
@@ -129,7 +128,6 @@ public class FactionsPlugin extends MPlugin {
 
     @Override
     public void onEnable() {
-
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
             Logger.print("You are missing dependencies!", Logger.PrefixType.FAILED);
             Logger.print("Please verify [Vault] is installed!", Logger.PrefixType.FAILED);

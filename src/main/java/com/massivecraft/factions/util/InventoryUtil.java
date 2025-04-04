@@ -1,5 +1,6 @@
 package com.massivecraft.factions.util;
 
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -75,7 +76,7 @@ public class InventoryUtil {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
-            Inventory inventory = Bukkit.createInventory(null, dataInput.readInt(), CC.translate(invName));
+            Inventory inventory = Bukkit.createInventory(null, dataInput.readInt(), TextUtil.parse(invName));
 
             // Read the serialized inventory
             for (int i = 0; i < inventory.getSize(); i++) {

@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd.audit;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.Configuration;
 
@@ -41,7 +42,7 @@ public enum FLogType {
     }
 
     public String getDisplayName() {
-        return CC.translate(getConfigString("names"));
+        return TextUtil.parse(getConfigString("names"));
     }
 
     @Override

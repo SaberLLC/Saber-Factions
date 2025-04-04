@@ -7,6 +7,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
@@ -113,7 +114,7 @@ public class CheckSettingsFrame implements InventoryHolder, FactionGUI {
     }
 
     public String color(String message) {
-        return CC.translate(message);
+        return TextUtil.parse(message);
     }
 }
 

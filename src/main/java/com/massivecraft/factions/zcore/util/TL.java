@@ -1513,7 +1513,7 @@ public enum TL {
 
     @Override
     public String toString() {
-        return CC.translate(LANG.getString(this.path, def)) + (this == TITLE ? " " : "");
+        return TextUtil.parse(LANG.getString(this.path, def)) + (this == TITLE ? " " : "");
     }
 
     public String format(Object... args) {

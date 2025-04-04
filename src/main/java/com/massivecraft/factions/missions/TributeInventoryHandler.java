@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -26,7 +27,7 @@ public class TributeInventoryHandler implements Listener {
     static Set<Inventory> inventorySet = new HashSet<>();
 
     public static Inventory getInventory(){
-        Inventory inv = Bukkit.createInventory(null, 9 * 4, CC.translate(FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getString("Tribute-GUI-Title")));
+        Inventory inv = Bukkit.createInventory(null, 9 * 4, TextUtil.parse(FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getString("Tribute-GUI-Title")));
 
         inventorySet.add(inv);
 

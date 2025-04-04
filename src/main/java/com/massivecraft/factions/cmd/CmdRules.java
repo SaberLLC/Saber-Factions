@@ -5,6 +5,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,11 +39,11 @@ public class CmdRules extends FCommand {
             HashMap<Integer, String> rules = context.faction.getRulesMap();
             if (rules.size() == 0) {
                 List<String> ruleList = FactionsPlugin.getInstance().getConfig().getStringList("frules.default-rules");
-                context.sendMessage(CC.translate(ruleList));
+                context.sendMessage(TextUtil.parse(ruleList));
 
             } else {
                 for (int i = 0; i <= rules.size() - 1; i++) {
-                    context.sendMessage(CC.translate(rules.get(i)));
+                    context.sendMessage(TextUtil.parse(rules.get(i)));
                 }
             }
 

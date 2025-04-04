@@ -2,6 +2,7 @@ package org.saberdev.corex.addons;
 
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +17,7 @@ public class AntiVehicleTeleport implements Listener {
         Player player = e.getPlayer();
         if(player.getVehicle() == null) return;
         if (player.isInsideVehicle()) {
-            player.sendMessage(CC.translate(TL.VEHICLE_TELEPORT_BLOCK.toString()));
+            player.sendMessage(TextUtil.parse(TL.VEHICLE_TELEPORT_BLOCK.toString()));
             e.setCancelled(true);
         }
     }

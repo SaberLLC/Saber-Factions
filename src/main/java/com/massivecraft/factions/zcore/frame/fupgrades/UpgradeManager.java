@@ -5,6 +5,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Placeholder;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.configuration.ConfigurationSection;
@@ -54,8 +55,8 @@ public class UpgradeManager {
         int level = f.getUpgrade(upgradeId);
         if (item != null) {
             ItemMeta meta = item.getItemMeta();
-            meta.setLore(CC.translate(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{level}", String.valueOf(level)))));
-            meta.setDisplayName(CC.translate(config.getString("Name")));
+            meta.setLore(TextUtil.parse(Placeholder.replacePlaceholders(config.getStringList("Lore"), new Placeholder("{level}", String.valueOf(level)))));
+            meta.setDisplayName(TextUtil.parse(config.getString("Name")));
             item.setItemMeta(meta);
             if (XMaterial.matchXMaterial(item) == XMaterial.PLAYER_HEAD && config.isSet("Texture")) {
                 SkullMeta skullMeta = (SkullMeta) meta;

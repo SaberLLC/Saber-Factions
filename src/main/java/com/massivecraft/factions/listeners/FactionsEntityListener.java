@@ -488,6 +488,10 @@ public class FactionsEntityListener implements Listener {
     }
 
     private boolean handleFriendlyFire(FPlayer attacker, FPlayer defender, boolean notify) {
+        if(attacker.getPlayer().hasMetadata("friendlyFire") && defender.getPlayer().hasMetadata("friendlyFire")) {
+            return false;
+        }
+
         if (attacker.getRelationTo(defender.getFaction()).isAtLeast(Relation.TRUCE) &&
                 attacker.getFaction().isNormal() && defender.getFaction().isNormal()) {
 

@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.massivecraft.factions.zcore.util.TagReplacer.TagType;
+import static com.massivecraft.factions.zcore.util.TextUtil.toFancy;
 
 public class TagUtil {
 
@@ -156,7 +157,7 @@ public class TagUtil {
                         firstAlly = false;
                         if (SERIALIZER.toJson(currentAllies.build()).length() > ARBITRARY_LIMIT) {
                             lines.add(currentAllies.build());
-                            currentAllies = TextUtil.toFancy("");
+                            currentAllies = toFancy("");
                         }
                     }
                 }
@@ -175,7 +176,7 @@ public class TagUtil {
                         firstEnemy = false;
                         if (SERIALIZER.toJson(currentEnemies.build()).length() > ARBITRARY_LIMIT) {
                             lines.add(currentEnemies.build());
-                            currentEnemies = TextUtil.toFancy("");
+                            currentEnemies = toFancy("");
                         }
                     }
                 }
@@ -194,7 +195,7 @@ public class TagUtil {
                         firstTruce = false;
                         if (SERIALIZER.toJson(currentTruces.build()).length() > ARBITRARY_LIMIT) {
                             lines.add(currentTruces.build());
-                            currentTruces = TextUtil.toFancy("");
+                            currentTruces = toFancy("");
                         }
                     }
                 }
@@ -203,37 +204,54 @@ public class TagUtil {
             case ONLINE_LIST:
                 TextComponent.Builder currentOnline = TextUtil.parseFancy(prefix);
                 boolean firstOnline = true;
+
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true, fme))) {
                     if (fme != null && fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer())) {
-                        continue; // skip
+                        continue; // skip invisible players
                     }
                     String name = p.getNameAndTitle();
-                    currentOnline.append(Component.text(firstOnline ? name : ", " + name).hoverEvent(Component.text(tipPlayerSingular(p))).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor())));
+                    String hoverText = tipPlayerSingular(p); // Tooltip for the player
+
+                    currentOnline.append(Component.text(firstOnline ? name : ", " + name)
+                            .hoverEvent(HoverEvent.showText(toFancy(tipPlayerSingular(p)).build())) // Properly parse hover text
+                            .color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor())));
+
                     firstOnline = false;
+
+                    // Handle ARBITRARY_LIMIT
                     if (SERIALIZER.toJson(currentOnline.build()).length() > ARBITRARY_LIMIT) {
                         lines.add(currentOnline.build());
-                        currentOnline = TextUtil.toFancy("");
+                        currentOnline = toFancy("");
                     }
                 }
                 lines.add(currentOnline.build());
-                return firstOnline && minimal ? null : lines; // we must return here and not outside the switch
+                return firstOnline && minimal ? null : lines;
+
             case OFFLINE_LIST:
                 TextComponent.Builder currentOffline = TextUtil.parseFancy(prefix);
                 boolean firstOffline = true;
+
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
+                    if (p.isOnline() && (fme == null || fme.getPlayer() == null || fme.getPlayer().canSee(p.getPlayer()))) {
+                        continue; // Skip online players
+                    }
                     String name = p.getNameAndTitle();
-                    // Also make sure to add players that are online BUT can't be seen.
-                    if (!p.isOnline() || (fme != null && fme.getPlayer() != null && !fme.getPlayer().canSee(p.getPlayer()))) {
-                        currentOffline.append(Component.text(firstOffline ? name : ", " + name).hoverEvent(Component.text(tipPlayerSingular(p))).color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor())));
-                        firstOffline = false;
-                        if (SERIALIZER.toJson(currentOffline.build()).length() > ARBITRARY_LIMIT) {
-                            lines.add(currentOffline.build());
-                            currentOffline = TextUtil.toFancy("");
-                        }
+                    String hoverText = tipPlayerSingular(p); // Tooltip for the player
+
+                    currentOffline.append(Component.text(firstOffline ? name : ", " + name)
+                            .hoverEvent(HoverEvent.showText(Component.text(hoverText))) // Add hover text
+                            .color(TextUtil.kyoriColor(fme != null ? fme.getColorTo(p) : Relation.NEUTRAL.getColor())));
+
+                    firstOffline = false;
+
+                    // Handle ARBITRARY_LIMIT
+                    if (SERIALIZER.toJson(currentOffline.build()).length() > ARBITRARY_LIMIT) {
+                        lines.add(currentOffline.build());
+                        currentOffline = toFancy("");
                     }
                 }
                 lines.add(currentOffline.build());
-                return firstOffline && minimal ? null : lines; // we must return here and not outside the switch
+                return firstOffline && minimal ? null : lines;
             case ALTS:
                 TextComponent.Builder alts = TextUtil.parseFancy(prefix);
                 boolean firstAlt = true;
@@ -270,7 +288,7 @@ public class TagUtil {
     private static List<String> tipFaction(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
-            lines.add(CC.translate(TagUtil.parsePlain(faction, line)));
+            lines.add(TextUtil.parse(TagUtil.parsePlain(faction, line)));
         }
         return lines;
     }
@@ -278,7 +296,7 @@ public class TagUtil {
     private static String tipFactionSingular(Faction faction) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.list")) {
-            lines.add(CC.translate(TagUtil.parsePlain(faction, line)));
+            lines.add(TextUtil.parse(TagUtil.parsePlain(faction, line)));
         }
         return String.join("\n", lines);
     }
@@ -292,7 +310,7 @@ public class TagUtil {
     private static List<String> tipPlayer(FPlayer fplayer) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
-            lines.add(CC.translate(TagUtil.parsePlain(fplayer, line)));
+            lines.add(TextUtil.parse(TagUtil.parsePlain(fplayer, line)));
         }
         return lines;
     }
@@ -300,8 +318,13 @@ public class TagUtil {
     private static String tipPlayerSingular(FPlayer fplayer) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
-            lines.add(CC.translate(TagUtil.parsePlain(fplayer, line)));
+            String parsedLine = TagUtil.parsePlain(fplayer, line);
+            if (parsedLine == null || parsedLine.isEmpty()) {
+                parsedLine = "No additional information available."; // Default message if no tooltip
+            }
+
+            lines.add(TextUtil.parse(parsedLine));
         }
-        return String.join("\n", lines);
+        return String.join("\n", lines); // Join lines with newline for hover text
     }
 }

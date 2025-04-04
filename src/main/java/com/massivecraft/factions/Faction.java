@@ -126,10 +126,6 @@ public interface Faction extends EconomyParticipator {
 
     void clearWarps();
 
-    int getMaxVaults();
-
-    void setMaxVaults(int value);
-
     void addAnnouncement(FPlayer fPlayer, String msg);
 
     void sendUnreadAnnouncements(FPlayer fPlayer);
@@ -188,17 +184,11 @@ public interface Faction extends EconomyParticipator {
 
     void takeTnt(int amt);
 
-    Location getVault();
-
-    void setVault(Location vaultLocation);
 
     Inventory getChestInventory();
 
     void setChestSize(int chestSize);
 
-    void setBannerPattern(ItemStack banner);
-
-    ItemStack getBanner();
 
     long getTnt();
 

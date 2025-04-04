@@ -24,9 +24,9 @@ public class TitleUtil {
             Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
 
                 if (version != 8) {
-                    Titles.sendTitle(me.getPlayer(), config.getInt("Title.Options.FadeInTime"), config.getInt("Title.Options.ShowTime"), config.getInt("Title.Options.FadeOutTime"), CC.translate(title), CC.translate(subTitle));
+                    Titles.sendTitle(me.getPlayer(), config.getInt("Title.Options.FadeInTime"), config.getInt("Title.Options.ShowTime"), config.getInt("Title.Options.FadeOutTime"), TextUtil.parse(title), TextUtil.parse(subTitle));
                 } else {
-                    me.getPlayer().sendTitle(CC.translate(title), CC.translate(subTitle));
+                    me.getPlayer().sendTitle(TextUtil.parse(title), TextUtil.parse(subTitle));
                 }
             }, 5);
             me.getPlayer().removeMetadata("showFactionTitle", FactionsPlugin.getInstance());

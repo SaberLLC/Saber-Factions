@@ -4,6 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 
 public class CmdVersion extends FCommand {
@@ -22,7 +23,7 @@ public class CmdVersion extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        context.msg(CC.translate("&c&l[!]&7 &c&k||| &r&4SaberFactions&7 &c&k|||&r &c» &7By Driftay")); // Did this so people can differentiate between SavageFactions and FactionsUUID (( Requested Feature ))
+        context.msg(TextUtil.parse("&c&l[!]&7 &c&k||| &r&4SaberFactions&7 &c&k|||&r &c» &7By Driftay")); // Did this so people can differentiate between SavageFactions and FactionsUUID (( Requested Feature ))
         context.msg(TL.COMMAND_VERSION_VERSION, FactionsPlugin.getInstance().getDescription().getFullName());
     }
 

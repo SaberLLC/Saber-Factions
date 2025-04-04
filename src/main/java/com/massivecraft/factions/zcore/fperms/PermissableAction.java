@@ -5,6 +5,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Placeholder;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -42,7 +43,6 @@ public enum PermissableAction {
     SETWARP("setwarp"),
     WARP("warp"),
     FLY("fly"),
-    VAULT("vault"),
     TNTBANK("tntbank"),
     TNTFILL("tntfill"),
     WITHDRAW("withdraw"),
@@ -99,7 +99,7 @@ public enum PermissableAction {
     }
 
     public String getDescription() {
-        return CC.translate(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.Descriptions." + this.name.toLowerCase()));
+        return TextUtil.parse(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.action.Descriptions." + this.name.toLowerCase()));
     }
 
     public int getSlot() {
@@ -125,7 +125,7 @@ public enum PermissableAction {
         ItemStack item = XMaterial.matchXMaterial(section.getString("Materials." + this.name)).get().parseItem();
         ItemMeta meta = item.getItemMeta();
 
-        meta.setDisplayName(CC.translate(section.getString("placeholder-item.name").replace("{action}", this.name)));
+        meta.setDisplayName(TextUtil.parse(section.getString("placeholder-item.name").replace("{action}", this.name)));
         List<String> lore = section.getStringList("placeholder-item.lore");
 
         Placeholder.replacePlaceholders(lore,
@@ -133,7 +133,7 @@ public enum PermissableAction {
                 new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
                 new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
 
-        meta.setLore(CC.translate(lore));
+        meta.setLore(TextUtil.parse(lore));
         item.setItemMeta(meta);
         return item;
     }

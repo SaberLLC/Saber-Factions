@@ -235,7 +235,7 @@ public enum Relation implements Permissable {
     }
 
     public String replacePlaceholders(String string) {
-        string = CC.translate(string);
+        string = TextUtil.parse(string);
 
         String permissableName = nicename.substring(0, 1).toUpperCase() + nicename.substring(1);
 
