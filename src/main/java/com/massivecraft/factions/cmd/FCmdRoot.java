@@ -430,10 +430,6 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     @Override
     public void addSubCommand(FCommand subCommand) {
         super.addSubCommand(subCommand);
-        // People were getting NPE's as somehow CommodoreProvider#isSupported returned true on legacy versions.
-        if (CommodoreProvider.isSupported()) {
-            brigadierManager.addSubCommand(subCommand);
-        }
     }
 
     @Override
