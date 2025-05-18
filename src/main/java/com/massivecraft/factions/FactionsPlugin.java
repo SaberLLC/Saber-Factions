@@ -53,9 +53,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class FactionsPlugin extends MPlugin {
@@ -333,63 +335,80 @@ public class FactionsPlugin extends MPlugin {
     }
 
 
-    // This method must stay for < 1.12 versions
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         // Must be a LinkedList to prevent UnsupportedOperationException.
         List<String> argsList = new LinkedList<>(Arrays.asList(args));
         CommandContext context = new CommandContext(sender, argsList, alias);
         List<FCommand> commandsList = cmdBase.getSubCommands();
         FCommand commandsEx = cmdBase;
         List<String> completions = new ArrayList<>();
-        // Check for "" first arg because spigot is mangled.
-        if (context.args.get(0).equals("")) {
+
+        // Handle empty first arg (spigot bug workaround)
+        if (context.args.get(0).isEmpty()) {
             for (FCommand subCommand : commandsEx.getSubCommands()) {
-                if (subCommand.getRequirements().isPlayerOnly() && sender.hasPermission(subCommand.getRequirements().getPermission().node) && subCommand.getVisibility() != CommandVisibility.INVISIBLE)
+                if (subCommand.getRequirements().isPlayerOnly()
+                        && sender.hasPermission(subCommand.getRequirements().getPermission().node)
+                        && subCommand.getVisibility() != CommandVisibility.INVISIBLE) {
                     completions.addAll(subCommand.getAliases());
+                }
             }
             return completions;
-        } else if (context.args.size() == 1) {
+        }
+
+        // Handle first argument = subcommand
+        if (context.args.size() == 1) {
             for (; !commandsList.isEmpty() && !context.args.isEmpty(); context.args.remove(0)) {
                 String cmdName = context.args.get(0).toLowerCase();
-                boolean toggle = false;
+                boolean found = false;
+
                 for (FCommand fCommand : commandsList) {
                     for (String s : fCommand.getAliases()) {
                         if (s.startsWith(cmdName)) {
                             commandsList = fCommand.getSubCommands();
                             completions.addAll(fCommand.getAliases());
-                            toggle = true;
+                            found = true;
                             break;
                         }
                     }
-                    if (toggle) break;
+                    if (found) break;
                 }
             }
+
             String lastArg = args[args.length - 1].toLowerCase();
-            List<String> filteredCompletions = new ArrayList<>(completions.size());
-            for (String completion : completions) {
-                if (completion.toLowerCase().startsWith(lastArg)) {
-                    filteredCompletions.add(completion);
-                }
-            }
-            return filteredCompletions;
-        } else {
-            String lastArg = args[args.length - 1].toLowerCase();
-            for (Role value : Role.VALUES) completions.add(value.nicename);
-            for (Relation value : Relation.VALUES) completions.add(value.nicename);
-            // The stream and foreach from the old implementation looped 2 times, by looping all players -> filtered -> looped filter and added -> filtered AGAIN at the end.
-            // This loops them once and just adds, because we are filtering the arguments at the end anyways
-            for (Player player : Bukkit.getServer().getOnlinePlayers()) completions.add(player.getName());
-            for (Faction faction : Factions.getInstance().getAllFactions())
-                completions.add(ChatColor.stripColor(faction.getTag()));
-            List<String> filteredCompletions = new ArrayList<>(completions.size());
-            for (String completion : completions) {
-                if (completion.toLowerCase().startsWith(lastArg)) {
-                    filteredCompletions.add(completion);
-                }
-            }
-            return filteredCompletions;
+            return completions.stream()
+                    .filter(name -> name.toLowerCase().startsWith(lastArg))
+                    .collect(Collectors.toList());
         }
+
+        // Handle further arguments
+        String lastArgName = args.length >= 2 ? args[args.length - 2].toLowerCase() : "";
+        String currentArg = args[args.length - 1].toLowerCase();
+
+        // Check for common player argument keywords
+        if (lastArgName.equals("player")
+                || lastArgName.equals("target")
+                || lastArgName.equals("name")
+                || lastArgName.equals("faction")
+                || lastArgName.equals("faction tag")) {
+            for (Player player : Bukkit.getServer().getOnlinePlayers()) {
+                if (player.getName().toLowerCase().startsWith(currentArg)) {
+                    completions.add(player.getName());
+                }
+            }
+            return completions;
+        }
+
+        // Default completions
+        for (Role value : Role.VALUES) completions.add(value.nicename);
+        for (Relation value : Relation.VALUES) completions.add(value.nicename);
+        for (Player player : Bukkit.getServer().getOnlinePlayers()) completions.add(player.getName());
+        for (Faction faction : Factions.getInstance().getAllFactions())
+            completions.add(ChatColor.stripColor(faction.getTag()));
+
+        return completions.stream()
+                .filter(name -> name.toLowerCase().startsWith(currentArg))
+                .collect(Collectors.toList());
     }
 
     // -------------------------------------------- //

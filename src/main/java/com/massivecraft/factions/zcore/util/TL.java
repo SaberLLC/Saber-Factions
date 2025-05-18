@@ -1331,7 +1331,6 @@ public enum TL {
     ECON_PERSONGAVEMONEYTO("%1$s gave %2$s to %3$s."),
     ECON_PERSONTOOKMONEYFROM("%1$s took %2$s from %3$s."),
     ECON_DISABLED("Factions econ is disabled."),
-    ECON_OVER_BAL_CAP("&4The amount &e%s &4is over Essentials' balance cap."),
     ECON_MONEYLOST("&c&l[!] %s &7lost &c%s &7%s."),
     ECON_CANTAFFORD("&c%s &7can't afford &c%s&7 %s."),
     ECON_UNABLETOTRANSFER("&7Unable to transfer &c%s&7 to &c%s&7 from &c%s&7."),

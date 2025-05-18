@@ -9,7 +9,6 @@ import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
 import com.massivecraft.factions.struct.ChatMode;
@@ -373,9 +372,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         return this.isAdminBypassing;
     }
 
-    public boolean isVanished() {
-        return Essentials.isVanished(getPlayer());
-    }
 
     public void setIsAdminBypassing(boolean val) {
         this.isAdminBypassing = val;
@@ -618,8 +614,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.power = Math.max(Math.min(this.power + delta, this.getPowerMax()), this.getPowerMin());
     }
 
-    public void alterPowerIgnoringMaxAndMin(double delta) {
-        this.power = this.power + delta;
+    public void alterPowerIgnoringLimits(double delta) {
+        this.power += delta;
     }
 
     public double getPowerMax() {
@@ -1347,7 +1343,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             }
 
             FPlayer enemyFPlayer = FPlayers.getInstance().getByPlayer(enemyPlayer);
-            if (enemyFPlayer == null || !me.canSee(enemyPlayer) || enemyFPlayer.isVanished()) {
+            if (enemyFPlayer == null || !me.canSee(enemyPlayer)) {
                 continue; // Skip invalid or vanished players
             }
 

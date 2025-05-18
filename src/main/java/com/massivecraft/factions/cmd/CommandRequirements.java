@@ -9,12 +9,12 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class  CommandRequirements {
 
-    private Permission permission;
-    private boolean playerOnly;
-    private boolean memberOnly;
-    private Role role;
-    private PermissableAction action;
-    private Class<? extends BrigadierProvider> brigadier;
+    private final Permission permission;
+    private final boolean playerOnly;
+    private final boolean memberOnly;
+    private final Role role;
+    private final PermissableAction action;
+    private final Class<? extends BrigadierProvider> brigadier;
     private boolean errorOnManyArgs;
     private boolean disableOnLock;
 
@@ -105,7 +105,7 @@ public class  CommandRequirements {
 
     public static class Builder {
 
-        private Permission permission;
+        private final Permission permission;
         private boolean playerOnly = false;
         private boolean memberOnly = false;
         private Role role = null;

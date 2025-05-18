@@ -1,6 +1,8 @@
 package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -8,17 +10,22 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.tree.CommandNode;
 import me.lucko.commodore.Commodore;
 import me.lucko.commodore.CommodoreProvider;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class BrigadierManager {
 
     private final Commodore commodore;
     private final LiteralArgumentBuilder<Object> brigadier;
+
+    // Player-like argument names
+    private static final Set<String> playerArgNames = new HashSet<>(Arrays.asList(
+            "player", "target", "name", "faction", "faction tag"
+    ));
 
     public BrigadierManager() {
         commodore = CommodoreProvider.getCommodore(FactionsPlugin.getInstance());
@@ -28,7 +35,6 @@ public class BrigadierManager {
     public void build() {
         commodore.register(brigadier.build());
 
-        // Register aliases with all children of 'factions'
         for (String alias : Conf.baseCommandAliases) {
             LiteralArgumentBuilder<Object> aliasLiteral = LiteralArgumentBuilder.literal(alias);
             for (CommandNode<Object> node : brigadier.getArguments()) {
@@ -83,20 +89,35 @@ public class BrigadierManager {
     private List<RequiredArgumentBuilder<Object, ?>> generateArgsStack(FCommand subCommand) {
         List<RequiredArgumentBuilder<Object, ?>> stack = new ArrayList<>(subCommand.getRequiredArgs().size() + subCommand.getOptionalArgs().size());
 
+        // Handle required arguments
         for (String required : subCommand.getRequiredArgs()) {
-            stack.add(RequiredArgumentBuilder.argument(required, StringArgumentType.word()));
+            stack.add(createArgument(required));
         }
 
+        // Handle optional arguments
         for (Map.Entry<String, String> optionalEntry : subCommand.getOptionalArgs().entrySet()) {
-            RequiredArgumentBuilder<Object, ?> optional;
-            if (optionalEntry.getKey().equalsIgnoreCase(optionalEntry.getValue())) {
-                optional = RequiredArgumentBuilder.argument(":" + optionalEntry.getKey(), StringArgumentType.word());
-            } else {
-                optional = RequiredArgumentBuilder.argument(optionalEntry.getKey() + "|" + optionalEntry.getValue(), StringArgumentType.word());
-            }
-            stack.add(optional);
+            String name = optionalEntry.getKey();
+            stack.add(createArgument(name));
         }
 
         return stack;
+    }
+
+    private RequiredArgumentBuilder<Object, ?> createArgument(String name) {
+        RequiredArgumentBuilder<Object, ?> arg = RequiredArgumentBuilder.argument(name, StringArgumentType.word());
+
+        // If argument is player-like, suggest both player names and faction tags
+        if (playerArgNames.contains(name.toLowerCase())) {
+            arg.suggests((context, builder) -> {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    builder.suggest(player.getName());
+                }
+                for (Faction faction : Factions.getInstance().getAllFactions()) {
+                    builder.suggest(faction.getTag());
+                }
+                return builder.buildFuture();
+            });
+        }
+        return arg;
     }
 }

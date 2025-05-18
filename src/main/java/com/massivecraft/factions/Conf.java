@@ -172,14 +172,12 @@ public class Conf {
     public static boolean homesTeleportToOnDeath = true;
     public static boolean homesRespawnFromNoPowerLossWorlds = true;
     public static boolean homesTeleportCommandEnabled = true;
-    public static boolean homesTeleportCommandEssentialsIntegration = true;
     public static boolean homesTeleportCommandSmokeEffectEnabled = true;
     public static float homesTeleportCommandSmokeEffectThickness = 3f;
     public static boolean homesTeleportAllowedFromEnemyTerritory = true;
     public static boolean homesTeleportAllowedFromDifferentWorld = true;
     public static double homesTeleportAllowedEnemyDistance = 32.0;
     public static boolean homesTeleportIgnoreEnemiesIfInOwnTerritory = true;
-    public static boolean homesTeleportIgnoreEnemiesIfInNoClaimingWorld = true;
     public static boolean disablePVPBetweenNeutralFactions = false;
     public static boolean disablePVPForFactionlessPlayers = false;
     public static boolean enablePVPAgainstFactionlessInAttackersLand = false;
@@ -312,7 +310,6 @@ public class Conf {
     public static double econCostPower = 0.0;
     public static double econCostShow = 0.0;
     public static double econFactionStartingBalance = 0.0;
-    public static double econDenyWithdrawWhenMinutesAgeLessThan = 2880; // 2 days
     public static String dateFormat = "HH:mm dd/MM/yyyy";
 
 

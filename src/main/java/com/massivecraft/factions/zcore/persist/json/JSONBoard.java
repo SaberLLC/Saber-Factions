@@ -25,7 +25,7 @@ public class JSONBoard extends MemoryBoard {
     // -------------------------------------------- //
 
     public Map<String, Map<String, String>> dumpAsSaveFormat() {
-        Map<String, Map<String, String>> worldCoordIds = new HashMap<>(this.flocationIds.entrySet().size());
+        Map<String, Map<String, String>> worldCoordIds = new HashMap<>(this.flocationIds.size());
 
         for (Entry<FLocation, String> entry : flocationIds.entrySet()) {
             worldCoordIds.computeIfAbsent(entry.getKey().getWorldName(), s -> new TreeMap<>()).put(entry.getKey().getCoordString(), entry.getValue());
