@@ -3,7 +3,6 @@ package com.massivecraft.factions.zcore.fperms;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Placeholder;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.configuration.ConfigurationSection;

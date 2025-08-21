@@ -1,6 +1,5 @@
 package org.saberdev.corex.addons;
 
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.TimeUtil;
 import com.massivecraft.factions.zcore.util.TL;

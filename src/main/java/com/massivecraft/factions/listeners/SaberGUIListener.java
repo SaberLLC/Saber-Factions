@@ -1,6 +1,7 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.util.SaberGUI;
+import com.massivecraft.factions.util.SaberGUIHolder;
 import com.massivecraft.factions.util.serializable.InventoryItem;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -10,24 +11,24 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.inventory.InventoryHolder;
 
 
 public class SaberGUIListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onInventoryClick(InventoryClickEvent event) {
-        SaberGUI active = SaberGUI.getActiveGUI(event.getWhoClicked().getUniqueId());
-        if (active != null) {
+        InventoryHolder holder = event.getInventory().getHolder();
+        if (holder instanceof SaberGUIHolder) {
+            SaberGUI active = ((SaberGUIHolder) holder).getGUI();
             event.setCancelled(true);
             if (event.getRawSlot() < event.getInventory().getSize()) {
                 int slot = event.getSlot();
                 InventoryItem item = active.getInventoryItems().get(slot);
-                if (item != null) {
-                    item.handleClick(event);
-                }
-                return;
+                if (item != null) item.handleClick(event);
+            } else {
+                active.onUnknownItemClick(event);
             }
-            active.onUnknownItemClick(event);
         } else if (SaberGUI.allGUINames.contains(event.getView().getTitle())) {
             event.setCancelled(true);
             Bukkit.getLogger().info("Cancelling Inventory CLICKED: " + event.getView().getTitle() + " DUE TO IT NOT BEING TRACKED FOR " + event.getWhoClicked().getName() + ", MASSIVE LAG??");

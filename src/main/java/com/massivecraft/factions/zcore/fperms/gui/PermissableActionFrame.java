@@ -3,7 +3,6 @@ package com.massivecraft.factions.zcore.fperms.gui;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.audit.FLogType;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.SaberGUI;
 import com.massivecraft.factions.util.serializable.InventoryItem;

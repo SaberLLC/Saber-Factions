@@ -1,7 +1,7 @@
 package com.massivecraft.factions.util.timer;
 
 import com.massivecraft.factions.Conf;
-import org.apache.commons.lang.time.FastDateFormat;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.DecimalFormat;
 import java.time.ZoneId;

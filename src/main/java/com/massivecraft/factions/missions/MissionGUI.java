@@ -5,9 +5,7 @@ import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.integration.Econ;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
@@ -26,6 +24,8 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static com.massivecraft.factions.integration.Econ.moneyString;
 
 public class MissionGUI implements FactionGUI {
 
@@ -89,16 +89,16 @@ public class MissionGUI implements FactionGUI {
                         return;
                     }
                 } else {
-                    EconomyParticipator payee = null;
-
                     if (Conf.bankEnabled && FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getBoolean("FactionPaysCancelMissionCost", false)) {
-                        payee = faction;
+                        if (Econ.withdrawFactionBalance(faction, cost)) {
+                            fPlayer.msg("<h>%s<i> lost <h>%s<i> %s.", TextUtil.parse("&aYour faction"), moneyString(cost), TL.MISSION_FORCANCEL.toString());
+                        } else {
+                            fPlayer.msg("<h>%s<i> can't afford <h>%s<i> %s.", TextUtil.parse("&aYour faction"), moneyString(cost), TL.MISSION_TOCANCEL.toString());
+                        }
                     } else {
-                        payee = fPlayer;
-                    }
-
-                    if (!Econ.modifyMoney(payee, -cost, TL.MISSION_TOCANCEL.toString(), TL.MISSION_FORCANCEL.toString())) {
-                        return;
+                        if (!Econ.modifyMoney(fPlayer, -cost, TL.MISSION_TOCANCEL.toString(), TL.MISSION_FORCANCEL.toString())) {
+                            return;
+                        }
                     }
                 }
             }

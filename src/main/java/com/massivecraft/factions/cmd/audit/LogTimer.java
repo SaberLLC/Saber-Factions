@@ -6,7 +6,7 @@ package com.massivecraft.factions.cmd.audit;
 
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
-import org.apache.commons.lang.StringUtils;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.MaterialData;
 
@@ -53,7 +53,7 @@ public class LogTimer extends ConcurrentHashMap<LogTimer.TimerType, Map<LogTimer
                 });
 
                 entityCounts.forEach((entityType, count) ->
-                        FactionsPlugin.instance.getFlogManager().log(faction, FLogType.SPAWNER_EDIT, username, subTimer == TimerSubType.SPAWNER_BREAK ? "broke" : "placed", count.get() + "x", StringUtils.capitaliseAllWords(entityType.name().toLowerCase().replace("_", " ")))
+                        FactionsPlugin.instance.getFlogManager().log(faction, FLogType.SPAWNER_EDIT, username, subTimer == TimerSubType.SPAWNER_BREAK ? "broke" : "placed", count.get() + "x", TextUtil.capitaliseAllWords(entityType.name().toLowerCase().replace("_", " ")))
                 );
             }
         });

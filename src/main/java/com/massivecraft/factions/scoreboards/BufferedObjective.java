@@ -1,6 +1,5 @@
 package com.massivecraft.factions.scoreboards;
 
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;

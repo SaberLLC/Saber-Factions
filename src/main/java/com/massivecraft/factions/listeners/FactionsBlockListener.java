@@ -9,8 +9,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.ItemBuilder;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -26,9 +24,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.concurrent.TimeUnit;
 
 
 public class FactionsBlockListener implements Listener {
@@ -302,7 +297,6 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void FrameRemove(HangingBreakByEntityEvent event) {
-
         if (event.getRemover() == null) return;
         if ((event.getRemover() instanceof Player)) {
             if (event.getEntity().getType().name().contains("ITEM_FRAME")) {
@@ -316,8 +310,6 @@ public class FactionsBlockListener implements Listener {
 
     @EventHandler
     public void onFarmLandDamage(EntityChangeBlockEvent event) {
-
-
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             if (!playerCanBuildDestroyBlock(player, event.getBlock().getLocation(), "destroy", true)) {

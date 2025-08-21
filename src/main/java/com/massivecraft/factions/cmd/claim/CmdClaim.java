@@ -9,7 +9,9 @@ import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.CC;
-import com.massivecraft.factions.util.SpiralTask;
+import com.massivecraft.factions.util.spiral.ChunkProcessingContext;
+import com.massivecraft.factions.util.spiral.SpiralTask;
+import com.massivecraft.factions.util.spiral.generator.SquareSpiralGenerator;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -81,14 +83,16 @@ public class CmdClaim extends FCommand {
                 return;
             }
 
-            new SpiralTask(FLocation.wrap(context.player), radius) {
+            new SpiralTask(FLocation.wrap(context.player), radius, new SquareSpiralGenerator()) {
                 private final int limit = Conf.radiusClaimFailureLimit - 1;
                 private int failCount = 0;
                 private int successfulClaims = 0;
 
                 @Override
-                public boolean work() {
-                    boolean success = context.fPlayer.attemptClaim(forFaction, this.currentLocation(), true);
+                public boolean work(ChunkProcessingContext ctx) {
+                    FLocation fLocation = ctx.getFLocation();
+
+                    boolean success = context.fPlayer.attemptClaim(forFaction, fLocation, true);
                     if (success) {
                         failCount = 0;
                         successfulClaims++;
@@ -100,17 +104,28 @@ public class CmdClaim extends FCommand {
                     return true;
                 }
 
+                @Override
                 public void finish() {
-                    if (FactionsPlugin.cachedRadiusClaim) {
-                        if (successfulClaims > 0) {
-                            if (forFaction.isWarZone() || forFaction.isSafeZone()) {
-                                context.fPlayer.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(context.fPlayer, true), Integer.toString(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ());
-                            } else {
-                                context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(f, true), Integer.toString(successfulClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ()));
-                            }
-                            stop();
+                    if (FactionsPlugin.cachedRadiusClaim && successfulClaims > 0) {
+                        if (forFaction.isWarZone() || forFaction.isSafeZone()) {
+                            context.fPlayer.msg(
+                                    TL.CLAIM_RADIUS_CLAIM,
+                                    context.fPlayer.describeTo(context.fPlayer, true),
+                                    Integer.toString(successfulClaims),
+                                    context.fPlayer.getPlayer().getLocation().getChunk().getX(),
+                                    context.fPlayer.getPlayer().getLocation().getChunk().getZ()
+                            );
+                        } else {
+                            context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(
+                                    TL.CLAIM_RADIUS_CLAIM,
+                                    context.fPlayer.describeTo(f, true),
+                                    Integer.toString(successfulClaims),
+                                    context.fPlayer.getPlayer().getLocation().getChunk().getX(),
+                                    context.fPlayer.getPlayer().getLocation().getChunk().getZ()
+                            ));
                         }
                     }
+                    super.finish();
                 }
             };
         }

@@ -4,7 +4,6 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.serializable.InventoryItem;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +28,8 @@ public abstract class SaberGUI {
     private ConcurrentMap<Integer, InventoryItem> inventoryItems;
     private String owningPluginName;
     private Runnable closeRunnable;
+    private int refreshTaskId = -1;
+    private long refreshIntervalTicks = -1;
 
     public SaberGUI(Player player, String title, int size) {
         this(player, title, size, InventoryType.CHEST);
@@ -36,7 +37,9 @@ public abstract class SaberGUI {
 
     public SaberGUI(Player player, String title, int size, InventoryType type) {
         this.inventoryItems = new ConcurrentHashMap<>();
-        this.inventory = type == InventoryType.CHEST ? Bukkit.createInventory(null, size, title) : Bukkit.createInventory(null, type, title);
+        this.inventory = type == InventoryType.CHEST
+                ? Bukkit.createInventory(new SaberGUIHolder(this), size, title)
+                : Bukkit.createInventory(new SaberGUIHolder(this), type, title);
         this.player = player;
         this.size = size;
         this.title = title;
@@ -50,7 +53,7 @@ public abstract class SaberGUI {
         activeGUIs.remove(uuid);
     }
 
-    public void onUnknownItemClick(InventoryClickEvent event) {
+    public void onUnknownItemClick(org.bukkit.event.inventory.InventoryClickEvent event) {
     }
 
     public abstract void redraw();
@@ -58,19 +61,26 @@ public abstract class SaberGUI {
     public void openGUI(JavaPlugin owning) {
         this.owningPluginName = owning.getName();
         UUID id = this.player.getUniqueId();
-        SaberGUI currentlyActive = activeGUIs.get(id);
-        if (currentlyActive != null) {
-            Bukkit.getScheduler().scheduleSyncDelayedTask(owning, () -> {
-                currentlyActive.close();
-                activeGUIs.put(id, this);
-                this.redraw();
-                this.player.openInventory(this.inventory);
-            });
-        } else {
+
+        Bukkit.getScheduler().runTask(owning, () -> {
+            SaberGUI currentlyActive = activeGUIs.get(id);
+            if (currentlyActive != null) currentlyActive.close();
             activeGUIs.put(id, this);
             this.redraw();
             this.player.openInventory(this.inventory);
-        }
+        });
+    }
+
+    public void enableAutoRefresh(JavaPlugin plugin, long intervalTicks) {
+        this.refreshIntervalTicks = intervalTicks;
+        if (refreshTaskId != -1) Bukkit.getScheduler().cancelTask(refreshTaskId);
+        this.refreshTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if (this.player.getOpenInventory().getTopInventory().equals(this.inventory)) {
+                this.redraw();
+            } else {
+                Bukkit.getScheduler().cancelTask(refreshTaskId);
+            }
+        }, intervalTicks, intervalTicks);
     }
 
     public void setItem(int slot, InventoryItem inventoryItem) {
@@ -89,9 +99,7 @@ public abstract class SaberGUI {
     public void closeWithDelay(java.util.function.Consumer<Player> afterClose) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> {
             this.player.closeInventory();
-            if (afterClose != null) {
-                afterClose.accept(this.player);
-            }
+            if (afterClose != null) afterClose.accept(this.player);
         }, 1L);
     }
 
@@ -100,12 +108,14 @@ public abstract class SaberGUI {
     }
 
     public void onInventoryClose() {
-        if (this.closeRunnable != null) {
-            this.closeRunnable.run();
-        }
+        if (this.closeRunnable != null) this.closeRunnable.run();
     }
 
     public void close() {
+        if (refreshTaskId != -1) {
+            Bukkit.getScheduler().cancelTask(refreshTaskId);
+            refreshTaskId = -1;
+        }
         this.onInventoryClose();
         this.player.closeInventory();
     }
@@ -148,5 +158,5 @@ public abstract class SaberGUI {
     public Runnable getCloseRunnable() {
         return this.closeRunnable;
     }
-
 }
+

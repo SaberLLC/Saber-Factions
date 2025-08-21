@@ -46,10 +46,7 @@ public class FactionsEntityListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEntityDeath(EntityDeathEvent event) {
         Entity entity = event.getEntity();
-        if (!(entity instanceof Player)) {
-            return;
-        }
-
+        if (!(entity instanceof Player)) return;
         Player player = (Player) entity;
 
         if(player.hasMetadata("NPC")) return;
@@ -188,25 +185,14 @@ public class FactionsEntityListener implements Listener {
                     combatList.add(damagee.getUniqueId());
                     Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
                     cancelFFly((Player) damageee);
-                    FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damageee);
-                    if (fplayer.isInspectMode()) {
-                        fplayer.setInspectMode(false);
-                        fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
-                    }
                 }
+
                 if (damager instanceof Player) {
                     cancelFStuckTeleport((Player) damager);
                     combatList.add(damager.getUniqueId());
-
                     Entity finalDamager = damager;
                     Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(finalDamager.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
-
                     cancelFFly((Player) damager);
-                    FPlayer fplayer = FPlayers.getInstance().getByPlayer((Player) damager);
-                    if (fplayer.isInspectMode()) {
-                        fplayer.setInspectMode(false);
-                        fplayer.msg(TL.COMMAND_INSPECT_DISABLED_MSG);
-                    }
                 }
             } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
                 // Players can not take any damage in a Safe Zone
@@ -492,9 +478,7 @@ public class FactionsEntityListener implements Listener {
             return false;
         }
 
-        if (attacker.getRelationTo(defender.getFaction()).isAtLeast(Relation.TRUCE) &&
-                attacker.getFaction().isNormal() && defender.getFaction().isNormal()) {
-
+        if (attacker.getRelationTo(defender.getFaction()).isAtLeast(Relation.TRUCE) && attacker.getFaction().isNormal() && defender.getFaction().isNormal()) {
             if (attacker.hasFriendlyFire() && defender.hasFriendlyFire()) {
                 return false;
             }
@@ -550,7 +534,6 @@ public class FactionsEntityListener implements Listener {
         }
 
         Relation relation = defendFaction.getRelationTo(attackFaction);
-
         if (Conf.disablePVPBetweenNeutralFactions && relation.isNeutral()) {
             if (notify) {
                 attacker.msg(TL.PLAYER_PVP_NEUTRAL);
@@ -578,7 +561,6 @@ public class FactionsEntityListener implements Listener {
             }
             return false;
         }
-
         return true;
     }
 
@@ -592,7 +574,6 @@ public class FactionsEntityListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         // if there is a target
-
         Entity target = event.getTarget();
         if (target == null) return;
 
@@ -639,7 +620,6 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler
     public void onHangerBreak(HangingBreakByEntityEvent e) {
-
         Entity remover = e.getRemover();
         if (remover instanceof Projectile) {
             remover = (Entity) ((Projectile) remover).getShooter();
@@ -658,7 +638,6 @@ public class FactionsEntityListener implements Listener {
     public void onPaintingPlace(HangingPlaceEvent e) {
         if (e.getPlayer() == null) return;
 
-
         if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().name().contains("ITEM_FRAME")) {
             if (!FactionsBlockListener.playerCanBuildDestroyBlock(e.getPlayer(), e.getBlock().getLocation(), "build", false)) {
                 e.setCancelled(true);
@@ -669,8 +648,6 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent e) {
-
-
         Entity entity = e.getEntity();
         Location loc = e.getBlock().getLocation();
 
@@ -685,54 +662,6 @@ public class FactionsEntityListener implements Listener {
                     (faction.isWarZone() && Conf.warZoneBlockFireballs) ||
                     faction.isSafeZone()) {
                 e.setCancelled(true);
-            }
-        }
-    }
-
-
-    /*
-    @EventHandler
-    public void onTravel(PlayerPortalEvent event) {
-        if (!FactionsPlugin.getInstance().getConfig().getBoolean("portals.limit", false))
-            return; // Don't do anything if they don't want us to.
-
-
-        TravelAgent agent = event.getPortalTravelAgent();
-
-        // If they aren't able to find a portal, it'll try to create one.
-        if (event.useTravelAgent() && agent.getCanCreatePortal() && agent.findPortal(event.getTo()) == null) {
-            FLocation loc = new FLocation(event.getTo());
-            Faction faction = Board.getInstance().getFactionAt(loc);
-            if (faction.isWilderness()) {
-                return; // We don't care about wilderness.
-            } else if (!faction.isNormal() && !event.getPlayer().isOp()) {
-                // Don't let non ops make portals in safezone or warzone.
-                event.setCancelled(true);
-                return;
-            }
-
-            FPlayer fp = FPlayers.getInstance().getByPlayer(event.getPlayer());
-            String mininumRelation = FactionsPlugin.getInstance().getConfig().getString("portals.minimum-relation", "MEMBER"); // Defaults to Neutral if typed wrong.
-            if (!fp.getFaction().getRelationTo(faction).isAtLeast(Relation.fromString(mininumRelation))) {
-                event.setCancelled(true);
-            }
-        }
-    }
-     */
-
-    @EventHandler
-    public void onHit(EntityDamageByEntityEvent e) {
-
-        if (e.getDamager() instanceof Player) {
-            if (e.getEntity() instanceof Player) {
-                Player victim = (Player) e.getEntity();
-                Player attacker = (Player) e.getDamager();
-                FPlayer fvictim = FPlayers.getInstance().getByPlayer(victim);
-                FPlayer fattacker = FPlayers.getInstance().getByPlayer(attacker);
-                if (fattacker.getRelationTo(fvictim) == Relation.TRUCE) {
-                    fattacker.msg(TL.PLAYER_PVP_CANTHURT, fvictim.describeTo(fattacker));
-                    e.setCancelled(true);
-                }
             }
         }
     }

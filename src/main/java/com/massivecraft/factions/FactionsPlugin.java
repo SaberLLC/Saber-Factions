@@ -17,6 +17,7 @@ import com.massivecraft.factions.cmd.chest.AntiChestListener;
 import com.massivecraft.factions.cmd.reserve.ReserveAdapter;
 import com.massivecraft.factions.cmd.reserve.ReserveObject;
 import com.massivecraft.factions.data.helpers.FactionDataHelper;
+import com.massivecraft.factions.data.listener.FactionDataListener;
 import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.listeners.vspecific.ChorusFruitListener;
 import com.massivecraft.factions.missions.MissionHandler;
@@ -79,6 +80,7 @@ public class FactionsPlugin extends MPlugin {
     public static boolean cachedRadiusClaim;
 
     public static Permission perms = null;
+    private FactionDataHelper factionDataHelper;
     private Map<String, FactionsAddon> factionsAddonHashMap;
     private final HashMap<Faction, String> shieldStatMap = new HashMap<>();
 
@@ -181,7 +183,13 @@ public class FactionsPlugin extends MPlugin {
                 Bukkit.getPluginManager().registerEvents(new ChorusFruitListener(), this);
             }
 
-            FactionDataHelper.init();
+            this.factionDataHelper = new FactionDataHelper(this.getDataFolder());
+            Bukkit.getPluginManager().registerEvents(new FactionDataListener(this.factionDataHelper), this);
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                for (Faction faction : Factions.getInstance().getAllNormalFactions()) {
+                    this.factionDataHelper.getOrLoadFactionData(faction);
+                }
+            }, 10L);
 
             if (version > 8) {
                 Bukkit.getPluginManager().registerEvents(new MissionHandlerModern(), this);
@@ -213,7 +221,7 @@ public class FactionsPlugin extends MPlugin {
 
             Bukkit.getScheduler().runTaskLater(this, () -> {
                 //To Add Addon Commands Into "Tab Completion Format"
-                if (factionsAddonHashMap.size() > 0) {
+                if (!factionsAddonHashMap.isEmpty()) {
                     FCmdRoot.instance.addVariableCommands();
                     FCmdRoot.instance.rebuild();
                 }
@@ -293,6 +301,11 @@ public class FactionsPlugin extends MPlugin {
         }
         if (TextUtil.AUDIENCES != null) {
             TextUtil.AUDIENCES.close();
+        }
+
+        if (this.factionDataHelper != null) {
+            this.factionDataHelper.saveAllCachedData();
+            this.factionDataHelper.shutdown();
         }
 
         super.onDisable();
@@ -436,6 +449,10 @@ public class FactionsPlugin extends MPlugin {
 
     public String getPrimaryGroup(OfflinePlayer player) {
         return perms == null || !perms.hasGroupSupport() ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).toString(), player);
+    }
+
+    public FactionDataHelper getFactionDataHelper() {
+        return factionDataHelper;
     }
 
     public TimerManager getTimerManager() {

@@ -3,7 +3,7 @@ package com.massivecraft.factions.util.timer;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.timer.type.GraceTimer;
 import com.massivecraft.factions.zcore.file.CustomFile;
-import org.apache.commons.lang.time.DurationFormatUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.bukkit.event.Listener;
 
 import java.util.*;

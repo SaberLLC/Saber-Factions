@@ -1,7 +1,6 @@
 package org.saberdev.corex.addons;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.Cooldown;
 import com.massivecraft.factions.util.Lazy;
 import com.massivecraft.factions.util.TimeUtil;

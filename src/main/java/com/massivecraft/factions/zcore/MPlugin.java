@@ -39,9 +39,7 @@ public abstract class MPlugin extends JavaPlugin {
     public String refCommand = "";
     //holds f stuck taskids
     public Map<UUID, Integer> stuckMap = new HashMap<>();
-    // These are not supposed to be used directly.
-    // They are loaded and used through the TextUtil instance for the plugin.
-    public Map<String, String> rawTags = new LinkedHashMap<>();
+
     protected boolean loadSuccessful = false;
     private Integer saveTask = null;
     private boolean autoSave = true;

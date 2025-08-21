@@ -1,6 +1,5 @@
 package com.massivecraft.factions.cmd.roster.struct;
 
-import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Role;
 

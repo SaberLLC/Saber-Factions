@@ -2,10 +2,12 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.util.WorldUtil;
+import com.massivecraft.factions.util.spiral.ChunkProcessingContext;
+import com.massivecraft.factions.util.spiral.SpiralTask;
+import com.massivecraft.factions.util.spiral.generator.SquareSpiralGenerator;
 import com.massivecraft.factions.zcore.util.TL;
-import org.apache.commons.lang.time.DurationFormatUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -71,10 +73,10 @@ public class CmdStuck extends FCommand {
 
                     final Board board = Board.getInstance();
                     // spiral task to find nearest wilderness chunk
-                    new SpiralTask(FLocation.wrap(context.player), radius * 2) {
+                    new SpiralTask(FLocation.wrap(context.player), radius * 2, new SquareSpiralGenerator()) {
                         @Override
-                        public boolean work() {
-                            FLocation chunk = currentFLocation();
+                        public boolean work(ChunkProcessingContext ctx) {
+                            FLocation chunk = ctx.getFLocation();
                             Faction faction = board.getFactionAt(chunk);
                             int buffer = FactionsPlugin.getInstance().getConfig().getInt("world-border.buffer", 0);
                             if (faction.isWilderness() && !chunk.isOutsideWorldBorder(buffer)) {

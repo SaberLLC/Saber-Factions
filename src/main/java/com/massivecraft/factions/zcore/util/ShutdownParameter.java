@@ -3,7 +3,6 @@ package com.massivecraft.factions.zcore.util;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.addon.FactionsAddon;
-import com.massivecraft.factions.data.helpers.FactionDataHelper;
 import com.massivecraft.factions.util.Logger;
 
 import java.io.File;
@@ -22,8 +21,7 @@ public class ShutdownParameter {
             Logger.print("Disabled " + factionsAddon.getAddonName() + " addon", Logger.PrefixType.DEFAULT);
         }
 
-        FactionDataHelper.onDisable();
-
+        FactionsPlugin.getInstance().getFactionDataHelper().getCache().forEach((factionID, factionData) -> FactionsPlugin.getInstance().getFactionDataHelper().saveFactionData(factionData.get()));
         plugin.getFlogManager().saveLogs();
         saveReserves(plugin);
     }

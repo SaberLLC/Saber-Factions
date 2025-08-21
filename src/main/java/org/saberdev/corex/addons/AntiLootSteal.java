@@ -1,7 +1,6 @@
 package org.saberdev.corex.addons;
 
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.entity.Item;

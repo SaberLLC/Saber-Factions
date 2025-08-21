@@ -3,7 +3,6 @@ package com.massivecraft.factions.struct;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;

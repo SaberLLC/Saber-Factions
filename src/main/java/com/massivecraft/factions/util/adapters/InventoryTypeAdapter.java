@@ -2,7 +2,6 @@ package com.massivecraft.factions.util.adapters;
 
 import com.google.gson.*;
 import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.InventoryUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.inventory.Inventory;

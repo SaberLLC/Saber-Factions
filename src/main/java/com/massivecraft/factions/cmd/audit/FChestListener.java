@@ -9,7 +9,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
-import org.apache.commons.lang.StringUtils;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -98,12 +98,12 @@ public class FChestListener implements Listener {
     }
 
     private void logAddItem(ItemStack cursorItem, FPlayer fplayer, Player player) {
-        String itemName = cursorItem.hasItemMeta() && cursorItem.getItemMeta().hasDisplayName() ? cursorItem.getItemMeta().getDisplayName() : StringUtils.capitaliseAllWords(cursorItem.getType().name().replace("_", " ").toLowerCase());
+        String itemName = cursorItem.hasItemMeta() && cursorItem.getItemMeta().hasDisplayName() ? cursorItem.getItemMeta().getDisplayName() : TextUtil.capitaliseAllWords(cursorItem.getType().name().replace("_", " ").toLowerCase());
         FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.FCHEST_EDIT, player.getName(), CC.GreenB + "ADDED", itemName);
     }
 
     private void logRemoveItem(ItemStack currentItem, FPlayer fplayer, Player player) {
-        String itemName = currentItem.hasItemMeta() && currentItem.getItemMeta().hasDisplayName() ? currentItem.getItemMeta().getDisplayName() : StringUtils.capitaliseAllWords(currentItem.getType().name().replace("_", " ").toLowerCase());
+        String itemName = currentItem.hasItemMeta() && currentItem.getItemMeta().hasDisplayName() ? currentItem.getItemMeta().getDisplayName() : TextUtil.capitaliseAllWords(currentItem.getType().name().replace("_", " ").toLowerCase());
         FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.FCHEST_EDIT, player.getName(), CC.RedB + "TOOK", itemName);
     }
 }

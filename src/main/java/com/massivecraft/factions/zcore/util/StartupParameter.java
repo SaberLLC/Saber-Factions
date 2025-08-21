@@ -12,7 +12,6 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.Metrics;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
-import org.bukkit.plugin.Plugin;
 import org.saberdev.corex.CoreX;
 
 import java.io.File;
@@ -72,6 +71,9 @@ public class StartupParameter {
 
             FactionsPlugin.getInstance().timerManager = new TimerManager(plugin);
             FactionsPlugin.getInstance().timerManager.reloadTimerData();
+
+            
+
             Logger.print("Loaded " + FactionsPlugin.getInstance().timerManager.getTimers().size() + " timers into list!", Logger.PrefixType.DEFAULT);
 
             finish.run();

@@ -8,7 +8,9 @@ import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.SpiralTask;
+import com.massivecraft.factions.util.spiral.ChunkProcessingContext;
+import com.massivecraft.factions.util.spiral.SpiralTask;
+import com.massivecraft.factions.util.spiral.generator.SquareSpiralGenerator;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -51,13 +53,15 @@ public class CmdUnclaim extends FCommand {
                 return;
             }
 
-            new SpiralTask(FLocation.wrap(context.fPlayer), radius) {
+            new SpiralTask(FLocation.wrap(context.fPlayer), radius, new SquareSpiralGenerator()) {
                 private final int limit = Conf.radiusClaimFailureLimit - 1;
                 private int failCount = 0;
 
                 @Override
-                public boolean work() {
-                    boolean success = context.fPlayer.attemptUnclaim(forFaction, this.currentFLocation(), true);
+                public boolean work(ChunkProcessingContext ctx) {
+                    FLocation fLocation = ctx.getFLocation();
+
+                    boolean success = context.fPlayer.attemptUnclaim(forFaction, fLocation, true);
                     if (success) {
                         failCount = 0;
                     } else if (failCount++ >= limit) {

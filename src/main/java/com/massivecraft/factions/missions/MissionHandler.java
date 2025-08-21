@@ -2,7 +2,6 @@ package com.massivecraft.factions.missions;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;

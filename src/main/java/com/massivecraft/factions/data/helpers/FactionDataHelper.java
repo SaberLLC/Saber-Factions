@@ -1,245 +1,149 @@
 package com.massivecraft.factions.data.helpers;
 
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.data.FactionData;
-import com.massivecraft.factions.data.listener.FactionDataListener;
+import com.massivecraft.factions.util.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.lang.ref.WeakReference;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-/**
- * This class provides helper methods for managing Faction data.
- *
- * @author Driftay
- */
 public class FactionDataHelper {
+    private final Map<String, WeakReference<FactionData>> cache = new ConcurrentHashMap<>();
+    private final ExecutorService ioPool = Executors.newCachedThreadPool();
+    private final File dataDir;
 
-    /**
-     * The path where faction data is stored.
-     */
-    private static final String FACTION_DATA_PATH = "/faction-data/";
-
-    /**
-     * The list of all faction data.
-     */
-    private static final List<FactionData> data = new ArrayList<>();
-
-    /**
-     * Gets the list of all faction data.
-     *
-     * @return the list of all faction data
-     */
-    public static List<FactionData> getData() {
-        return data;
-    }
-
-    /**
-     * Initializes the faction data helper.
-     */
-    public static void init() {
-        for (Faction faction : Factions.getInstance().getAllFactions()) {
-            if (faction.isSystemFaction()) continue;
-            FactionData data = new FactionData(faction);
-            FactionDataHelper.addFactionData(data);
-        }
-
-        FactionsPlugin.getInstance().getServer().getPluginManager().registerEvents(new FactionDataListener(), FactionsPlugin.getInstance());
-
-        File directory = getFactionDirectory();
-        if (!directory.exists()) {
-            directory.mkdir();
+    public FactionDataHelper(File pluginDataFolder) {
+        this.dataDir = new File(pluginDataFolder, "faction-data");
+        if (!dataDir.exists()) {
+            if (!dataDir.mkdirs()) {
+                throw new IllegalStateException("Failed to create faction-data directory: " + dataDir.getAbsolutePath());
+            }
         }
     }
 
-    /**
-     * Cleans up any resources used by the faction data helper.
-     */
-    public static void onDisable() {
-        for (FactionData dataItem : data) {
-            dataItem.removeSafely();
-        }
-    }
-
-    /**
-     * Gets the file for a specific faction.
-     *
-     * @param faction the faction
-     * @return the file for the faction
-     */
-    public static File getFactionFile(Faction faction) {
-        return new File(FactionsPlugin.getInstance().getDataFolder(), FACTION_DATA_PATH + faction.getId() + ".yml");
-    }
-
-    /**
-     * Gets the directory for faction data.
-     *
-     * @return the directory for faction data
-     */
-    public static File getFactionDirectory() {
-        return new File(FactionsPlugin.getInstance().getDataFolder() + FACTION_DATA_PATH);
-    }
-
-    /**
-     * Creates the configuration file for a specific faction if it does not already exist.
-     *
-     * @param faction the faction
-     */
-    public static void createConfiguration(Faction faction) {
-        File file = getFactionFile(faction);
+    public FactionData loadFactionDataSync(Faction faction) {
         try {
+            File file = getFactionFile(faction.getId());
+            FactionData data;
             if (!file.exists()) {
-                file.createNewFile();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Adds a faction data object to the list of all faction data.
-     *
-     * @param factionData the faction data object
-     */
-    public static synchronized void addFactionData(FactionData factionData) {
-        data.add(factionData);
-    }
-
-    /**
-     * Removes a faction data object from the list of all faction data.
-     *
-     * @param factionData the faction data object
-     */
-    public static synchronized void removeFactionData(FactionData factionData) {
-        data.remove(factionData);
-    }
-
-    /**
-     * Sets a value in the configuration file for a specific faction.
-     *
-     * @param faction the faction
-     * @param key the key of the value to set
-     * @param value the value to set
-     */
-    public static void setConfigValue(Faction faction, String key, Object value) {
-        File file = getFactionFile(faction);
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set(key, value);
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Sets a default value in the configuration file for a specific faction if it does not already exist.
-     *
-     * @param faction the faction
-     * @param key the key of the value to set
-     * @param value the value to set
-     */
-    public static void setDefaultConfigValue(Faction faction, String key, Object value) {
-        FactionData factionData = findFactionData(faction);
-        if (factionData!= null) {
-            factionData.setDefaultPath(key, value);
-            factionData.save(); // Assuming you have an async save method in FactionData
-        }
-    }
-
-    /**
-     * Gets the configuration for a specific faction.
-     *
-     * @param faction the faction
-     * @return the configuration for the faction, or null if the file does not exist
-     */
-    public static YamlConfiguration getConfiguration(Faction faction) {
-        File file = getFactionFile(faction);
-        if (!file.exists()) {
-            return null;
-        }
-        return YamlConfiguration.loadConfiguration(file);
-    }
-
-    /**
-     * Gets a list of all the configuration files for factions.
-     *
-     * @return a list of all the configuration files for factions
-     */
-    public static List<File> getAllFactionFiles() {
-        File directory = getFactionDirectory();
-        File[] files = Objects.requireNonNull(directory.listFiles());
-        return new ArrayList<>(Arrays.asList(files));
-    }
-
-    /**
-     * Removes a specific path from all the configuration files for factions.
-     *
-     * @param path the path to remove
-     * @return the number of files that were modified
-     */
-    public static int removeDataFromFiles(String path) {
-        int count = 0;
-        File directory = getFactionDirectory();
-        for (File file : Objects.requireNonNull(directory.listFiles())) {
-            try {
+                data = new FactionData(faction);
+            } else {
                 YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-                config.set(path, null);
-                config.save(file);
-                count++;
-            } catch (IOException e) {
-                e.printStackTrace();
+                data = FactionData.fromConfig(faction, config);
             }
+            cache.put(faction.getId(), new WeakReference<>(data));
+            return data;
+        } catch (Exception e) {
+            Logger.print("[FactionDataHelper] Error loading faction-data for " + faction.getId() + ": " + e.getMessage(), Logger.PrefixType.FAILED);
+            return new FactionData(faction);
         }
-        return count;
     }
 
-    /**
-     * Checks if a configuration file exists for a specific faction.
-     *
-     * @param faction the faction
-     * @return true if the configuration file exists, false otherwise
-     */
-    public static boolean doesConfigurationExist(Faction faction) {
-        return getFactionFile(faction).exists();
+    public CompletableFuture<FactionData> loadFactionData(Faction faction) {
+        WeakReference<FactionData> ref = cache.get(faction.getId());
+        FactionData cached = (ref != null) ? ref.get() : null;
+        if (cached != null) {
+            return CompletableFuture.completedFuture(cached);
+        }
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                File file = getFactionFile(faction.getId());
+                if (!file.exists()) return new FactionData(faction);
+                YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+                return FactionData.fromConfig(faction, config);
+            } catch (Exception e) {
+                Logger.print("[FactionDataHelper] Error loading faction-data for " + faction.getId() + ": " + e.getMessage(), Logger.PrefixType.FAILED);
+                return new FactionData(faction);
+            }
+        }, ioPool).thenApply(data -> {
+            cache.put(faction.getId(), new WeakReference<>(data));
+            return data;
+        });
     }
 
-    /**
-     * Finds a faction data object by its faction ID.
-     *
-     * @param factionID the faction ID
-     * @return the faction data object, or null if no match is found
-     */
-    public static FactionData findFactionData(String factionID) {
-        return data.stream()
-                .filter(d -> d.getFactionID().equals(factionID))
-                .findFirst()
-                .orElse(null);
+    public FactionData getOrLoadFactionData(Faction faction) {
+        WeakReference<FactionData> ref = cache.get(faction.getId());
+        FactionData cached = (ref != null) ? ref.get() : null;
+
+        if (cached != null) {
+            return cached;
+        }
+
+        return loadFactionDataSync(faction);
     }
 
-    /**
-     * Finds a faction data object by its faction.
-     *
-     * @param faction the faction
-     * @return the faction data object, or null if no match is found
-     */
-    public static FactionData findFactionData(Faction faction) {
-        return findFactionData(faction.getId());
+    public void setFactionData(Faction faction, String key, Object value) {
+        FactionData data = getOrLoadFactionData(faction);
+        data.set(key, value);
+        saveFactionData(data);
     }
 
-    /**
-     * Gets the faction ID from a configuration file.
-     *
-     * @param file the configuration file
-     * @return the faction ID
-     */
-    public static String getFactionIDFromFile(File file) {
-        return Factions.getInstance().getFactionById(file.getName().replace(".yml", "")).getId();
+    public Object getFactionData(Faction faction, String key) {
+        FactionData data = getOrLoadFactionData(faction);
+        return data.get(key);
+    }
+
+    public Object getFactionData(Faction faction, String key, Object defaultValue) {
+        Object value = getFactionData(faction, key);
+        return value != null ? value : defaultValue;
+    }
+
+    public void saveFactionData(FactionData data) {
+        ioPool.submit(() -> {
+            try {
+                File file = getFactionFile(data.getFaction().getId());
+                YamlConfiguration config = data.toConfig();
+                config.save(file);
+            } catch (Exception e) {
+                Logger.print("[FactionDataHelper] Error saving faction-data for " + data.getFaction().getId() + ": " + e.getMessage(), Logger.PrefixType.FAILED);
+            }
+        });
+    }
+
+    public void saveAllCachedData() {
+        cache.forEach((factionId, ref) -> {
+            FactionData data = ref.get();
+            if (data != null) {
+                saveFactionData(data);
+            }
+        });
+    }
+
+    public void deleteFactionData(Faction faction) {
+        ioPool.submit(() -> {
+            File file = getFactionFile(faction.getId());
+            if (file.exists()) {
+                boolean deleted = file.delete();
+                if (!deleted) {
+                    Logger.print("[FactionDataHelper] Warning: Failed to delete faction-data file: " + file.getAbsolutePath(), Logger.PrefixType.WARNING);
+                }
+            }
+            cache.remove(faction.getId());
+        });
+    }
+
+    public Map<String, WeakReference<FactionData>> getCache() {
+        return cache;
+    }
+
+    public FactionData getCached(Faction faction) {
+        WeakReference<FactionData> ref = cache.get(faction.getId());
+        return ref == null ? null : ref.get();
+    }
+
+    private File getFactionFile(String id) {
+        return new File(dataDir, id + ".yml");
+    }
+
+    public void shutdown() {
+        saveAllCachedData();
+        ioPool.shutdown();
     }
 }

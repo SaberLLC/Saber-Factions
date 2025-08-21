@@ -165,7 +165,6 @@ public class JSONFactions extends MemoryFactions {
                             }
                         }
                         Logger.print("Done converting factions.json to UUID.");
-
                         saveCore(this.path, data, true);
                         finish.accept(data);
                     });

@@ -14,8 +14,8 @@ import org.dynmap.markers.*;
 import org.dynmap.utils.TileFlags;
 
 import java.awt.*;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.Map.Entry;
 
 // This source code is a heavily modified version of mikeprimms plugin Dynmap-Factions.

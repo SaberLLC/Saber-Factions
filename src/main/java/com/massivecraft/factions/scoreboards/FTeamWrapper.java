@@ -1,7 +1,6 @@
 package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import me.clip.placeholderapi.PlaceholderAPI;

@@ -11,8 +11,8 @@ import org.bukkit.Material;
 
 import java.awt.*;
 import java.text.DecimalFormat;
-import java.util.List;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -235,6 +235,7 @@ public final class TextUtil {
     public static String parseColorAcc(String string) {
         return StringUtils.replaceEach(string, COLOR_TAGS_SHORT_HAND, BUKKIT_RAW_COLORS);
     }
+
     @Deprecated
     public static String parseColorAmp(String string) {
         return parseColorBukkit(string);
@@ -288,6 +289,30 @@ public final class TextUtil {
         } else {
             return parseTags("<a>") + center;
         }
+    }
+
+
+    public static String capitaliseAllWords(String input) {
+        if (input == null || input.isEmpty()) return input;
+
+
+        char[] chars = input.toCharArray();
+        boolean capitalizeNext = true;
+
+        for (int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+
+            if (Character.isWhitespace(c)) {
+                capitalizeNext = true;
+            } else if (capitalizeNext) {
+                chars[i] = Character.toTitleCase(c);
+                capitalizeNext = false;
+            } else {
+                chars[i] = Character.toLowerCase(c);
+            }
+        }
+
+        return new String(chars).trim().replaceAll("\\s+", " ");
     }
 
     public static List<String> getPage(List<String> lines, int pageHumanBased, String title) {
