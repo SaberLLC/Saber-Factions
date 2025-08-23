@@ -32,6 +32,8 @@ import java.util.stream.Stream;
 public class MissionHandler implements Listener {
 
     public static final String matchAnythingRegex = ".*";
+    private static final String ANY = "ANY";
+    private static final String ALL = "ALL";
 
     private static FactionsPlugin plugin;
     private static final Map<String, Map<String, BukkitTask>> deadlines = new HashMap<>();
@@ -52,33 +54,39 @@ public class MissionHandler implements Listener {
         }
     }
 
+
+    public static boolean matchesConfig(String actual, String rawPattern) {
+        if (rawPattern == null || rawPattern.trim().isEmpty()) return true;
+        if (ANY.equalsIgnoreCase(rawPattern.trim()) || ALL.equalsIgnoreCase(rawPattern.trim())) return true;
+        if (matchAnythingRegex.equals(rawPattern)) return true;
+        return actual.matches(rawPattern);
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTame(EntityTameEvent event) {
-        if (!(event.getOwner() instanceof Player)) {
-            return;
-        }
+        if (!(event.getOwner() instanceof Player)) return;
+
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer((Player) event.getOwner());
-        if (fPlayer == null) {
-            return;
-        }
+        if (fPlayer == null) return;
+
         handleMissionsOfType(fPlayer, MissionType.TAME, (mission, section) -> {
-            String entity = section.getString("Mission.EntityType", matchAnythingRegex);
-            return event.getEntityType().toString().matches(entity) ? 1 : -1;
+            String pattern = section.getString("Mission.EntityType", matchAnythingRegex);
+            String actual  = event.getEntityType().name();
+            return matchesConfig(actual, pattern) ? 1 : -1;
         });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDeath(EntityDeathEvent event) {
-        if (event.getEntity() == null || event.getEntity().getKiller() == null) {
-            return;
-        }
+        if (event.getEntity() == null || event.getEntity().getKiller() == null) return;
+
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(event.getEntity().getKiller());
-        if (fPlayer == null) {
-            return;
-        }
+        if (fPlayer == null) return;
+
         handleMissionsOfType(fPlayer, MissionType.KILL, (mission, section) -> {
-            String entity = section.getString("Mission.EntityType", matchAnythingRegex);
-            return event.getEntityType().toString().matches(entity) ? 1 : -1;
+            String pattern = section.getString("Mission.EntityType", matchAnythingRegex);
+            String actual = event.getEntityType().name();
+            return matchesConfig(actual, pattern) ? 1 : -1;
         });
     }
 
@@ -89,8 +97,10 @@ public class MissionHandler implements Listener {
             return;
         }
         handleMissionsOfType(fPlayer, MissionType.MINE, (mission, section) -> {
-            String item = section.getString("Mission.Material", matchAnythingRegex);
-            return XMaterial.matchXMaterial(event.getBlock().getType()).parseMaterial() == XMaterial.matchXMaterial(item).get().parseMaterial() ? 1 : -1;
+            String pattern = section.getString("Mission.Material", matchAnythingRegex);
+            XMaterial xm = XMaterial.matchXMaterial(event.getBlock().getType());
+            String actual = (xm != null ? xm.name() : event.getBlock().getType().name());
+            return matchesConfig(actual, pattern) ? 1 : -1;
         });
     }
 
@@ -102,8 +112,10 @@ public class MissionHandler implements Listener {
         }
 
         handleMissionsOfType(fPlayer, MissionType.PLACE, (mission, section) -> {
-            String item = section.getString("Mission.Material", matchAnythingRegex);
-            return XMaterial.matchXMaterial(event.getBlockPlaced().getType()).parseMaterial() == XMaterial.matchXMaterial(item).get().parseMaterial() ? 1 : -1;
+            String pattern = section.getString("Mission.Material", matchAnythingRegex);
+            XMaterial xm = XMaterial.matchXMaterial(event.getBlockPlaced().getType());
+            String actual = (xm != null ? xm.name() : event.getBlockPlaced().getType().name());
+            return matchesConfig(actual, pattern) ? 1 : -1;
         });
     }
 
@@ -118,9 +130,11 @@ public class MissionHandler implements Listener {
         }
         handleMissionsOfType(fPlayer, MissionType.FISH, (mission, section) -> {
             if (event.getCaught() instanceof Item) {
-                String item = section.getString("Mission.Type", matchAnythingRegex);
+                String pattern = section.getString("Mission.EntityType", matchAnythingRegex);
                 Item caughtItem = (Item) event.getCaught();
-                return XMaterial.matchXMaterial(caughtItem.getItemStack().getType()).toString().matches(item) ? 1 : -1;
+                XMaterial xm = XMaterial.matchXMaterial(caughtItem.getItemStack().getType());
+                String actual = (xm != null ? xm.name() : caughtItem.getItemStack().getType().name());
+                return matchesConfig(actual, pattern) ? 1 : -1;
             }
             return -1;
         });
@@ -134,8 +148,10 @@ public class MissionHandler implements Listener {
         }
 
         handleMissionsOfType(fPlayer, MissionType.ENCHANT, (mission, section) -> {
-            String item = section.getString("Mission.Type", matchAnythingRegex);
-            return XMaterial.matchXMaterial(e.getItem().getType()).toString().matches(item) ? 1 : -1;
+            String pattern = section.getString("Mission.Item", matchAnythingRegex);
+            XMaterial xm = XMaterial.matchXMaterial(e.getItem().getType());
+            String actual = (xm != null ? xm.name() : e.getItem().getType().name());
+            return matchesConfig(actual, pattern) ? 1 : -1;
         });
     }
 
@@ -147,8 +163,10 @@ public class MissionHandler implements Listener {
         }
 
         handleMissionsOfType(fPlayer, MissionType.CONSUME, (mission, section) -> {
-            String item = section.getString("Mission.Type", matchAnythingRegex);
-            return XMaterial.matchXMaterial(e.getItem().getType()).toString().matches(item) ? 1 : -1;
+            String pattern = section.getString("Mission.Item", matchAnythingRegex);
+            XMaterial xm = XMaterial.matchXMaterial(e.getItem().getType());
+            String actual = (xm != null ? xm.name() : e.getItem().getType().name());
+            return matchesConfig(actual, pattern) ? 1 : -1;
         });
     }
 

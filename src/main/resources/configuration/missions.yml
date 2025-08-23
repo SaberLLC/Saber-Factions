@@ -91,6 +91,7 @@ Missions:
       - "&7&nClick-here to start your mission!"
     Mission:
       Type: "FISH"
+      EntityType: "ANY"
       Amount: 100
     Reward:
       Commands: ["f points add %faction% 100"]
@@ -120,6 +121,7 @@ Missions:
       - "&7&nClick-here to start your mission!"
     Mission:
       Type: "ENCHANT"
+      Item: "ALL"
       Amount: 100
     Reward:
       Commands: ["f points add %faction% 100"]

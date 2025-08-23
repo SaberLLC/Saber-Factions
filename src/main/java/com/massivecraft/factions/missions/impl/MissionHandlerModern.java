@@ -27,8 +27,9 @@ public class MissionHandlerModern implements Listener {
         }
 
         MissionHandler.handleMissionsOfType(fPlayer, MissionType.BREED, (mission, section) -> {
-            String entity = section.getString("Mission.Entity", MissionHandler.matchAnythingRegex);
-            return e.getEntityType().name().matches(entity) ? 1 : -1;
+            String pattern = section.getString("Mission.Entity", MissionHandler.matchAnythingRegex);
+            String actual  = e.getEntityType().name();
+            return MissionHandler.matchesConfig(actual, pattern) ? 1 : -1;
         });
     }
 }
