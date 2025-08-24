@@ -132,7 +132,7 @@ public enum TagReplacer {
     private String getValue() {
         switch (this) {
             case GRACE_TIMER:
-                return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
+                return TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true);
             case TOTAL_ONLINE:
                 return String.valueOf(Bukkit.getOnlinePlayers().size());
             case FACTIONLESS:

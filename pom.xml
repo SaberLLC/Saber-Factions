@@ -286,7 +286,7 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.3.4</version>
+            <version>4.4.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -414,10 +414,6 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>sonatype-oss-snapshots1</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>bg-repo</id>

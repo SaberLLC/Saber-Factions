@@ -59,7 +59,11 @@ public class CommandContext {
     }
 
     public void sendComponent(Component message) {
-        TextUtil.AUDIENCES.sender(sender).sendMessage(message);
+        if (this.player != null && this.player.isOnline()) {
+            TextUtil.AUDIENCES.player(this.player).sendMessage(message);
+        } else {
+            TextUtil.AUDIENCES.sender(this.sender).sendMessage(message);
+        }
     }
 
     public void sendComponent(List<Component> messages) {

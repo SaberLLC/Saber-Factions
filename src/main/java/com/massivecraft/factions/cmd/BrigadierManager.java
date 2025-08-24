@@ -24,7 +24,7 @@ public class BrigadierManager {
 
     // Player-like argument names
     private static final Set<String> playerArgNames = new HashSet<>(Arrays.asList(
-            "player", "target", "name", "faction", "faction tag"
+            "player", "target", "name", "faction", "faction tag", "player name"
     ));
 
     public BrigadierManager() {
