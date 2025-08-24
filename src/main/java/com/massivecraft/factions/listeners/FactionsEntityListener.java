@@ -332,44 +332,43 @@ public class FactionsEntityListener implements Listener {
         return true; // No condition retained, destroy the block!
     }
 
-    // mainly for flaming arrows; don't want allies or people in safe zones to be ignited even after damage event is cancelled
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
-        EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), EntityDamageEvent.DamageCause.FIRE, 0d);
-        if (!this.canDamagerHurtDamagee(sub, false)) event.setCancelled(true);
+        Entity damager = event.getCombuster();
+        Entity target  = event.getEntity();
+        if (!this.canDamagerHurtDamagee(damager, target, false)) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPotionSplashEvent(PotionSplashEvent event) {
-        // see if the potion has a harmful effect
-
-        boolean badjuju = false;
+        boolean harmful = false;
         for (PotionEffect effect : event.getPotion().getEffects()) {
             if (badPotionEffects.contains(effect.getType())) {
-                badjuju = true;
+                harmful = true;
                 break;
             }
         }
-        if (!badjuju) return;
+        if (!harmful) return;
 
         ProjectileSource thrower = event.getPotion().getShooter();
         if (!(thrower instanceof Entity)) return;
 
-
         if (thrower instanceof Player) {
-            Player player = (Player) thrower;
-            FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-            if (fPlayer.getFaction().isPeaceful()) {
+            Player p = (Player) thrower;
+            FPlayer fp = FPlayers.getInstance().getByPlayer(p);
+            if (fp != null && fp.getFaction().isPeaceful()) {
                 event.setCancelled(true);
                 return;
             }
         }
 
-        // scan through affected entities to make sure they're all valid targets
+        Entity damager = (Entity) thrower;
         for (LivingEntity target : event.getAffectedEntities()) {
-            EntityDamageByEntityEvent sub = new EntityDamageByEntityEvent((Entity) thrower, target, EntityDamageEvent.DamageCause.CUSTOM, 0);
-            if (!this.canDamagerHurtDamagee(sub, true))
-                event.setIntensity(target, 0.0);  // affected entity list doesn't accept modification (so no iter.remove()), but this works
+            if (!this.canDamagerHurtDamagee(damager, target, true)) {
+                event.setIntensity(target, 0.0);
+            }
         }
     }
 
@@ -379,87 +378,69 @@ public class FactionsEntityListener implements Listener {
         return Board.getInstance().getFactionAt(FLocation.wrap(damagee.getLocation())).isSafeZone();
     }
 
-    public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {
-        return canDamagerHurtDamagee(sub, true);
+    private Entity resolveDamager(Entity raw) {
+        if (raw instanceof Projectile) {
+            Projectile proj = (Projectile) raw;
+            ProjectileSource shooter = proj.getShooter();
+            if (shooter instanceof Entity) {
+                return (Entity) shooter;
+            }
+        }
+        return raw;
     }
 
-    public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify) {
-        Entity damager = sub.getDamager();
-        Entity damagee = sub.getEntity();
+    public boolean canDamagerHurtDamagee(Entity damager, Entity damagee, boolean notify) {
+        damager = resolveDamager(damager);
 
-        if (!(damagee instanceof Player) || damagee.hasMetadata("NPC")) {
-            return true;
-        }
+        if (!(damagee instanceof Player) || damagee.hasMetadata("NPC")) return true;
 
         Player defenderPlayer = (Player) damagee;
         FPlayer defender = FPlayers.getInstance().getByPlayer(defenderPlayer);
-
-        if (defender == null || defender.getPlayer() == null) {
-            return true;
-        }
+        if (defender == null || defender.getPlayer() == null) return true;
 
         Faction defLocFaction = Board.getInstance().getFactionAt(FLocation.wrap(defenderPlayer.getLocation()));
 
-        if (damager instanceof Projectile) {
-            Projectile projectile = (Projectile) damager;
-            if (!(projectile.getShooter() instanceof Entity)) {
-                return true;
-            }
-            damager = (Entity) projectile.getShooter();
-        }
-
-        if (damager == damagee) {
-            return true; // Ender pearl usage and other self-inflicted damage
-        }
+        if (damager == damagee) return true; // self damage (pearls, fire tick, etc.)
 
         if (defLocFaction.noPvPInTerritory()) {
             return handleNoPvPTerritory(damager, notify, defLocFaction);
         }
 
-        if (!(damager instanceof Player)) {
-            return true;
-        }
+        if (!(damager instanceof Player)) return true;
 
         Player attackerPlayer = (Player) damager;
         FPlayer attacker = FPlayers.getInstance().getByPlayer(attackerPlayer);
+        if (attacker == null || attacker.getPlayer() == null) return true;
 
-        if (attacker == null || attacker.getPlayer() == null) {
-            return true;
-        }
+        if (handleFriendlyFire(attacker, defender, notify)) return false;
 
-        if (handleFriendlyFire(attacker, defender, notify)) {
-            return false;
-        }
-
-        if (Conf.playersWhoBypassAllProtection.contains(attacker.getName())) {
-            return true;
-        }
+        if (Conf.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
         if (attacker.hasLoginPvpDisabled()) {
-            if (notify) {
-                attacker.msg(TL.PLAYER_PVP_LOGIN, Conf.noPVPDamageToOthersForXSecondsAfterLogin);
-            }
+            if (notify) attacker.msg(TL.PLAYER_PVP_LOGIN, Conf.noPVPDamageToOthersForXSecondsAfterLogin);
             return false;
         }
 
         Faction locFaction = Board.getInstance().getFactionAt(FLocation.wrap(attackerPlayer.getLocation()));
-
         if (locFaction.noPvPInTerritory()) {
-            if (notify) {
-                attacker.msg(TL.PLAYER_CANTHURT, locFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString());
-            }
+            if (notify) attacker.msg(TL.PLAYER_CANTHURT,
+                    locFaction.isSafeZone() ? TL.REGION_SAFEZONE.toString() : TL.REGION_PEACEFUL.toString());
             return false;
         }
 
-        if (locFaction.isWarZone() && Conf.warZoneFriendlyFire) {
-            return true;
-        }
+        if (locFaction.isWarZone() && Conf.warZoneFriendlyFire) return true;
 
-        if (isWorldIgnoringPvP(defenderPlayer.getWorld().getName())) {
-            return true;
-        }
+        if (isWorldIgnoringPvP(defenderPlayer.getWorld().getName())) return true;
 
         return handleFactionLogic(attacker, defender, defLocFaction, notify);
+    }
+
+    public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {
+        return canDamagerHurtDamagee(sub, true);
+    }
+
+    public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify) {
+        return canDamagerHurtDamagee(sub.getDamager(), sub.getEntity(), notify);
     }
 
     private boolean handleNoPvPTerritory(Entity damager, boolean notify, Faction defLocFaction) {
