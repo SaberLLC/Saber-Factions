@@ -34,6 +34,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
+
+    private final int defaultWarpsLimit = FactionsPlugin.getInstance().getConfig().getInt("max-warps");
+    private final long defaultTntBankLimit = FactionsPlugin.getInstance().getConfig().getLong("ftnt.Bank-Limit");
+    private final int defaultChestSizeRows = FactionsPlugin.getInstance().getConfig().getInt("fchest.Default-Size");
+    private final String chestTitle = TextUtil.parse(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"));
+
     public HashMap<Integer, String> rules = new HashMap<>();
     public long tnt;
     public Location checkpoint;
@@ -70,7 +76,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected String player;
     protected String discord;
     Inventory chest;
-    Map<String, Object> bannerSerialized;
     private long lastDeath;
     private int strikes = 0;
     private int points = 0;
@@ -85,7 +90,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     private boolean weeWoo;
     private long tntBankSize;
     private int warpLimit;
-    private double reinforcedArmor;
     private List<String> completedMissions;
     private int allowedSpawnerChunks;
     private Set<FastChunk> spawnerChunks;
@@ -234,15 +238,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void sendUnreadAnnouncements(FPlayer fPlayer) {
-        if (!announcements.containsKey(fPlayer.getId())) {
-            return;
-        }
+        final String key = fPlayer.getId();
+        List<String> list = announcements.get(key);
+        if (list == null || list.isEmpty()) return;
+
         fPlayer.msg(TL.FACTIONS_ANNOUNCEMENT_TOP);
-        for (String s : announcements.get(fPlayer.getPlayer().getUniqueId().toString())) {
+        for (String s : list) {
             fPlayer.sendMessage(s);
         }
         fPlayer.msg(TL.FACTIONS_ANNOUNCEMENT_BOTTOM);
-        announcements.remove(fPlayer.getId());
+        announcements.remove(key);
     }
 
     public void removeAnnouncements(FPlayer fPlayer) {
@@ -302,13 +307,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         warps.clear();
     }
 
-    public int getMaxVaults() {
-        return this.maxVaults;
-    }
-
-    public void setMaxVaults(int value) {
-        this.maxVaults = value;
-    }
 
     public String getFocused() {
         return this.player;
@@ -320,18 +318,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<String> getInvites() {
         return invites;
-    }
-
-    public Set<String> getAltInvites() {
-        return altinvites;
-    }
-
-    public void deinviteAlt(FPlayer fplayer) {
-        altinvites.remove(fplayer.getId());
-    }
-
-    public void deinviteAllAlts() {
-        altinvites.clear();
     }
 
     public String getId() {
@@ -450,8 +436,15 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void removeRule(int index) {
-        HashMap<Integer, String> newRule = rules;
-        newRule.remove(index);
+        if (!rules.containsKey(index)) return;
+        rules.remove(index);
+        HashMap<Integer, String> reindexed = new HashMap<>(rules.size());
+        int i = 0;
+        for (int k = 0; k <= rules.size() + 1; k++) {
+            String v = rules.get(k);
+            if (v != null) reindexed.put(i++, v);
+        }
+        rules = reindexed;
     }
 
     public void addTnt(int amt) {
@@ -491,14 +484,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Inventory getChestInventory() {
         if (chest == null) {
-            this.chest = Bukkit.createInventory(null, getChestSize(), TextUtil.parse(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
+            this.chest = Bukkit.createInventory(null, getChestSize(), TextUtil.parse(chestTitle));
             return chest;
         }
         return chest;
     }
 
     private int getChestSize() {
-        int size = FactionsPlugin.getInstance().getConfig().getInt("fchest.Default-Size");
+        int size = defaultChestSizeRows;
         int chestUpgrade = getUpgrade("Chest");
         if (chestUpgrade > 0) {
             int upgradedSize = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getInt("fupgrades.MainMenu.Chest.Chest-Size.level-" + chestUpgrade, -1);
@@ -514,9 +507,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
 
     public void setChestSize(int chestSize) {
-        ItemStack[] contents = this.getChestInventory().getContents();
-        chest = Bukkit.createInventory(null, chestSize, TextUtil.parse(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")));
-        chest.setContents(contents);
+        int size = Math.max(9, (chestSize / 9) * 9);
+        ItemStack[] contents = getChestInventory().getContents();
+        Inventory newInv = Bukkit.createInventory(null, size, chestTitle);
+        int limit = Math.min(contents.length, size);
+        for (int i = 0; i < limit; i++) newInv.setItem(i, contents[i]);
+        chest = newInv;
     }
 
 
@@ -525,7 +521,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     @Override
     public int getWarpsLimit() {
         if (warpLimit == 0) {
-            return FactionsPlugin.getInstance().getConfig().getInt("max-warps");
+            return defaultWarpsLimit;
         }
         return warpLimit;
     }
@@ -538,7 +534,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     @Override
     public long getTntBankLimit() {
         if (tntBankSize == 0) {
-            return FactionsPlugin.getInstance().getConfig().getLong("ftnt.Bank-Limit");
+            return defaultTntBankLimit;
         }
         return tntBankSize;
     }
@@ -547,17 +543,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public void setTntBankLimit(long newLimit) {
         tntBankSize = newLimit;
     }
-
-    @Override
-    public double getReinforcedArmor() {
-        return this.reinforcedArmor;
-    }
-
-    @Override
-    public void setReinforcedArmor(double newPercent) {
-        reinforcedArmor = newPercent;
-    }
-
 
     public void setUpgrade(String upgrade, int level) {
         upgrades.put(upgrade, level);
@@ -1147,15 +1132,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
 
     public ArrayList<Player> getOnlinePlayers() {
-        if (isPlayerFreeType()) {
-            return new ArrayList<>(0);
-        }
+        if (isPlayerFreeType()) return new ArrayList<>(0);
         ArrayList<Player> ret = new ArrayList<>();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
-            if (fplayer.getFaction() == this && !fplayer.isAlt()) {
-                ret.add(player);
-            }
+        for (FPlayer fp : fplayers) {
+            Player p = fp.getPlayer();
+            if (p != null && p.isOnline() && !fp.isAlt()) ret.add(p);
         }
         return ret;
     }
@@ -1322,14 +1303,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public String getOwnerListString(FLocation loc) {
         Set<String> ownerData = claimOwnership.get(loc);
         if (ownerData == null || ownerData.isEmpty()) return "";
-        StringBuilder ownerList = new StringBuilder();
-
-        for (String anOwnerData : ownerData) {
-            if (ownerList.length() > 0) ownerList.append(", ");
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(anOwnerData));
-            ownerList.append(offlinePlayer != null ? offlinePlayer.getName() : TL.GENERIC_NULLPLAYER.toString());
+        StringBuilder sb = new StringBuilder();
+        for (String id : ownerData) {
+            if (sb.length() > 0) sb.append(", ");
+            OfflinePlayer op = Bukkit.getOfflinePlayer(UUID.fromString(id));
+            String name = (op != null && op.getName() != null) ? op.getName() : TL.GENERIC_NULLPLAYER.toString();
+            sb.append(name);
         }
-        return ownerList.toString();
+        return sb.toString();
     }
 
     public boolean playerHasOwnershipRights(FPlayer fplayer, FLocation loc) {

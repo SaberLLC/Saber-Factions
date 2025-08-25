@@ -52,43 +52,33 @@ public class CheckHistoryFrame implements FactionGUI {
             }
 
             ItemStack itemStack = new ItemStack(XMaterial.MAGENTA_STAINED_GLASS_PANE.parseItem());
+            MaterialData data = itemStack.getData();
+            ItemMeta itemMeta = itemStack.getItemMeta();
             if (entry.getValue().startsWith("U")) {
                 itemStack.setDurability((short) 2);
-                MaterialData data = itemStack.getData();
                 data.setData(DyeColor.MAGENTA.getWoolData());
-                itemStack.setData(data);
-                ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(TL.CHECK_WALLS_CHECKED_GUI_ICON.toString());
                 itemMeta.setLore(Arrays.asList(TL.CHECK_TIME_LORE_LINE.format(simpleDateFormat.format(new Date(entry.getKey()))), TL.CHECK_PLAYER_LORE_LINE.format(entry.getValue().substring(1))));
-                itemStack.setItemMeta(itemMeta);
             } else if (entry.getValue().startsWith("Y")) {
                 itemStack.setDurability((short) 2);
-                MaterialData data = itemStack.getData();
                 data.setData(DyeColor.MAGENTA.getWoolData());
-                itemStack.setData(data);
-                ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(TL.CHECK_BUFFERS_CHECKED_GUI_ICON.toString());
                 itemMeta.setLore(Arrays.asList(TL.CHECK_TIME_LORE_LINE.format(simpleDateFormat.format(new Date(entry.getKey()))), TL.CHECK_PLAYER_LORE_LINE.format(entry.getValue().substring(1))));
-                itemStack.setItemMeta(itemMeta);
             } else if (entry.getValue().startsWith("J")) {
                 itemStack.setDurability((short) 0);
-                MaterialData data = itemStack.getData();
                 data.setData(DyeColor.WHITE.getWoolData());
-                itemStack.setData(data);
-                ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(TL.CHECK_WALLS_UNCHECKED_GUI_ICON.toString());
                 itemMeta.setLore(Collections.singletonList(TL.CHECK_TIME_LORE_LINE.format(simpleDateFormat.format(new Date(entry.getKey())))));
-                itemStack.setItemMeta(itemMeta);
             } else if (entry.getValue().startsWith("H")) {
                 itemStack.setDurability((short) 0);
-                MaterialData data = itemStack.getData();
                 data.setData(DyeColor.WHITE.getWoolData());
-                itemStack.setData(data);
-                ItemMeta itemMeta = itemStack.getItemMeta();
                 itemMeta.setDisplayName(TL.CHECK_BUFFERS_UNCHECKED_GUI_ICON.toString());
                 itemMeta.setLore(Collections.singletonList(TL.CHECK_TIME_LORE_LINE.format(simpleDateFormat.format(new Date(entry.getKey())))));
-                itemStack.setItemMeta(itemMeta);
             }
+
+            itemStack.setData(data);
+            itemStack.setItemMeta(itemMeta);
+
             inventory.setItem(currentSlot, itemStack);
             ++currentSlot;
         }

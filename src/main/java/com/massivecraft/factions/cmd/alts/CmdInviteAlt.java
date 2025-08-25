@@ -81,7 +81,7 @@ public class CmdInviteAlt extends FCommand {
         Component message = TL.COMMAND_INVITE_INVITEDYOU.toFormattedComponent(context.fPlayer.describeTo(target, true), context.faction.getTag())
                 .hoverEvent(TL.COMMAND_INVITE_CLICKTOJOIN.toComponent())
                 .clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " join " + context.faction.getTag()));
-        TextUtil.AUDIENCES.player(target.getPlayer()).sendMessage(message);
+        context.sendComponent(message);
         FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.INVITES, context.fPlayer.getName(), CC.Green + "invited", target.getName());
         context.faction.msg(TL.COMMAND_ALTINVITE_INVITED_ALT, context.fPlayer.describeTo(context.faction, true), target.describeTo(context.faction));
     }

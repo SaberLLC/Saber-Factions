@@ -314,7 +314,7 @@ public class TagUtil {
         return lines;
     }
 
-    private static String tipPlayerSingular(FPlayer fplayer) {
+    public static String tipPlayerSingular(FPlayer fplayer) {
         List<String> lines = new ArrayList<>();
         for (String line : FactionsPlugin.getInstance().getConfig().getStringList("tooltips.show")) {
             String parsedLine = TagUtil.parsePlain(fplayer, line);

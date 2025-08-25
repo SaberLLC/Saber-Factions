@@ -41,9 +41,6 @@ public interface Faction extends EconomyParticipator {
 
     void checkPerms();
 
-    double getReinforcedArmor();
-
-    void setReinforcedArmor(double percent);
 
     int getWarpsLimit();
 
@@ -92,10 +89,6 @@ public interface Faction extends EconomyParticipator {
     boolean isProtected();
 
     void setProtected(boolean b);
-
-    void deinviteAlt(FPlayer alt);
-
-    void deinviteAllAlts();
 
     void altInvite(FPlayer fplayer);
 
@@ -188,12 +181,9 @@ public interface Faction extends EconomyParticipator {
 
     void setChestSize(int chestSize);
 
-
     long getTnt();
 
     void setTnt(long amount);
-
-    String getRule(int index);
 
     boolean getOpen();
 

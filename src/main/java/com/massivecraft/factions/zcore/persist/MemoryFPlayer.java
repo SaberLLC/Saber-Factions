@@ -671,40 +671,32 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void updatePower() {
-        if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) {
-            return;
-        }
+        if (this.isAlt() && !FactionsPlugin.getInstance().getConfig().getBoolean("f-alts.Have-Power")) return;
 
         if (this.isOffline()) {
             losePowerFromBeingOffline();
-            if (!Conf.powerRegenOffline) {
-                return;
-            }
+            if (!Conf.powerRegenOffline) return;
         } else if (hasFaction() && getFaction().isPowerFrozen()) {
-            return; // Don't let power regen if faction power is frozen.
+            return;
         }
 
         long now = System.currentTimeMillis();
         long millisPassed = now - this.lastPowerUpdateTime;
         this.lastPowerUpdateTime = now;
 
-        Player thisPlayer = this.getPlayer();
-        if (thisPlayer != null && thisPlayer.isDead()) {
-            return;  // don't let dead players regain power until they respawn
-        }
+        Player p = this.getPlayer();
+        if (p != null && p.isDead()) return;
 
-        double delta = millisPassed * Conf.powerPerMinute / 60000; // millisPerMinute : 60 * 1000
-        if (Bukkit.getPluginManager().getPlugin("FactionsPlugin") != null) {
-            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> {
-                PowerRegenEvent powerRegenEvent = new PowerRegenEvent(getFaction(), this, delta);
-                Bukkit.getServer().getPluginManager().callEvent(powerRegenEvent);
-                if (!powerRegenEvent.isCancelled()) {
-                    this.alterPower(powerRegenEvent.getDelta());
-                }
-            });
-        } else {
-            this.alterPower(delta);
-        }
+        double delta = millisPassed * Conf.powerPerMinute / 60000.0;
+
+        Runnable regen = () -> {
+            PowerRegenEvent e = new PowerRegenEvent(getFaction(), this, delta);
+            Bukkit.getPluginManager().callEvent(e);
+            if (!e.isCancelled()) this.alterPower(e.getDelta());
+        };
+
+        if (Bukkit.isPrimaryThread()) regen.run();
+        else Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), regen);
     }
 
     public void losePowerFromBeingOffline() {
@@ -910,8 +902,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         if (Conf.worldGuardChecking && hasRegionsInChunk(flocation.getChunk())) {
             error = TextUtil.parse(TL.CLAIM_PROTECTED.toString());
-        } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
-            error = TextUtil.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
         } else if (Conf.worldsNoClaiming.contains(flocation.getWorldName()) != Conf.useWorldConfigurationsAsWhitelist) {
             error = TextUtil.parse(TL.CLAIM_DISABLED.toString());
         } else if (isAdminBypassing() || forFaction.isSafeZone() && Permission.MANAGE_SAFE_ZONE.has(getPlayer()) || forFaction.isWarZone() && Permission.MANAGE_WAR_ZONE.has(getPlayer())) {
@@ -1319,48 +1309,33 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.warmupTask = taskId;
     }
 
-    @Override
     public void checkIfNearbyEnemies() {
         Player me = getPlayer();
-
-        if (me == null || me.hasPermission("factions.fly.bypassnearbyenemycheck")) {
-            return;
-        }
+        if (me == null || me.hasPermission("factions.fly.bypassnearbyenemycheck")) return;
 
         int radius = Conf.stealthFlyCheckRadius;
-        boolean foundEnemy = false;
+        int r2 = radius * radius;
 
-        List<Entity> nearbyEntities = me.getNearbyEntities(radius, 255, radius);
+        boolean found = false;
+        for (Player other : me.getWorld().getPlayers()) {
+            if (other == me || other.hasMetadata("NPC")) continue;
+            if (!me.canSee(other)) continue;
 
-        for (Entity entity : nearbyEntities) {
-            if (!(entity instanceof Player)) {
-                continue;
-            }
+            // cheap distance squared
+            if (other.getLocation().distanceSquared(me.getLocation()) > r2) continue;
 
-            Player enemyPlayer = (Player) entity;
-            if (enemyPlayer.hasMetadata("NPC")) {
-                continue; // Skip NPCs
-            }
+            FPlayer efp = FPlayers.getInstance().getByPlayer(other);
+            if (efp == null || efp.isStealthEnabled()) continue;
 
-            FPlayer enemyFPlayer = FPlayers.getInstance().getByPlayer(enemyPlayer);
-            if (enemyFPlayer == null || !me.canSee(enemyPlayer)) {
-                continue; // Skip invalid or vanished players
-            }
-
-            if (getRelationTo(enemyFPlayer) == Relation.ENEMY && !enemyFPlayer.isStealthEnabled()) {
-                foundEnemy = true;
-                break;
-            }
+            if (getRelationTo(efp) == Relation.ENEMY) { found = true; break; }
         }
 
-        if (foundEnemy && me.isFlying()) {
+        if (found && me.isFlying()) {
             setFlying(false);
             msg(TL.COMMAND_FLY_ENEMY_NEAR);
-            Bukkit.getServer().getPluginManager().callEvent(new FPlayerStoppedFlying(this));
+            Bukkit.getPluginManager().callEvent(new FPlayerStoppedFlying(this));
         }
-
-        // Update the enemiesNearby flag
-        enemiesNearby = foundEnemy;
+        enemiesNearby = found;
     }
 
     @Override

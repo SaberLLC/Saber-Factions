@@ -10,7 +10,10 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentBuilder;
+import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.ChatColor;
 
 public class CmdColeader extends FCommand {
@@ -35,17 +38,26 @@ public class CmdColeader extends FCommand {
     public void perform(CommandContext context) {
         FPlayer you = context.argAsBestFPlayerMatch(0);
         if (you == null) {
-            Component msg = TL.COMMAND_COLEADER_CANDIDATES.toComponent().color(TextUtil.kyoriColor(ChatColor.GOLD));
+            ComponentBuilder<TextComponent, TextComponent.Builder> msgBuilder = Component.text()
+                    .append(TL.COMMAND_COLEADER_CANDIDATES.toComponent().color(TextUtil.kyoriColor(ChatColor.GOLD)));
+
             for (FPlayer player : context.faction.getFPlayersWhereRole(Role.NORMAL)) {
                 String s = player.getName();
-                msg.append(Component.text(s + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_MOD_CLICKTOPROMOTE.toComponent().append(Component.text(s))).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " coleader " + s)));
-            }
-            for (FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
-                String s = player.getName();
-                msg.append(Component.text(s + " ").color(TextUtil.kyoriColor(ChatColor.WHITE)).hoverEvent(TL.COMMAND_MOD_CLICKTOPROMOTE.toComponent().append(Component.text(s))).clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " coleader " + s)));
+                msgBuilder.append(Component.text(s + " ")
+                        .color(TextUtil.kyoriColor(ChatColor.WHITE))
+                        .hoverEvent(HoverEvent.showText(TL.COMMAND_MOD_CLICKTOPROMOTE.toComponent().append(Component.text(s))))
+                        .clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " coleader " + s)));
             }
 
-            context.sendComponent(msg);
+            for (FPlayer player : context.faction.getFPlayersWhereRole(Role.MODERATOR)) {
+                String s = player.getName();
+                msgBuilder.append(Component.text(s + " ")
+                        .color(TextUtil.kyoriColor(ChatColor.WHITE))
+                        .hoverEvent(HoverEvent.showText(TL.COMMAND_MOD_CLICKTOPROMOTE.toComponent().append(Component.text(s))))
+                        .clickEvent(ClickEvent.runCommand("/" + Conf.baseCommandAliases.get(0) + " coleader " + s)));
+            }
+
+            context.sendComponent(msgBuilder.build());
             return;
         }
 
