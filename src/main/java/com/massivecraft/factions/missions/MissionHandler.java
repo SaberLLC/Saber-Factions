@@ -21,10 +21,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -188,14 +185,27 @@ public class MissionHandler implements Listener {
     }
 
     public static void handleMissionsOfType(FPlayer fPlayer, MissionType missionType, BiFunction<Mission, ConfigurationSection, Integer> missionConsumer) {
-        getMissionsOfType(fPlayer, missionType).forEach(mission -> {
-            ConfigurationSection section = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
+        List<Mission> snapshot = getMissionsOfType(fPlayer, missionType)
+                .collect(Collectors.toList());
+
+        for (Mission mission : snapshot) {
+            ConfigurationSection section = plugin.getFileManager()
+                    .getMissions().getConfig()
+                    .getConfigurationSection("Missions." + mission.getName());
+
+            if (section == null) continue;
+
             int missionResult = missionConsumer.apply(mission, section);
             if (missionResult > 0) {
+
+               if(plugin.getFileManager().getMissions().fetchStringList("No-Progress-Worlds").contains(fPlayer.getPlayer().getWorld().getName())) {
+                   return;
+               }
+
                 mission.incrementProgress(missionResult);
-                checkIfDone(fPlayer, mission, section);
+                checkIfDone(fPlayer, mission, section); // may remove from the live map; safe now
             }
-        });
+        }
     }
 
     public static Stream<Mission> getMissionsOfType(FPlayer fPlayer, MissionType missionType) {

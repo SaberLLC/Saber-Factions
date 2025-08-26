@@ -25,7 +25,7 @@ public class TributeInventoryHandler implements Listener {
 
     static Set<Inventory> inventorySet = new HashSet<>();
 
-    public static Inventory getInventory(){
+    public static Inventory getInventory() {
         Inventory inv = Bukkit.createInventory(null, 9 * 4, TextUtil.parse(FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getString("Tribute-GUI-Title")));
 
         inventorySet.add(inv);
@@ -39,7 +39,7 @@ public class TributeInventoryHandler implements Listener {
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         Inventory inventory = e.getInventory();
 
-        if(fPlayer == null)
+        if (fPlayer == null)
             return;
 
         if (!inventorySet.contains(inventory))
@@ -107,7 +107,7 @@ public class TributeInventoryHandler implements Listener {
                     continue;
 
                 //If this mission is has been completed, just skip it
-                if(missingAmount <= 0)
+                if (missingAmount <= 0)
                     break;
 
                 if (itemStack.getType().toString().matches(item)) {
@@ -140,16 +140,16 @@ public class TributeInventoryHandler implements Listener {
     }
 
 
-    private boolean isMissionItem(FPlayer fPlayer, ItemStack itemStack){
-        if(itemStack.getType() == Material.AIR)
+    private boolean isMissionItem(FPlayer fPlayer, ItemStack itemStack) {
+        if (itemStack.getType() == Material.AIR)
             return true;
 
-        for(Mission mission : MissionHandler.getMissionsOfType(fPlayer, MissionType.TRIBUTE).collect(Collectors.toList())){
+        for (Mission mission : MissionHandler.getMissionsOfType(fPlayer, MissionType.TRIBUTE).collect(Collectors.toList())) {
             ConfigurationSection section = FactionsPlugin.getInstance().getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
-            if(section != null) {
+            if (section != null) {
                 String item = section.getString("Mission.Item", MissionHandler.matchAnythingRegex);
 
-                if(itemStack.getType().toString().matches(item)){
+                if (itemStack.getType().toString().matches(item)) {
                     return true;
                 }
             }

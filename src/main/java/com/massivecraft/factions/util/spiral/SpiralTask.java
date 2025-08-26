@@ -21,7 +21,6 @@ public abstract class SpiralTask implements Runnable {
 
     public SpiralTask(FLocation center, int radius, SpiralGenerator generator) {
         this.worldName = center.getWorldName();
-
         if (Bukkit.getWorld(this.worldName) == null) {
             Logger.print("[SpiralTask] Invalid world: " + center.getWorldName(), Logger.PrefixType.WARNING);
             this.spiralQueue = null;
