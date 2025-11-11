@@ -1,5 +1,6 @@
 package com.massivecraft.factions.listeners;
 
+import com.massivecraft.factions.util.ReflectionUtils;
 import com.massivecraft.factions.util.serializable.ClickableItemStack;
 import com.massivecraft.factions.util.serializable.GUIMenu;
 import org.bukkit.entity.Player;
@@ -20,7 +21,8 @@ public class MenuListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getView().getTitle().equals("Faction Logs")) {
+        String title = ReflectionUtils.resolveInventoryTitleCompat(event);
+        if ("Faction Logs".equals(title)) {
             event.setCancelled(true);
         }
 
@@ -28,7 +30,7 @@ public class MenuListener implements Listener {
         GUIMenu menu = GUIMenu.getMenus().get(player.getUniqueId());
         if (menu != null) {
             event.setCancelled(true);
-            if (!menu.getName().equals(event.getView().getTitle())) {
+            if (title == null || !menu.getName().equals(title)) {
                 event.getView().close();
                 return;
             }

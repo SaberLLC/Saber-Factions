@@ -9,6 +9,7 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.CC;
+import com.massivecraft.factions.util.ReflectionUtils;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,10 +24,10 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class FChestListener implements Listener {
-
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent e) {
@@ -48,7 +49,6 @@ public class FChestListener implements Listener {
             fPlayer.setInFactionsChest(false);
     }
 
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerClickInventory(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
@@ -60,7 +60,9 @@ public class FChestListener implements Listener {
         }
 
         Inventory clickedInventory = event.getClickedInventory();
-        if (clickedInventory == null || !event.getView().getTitle().equalsIgnoreCase(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title")))) {
+        String title = ReflectionUtils.resolveInventoryTitleCompat(event);
+        String expected = CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"));
+        if (clickedInventory == null || title == null || !title.equalsIgnoreCase(expected)) {
             return;
         }
 
@@ -79,7 +81,7 @@ public class FChestListener implements Listener {
         Faction faction = fPlayer.getFaction();
         Inventory factionChestInventory = faction.getChestInventory();
 
-        if (event.getView().getTitle().equalsIgnoreCase(CC.translate(FactionsPlugin.getInstance().getConfig().getString("fchest.Inventory-Title"))) && !event.getClick().isShiftClick()) {
+        if (title.equalsIgnoreCase(expected) && !event.getClick().isShiftClick()) {
             if (currentItemType != Material.AIR) {
                 if ((factionChestInventory == null || !factionChestInventory.contains(currentItem)) && clickedInventory == factionChestInventory) {
                     event.setCancelled(true);

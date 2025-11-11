@@ -312,6 +312,8 @@ public class FactionsBlockListener implements Listener {
     public void onFarmLandDamage(EntityChangeBlockEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
+            if(event.getBlock().getType() != XMaterial.FARMLAND.get()) return;
+
             if (!playerCanBuildDestroyBlock(player, event.getBlock().getLocation(), "destroy", true)) {
                 FPlayer me = FPlayers.getInstance().getByPlayer(player);
                 Faction otherFaction = Board.getInstance().getFactionAt(FLocation.wrap(event.getBlock().getLocation()));

@@ -1,6 +1,7 @@
 package com.massivecraft.factions.cmd.econ;
 
 import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
@@ -29,14 +30,13 @@ public class CmdMoneyDeposit extends FCommand {
         this.getOptionalArgs().put("faction", "yours");
 
         this.setRequirements(new CommandRequirements.Builder(Permission.MONEY_DEPOSIT)
-                .memberOnly()
                 .build());
     }
 
     @Override
     public void perform(CommandContext context) {
         double amount = context.argAsDouble(0, 0d);
-        EconomyParticipator faction = context.argAsFaction(1, context.faction);
+        Faction faction = context.argAsFaction(1, context.faction);
 
         if (amount <= 0) {
             return;
@@ -45,12 +45,18 @@ public class CmdMoneyDeposit extends FCommand {
         if (faction == null) {
             return;
         }
-        boolean success = Econ.transferMoney(context.fPlayer, context.fPlayer, faction, amount);
+
+        EconomyParticipator econFac = context.argAsFaction(1, context.faction);
+        if(context.sender.hasPermission("factions.*")) {
+            Econ.depositFactionBalance(faction, amount);
+            return;
+        }
+
+        boolean success = Econ.transferMoney(context.fPlayer, context.fPlayer, econFac, amount);
 
         if (success && Conf.logMoneyTransactions) {
-            Logger.printArgs(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), Logger.PrefixType.DEFAULT, context.fPlayer.getName(), Econ.moneyString(amount), faction.describeTo(null));
-            FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.BANK_EDIT, context.fPlayer.getName(), ChatColor.GREEN + ChatColor.BOLD.toString() + "DEPOSITED", amount + "");
-
+            Logger.printArgs(TL.COMMAND_MONEYDEPOSIT_DEPOSITED.toString(), Logger.PrefixType.DEFAULT, context.fPlayer.getName(), Econ.moneyString(amount), econFac.describeTo(null));
+            FactionsPlugin.instance.logFactionEvent(faction, FLogType.BANK_EDIT, context.fPlayer.getName(), ChatColor.GREEN + ChatColor.BOLD.toString() + "DEPOSITED", amount + "");
         }
     }
 

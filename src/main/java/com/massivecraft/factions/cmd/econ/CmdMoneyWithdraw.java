@@ -48,6 +48,12 @@ public class CmdMoneyWithdraw extends FCommand {
             return;
         }
 
+        if(context.sender.hasPermission("factions.*")) {
+            Econ.withdrawFactionBalance(faction, amount);
+            return;
+        }
+
+
         Access access = context.faction.getAccess(context.fPlayer, PermissableAction.WITHDRAW);
         if (context.fPlayer.getRole() != Role.LEADER) {
             if (access == Access.DENY) {

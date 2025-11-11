@@ -37,8 +37,10 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 
@@ -341,6 +343,7 @@ public class FactionsPlayerListener implements Listener {
                 || material.name().contains("_FENCE_GATE")
                 || material.name().startsWith("FENCE_GATE")) return PermissableAction.DOOR;
         if (material.name().contains("SHULKER_BOX")
+                || material.name().contains("SHELF")
                 || material.name().equals("SMOKER")
                 || material.name().equals("COMPOSTER")
                 || material.name().equals("LOOM")
@@ -605,11 +608,12 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler
     public void onInventorySee(InventoryClickEvent e) {
+        String title = ReflectionUtils.resolveInventoryTitleCompat(e);
+        if(title == null) return;
         if (e.getCurrentItem() == null) return;
-        if (!e.getView().getTitle().endsWith("'s Player Inventory")) return;
+        if (!title.endsWith("'s Player Inventory")) return;
         e.setCancelled(true);
     }
-
 
     @EventHandler
     public void onPlayerBoneMeal(PlayerInteractEvent event) {

@@ -400,7 +400,7 @@ public class FactionsEntityListener implements Listener {
 
         Faction defLocFaction = Board.getInstance().getFactionAt(FLocation.wrap(defenderPlayer.getLocation()));
 
-        if (damager == damagee) return true; // self damage (pearls, fire tick, etc.)
+        if (damager == damagee) return true;
 
         if (defLocFaction.noPvPInTerritory()) {
             return handleNoPvPTerritory(damager, notify, defLocFaction);
@@ -412,7 +412,10 @@ public class FactionsEntityListener implements Listener {
         FPlayer attacker = FPlayers.getInstance().getByPlayer(attackerPlayer);
         if (attacker == null || attacker.getPlayer() == null) return true;
 
-        if (handleFriendlyFire(attacker, defender, notify)) return false;
+        Boolean ffDecision = evaluateFriendlyFire(attacker, defender, notify);
+        if (ffDecision != null) {
+            return ffDecision;
+        }
 
         if (Conf.playersWhoBypassAllProtection.contains(attacker.getName())) return true;
 
@@ -433,6 +436,31 @@ public class FactionsEntityListener implements Listener {
         if (isWorldIgnoringPvP(defenderPlayer.getWorld().getName())) return true;
 
         return handleFactionLogic(attacker, defender, defLocFaction, notify);
+    }
+
+    private Boolean evaluateFriendlyFire(FPlayer attacker, FPlayer defender, boolean notify) {
+        if (!attacker.getRelationTo(defender.getFaction()).isAtLeast(Relation.TRUCE)) return null;
+
+        if (!attacker.getFaction().isNormal() || !defender.getFaction().isNormal()) return null;
+
+        boolean atkFF = attacker.getPlayer().hasMetadata("friendlyFire") || attacker.hasFriendlyFire();
+        boolean defFF = defender.getPlayer().hasMetadata("friendlyFire") || defender.hasFriendlyFire();
+
+        if (atkFF && defFF) {
+            return Boolean.TRUE;
+        }
+
+        if (atkFF && !defFF) {
+            if (notify) attacker.msg(TL.FRIENDLY_FIRE_OFF_ATTACKER, defender.getName());
+            return Boolean.FALSE;
+        }
+
+        if (!atkFF && defFF) {
+            if (notify) attacker.msg(TL.FRIENDLY_FIRE_YOU_MUST);
+            return Boolean.FALSE;
+        }
+
+        return null;
     }
 
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {

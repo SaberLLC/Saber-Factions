@@ -1,6 +1,8 @@
 package com.massivecraft.factions.util;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -28,6 +30,30 @@ import java.util.Map;
 public final class ReflectionUtils {
     // Prevent accidental construction
     private ReflectionUtils() {
+    }
+
+    public static String resolveInventoryTitleCompat(InventoryClickEvent event) {
+        try {
+            Object view = event.getView();
+            if (view != null) {
+                Method m = view.getClass().getMethod("getTitle");
+                Object title = m.invoke(view);
+                if (title instanceof String) return (String) title;
+            }
+        } catch (Throwable ignored) {
+        }
+
+        try {
+            Inventory inv = event.getInventory();
+            if (inv != null) {
+                Method m = inv.getClass().getMethod("getName");
+                Object name = m.invoke(inv);
+                if (name instanceof String) return (String) name;
+            }
+        } catch (Throwable ignored) {
+        }
+
+        return null;
     }
 
     /**
