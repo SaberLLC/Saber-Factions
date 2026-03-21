@@ -67,6 +67,12 @@ public class CmdJoin extends FCommand {
                 return;
             }
 
+            int altLimit = Conf.factionAltMemberLimit;
+            if (altLimit > 0 && faction.getAltPlayers().size() >= altLimit && faction.altInvited(context.fPlayer)) {
+                context.msg(TL.COMMAND_JOIN_ATLIMIT_ALTS, faction.getTag(context.fPlayer), altLimit, fplayer.describeTo(context.fPlayer, false));
+                return;
+            }
+
             if (!useRoster) {
                 if (!(faction.getOpen() || faction.isInvited(fplayer) || context.fPlayer.isAdminBypassing() || Permission.JOIN_ANY.has(context.sender, false))) {
                     context.msg(TL.COMMAND_JOIN_REQUIRESINVITATION);
@@ -75,12 +81,6 @@ public class CmdJoin extends FCommand {
                     }
                     return;
                 }
-            }
-
-            int altLimit = Conf.factionAltMemberLimit;
-            if (altLimit > 0 && faction.getAltPlayers().size() >= altLimit && faction.altInvited(context.fPlayer)) {
-                context.msg(TL.COMMAND_JOIN_ATLIMIT_ALTS, faction.getTag(context.fPlayer), altLimit, fplayer.describeTo(context.fPlayer, false));
-                return;
             }
 
             if (samePlayer && !context.canAffordCommand(Conf.econCostJoin, TL.COMMAND_JOIN_TOJOIN.toString())) {

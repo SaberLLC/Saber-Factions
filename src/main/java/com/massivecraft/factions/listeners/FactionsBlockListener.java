@@ -107,7 +107,7 @@ public class FactionsBlockListener implements Listener {
                         me.msg(replace.replace("{faction}", Board.getInstance().getFactionAt(loc).getTag(myFaction)));
                 }
                 if (myFaction.getTag(me.getFaction()) != null && action != null)
-                    me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
+                me.msg(TL.ACTIONS_NOPERMISSION.toString().replace("{faction}", myFaction.getTag(me.getFaction())).replace("{action}", action.toString()));
                 return false;
             } else if (access == Access.ALLOW) return true;
         }

@@ -34,7 +34,7 @@ public class CmdFly extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        if (context.args.size() == 0) {
+        if (context.args.isEmpty()) {
             toggleFlight(context, !context.fPlayer.isFlying(), true);
         } else if (context.args.size() == 1) {
             if (context.argAsString(0).equalsIgnoreCase("auto")) {
@@ -76,10 +76,16 @@ public class CmdFly extends FCommand {
                 context.msg(TL.COMMAND_FLY_NO_ACCESS, factionAtLocation.getTag(context.fPlayer));
             }
             return false;
-        } else if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight", true)) {
-            context.fPlayer.checkIfNearbyEnemies();
-            return false;
         }
+
+        if (FactionsPlugin.getInstance().getConfig().getBoolean("ffly.enemies-near-disable-flight", true)) {
+            context.fPlayer.checkIfNearbyEnemies();
+            if (context.fPlayer.hasEnemiesNearby()) {
+                if (notify) context.msg(TL.COMMAND_FLY_ENEMY_NEAR);
+                return false;
+            }
+        }
+
         return true;
     }
 

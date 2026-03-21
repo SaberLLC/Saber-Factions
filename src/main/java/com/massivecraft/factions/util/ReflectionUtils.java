@@ -2,7 +2,7 @@ package com.massivecraft.factions.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -33,22 +33,20 @@ public final class ReflectionUtils {
     }
 
     public static String resolveInventoryTitleCompat(InventoryClickEvent event) {
+        // Modern API (1.13+)
+        try {
+            InventoryView view = event.getView();
+            return view.getTitle();
+        } catch (Throwable ignored) {
+        }
+
+        // Legacy API (pre-1.13) - use reflection
         try {
             Object view = event.getView();
             if (view != null) {
                 Method m = view.getClass().getMethod("getTitle");
                 Object title = m.invoke(view);
                 if (title instanceof String) return (String) title;
-            }
-        } catch (Throwable ignored) {
-        }
-
-        try {
-            Inventory inv = event.getInventory();
-            if (inv != null) {
-                Method m = inv.getClass().getMethod("getName");
-                Object name = m.invoke(inv);
-                if (name instanceof String) return (String) name;
             }
         } catch (Throwable ignored) {
         }

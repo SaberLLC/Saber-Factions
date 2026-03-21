@@ -4,7 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
 import com.massivecraft.factions.integration.dynmap.DynmapStyle;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fperms.FPerms;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -420,12 +420,12 @@ public class Conf {
     public static boolean useCustomDefaultPermissions = true;
     public static boolean usePermissionHints = false;
     public static HashMap<String, DefaultPermissions> defaultFactionPermissions = new HashMap<>();
-    public static HashSet<PermissableAction> lockedPermissions = new HashSet<>();
+    public static HashSet<String> lockedPermissions = new HashSet<>();
 
     private static transient Conf i = new Conf();
 
     static {
-        lockedPermissions.add(PermissableAction.CHEST);
+        lockedPermissions.add(FPerms.normalizeId("chest"));
     }
 
     static {

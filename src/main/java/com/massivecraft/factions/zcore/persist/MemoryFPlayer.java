@@ -17,6 +17,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.FPermKey;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.FastUUID;
 import com.massivecraft.factions.zcore.util.TL;
@@ -764,6 +765,17 @@ public abstract class MemoryFPlayer implements FPlayer {
     // Actions
     // -------------------------------
 
+    @Override
+    public boolean hasAccess(FPermKey action) {
+        if (action == null) {
+            return false;
+        }
+        if (isAdminBypassing()) {
+            return true;
+        }
+        return getFaction().getAccess(this, action) == Access.ALLOW;
+    }
+
     /**
      * Check if the scoreboard should be shown. Simple method to be used by above method.
      *
@@ -988,7 +1000,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         if (!hasFaction()) {
             if (notifyFailure) {
-                msg("You are not a member of any faction.");
+                msg(TL.GENERIC_MEMBERONLY);
             }
             return false;
         }

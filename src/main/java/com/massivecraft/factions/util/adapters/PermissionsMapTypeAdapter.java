@@ -5,8 +5,8 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.fperms.Access;
+import com.massivecraft.factions.zcore.fperms.FPerms;
 import com.massivecraft.factions.zcore.fperms.Permissable;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 
 import java.lang.reflect.Type;
@@ -14,10 +14,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissable, Map<PermissableAction, Access>>> {
+public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissable, Map<String, Access>>> {
 
     @Override
-    public Map<Permissable, Map<PermissableAction, Access>> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+    public Map<Permissable, Map<String, Access>> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 
         try {
             JsonObject obj = json.getAsJsonObject();
@@ -25,7 +25,7 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
                 return null;
             }
 
-            Map<Permissable, Map<PermissableAction, Access>> permissionsMap = new ConcurrentHashMap<>();
+            Map<Permissable, Map<String, Access>> permissionsMap = new ConcurrentHashMap<>();
 
             // Top level is Relation
             for (Map.Entry<String, JsonElement> entry : obj.entrySet()) {
@@ -36,24 +36,14 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
                 }
 
                 // Second level is the map between action -> access
-                Map<PermissableAction, Access> accessMap = new HashMap<>();
+                Map<String, Access> accessMap = new HashMap<>();
                 for (Map.Entry<String, JsonElement> entry2 : entry.getValue().getAsJsonObject().entrySet()) {
-                    PermissableAction permissableAction = PermissableAction.fromString(entry2.getKey());
-                    if (permissableAction == null) {
-                        switch (entry2.getKey()) {
-                            case "frostwalk":
-                                permissableAction = PermissableAction.FROST_WALK;
-                                break;
-                            case "painbuild":
-                                permissableAction = PermissableAction.PAIN_BUILD;
-                                break;
-                            case "items":
-                                permissableAction = PermissableAction.ITEM;
-                                break;
-                        }
-                    }
+                    String actionId = FPerms.normalizeId(entry2.getKey());
+                    if (actionId == null) continue;
                     Access access = Access.fromString(entry2.getValue().getAsString());
-                    accessMap.put(permissableAction, access);
+                    if (access != null) {
+                        accessMap.put(actionId, access);
+                    }
                 }
                 permissionsMap.put(permissable, accessMap);
             }

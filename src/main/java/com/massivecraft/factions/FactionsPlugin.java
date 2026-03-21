@@ -35,7 +35,6 @@ import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fupgrades.UpgradesListener;
 import com.massivecraft.factions.zcore.util.ShutdownParameter;
 import com.massivecraft.factions.zcore.util.StartupParameter;
@@ -65,7 +64,7 @@ public class FactionsPlugin extends MPlugin {
 
     public static FactionsPlugin instance;
     private final Gson gsonSerializer = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().enableComplexMapKeySerialization().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE)
-            .registerTypeAdapter(new TypeToken<Map<Permissable, Map<PermissableAction, Access>>>() {
+            .registerTypeAdapter(new TypeToken<Map<Permissable, Map<String, Access>>>() {
             }.getType(), new PermissionsMapTypeAdapter())
             .registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter())
             .registerTypeAdapter(new TypeToken<Map<FLocation, Set<String>>>() {

@@ -359,7 +359,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         //    FactionsPlugin.getInstance().log("CoreProtect not found, disabling Inspect");
         //}
         //FTOP
-        if ((Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null) && !internalFTOPEnabled) {
+        if ((Bukkit.getServer().getPluginManager().getPlugin("FactionsTop") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SavageFTOP") != null || Bukkit.getServer().getPluginManager().getPlugin("SaberFTOP") != null) && !internalFTOPEnabled) {
             Logger.print( "Found FactionsTop plugin. Disabling our own /f top command.", Logger.PrefixType.DEFAULT);
         } else {
             Logger.print( "Internal Factions Top Being Used. NOTE: Very Basic", Logger.PrefixType.DEFAULT);

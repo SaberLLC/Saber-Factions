@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-public enum PermissableAction {
+public enum PermissableAction implements FPermKey {
 
     /**
      * @author FactionsUUID Team - Modified By CmdrKittens
@@ -50,7 +50,7 @@ public enum PermissableAction {
     CHECK("check"),
     SPAWNER("spawner");
 
-    private String name;
+    private final String name;
 
     public static PermissableAction[] VALUES = values();
 
@@ -67,25 +67,25 @@ public enum PermissableAction {
      */
     public static PermissableAction fromString(String check) {
         for (PermissableAction permissableAction : values()) {
-            if (permissableAction.name().equalsIgnoreCase(check)) {
+            if (permissableAction.name().equalsIgnoreCase(check) || permissableAction.getId().equalsIgnoreCase(check)) {
                 return permissableAction;
             }
         }
         return null;
     }
 
-    public static Map<PermissableAction, Access> fromDefaults(DefaultPermissions defaultPermissions) {
-        Map<PermissableAction, Access> defaultMap = new HashMap<>(PermissableAction.VALUES.length);
+    public static Map<String, Access> fromDefaults(DefaultPermissions defaultPermissions) {
+        Map<String, Access> defaultMap = new HashMap<>(PermissableAction.VALUES.length);
         for (PermissableAction permissableAction : PermissableAction.VALUES) {
-            defaultMap.put(permissableAction, defaultPermissions.getbyName(permissableAction.name) ? Access.ALLOW : Access.DENY);
+            defaultMap.put(permissableAction.getId(), defaultPermissions.getById(permissableAction.getId(), false) ? Access.ALLOW : Access.DENY);
         }
         return defaultMap;
     }
 
-    public static Map<PermissableAction, Access> fromPredicated(Predicate<PermissableAction> predicate) {
-        Map<PermissableAction, Access> actions = new EnumMap<>(PermissableAction.class);
+    public static Map<String, Access> fromPredicated(Predicate<PermissableAction> predicate) {
+        Map<String, Access> actions = new HashMap<>(PermissableAction.VALUES.length);
         for (PermissableAction action : PermissableAction.VALUES) {
-            actions.put(action, predicate != null ? Access.parse(predicate.test(action)) : Access.UNDEFINED);
+            actions.put(action.getId(), predicate != null ? Access.parse(predicate.test(action)) : Access.UNDEFINED);
         }
         return actions;
     }
@@ -115,6 +115,11 @@ public enum PermissableAction {
     }
 
     @Override
+    public String getId() {
+        return this.name;
+    }
+
+    @Override
     public String toString() {
         return name;
     }
@@ -127,10 +132,11 @@ public enum PermissableAction {
         meta.setDisplayName(TextUtil.parse(section.getString("placeholder-item.name").replace("{action}", this.name)));
         List<String> lore = section.getStringList("placeholder-item.lore");
 
+        Access access = fme.getFaction().getAccess(perm, this);
         Placeholder.replacePlaceholders(lore,
                 new Placeholder("{description}", this.getDescription()),
-                new Placeholder("{action-access-color}", fme.getFaction().getPermissions().get(perm).get(this).getColor()),
-                new Placeholder("{action-access}", fme.getFaction().getPermissions().get(perm).get(this).getName()));
+                new Placeholder("{action-access-color}", access.getColor()),
+                new Placeholder("{action-access}", access.getName()));
 
         meta.setLore(TextUtil.parse(lore));
         item.setItemMeta(meta);

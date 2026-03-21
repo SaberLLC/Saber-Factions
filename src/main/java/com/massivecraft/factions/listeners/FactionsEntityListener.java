@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.util.XPotionEffect;
+import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -148,7 +149,7 @@ public class FactionsEntityListener implements Listener {
 
                         // Run the check for a player
                         if (damager instanceof Player) {
-                            if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damageee.getLocation(), "destroy", false))
+                            if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damageee.getLocation(), PermissableAction.DESTROY.getId(), false))
                                 event.setCancelled(true);
                         } else {
                             // we don't want to let mobs/arrows destroy item frames/armor stands
@@ -167,7 +168,7 @@ public class FactionsEntityListener implements Listener {
                         // Run the check for a player
                         if (damager instanceof Player) {
                             //I don't understand the plugin enough to make this less hacky. ~avixk
-                            if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damagee.getLocation(), "destroy", false)) {
+                            if (!FactionsBlockListener.playerCanBuildDestroyBlock((Player) damager, damagee.getLocation(), PermissableAction.DESTROY.getId(), false)) {
                                 event.setCancelled(true);
                             }
                         } else {
@@ -621,7 +622,7 @@ public class FactionsEntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerShear(PlayerShearEntityEvent event) {
-        if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getEntity().getLocation(), "destroy", false)) {
+        if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getEntity().getLocation(), PermissableAction.DESTROY.getId(), false)) {
             event.setCancelled(true);
         }
     }
@@ -637,7 +638,7 @@ public class FactionsEntityListener implements Listener {
         Player p = (Player) remover;
 
         if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().name().contains("ITEM_FRAME")) {
-            if (!FactionsBlockListener.playerCanBuildDestroyBlock(p, remover.getLocation(), "destroy", false)) {
+            if (!FactionsBlockListener.playerCanBuildDestroyBlock(p, remover.getLocation(), PermissableAction.DESTROY.getId(), false)) {
                 e.setCancelled(true);
             }
         }
@@ -648,7 +649,7 @@ public class FactionsEntityListener implements Listener {
         if (e.getPlayer() == null) return;
 
         if (e.getEntity().getType() == EntityType.PAINTING || e.getEntity().getType().name().contains("ITEM_FRAME")) {
-            if (!FactionsBlockListener.playerCanBuildDestroyBlock(e.getPlayer(), e.getBlock().getLocation(), "build", false)) {
+            if (!FactionsBlockListener.playerCanBuildDestroyBlock(e.getPlayer(), e.getBlock().getLocation(), PermissableAction.BUILD.getId(), false)) {
                 e.setCancelled(true);
                 e.getPlayer().updateInventory();
             }
@@ -711,7 +712,7 @@ public class FactionsEntityListener implements Listener {
 
         if (!event.getRightClicked().getType().name().contains("ITEM_FRAME")) return;
 
-        if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getRightClicked().getLocation(), "build", false)) {
+        if (!FactionsBlockListener.playerCanBuildDestroyBlock(event.getPlayer(), event.getRightClicked().getLocation(), PermissableAction.BUILD.getId(), false)) {
             event.setCancelled(true);
         }
     }

@@ -223,44 +223,79 @@ public class UpgradesListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onArmorDamage(PlayerItemDamageEvent e) {
-        if (FPlayers.getInstance().getByPlayer(e.getPlayer()) == null) return;
+        FPlayer fp = FPlayers.getInstance().getByPlayer(e.getPlayer());
+        if (fp == null || fp.getFaction() == null || !fp.getFaction().isNormal()) return;
 
-        if (e.getItem().getType().toString().contains("LEGGINGS") || e.getItem().getType().toString().contains("CHESTPLATE") || e.getItem().getType().toString().contains("HELMET") || e.getItem().getType().toString().contains("BOOTS")) {
-            int lvl = FPlayers.getInstance().getByPlayer(e.getPlayer()).getFaction().getUpgrade("Armor");
-            double drop = FactionsPlugin.getInstance().getFileManager().getUpgrades().getConfig().getDouble("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);
-            int newDamage = FastMath.round(e.getDamage() - e.getDamage() * drop);
-            e.setDamage(newDamage);
-        }
+        String typeName = e.getItem().getType().name();
+        boolean armorPiece =
+                typeName.endsWith("_HELMET") ||
+                        typeName.endsWith("_CHESTPLATE") ||
+                        typeName.endsWith("_LEGGINGS") ||
+                        typeName.endsWith("_BOOTS");
+
+        if (!armorPiece) return;
+
+        int lvl = fp.getFaction().getUpgrade("Armor");
+        if (lvl <= 0) return;
+
+        double drop = getPercentAsFraction("fupgrades.MainMenu.Armor.Armor-HP-Drop.level-" + lvl);
+
+        int base = e.getDamage();
+        int newDamage = (int) Math.round(base - (base * drop));
+        e.setDamage(Math.max(0, newDamage));
     }
 
-    @EventHandler
+    private double getPercentAsFraction(String path) {
+        double raw = FactionsPlugin.getInstance()
+                .getFileManager()
+                .getUpgrades()
+                .getConfig()
+                .getDouble(path, 0.0);
+
+        if (raw > 1.0) raw /= 100.0;
+
+        // Safety clamp
+        if (raw < 0.0) raw = 0.0;
+        if (raw > 1.0) raw = 1.0;
+
+        return raw;
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player) || !(event.getEntity() instanceof LivingEntity)) return;
+        if (!(event.getDamager() instanceof Player)) return;
+        if (!(event.getEntity() instanceof LivingEntity)) return;
 
-        Player damager = (Player) event.getDamager();
-        FPlayer attackerFPlayer = FPlayers.getInstance().getByPlayer(damager);
+        final Player damager = (Player) event.getDamager();
+        final FPlayer attackerFPlayer = FPlayers.getInstance().getByPlayer(damager);
 
-        if (attackerFPlayer != null && attackerFPlayer.getFaction().isNormal()) {
-            int damageIncreaseLevel = attackerFPlayer.getFaction().getUpgrade("DamageIncrease");
-            if (damageIncreaseLevel > 0) {
-                double bonus = FactionsPlugin.getInstance().getFileManager().getUpgrades()
-                        .getConfig().getDouble("fupgrades.MainMenu.DamageIncrease.DamageIncreasePercent.level-" + damageIncreaseLevel);
-                event.setDamage(event.getDamage() + event.getDamage() * bonus);
+        if (attackerFPlayer != null && attackerFPlayer.getFaction() != null && attackerFPlayer.getFaction().isNormal()) {
+            int lvl = attackerFPlayer.getFaction().getUpgrade("DamageIncrease");
+            if (lvl > 0) {
+                double bonus = getPercentAsFraction(
+                        "fupgrades.MainMenu.DamageIncrease.DamageIncreasePercent.level-" + lvl
+                );
+
+                double base = event.getDamage();
+                event.setDamage(Math.max(0D, base + (base * bonus)));
             }
         }
 
         if (event.getEntity() instanceof Player) {
-            Player victim = (Player) event.getEntity();
-            FPlayer defenderFPlayer = FPlayers.getInstance().getByPlayer(victim);
+            final Player victim = (Player) event.getEntity();
+            final FPlayer defenderFPlayer = FPlayers.getInstance().getByPlayer(victim);
 
-            if (defenderFPlayer != null && defenderFPlayer.getFaction().isNormal()) {
-                int damageReductLevel = defenderFPlayer.getFaction().getUpgrade("DamageReduct");
-                if (damageReductLevel > 0) {
-                    double reduction = FactionsPlugin.getInstance().getFileManager().getUpgrades()
-                            .getConfig().getDouble("fupgrades.MainMenu.DamageReduct.DamageReductPercent.level-" + damageReductLevel);
-                    event.setDamage(event.getDamage() - event.getDamage() * reduction);
+            if (defenderFPlayer != null && defenderFPlayer.getFaction() != null && defenderFPlayer.getFaction().isNormal()) {
+                int lvl = defenderFPlayer.getFaction().getUpgrade("DamageReduct");
+                if (lvl > 0) {
+                    double reduction = getPercentAsFraction(
+                            "fupgrades.MainMenu.DamageReduct.DamageReductPercent.level-" + lvl
+                    );
+
+                    double base = event.getDamage();
+                    event.setDamage(Math.max(0D, base - (base * reduction)));
                 }
             }
         }

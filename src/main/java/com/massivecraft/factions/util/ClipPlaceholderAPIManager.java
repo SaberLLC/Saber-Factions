@@ -101,10 +101,6 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(fPlayer.getPowerRounded());
             case "player_maxpower":
                 return String.valueOf(fPlayer.getPowerMaxRounded());
-            case "player_kills":
-                return String.valueOf(fPlayer.getKills());
-            case "player_deaths":
-                return String.valueOf(fPlayer.getDeaths());
             case "player_role_prefix":
                 return String.valueOf(fPlayer.getRolePrefix());
             case "player_role":
@@ -203,15 +199,11 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
                 return String.valueOf(faction.getFPlayers().size());
             case "faction_announcement":
                 return String.valueOf(faction.getAnnouncements());
-            case "faction_kills":
-                return String.valueOf(faction.getKills());
-            case "faction_deaths":
-                return String.valueOf(faction.getDeaths());
             case "faction_relation_color":
                 return fPlayer.getColorTo(faction).toString();
             case "grace_time":
                 if (FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining() >= 0) {
-                    return String.valueOf(TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true));
+                    return TimerManager.getRemaining(FactionsPlugin.getInstance().getTimerManager().graceTimer.getRemaining(), true);
                 } else {
                     return TL.GRACE_DISABLED_PLACEHOLDER.toString();
                 }

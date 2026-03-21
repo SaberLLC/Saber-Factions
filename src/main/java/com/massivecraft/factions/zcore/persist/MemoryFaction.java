@@ -17,6 +17,8 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.DefaultPermissions;
+import com.massivecraft.factions.zcore.fperms.FPermKey;
+import com.massivecraft.factions.zcore.fperms.FPerms;
 import com.massivecraft.factions.zcore.fperms.Permissable;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -71,7 +73,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
     protected int maxVaults;
     protected Role defaultRole;
-    protected Map<Permissable, Map<PermissableAction, Access>> permissions = new HashMap<>();
+    protected Map<Permissable, Map<String, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
     protected String player;
     protected String discord;
@@ -790,12 +792,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return deaths;
     }
 
-    public Access getAccess(Permissable permissable, PermissableAction permissableAction) {
-        if (permissable == null || permissableAction == null) {
+    public Access getAccess(Permissable permissable, FPermKey permissableAction) {
+        String actionId = normalizeActionId(permissableAction);
+        if (permissable == null || actionId == null) {
             return Access.UNDEFINED;
         }
 
-        return accessOrElse(permissable, permissableAction, Access.UNDEFINED);
+        return accessOrElse(permissable, actionId, Access.UNDEFINED);
     }
 
     /**
@@ -805,19 +808,20 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
      * @param permissableAction
      * @return
      */
-    public Access getAccess(FPlayer player, PermissableAction permissableAction) {
-        if (player == null || permissableAction == null) return Access.UNDEFINED;
+    public Access getAccess(FPlayer player, FPermKey permissableAction) {
+        String actionId = normalizeActionId(permissableAction);
+        if (player == null || actionId == null) return Access.UNDEFINED;
         if (player.getFaction() == this && player.getRole() == Role.LEADER) return Access.ALLOW;
 
         Permissable perm = player.getFaction() == this ? player.getRole() : player.getFaction().getRelationTo(this);
 
-        return accessOrElse(perm, permissableAction, Access.UNDEFINED);
+        return accessOrElse(perm, actionId, Access.UNDEFINED);
     }
 
-    private Access accessOrElse(Permissable permissable, PermissableAction permissableAction, Access orElse) {
-        Map<PermissableAction, Access> accessMap = this.permissions.get(permissable);
+    private Access accessOrElse(Permissable permissable, String actionId, Access orElse) {
+        Map<String, Access> accessMap = this.permissions.get(permissable);
         if (accessMap != null) {
-            Access access = accessMap.get(permissableAction);
+            Access access = accessMap.get(actionId);
             if (access != null) {
                 return access;
             }
@@ -825,22 +829,34 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return orElse;
     }
 
-    public boolean setPermission(Permissable permissable, PermissableAction permissableAction, Access access) {
-        if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(permissableAction)) {
+    private String normalizeActionId(FPermKey permissableAction) {
+        return permissableAction == null ? null : FPerms.normalizeId(permissableAction.getId());
+    }
+
+    public boolean setPermission(Permissable permissable, FPermKey permissableAction, Access access) {
+        String actionId = normalizeActionId(permissableAction);
+        if (permissable == null || actionId == null) {
             return false;
         }
-        Map<PermissableAction, Access> accessMap = permissions.computeIfAbsent(permissable, p -> new HashMap<>(PermissableAction.VALUES.length));
-        accessMap.put(permissableAction, access);
+        if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(actionId)) {
+            return false;
+        }
+        Map<String, Access> accessMap = permissions.computeIfAbsent(permissable, p -> new HashMap<>(PermissableAction.VALUES.length));
+        accessMap.put(actionId, access);
         return true;
     }
 
-    public boolean setPermission(Permissable permissable, PermissableAction permissableAction, Access access, FPlayer fPlayer) {
-        if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(permissableAction)) {
+    public boolean setPermission(Permissable permissable, FPermKey permissableAction, Access access, FPlayer fPlayer) {
+        String actionId = normalizeActionId(permissableAction);
+        if (permissable == null || actionId == null) {
+            return false;
+        }
+        if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(actionId)) {
             fPlayer.msg(TL.COMMAND_PERM_LOCKED);
             return false;
         }
-        Map<PermissableAction, Access> accessMap = permissions.computeIfAbsent(permissable, p -> new HashMap<>(PermissableAction.VALUES.length));
-        accessMap.put(permissableAction, access);
+        Map<String, Access> accessMap = permissions.computeIfAbsent(permissable, p -> new HashMap<>(PermissableAction.VALUES.length));
+        accessMap.put(actionId, access);
         return true;
     }
 
@@ -873,7 +889,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
      *
      * @return
      */
-    public Map<Permissable, Map<PermissableAction, Access>> getPermissions() {
+    public Map<Permissable, Map<String, Access>> getPermissions() {
         return Collections.unmodifiableMap(permissions);
     }
 

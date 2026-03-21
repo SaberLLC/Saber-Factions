@@ -173,7 +173,7 @@ public class CommandContext {
         if (player == null || fPlayer.hasFaction()) {
             return true;
         }
-        sendMessage("You are not a member of any faction.");
+        msg(TL.GENERIC_MEMBERONLY);
         return false;
     }
 

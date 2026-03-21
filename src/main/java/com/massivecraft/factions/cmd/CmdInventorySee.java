@@ -64,7 +64,7 @@ public class CmdInventorySee extends FCommand {
     public Inventory createCopy(Player player) {
         FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
         int inventorySize = Math.min(54, (player.getInventory().getSize() + 9) / 9 * 9);
-        Inventory inventory = Bukkit.createInventory(null, inventorySize, fPlayer.getNameAndTag() + "'s Player Inventory");
+        Inventory inventory = Bukkit.createInventory(null, inventorySize, fPlayer.getName() + "'s Player Inventory");
 
         ItemStack[] armor = player.getEquipment().getArmorContents();
         ItemStack[] items = player.getInventory().getContents();

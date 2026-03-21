@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
+import com.massivecraft.factions.zcore.fperms.FPermKey;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -331,8 +332,6 @@ public interface FPlayer extends EconomyParticipator {
 
     int getPowerMinRounded();
 
-    long getMillisPassed();
-
     long getLastPowerUpdateTime();
 
     void updatePower();
@@ -359,6 +358,8 @@ public interface FPlayer extends EconomyParticipator {
     // -------------------------------
     // Actions
     // -------------------------------
+
+    boolean hasAccess(FPermKey action);
 
 
     void leave(boolean makePay);

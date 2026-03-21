@@ -12,7 +12,7 @@ import com.massivecraft.factions.util.FastChunk;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.Permissable;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fperms.FPermKey;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -176,7 +176,6 @@ public interface Faction extends EconomyParticipator {
 
     void takeTnt(int amt);
 
-
     Inventory getChestInventory();
 
     void setChestSize(int chestSize);
@@ -272,13 +271,13 @@ public interface Faction extends EconomyParticipator {
 
     int getDeaths();
 
-    Access getAccess(Permissable permissable, PermissableAction permissableAction);
+    Access getAccess(Permissable permissable, FPermKey permissableAction);
 
-    Access getAccess(FPlayer player, PermissableAction permissableAction);
+    Access getAccess(FPlayer player, FPermKey permissableAction);
 
-    boolean setPermission(Permissable permissable, PermissableAction permissableAction, Access access);
+    boolean setPermission(Permissable permissable, FPermKey permissableAction, Access access);
 
-    boolean setPermission(Permissable permissable, PermissableAction permissableAction, Access access, FPlayer fPlayer);
+    boolean setPermission(Permissable permissable, FPermKey permissableAction, Access access, FPlayer fPlayer);
 
     void resetPerms();
 
@@ -293,7 +292,7 @@ public interface Faction extends EconomyParticipator {
     // Relation and relation colors
     // -------------------------------
 
-    Map<Permissable, Map<PermissableAction, Access>> getPermissions();
+    Map<Permissable, Map<String, Access>> getPermissions();
 
     @Override
     String describeTo(RelationParticipator that, boolean ucfirst);

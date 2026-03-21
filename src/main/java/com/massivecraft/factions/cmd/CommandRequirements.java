@@ -4,7 +4,7 @@ import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.fperms.Access;
-import com.massivecraft.factions.zcore.fperms.PermissableAction;
+import com.massivecraft.factions.zcore.fperms.FPermKey;
 import com.massivecraft.factions.zcore.util.TL;
 
 public class  CommandRequirements {
@@ -13,12 +13,12 @@ public class  CommandRequirements {
     private final boolean playerOnly;
     private final boolean memberOnly;
     private final Role role;
-    private final PermissableAction action;
+    private final FPermKey action;
     private final Class<? extends BrigadierProvider> brigadier;
     private boolean errorOnManyArgs;
     private boolean disableOnLock;
 
-    private CommandRequirements(Permission permission, boolean playerOnly, boolean memberOnly, Role role, PermissableAction action, Class<? extends BrigadierProvider> brigadier) {
+    private CommandRequirements(Permission permission, boolean playerOnly, boolean memberOnly, Role role, FPermKey action, Class<? extends BrigadierProvider> brigadier) {
         this.permission = permission;
         this.playerOnly = playerOnly;
         this.memberOnly = memberOnly;
@@ -52,7 +52,7 @@ public class  CommandRequirements {
                 }
                 Access access = context.faction.getAccess(context.fPlayer, action);
                 if (access == Access.DENY) {
-                    if (informIfNot) context.msg(TL.GENERIC_FPERM_NOPERMISSION, action.getName());
+                    if (informIfNot) context.msg(TL.GENERIC_FPERM_NOPERMISSION, action.getId());
                     return false;
                 }
                 if (access != Access.ALLOW && role != null && !context.fPlayer.getRole().isAtLeast(role)) {
@@ -87,7 +87,7 @@ public class  CommandRequirements {
         return role;
     }
 
-    public PermissableAction getAction() {
+    public FPermKey getAction() {
         return action;
     }
 
@@ -109,7 +109,7 @@ public class  CommandRequirements {
         private boolean playerOnly = false;
         private boolean memberOnly = false;
         private Role role = null;
-        private PermissableAction action;
+        private FPermKey action;
         private Class<? extends BrigadierProvider> brigadier;
         private boolean errorOnManyArgs = true;
         private boolean disableOnLock = true;
@@ -134,7 +134,7 @@ public class  CommandRequirements {
             return this;
         }
 
-        public Builder withAction(PermissableAction action) {
+        public Builder withAction(FPermKey action) {
             this.action = action;
             return this;
         }
