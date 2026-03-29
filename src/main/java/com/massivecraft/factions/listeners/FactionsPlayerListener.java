@@ -264,6 +264,11 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
+        if (at.isNormal() && rel.isTruce() && !Conf.territoryTruceDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryTruceDenyCommands.iterator())) {
+            me.msg(TL.PLAYER_COMMAND_TRUCE, fullCmd);
+            return true;
+        }
+
         if (at.isNormal() && rel.isNeutral() && !Conf.territoryNeutralDenyCommands.isEmpty() && !me.isAdminBypassing() && isCommandInList(fullCmd, shortCmd, Conf.territoryNeutralDenyCommands.iterator())) {
             me.msg(TL.PLAYER_COMMAND_NEUTRAL, fullCmd);
             return true;

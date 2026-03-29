@@ -202,6 +202,7 @@ public class Conf {
     public static Set<String> permanentFactionMemberDenyCommands = new LinkedHashSet<>();
     // commands which will be prevented when in claimed territory of another faction
     public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<>();
+    public static Set<String> territoryTruceDenyCommands = new LinkedHashSet<>();
     public static Set<String> territoryEnemyDenyCommands = new LinkedHashSet<>();
     public static Set<String> territoryAllyDenyCommands = new LinkedHashSet<>();
     public static Set<String> warzoneDenyCommands = new LinkedHashSet<>();
