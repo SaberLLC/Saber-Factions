@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.massivecraft</groupId>
+        <artifactId>Factions</artifactId>
+        <version>1.6.9.5-4.2.5</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>factions-plugin</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SaberFactions Plugin</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>factions-shared</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>factions-modern</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>factions-legacy</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.parent.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <minimizeJar>false</minimizeJar>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <transformers>
+                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                    </transformers>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.apache.commons.lang3</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.apache</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.cryptomorin</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.bstats</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.org.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.dv8tion</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.net.dv8tion</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>xyz.xenondevs</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.particlelib</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.net.kyori</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.darkblade12</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.com.darkblade12</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                            <shadedPattern>com.massivecraft.factions.shade.nbtapi</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
