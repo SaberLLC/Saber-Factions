@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -18,7 +17,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.scheduler.BukkitTask;
+import com.massivecraft.factions.scheduler.FactionTask;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -33,7 +32,7 @@ public class MissionHandler implements Listener {
     private static final String ALL = "ALL";
 
     private static FactionsPlugin plugin;
-    private static final Map<String, Map<String, BukkitTask>> deadlines = new HashMap<>();
+    private static final Map<String, Map<String, FactionTask>> deadlines = new HashMap<>();
 
     public MissionHandler(FactionsPlugin plugin) {
         MissionHandler.plugin = plugin;
@@ -168,20 +167,20 @@ public class MissionHandler implements Listener {
     }
 
     public static void setDeadlineTask(Mission mission, Faction faction, long timeTillDeadline) {
-        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> {
+        FactionTask factionTask = FactionsPlugin.getScheduler().runAsyncLater(timeTillDeadline / 50L, () -> {
             ConfigurationSection missionSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Missions." + mission.getName());
             if (mission.getProgress() < missionSection.getLong("Mission.Amount", 0L)) {
                 faction.getMissions().remove(mission.getName());
                 faction.msg(TL.MISSION_MISSION_FAILED, TextUtil.parse(missionSection.getString("Name")));
             }
 
-            Map<String, BukkitTask> tasks = deadlines.get(faction.getId());
+            Map<String, FactionTask> tasks = deadlines.get(faction.getId());
             if (tasks != null) {
                 tasks.remove(mission.getName());
             }
-        }, timeTillDeadline / 50L);
+        });
 
-        deadlines.computeIfAbsent(faction.getId(), id -> new HashMap<>()).put(mission.getName(), bukkitTask);
+        deadlines.computeIfAbsent(faction.getId(), id -> new HashMap<>()).put(mission.getName(), factionTask);
     }
 
     public static void handleMissionsOfType(FPlayer fPlayer, MissionType missionType, BiFunction<Mission, ConfigurationSection, Integer> missionConsumer) {
@@ -235,11 +234,11 @@ public class MissionHandler implements Listener {
         faction.getCompletedMissions().add(mission.getName());
 
         long deadlineMillis = plugin.getFileManager().getMissions().getConfig().getLong("MissionDeadline", 0L);
-        Map<String, BukkitTask> tasks = deadlines.get(faction.getId());
+        Map<String, FactionTask> tasks = deadlines.get(faction.getId());
         if (deadlineMillis > 0L && tasks != null) {
-            BukkitTask bukkitTask = tasks.remove(mission.getName());
-            if (bukkitTask != null) {
-                bukkitTask.cancel();
+            FactionTask deadlineTask = tasks.remove(mission.getName());
+            if (deadlineTask != null) {
+                deadlineTask.cancel();
             }
 
             ConfigurationSection prestigeSection = plugin.getFileManager().getMissions().getConfig().getConfigurationSection("Prestige");

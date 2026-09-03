@@ -9,13 +9,16 @@ import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.sidebar.FInfoSidebar;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.FactionRole;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.*;
+import com.massivecraft.factions.scheduler.FactionTask;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.FPermKey;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -28,7 +31,7 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -54,6 +57,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected HashMap<String, Long> commandCooldown = new HashMap<>();
     protected String factionId;
     protected Role role;
+    protected String roleId;
     protected String title;
     protected double power;
     protected double powerBoost;
@@ -69,7 +73,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected boolean spyingChat = false;
     protected boolean showScoreboard = true;
     protected WarmUpUtil.Warmup warmup;
-    protected int warmupTask;
+    protected transient FactionTask warmupTask;
     protected boolean isAdminBypassing = false;
     protected int kills, deaths;
     protected boolean willAutoLeave = true;
@@ -134,6 +138,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.loginPvpDisabled = other.loginPvpDisabled;
         this.powerBoost = other.powerBoost;
         this.role = other.role;
+        this.roleId = other.roleId;
         this.title = other.title;
         this.isAlt = other.isAlt;
         this.chatMode = other.chatMode;
@@ -239,6 +244,15 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (alt) faction.addAltPlayer(this);
         else faction.addFPlayer(this);
         this.factionId = faction.getId();
+        this.isAlt = alt;
+        if (faction.getRole(this.roleId) == null) {
+            FactionRole fallback = alt ? faction.getRole(Role.NORMAL) : faction.getDefaultFactionRole();
+            if (fallback != null) {
+                this.roleId = fallback.getId();
+                this.role = fallback.getTier();
+            }
+        }
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     @Override
@@ -301,27 +315,101 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public Role getRole() {
-        // Hack to fix null roles..
-        if (role == null) this.role = Role.NORMAL;
-        Faction faction = this.getFaction();
-        if (faction != null && faction.isAdminFaction() && this.role != Role.NORMAL) {
-            this.role = Role.NORMAL;
-        }
-        return this.role;
+        return getFactionRole().getTier();
     }
 
     public void setRole(Role role) {
+        if (role == null) {
+            role = Role.NORMAL;
+        }
         Faction faction = this.getFaction();
         if (faction != null && faction.isAdminFaction()) {
             role = Role.NORMAL;
         }
-        if (this.role == role) return;
-        FPlayerRoleChangeEvent event = new FPlayerRoleChangeEvent(faction, this, role);
-        Bukkit.getPluginManager().callEvent(event);
+        FactionRole factionRole = faction != null ? faction.getRole(role) : FactionRole.fromRole(role);
+        setFactionRole(factionRole);
+    }
 
-        if (!event.isCancelled()) {
-            this.role = event.getTo();
+    @Override
+    public FactionRole getFactionRole() {
+        Role legacyRole = this.role == null ? Role.NORMAL : this.role;
+        Faction faction = this.getFaction();
+
+        if (faction != null && faction.isAdminFaction()) {
+            this.role = Role.NORMAL;
+            this.roleId = FactionRole.getSystemRoleId(Role.NORMAL);
         }
+
+        if (faction != null && faction.isNormal()) {
+            FactionRole resolved = faction.getRole(this.roleId);
+            if (resolved == null) {
+                resolved = faction.getRole(legacyRole);
+            }
+            if (resolved == null) {
+                resolved = faction.getDefaultFactionRole();
+            }
+            if (resolved != null) {
+                this.role = resolved.getTier();
+                this.roleId = resolved.getId();
+                return resolved;
+            }
+        }
+
+        if (this.roleId == null) {
+            this.roleId = FactionRole.getSystemRoleId(legacyRole);
+        }
+        this.role = legacyRole;
+        return new FactionRole(this.roleId, null, null, legacyRole, true);
+    }
+
+    @Override
+    public String getRoleId() {
+        return getFactionRole().getId();
+    }
+
+    @Override
+    public void setFactionRole(FactionRole factionRole) {
+        Faction faction = this.getFaction();
+        FactionRole resolved = factionRole;
+
+        if (faction != null) {
+            if (faction.isAdminFaction()) {
+                resolved = faction.getRole(Role.NORMAL);
+            } else if (factionRole != null) {
+                FactionRole lookedUp = faction.getRole(factionRole.getId());
+                if (lookedUp != null) {
+                    resolved = lookedUp;
+                } else {
+                    resolved = faction.getRole(factionRole.getTier());
+                }
+            }
+        }
+
+        if (resolved == null) {
+            resolved = faction != null ? faction.getRole(Role.NORMAL) : FactionRole.fromRole(Role.NORMAL);
+        }
+
+        Role previousRole = this.role == null ? Role.NORMAL : this.role;
+        boolean tierChanged = previousRole != resolved.getTier();
+        if (!tierChanged && Objects.equals(this.roleId, resolved.getId())) {
+            return;
+        }
+
+        if (tierChanged) {
+            FPlayerRoleChangeEvent event = new FPlayerRoleChangeEvent(faction, this, previousRole, resolved.getTier());
+            Bukkit.getPluginManager().callEvent(event);
+            if (event.isCancelled()) {
+                return;
+            }
+            resolved = faction != null ? faction.getRole(event.getTo()) : FactionRole.fromRole(event.getTo());
+            if (resolved == null) {
+                resolved = FactionRole.fromRole(event.getTo());
+            }
+        }
+
+        this.roleId = resolved.getId();
+        this.role = resolved.getTier();
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     public double getPowerBoost() {
@@ -438,6 +526,9 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (factionId != null && Factions.getInstance().isValidFactionId(this.getFactionId())) {
             Faction currentFaction = this.getFaction();
 
+            if (this.isAlt()) {
+                currentFaction.removeAltPlayer(this);
+            }
             currentFaction.removeFPlayer(this);
             if (currentFaction.isNormal()) {
                 currentFaction.clearClaimOwnership(this);
@@ -447,9 +538,11 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.factionId = "0"; // The default neutral faction
         this.chatMode = ChatMode.PUBLIC;
         this.role = Role.NORMAL;
+        this.roleId = FactionRole.getSystemRoleId(Role.NORMAL);
         this.title = "";
         this.autoClaimFor = null;
         this.isAlt = false;
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     public void resetFactionData() {
@@ -535,7 +628,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     // These are used in information messages
 
     public String getNameAndSomething(String something) {
-        return this.role.getPrefix() + (something.length() > 0 ? something + " " : "") + this.getName();
+        return this.getRolePrefix() + (something.length() > 0 ? something + " " : "") + this.getName();
     }
 
     public String getNameAndTitle() {
@@ -558,7 +651,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public String getChatTag() {
-        return this.hasFaction() ? String.format(Conf.chatTagFormat, this.getRole().getPrefix() + this.getTag()) : TL.NOFACTION_PREFIX.toString();
+        return this.hasFaction() ? String.format(Conf.chatTagFormat, this.getRolePrefix() + this.getTag()) : TL.NOFACTION_PREFIX.toString();
     }
 
     // Colored Chat Tag
@@ -720,7 +813,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         };
 
         if (Bukkit.isPrimaryThread()) regen.run();
-        else Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), regen);
+        else FactionsPlugin.getScheduler().runGlobal(regen);
     }
 
     public void losePowerFromBeingOffline() {
@@ -870,9 +963,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         if (myFaction.isNormal()) {
             for (FPlayer fplayer : myFaction.getFPlayersWhereOnline(true))
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> fplayer.msg(TL.LEAVE_LEFT, this.describeTo(fplayer, true), myFaction.describeTo(fplayer)));
+                FactionsPlugin.getScheduler().runAsync(() -> fplayer.msg(TL.LEAVE_LEFT, this.describeTo(fplayer, true), myFaction.describeTo(fplayer)));
             if (Conf.logFactionLeave)
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> Logger.print(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()), Logger.PrefixType.DEFAULT));
+                FactionsPlugin.getScheduler().runAsync(() -> Logger.print(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()), Logger.PrefixType.DEFAULT));
         }
         myFaction.removeAnnouncements(this);
         if (this.isAlt()) {
@@ -903,9 +996,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
             Factions.getInstance().removeFaction(myFaction.getId());
             if (Conf.logFactionDisband)
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance,
-                        () -> Logger.print(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(),
-                                this.getName()).replace("{claims}", myFaction.getAllClaims().size() + ""), Logger.PrefixType.DEFAULT));
+                FactionsPlugin.getScheduler().runAsync(() -> Logger.print(TL.LEAVE_DISBANDEDLOG.format(myFaction.getTag(), myFaction.getId(),
+                        this.getName()).replace("{claims}", myFaction.getAllClaims().size() + ""), Logger.PrefixType.DEFAULT));
         }
     }
 
@@ -1176,12 +1268,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             // Otherwise, start a timer and have this cancel after a few seconds.
             if (cooldown > 0) {
                 setTakeFallDamage(false);
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        setTakeFallDamage(true);
-                    }
-                }.runTaskLater(FactionsPlugin.getInstance(), 20L * cooldown);
+                FactionsPlugin.getScheduler().runGlobalLater(20L * cooldown, () -> setTakeFallDamage(true));
             }
         }
 
@@ -1308,7 +1395,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void sendComponent(List<Component> messages) {
-        messages.forEach(this::sendComponent);
+        messages.forEach(message -> this.sendComponent(message));
     }
 
     public int getMapHeight() {
@@ -1379,7 +1466,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     @Override
     public void clearWarmup() {
         if (warmup != null) {
-            Bukkit.getScheduler().cancelTask(warmupTask);
+            if (warmupTask != null && !warmupTask.isCancelled()) {
+                warmupTask.cancel();
+            }
+            warmupTask = null;
             this.stopWarmup();
         }
     }
@@ -1387,6 +1477,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     @Override
     public void stopWarmup() {
         warmup = null;
+        warmupTask = null;
     }
 
     @Override
@@ -1400,10 +1491,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     @Override
-    public void addWarmup(WarmUpUtil.Warmup warmup, int taskId) {
+    public void addWarmup(WarmUpUtil.Warmup warmup, FactionTask task) {
         if (this.warmup != null) this.clearWarmup();
         this.warmup = warmup;
-        this.warmupTask = taskId;
+        this.warmupTask = task;
     }
 
     public void checkIfNearbyEnemies() {
@@ -1581,7 +1672,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 
         // announce success
-        if (!FactionsPlugin.cachedRadiusClaim) {
+        if (ClaimMessageControl.shouldNotifySuccess()) {
             Set<FPlayer> informTheseFPlayers = new HashSet<>();
             informTheseFPlayers.add(this);
             informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
@@ -1593,7 +1684,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         Board.getInstance().setFactionAt(forFaction, flocation);
 
         if (Conf.logLandClaims) {
-            FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> Logger.printArgs(TL.CLAIM_CLAIMEDLOG.toString(), Logger.PrefixType.DEFAULT, this.getName(), flocation.getCoordString(), forFaction.getTag()));
+            FactionsPlugin.getScheduler().runAsync(() -> Logger.printArgs(TL.CLAIM_CLAIMEDLOG.toString(), Logger.PrefixType.DEFAULT, this.getName(), flocation.getCoordString(), forFaction.getTag()));
         }
 
         return true;
@@ -1602,20 +1693,7 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     @Override
     public String getRolePrefix() {
-
-        switch (getRole()) {
-            case RECRUIT:
-                return Conf.prefixRecruit;
-            case NORMAL:
-                return Conf.prefixNormal;
-            case MODERATOR:
-                return Conf.prefixMod;
-            case COLEADER:
-                return Conf.prefixCoLeader;
-            case LEADER:
-                return Conf.prefixLeader;
-        }
-        return null;
+        return getFactionRole().getPrefix();
     }
 
     @Override

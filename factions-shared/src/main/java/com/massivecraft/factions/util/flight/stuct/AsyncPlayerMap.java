@@ -4,6 +4,7 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.TitleUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -31,7 +32,7 @@ public class AsyncPlayerMap implements Runnable, Listener {
 
     public AsyncPlayerMap(Plugin bukkitPlugin) {
         Bukkit.getPluginManager().registerEvents(this, bukkitPlugin);
-        Bukkit.getScheduler().runTaskTimer(bukkitPlugin, this, 20L, 20L);
+        FactionsPlugin.getScheduler().runGlobalRepeating(20L, 20L, this);
     }
 
     @Override

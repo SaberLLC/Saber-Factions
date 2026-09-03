@@ -1,0 +1,441 @@
+settings:
+  custom-role-system: false
+  max-custom-roles: -1
+
+common:
+  filler:
+    enabled: true
+    Material: GRAY_STAINED_GLASS_PANE
+    Name: " "
+    Lore: []
+  values:
+    none: "&7(none)"
+    system: "&7system"
+    custom: "&acustom"
+    default: "&aDefault join role"
+    default-state: "&atrue"
+    non-default-state: "&7false"
+    online: "&aonline"
+    offline: "&7offline"
+    role-fallback: "Role"
+
+menus:
+  main:
+    title: "&8Faction Roles"
+    rows: 6
+    slots:
+      create: 0
+      members: 1
+      permissions: 2
+      info: 4
+      previous: 45
+      close: 49
+      next: 53
+      role-slots:
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 17
+        - 18
+        - 19
+        - 20
+        - 21
+        - 22
+        - 23
+        - 24
+        - 25
+        - 26
+        - 27
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+        - 36
+        - 37
+        - 38
+        - 39
+        - 40
+        - 41
+        - 42
+        - 43
+        - 44
+    items:
+      create:
+        Material: ANVIL
+        Name: "&aCreate Role"
+        Lore:
+          - "&7Roles: &f{role-count}&7/&f{role-limit}"
+          - ""
+          - "&eClick &7to create a role"
+      members:
+        Material: BOOK
+        Name: "&bMembers"
+        Lore:
+          - "&7Assign faction members to roles."
+          - ""
+          - "&eClick &7to manage members"
+      permissions:
+        Material: REDSTONE
+        Name: "&cPermissions"
+        Lore:
+          - "&7Control what each role can do."
+          - ""
+          - "&eClick &7to edit permissions"
+      info:
+        Material: NETHER_STAR
+        Name: "&eRoles"
+        Lore:
+          - "&7Create roles, assign members,"
+          - "&7and edit role permissions."
+          - ""
+          - "&7Page &f{page}&7/&f{max-page}"
+      previous:
+        Material: ARROW
+        Name: "&ePrevious Page"
+        Lore:
+          - "&7Go to page &f{page}&7."
+      next:
+        Material: ARROW
+        Name: "&eNext Page"
+        Lore:
+          - "&7Go to page &f{page}&7."
+      close:
+        Material: BARRIER
+        Name: "&cClose"
+        Lore: []
+      role:
+        Material: NAME_TAG
+        Name: "&f{role-name}"
+        Lore:
+          - "&7Members: &f{role-members}"
+          - ""
+          - "&eLeft-Click &7Edit"
+          - "&eRight-Click &7Set default"
+      role-default:
+        Material: EMERALD
+        Name: "&a{role-name}"
+        Glow: true
+        Lore:
+          - "&7Members: &f{role-members}"
+          - "&aDefault join role"
+          - ""
+          - "&eLeft-Click &7Edit"
+
+  detail:
+    title: "&8Role: {role-name}"
+    rows: 5
+    slots:
+      summary: 4
+      display-name: 20
+      permissions: 22
+      members: 24
+      default: 30
+      delete: 32
+      back: 36
+      close: 44
+    items:
+      summary:
+        Material: NAME_TAG
+        Name: "&f{role-name}"
+        Lore:
+          - "&7Members: &f{role-members}"
+      summary-default:
+        Material: EMERALD
+        Name: "&a{role-name}"
+        Glow: true
+        Lore:
+          - "&7Members: &f{role-members}"
+          - "&aDefault join role"
+      display-name:
+        Material: NAME_TAG
+        Name: "&eRename"
+        Lore:
+          - "&7Current name: &f{role-name}"
+          - ""
+          - "&eClick &7to rename"
+      default:
+        Material: REDSTONE_BLOCK
+        Name: "&eMake Default"
+        Lore:
+          - "&7New members will receive"
+          - "&7this role when they join."
+          - ""
+          - "&eClick &7to set default"
+      default-current:
+        Material: EMERALD_BLOCK
+        Name: "&aDefault Role"
+        Glow: true
+        Lore:
+          - "&7New members receive this role."
+      default-locked:
+        Material: BARRIER
+        Name: "&cCannot Set Default"
+        Lore:
+          - "&7This role cannot be used"
+          - "&7as the join role."
+      permissions:
+        Material: REDSTONE
+        Name: "&cPermissions"
+        Lore:
+          - "&7Edit what this role can do."
+          - ""
+          - "&eClick &7to edit permissions"
+      members:
+        Material: BOOK
+        Name: "&bMembers"
+        Lore:
+          - "&7Assign members to roles."
+          - ""
+          - "&eClick &7to manage members"
+      delete:
+        Material: BARRIER
+        Name: "&cDelete"
+        Lore:
+          - "&7Members using this role"
+          - "&7move to the default role."
+          - ""
+          - "&eClick &7to delete"
+      system:
+        Material: IRON_BARS
+        Name: "&7Locked"
+        Lore:
+          - "&7This role cannot be deleted."
+      back:
+        Material: ARROW
+        Name: "&eBack"
+        Lore: []
+      close:
+        Material: BARRIER
+        Name: "&cClose"
+        Lore: []
+
+  create:
+    title: "&8Create Role"
+    rows: 6
+    slots:
+      header: 4
+      back: 45
+      previous: 46
+      close: 49
+      next: 52
+      template-slots:
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 17
+        - 18
+        - 19
+        - 20
+        - 21
+        - 22
+        - 23
+        - 24
+        - 25
+        - 26
+        - 27
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+        - 36
+        - 37
+        - 38
+        - 39
+        - 40
+        - 41
+        - 42
+        - 43
+        - 44
+    items:
+      header:
+        Material: ANVIL
+        Name: "&aCreate Role"
+        Lore:
+          - "&7Choose a template for"
+          - "&7the new role."
+          - ""
+          - "&7Page &f{page}&7/&f{max-page}"
+      back:
+        Material: ARROW
+        Name: "&eBack"
+        Lore: []
+      previous:
+        Material: ARROW
+        Name: "&ePrevious Page"
+        Lore:
+          - "&7Go to page &f{page}&7."
+      next:
+        Material: ARROW
+        Name: "&eNext Page"
+        Lore:
+          - "&7Go to page &f{page}&7."
+      close:
+        Material: BARRIER
+        Name: "&cClose"
+        Lore: []
+      role:
+        Material: BOOK
+        Name: "&f{role-name}"
+        Lore:
+          - "&7Use this role as the"
+          - "&7starting template."
+          - ""
+          - "&eClick &7to select"
+
+  members:
+    title: "&8Member Roles"
+    rows: 6
+    slots:
+      header: 4
+      back: 45
+      previous: 46
+      close: 49
+      next: 52
+      member-slots:
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 17
+        - 18
+        - 19
+        - 20
+        - 21
+        - 22
+        - 23
+        - 24
+        - 25
+        - 26
+        - 27
+        - 28
+        - 29
+        - 30
+        - 31
+        - 32
+        - 33
+        - 34
+        - 35
+        - 36
+        - 37
+        - 38
+        - 39
+        - 40
+        - 41
+        - 42
+        - 43
+        - 44
+    items:
+      header:
+        Material: BOOK
+        Name: "&bMembers"
+        Lore:
+          - "&7Choose a member to assign"
+          - "&7a faction role."
+          - ""
+          - "&7Page &f{page}&7/&f{max-page}"
+      back:
+        Material: ARROW
+        Name: "&eBack"
+        Lore: []
+      previous:
+        Material: ARROW
+        Name: "&ePrevious Page"
+        Lore:
+          - "&7Go to page &f{page}&7."
+      next:
+        Material: ARROW
+        Name: "&eNext Page"
+        Lore:
+          - "&7Go to page &f{page}&7."
+      close:
+        Material: BARRIER
+        Name: "&cClose"
+        Lore: []
+      member:
+        Material: PAPER
+        Name: "&f{member-name}"
+        Lore:
+          - "&7Role: &f{member-role}"
+          - "&7Status: {member-status}"
+          - ""
+          - "&eClick &7to change role"
+      member-leader:
+        Material: NETHER_STAR
+        Name: "&f{member-name}"
+        Lore:
+          - "&7Role: &f{member-role}"
+          - "&7Status: {member-status}"
+          - ""
+          - "&cUse /f admin to transfer leadership."
+
+  member-picker:
+    title: "&8Assign Role: {member-name}"
+    rows: 4
+    slots:
+      header: 4
+      back: 27
+      close: 35
+      roles:
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+        - 17
+        - 18
+        - 19
+        - 20
+        - 21
+        - 22
+        - 23
+        - 24
+        - 25
+    items:
+      header:
+        Material: BOOK
+        Name: "&b{member-name}"
+        Lore:
+          - "&7Current role: &f{member-role}"
+      back:
+        Material: ARROW
+        Name: "&eBack"
+        Lore: []
+      close:
+        Material: BARRIER
+        Name: "&cClose"
+        Lore: []
+      role:
+        Material: NAME_TAG
+        Name: "&f{role-name}"
+        Lore:
+          - "&eClick &7to assign"
+      role-current:
+        Material: EMERALD
+        Name: "&a{role-name}"
+        Glow: true
+        Lore:
+          - "&aCurrently assigned"

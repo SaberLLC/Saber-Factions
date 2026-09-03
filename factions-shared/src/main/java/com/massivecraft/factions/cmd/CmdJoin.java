@@ -27,7 +27,7 @@ public class CmdJoin extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
+        FactionsPlugin.getScheduler().runAsync(() -> {
 
             Faction faction = context.argAsFaction(0);
             if (faction == null) return;
@@ -140,7 +140,7 @@ public class CmdJoin extends FCommand {
                 }
             }
 
-            FactionsPlugin.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> {
+            FactionsPlugin.getScheduler().runGlobal(() -> {
                 FPlayerJoinEvent joinEvent = new FPlayerJoinEvent(FPlayers.getInstance().getByPlayer(context.player), faction, FPlayerJoinEvent.PlayerJoinReason.COMMAND);
                 Bukkit.getServer().getPluginManager().callEvent(joinEvent);
                 if (joinEvent.isCancelled()) {
@@ -171,10 +171,10 @@ public class CmdJoin extends FCommand {
                 faction.deinvite(fplayer);
 
                 if (!useRoster || fplayer.isAdminBypassing()) {
-                    context.fPlayer.setRole(faction.getDefaultRole());
+                    fplayer.setFactionRole(faction.getDefaultFactionRole());
                 } else {
                     RosterPlayer rosterPlayer = RosterPlayerManager.getRosterPlayerFromUUID(context.player.getUniqueId(), faction);
-                    context.fPlayer.setRole(rosterPlayer.getRole());
+                    fplayer.setRole(rosterPlayer.getRole());
                 }
 
                 if (Conf.logFactionJoin) {

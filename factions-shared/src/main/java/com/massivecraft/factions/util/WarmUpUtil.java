@@ -2,8 +2,9 @@ package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.scheduler.FactionTask;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class WarmUpUtil {
 
@@ -24,11 +25,14 @@ public class WarmUpUtil {
             }
 
             player.msg(translationKey.format(action, delay));
-            int id = Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-                player.stopWarmup();
-                runnable.run();
-            }, delay * 20).getTaskId();
-            player.addWarmup(warmup, id);
+            Player bukkitPlayer = player.getPlayer();
+            if (bukkitPlayer == null) return;
+            FactionTask task = FactionsPlugin.getScheduler().runEntityLater(
+                bukkitPlayer, delay * 20L, () -> {
+                    player.stopWarmup();
+                    runnable.run();
+                }, () -> player.stopWarmup());
+            player.addWarmup(warmup, task);
         } else {
             runnable.run();
         }

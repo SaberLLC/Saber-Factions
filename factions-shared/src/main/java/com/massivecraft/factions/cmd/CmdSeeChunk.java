@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.scheduler.FactionTask;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.FastMath;
 import com.massivecraft.factions.util.VisualizeUtil;
@@ -13,19 +14,19 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CmdSeeChunk extends FCommand {
 
     //Used a hashmap cuz imma make a particle selection gui later, will store it where the boolean is rn.
-    public static HashMap<String, Boolean> seeChunkMap = new HashMap<>();
+    public static ConcurrentHashMap<String, Boolean> seeChunkMap = new ConcurrentHashMap<>();
     Long interval;
     //private boolean useParticles;
     //private final ParticleEffect effect = ParticleEffect.REDSTONE;
 
-    private int taskID = -1;
+    private volatile FactionTask seeChunkTask;
 
 
     //I remade it cause of people getting mad that I had the same seechunk as drtshock
@@ -58,6 +59,7 @@ public class CmdSeeChunk extends FCommand {
     public void perform(CommandContext context) {
         if (seeChunkMap.remove(context.player.getName()) != null) {
             context.msg(TL.COMMAND_SEECHUNK_DISABLED);
+            manageTask(); // cancel task if no more viewers
         } else {
             seeChunkMap.put(context.player.getName(), true);
             context.msg(TL.COMMAND_SEECHUNK_ENABLED);
@@ -66,10 +68,10 @@ public class CmdSeeChunk extends FCommand {
     }
 
     private void manageTask() {
-        if (taskID != -1) {
+        if (seeChunkTask != null) {
             if (seeChunkMap.isEmpty()) {
-                Bukkit.getScheduler().cancelTask(taskID);
-                taskID = -1;
+                seeChunkTask.cancel();
+                seeChunkTask = null;
             }
         } else {
             startTask();
@@ -77,7 +79,7 @@ public class CmdSeeChunk extends FCommand {
     }
 
     private void startTask() {
-        taskID = Bukkit.getScheduler().runTaskTimer(FactionsPlugin.getInstance(), () -> {
+        seeChunkTask = FactionsPlugin.getScheduler().runGlobalRepeating(0L, interval, () -> {
             Iterator<Map.Entry<String, Boolean>> iterator = seeChunkMap.entrySet().iterator();
 
             while (iterator.hasNext()) {
@@ -91,7 +93,7 @@ public class CmdSeeChunk extends FCommand {
                 showBorders(player);
             }
             manageTask();
-        }, 0, interval).getTaskId();
+        });
     }
 
     private void showBorders(Player me) {

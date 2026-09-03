@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.massivecraft</groupId>
+        <artifactId>Factions</artifactId>
+        <version>1.6.9.5-4.2.5</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>factions-folia</artifactId>
+    <packaging>jar</packaging>
+
+    <name>SaberFactions Folia</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>factions-shared</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>dev.folia</groupId>
+            <artifactId>folia-api</artifactId>
+            <version>[26.1.2.build,)</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

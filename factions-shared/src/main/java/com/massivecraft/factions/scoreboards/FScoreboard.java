@@ -3,11 +3,13 @@ package com.massivecraft.factions.scoreboards;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.scheduler.FactionTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Scoreboard;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -107,19 +109,18 @@ public class FScoreboard {
             updateObjective();
         }
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (removed || provider != defaultProvider) {
-                    cancel();
-                    return;
-                }
-
-                if (temporaryProvider == null) {
-                    updateObjective();
-                }
+        AtomicReference<FactionTask> taskRef = new AtomicReference<>();
+        FactionTask t = FactionsPlugin.getScheduler().runGlobalRepeating(20L, 20L, () -> {
+            if (removed || provider != defaultProvider) {
+                FactionTask self = taskRef.get();
+                if (self != null) self.cancel();
+                return;
             }
-        }.runTaskTimer(FactionsPlugin.getInstance(), 20, 20);
+            if (temporaryProvider == null) {
+                updateObjective();
+            }
+        });
+        taskRef.set(t);
     }
 
     public void setTemporarySidebar(final FSidebarProvider provider) {
@@ -130,19 +131,14 @@ public class FScoreboard {
         temporaryProvider = provider;
         updateObjective();
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (removed) {
-                    return;
-                }
-
-                if (temporaryProvider == provider) {
-                    temporaryProvider = null;
-                    updateObjective();
-                }
+        long expDelay = FactionsPlugin.getInstance().getConfig().getInt("scoreboard.expiration", 7) * 20L;
+        FactionsPlugin.getScheduler().runGlobalLater(expDelay, () -> {
+            if (removed) return;
+            if (temporaryProvider == provider) {
+                temporaryProvider = null;
+                updateObjective();
             }
-        }.runTaskLater(FactionsPlugin.getInstance(), FactionsPlugin.getInstance().getConfig().getInt("scoreboard.expiration", 7) * 20L);
+        });
     }
 
     private void updateObjective() {

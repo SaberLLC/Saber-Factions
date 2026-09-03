@@ -352,6 +352,14 @@ public class Conf {
     public static boolean dynmapDescriptionMoney = false;
     // Allow players in faction to see one another on Dynmap (only relevant if Dynmap has 'player-info-protected' enabled)
     public static boolean dynmapVisibilityByFaction = true;
+    // How often the dynmap integration checks whether a refresh is needed.
+    public static long dynmapUpdateInterval = 100L;
+    // Failsafe full refresh period even if nothing explicitly marked dynmap dirty.
+    public static long dynmapForcedFullUpdateTicks = 1200L;
+    // Automatically assign deterministic colors to normal factions when no explicit style override exists.
+    public static boolean dynmapAutoStyleByFaction = true;
+    public static double dynmapAutoStyleSaturation = 0.72D;
+    public static double dynmapAutoStyleBrightness = 0.92D;
     // Optional setting to limit which regions to show.
     // If empty all regions are shown.
     // Specify Faction either by name or UUID.

@@ -43,8 +43,8 @@ public class CmdPerm extends FCommand {
         if (context.args.size() == 0) {
             new PermissableRelationFrame(context.player, context.faction).openGUI(FactionsPlugin.getInstance());
             return;
-        } else if (context.args.size() == 1 && getPermissable(context.argAsString(0)) != null) {
-            new PermissableActionFrame(context.player, context.faction, getPermissable(context.argAsString(0))).openGUI(FactionsPlugin.getInstance());
+        } else if (context.args.size() == 1 && getPermissable(context, context.argAsString(0)) != null) {
+            new PermissableActionFrame(context.player, context.faction, getPermissable(context, context.argAsString(0))).openGUI(FactionsPlugin.getInstance());
             return;
         }
 
@@ -66,9 +66,9 @@ public class CmdPerm extends FCommand {
         boolean allActions = context.argAsString(1).equalsIgnoreCase("all");
 
         if (allRelations) {
-            permissables.addAll(context.faction.getPermissions().keySet());
+            permissables.addAll(context.faction.getPermissionTargets());
         } else {
-            Permissable permissable = getPermissable(context.argAsString(0));
+            Permissable permissable = getPermissable(context, context.argAsString(0));
 
             if (permissable == null) {
                 context.msg(TL.COMMAND_PERM_INVALID_RELATION);
@@ -111,14 +111,17 @@ public class CmdPerm extends FCommand {
 
     }
 
-    private Permissable getPermissable(String name) {
-        if (Role.fromString(name.toUpperCase()) != null) {
-            return Role.fromString(name.toUpperCase());
-        } else if (Relation.fromString(name.toUpperCase()) != null) {
-            return Relation.fromString(name.toUpperCase());
-        } else {
-            return null;
+    private Permissable getPermissable(CommandContext context, String name) {
+        Permissable role = context.faction.getRoleByName(name);
+        if (role != null) {
+            return role;
         }
+        for (Relation relation : Relation.VALUES) {
+            if (relation.name().equalsIgnoreCase(name) && relation != Relation.MEMBER) {
+                return relation;
+            }
+        }
+        return null;
     }
 
     @Override

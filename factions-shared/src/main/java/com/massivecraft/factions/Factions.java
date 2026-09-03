@@ -13,6 +13,13 @@ public abstract class Factions {
         return instance;
     }
 
+    public static void setInstance(Factions factions) {
+        if (factions == null) {
+            throw new IllegalArgumentException("factions");
+        }
+        instance = factions;
+    }
+
     private static Factions getFactionsImpl() {
         return new JSONFactions();
     }

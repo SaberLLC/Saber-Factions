@@ -91,7 +91,7 @@ public class CmdMod extends FCommand {
     }
 
     private void setRole(FPlayer fp, Role r) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTask(FactionsPlugin.instance, () -> fp.setRole(r));
+        FactionsPlugin.getScheduler().runGlobal(() -> fp.setRole(r));
     }
 
     @Override

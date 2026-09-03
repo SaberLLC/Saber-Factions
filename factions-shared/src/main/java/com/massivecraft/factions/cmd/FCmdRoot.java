@@ -109,6 +109,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
     public CmdAHome cmdAHome = new CmdAHome();
     public CmdPerm cmdPerm = new CmdPerm();
     public CmdPromote cmdPromote = new CmdPromote();
+    public CmdRole cmdRole = new CmdRole();
     public CmdDemote cmdDemote = new CmdDemote();
     public CmdSetDefaultRole cmdSetDefaultRole = new CmdSetDefaultRole();
     public CmdMapHeight cmdMapHeight = new CmdMapHeight();
@@ -270,6 +271,7 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
         this.addSubCommand(this.cmdClaimLine);
         this.addSubCommand(this.cmdAHome);
         this.addSubCommand(this.cmdPerm);
+        this.addSubCommand(this.cmdRole);
         this.addSubCommand(this.cmdPromote);
         this.addSubCommand(this.cmdDebug);
         this.addSubCommand(this.cmdDemote);
@@ -323,13 +325,13 @@ public class FCmdRoot extends FCommand implements CommandExecutor {
             this.addSubCommand(this.cmdRoster);
         }
 
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+        FactionsPlugin.getScheduler().runGlobalLater(200L, () -> {
             if(FactionsPlugin.getInstance().getFactionsAddonHashMap().containsKey("Roster")) {
                 this.getSubCommands().remove(this.cmdInvite);
                 this.getSubCommands().remove(this.cmdJoin);
                 this.getSubCommands().remove(this.cmdKick);
             }
-        }, 200);
+        });
 
         //Reserve
         if (Conf.useReserveSystem) {

@@ -6,7 +6,6 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -21,15 +20,16 @@ public class TitleUtil {
             String title = parseAllPlaceholders(TextUtil.replace(config.getString("Title.Format.Title"), "{Faction}", faction.getColorTo(me) + faction.getTag()), faction, me.getPlayer());
             String subTitle = parseAllPlaceholders(TextUtil.replace(config.getString("Title.Format.Subtitle"), "{Description}", faction.getDescription()).replace("{Faction}", faction.getColorTo(me) + faction.getTag()), faction, me.getPlayer());
 
-            Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
-
+            Player p = me.getPlayer();
+            if (p == null) return;
+            FactionsPlugin.getScheduler().runEntityLater(p, 5L, () -> {
                 if (version != 8) {
-                    Titles.sendTitle(me.getPlayer(), config.getInt("Title.Options.FadeInTime"), config.getInt("Title.Options.ShowTime"), config.getInt("Title.Options.FadeOutTime"), TextUtil.parse(title), TextUtil.parse(subTitle));
+                    Titles.sendTitle(p, config.getInt("Title.Options.FadeInTime"), config.getInt("Title.Options.ShowTime"), config.getInt("Title.Options.FadeOutTime"), TextUtil.parse(title), TextUtil.parse(subTitle));
                 } else {
-                    me.getPlayer().sendTitle(TextUtil.parse(title), TextUtil.parse(subTitle));
+                    p.sendTitle(TextUtil.parse(title), TextUtil.parse(subTitle));
                 }
-            }, 5);
-            me.getPlayer().removeMetadata("showFactionTitle", FactionsPlugin.getInstance());
+            }, null);
+            p.removeMetadata("showFactionTitle", FactionsPlugin.getInstance());
         }
     }
 

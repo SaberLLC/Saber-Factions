@@ -41,10 +41,8 @@ public class TempMarkerSet {
             markerset.setMarkerSetLabel(this.label);
         }
 
-        if (this.minimumZoom > 0) {
-            if (markerset.getMinZoom() != this.minimumZoom) {
-                markerset.setMinZoom(this.minimumZoom);
-            }
+        if (markerset.getMinZoom() != this.minimumZoom) {
+            markerset.setMinZoom(this.minimumZoom);
         }
 
         if (markerset.getLayerPriority() != this.priority) {

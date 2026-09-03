@@ -1,0 +1,196 @@
+############################################################
+# +------------------------------------------------------+ #
+# |                   Faction Audit                      | #
+# +------------------------------------------------------+ #
+############################################################
+storage:
+  file-name: audit-logs.json
+  cleanup-interval-ticks: 400
+  async-save-interval-ticks: 6000
+
+menu:
+  timestamp-format: "MM/dd hh:mma"
+  show-timestamps-by-default: true
+  timestamp-enabled-label: "&aShown"
+  timestamp-disabled-label: "&cHidden"
+  timestamp-suffix: "&7 - {timestamp}"
+
+  filler:
+    enabled: true
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+
+  overview:
+    title: "&8Faction Audit: {faction}"
+    rows: 3
+    preview-lines: 5
+    count-line: "&7Entries: &f{count}"
+    no-logs-line: "&7No logs recorded."
+    preview-prefix: " &8- &f"
+    more-line: "&e{remaining} more logs..."
+    left-click-line: "&6Left-Click &7to open this log category."
+    right-click-line: "&6Right-Click &7to toggle timestamps."
+
+  detail:
+    title: "&8{type} Audit: {faction}"
+    rows: 6
+    entries-per-page: 45
+    entry-material: PAPER
+    entry-name: "&a{type} &7#{index}"
+    entry-lore:
+      - "&7When: &f{timestamp}"
+      - "&7Message:"
+      - "&f{message}"
+
+    empty:
+      material: BARRIER
+      name: "&cNo Logs"
+      lore:
+        - "&7This category has no audit entries yet."
+
+    back:
+      slot: 45
+      material: ARROW
+      name: "&aBack"
+      lore:
+        - "&7Return to the audit overview."
+
+    previous:
+      slot: 48
+      material: ARROW
+      name: "&ePrevious Page"
+      lore:
+        - "&7View the previous page."
+
+    next:
+      slot: 50
+      material: ARROW
+      name: "&eNext Page"
+      lore:
+        - "&7View the next page."
+
+    timestamp-toggle:
+      slot: 53
+      material: CLOCK
+      name: "&bTimestamps: {state}"
+      lore:
+        - "&7Currently: {state}"
+        - "&7Click to toggle."
+
+types:
+  invites:
+    enabled: true
+    slot: 10
+    material: WRITABLE_BOOK
+    name: "&a&lRoster Edits"
+    format: "&e%s&7 &a%s&7 &e%s"
+    max-entries: 60
+    retention-days: 7
+
+  bans:
+    enabled: true
+    slot: 11
+    material: ANVIL
+    name: "&a&lPlayer Bans"
+    format: "&e%s&7 &e%s&6 &e%s"
+    max-entries: 60
+    retention-days: 7
+
+  chunk_claims:
+    enabled: true
+    slot: 12
+    material: WOODEN_AXE
+    name: "&a&lClaim Edits"
+    format: "&e%s&7 %s&7 &e%s&7 near &e%s"
+    max-entries: 60
+    retention-days: 7
+
+  perm_edit_defaults:
+    enabled: true
+    slot: 13
+    material: WRITTEN_BOOK
+    name: "&a&lDefault Perm Edits"
+    format: "&e%s&7 %s&7 %s for &e%s"
+    max-entries: 60
+    retention-days: 7
+
+  bank_edit:
+    enabled: true
+    slot: 14
+    material: GOLD_INGOT
+    name: "&a&lMoney Edits"
+    format: "&e%s&7 %s &e&l$&e%s"
+    max-entries: 60
+    retention-days: 7
+
+  fchest_edit:
+    enabled: true
+    slot: 15
+    material: CHEST
+    name: "&a&lChest Edits"
+    format: "&e%s&7 %s &f%s"
+    max-entries: 60
+    retention-days: 7
+
+  relation_change:
+    enabled: true
+    slot: 16
+    material: GOLDEN_SWORD
+    name: "&a&lRelation Edits"
+    format: "&e%s %s&e'd %s"
+    max-entries: 60
+    retention-days: 7
+
+  ftag_edit:
+    enabled: true
+    slot: 19
+    material: NAME_TAG
+    name: "&a&lTag Edits"
+    format: "&e%s&7 set to &e'%s'"
+    max-entries: 60
+    retention-days: 7
+
+  fdesc_edit:
+    enabled: true
+    slot: 20
+    material: PAPER
+    name: "&a&lDesc Edits"
+    format: "&e%s&7 set to &e'%s'"
+    max-entries: 60
+    retention-days: 7
+
+  role_perm_edit:
+    enabled: true
+    slot: 21
+    material: WRITTEN_BOOK
+    name: "&a&lPromotional Edits"
+    format: "&e%s&7 %s &e%s &7to &e%s"
+    max-entries: 60
+    retention-days: 7
+
+  spawner_edit:
+    enabled: true
+    slot: 22
+    material: SPAWNER
+    name: "&a&lSpawner Edits"
+    format: "&e%s&7 %s &e%s&7 %s"
+    max-entries: 60
+    retention-days: 7
+
+  rank_edit:
+    enabled: true
+    slot: 23
+    material: GOLDEN_HELMET
+    name: "&a&lRank Edits"
+    format: "&e%s&7 set &e%s&7 to %s"
+    max-entries: 60
+    retention-days: 7
+
+  f_tnt:
+    enabled: true
+    slot: 24
+    material: TNT
+    name: "&a&lTNT Edits"
+    format: "&e%s&7 %s &e%s"
+    max-entries: 200
+    retention-days: 7

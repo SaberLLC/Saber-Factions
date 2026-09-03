@@ -7,10 +7,12 @@ import com.massivecraft.factions.event.FactionDisbandEvent;
 import com.massivecraft.factions.event.FactionDisbandEvent.PlayerDisbandReason;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
+import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.struct.BanInfo;
+import com.massivecraft.factions.struct.FactionRole;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -33,7 +35,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Predicate;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
@@ -73,7 +74,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<>();
     protected ConcurrentHashMap<String, String> warpPasswords = new ConcurrentHashMap<>();
     protected int maxVaults;
+    @Deprecated
     protected Role defaultRole;
+    protected String defaultRoleId;
+    protected Map<String, FactionRole> roles = new LinkedHashMap<>();
     protected Map<Permissable, Map<String, Access>> permissions = new HashMap<>();
     protected Set<BanInfo> bans = new HashSet<>();
     protected String player;
@@ -121,6 +125,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.foundedDate = System.currentTimeMillis();
         this.maxVaults = Conf.defaultMaxVaults;
         this.defaultRole = Role.RECRUIT;
+        this.defaultRoleId = FactionRole.getSystemRoleId(Role.RECRUIT);
         this.wallCheckMinutes = 0;
         this.bufferCheckMinutes = 0;
         this.weeWoo = false;
@@ -131,6 +136,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.completedMissions = new ArrayList<>();
         allowedSpawnerChunks = Conf.allowedSpawnerChunks;
         spawnerChunks = new HashSet<>();
+        seedDefaultRoles();
         resetPerms(); // Reset on new Faction so it has default values.
     }
 
@@ -158,7 +164,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         invites = old.invites;
         roster = old.roster;
         announcements = old.announcements;
-        this.defaultRole = Role.NORMAL;
+        this.defaultRole = old.defaultRole;
+        this.defaultRoleId = old.defaultRoleId;
+        this.roles = copyRoles(old.roles);
+        this.permissions = copyPermissions(old.permissions);
         this.wallCheckMinutes = 0;
         this.bufferCheckMinutes = 0;
         this.weeWoo = false;
@@ -167,7 +176,111 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         spawnerChunks = new HashSet<>();
         this.playerWallCheckCount = new ConcurrentHashMap<>();
         this.playerBufferCheckCount = new ConcurrentHashMap<>();
-        resetPerms(); // Reset on new Faction so it has default values.
+        checkPerms();
+    }
+
+    private void seedDefaultRoles() {
+        if (this.roles == null) {
+            this.roles = new LinkedHashMap<>();
+        }
+        for (Role value : Role.VALUES) {
+            this.roles.putIfAbsent(FactionRole.getSystemRoleId(value), FactionRole.fromRole(value));
+        }
+    }
+
+    private void ensureRoleModel() {
+        if (this.roles == null) {
+            this.roles = new LinkedHashMap<>();
+        }
+
+        Map<String, FactionRole> normalized = new LinkedHashMap<>();
+        for (Role value : Role.VALUES) {
+            normalized.put(FactionRole.getSystemRoleId(value), FactionRole.fromRole(value));
+        }
+
+        for (FactionRole stored : this.roles.values()) {
+            FactionRole role = normalizeRole(stored);
+            if (role != null) {
+                normalized.put(role.getId(), role);
+            }
+        }
+        this.roles = normalized;
+
+        if (this.defaultRoleId == null || !this.roles.containsKey(FactionRole.normalizeId(this.defaultRoleId))) {
+            Role fallback = this.defaultRole != null ? this.defaultRole : Role.RECRUIT;
+            this.defaultRoleId = FactionRole.getSystemRoleId(fallback);
+        } else {
+            this.defaultRoleId = FactionRole.normalizeId(this.defaultRoleId);
+        }
+
+        FactionRole resolvedDefaultRole = this.roles.get(this.defaultRoleId);
+        if (resolvedDefaultRole == null) {
+            resolvedDefaultRole = this.roles.get(FactionRole.getSystemRoleId(Role.RECRUIT));
+            this.defaultRoleId = resolvedDefaultRole == null ? FactionRole.getSystemRoleId(Role.RECRUIT) : resolvedDefaultRole.getId();
+        }
+        this.defaultRole = resolvedDefaultRole == null ? Role.RECRUIT : resolvedDefaultRole.getTier();
+    }
+
+    private FactionRole normalizeRole(FactionRole stored) {
+        if (stored == null) {
+            return null;
+        }
+
+        String normalizedId = FactionRole.normalizeId(stored.getId() != null ? stored.getId() : stored.name());
+        if (normalizedId == null) {
+            return null;
+        }
+
+        boolean systemRole = stored.isSystem() || isSystemRoleId(normalizedId);
+        Role tier = stored.getTier();
+        Role legacyTier = Role.fromString(normalizedId);
+        if (systemRole && legacyTier != null) {
+            tier = legacyTier;
+        } else if (tier == null) {
+            tier = legacyTier != null ? legacyTier : Role.NORMAL;
+        }
+
+        return new FactionRole(
+                normalizedId,
+                stored.getStoredDisplayName(),
+                null,
+                tier,
+                systemRole
+        );
+    }
+
+    private boolean isSystemRoleId(String roleId) {
+        for (Role value : Role.VALUES) {
+            if (FactionRole.getSystemRoleId(value).equals(roleId)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Map<String, FactionRole> copyRoles(Map<String, FactionRole> source) {
+        Map<String, FactionRole> copy = new LinkedHashMap<>();
+        if (source == null) {
+            return copy;
+        }
+        for (FactionRole role : source.values()) {
+            FactionRole normalized = normalizeRole(role);
+            if (normalized != null) {
+                copy.put(normalized.getId(), normalized);
+            }
+        }
+        return copy;
+    }
+
+    private Map<Permissable, Map<String, Access>> copyPermissions(Map<Permissable, Map<String, Access>> source) {
+        Map<Permissable, Map<String, Access>> copy = new HashMap<>();
+        if (source == null) {
+            return copy;
+        }
+        for (Map.Entry<Permissable, Map<String, Access>> entry : source.entrySet()) {
+            copy.put(entry.getKey(), entry.getValue() == null ? new HashMap<>() : new HashMap<>(entry.getValue()));
+        }
+        return copy;
     }
 
     @Override
@@ -675,12 +788,24 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (Factions.getInstance() instanceof MemoryFactions) {
             ((MemoryFactions) Factions.getInstance()).onFactionTagChanged(this, previousTag);
         }
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     public void checkPerms() {
-        if (this.permissions == null || this.permissions.isEmpty()) {
-            this.resetPerms();
+        ensureRoleModel();
+        if (this.isSystemFaction()) {
+            return;
         }
+        if (this.permissions == null) {
+            this.permissions = new HashMap<>();
+        }
+        this.permissions = normalizePermissionMap(this.permissions);
+        if (this.permissions.isEmpty()) {
+            this.resetPerms();
+            return;
+        }
+        upsertPermissions(Arrays.asList(Relation.VALUES), relation -> relation != Relation.MEMBER);
+        upsertPermissions(this.roles.values(), role -> !role.isLeaderTier());
     }
 
     public String getTag(String prefix) {
@@ -711,6 +836,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setDescription(String value) {
         this.description = value;
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     public boolean hasHome() {
@@ -724,11 +850,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setHome(Location home) {
         this.home = new LazyLocation(home);
+        EngineDynmap.getInstance().requestUpdate();
     }
 
 
     public void deleteHome() {
         this.home = null;
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     public long getFoundedDate() {
@@ -762,6 +890,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public void setFactionBalance(double money) {
         this.money = money;
+        if (Conf.dynmapDescriptionMoney) {
+            EngineDynmap.getInstance().requestUpdate();
+        }
     }
 
     public Integer getPermanentPower() {
@@ -822,11 +953,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Access getAccess(Permissable permissable, FPermKey permissableAction) {
         String actionId = normalizeActionId(permissableAction);
-        if (permissable == null || actionId == null) {
+        Permissable target = normalizePermissionTarget(permissable);
+        if (target == null || actionId == null) {
             return Access.UNDEFINED;
         }
 
-        return accessOrElse(permissable, actionId, Access.UNDEFINED);
+        return accessOrElse(target, actionId, Access.UNDEFINED);
     }
 
     /**
@@ -841,7 +973,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (player == null || actionId == null) return Access.UNDEFINED;
         if (player.getFaction() == this && player.getRole() == Role.LEADER) return Access.ALLOW;
 
-        Permissable perm = player.getFaction() == this ? player.getRole() : player.getFaction().getRelationTo(this);
+        Permissable perm = player.getFaction() == this ? player.getFactionRole() : player.getFaction().getRelationTo(this);
 
         return accessOrElse(perm, actionId, Access.UNDEFINED);
     }
@@ -863,37 +995,39 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean setPermission(Permissable permissable, FPermKey permissableAction, Access access) {
         String actionId = normalizeActionId(permissableAction);
-        if (permissable == null || actionId == null) {
+        Permissable target = normalizePermissionTarget(permissable);
+        if (target == null || actionId == null) {
             return false;
         }
         if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(actionId)) {
             return false;
         }
-        Map<String, Access> accessMap = permissions.computeIfAbsent(permissable, p -> new HashMap<>(PermissableAction.VALUES.length));
+        Map<String, Access> accessMap = permissions.computeIfAbsent(target, p -> new HashMap<>(PermissableAction.VALUES.length));
         accessMap.put(actionId, access);
         return true;
     }
 
     public boolean setPermission(Permissable permissable, FPermKey permissableAction, Access access, FPlayer fPlayer) {
         String actionId = normalizeActionId(permissableAction);
-        if (permissable == null || actionId == null) {
+        Permissable target = normalizePermissionTarget(permissable);
+        if (target == null || actionId == null) {
             return false;
         }
         if (Conf.useLockedPermissions && Conf.lockedPermissions.contains(actionId)) {
             fPlayer.msg(TL.COMMAND_PERM_LOCKED);
             return false;
         }
-        Map<String, Access> accessMap = permissions.computeIfAbsent(permissable, p -> new HashMap<>(PermissableAction.VALUES.length));
+        Map<String, Access> accessMap = permissions.computeIfAbsent(target, p -> new HashMap<>(PermissableAction.VALUES.length));
         accessMap.put(actionId, access);
         return true;
     }
 
     public void resetPerms() {
+        ensureRoleModel();
         if (!this.isSystemFaction()) {
             permissions.clear();
-
-            upsertPermissions(Relation.VALUES, ignored -> ignored == Relation.MEMBER);
-            upsertPermissions(Role.VALUES, ignored -> ignored == Role.LEADER);
+            upsertPermissions(Arrays.asList(Relation.VALUES), relation -> relation != Relation.MEMBER);
+            upsertPermissions(this.roles.values(), role -> !role.isLeaderTier());
         }
     }
 
@@ -902,14 +1036,77 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         resetPerms();
     }
 
-    private void upsertPermissions(Permissable[] values, Predicate<Permissable> ignored) {
+    private <T extends Permissable> void upsertPermissions(Collection<T> values, java.util.function.Predicate<T> predicate) {
         for (Permissable value : values) {
-            if (ignored.test(value)) {
+            if (!predicate.test((T) value)) {
                 continue;
             }
-            DefaultPermissions defaultPermissions = Conf.defaultFactionPermissions.get(value.name());
-            this.permissions.put(value, defaultPermissions != null && Conf.useCustomDefaultPermissions ? PermissableAction.fromDefaults(defaultPermissions) : PermissableAction.fromPredicated(permissableAction -> false));
+            this.permissions.computeIfAbsent(value, ignored -> buildDefaultPermissions(value));
         }
+    }
+
+    private Map<Permissable, Map<String, Access>> normalizePermissionMap(Map<Permissable, Map<String, Access>> source) {
+        Map<Permissable, Map<String, Access>> normalized = new HashMap<>();
+        if (source == null) {
+            return normalized;
+        }
+
+        for (Map.Entry<Permissable, Map<String, Access>> entry : source.entrySet()) {
+            Permissable target = normalizePermissionTarget(entry.getKey());
+            if (target == null) {
+                continue;
+            }
+
+            Map<String, Access> accessMap = normalized.computeIfAbsent(target, ignored -> new HashMap<>(PermissableAction.VALUES.length));
+            if (entry.getValue() == null) {
+                continue;
+            }
+
+            for (Map.Entry<String, Access> accessEntry : entry.getValue().entrySet()) {
+                String actionId = FPerms.normalizeId(accessEntry.getKey());
+                if (actionId != null && accessEntry.getValue() != null) {
+                    accessMap.put(actionId, accessEntry.getValue());
+                }
+            }
+        }
+        return normalized;
+    }
+
+    private Permissable normalizePermissionTarget(Permissable permissable) {
+        if (permissable == null) {
+            return null;
+        }
+        if (permissable instanceof Relation) {
+            return permissable == Relation.MEMBER ? null : permissable;
+        }
+        if (permissable instanceof Role) {
+            Role role = (Role) permissable;
+            return role == Role.LEADER ? null : getRole(role);
+        }
+        if (permissable instanceof FactionRole) {
+            FactionRole role = getRole(permissable.name());
+            return role != null && !role.isLeaderTier() ? role : null;
+        }
+        Relation relation = Relation.fromString(permissable.name().toUpperCase(Locale.ROOT));
+        if (relation != null && relation != Relation.MEMBER && relation.name().equalsIgnoreCase(permissable.name())) {
+            return relation;
+        }
+        FactionRole role = getRole(permissable.name());
+        return role != null && !role.isLeaderTier() ? role : null;
+    }
+
+    private Map<String, Access> buildDefaultPermissions(Permissable permissable) {
+        String defaultsKey;
+        if (permissable instanceof FactionRole) {
+            defaultsKey = ((FactionRole) permissable).getTier().name();
+        } else {
+            defaultsKey = permissable.name();
+        }
+
+        DefaultPermissions defaultPermissions = Conf.defaultFactionPermissions.get(defaultsKey);
+        return defaultPermissions != null && Conf.useCustomDefaultPermissions
+                ? PermissableAction.fromDefaults(defaultPermissions)
+                : PermissableAction.fromPredicated(ignored -> false);
     }
 
     /**
@@ -918,15 +1115,224 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
      * @return
      */
     public Map<Permissable, Map<String, Access>> getPermissions() {
+        checkPerms();
         return Collections.unmodifiableMap(permissions);
     }
 
     public Role getDefaultRole() {
-        return this.defaultRole;
+        return getDefaultFactionRole().getTier();
     }
 
     public void setDefaultRole(Role role) {
-        this.defaultRole = role;
+        FactionRole factionRole = getRole(role);
+        if (factionRole != null) {
+            setDefaultRole(factionRole);
+        }
+    }
+
+    private boolean useCustomRoles() {
+        return FactionsPlugin.getInstance() == null
+                || FactionsPlugin.getInstance().getFileManager() == null
+                || FactionsPlugin.getInstance().getFileManager().getRoles() == null
+                || FactionsPlugin.getInstance().getFileManager().getRoles().getConfig() == null
+                || FactionsPlugin.getInstance().getFileManager().getRoles().getConfig().getBoolean("settings.custom-role-system", true);
+    }
+
+    private int getMaxCustomRoles() {
+        if (FactionsPlugin.getInstance() == null
+                || FactionsPlugin.getInstance().getFileManager() == null
+                || FactionsPlugin.getInstance().getFileManager().getRoles() == null
+                || FactionsPlugin.getInstance().getFileManager().getRoles().getConfig() == null) {
+            return -1;
+        }
+        return FactionsPlugin.getInstance().getFileManager().getRoles().getConfig().getInt("settings.max-custom-roles", -1);
+    }
+
+    private Map<String, FactionRole> getActiveRoles() {
+        ensureRoleModel();
+        if (useCustomRoles()) {
+            return roles;
+        }
+
+        Map<String, FactionRole> activeRoles = new LinkedHashMap<>();
+        for (Role value : Role.VALUES) {
+            FactionRole role = roles.get(FactionRole.getSystemRoleId(value));
+            if (role != null) {
+                activeRoles.put(role.getId(), role);
+            }
+        }
+        return activeRoles;
+    }
+
+    @Override
+    public Map<String, FactionRole> getRoles() {
+        return Collections.unmodifiableMap(new LinkedHashMap<>(getActiveRoles()));
+    }
+
+    @Override
+    public Collection<FactionRole> getCustomRoles() {
+        if (!useCustomRoles()) {
+            return Collections.emptyList();
+        }
+        ensureRoleModel();
+        List<FactionRole> customRoles = new ArrayList<>();
+        for (FactionRole role : roles.values()) {
+            if (!role.isSystem()) {
+                customRoles.add(role);
+            }
+        }
+        customRoles.sort(Comparator.comparingInt((FactionRole role) -> role.getTier().value)
+                .thenComparing(FactionRole::getDisplayName, String.CASE_INSENSITIVE_ORDER));
+        return customRoles;
+    }
+
+    @Override
+    public FactionRole getRole(String roleId) {
+        ensureRoleModel();
+        String normalizedId = FactionRole.normalizeId(roleId);
+        if (normalizedId == null) {
+            return null;
+        }
+        if (useCustomRoles()) {
+            return roles.get(normalizedId);
+        }
+
+        Role legacy = Role.fromString(normalizedId.toUpperCase(Locale.ROOT));
+        return legacy == null ? null : roles.get(FactionRole.getSystemRoleId(legacy));
+    }
+
+    @Override
+    public FactionRole getRole(Role role) {
+        ensureRoleModel();
+        return role == null ? null : roles.get(FactionRole.getSystemRoleId(role));
+    }
+
+    @Override
+    public FactionRole getRoleByName(String name) {
+        ensureRoleModel();
+        if (name == null) {
+            return null;
+        }
+
+        FactionRole direct = getRole(name);
+        if (direct != null) {
+            return direct;
+        }
+
+        Role legacy = Role.fromString(name.toUpperCase(Locale.ROOT));
+        if (legacy != null) {
+            return getRole(legacy);
+        }
+
+        String comparison = ChatColor.stripColor(TextUtil.parse(name)).replace(" ", "").replace("_", "").replace("-", "").toLowerCase(Locale.ROOT);
+        for (FactionRole role : getActiveRoles().values()) {
+            String roleName = ChatColor.stripColor(TextUtil.parse(role.getDisplayName())).replace(" ", "").replace("_", "").replace("-", "").toLowerCase(Locale.ROOT);
+            if (roleName.equals(comparison)) {
+                return role;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public FactionRole getDefaultFactionRole() {
+        ensureRoleModel();
+        FactionRole role = defaultRoleId == null ? null : getRole(defaultRoleId);
+        if (role == null) {
+            Role fallbackTier = this.defaultRole != null ? this.defaultRole : Role.RECRUIT;
+            role = getRole(fallbackTier);
+            if (role == null) {
+                role = roles.get(FactionRole.getSystemRoleId(Role.RECRUIT));
+            }
+            this.defaultRoleId = role == null ? FactionRole.getSystemRoleId(Role.RECRUIT) : role.getId();
+        }
+        this.defaultRole = role == null ? Role.RECRUIT : role.getTier();
+        return role == null ? FactionRole.fromRole(Role.RECRUIT) : role;
+    }
+
+    @Override
+    public void setDefaultRole(FactionRole role) {
+        if (role == null || role.isLeaderTier()) {
+            return;
+        }
+        FactionRole resolved = useCustomRoles() ? getRole(role.getId()) : getRole(role.getTier());
+        if (resolved == null) {
+            return;
+        }
+        this.defaultRoleId = resolved.getId();
+        this.defaultRole = resolved.getTier();
+    }
+
+    @Override
+    public Collection<Permissable> getPermissionTargets() {
+        List<Permissable> targets = new ArrayList<>();
+        List<FactionRole> sortedRoles = new ArrayList<>(getActiveRoles().values());
+        sortedRoles.sort(Comparator.comparingInt((FactionRole role) -> role.getTier().value)
+                .thenComparing(role -> role.isSystem() ? 0 : 1)
+                .thenComparing(FactionRole::getDisplayName, String.CASE_INSENSITIVE_ORDER));
+        for (FactionRole role : sortedRoles) {
+            if (!role.isLeaderTier()) {
+                targets.add(role);
+            }
+        }
+        for (Relation relation : Relation.VALUES) {
+            if (relation != Relation.MEMBER) {
+                targets.add(relation);
+            }
+        }
+        return targets;
+    }
+
+    @Override
+    public boolean addRole(FactionRole role, FactionRole copyFrom) {
+        if (!useCustomRoles()) {
+            return false;
+        }
+        ensureRoleModel();
+        int maxCustomRoles = getMaxCustomRoles();
+        if (maxCustomRoles >= 0 && getCustomRoles().size() >= maxCustomRoles) {
+            return false;
+        }
+        FactionRole normalized = normalizeRole(role);
+        if (normalized == null || normalized.isLeaderTier() || normalized.isSystem() || roles.containsKey(normalized.getId())) {
+            return false;
+        }
+
+        FactionRole source = copyFrom == null ? getRole(normalized.getTier()) : getRole(copyFrom.getId());
+        roles.put(normalized.getId(), normalized);
+        Map<String, Access> template = source == null ? null : permissions.get(source);
+        permissions.put(normalized, template == null ? buildDefaultPermissions(normalized) : new HashMap<>(template));
+        return true;
+    }
+
+    @Override
+    public boolean deleteRole(FactionRole role) {
+        if (!useCustomRoles()) {
+            return false;
+        }
+        ensureRoleModel();
+        FactionRole existing = role == null ? null : getRole(role.getId());
+        if (existing == null || existing.isSystem() || existing.isLeaderTier()) {
+            return false;
+        }
+
+        FactionRole fallback = getRole(existing.getTier());
+        for (FPlayer player : new HashSet<>(fplayers)) {
+            if (existing.equals(player.getFactionRole())) {
+                player.setFactionRole(fallback);
+            }
+        }
+        for (FPlayer player : new HashSet<>(alts)) {
+            if (existing.equals(player.getFactionRole())) {
+                player.setFactionRole(fallback);
+            }
+        }
+        if (Objects.equals(defaultRoleId, existing.getId()) && fallback != null) {
+            setDefaultRole(fallback);
+        }
+        roles.remove(existing.getId());
+        permissions.remove(existing);
+        return true;
     }
 
     // -------------------------------------------- //
@@ -1396,12 +1802,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         for (FPlayer fPlayer : alts) fPlayer.resetFactionData(false);
 
         try {
-            if (FactionsPlugin.getInstance() != null && FactionsPlugin.getInstance().getFlogManager() != null && FactionsPlugin.getInstance().getFlogManager().getFactionLogMap() != null) {
-                FactionsPlugin.getInstance().getFlogManager().getFactionLogMap().remove(this.getId());
+            if (FactionsPlugin.getInstance() != null && FactionsPlugin.getInstance().getFlogManager() != null) {
+                FactionsPlugin.getInstance().getFlogManager().removeFactionLogs(this.getId());
             }
         } catch (Exception exception) {
             // empty catch block
         }
+
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     public Set<FLocation> getAllClaims() {

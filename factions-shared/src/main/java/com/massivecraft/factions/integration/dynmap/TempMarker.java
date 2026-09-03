@@ -6,6 +6,8 @@ import org.dynmap.markers.MarkerAPI;
 import org.dynmap.markers.MarkerIcon;
 import org.dynmap.markers.MarkerSet;
 
+import java.util.Objects;
+
 public class TempMarker {
 
     /**
@@ -62,16 +64,16 @@ public class TempMarker {
             marker.setLocation(this.world, this.x, this.y, this.z);
         }
 
-        if (!marker.getLabel().equals(this.label)) {
+        if (!Objects.equals(marker.getLabel(), this.label)) {
             marker.setLabel(this.label);
         }
 
         MarkerIcon icon = getMarkerIcon(markerApi, this.iconName);
-        if (marker.getMarkerIcon() == null || marker.getMarkerIcon().equals(icon)) {
+        if (marker.getMarkerIcon() == null || !marker.getMarkerIcon().equals(icon)) {
             marker.setMarkerIcon(icon);
         }
 
-        if (!marker.getDescription().equals(this.description)) {
+        if (!Objects.equals(marker.getDescription(), this.description)) {
             marker.setDescription(this.description);
         }
     }

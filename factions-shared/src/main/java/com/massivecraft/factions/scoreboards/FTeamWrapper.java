@@ -4,7 +4,6 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -42,7 +41,7 @@ public class FTeamWrapper {
             return;
 
         if (updating.add(faction)) {
-            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> {
+            FactionsPlugin.getScheduler().runGlobal(() -> {
                 updating.remove(faction);
                 applyUpdates(faction);
             });

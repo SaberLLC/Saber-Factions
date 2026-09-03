@@ -9,7 +9,6 @@ import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.frame.FactionGUI;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -19,7 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
+import com.massivecraft.factions.scheduler.FactionTask;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -38,8 +37,8 @@ public class MissionGUI implements FactionGUI {
     private final Inventory inventory;
     private final Map<Integer, String> slots;
 
-    BukkitTask updateItemsTask = null;
-    BukkitTask cancelTask = null;
+    FactionTask updateItemsTask = null;
+    FactionTask cancelTask = null;
 
 
     public MissionGUI(FactionsPlugin plugin, FPlayer fPlayer) {
@@ -58,11 +57,11 @@ public class MissionGUI implements FactionGUI {
             cancelTask.cancel();
         //Because of what's mentioned before, we check on the next tick if the inventory that the player
         //is currently viewing is the same as this GUI, if it isn't, the updateItemsTask gets cancelled
-        cancelTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if(player.getOpenInventory().getTopInventory() != inventory)
+        cancelTask = FactionsPlugin.getScheduler().runGlobalLater(1L, () -> {
+            if (player.getOpenInventory().getTopInventory() != inventory)
                 if (updateItemsTask != null)
                     updateItemsTask.cancel();
-        }, 1);
+        });
     }
 
 
@@ -244,8 +243,8 @@ public class MissionGUI implements FactionGUI {
                                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeTillDeadline)))));
 
 
-                        if(updateItemsTask == null)
-                            updateItemsTask = Bukkit.getScheduler().runTaskTimer(plugin, this::updateGUI, 20L, 20L);
+                        if (updateItemsTask == null)
+                            updateItemsTask = FactionsPlugin.getScheduler().runGlobalRepeating(20L, 20L, this::updateGUI);
                     }
 
                     if (plugin.getFileManager().getMissions().getConfig().getBoolean("Allow-Cancellation-Of-Missions")) {

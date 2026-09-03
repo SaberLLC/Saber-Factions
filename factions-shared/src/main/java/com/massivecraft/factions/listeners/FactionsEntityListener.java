@@ -182,18 +182,25 @@ public class FactionsEntityListener implements Listener {
                     if (damager instanceof Player) return;
                 }
                 if (damageee != null && damageee instanceof Player) {
-                    cancelFStuckTeleport((Player) damageee);
+                    final Player damageeePlayer = (Player) damageee;
+                    cancelFStuckTeleport(damageeePlayer);
                     combatList.add(damagee.getUniqueId());
-                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(damageee.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
-                    cancelFFly((Player) damageee);
+                    FactionsPlugin.getScheduler().runEntityLater(damageeePlayer,
+                        20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"),
+                        () -> combatList.remove(damageeePlayer.getUniqueId()),
+                        () -> combatList.remove(damageeePlayer.getUniqueId()));
+                    cancelFFly(damageeePlayer);
                 }
 
                 if (damager instanceof Player) {
-                    cancelFStuckTeleport((Player) damager);
-                    combatList.add(damager.getUniqueId());
-                    Entity finalDamager = damager;
-                    Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> combatList.remove(finalDamager.getUniqueId()), 20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"));
-                    cancelFFly((Player) damager);
+                    final Player damagerPlayer = (Player) damager;
+                    cancelFStuckTeleport(damagerPlayer);
+                    combatList.add(damagerPlayer.getUniqueId());
+                    FactionsPlugin.getScheduler().runEntityLater(damagerPlayer,
+                        20L * FactionsPlugin.getInstance().getConfig().getInt("ffly.CombatFlyCooldown"),
+                        () -> combatList.remove(damagerPlayer.getUniqueId()),
+                        () -> combatList.remove(damagerPlayer.getUniqueId()));
+                    cancelFFly(damagerPlayer);
                 }
             } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
                 // Players can not take any damage in a Safe Zone
@@ -241,9 +248,13 @@ public class FactionsEntityListener implements Listener {
         if (player == null) return;
 
         UUID uuid = player.getUniqueId();
-        if (FactionsPlugin.getInstance().getStuckMap().containsKey(uuid))
+        com.massivecraft.factions.scheduler.FactionTask stuckTask = FactionsPlugin.getInstance().getStuckMap().remove(uuid);
+        if (stuckTask != null) {
+            if (!stuckTask.isCancelled()) {
+                stuckTask.cancel();
+            }
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
-        FactionsPlugin.getInstance().getStuckMap().remove(uuid);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

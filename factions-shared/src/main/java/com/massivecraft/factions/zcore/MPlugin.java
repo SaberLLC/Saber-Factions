@@ -5,6 +5,8 @@ import com.massivecraft.factions.Board;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.scheduler.FactionTask;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayers;
 import com.massivecraft.factions.zcore.persist.SaveTask;
@@ -26,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
@@ -37,11 +40,11 @@ public abstract class MPlugin extends JavaPlugin {
     public PermUtil perm;
 
     public String refCommand = "";
-    //holds f stuck taskids
-    public Map<UUID, Integer> stuckMap = new HashMap<>();
+    //holds f stuck tasks
+    public Map<UUID, FactionTask> stuckMap = new ConcurrentHashMap<>();
 
     protected boolean loadSuccessful = false;
-    private Integer saveTask = null;
+    private FactionTask saveTask = null;
     private boolean autoSave = true;
 
     // Our stored base commands
@@ -98,7 +101,7 @@ public abstract class MPlugin extends JavaPlugin {
         // Register recurring tasks
         if (this.saveTask == null && Conf.saveToFileEveryXMinutes > 0.0) {
             long saveTicks = (long) (1200.0 * Conf.saveToFileEveryXMinutes);
-            this.saveTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this, new SaveTask(this), saveTicks, saveTicks).getTaskId();
+            this.saveTask = FactionsPlugin.getScheduler().runAsyncRepeating(saveTicks, saveTicks, new SaveTask(this));
         }
         loadLang();
         loadSuccessful = true;
@@ -175,7 +178,7 @@ public abstract class MPlugin extends JavaPlugin {
 
     public void onDisable() {
         if (saveTask != null) {
-            this.getServer().getScheduler().cancelTask(saveTask);
+            saveTask.cancel();
             saveTask = null;
         }
         // only save data if plugin actually loaded successfully
@@ -234,7 +237,7 @@ public abstract class MPlugin extends JavaPlugin {
 
         List<String> args = Arrays.asList(arguments).subList(1, arguments.length);
         if (async) {
-            Bukkit.getScheduler().runTaskAsynchronously(this, () -> command.execute(sender, args));
+            FactionsPlugin.getScheduler().runAsync(() -> command.execute(sender, args));
         } else {
             command.execute(sender, args);
         }
@@ -256,7 +259,7 @@ public abstract class MPlugin extends JavaPlugin {
 
     }
 
-    public Map<UUID, Integer> getStuckMap() {
+    public Map<UUID, FactionTask> getStuckMap() {
         return this.stuckMap;
     }
 

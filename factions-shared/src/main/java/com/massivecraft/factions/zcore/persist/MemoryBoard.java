@@ -2,6 +2,7 @@ package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
@@ -53,10 +54,12 @@ public abstract class MemoryBoard extends Board {
         }
 
         flocationIds.put(flocation, id);
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     public void setFactionAt(Faction faction, FLocation flocation) {
-        setIdAt(faction.getId(), flocation);
+        FactionsPlugin.getScheduler().runRegion(flocation.asBukkitLocation(), () ->
+            setIdAt(faction.getId(), flocation));
     }
 
     public void removeAt(FLocation flocation) {
@@ -83,6 +86,7 @@ public abstract class MemoryBoard extends Board {
 
         clearOwnershipAt(flocation);
         flocationIds.remove(flocation);
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     public Set<FLocation> getAllClaims(String factionId) {
@@ -121,6 +125,7 @@ public abstract class MemoryBoard extends Board {
 
     public void clean(String factionId) {
         flocationIds.removeFaction(factionId);
+        EngineDynmap.getInstance().requestUpdate();
     }
 
     // Is this coord NOT completely surrounded by coords claimed by the same faction?
@@ -194,6 +199,10 @@ public abstract class MemoryBoard extends Board {
 
         for (FLocation invalidClaim : invalidClaims) {
             this.flocationIds.remove(invalidClaim);
+        }
+
+        if (!invalidClaims.isEmpty()) {
+            EngineDynmap.getInstance().requestUpdate();
         }
     }
 
@@ -402,12 +411,12 @@ public abstract class MemoryBoard extends Board {
         private int size;
 
         @Override
-        public String put(FLocation floc, String factionId) {
+        public synchronized String put(FLocation floc, String factionId) {
             return put(floc.getWorldName(), floc.toKey(), factionId);
         }
 
         @Override
-        public String get(Object key) {
+        public synchronized String get(Object key) {
             if (!(key instanceof FLocation)) {
                 return null;
             }
@@ -416,7 +425,7 @@ public abstract class MemoryBoard extends Board {
         }
 
         @Override
-        public String remove(Object key) {
+        public synchronized String remove(Object key) {
             if (!(key instanceof FLocation)) {
                 return null;
             }
@@ -442,7 +451,7 @@ public abstract class MemoryBoard extends Board {
         }
 
         @Override
-        public void clear() {
+        public synchronized void clear() {
             this.worldToFactionMap.clear();
             this.factionToLandMap.clear();
             this.factionToWorldCountMap.clear();
@@ -450,7 +459,7 @@ public abstract class MemoryBoard extends Board {
         }
 
         @Override
-        public int size() {
+        public synchronized int size() {
             return this.size;
         }
 
@@ -477,12 +486,12 @@ public abstract class MemoryBoard extends Board {
             return this.entrySet;
         }
 
-        public int getOwnedLandCount(String factionId) {
+        public synchronized int getOwnedLandCount(String factionId) {
             Set<ChunkRef> claims = this.factionToLandMap.get(factionId);
             return claims == null ? 0 : claims.size();
         }
 
-        public int getOwnedLandCount(String factionId, String worldName) {
+        public synchronized int getOwnedLandCount(String factionId, String worldName) {
             Map<String, Integer> worldCounts = this.factionToWorldCountMap.get(factionId);
             if (worldCounts == null) {
                 return 0;
@@ -490,7 +499,7 @@ public abstract class MemoryBoard extends Board {
             return worldCounts.getOrDefault(worldName, 0);
         }
 
-        public Set<FLocation> getFactionClaims(String factionId) {
+        public synchronized Set<FLocation> getFactionClaims(String factionId) {
             Set<ChunkRef> claims = this.factionToLandMap.get(factionId);
             if (claims == null || claims.isEmpty()) {
                 return new HashSet<>();
@@ -503,7 +512,7 @@ public abstract class MemoryBoard extends Board {
             return result;
         }
 
-        public void removeFaction(String factionId) {
+        public synchronized void removeFaction(String factionId) {
             Set<ChunkRef> claims = this.factionToLandMap.remove(factionId);
             if (claims == null || claims.isEmpty()) {
                 this.factionToWorldCountMap.remove(factionId);
@@ -539,7 +548,7 @@ public abstract class MemoryBoard extends Board {
             return this.worldToFactionMap.entrySet();
         }
 
-        public String put(String worldName, int x, int z, String factionId) {
+        public synchronized String put(String worldName, int x, int z, String factionId) {
             return put(worldName, WorldUtil.encodeChunk(x, z), factionId);
         }
 

@@ -35,11 +35,20 @@ public class DynmapStyle {
 
     public static int getColor(String string) {
         int ret = 0x00FF00;
+        if (string == null || string.isEmpty()) {
+            return ret;
+        }
+
+        String normalized = string.startsWith("#") ? string.substring(1) : string;
         try {
-            ret = Integer.parseInt(string.substring(1), 16);
+            ret = Integer.parseInt(normalized, 16);
         } catch (NumberFormatException ignored) {
         }
         return ret;
+    }
+
+    public static String formatColor(int color) {
+        return String.format("#%06X", color & 0xFFFFFF);
     }
 
     public int getLineColor() {
@@ -107,6 +116,17 @@ public class DynmapStyle {
     public DynmapStyle setBoost(Boolean boost) {
         this.boost = boost;
         return this;
+    }
+
+    public DynmapStyle copy() {
+        return new DynmapStyle()
+                .setStrokeColor(this.lineColor)
+                .setLineOpacity(this.lineOpacity)
+                .setLineWeight(this.lineWeight)
+                .setFillColor(this.fillColor)
+                .setFillOpacity(this.fillOpacity)
+                .setHomeMarker(this.homeMarker)
+                .setBoost(this.boost);
     }
 
 }

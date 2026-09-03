@@ -5,16 +5,16 @@ import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.spiral.ChunkProcessingContext;
+import com.massivecraft.factions.util.spiral.FoliaSpiralTask;
 import com.massivecraft.factions.util.spiral.SpiralTask;
 import com.massivecraft.factions.util.spiral.generator.SquareSpiralGenerator;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class CmdClaim extends FCommand {
@@ -63,71 +63,77 @@ public class CmdClaim extends FCommand {
             return;
         }
 
-        Faction at = Board.getInstance().getFactionAt(FLocation.wrap(context.fPlayer.getPlayer().getLocation()));
-
         if (radius < 2) {
-            if (forFaction.isSystemFaction() && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false) && FactionsPlugin.cachedRadiusClaim) {
-                context.fPlayer.msg(TL.CLAIM_CLAIMED, context.fPlayer.describeTo(context.fPlayer, true), forFaction.describeTo(context.fPlayer), at.describeTo(forFaction));
-                return;
+            FLocation claimLocation = FLocation.wrap(context.player.getLocation());
+            if (context.fPlayer.attemptClaim(forFaction, claimLocation, true)) {
+                ClaimCommandUtil.logClaim(forFaction, context.fPlayer, claimLocation);
             }
-            if (FactionsPlugin.cachedRadiusClaim && context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false)) {
-                context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_CLAIMED, context.fPlayer.describeTo(f, true), context.fPlayer.getFaction().describeTo(f), at.describeTo(f)));
-                FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (FLocation.wrap(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
-                return;
-            }
-            context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), true);
-            FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (FLocation.wrap(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
         } else {
             // radius claim
             if (!Permission.CLAIM_RADIUS.has(context.sender, true)) {
                 return;
             }
 
-            new SpiralTask(FLocation.wrap(context.player), radius, new SquareSpiralGenerator()) {
-                private final int limit = Conf.radiusClaimFailureLimit - 1;
-                private int failCount = 0;
-                private int successfulClaims = 0;
+            boolean batchMessages = ClaimCommandUtil.shouldBatchSuccessMessages();
+            int startChunkX = context.player.getLocation().getChunk().getX();
+            int startChunkZ = context.player.getLocation().getChunk().getZ();
 
-                @Override
-                public boolean work(ChunkProcessingContext ctx) {
-                    FLocation fLocation = ctx.getFLocation();
+            if (FactionsPlugin.isFolia()) {
+                new FoliaSpiralTask(SpiralTask.buildFLocationQueue(FLocation.wrap(context.player), radius, new SquareSpiralGenerator())) {
+                    private final int limit = Conf.radiusClaimFailureLimit - 1;
+                    private final AtomicInteger failCount = new AtomicInteger(0);
+                    private final AtomicInteger successfulClaims = new AtomicInteger(0);
 
-                    boolean success = context.fPlayer.attemptClaim(forFaction, fLocation, true);
-                    if (success) {
-                        failCount = 0;
-                        successfulClaims++;
-                        FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", "1", (FLocation.wrap(context.fPlayer.getPlayer().getLocation())).formatXAndZ(","));
-                    } else if (failCount++ >= limit) {
-                        this.stop();
-                        return false;
-                    }
-                    return true;
-                }
-
-                @Override
-                public void finish() {
-                    if (FactionsPlugin.cachedRadiusClaim && successfulClaims > 0) {
-                        if (forFaction.isWarZone() || forFaction.isSafeZone()) {
-                            context.fPlayer.msg(
-                                    TL.CLAIM_RADIUS_CLAIM,
-                                    context.fPlayer.describeTo(context.fPlayer, true),
-                                    Integer.toString(successfulClaims),
-                                    context.fPlayer.getPlayer().getLocation().getChunk().getX(),
-                                    context.fPlayer.getPlayer().getLocation().getChunk().getZ()
-                            );
-                        } else {
-                            context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(
-                                    TL.CLAIM_RADIUS_CLAIM,
-                                    context.fPlayer.describeTo(f, true),
-                                    Integer.toString(successfulClaims),
-                                    context.fPlayer.getPlayer().getLocation().getChunk().getX(),
-                                    context.fPlayer.getPlayer().getLocation().getChunk().getZ()
-                            ));
+                    @Override
+                    protected void work(FLocation loc) {
+                        boolean success = ClaimCommandUtil.attemptClaim(context, forFaction, loc, true, batchMessages);
+                        if (success) {
+                            failCount.set(0);
+                            successfulClaims.incrementAndGet();
+                            ClaimCommandUtil.logClaim(forFaction, context.fPlayer, loc);
+                        } else if (failCount.getAndIncrement() >= limit) {
+                            this.stop();
                         }
                     }
-                    super.finish();
-                }
-            };
+
+                    @Override
+                    protected void finish() {
+                        if (batchMessages) {
+                            ClaimCommandUtil.broadcastClaimSummary(context, forFaction, successfulClaims.get(), startChunkX, startChunkZ);
+                        }
+                    }
+                }.start();
+            } else {
+                new SpiralTask(FLocation.wrap(context.player), radius, new SquareSpiralGenerator()) {
+                    private final int limit = Conf.radiusClaimFailureLimit - 1;
+                    private int failCount = 0;
+                    private int successfulClaims = 0;
+
+                    @Override
+                    public boolean work(ChunkProcessingContext ctx) {
+                        FLocation fLocation = ctx.getFLocation();
+
+                        boolean success = ClaimCommandUtil.attemptClaim(context, forFaction, fLocation, true, batchMessages);
+                        if (success) {
+                            failCount = 0;
+                            successfulClaims++;
+                            ClaimCommandUtil.logClaim(forFaction, context.fPlayer, fLocation);
+                        } else if (failCount++ >= limit) {
+                            this.stop();
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    @Override
+                    public void finish() {
+                        if (batchMessages) {
+                            ClaimCommandUtil.broadcastClaimSummary(context, forFaction, successfulClaims, startChunkX, startChunkZ);
+                        }
+                        super.finish();
+                    }
+                };
+            }
         }
     }
 

@@ -9,7 +9,6 @@ import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +84,7 @@ public class CmdShow extends FCommand {
         List<Component> fancy = new ArrayList<>(16);
         List<String> finalShow = show;
         Faction finalFaction = faction;
-        Bukkit.getScheduler().runTaskAsynchronously(FactionsPlugin.getInstance(), () -> {
+        FactionsPlugin.getScheduler().runAsync(() -> {
             for (String raw : finalShow) {
                 String parsed = FactionsPlugin.getInstance().getConfig().getBoolean("relational-show", true) ? TagUtil.parsePlain(finalFaction, context.fPlayer, raw) : TagUtil.parsePlain(finalFaction, raw); // use relations
                 if (parsed == null) {
@@ -104,11 +103,10 @@ public class CmdShow extends FCommand {
                 }
                 if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
                     if (parsed.contains("{ig}")) {
-                        // replaces all variables with no home TL
                         parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME;
                     }
                     if (parsed.contains("%")) {
-                        parsed = parsed.replaceAll("%", ""); // Just in case it got in there before we disallowed it.
+                        parsed = parsed.replaceAll("%", "");
                     }
 
                     parsed = TextUtil.parse(parsed);
@@ -116,7 +114,7 @@ public class CmdShow extends FCommand {
                     fancy.add(localFancy);
                 }
             }
-            Bukkit.getScheduler().runTask(FactionsPlugin.getInstance(), () -> context.sendComponent(fancy));
+            FactionsPlugin.getScheduler().runGlobal(() -> context.sendComponent(fancy));
         });
     }
 

@@ -12,6 +12,7 @@ import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.Metrics;
 import com.massivecraft.factions.util.timer.TimerManager;
 import com.massivecraft.factions.zcore.file.impl.FileManager;
+import com.massivecraft.factions.zcore.persist.StorageBackend;
 import org.saberdev.corex.CoreX;
 
 import java.io.File;
@@ -27,6 +28,7 @@ public class StartupParameter {
 
         FactionsPlugin.getInstance().fileManager = new FileManager();
         FactionsPlugin.getInstance().fileManager.setupFiles();
+        StorageBackend.configure(plugin);
 
         FactionsPlugin.getInstance().fLogManager = new FLogManager();
 
@@ -57,14 +59,10 @@ public class StartupParameter {
 
             initReserves();
 
-            FactionsPlugin.cachedRadiusClaim = Conf.useRadiusClaimSystem;
-
             CoreX.init();
             if (Conf.useCheckSystem) {
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, CheckTask.getInstance(), 0L, 1200L);
-                FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimer(plugin, CheckTask.getInstance()::cleanupTask, 0L, 1260L);
-
-                // FactionsPlugin.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(plugin, WeeWooTask::new, 600L, 600L);
+                FactionsPlugin.getScheduler().runAsyncRepeating(1L, 1200L, CheckTask.getInstance());
+                FactionsPlugin.getScheduler().runGlobalRepeating(1L, 1260L, CheckTask.getInstance()::cleanupTask);
             }
 
             FactionsPlugin.getInstance().fLogManager.loadLogs(plugin);

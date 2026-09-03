@@ -3,8 +3,10 @@ package com.massivecraft.factions;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.ChatMode;
+import com.massivecraft.factions.struct.FactionRole;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
+import com.massivecraft.factions.scheduler.FactionTask;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.fperms.FPermKey;
 import net.kyori.adventure.text.Component;
@@ -155,6 +157,12 @@ public interface FPlayer extends EconomyParticipator {
     Role getRole();
 
     void setRole(Role role);
+
+    FactionRole getFactionRole();
+
+    String getRoleId();
+
+    void setFactionRole(FactionRole role);
 
     boolean shouldTakeFallDamage();
 
@@ -445,7 +453,7 @@ public interface FPlayer extends EconomyParticipator {
 
     WarmUpUtil.Warmup getWarmupType();
 
-    void addWarmup(WarmUpUtil.Warmup warmup, int taskId);
+    void addWarmup(WarmUpUtil.Warmup warmup, FactionTask task);
 
     void stopWarmup();
 

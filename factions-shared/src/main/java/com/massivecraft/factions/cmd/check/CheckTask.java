@@ -4,7 +4,6 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -90,10 +89,7 @@ public class CheckTask implements Runnable {
                 found.add(faction.getId());
 
                 faction.msg(TL.CHECK_WALLS_CHECK);
-                Bukkit.getScheduler().runTask(
-                        FactionsPlugin.getInstance(),
-                        () -> faction.getChecks().put(currentTime, "J")
-                );
+                FactionsPlugin.getScheduler().runGlobal(() -> faction.getChecks().put(currentTime, "J"));
             }
 
             if (faction.getBufferCheckMinutes() % 60 == minute % 60) {
@@ -105,10 +101,7 @@ public class CheckTask implements Runnable {
                 found.add(faction.getId());
 
                 faction.msg(TL.CHECK_BUFFERS_CHECK);
-                Bukkit.getScheduler().runTask(
-                        FactionsPlugin.getInstance(),
-                        () -> faction.getChecks().put(currentTime, "H")
-                );
+                FactionsPlugin.getScheduler().runGlobal(() -> faction.getChecks().put(currentTime, "H"));
             }
         }
     }

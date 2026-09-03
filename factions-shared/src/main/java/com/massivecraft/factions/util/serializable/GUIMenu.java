@@ -102,11 +102,11 @@ public abstract class GUIMenu {
         GUIMenu openMenu = menus.get(player.getUniqueId());
         if (openMenu != null) {
             player.closeInventory();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.instance, () -> {
+            FactionsPlugin.getScheduler().runGlobalLater(1L, () -> {
                 this.drawItems();
                 player.openInventory(this.menu);
                 menus.put(player.getUniqueId(), this);
-            }, 1L);
+            });
         } else {
             this.drawItems();
             player.openInventory(this.menu);

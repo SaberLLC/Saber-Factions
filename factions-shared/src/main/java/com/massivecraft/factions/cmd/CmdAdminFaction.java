@@ -5,9 +5,9 @@ import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
+import com.massivecraft.factions.struct.FactionRole;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.fperms.Access;
@@ -129,9 +129,9 @@ public class CmdAdminFaction extends FCommand {
         boolean allActions = context.argAsString(3).equalsIgnoreCase("all");
 
         if (allRelations) {
-            permissables.addAll(faction.getPermissions().keySet());
+            permissables.addAll(faction.getPermissionTargets());
         } else {
-            Permissable permissable = getPermissable(context.argAsString(2));
+            Permissable permissable = getPermissable(faction, context.argAsString(2));
             if (permissable == null) {
                 context.msg(TL.COMMAND_PERM_INVALID_RELATION);
                 return;
@@ -196,14 +196,17 @@ public class CmdAdminFaction extends FCommand {
         return faction;
     }
 
-    private Permissable getPermissable(String name) {
-        if (Role.fromString(name.toUpperCase()) != null) {
-            return Role.fromString(name.toUpperCase());
-        } else if (Relation.fromString(name.toUpperCase()) != null) {
-            return Relation.fromString(name.toUpperCase());
-        } else {
-            return null;
+    private Permissable getPermissable(Faction faction, String name) {
+        FactionRole role = faction.getRoleByName(name);
+        if (role != null) {
+            return role;
         }
+        for (Relation relation : Relation.VALUES) {
+            if (relation.name().equalsIgnoreCase(name) && relation != Relation.MEMBER) {
+                return relation;
+            }
+        }
+        return null;
     }
 
     @Override

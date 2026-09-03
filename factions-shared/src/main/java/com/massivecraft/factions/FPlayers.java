@@ -15,6 +15,13 @@ public abstract class FPlayers {
         return instance;
     }
 
+    public static void setInstance(FPlayers fPlayers) {
+        if (fPlayers == null) {
+            throw new IllegalArgumentException("fPlayers");
+        }
+        instance = fPlayers;
+    }
+
     private static FPlayers getFPlayersImpl() {
         return new JSONFPlayers();
     }

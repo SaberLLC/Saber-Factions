@@ -44,7 +44,7 @@ public class CmdWarunclaimall extends FCommand {
         }
 
         context.msg(TL.COMMAND_WARUNCLAIMALL_SUCCESS);
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
+        FactionsPlugin.getScheduler().runAsync(() -> {
             if (Conf.logLandUnclaims) {
                 Logger.print(TL.COMMAND_WARUNCLAIMALL_LOG.format(context.fPlayer.getName()), Logger.PrefixType.DEFAULT);
             }

@@ -6,6 +6,7 @@ import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
+import com.massivecraft.factions.scheduler.FactionTask;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.CornerTask;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -61,7 +62,10 @@ public class CmdCorner extends FCommand {
                 if (surrounding.isEmpty()) {
                     context.msg(TL.COMMAND_CORNER_CANT_CLAIM);
                 } else {
-                    new CornerTask(context.fPlayer, surrounding).runTaskTimer(FactionsPlugin.getInstance(), 1L, 1L);
+                    CornerTask cornerTask = new CornerTask(context.fPlayer, surrounding);
+                    FactionTask task = FactionsPlugin.getScheduler().runRegionRepeating(
+                        surrounding.get(0).asBukkitLocation(), 1L, 1L, cornerTask);
+                    cornerTask.setTask(task);
                 }
             }
         } else {

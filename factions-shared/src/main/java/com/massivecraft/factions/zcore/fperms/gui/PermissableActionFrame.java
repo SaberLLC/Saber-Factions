@@ -76,13 +76,13 @@ public class PermissableActionFrame extends SaberGUI {
 
                 boolean success = fplayer.getFaction().setPermission(perm, action, access);
 
-                if (success) fplayer.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), perm.name());
+                if (success) fplayer.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), perm.toString());
                 else fplayer.msg(TL.COMMAND_PERM_LOCKED);
                 if (Conf.logLandClaims) {
-                    Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.name()) + " for faction " + fplayer.getTag(), Logger.PrefixType.DEFAULT);
+                    Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.toString()) + " for faction " + fplayer.getTag(), Logger.PrefixType.DEFAULT);
                 }
 
-                FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), color + access.getInlinedName(access), action.name().toUpperCase(), perm.name());
+                FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), color + access.getInlinedName(access), action.name().toUpperCase(), perm.toString());
 
                 redraw();
 
@@ -93,22 +93,39 @@ public class PermissableActionFrame extends SaberGUI {
                 boolean success = fplayer.getFaction().setPermission(perm, action, access);
 
 
-                if (success) fplayer.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), perm.name());
+                if (success) fplayer.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), perm.toString());
                 else fplayer.msg(TL.COMMAND_PERM_LOCKED);
                 if (Conf.logLandClaims) {
-                    Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.name()) + " for faction " + fplayer.getTag(), Logger.PrefixType.DEFAULT);
+                    Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.toString()) + " for faction " + fplayer.getTag(), Logger.PrefixType.DEFAULT);
                 }
                 // Closing and opening resets the cursor.
                 // fplayer.getPlayer().closeInventory();
-                FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), color + access.getInlinedName(access), action.name().toUpperCase(), perm.name());
+                FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), color + access.getInlinedName(access), action.name().toUpperCase(), perm.toString());
+
+                redraw();
+            }).click(ClickType.MIDDLE, () -> {
+                Access access = Access.UNDEFINED;
+                String color = TextUtil.parse(access.getColor() + "&l");
+
+                boolean success = fplayer.getFaction().setPermission(perm, action, access);
+
+                if (success) fplayer.msg(TL.COMMAND_PERM_SET, action.name(), access.name(), perm.toString());
+                else fplayer.msg(TL.COMMAND_PERM_LOCKED);
+                if (Conf.logLandClaims) {
+                    Logger.print(String.format(TL.COMMAND_PERM_SET.toString(), action.name(), access.name(), perm.toString()) + " for faction " + fplayer.getTag(), Logger.PrefixType.DEFAULT);
+                }
+                FactionsPlugin.instance.logFactionEvent(fplayer.getFaction(), FLogType.PERM_EDIT_DEFAULTS, fplayer.getName(), color + access.getInlinedName(access), action.name().toUpperCase(), perm.toString());
 
                 redraw();
             }));
         }
 
         this.setItem(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getInt("fperm-gui.action.slots.back"), new InventoryItem(buildBackItem()).click(() -> {
-            // Closing and opening resets the cursor.
-            // fplayer.getPlayer().closeInventory();
+            SaberGUI parent = this.getParentGUI();
+            if (parent != null) {
+                parent.openGUI(FactionsPlugin.getInstance());
+                return;
+            }
             new PermissableRelationFrame(player, fplayer.getFaction()).openGUI(FactionsPlugin.getInstance());
         }));
 

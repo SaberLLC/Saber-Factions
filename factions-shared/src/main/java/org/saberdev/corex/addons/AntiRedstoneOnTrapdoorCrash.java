@@ -2,6 +2,7 @@ package org.saberdev.corex.addons;
 
 import com.massivecraft.factions.FactionsPlugin;
 import com.massivecraft.factions.util.Logger;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -21,11 +22,10 @@ public class AntiRedstoneOnTrapdoorCrash implements Listener {
     private final Map<Location, Integer> trapdoorPoweredByRedstoneCounts = new HashMap<>();
 
     public AntiRedstoneOnTrapdoorCrash() {
-        FactionsPlugin plugin = FactionsPlugin.getInstance();
-        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        FactionsPlugin.getScheduler().runAsyncRepeating(6000L, 6000L, () -> {
             cooldowns.clear();
             trapdoorPoweredByRedstoneCounts.clear();
-        }, 6000L, 6000L);
+        });
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

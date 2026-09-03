@@ -12,6 +12,19 @@ Config-Version: 1.1
 # It's suggested that you only turn this on at the direction of a developer.
 debug: false
 
+# Storage backend for factions, players, and claims.
+# JSON keeps the current flat-file storage. MYSQL stores data in MySQL tables.
+storage:
+  type: JSON
+  mysql:
+    host: localhost
+    port: 3306
+    database: saberfactions
+    username: root
+    password: ""
+    table-prefix: saberfactions_
+    import-json-on-first-run: true
+
 # Prevent find factions exploit
 # This will help limit how many times a player can be sent a map of factions.
 # Set this to the cool down you want, in milliseconds, for a map to be shown to a player.
@@ -707,55 +720,6 @@ fbanners:
   Placeable:
     Warzone: false
     Enemy: true
-
-############################################################
-# +------------------------------------------------------+ #
-# |                   Faction Audit                      | #
-# +------------------------------------------------------+ #
-############################################################
-faudit-gui:
-  slots:
-    invites: 0
-    bans: 1
-    chunk_claims: 2
-    perm_edit_defaults: 3
-    bank_edit: 4
-    fchest_edit: 5
-    relation_change: 6
-    ftag_edit: 7
-    fdesc_edit: 8
-    role_perm_edit: 9
-    spawner_edit: 10
-    rank_edit: 11
-    f_tnt: 12
-  names:
-    invites: '&a&lRoster Edits'
-    bans: '&a&lPlayer Bans'
-    chunk_claims: '&a&lClaim Edits'
-    perm_edit_defaults: '&a&lDefault Perm Edits'
-    bank_edit: '&a&lMoney Edits'
-    fchest_edit: '&a&lChest Edits'
-    relation_change: '&a&lRelation Edits'
-    ftag_edit: '&a&lTag Edits'
-    fdesc_edit: '&a&lDesc Edits'
-    role_perm_edit: '&a&lPromotional Edits'
-    spawner_edit: '&a&lSpawner Edits'
-    rank_edit: '&a&lRank Edits'
-    f_tnt: '&a&lTnt Edits'
-  materials:
-    invites: WRITABLE_BOOK
-    bans: ANVIL
-    chunk_claims: WOODEN_AXE
-    perm_edit_defaults: WRITTEN_BOOK
-    bank_edit: GOLD_INGOT
-    fchest_edit: CHEST
-    relation_change: GOLDEN_SWORD
-    ftag_edit: NAME_TAG
-    fdesc_edit: PAPER
-    role_perm_edit: WRITTEN_BOOK
-    spawner_edit: SPAWNER
-    rank_edit: GOLDEN_HELMET
-    f_tnt: TNT
 
 ############################################################
 # +------------------------------------------------------+ #

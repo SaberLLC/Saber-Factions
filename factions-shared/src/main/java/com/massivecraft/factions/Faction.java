@@ -6,6 +6,7 @@ import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.missions.Mission;
 import com.massivecraft.factions.struct.BanInfo;
+import com.massivecraft.factions.struct.FactionRole;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.FastChunk;
@@ -288,6 +289,24 @@ public interface Faction extends EconomyParticipator {
     @Deprecated
     void setDefaultPerms();
 
+    Map<String, FactionRole> getRoles();
+
+    Collection<FactionRole> getCustomRoles();
+
+    FactionRole getRole(String roleId);
+
+    FactionRole getRole(Role role);
+
+    FactionRole getRoleByName(String name);
+
+    FactionRole getDefaultFactionRole();
+
+    Collection<Permissable> getPermissionTargets();
+
+    boolean addRole(FactionRole role, FactionRole copyFrom);
+
+    boolean deleteRole(FactionRole role);
+
     void disband(Player disbander);
 
     void disband(Player disbander, PlayerDisbandReason reason);
@@ -378,6 +397,8 @@ public interface Faction extends EconomyParticipator {
     Role getDefaultRole();
 
     void setDefaultRole(Role role);
+
+    void setDefaultRole(FactionRole role);
 
     // ----------------------------------------------//
     // Messages

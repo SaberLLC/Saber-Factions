@@ -30,7 +30,7 @@ public class CmdSafeunclaimall extends FCommand {
 
     @Override
     public void perform(CommandContext context) {
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
+        FactionsPlugin.getScheduler().runAsync(() -> {
 
 
             String worldName = context.argAsString(0);

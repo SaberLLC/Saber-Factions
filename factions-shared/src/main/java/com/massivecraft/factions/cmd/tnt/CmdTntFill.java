@@ -8,6 +8,7 @@ import com.massivecraft.factions.cmd.FCommand;
 import com.massivecraft.factions.cmd.tnt.tntprovider.FactionTNTProvider;
 import com.massivecraft.factions.cmd.tnt.tntprovider.PlayerTNTProvider;
 import com.massivecraft.factions.cmd.tnt.tntprovider.TNTProvider;
+import com.massivecraft.factions.scheduler.FactionTask;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.util.TL;
@@ -33,7 +34,7 @@ public class CmdTntFill extends FCommand {
 
     public CmdTntFill() {
         super();
-        this.fillTaskMap = new WeakHashMap<>();
+        this.fillTaskMap = Collections.synchronizedMap(new WeakHashMap<>());
         this.getAliases().addAll(Aliases.tnt_tntfill);
 
         this.getRequiredArgs().add("radius");
@@ -136,14 +137,23 @@ public class CmdTntFill extends FCommand {
     }
 
     private boolean hasRunningTask(Player player) {
-        this.fillTaskMap.values().removeIf(TNTFillTask::isCancelled);
-        return this.fillTaskMap.containsKey(player);
+        synchronized (fillTaskMap) {
+            this.fillTaskMap.values().removeIf(TNTFillTask::isCancelled);
+            return this.fillTaskMap.containsKey(player);
+        }
     }
 
     public void fillDispensers(Player player, TNTProvider tntProvider, Collection<Dispenser> dispensers, int amount) {
-        TNTFillTask tntFillTask = new TNTFillTask(this, tntProvider, dispensers.stream().map(BlockState::getBlock).collect(Collectors.toList()), amount);
-        tntFillTask.runTaskTimer(FactionsPlugin.getInstance(), 0, 1);
-        fillTaskMap.put(player, tntFillTask);
+        List<Block> blocks = dispensers.stream().map(BlockState::getBlock).collect(Collectors.toList());
+        TNTFillTask tntFillTask = new TNTFillTask(this, tntProvider, blocks, amount);
+        if (!blocks.isEmpty()) {
+            FactionTask task = FactionsPlugin.getScheduler().runRegionRepeating(
+                blocks.get(0).getLocation(), 0L, 1L, tntFillTask);
+            tntFillTask.setTask(task);
+        }
+        synchronized (fillTaskMap) {
+            fillTaskMap.put(player, tntFillTask);
+        }
     }
 
     public int getAddable(Inventory inv, Material material) {

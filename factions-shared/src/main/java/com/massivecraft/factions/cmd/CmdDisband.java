@@ -11,7 +11,6 @@ import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
 import com.massivecraft.factions.zcore.frame.fdisband.FDisbandFrame;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 
 import java.util.HashMap;
@@ -110,7 +109,7 @@ public class CmdDisband extends FCommand {
         if (!disbandMap.containsKey(context.player.getUniqueId().toString()) && faction.getTnt() > 0) {
             context.msg(TL.COMMAND_DISBAND_CONFIRM.toString().replace("{tnt}", String.valueOf(faction.getTnt())));
             disbandMap.put(context.player.getUniqueId().toString(), faction.getId());
-            Bukkit.getScheduler().scheduleSyncDelayedTask(FactionsPlugin.getInstance(), () -> disbandMap.remove(context.player.getUniqueId().toString()), 200L);
+            FactionsPlugin.getScheduler().runGlobalLater(200L, () -> disbandMap.remove(context.player.getUniqueId().toString()));
         } else if (!disbandMap.containsKey(context.player.getUniqueId().toString())) {
             new FDisbandFrame(context.player).openGUI(FactionsPlugin.getInstance());
         }

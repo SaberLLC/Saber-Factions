@@ -1,9 +1,8 @@
 package com.massivecraft.factions.util;
 
 import com.massivecraft.factions.FactionsPlugin;
-import org.bukkit.Bukkit;
+import com.massivecraft.factions.scheduler.FactionTask;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.beans.ConstructorProperties;
 
@@ -12,66 +11,58 @@ public class TaskRunner {
   public TaskRunner(JavaPlugin plugin) {
     this.plugin = plugin;
   }
-  
-  public static final BukkitScheduler scheduler = Bukkit.getScheduler();
-  
+
   private final JavaPlugin plugin;
-  
+
   private Runnable task;
-  
-  private int taskId;
-  
+
+  private volatile FactionTask currentTask;
+
   public static TaskRunner forPlugin(JavaPlugin plugin) {
     return new TaskRunner(plugin);
   }
-  
+
   public static TaskRunner bind(Runnable task) {
     return forPlugin(FactionsPlugin.getInstance()).with(task);
   }
-  
+
   public TaskRunner with(Runnable task) {
     this.task = task;
     return this;
   }
-  
+
   public void cancelTask() {
-    scheduler.cancelTask(this.taskId);
-    this.taskId = -1;
+    FactionTask t = this.currentTask;
+    if (t != null) t.cancel();
+    this.currentTask = null;
   }
-  
+
   public boolean isTaskCancelled() {
-    return (this.taskId == -1);
+    FactionTask t = this.currentTask;
+    return t == null || t.isCancelled();
   }
-  
-  public boolean isTaskQueued() {
-    return (!isTaskCancelled() && scheduler.isQueued(this.taskId));
+
+  public void runTaskSync() {
+    this.currentTask = FactionsPlugin.getScheduler().runGlobal(this.task);
   }
-  
-  public boolean isTaskRunning() {
-    return (!isTaskCancelled() && scheduler.isCurrentlyRunning(this.taskId));
+
+  public void runTaskSyncLater(long delay) {
+    this.currentTask = FactionsPlugin.getScheduler().runGlobalLater(delay, this.task);
   }
-  
-  public int runTaskSync() {
-    return this.taskId = scheduler.runTask(this.plugin, this.task).getTaskId();
+
+  public void runTaskSyncTimer(long delay, long interval) {
+    this.currentTask = FactionsPlugin.getScheduler().runGlobalRepeating(delay, interval, this.task);
   }
-  
-  public int runTaskSyncLater(long delay) {
-    return this.taskId = scheduler.runTaskLater(this.plugin, this.task, delay).getTaskId();
+
+  public void runTaskAsync() {
+    this.currentTask = FactionsPlugin.getScheduler().runAsync(this.task);
   }
-  
-  public int runTaskSyncTimer(long delay, long interval) {
-    return this.taskId = scheduler.runTaskTimer(this.plugin, this.task, delay, interval).getTaskId();
+
+  public void runTaskAsyncLater(long delay) {
+    this.currentTask = FactionsPlugin.getScheduler().runAsyncLater(delay, this.task);
   }
-  
-  public int runTaskAsync() {
-    return this.taskId = scheduler.runTaskAsynchronously(this.plugin, this.task).getTaskId();
-  }
-  
-  public int runTaskAsyncLater(long delay) {
-    return this.taskId = scheduler.runTaskLaterAsynchronously(this.plugin, this.task, delay).getTaskId();
-  }
-  
-  public int runTaskAsyncTimer(long delay, long interval) {
-    return this.taskId = scheduler.runTaskTimerAsynchronously(this.plugin, this.task, delay, interval).getTaskId();
+
+  public void runTaskAsyncTimer(long delay, long interval) {
+    this.currentTask = FactionsPlugin.getScheduler().runAsyncRepeating(delay, interval, this.task);
   }
 }

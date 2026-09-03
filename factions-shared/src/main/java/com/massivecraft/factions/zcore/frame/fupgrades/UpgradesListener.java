@@ -89,7 +89,7 @@ public class UpgradesListener implements Listener {
         int reducedDelay = Math.max(40, FastMath.round(currentDelay - (currentDelay * multiplier)));
         if (reducedDelay >= currentDelay) return;
 
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> {
+        FactionsPlugin.getScheduler().runGlobalLater(1L, () -> {
             if (wildStackerProvider != null) {
                 if (!wildStackerProvider.setDelay(spawner, reducedDelay)) {
                     Logger.print("WildStacker failed to set delay at " + spawner.getLocation(), Logger.PrefixType.FAILED);
@@ -101,7 +101,7 @@ public class UpgradesListener implements Listener {
             } else {
                 spawner.setDelay(reducedDelay);
             }
-        }, 1L);
+        });
     }
 
     @EventHandler

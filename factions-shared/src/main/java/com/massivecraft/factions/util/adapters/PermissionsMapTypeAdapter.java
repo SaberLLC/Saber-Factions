@@ -1,6 +1,7 @@
 package com.massivecraft.factions.util.adapters;
 
 import com.google.gson.*;
+import com.massivecraft.factions.struct.FactionRole;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.Logger;
@@ -14,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissable, Map<String, Access>>> {
+public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissable, Map<String, Access>>>, JsonSerializer<Map<Permissable, Map<String, Access>>> {
 
     @Override
     public Map<Permissable, Map<String, Access>> deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
@@ -57,31 +58,65 @@ public class PermissionsMapTypeAdapter implements JsonDeserializer<Map<Permissab
         }
     }
 
-    private Permissable getPermissable(String name) {
-        // If name is uppercase then it is (probably, no way to completely know) valid if not begin conversion
-        if (name.equals(name.toUpperCase())) {
-            if (Role.fromString(name.toUpperCase()) != null) {
-                return Role.fromString(name.toUpperCase());
-            } else if (Relation.fromString(name.toUpperCase()) != null) {
-                return Relation.fromString(name.toUpperCase());
-            } else {
-                return null;
-            }
-        } else {
-            if (name.equals(TL.ROLE_RECRUIT.toString())) {
-                return Role.RECRUIT;
-            } else if (name.equals(TL.ROLE_NORMAL.toString())) {
-                return Role.NORMAL;
-            } else if (name.equals(TL.ROLE_MODERATOR.toString())) {
-                return Role.MODERATOR;
-            } else {
-                // If it is explicitly member and its old data then it refers to relation member not role, skip it
-                if (name.equals("member")) {
-                    return null;
-                }
-                return Relation.fromString(name);
-            }
+    @Override
+    public JsonElement serialize(Map<Permissable, Map<String, Access>> src, Type typeOfSrc, JsonSerializationContext context) {
+        JsonObject object = new JsonObject();
+        if (src == null) {
+            return object;
         }
+
+        for (Map.Entry<Permissable, Map<String, Access>> entry : src.entrySet()) {
+            Permissable permissable = entry.getKey();
+            if (permissable == null) {
+                continue;
+            }
+
+            JsonObject accessObject = new JsonObject();
+            if (entry.getValue() != null) {
+                for (Map.Entry<String, Access> accessEntry : entry.getValue().entrySet()) {
+                    String actionId = FPerms.normalizeId(accessEntry.getKey());
+                    Access access = accessEntry.getValue();
+                    if (actionId != null && access != null) {
+                        accessObject.addProperty(actionId, access.name());
+                    }
+                }
+            }
+            object.add(permissable.name(), accessObject);
+        }
+
+        return object;
+    }
+
+    private Permissable getPermissable(String name) {
+        if (name == null) {
+            return null;
+        }
+
+        String upperName = name.toUpperCase();
+        if (upperName.equals(Relation.ALLY.name()) || upperName.equals(Relation.TRUCE.name()) || upperName.equals(Relation.ENEMY.name()) || upperName.equals(Relation.NEUTRAL.name()) || upperName.equals(Relation.MEMBER.name())) {
+            Relation relation = Relation.fromString(upperName);
+            return relation == Relation.MEMBER ? null : relation;
+        }
+
+        Role legacyRole = Role.fromString(upperName);
+        if (legacyRole != null) {
+            return FactionRole.fromRole(legacyRole);
+        }
+
+        if (name.equals(TL.ROLE_RECRUIT.toString())) {
+            return FactionRole.fromRole(Role.RECRUIT);
+        } else if (name.equals(TL.ROLE_NORMAL.toString())) {
+            return FactionRole.fromRole(Role.NORMAL);
+        } else if (name.equals(TL.ROLE_MODERATOR.toString())) {
+            return FactionRole.fromRole(Role.MODERATOR);
+        } else if (name.equals(TL.ROLE_COLEADER.toString())) {
+            return FactionRole.fromRole(Role.COLEADER);
+        } else if (name.equals(TL.ROLE_LEADER.toString())) {
+            return FactionRole.fromRole(Role.LEADER);
+        }
+
+        String normalizedId = FactionRole.normalizeId(name);
+        return normalizedId == null ? null : new FactionRole(normalizedId);
     }
 
 }

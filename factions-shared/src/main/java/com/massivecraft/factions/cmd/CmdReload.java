@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.integration.dynmap.EngineDynmap;
 import com.massivecraft.factions.listeners.FactionsPlayerListener;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
@@ -23,10 +24,14 @@ public class CmdReload extends FCommand {
     public void perform(CommandContext context) {
         long timeInitStart = System.currentTimeMillis();
         Conf.load();
+        FactionsPlugin.getInstance().reloadBaseCommandAliases();
         Conf.save();
         FactionsPlugin.getInstance().getFileManager().loadCustomFiles();
         FactionsPlugin.getInstance().reloadConfig();
         FactionsPlugin.getInstance().loadLang();
+        FactionsPlugin.getInstance().getFlogManager().reloadSettings();
+        EngineDynmap.getInstance().init();
+        EngineDynmap.getInstance().requestUpdate();
 
 
         if (FactionsPlugin.getInstance().version != 7) {

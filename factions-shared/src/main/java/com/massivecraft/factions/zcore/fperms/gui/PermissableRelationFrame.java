@@ -4,8 +4,8 @@ import com.cryptomorin.xseries.XMaterial;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.struct.FactionRole;
 import com.massivecraft.factions.struct.Relation;
-import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.SaberGUI;
 import com.massivecraft.factions.util.serializable.InventoryItem;
 import com.massivecraft.factions.zcore.fperms.Permissable;
@@ -16,7 +16,11 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class PermissableRelationFrame extends SaberGUI {
 
@@ -28,27 +32,6 @@ public class PermissableRelationFrame extends SaberGUI {
 
     public PermissableRelationFrame(Player player, Faction faction) {
         super(player, TextUtil.parse(Objects.requireNonNull(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString("fperm-gui.relation.name")).replace("{faction}", faction.getTag())), FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getInt("fperm-gui.relation.rows") * 9);
-    }
-
-    private ItemStack buildAsset(String loc, String relation) {
-        Permissable fromRelation = getPermissable(relation);
-        // Since only two struct implement Permissible, using ternary operator to cast type is safe. By TwinkleStar03
-        String relationName = fromRelation instanceof Relation ? ((Relation) fromRelation).nicename : ((Role) fromRelation).nicename;
-        String nameCapitalized = relation.substring(0, 1).toUpperCase() + relation.substring(1);
-        ItemStack item = XMaterial.matchXMaterial(FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getString(loc)).get().parseItem();
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.setDisplayName(TextUtil.parse(
-                    FactionsPlugin
-                            .getInstance()
-                            .getFileManager()
-                            .getFperms()
-                            .getConfig()
-                            .getString("fperm-gui.relation.Placeholder-Item.Name")
-                            .replace("{relation}", relationName != null ? relationName : nameCapitalized)));
-            item.setItemMeta(meta);
-        }
-        return item;
     }
 
     private ItemStack buildDummyItem() {
@@ -64,14 +47,17 @@ public class PermissableRelationFrame extends SaberGUI {
         return item;
     }
 
-    private Permissable getPermissable(String name) {
-        if (Role.fromString(name.toUpperCase()) != null) {
-            return Role.fromString(name.toUpperCase());
-        } else if (Relation.fromString(name.toUpperCase()) != null) {
-            return Relation.fromString(name.toUpperCase());
-        } else {
-            return null;
+    private Permissable getPermissable(Faction faction, String name) {
+        FactionRole role = faction.getRoleByName(name);
+        if (role != null && !role.isLeaderTier()) {
+            return role;
         }
+        for (Relation relation : Relation.VALUES) {
+            if (relation.name().equalsIgnoreCase(name) && relation != Relation.MEMBER) {
+                return relation;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -81,13 +67,35 @@ public class PermissableRelationFrame extends SaberGUI {
         }
         Faction faction = FPlayers.getInstance().getByPlayer(player).getFaction();
         ConfigurationSection sec = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.relation");
+        Set<Integer> usedSlots = new HashSet<>();
         for (String key : sec.getConfigurationSection("slots").getKeys(false)) {
             if (key == null || sec.getInt("slots." + key) < 0) continue;
-            this.setItem(sec.getInt("slots." + key), new InventoryItem(buildAsset("fperm-gui.relation.materials." + key, key)).click(ClickType.LEFT, () -> {
-                // Closing and opening resets the cursor.
-                // e.getWhoClicked().closeInventory();
-                new PermissableActionFrame(player, faction, getPermissable(key)).openGUI(FactionsPlugin.getInstance());
-            }));
+            int slot = sec.getInt("slots." + key);
+            Permissable permissable = getPermissable(faction, key);
+            usedSlots.add(slot);
+            if (permissable == null || permissable.buildItem() == null) {
+                continue;
+            }
+            this.setItem(slot, new InventoryItem(permissable.buildItem()).click(ClickType.LEFT, () ->
+                    new PermissableActionFrame(player, faction, permissable).openGUI(FactionsPlugin.getInstance())));
+        }
+
+        List<FactionRole> customRoles = new ArrayList<>(faction.getCustomRoles());
+        List<Integer> freeSlots = new ArrayList<>();
+        for (int slot = 0; slot < this.size; slot++) {
+            if (!usedSlots.contains(slot)) {
+                freeSlots.add(slot);
+            }
+        }
+
+        for (int index = 0; index < customRoles.size() && index < freeSlots.size(); index++) {
+            FactionRole role = customRoles.get(index);
+            if (role.buildItem() == null) {
+                continue;
+            }
+            int slot = freeSlots.get(index);
+            this.setItem(slot, new InventoryItem(role.buildItem()).click(ClickType.LEFT, () ->
+                    new PermissableActionFrame(player, faction, role).openGUI(FactionsPlugin.getInstance())));
         }
     }
 }

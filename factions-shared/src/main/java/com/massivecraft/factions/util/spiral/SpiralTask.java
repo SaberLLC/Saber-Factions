@@ -2,6 +2,7 @@ package com.massivecraft.factions.util.spiral;
 
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FactionsPlugin;
+import com.massivecraft.factions.scheduler.FactionTask;
 import com.massivecraft.factions.util.Logger;
 import com.massivecraft.factions.util.spiral.coord.ChunkCoord;
 import com.massivecraft.factions.util.spiral.generator.SpiralGenerator;
@@ -16,8 +17,8 @@ public abstract class SpiralTask implements Runnable {
     private final TaskProgressTracker progressTracker;
     private final AdaptiveBatchExecutor batchExecutor = new AdaptiveBatchExecutor();
 
-    private boolean active = false;
-    private int taskId = -1;
+    private volatile boolean active = false;
+    private volatile FactionTask task;
 
     public SpiralTask(FLocation center, int radius, SpiralGenerator generator) {
         this.worldName = center.getWorldName();
@@ -37,7 +38,7 @@ public abstract class SpiralTask implements Runnable {
         }
 
         this.active = true;
-        this.taskId = Bukkit.getScheduler().runTaskTimer(FactionsPlugin.getInstance(), this, 1, 1).getTaskId();
+        this.task = FactionsPlugin.getScheduler().runGlobalRepeating(1L, 1L, this);
         Logger.print("[SpiralTask] Started with " + progressTracker.getTotalChunks() + " chunks.", Logger.PrefixType.DEFAULT);
     }
 
@@ -90,9 +91,9 @@ public abstract class SpiralTask implements Runnable {
     public void stop() {
         if (!active) return;
         active = false;
-        if (taskId != -1) {
-            Bukkit.getScheduler().cancelTask(taskId);
-            taskId = -1;
+        if (this.task != null) {
+            this.task.cancel();
+            this.task = null;
         }
         if (spiralQueue != null) spiralQueue.clear();
     }
@@ -107,5 +108,19 @@ public abstract class SpiralTask implements Runnable {
 
     public AdaptiveBatchExecutor getBatchExecutor() {
         return batchExecutor;
+    }
+
+    /**
+     * Converts a spiral generator's output into a Queue of FLocations for use
+     * with FoliaSpiralTask (region-threaded spiral processing on Folia).
+     */
+    public static Queue<FLocation> buildFLocationQueue(FLocation center, int radius, SpiralGenerator generator) {
+        Queue<ChunkCoord> coords = generator.generate(center.getIntX(), center.getIntZ(), radius);
+        Queue<FLocation> result = new java.util.LinkedList<>();
+        String worldName = center.getWorldName();
+        for (ChunkCoord coord : coords) {
+            result.add(FLocation.wrap(worldName, coord.x, coord.z));
+        }
+        return result;
     }
 }

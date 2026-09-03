@@ -104,9 +104,9 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             case "player_role_prefix":
                 return String.valueOf(fPlayer.getRolePrefix());
             case "player_role":
-                return fPlayer.hasFaction() ? fPlayer.getRole().getPrefix() : "";
+                return fPlayer.hasFaction() ? fPlayer.getRolePrefix() : "";
             case "player_role_name":
-                return fPlayer.hasFaction() ? fPlayer.getRole().getTranslation().toString() : TL.PLACEHOLDER_ROLE_NAME.toString();
+                return fPlayer.hasFaction() ? fPlayer.getFactionRole().getDisplayName() : TL.PLACEHOLDER_ROLE_NAME.toString();
             // Then Faction stuff
             case "faction_name":
                 return fPlayer.hasFaction() ? faction.getTag() : TL.NOFACTION_PREFIX.toString();
@@ -231,7 +231,7 @@ public class ClipPlaceholderAPIManager extends PlaceholderExpansion implements R
             }
             return String.valueOf(pulled);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            logInvalid(stripped);
+
         }
 
         return TL.PLACEHOLDERAPI_NULL.toString();

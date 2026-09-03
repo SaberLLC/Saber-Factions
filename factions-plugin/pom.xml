@@ -31,6 +31,11 @@
             <artifactId>factions-legacy</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>factions-folia</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

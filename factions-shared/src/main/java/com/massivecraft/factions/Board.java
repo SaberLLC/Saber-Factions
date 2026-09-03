@@ -19,6 +19,13 @@ public abstract class Board {
         return instance;
     }
 
+    public static void setInstance(Board board) {
+        if (board == null) {
+            throw new IllegalArgumentException("board");
+        }
+        instance = board;
+    }
+
     //----------------------------------------------//
     // Get and Set
     //----------------------------------------------//

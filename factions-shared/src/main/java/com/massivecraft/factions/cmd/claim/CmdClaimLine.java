@@ -5,9 +5,7 @@ import com.massivecraft.factions.cmd.Aliases;
 import com.massivecraft.factions.cmd.CommandContext;
 import com.massivecraft.factions.cmd.CommandRequirements;
 import com.massivecraft.factions.cmd.FCommand;
-import com.massivecraft.factions.cmd.audit.FLogType;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.CC;
 import com.massivecraft.factions.util.FastMath;
 import com.massivecraft.factions.zcore.fperms.Access;
 import com.massivecraft.factions.zcore.fperms.PermissableAction;
@@ -45,6 +43,11 @@ public class CmdClaimLine extends FCommand {
         // Args
         Integer amount = context.argAsInt(0, 1); // Default to 1
 
+        if (amount < 1) {
+            context.msg(TL.COMMAND_CLAIMLINE_INVALIDRADIUS);
+            return;
+        }
+
         if (amount > Conf.lineClaimLimit) {
             context.fPlayer.msg(TL.COMMAND_CLAIMLINE_ABOVEMAX, Conf.lineClaimLimit);
             return;
@@ -69,7 +72,6 @@ public class CmdClaimLine extends FCommand {
         }
 
         final Faction forFaction = context.argAsFaction(2, context.faction);
-        Faction at = Board.getInstance().getFactionAt(FLocation.wrap(context.fPlayer.getPlayer().getLocation()));
 
         if (forFaction != context.fPlayer.getFaction()) {
             if (!context.fPlayer.isAdminBypassing()) {
@@ -81,20 +83,25 @@ public class CmdClaimLine extends FCommand {
         }
 
         Location location = context.player.getLocation();
+        final boolean batchSuccessMessages = ClaimCommandUtil.shouldBatchSuccessMessages();
+        final int startChunkX = location.getChunk().getX();
+        final int startChunkZ = location.getChunk().getZ();
 
         // TODO: make this a task like claiming a radius?
         int claims = 0;
 
         for (int i = 0; i < amount; i++) {
-            if (!FactionsPlugin.cachedRadiusClaim || !context.fPlayer.attemptClaim(forFaction, context.player.getLocation(), false)) {
-                context.fPlayer.attemptClaim(forFaction, location, true);
+            FLocation claimLocation = FLocation.wrap(location);
+            if (ClaimCommandUtil.attemptClaim(context, forFaction, claimLocation, true, batchSuccessMessages)) {
+                claims++;
+                ClaimCommandUtil.logClaim(forFaction, context.fPlayer, claimLocation);
             }
-            claims++;
             location = location.add(blockFace.getModX() * 16, 0, blockFace.getModZ() * 16);
-            FactionsPlugin.instance.logFactionEvent(forFaction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.GreenB + "CLAIMED", String.valueOf(i), FLocation.wrap(context.player.getLocation()).formatXAndZ(","));
         }
-        int cachedClaims = claims;
-        context.fPlayer.getFaction().getFPlayersWhereOnline(true).forEach(f -> f.msg(TL.CLAIM_RADIUS_CLAIM, context.fPlayer.describeTo(f, true), String.valueOf(cachedClaims), context.fPlayer.getPlayer().getLocation().getChunk().getX(), context.fPlayer.getPlayer().getLocation().getChunk().getZ()));
+
+        if (batchSuccessMessages) {
+            ClaimCommandUtil.broadcastClaimSummary(context, forFaction, claims, startChunkX, startChunkZ);
+        }
     }
 
     @Override

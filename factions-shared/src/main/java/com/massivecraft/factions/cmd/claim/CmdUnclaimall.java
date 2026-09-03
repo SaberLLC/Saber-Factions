@@ -76,14 +76,14 @@ public class CmdUnclaimall extends FCommand {
         }
 
         LandUnclaimAllEvent unclaimAllEvent = new LandUnclaimAllEvent(target, context.fPlayer);
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.getInstance(), () -> Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent), 1);
+        FactionsPlugin.getScheduler().runGlobalLater(1L, () -> Bukkit.getServer().getPluginManager().callEvent(unclaimAllEvent));
         if (unclaimAllEvent.isCancelled()) {
             return;
         }
         int unclaimed = target.getAllClaims().size();
         Board.getInstance().unclaimAll(target.getId());
         FactionsPlugin.instance.logFactionEvent(context.faction, FLogType.CHUNK_CLAIMS, context.fPlayer.getName(), CC.RedB + "UNCLAIMED", String.valueOf(unclaimed), FLocation.wrap(context.fPlayer.getPlayer().getLocation()).formatXAndZ(","));
-        FactionsPlugin.getInstance().getServer().getScheduler().runTaskAsynchronously(FactionsPlugin.instance, () -> {
+        FactionsPlugin.getScheduler().runAsync(() -> {
 
             context.faction.msg(TL.COMMAND_UNCLAIMALL_UNCLAIMED, context.fPlayer.describeTo(context.faction, true));
 

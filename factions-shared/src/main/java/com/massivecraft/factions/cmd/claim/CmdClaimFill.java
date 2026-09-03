@@ -44,12 +44,17 @@ public class CmdClaimFill extends FCommand {
         // Args
         final int limit = context.argAsInt(0, Conf.maxFillClaimCount);
 
+        if (limit < 1) {
+            context.msg(TL.COMMAND_CLAIM_INVALIDRADIUS);
+            return;
+        }
+
         if (limit > Conf.maxFillClaimCount) {
             context.msg(TL.COMMAND_CLAIMFILL_ABOVEMAX, Conf.maxFillClaimCount);
             return;
         }
 
-        final Faction forFaction = context.argAsFaction(2, context.faction);
+        final Faction forFaction = context.argAsFaction(1, context.faction);
         Location location = context.player.getLocation();
         FLocation loc = FLocation.wrap(location);
 
@@ -97,21 +102,32 @@ public class CmdClaimFill extends FCommand {
             return;
         }
 
-        if (toClaim.size() > context.faction.getPowerRounded() - context.faction.getLandRounded()) {
+        if (forFaction.isNormal() && toClaim.size() > forFaction.getPowerRounded() - forFaction.getLandRounded()) {
             context.msg(TL.COMMAND_CLAIMFILL_NOTENOUGHLANDLEFT, forFaction.describeTo(context.fPlayer), toClaim.size());
             return;
         }
 
         final int limFail = Conf.radiusClaimFailureLimit;
+        final boolean batchSuccessMessages = ClaimCommandUtil.shouldBatchSuccessMessages();
+        final int startChunkX = location.getChunk().getX();
+        final int startChunkZ = location.getChunk().getZ();
         int fails = 0;
+        int claims = 0;
         for (FLocation currentLocation : toClaim) {
-            if (!context.fPlayer.attemptClaim(forFaction, currentLocation, true)) {
+            if (ClaimCommandUtil.attemptClaim(context, forFaction, currentLocation, true, batchSuccessMessages)) {
+                claims++;
+                ClaimCommandUtil.logClaim(forFaction, context.fPlayer, currentLocation);
+            } else {
                 fails++;
             }
             if (fails >= limFail) {
                 context.msg(TL.COMMAND_CLAIMFILL_TOOMUCHFAIL, fails);
                 return;
             }
+        }
+
+        if (batchSuccessMessages) {
+            ClaimCommandUtil.broadcastClaimSummary(context, forFaction, claims, startChunkX, startChunkZ);
         }
     }
 

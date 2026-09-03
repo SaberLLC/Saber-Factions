@@ -1,67 +1,70 @@
 package com.massivecraft.factions.cmd.audit;
 
-import com.cryptomorin.xseries.XMaterial;
-import com.massivecraft.factions.FactionsPlugin;
-import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Material;
-import org.bukkit.configuration.Configuration;
 
-/**
- * @author Saser
- */
+import java.util.Locale;
+
 public enum FLogType {
 
-    INVITES("&e%s&7 &a%s&7 &e%s", 3),
-    BANS("&e%s&7 &e%s&6 &e%s", 3),
-    CHUNK_CLAIMS("&e%s&7 %s&7 &e%s&7 near &e%s", 3),
-    PERM_EDIT_DEFAULTS("&e%s&7 %s&7 %s for &e%s", 4),
-    BANK_EDIT("&e%s&7 %s &e&l$&e%s", 3),
-    FCHEST_EDIT("&e%s&7 %s &f%s", 3),
-    RELATION_CHANGE("&e%s %s&e'd %s", 3),
-    FTAG_EDIT("&e%s&7 set to &e'%s'", 2),
-    FDESC_EDIT("&e%s&7 set to &e'%s'", 2),
-    ROLE_PERM_EDIT("&e%s&7&e %s &e%s &7to &e%s", 4),
-    SPAWNER_EDIT("&e%s&7 %s &e%s&7 %s", 4),
-    RANK_EDIT("&e%s&7 set &e%s&7 to %s", 3),
-    F_TNT("&e%s&7 %s &e%s", 3);
+    INVITES("Roster Edits", Material.WRITABLE_BOOK, 10, "&e%s&7 &a%s&7 &e%s", 60, 7),
+    BANS("Player Bans", Material.ANVIL, 11, "&e%s&7 &e%s&6 &e%s", 60, 7),
+    CHUNK_CLAIMS("Claim Edits", Material.WOODEN_AXE, 12, "&e%s&7 %s&7 &e%s&7 near &e%s", 60, 7),
+    PERM_EDIT_DEFAULTS("Default Perm Edits", Material.WRITTEN_BOOK, 13, "&e%s&7 %s&7 %s for &e%s", 60, 7),
+    BANK_EDIT("Money Edits", Material.GOLD_INGOT, 14, "&e%s&7 %s &e&l$&e%s", 60, 7),
+    FCHEST_EDIT("Chest Edits", Material.CHEST, 15, "&e%s&7 %s &f%s", 60, 7),
+    RELATION_CHANGE("Relation Edits", Material.GOLDEN_SWORD, 16, "&e%s %s&e'd %s", 60, 7),
+    FTAG_EDIT("Tag Edits", Material.NAME_TAG, 19, "&e%s&7 set to &e'%s'", 60, 7),
+    FDESC_EDIT("Desc Edits", Material.PAPER, 20, "&e%s&7 set to &e'%s'", 60, 7),
+    ROLE_PERM_EDIT("Promotional Edits", Material.WRITTEN_BOOK, 21, "&e%s&7 %s &e%s &7to &e%s", 60, 7),
+    SPAWNER_EDIT("Spawner Edits", Material.SPAWNER, 22, "&e%s&7 %s &e%s&7 %s", 60, 7),
+    RANK_EDIT("Rank Edits", Material.GOLDEN_HELMET, 23, "&e%s&7 set &e%s&7 to %s", 60, 7),
+    F_TNT("TNT Edits", Material.TNT, 24, "&e%s&7 %s &e%s", 200, 7);
 
-    private final String msg;
-    private final int requiredArgs;
+    private final String defaultDisplayName;
+    private final Material defaultMaterial;
+    private final int defaultSlot;
+    private final String defaultFormat;
+    private final int defaultMaxEntries;
+    private final int defaultRetentionDays;
 
-    // Cached for better performance
-    private static final Configuration CONFIG = FactionsPlugin.getInstance().getConfig();
-
-    FLogType(String msg, int requiredArgs) {
-        this.msg = msg;
-        this.requiredArgs = requiredArgs;
+    FLogType(String defaultDisplayName, Material defaultMaterial, int defaultSlot, String defaultFormat, int defaultMaxEntries, int defaultRetentionDays) {
+        this.defaultDisplayName = defaultDisplayName;
+        this.defaultMaterial = defaultMaterial;
+        this.defaultSlot = defaultSlot;
+        this.defaultFormat = defaultFormat;
+        this.defaultMaxEntries = defaultMaxEntries;
+        this.defaultRetentionDays = defaultRetentionDays;
     }
 
-    private String getConfigString(String pathSuffix) {
-        return CONFIG.getString("faudit-gui." + pathSuffix + "." + name().toLowerCase());
+    public String getKey() {
+        return this.name().toLowerCase(Locale.ROOT);
     }
 
-    public String getDisplayName() {
-        return TextUtil.parse(getConfigString("names"));
+    public String getDefaultDisplayName() {
+        return this.defaultDisplayName;
     }
 
-    @Override
-    public String toString() {
-        return name();
+    public Material getDefaultMaterial() {
+        return this.defaultMaterial;
     }
 
-    public int getSlot() {
-        return CONFIG.getInt("faudit-gui.slots." + name().toLowerCase());
+    public String getDefaultMaterialName() {
+        return this.defaultMaterial.name();
     }
 
-    public Material getMaterial() {
-        return XMaterial.matchXMaterial(getConfigString("materials")).get().parseMaterial();
+    public int getDefaultSlot() {
+        return this.defaultSlot;
     }
 
-    public String getMsg() {
-        return this.msg;
+    public String getDefaultFormat() {
+        return this.defaultFormat;
     }
 
-    public int getRequiredArgs() {
-        return this.requiredArgs;
+    public int getDefaultMaxEntries() {
+        return this.defaultMaxEntries;
+    }
+
+    public int getDefaultRetentionDays() {
+        return this.defaultRetentionDays;
     }
 }

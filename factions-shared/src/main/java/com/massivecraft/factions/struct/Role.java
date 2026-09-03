@@ -127,7 +127,8 @@ public enum Role implements Permissable {
     public ItemStack buildItem() {
         final ConfigurationSection RELATION_CONFIG = FactionsPlugin.getInstance().getFileManager().getFperms().getConfig().getConfigurationSection("fperm-gui.relation");
 
-        String displayName = replacePlaceholders(RELATION_CONFIG.getString("placeholder-item.name", ""));
+        String displayName = replacePlaceholders(RELATION_CONFIG.getString("Placeholder-Item.Name",
+                RELATION_CONFIG.getString("placeholder-item.name", "")));
         List<String> lore = new ArrayList<>();
 
         Material material = XMaterial.matchXMaterial(RELATION_CONFIG.getString("materials." + name().toLowerCase(), "STAINED_CLAY")).orElse(XMaterial.TERRACOTTA).parseMaterial();
@@ -138,7 +139,11 @@ public enum Role implements Permissable {
         ItemStack item = new ItemStack(material);
         ItemMeta itemMeta = item.getItemMeta();
 
-        for (String loreLine : RELATION_CONFIG.getStringList("placeholder-item.lore")) {
+        List<String> configuredLore = RELATION_CONFIG.getStringList("Placeholder-Item.Lore");
+        if (configuredLore.isEmpty()) {
+            configuredLore = RELATION_CONFIG.getStringList("placeholder-item.lore");
+        }
+        for (String loreLine : configuredLore) {
             lore.add(replacePlaceholders(loreLine));
         }
 

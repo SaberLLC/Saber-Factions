@@ -3,6 +3,8 @@ package com.massivecraft.factions.integration.dynmap;
 import org.dynmap.markers.AreaMarker;
 import org.dynmap.markers.MarkerSet;
 
+import java.util.Objects;
+
 public class TempAreaMarker {
 
     /**
@@ -92,12 +94,12 @@ public class TempAreaMarker {
         }
 
         // Label
-        if (!marker.getLabel().equals(this.label)) {
+        if (!Objects.equals(marker.getLabel(), this.label)) {
             marker.setLabel(this.label);
         }
 
         // Description
-        if (!marker.getDescription().equals(this.description)) {
+        if (!Objects.equals(marker.getDescription(), this.description)) {
             marker.setDescription(this.description);
         }
 

@@ -143,6 +143,15 @@ public final class FLocation implements Serializable {
         return this.z;
     }
 
+    /**
+     * Converts chunk coordinates to a Location for use with RegionScheduler.
+     * Y=64 is arbitrary; RegionScheduler uses only X/Z to determine region ownership.
+     */
+    public org.bukkit.Location asBukkitLocation() {
+        org.bukkit.World w = org.bukkit.Bukkit.getWorld(this.world);
+        return new org.bukkit.Location(w, (this.x << 4) + 8, 64, (this.z << 4) + 8);
+    }
+
     public String getCoordString() {
         return this.formatted == null ? this.formatted = this.x + "," + this.z : this.formatted;
     }

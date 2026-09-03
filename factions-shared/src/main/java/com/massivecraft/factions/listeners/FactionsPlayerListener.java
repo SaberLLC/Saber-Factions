@@ -5,6 +5,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.cmd.CmdFGlobal;
 import com.massivecraft.factions.cmd.CmdSeeChunk;
 import com.massivecraft.factions.cmd.FCmdRoot;
+import com.massivecraft.factions.cmd.role.RoleTextInput;
 import com.massivecraft.factions.cmd.logout.LogoutHandler;
 import com.massivecraft.factions.event.FPlayerEnteredFactionEvent;
 import com.massivecraft.factions.event.FPlayerJoinEvent;
@@ -392,9 +393,9 @@ public class FactionsPlayerListener implements Listener {
 
         me.login(); // set kills / deaths
 
-        Bukkit.getScheduler().runTaskLater(FactionsPlugin.instance, () -> {
+        FactionsPlugin.getScheduler().runEntityLater(player, 33L, () -> {
             if (me.isOnline()) me.getFaction().sendUnreadAnnouncements(me);
-        }, 33L);
+        }, null);
 
         if (FactionsPlugin.instance.getConfig().getBoolean("scoreboard.default-enabled", false)) {
             FScoreboard.init(me);
@@ -443,9 +444,12 @@ public class FactionsPlayerListener implements Listener {
         CmdSeeChunk.seeChunkMap.remove(me.getPlayer().getName());
 
         // if player is waiting for fstuck teleport but leaves, remove
-        Integer stuck = FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
+        com.massivecraft.factions.scheduler.FactionTask stuck = FactionsPlugin.getInstance().getStuckMap().remove(player.getUniqueId());
 
         if (stuck != null) {
+            if (!stuck.isCancelled()) {
+                stuck.cancel();
+            }
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
             FactionsPlugin.instance.getTimers().remove(player.getUniqueId());
         }
@@ -461,6 +465,7 @@ public class FactionsPlayerListener implements Listener {
 
         FScoreboard.remove(me, event.getPlayer());
         ((MemoryFPlayers) FPlayers.getInstance()).removeOnlinePlayer(player);
+        RoleTextInput.clear(player.getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -761,6 +766,10 @@ public class FactionsPlayerListener implements Listener {
 
     @EventHandler
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
+        if (RoleTextInput.handleChat(event)) {
+            return;
+        }
+
         Player player = event.getPlayer();
 
         if (CmdFGlobal.toggled.contains(player.getUniqueId())) {
