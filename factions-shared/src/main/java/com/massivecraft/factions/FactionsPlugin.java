@@ -187,7 +187,7 @@ public class FactionsPlugin extends MPlugin {
             return;
         }
 
-        this.version = Short.parseShort(ReflectionUtils.PackageType.getServerVersion().split("_")[1]);
+        this.version = ReflectionUtils.PackageType.getMinecraftVersion();
 
         if (!preEnable()) {
             this.loadSuccessful = false;
@@ -325,6 +325,22 @@ public class FactionsPlugin extends MPlugin {
 
     public boolean isMVdWPlaceholderAPIHooked() {
         return this.mvdwPlaceholderAPIManager;
+    }
+
+    private java.lang.reflect.Method mvdwReplaceMethod;
+
+    // MVdWPlaceholderAPI is discontinued and no longer published to any maven repo, so call it reflectively.
+    public String replaceMVdWPlaceholders(org.bukkit.OfflinePlayer player, String line) {
+        try {
+            if (mvdwReplaceMethod == null) {
+                mvdwReplaceMethod = Class.forName("be.maximvdw.placeholderapi.PlaceholderAPI")
+                        .getMethod("replacePlaceholders", org.bukkit.OfflinePlayer.class, String.class);
+            }
+            return (String) mvdwReplaceMethod.invoke(null, player, line);
+        } catch (ReflectiveOperationException | LinkageError e) {
+            this.mvdwPlaceholderAPIManager = false;
+            return line;
+        }
     }
 
     private void setupPermissions() {
