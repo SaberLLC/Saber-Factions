@@ -58,7 +58,7 @@ public interface Tag {
         }
 
         if (FactionsPlugin.getInstance().isMVdWPlaceholderAPIHooked() && player.isOnline()) {
-            line = be.maximvdw.placeholderapi.PlaceholderAPI.replacePlaceholders(player, line);
+            line = FactionsPlugin.getInstance().replaceMVdWPlaceholders(player, line);
         }
 
         return line;

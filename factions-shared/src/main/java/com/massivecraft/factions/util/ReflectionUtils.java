@@ -416,6 +416,26 @@ public final class ReflectionUtils {
         }
 
         /**
+         * Returns the minor version for 1.x servers (e.g. 21 for 1.21.11), or the major
+         * version for year-based releases (e.g. 26 for 26.2) so ">= 20" checks keep working.
+         *
+         * @return The Minecraft version number used for feature checks
+         */
+        public static short getMinecraftVersion() {
+            String bukkitVersion = Bukkit.getBukkitVersion();
+            String[] parts = bukkitVersion.split("-")[0].split("\\.");
+            try {
+                short major = Short.parseShort(parts[0]);
+                if (major == 1 && parts.length > 1) {
+                    return Short.parseShort(parts[1]);
+                }
+                return major;
+            } catch (NumberFormatException e) {
+                return Short.parseShort(getServerVersion().split("_")[1]);
+            }
+        }
+
+        /**
          * Returns the version of your server
          *
          * @return The server version

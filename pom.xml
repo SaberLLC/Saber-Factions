@@ -23,8 +23,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.build.timestamp.format>yyyy-MM-dd--HH-mm</maven.build.timestamp.format>
-        <spigot.api.version>26.1.2-R0.1-SNAPSHOT</spigot.api.version>
-        <paper.api.version>26.1.2-R0.1-SNAPSHOT</paper.api.version>
+        <spigot.api.version>26.2-R0.1-SNAPSHOT</spigot.api.version>
+        <paper.api.version>26.2-R0.1-SNAPSHOT</paper.api.version>
         <legacy.spigot.api.version>1.8.8-R0.1-SNAPSHOT</legacy.spigot.api.version>
     </properties>
 
